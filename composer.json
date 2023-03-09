@@ -1,6 +1,12 @@
 {
-    "name": "parthenon/skeleton",
+    "name": "billabear/billabear",
     "type": "project",
+    "authors": [
+        {
+            "name": "Iain Cambridge",
+            "email": "iain@humblyarrogant.io",
+        }
+    ],
     "license": "BUSL-1.1",
     "minimum-stability": "stable",
     "prefer-stable": true,

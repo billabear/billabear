@@ -1,12 +1,4 @@
 {
-    "name": "billabear/billabear",
-    "type": "project",
-    "authors": [
-        {
-            "name": "Iain Cambridge",
-            "email": "iain@humblyarrogant.io",
-        }
-    ],
     "devDependencies": {
         "@babel/core": "^7.18.13",
         "@babel/preset-env": "^7.18.10",
