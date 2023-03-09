@@ -1,0 +1,65 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+
+    #####
+    ## Parthenon user services
+    #####
+    Parthenon\User\Factory\EntityFactory: '@App\User\Entity\EntityFactory'
+    Parthenon\User\Repository\UserRepositoryInterface: '@App\Repository\UserRepository'
+    Parthenon\User\Repository\TeamRepositoryInterface: '@App\Repository\TeamRepository'
+    Parthenon\User\Notification\MessageFactory: '@App\User\Notification\MessageFactory'
+    Parthenon\User\Repository\TeamInviteCodeRepositoryInterface: '@App\Repository\TeamInviteCodeRepository'
+
+    App\Repository\UserRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.user'
+    app.repository.orm.user:
+        class: App\Repository\Orm\UserRepository
+
+    App\Repository\TeamRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.team'
+    app.repository.orm.team:
+        class: App\Repository\Orm\TeamRepository
+
+    App\Repository\TeamInviteCodeRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.team_invite_code'
+    app.repository.orm.team_invite_code:
+        class: App\Repository\Orm\TeamInviteCodeRepository
+
+
+    parthenon.user.repository.forgot_password_code_repository:
+        class: Parthenon\User\Repository\ForgotPasswordCodeRepository
+        arguments:
+            - '@App\Repository\Orm\ForgotPasswordCodeRepository'
+
+    parthenon.user.repository.orm.invite_code_repository_doctrine: '@App\Repository\Orm\InviteCodeRepository'
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

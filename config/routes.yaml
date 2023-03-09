@@ -1,0 +1,17 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation
+
+parthenon_user_controllers:
+    prefix: /api
+    resource: ../vendor/parthenon/parthenon/src/User/Controller/
+    type: annotation
+
+parthenon_payments_controllers:
+    prefix: /api
+    resource: ../vendor/parthenon/parthenon/src/Payments/Controller/
+    type: annotation

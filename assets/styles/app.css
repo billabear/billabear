@@ -1,0 +1,189 @@
+@tailwind preflight;
+@tailwind base;
+@tailwind components;
+
+@tailwind utilities;
+
+@layer base {
+    h1 {
+        @apply text-2xl;
+    }
+    h2 {
+        @apply text-xl;
+    }
+    h3 {
+        @apply text-lg;
+    }
+    a {
+        @apply text-blue-600 underline;
+    }
+}
+
+.rounded-sm { border-radius: 0.125rem; }
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
+
+.login {
+    background-color: #368aca;
+    background-image: linear-gradient(160deg, #368aca 0%, #c2dcef 100%);
+}
+
+.input-field {
+    border-color: silver!important;
+    @apply bg-transparent rounded-lg text-slate-600 font-medium w-full backdrop-blur-lg p-2;
+}
+
+.public-form-body {
+    @apply rounded-xl w-full md:max-w-screen-sm;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s;
+}
+
+.animate-fade-out {
+     animation: fadeOut 1s;
+ }
+
+.alert-error {
+    @apply bg-red-300 p-3 w-full border font-bold rounded-xl border-red-700 text-red-700;
+}
+.alert-success {
+    @apply bg-green-300 p-3 w-full border font-bold rounded-xl border-green-700 text-green-700;
+}
+
+.menu-group-title {
+    @apply font-medium text-xl text-slate-900 mb-3;
+}
+
+.menu-item {
+    @apply my-3;
+}
+
+.menu-link {
+    @apply pl-2 hover:bg-slate-200 rounded-xl p-2 w-full inline-block;
+}
+
+.router-link-active {
+    @apply bg-slate-100;
+}
+
+.main-background {
+    background-color: #f7fbff;
+}
+
+.dashboard-sidebar {
+    @apply flex flex-col lg:w-80 md:sticky top-0 left-0 lg:h-screen px-4 py-8 overflow-y-auto lg:shadow-md bg-white;
+}
+
+.page-title {
+    @apply text-3xl;
+}
+
+.card-body {
+    @apply rounded-xl bg-white p-5 w-full shadow;
+}
+
+.body-panel {
+    @apply rounded-xl bg-white w-full shadow;
+}
+
+.border-r-1 {
+    border-right-width: 1px;
+}
+
+.submenu-list-item {
+    @apply my-2;
+}
+
+.submenu {
+    @apply inline-block rounded-xl p-2 text-black font-bold no-underline w-full  hover:text-slate-800 hover:no-underline hover:bg-blue-50 hover:text-slate-600;
+}
+
+
+.h1 {
+    @apply text-2xl font-medium;
+}
+
+.h2 {
+    @apply text-xl font-medium;
+}
+
+.h3 {
+    @apply text-xl font-medium;
+}
+
+.btn--main {
+    @apply p-3 font-medium rounded-xl bg-blue-600 text-white hover:bg-blue-500;
+}
+
+.btn--main--disabled {
+    @apply p-3 font-medium rounded-xl bg-blue-400 text-white cursor-not-allowed;
+}
+
+.btn--danger {
+    @apply p-3 font-medium rounded-xl bg-red-600 text-white hover:bg-red-500;
+}
+
+.btn--danger--disabled {
+    @apply p-3 font-medium rounded-xl bg-red-300 text-white cursor-not-allowed;
+}
+
+.btn--secondary {
+    @apply p-3 font-medium rounded-xl border-blue-500 text-blue-500 bg-transparent;
+}
+
+.btn--secondary:hover {
+    @apply bg-blue-500 text-white;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.top-button-container {
+    @apply mb-4 text-end;
+}
+
+.form-input-field {
+    @apply p-2 border rounded-xl;
+}
+
+.badge--green {
+    @apply text-white font-bold bg-green-500 p-2 rounded-xl;
+}
+
+.badge--red {
+    @apply text-white font-bold bg-red-500 p-2 rounded-xl;
+}
+
+
+.label {
+    @apply block text-gray-700 font-medium mt-2;
+}
+
+.form-error {
+    @apply border-red-500 border-2 bg-red-100 !important;
+}
+
+.form-field {
+    @apply border border-slate-400 p-2 rounded-lg;
+}
+.error-message {
+    @apply block text-red-500;
+}
+
+.menu-link {
+    @apply no-underline text-black hover:text-slate-800 hover:no-underline;
+}

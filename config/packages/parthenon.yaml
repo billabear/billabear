@@ -1,0 +1,48 @@
+parthenon:
+  user:
+    enabled: true
+    user_class: App\Entity\User
+    team_class: App\Entity\Team
+    user_invites_enabled: true
+    teams_enabled: true
+    login_route: "parthenon_user_login"
+    teams_invites_enabled: true
+  notification:
+    enabled: true
+    email:
+      from_name: 'Parthenon'
+      from_address: 'support@example.org'
+      provider: symfony
+  payments:
+    enabled: true
+    provider: stripe
+    success_redirect_route: app_plan
+    cancel_checkout_redirect_route: app_plan
+    stripe:
+      private_api_key: '%env(resolve:STRIPE_PRIVATE_API_KEY)%'
+      public_api_key: '%env(resolve:STRIPE_PUBLIC_API_KEY)%'
+      success_url: "%env(resolve:APPLICATION_URL)%/api/payments/success/{CHECKOUT_SESSION_ID}"
+      cancel_url: "%env(resolve:APPLICATION_URL)%/api/payments/checkout/cancel"
+      return_url: '%env(resolve:APPLICATION_URL)%/app/plan'
+    price:
+      Basic:
+        monthly:
+          price: '20'
+          price_id: '%env(resolve:BASIC_MONTHLY_PRICE_ID)%'
+        yearly:
+          price: '150'
+          price_id: '%env(resolve:BASIC_YEARLY_PRICE_ID)%'
+      Standard:
+        monthly:
+          price: '500'
+          price_id: '%env(resolve:STANDARD_MONTHLY_PRICE_ID)%'
+        yearly:
+          price: '5000'
+          price_id: '%env(resolve:STANDARD_YEARLY_PRICE_ID)%'
+    subscriptions:
+      subscriber_type: team
+      plan:
+        Basic:
+          user_count: 1
+        Standard:
+          user_count: 5

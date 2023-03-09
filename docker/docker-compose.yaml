@@ -1,0 +1,47 @@
+version: '3.2'
+
+services:
+  database:
+    image: postgres:13.3-alpine3.14
+    environment:
+      - POSTGRES_DB=${PSQGL_DATABASE_NAME}
+      - POSTGRES_USER=${PSQGL_DATABASE_USER}
+      - POSTGRES_PASSWORD=${PSQGL_DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - parthenon
+
+  php-fpm:
+    image: getparthenon/ubuntu-php-fpm:8.1
+    depends_on:
+      - database
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=pgsql://${PSQGL_DATABASE_USER}:${PSQGL_DATABASE_PASSWORD}@database:5432/${PSQGL_DATABASE_NAME}
+    volumes:
+      - ..:/var/www
+    networks:
+      - parthenon
+
+  nginx:
+    image: getparthenon/ubuntu-nginx:21.04
+    volumes:
+      - ..:/var/www
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites/:/etc/nginx/sites-available
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+    networks:
+      - parthenon
+
+networks:
+  parthenon:
+    driver: bridge
