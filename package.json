@@ -1,4 +1,12 @@
 {
+    "name": "billabear/billabear",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Iain Cambridge",
+            "email": "iain@humblyarrogant.io",
+        }
+    ],
     "devDependencies": {
         "@babel/core": "^7.18.13",
         "@babel/preset-env": "^7.18.10",
@@ -16,7 +24,7 @@
         "webpack-notifier": "^1.15.0"
     },
     "license": "BUSL-1.1",
-    "private": true,
+    "private": false,
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
