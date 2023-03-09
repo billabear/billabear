@@ -10,6 +10,7 @@ use Parthenon\User\Entity\UserInterface;
 
 /**
  * @ORM\Entity()
+ *
  * @ORM\Table(name="teams")
  */
 class Team extends \Parthenon\User\Entity\Team implements SubscriberInterface

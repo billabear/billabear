@@ -10,6 +10,7 @@ use Parthenon\User\Entity\TeamInterface;
 
 /**
  * @ORM\Entity()
+ *
  * @ORM\Table(name="users")
  */
 class User extends \Parthenon\User\Entity\User implements MemberInterface, LimitedUserInterface
