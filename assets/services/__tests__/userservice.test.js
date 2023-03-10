@@ -24,24 +24,24 @@ describe("userService", () => {
 
     describe("Fetch user settings", () => {
         it("Should return response if successful", async () => {
-            mock.onGet(`/api/user/settings`).reply(200, {form: {success: true}});
+            mock.onGet(`/app/user/settings`).reply(200, {form: {success: true}});
 
             // when
             const result = await userservice.fetchSettings();
 
             // then
-            expect(mock.history.get[0].url).toEqual(`/api/user/settings`);
+            expect(mock.history.get[0].url).toEqual(`/app/user/settings`);
             expect(result).toEqual({success: true});
         });
 
         it("Should return error", async () => {
-            mock.onGet(`/api/user/settings`).reply(400, {success: false, error: "Invalid code"});
+            mock.onGet(`/app/user/settings`).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.fetchSettings();
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.get[0].url).toEqual(`/api/user/settings`);
+                expect(mock.history.get[0].url).toEqual(`/app/user/settings`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -55,13 +55,13 @@ describe("userService", () => {
                 email: "iain.cambridge@example.org",
             }
 
-            mock.onPost(`/api/user/settings`, user).reply(200, {success: true});
+            mock.onPost(`/app/user/settings`, user).reply(200, {success: true});
 
             // when
             const result = await userservice.updateSettings(user);
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/settings`);
+            expect(mock.history.post[0].url).toEqual(`/app/user/settings`);
             expect(result.data).toEqual({success: true});
         });
 
@@ -71,13 +71,13 @@ describe("userService", () => {
                 email: "iain.cambridge@example.org",
             }
 
-            mock.onPost(`/api/user/settings`, user).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/settings`, user).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.updateSettings(user);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/settings`);
+                expect(mock.history.post[0].url).toEqual(`/app/user/settings`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -89,13 +89,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
 
-            mock.onGet(`/api/user/confirm/`+code).reply(200, {success: true});
+            mock.onGet(`/app/user/confirm/`+code).reply(200, {success: true});
 
             // when
             const result = await userservice.confirmEmail(code)
 
             // then
-            expect(mock.history.get[0].url).toEqual(`/api/user/confirm/`+code);
+            expect(mock.history.get[0].url).toEqual(`/app/user/confirm/`+code);
             expect(result.data).toEqual({success: true});
         });
 
@@ -103,13 +103,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
 
-            mock.onGet(`/api/user/confirm/`+code).reply(400, {success: false, error: "Invalid code"});
+            mock.onGet(`/app/user/confirm/`+code).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.confirmEmail(code);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.get[0].url).toEqual(`/api/user/confirm/`+code);
+                expect(mock.history.get[0].url).toEqual(`/app/user/confirm/`+code);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -121,13 +121,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
 
-            mock.onGet(`/api/user/reset/`+code).reply(200, {success: true});
+            mock.onGet(`/app/user/reset/`+code).reply(200, {success: true});
 
             // when
             const result = await userservice.forgotPasswordCheck(code)
 
             // then
-            expect(mock.history.get[0].url).toEqual(`/api/user/reset/`+code);
+            expect(mock.history.get[0].url).toEqual(`/app/user/reset/`+code);
             expect(result.data).toEqual({success: true});
         });
 
@@ -135,13 +135,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
 
-            mock.onGet(`/api/user/reset/`+code).reply(400, {success: false, error: "Invalid code"});
+            mock.onGet(`/app/user/reset/`+code).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.forgotPasswordCheck(code);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.get[0].url).toEqual(`/api/user/reset/`+code);
+                expect(mock.history.get[0].url).toEqual(`/app/user/reset/`+code);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -153,13 +153,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
             var newPassword = "a-new-password";
-            mock.onPost(`/api/user/reset/`+code, {password: newPassword}).reply(200, {success: true});
+            mock.onPost(`/app/user/reset/`+code, {password: newPassword}).reply(200, {success: true});
 
             // when
             const result = await userservice.forgotPasswordConfirm(code, newPassword)
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/reset/`+code);
+            expect(mock.history.post[0].url).toEqual(`/app/user/reset/`+code);
             expect(result.data).toEqual({success: true});
         });
 
@@ -168,13 +168,13 @@ describe("userService", () => {
             var code = "a-random-code";
             var newPassword = "a-new-password";
 
-            mock.onPost(`/api/user/reset/`+code, {password: newPassword}).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/reset/`+code, {password: newPassword}).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.forgotPasswordConfirm(code, newPassword);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/reset/`+code);
+                expect(mock.history.post[0].url).toEqual(`/app/user/reset/`+code);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -186,13 +186,13 @@ describe("userService", () => {
 
             var password = "a-random-password";
             var new_password = "new.password";
-            mock.onPost(`/api/user/password`, {password, new_password}).reply(200, {success: true});
+            mock.onPost(`/app/user/password`, {password, new_password}).reply(200, {success: true});
 
             // when
             const result = await userservice.changePassword(password, new_password)
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/password`);
+            expect(mock.history.post[0].url).toEqual(`/app/user/password`);
             expect(result.data).toEqual({success: true});
         });
 
@@ -200,13 +200,13 @@ describe("userService", () => {
 
             var password = "a-random-password";
             var new_password = "new.password";
-            mock.onPost(`/api/user/password`, {password, new_password}).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/password`, {password, new_password}).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.changePassword(password, new_password);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/password`);
+                expect(mock.history.post[0].url).toEqual(`/app/user/password`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -218,13 +218,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
             var email = "iain.cambridge@example.org";
-            mock.onPost(`/api/user/invite`, {email}).reply(200, {success: true});
+            mock.onPost(`/app/user/invite`, {email}).reply(200, {success: true});
 
             // when
             const result = await userservice.invite( email)
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/invite`);
+            expect(mock.history.post[0].url).toEqual(`/app/user/invite`);
             expect(result.data).toEqual({success: true});
         });
 
@@ -233,13 +233,13 @@ describe("userService", () => {
             var code = "a-random-code";
             var email = "iain.cambridge@example.org";
 
-            mock.onPost(`/api/user/invite`, {email}).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/invite`, {email}).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.invite(email);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/invite`);
+                expect(mock.history.post[0].url).toEqual(`/app/user/invite`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -251,13 +251,13 @@ describe("userService", () => {
 
             var code = "a-random-code";
             var email = "iain.cambridge@example.org";
-            mock.onPost(`/api/user/reset`, {email}).reply(200, {success: true});
+            mock.onPost(`/app/user/reset`, {email}).reply(200, {success: true});
 
             // when
             const result = await userservice.forgotPassword( email)
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/reset`);
+            expect(mock.history.post[0].url).toEqual(`/app/user/reset`);
             expect(result.data).toEqual({success: true});
         });
 
@@ -266,13 +266,13 @@ describe("userService", () => {
             var code = "a-random-code";
             var email = "iain.cambridge@example.org";
 
-            mock.onPost(`/api/user/reset`, {email}).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/reset`, {email}).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.forgotPassword(email);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/reset`);
+                expect(mock.history.post[0].url).toEqual(`/app/user/reset`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -287,13 +287,13 @@ describe("userService", () => {
                 password: "a-password"
             };
 
-            mock.onPost(`/api/user/signup`, user).reply(200, {success: true});
+            mock.onPost(`/app/user/signup`, user).reply(200, {success: true});
 
             // when
             const result = await userservice.signup(user, undefined);
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/signup`);
+            expect(mock.history.post[0].url).toEqual(`/app/user/signup`);
             expect(result.data).toEqual({success: true});
         });
 
@@ -304,13 +304,13 @@ describe("userService", () => {
                 password: "a-password"
             };
 
-            mock.onPost(`/api/user/signup`, user).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/signup`, user).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.signup(user, undefined);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/signup`);
+                expect(mock.history.post[0].url).toEqual(`/app/user/signup`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -326,13 +326,13 @@ describe("userService", () => {
             };
             var code = 'invite-code';
 
-            mock.onPost(`/api/user/signup/`+code, user).reply(200, {success: true});
+            mock.onPost(`/app/user/signup/`+code, user).reply(200, {success: true});
 
             // when
             const result = await userservice.signup(user, code);
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/user/signup/`+code);
+            expect(mock.history.post[0].url).toEqual(`/app/user/signup/`+code);
             expect(result.data).toEqual({success: true});
         });
 
@@ -344,13 +344,13 @@ describe("userService", () => {
             };
             var code = 'invite-code';
 
-            mock.onPost(`/api/user/signup/`+code, user).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/user/signup/`+code, user).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.signup(user, code);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/user/signup/`+code);
+                expect(mock.history.post[0].url).toEqual(`/app/user/signup/`+code);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -365,13 +365,13 @@ describe("userService", () => {
                 password: "a-password"
             };
 
-            mock.onPost(`/api/authenticate`, user).reply(200, {success: true});
+            mock.onPost(`/app/authenticate`, user).reply(200, {success: true});
 
             // when
             const result = await userservice.login(user.username, user.password);
 
             // then
-            expect(mock.history.post[0].url).toEqual(`/api/authenticate`);
+            expect(mock.history.post[0].url).toEqual(`/app/authenticate`);
             expect(result.data).toEqual({success: true});
         });
 
@@ -382,13 +382,13 @@ describe("userService", () => {
                 password: "a-password"
             };
 
-            mock.onPost(`/api/authenticate`, user).reply(400, {success: false, error: "Invalid code"});
+            mock.onPost(`/app/authenticate`, user).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.login(user.username, user.password);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.post[0].url).toEqual(`/api/authenticate`);
+                expect(mock.history.post[0].url).toEqual(`/app/authenticate`);
                 expect(error).toEqual("Invalid code");
 
             }

@@ -7,3 +7,5 @@ services:
         resource: '../tests/Behat/*'
 
     Parthenon\Notification\EmailSenderInterface: '@Parthenon\Notification\Sender\NullEmailSender'
+
+    App\Customer\ExternalRegisterInterface: '@App\Customer\DummyRegister'

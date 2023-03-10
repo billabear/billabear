@@ -2,8 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Customer\CustomerFactory;
+use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
-use App\Factory\CustomerFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PaymentController
+class CustomerController
 {
     #[Route('/api/1.0/customer', name: 'api_customer_create',  methods: ['PUT'])]
     public function createCustomer(
@@ -20,6 +21,7 @@ class PaymentController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CustomerFactory $customerFactory,
+        ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository
     ): Response {
 
@@ -40,6 +42,7 @@ class PaymentController
         }
 
         $customer = $customerFactory->createCustomer($dto);
+        $externalRegister->register($customer);
         $customerRepository->save($customer);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);

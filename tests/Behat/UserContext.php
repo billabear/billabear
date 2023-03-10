@@ -351,7 +351,7 @@ class UserContext implements Context
      */
     public function iVisitTheProfiilePage()
     {
-        $this->session->visit('/api/user/settings');
+        $this->session->visit('/app/user/settings');
     }
 
     /**

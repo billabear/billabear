@@ -43,7 +43,6 @@ class MainContext implements Context
         $customer = $this->customerRepository->findOneBy(['billingEmail' => $email]);
 
         if (!$customer instanceof Customer) {
-            print $this->session->getStatusCode();
             throw new \Exception(sprintf("No customer for '%s'", $email));
         }
     }

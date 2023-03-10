@@ -2,7 +2,7 @@ import axios from "axios";
 import {handleResponse} from "./utils";
 
 function invite(email) {
-    return axios.post("/api/user/team/invite", {email})
+    return axios.post("/app/user/team/invite", {email})
         .then((response) => {
             const origResponse = response;
             if (response.name === 'AxiosError') {
@@ -32,7 +32,7 @@ function invite(email) {
 }
 
 function getTeam() {
-    return axios.get("/api/user/team")
+    return axios.get("/app/user/team")
         .then(handleResponse)
         .then((result) => {
             return {
@@ -43,11 +43,11 @@ function getTeam() {
 }
 
 function cancelInvite(invite) {
-    return axios.post("/api/user/team/invite/"+invite.id+"/cancel").then(handleResponse);
+    return axios.post("/app/user/team/invite/"+invite.id+"/cancel").then(handleResponse);
 }
 
 function disableMember(member) {
-    return axios.post("/api/user/team/member/"+member.id+"/disable").then(handleResponse);
+    return axios.post("/app/user/team/member/"+member.id+"/disable").then(handleResponse);
 }
 
 export const teamservice = {

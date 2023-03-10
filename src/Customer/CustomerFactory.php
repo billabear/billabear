@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Factory;
+namespace App\Customer;
 
 use App\Dto\CreateCustomerDto;
 use App\Entity\Customer;
@@ -16,7 +16,6 @@ class CustomerFactory
         $customer = new Customer();
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
-        $customer->setExternalCustomerReference('');
         $customer->setBillingAddress($address);
 
         return $customer;

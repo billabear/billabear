@@ -7,49 +7,49 @@ function login(username, password) {
         password
     };
 
-    return axios.post("/api/authenticate", payload).then(handleResponse)
+    return axios.post("/app/authenticate", payload).then(handleResponse)
 }
 
 function signup(user, code) {
 
     var url
     if (code === undefined) {
-        url = `/api/user/signup`
+        url = `/app/user/signup`
     } else {
-        url = '/api/user/signup/' + code
+        url = '/app/user/signup/' + code
     }
 
     return axios.post(url, user).then(handleResponse);
 }
 
 function forgotPassword(email) {
-    return axios.post("/api/user/reset", {email}).then(handleResponse);
+    return axios.post("/app/user/reset", {email}).then(handleResponse);
 }
 
 function confirmEmail(code) {
-    return axios.get(`/api/user/confirm/` + code, {
+    return axios.get(`/app/user/confirm/` + code, {
         headers: {'Content-Type': 'application/json'},
         data: {}
     }).then(handleResponse);
 }
 
 function forgotPasswordCheck(code) {
-    return axios.get(`/api/user/reset/` + code, {
+    return axios.get(`/app/user/reset/` + code, {
         headers: {'Content-Type': 'application/json'},
         data: {}
     }).then(handleResponse);
 }
 function changePassword(password, new_password)
 {
-    return axios.post(`/api/user/password`, {password, new_password}).then(handleResponse);
+    return axios.post(`/app/user/password`, {password, new_password}).then(handleResponse);
 }
 
 function forgotPasswordConfirm(code, password) {
-    return axios.post(`/api/user/reset/` + code, {password}).then(handleResponse);
+    return axios.post(`/app/user/reset/` + code, {password}).then(handleResponse);
 }
 
 function fetchSettings() {
-    return axios.get("/api/user/settings", {
+    return axios.get("/app/user/settings", {
         headers: {'Content-Type': 'application/json'},
         data: {}
     })
@@ -60,11 +60,11 @@ function fetchSettings() {
 }
 
 function updateSettings(user) {
-    return axios.post("/api/user/settings", user).then(handleResponse);
+    return axios.post("/app/user/settings", user).then(handleResponse);
 }
 
 function invite(email) {
-    return axios.post("/api/user/invite", {email}).then(handleResponse);
+    return axios.post("/app/user/invite", {email}).then(handleResponse);
 }
 export const userservice = {
     login,

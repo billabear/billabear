@@ -47,7 +47,7 @@
     <div class="bottom-body" v-if="(this.current_plan.status == 'active' || this.current_plan.status == 'pending')">
       <h3 class="h3">{{ $t('app.plan.main.plan_options') }}</h3>
 
-      <a href="/api/payments/portal" class="btn--main mb-3 text-center block">{{ $t('app.plan.main.payment_settings') }}</a>
+      <a href="/app/payments/portal" class="btn--main mb-3 text-center block">{{ $t('app.plan.main.payment_settings') }}</a>
 
       <a @click="cancel" class="btn--danger block text-center cursor-pointer	"  v-if="in_progress === false">{{ $t('app.plan.main.cancel_button') }}</a>
       <a @click="cancel" class="btn--danger--disabled block text-center "  v-else>

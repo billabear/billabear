@@ -19,7 +19,7 @@ export const router = createRouter({
         { path: '/forgot-password/:code', name: 'public.forgot_password_confirm', component: ForgotPasswordConfirm },
         { path: '/confirm-email/:code', name: 'public.confirm_email', component: ConfirmEmail },
         {
-            path: '/app/',
+            path: '/site/',
             component: InternalApp,
             children: APP_ROUTES,
         },
