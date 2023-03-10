@@ -8,7 +8,7 @@ use Parthenon\Common\Address;
 
 class CustomerFactory
 {
-    public function createCustomer(CreateCustomerDto $createCustomerDto) : Customer
+    public function createCustomer(CreateCustomerDto $createCustomerDto): Customer
     {
         $address = new Address();
         $address->setCountry($createCustomerDto->getCountry());

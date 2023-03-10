@@ -1,6 +1,6 @@
 <?php
 
- namespace App\Repository;
+namespace App\Repository;
 
  use Parthenon\Billing\Entity\Subscription;
  use Parthenon\Common\Repository\DoctrineRepository;

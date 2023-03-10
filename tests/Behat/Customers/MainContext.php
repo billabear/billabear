@@ -16,8 +16,7 @@ class MainContext implements Context
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
-    )
-    {
+    ) {
     }
 
     /**
@@ -46,7 +45,4 @@ class MainContext implements Context
             throw new \Exception(sprintf("No customer for '%s'", $email));
         }
     }
-
-
-
 }

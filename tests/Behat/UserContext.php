@@ -4,10 +4,9 @@ namespace App\Tests\Behat;
 
 use App\Entity\ForgotPasswordCode;
 use App\Entity\InviteCode;
-use App\Entity\Team;
 use App\Entity\User;
-use App\Repository\Orm\InviteCodeRepository;
 use App\Repository\Orm\ForgotPasswordCodeRepository;
+use App\Repository\Orm\InviteCodeRepository;
 use App\Repository\Orm\UserRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -15,7 +14,6 @@ use Behat\Mink\Session;
 use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Athena\Entity\Link;
 use Parthenon\Athena\Entity\Notification;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class UserContext implements Context
@@ -31,12 +29,12 @@ class UserContext implements Context
     private string $passwordHash;
 
     public function __construct(
-        private Session                        $session,
-        private UserRepository                 $repository,
-        private EntityManagerInterface         $entityManager,
+        private Session $session,
+        private UserRepository $repository,
+        private EntityManagerInterface $entityManager,
         private PasswordHasherFactoryInterface $hasherFactory,
-        private ForgotPasswordCodeRepository   $passwordResetRepository,
-        private InviteCodeRepository           $inviteCodeRepository,
+        private ForgotPasswordCodeRepository $passwordResetRepository,
+        private InviteCodeRepository $inviteCodeRepository,
     ) {
     }
 
@@ -103,6 +101,7 @@ class UserContext implements Context
 
     /**
      * @When I login as :username with the password :password
+     *
      * @Given I have logged in as :username with the password :password
      */
     public function iLoginAsWithThePassword($username, $password)
@@ -309,8 +308,6 @@ class UserContext implements Context
         $this->iLoginAsWithThePassword($arg1, 'RealPassword');
     }
 
-
-
     /**
      * @When I edit my settings with the name :arg1
      */
@@ -365,8 +362,6 @@ class UserContext implements Context
     }
 
     /**
-     * @param $email
-     *
      * @return User|null
      *
      * @throws \Doctrine\ORM\ORMException
@@ -628,7 +623,6 @@ class UserContext implements Context
             throw new \Exception('invite code found');
         }
     }
-
 
     /**
      * @Given the invite code :arg1 exists

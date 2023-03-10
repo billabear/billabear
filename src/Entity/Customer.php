@@ -10,7 +10,7 @@ use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: "customers")]
+#[ORM\Table(name: 'customers')]
 class Customer implements CustomerInterface
 {
     #[ORM\Id]
@@ -25,16 +25,14 @@ class Customer implements CustomerInterface
     #[ORM\Embedded(class: Address::class)]
     private ?Address $billingAddress;
 
-    #[ORM\Column(type: "string", nullable: true)]
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $reference;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: 'string')]
     private string $externalCustomerReference;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: 'string')]
     private string $billingEmail;
-
-
 
     public function hasSubscription(): bool
     {
@@ -79,34 +77,21 @@ class Customer implements CustomerInterface
         return $this->subscription;
     }
 
-    /**
-     * @param Subscription|null $subscription
-     */
     public function setSubscription(?Subscription $subscription): void
     {
         $this->subscription = $subscription;
     }
 
-
-    /**
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * @param string|null $reference
-     */
     public function setReference(?string $reference): void
     {
         $this->reference = $reference;
     }
 
-    /**
-     * @return string
-     */
     public function getExternalCustomerReference(): string
     {
         return $this->externalCustomerReference;
@@ -120,17 +105,11 @@ class Customer implements CustomerInterface
         $this->externalCustomerReference = $externalCustomerReference;
     }
 
-    /**
-     * @return string
-     */
     public function getBillingEmail(): string
     {
         return $this->billingEmail;
     }
 
-    /**
-     * @param string $billingEmail
-     */
     public function setBillingEmail(string $billingEmail): void
     {
         $this->billingEmail = $billingEmail;
@@ -144,7 +123,7 @@ class Customer implements CustomerInterface
     public function getBillingAddress(): Address
     {
         if (!isset($this->billingAddress)) {
-            throw new \Exception("No billing address");
+            throw new \Exception('No billing address');
         }
 
         return $this->billingAddress;

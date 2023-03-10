@@ -2,7 +2,6 @@
 
 namespace App\Tests\Behat;
 
-use App\Repository\Orm\UserRepository;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;

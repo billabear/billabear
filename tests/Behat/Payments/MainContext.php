@@ -7,5 +7,7 @@ use Behat\Mink\Session;
 
 class MainContext implements Context
 {
-    public function __construct(private Session $session){}
+    public function __construct(private Session $session)
+    {
+    }
 }

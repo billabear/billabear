@@ -2,12 +2,9 @@
 
 namespace App\Tests\Behat;
 
-use Behat\Mink\Session;
-use Parthenon\Payments\SessionInterface;
-
 trait SendRequestTrait
 {
-    static ?string $apiKey = null;
+    public static ?string $apiKey = null;
 
     protected function authenticate(string $apiKey): void
     {
@@ -34,12 +31,12 @@ trait SendRequestTrait
             $jsonBody);
     }
 
-    protected function getJsonContent() : array
+    protected function getJsonContent(): array
     {
         $content = $this->session->getPage()->getContent();
         $json = json_decode($content, true);
         if (!$json) {
-            throw new \Exception("No valid JSON found");
+            throw new \Exception('No valid JSON found');
         }
 
         return $json;

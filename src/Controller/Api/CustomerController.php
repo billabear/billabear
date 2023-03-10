@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    #[Route('/api/1.0/customer', name: 'api_customer_create',  methods: ['PUT'])]
+    #[Route('/api/1.0/customer', name: 'api_customer_create', methods: ['PUT'])]
     public function createCustomer(
         Request $request,
         SerializerInterface $serializer,
@@ -24,8 +24,7 @@ class CustomerController
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository
     ): Response {
-
-        $dto = $serializer->deserialize($request->getContent(),CreateCustomerDto::class,'json');
+        $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
 
         if (count($errors) > 0) {
@@ -37,7 +36,7 @@ class CustomerController
 
             return new JsonResponse([
                 'success' => false,
-                'errors' => $errorOutput
+                'errors' => $errorOutput,
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
