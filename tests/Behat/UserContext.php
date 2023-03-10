@@ -8,7 +8,6 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Repository\Orm\InviteCodeRepository;
 use App\Repository\Orm\ForgotPasswordCodeRepository;
-use App\Repository\Orm\TeamRepository;
 use App\Repository\Orm\UserRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -16,14 +15,12 @@ use Behat\Mink\Session;
 use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Athena\Entity\Link;
 use Parthenon\Athena\Entity\Notification;
-use Parthenon\Payments\Entity\Subscription;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class UserContext implements Context
 {
     use SendRequestTrait;
-    use TeamTrait;
 
     private array $formFields = [];
 
@@ -40,7 +37,6 @@ class UserContext implements Context
         private PasswordHasherFactoryInterface $hasherFactory,
         private ForgotPasswordCodeRepository   $passwordResetRepository,
         private InviteCodeRepository           $inviteCodeRepository,
-        private TeamRepository                 $teamRepository
     ) {
     }
 
@@ -50,7 +46,7 @@ class UserContext implements Context
     public function iTryToSignUp()
     {
         $this->count = $this->repository->count([]);
-        $this->sendJsonRequest('POST', '/api/user/signup', $this->formFields);
+        $this->sendJsonRequest('POST', '/app/user/signup', $this->formFields);
     }
 
     /**
@@ -111,7 +107,7 @@ class UserContext implements Context
      */
     public function iLoginAsWithThePassword($username, $password)
     {
-        $this->sendJsonRequest('POST', '/api/authenticate', ['username' => $username, 'password' => $password]);
+        $this->sendJsonRequest('POST', '/app/authenticate', ['username' => $username, 'password' => $password]);
     }
 
     /**
@@ -183,7 +179,7 @@ class UserContext implements Context
      */
     public function iConfirmTheCode($code)
     {
-        $this->sendJsonRequest('GET', '/api/user/confirm/'.$code);
+        $this->sendJsonRequest('GET', '/app/user/confirm/'.$code);
     }
 
     /**
@@ -216,7 +212,7 @@ class UserContext implements Context
     public function iRequestToResetMyPasswordFor($username)
     {
         $this->count = $this->passwordResetRepository->count([]);
-        $this->sendJsonRequest('POST', '/api/user/reset', ['email' => $username]);
+        $this->sendJsonRequest('POST', '/app/user/reset', ['email' => $username]);
     }
 
     /**
@@ -249,7 +245,7 @@ class UserContext implements Context
         $user = $this->repository->findOneBy(['email' => $email]);
         $this->passwordHash = $user->getPassword();
 
-        $this->sendJsonRequest('POST', '/api/user/reset/'.$code, ['password' => $password]);
+        $this->sendJsonRequest('POST', '/app/user/reset/'.$code, ['password' => $password]);
 
         $this->count = $this->passwordResetRepository->count([]);
     }
@@ -320,7 +316,7 @@ class UserContext implements Context
      */
     public function iEditMyProfileWithTheName($arg1)
     {
-        $this->sendJsonRequest('GET', '/api/user/settings');
+        $this->sendJsonRequest('GET', '/app/user/settings');
         $content = $this->getJsonContent()['form'];
         $output = [];
         foreach ($content as $key => $value) {
@@ -328,7 +324,7 @@ class UserContext implements Context
         }
 
         $output['name'] = $arg1;
-        $this->sendJsonRequest('POST', '/api/user/settings', $output);
+        $this->sendJsonRequest('POST', '/app/user/settings', $output);
     }
 
     /**
@@ -389,7 +385,7 @@ class UserContext implements Context
      */
     public function iChangeMyPasswordToGivingMyCurrentPasswordAs($newPassword, $currentPassword)
     {
-        $this->sendJsonRequest('POST', '/api/user/password', ['password' => $currentPassword, 'new_password' => $newPassword]);
+        $this->sendJsonRequest('POST', '/app/user/password', ['password' => $currentPassword, 'new_password' => $newPassword]);
     }
 
     /**
@@ -606,7 +602,7 @@ class UserContext implements Context
      */
     public function iInvite($email)
     {
-        $this->sendJsonRequest('POST', '/api/user/invite', ['email' => $email]);
+        $this->sendJsonRequest('POST', '/app/user/invite', ['email' => $email]);
     }
 
     /**
@@ -620,6 +616,19 @@ class UserContext implements Context
             throw new \Exception('No invite code found');
         }
     }
+
+    /**
+     * @Then there will not be an invite code for :arg1
+     */
+    public function thereWillNotBeAnInviteCodeFor($email)
+    {
+        $inviteCode = $this->inviteCodeRepository->findOneBy(['email' => $email]);
+
+        if ($inviteCode) {
+            throw new \Exception('invite code found');
+        }
+    }
+
 
     /**
      * @Given the invite code :arg1 exists
@@ -642,7 +651,7 @@ class UserContext implements Context
         $this->count = $this->repository->count([]);
 
         $this->count = $this->repository->count([]);
-        $this->sendJsonRequest('POST', '/api/user/signup/'.$code, $this->formFields);
+        $this->sendJsonRequest('POST', '/app/user/signup/'.$code, $this->formFields);
     }
 
     /**
@@ -698,59 +707,15 @@ class UserContext implements Context
     {
         foreach ($table->getColumnsHash() as $row) {
             $user = $this->createUser($row['Email'], $row['Password'], 'fake', ($row['Confirmed'] ?? null) !== 'False', $row['Name']);
-            try {
-                $team = $this->getTeamByName($row['Team']);
-                $team->addMember($user);
-                $user->setTeam($team);
-                $this->teamRepository->getEntityManager()->persist($user);
-                $this->teamRepository->getEntityManager()->flush();
-            } catch (\Throwable $entityFoundException) {
-                $this->createTeam($user, $row['Team']);
-            }
         }
     }
-
-    /**
-     * @Given the following teams exist:
-     */
-    public function theFollowingTeamsExist(TableNode $table)
-    {
-        foreach ($table->getColumnsHash() as $row) {
-            $this->createTeam(null, $row['Name'], $row['Plan'] ?? 'Trial');
-        }
-    }
-
-    protected function createTeam(?User $user, $name, $plan = 'Trial')
-    {
-        $team = new Team();
-        $team->setName($name);
-        if ($user) {
-            $team->addMember($user);
-        }
-        $team->setCreatedAt(new \DateTime('now'));
-        $team->setSubscription(new Subscription());
-        $team->getSubscription()->setPlanName($plan);
-        $team->getSubscription()->setValidUntil(new \DateTime('+7 days'));
-        $team->getSubscription()->setActive(true);
-
-        $this->teamRepository->getEntityManager()->persist($team);
-
-        $this->teamRepository->getEntityManager()->flush();
-        if ($user) {
-            $user->setTeam($team);
-            $this->teamRepository->getEntityManager()->persist($user);
-        }
-
-        $this->teamRepository->getEntityManager()->flush();
-    }
-
 
     /**
      * @When I sent an invite to :arg1
      */
     public function iSentAnInviteTo($email)
     {
-        $this->sendJsonRequest('POST', '/api/user/team/invite', ['email' => $email]);
+        $this->sendJsonRequest('POST', '/app/user/team/invite', ['email' => $email]);
     }
 
     /**

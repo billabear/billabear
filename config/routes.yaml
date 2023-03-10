@@ -7,11 +7,11 @@ kernel:
     type: annotation
 
 parthenon_user_controllers:
-    prefix: /api
+    prefix: /app
     resource: ../vendor/parthenon/parthenon/src/User/Controller/
     type: annotation
 
 parthenon_payments_controllers:
-    prefix: /api
+    prefix: /app
     resource: ../vendor/parthenon/parthenon/src/Payments/Controller/
     type: annotation

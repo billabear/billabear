@@ -4,15 +4,11 @@ Feature: User request password reset
   I need to be able to reset my password
 
   Background:
-    Given the following teams exist:
-      | Name    | Plan     |
-      | Example | Standard |
-      | Second  | Basic    |
     Given the following accounts exist:
-      | Name        | Email                   | Password  | Team    |
-      | Sally Brown | sally.brown@example.org | AF@k3P@ss | Example |
-      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss | Example |
-      | Sally Braun | sally.braun@example.org | AF@k3Pass | Second  |
+      | Name        | Email                   | Password  |
+      | Sally Brown | sally.brown@example.org | AF@k3P@ss |
+      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
+      | Sally Braun | sally.braun@example.org | AF@k3Pass |
 
   Scenario: Confirmed User with valid code
     Given a password reset code "code" for "sally.brown@example.org" exists

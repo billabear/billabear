@@ -5,8 +5,15 @@ default:
                 - App\Tests\Behat\DemoContext
                 - App\Tests\Behat\GeneralContext
                 - App\Tests\Behat\UserContext
-                - App\Tests\Behat\PlanContext
-                - App\Tests\Behat\TeamContext
+
+                # API
+                - App\Tests\Behat\Api\MainContext
+
+                # Payments
+                - App\Tests\Behat\Payments\MainContext
+
+                # Customers
+                - App\Tests\Behat\Customers\MainContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

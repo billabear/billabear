@@ -32,9 +32,8 @@ services:
     #####
     Parthenon\User\Factory\EntityFactory: '@App\User\Entity\EntityFactory'
     Parthenon\User\Repository\UserRepositoryInterface: '@App\Repository\UserRepository'
-    Parthenon\User\Repository\TeamRepositoryInterface: '@App\Repository\TeamRepository'
     Parthenon\User\Notification\MessageFactory: '@App\User\Notification\MessageFactory'
-    Parthenon\User\Repository\TeamInviteCodeRepositoryInterface: '@App\Repository\TeamInviteCodeRepository'
+    Parthenon\Billing\Repository\CustomerRepositoryInterface: '@App\Repository\CustomerRepository'
 
     App\Repository\UserRepository:
         arguments:
@@ -42,24 +41,19 @@ services:
     app.repository.orm.user:
         class: App\Repository\Orm\UserRepository
 
-    App\Repository\TeamRepository:
-        arguments:
-            $entityRepository: '@app.repository.orm.team'
-    app.repository.orm.team:
-        class: App\Repository\Orm\TeamRepository
-
-    App\Repository\TeamInviteCodeRepository:
-        arguments:
-            $entityRepository: '@app.repository.orm.team_invite_code'
-    app.repository.orm.team_invite_code:
-        class: App\Repository\Orm\TeamInviteCodeRepository
-
-
     parthenon.user.repository.forgot_password_code_repository:
         class: Parthenon\User\Repository\ForgotPasswordCodeRepository
         arguments:
             - '@App\Repository\Orm\ForgotPasswordCodeRepository'
 
     parthenon.user.repository.orm.invite_code_repository_doctrine: '@App\Repository\Orm\InviteCodeRepository'
+
+
+    App\Repository\CustomerRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.customer'
+    app.repository.orm.customer:
+        class: App\Repository\Orm\CustomerRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

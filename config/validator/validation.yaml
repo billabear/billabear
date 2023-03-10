@@ -1,0 +1,4 @@
+Parthenon\Common\Address:
+  properties:
+    country:
+      - NotBlank: ~

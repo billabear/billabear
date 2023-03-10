@@ -4,15 +4,11 @@ Feature: User login
   I need to be able to login
 
   Background:
-    Given the following teams exist:
-      | Name    | Plan     |
-      | Example | Standard |
-      | Second  | Basic    |
     Given the following accounts exist:
-      | Name        | Email                   | Password  | Team    | Confirmed |
-      | Sally Brown | sally.brown@example.org | AF@k3P@ss | Example | True      |
-      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss | Example | False     |
-      | Sally Braun | sally.braun@example.org | AF@k3Pass | Second  | False     |
+      | Name        | Email                   | Password  | Confirmed |
+      | Sally Brown | sally.brown@example.org | AF@k3P@ss | True      |
+      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss | False     |
+      | Sally Braun | sally.braun@example.org | AF@k3Pass | False     |
 
   Scenario: User does not exist
     When I have logged in as "sally.brown@example.org" with the password "ARealP@ss"

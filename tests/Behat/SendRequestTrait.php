@@ -7,6 +7,13 @@ use Parthenon\Payments\SessionInterface;
 
 trait SendRequestTrait
 {
+    static ?string $apiKey = null;
+
+    protected function authenticate(string $apiKey): void
+    {
+        static::$apiKey = $apiKey;
+    }
+
     protected function sendJsonRequest(string $method, string $url, array $body = []): void
     {
         $jsonBody = json_encode($body);
