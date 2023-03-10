@@ -30,6 +30,5 @@ yarn-error.log
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
 
-composer.lock
 yarn.lock
 symfony.lock
