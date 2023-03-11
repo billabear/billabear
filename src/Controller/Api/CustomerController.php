@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
+use App\Dto\Response\ListResponse;
 use App\Repository\CustomerRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    #[Route('/api/1.0/customer', name: 'api_customer_create', methods: ['PUT'])]
+    #[Route('/api/v1.0/customer', name: 'api_customer_create', methods: ['PUT'])]
     public function createCustomer(
         Request $request,
         SerializerInterface $serializer,
@@ -47,5 +48,24 @@ class CustomerController
         $customerRepository->save($customer);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
+    }
+
+
+    #[Route('/api/v1.0/customer', name: 'api_customer_list', methods: ['GET'])]
+    public function listCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SerializerInterface $serializer,
+    ): Response {
+
+        $resultSet = $customerRepository->getList();
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($resultSet->getResults());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }

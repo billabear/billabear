@@ -8,6 +8,8 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Exception\NoSubscriptionException;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'customers')]
@@ -20,18 +22,23 @@ class Customer implements CustomerInterface
     private $id;
 
     #[ORM\Embedded(class: Subscription::class)]
+    #[Ignore]
     private ?Subscription $subscription;
 
     #[ORM\Embedded(class: Address::class)]
+    #[Ignore]
     private ?Address $billingAddress;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[SerializedName('reference')]
     private ?string $reference;
 
     #[ORM\Column(type: 'string')]
+    #[SerializedName('external_reference')]
     private string $externalCustomerReference;
 
     #[ORM\Column(type: 'string')]
+    #[SerializedName('email')]
     private string $billingEmail;
 
     public function hasSubscription(): bool
@@ -43,6 +50,7 @@ class Customer implements CustomerInterface
         return false;
     }
 
+    #[Ignore]
     public function hasActiveSubscription(): bool
     {
         if (isset($this->subscription) && $this->subscription->isActive()) {
@@ -105,6 +113,7 @@ class Customer implements CustomerInterface
         $this->externalCustomerReference = $externalCustomerReference;
     }
 
+    #[Ignore]
     public function hasExternalsCustomerReference(): bool
     {
         return isset($this->externalCustomerReference);
@@ -139,6 +148,11 @@ class Customer implements CustomerInterface
         return isset($this->billingAddress);
     }
 
+    public function getCountry(): string{
+        return $this->billingAddress->getCountry();
+    }
+
+    #[Ignore]
     public function getDisplayName(): string
     {
         return $this->billingEmail;

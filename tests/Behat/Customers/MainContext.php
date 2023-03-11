@@ -8,6 +8,7 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Parthenon\Common\Address;
 
 class MainContext implements Context
 {
@@ -39,7 +40,7 @@ class MainContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
-        $this->sendJsonRequest('PUT', '/api/1.0/customer', $payload);
+        $this->sendJsonRequest('PUT', '/api/v1.0/customer', $payload);
     }
 
     /**
@@ -91,4 +92,61 @@ class MainContext implements Context
 
         return $customer;
     }
+
+    /**
+     * @Given the follow customers exist:
+     */
+    public function theFollowCustomersExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+
+        foreach ($data as $row) {
+
+            $externalCustomerReference = $row['External Reference'] ?? bin2hex(random_bytes(32));
+            $reference = $row['Reference'] ?? null;
+
+            $billingAddress = new Address();
+            $billingAddress->setCountry($row['Country']);
+
+            $customer = new Customer();
+            $customer->setBillingEmail($row['Email']);
+            $customer->setBillingAddress($billingAddress);
+            $customer->setExternalCustomerReference($externalCustomerReference);
+            $customer->setReference($reference);
+
+            $this->customerRepository->getEntityManager()->persist($customer);
+
+        }
+
+        $this->customerRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I use the API to list customers
+     */
+    public function iUseTheApiToListCustomers()
+    {
+        $this->sendJsonRequest('GET', '/api/v1.0/customer');
+    }
+
+    /**
+     * @Then I should see in the API response the customer :arg1
+     */
+    public function iShouldSeeInTheApiResponseTheCustomer($email)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['data'])) {
+            throw new \Exception("No data found");
+        }
+
+        foreach ($data['data'] as $customer) {
+            if ($customer['email'] === $email) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find customer");
+    }
+
 }
