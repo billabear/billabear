@@ -105,6 +105,10 @@ class Customer implements CustomerInterface
         $this->externalCustomerReference = $externalCustomerReference;
     }
 
+    public function hasExternalsCustomerReference() : bool {
+        return isset($this->externalCustomerReference);
+    }
+
     public function getBillingEmail(): string
     {
         return $this->billingEmail;

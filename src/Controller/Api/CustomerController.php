@@ -41,7 +41,9 @@ class CustomerController
         }
 
         $customer = $customerFactory->createCustomer($dto);
-        $externalRegister->register($customer);
+        if (!$customer->hasExternalsCustomerReference()) {
+            $externalRegister->register($customer);
+        }
         $customerRepository->save($customer);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);

@@ -18,6 +18,12 @@ class CustomerFactory
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
 
+        $externalCustomerReference = $createCustomerDto->getExternalReference();
+
+        if (isset($externalCustomerReference)) {
+            $customer->setExternalCustomerReference($externalCustomerReference);
+        }
+
         return $customer;
     }
 }

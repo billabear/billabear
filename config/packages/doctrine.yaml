@@ -11,6 +11,7 @@ doctrine:
         auto_mapping: true
         resolve_target_entities:
             Parthenon\User\Entity\UserInterface: App\Entity\User
+            Parthenon\User\Entity\TeamInterface: App\Entity\User
             Parthenon\Billing\Entity\CustomerInterface: App\Entity\Customer
         mappings:
             App:

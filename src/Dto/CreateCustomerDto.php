@@ -8,11 +8,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateCustomerDto
 {
     #[Assert\NotBlank]
+    #[Assert\Email]
     #[SerializedName('email')]
     private string $email;
 
     #[SerializedName('reference')]
     private ?string $reference = null;
+
+    #[SerializedName('external_reference')]
+    private ?string $externalReference = null;
 
     #[Assert\NotBlank]
     #[SerializedName('country')]
@@ -46,5 +50,21 @@ class CreateCustomerDto
     public function setCountry(string $country): void
     {
         $this->country = $country;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalReference(): ?string
+    {
+        return $this->externalReference;
+    }
+
+    /**
+     * @param string|null $externalReference
+     */
+    public function setExternalReference(?string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
     }
 }

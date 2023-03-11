@@ -31,6 +31,14 @@ class MainContext implements Context
             'country' => $data['Country'],
         ];
 
+        if (isset($data['External Reference'])) {
+            $payload['external_reference'] = $data['External Reference'];
+        }
+
+        if (isset($data['Reference'])) {
+            $payload['reference'] = $data['Reference'];
+        }
+
         $this->sendJsonRequest('PUT', '/api/1.0/customer', $payload);
     }
 
@@ -39,10 +47,49 @@ class MainContext implements Context
      */
     public function thereShouldBeACustomerFor($email)
     {
+        $this->getCustomerByEmail($email);
+    }
+
+    /**
+     * @Then the customer :arg1 should have the external reference :arg2
+     */
+    public function theCustomerShouldHaveTheExternalReference($email, $arg2)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        if ($customer->getExternalCustomerReference() !== $arg2) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $arg2, $customer->getExternalCustomerReference()));
+        }
+    }
+
+    /**
+     * @Then the customer :arg1 should have the reference :arg2
+     */
+    public function theCustomerShouldHaveTheReference($email, $arg2)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        if ($customer->getReference() !== $arg2) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $arg2, $customer->getReference()));
+        }
+    }
+
+    /**
+     * @param $email
+     * @return void
+     * @throws \Exception
+     */
+    public function getCustomerByEmail($email): Customer
+    {
         $customer = $this->customerRepository->findOneBy(['billingEmail' => $email]);
 
         if (!$customer instanceof Customer) {
             throw new \Exception(sprintf("No customer for '%s'", $email));
         }
+
+        $this->customerRepository->getEntityManager()->refresh($customer);
+
+        return $customer;
     }
+
 }
