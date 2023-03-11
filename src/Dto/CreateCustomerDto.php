@@ -52,17 +52,11 @@ class CreateCustomerDto
         $this->country = $country;
     }
 
-    /**
-     * @return string|null
-     */
     public function getExternalReference(): ?string
     {
         return $this->externalReference;
     }
 
-    /**
-     * @param string|null $externalReference
-     */
     public function setExternalReference(?string $externalReference): void
     {
         $this->externalReference = $externalReference;

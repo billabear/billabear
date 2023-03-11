@@ -75,8 +75,8 @@ class MainContext implements Context
     }
 
     /**
-     * @param $email
      * @return void
+     *
      * @throws \Exception
      */
     public function getCustomerByEmail($email): Customer
@@ -91,5 +91,4 @@ class MainContext implements Context
 
         return $customer;
     }
-
 }

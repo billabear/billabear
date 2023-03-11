@@ -105,7 +105,8 @@ class Customer implements CustomerInterface
         $this->externalCustomerReference = $externalCustomerReference;
     }
 
-    public function hasExternalsCustomerReference() : bool {
+    public function hasExternalsCustomerReference(): bool
+    {
         return isset($this->externalCustomerReference);
     }
 

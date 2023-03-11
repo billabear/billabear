@@ -21,7 +21,6 @@ class MainContext implements Context
     {
     }
 
-
     /**
      * @Then there should be an error for :arg1
      */
@@ -30,11 +29,11 @@ class MainContext implements Context
         $data = $this->getJsonContent();
 
         if (!isset($data['errors'])) {
-            throw new \Exception("No errors");
+            throw new \Exception('No errors');
         }
 
         if (!isset($data['errors'][$errorKey])) {
-            throw  new \Exception("No error");
+            throw new \Exception('No error');
         }
     }
 
@@ -46,12 +45,11 @@ class MainContext implements Context
         $data = $this->getJsonContent();
 
         if (!isset($data['errors'])) {
-            throw new \Exception("No errors");
+            throw new \Exception('No errors');
         }
 
         if (isset($data['errors'][$errorKey])) {
-            throw  new \Exception("Error found");
+            throw new \Exception('Error found');
         }
     }
-
 }
