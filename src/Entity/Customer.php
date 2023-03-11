@@ -148,7 +148,8 @@ class Customer implements CustomerInterface
         return isset($this->billingAddress);
     }
 
-    public function getCountry(): string{
+    public function getCountry(): string
+    {
         return $this->billingAddress->getCountry();
     }
 

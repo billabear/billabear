@@ -50,14 +50,12 @@ class CustomerController
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
     }
 
-
     #[Route('/api/v1.0/customer', name: 'api_customer_list', methods: ['GET'])]
     public function listCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
     ): Response {
-
         $resultSet = $customerRepository->getList();
 
         $listResponse = new ListResponse();

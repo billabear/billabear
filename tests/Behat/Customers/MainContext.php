@@ -101,7 +101,6 @@ class MainContext implements Context
         $data = $table->getColumnsHash();
 
         foreach ($data as $row) {
-
             $externalCustomerReference = $row['External Reference'] ?? bin2hex(random_bytes(32));
             $reference = $row['Reference'] ?? null;
 
@@ -115,7 +114,6 @@ class MainContext implements Context
             $customer->setReference($reference);
 
             $this->customerRepository->getEntityManager()->persist($customer);
-
         }
 
         $this->customerRepository->getEntityManager()->flush();
@@ -137,7 +135,7 @@ class MainContext implements Context
         $data = $this->getJsonContent();
 
         if (!isset($data['data'])) {
-            throw new \Exception("No data found");
+            throw new \Exception('No data found');
         }
 
         foreach ($data['data'] as $customer) {
@@ -148,5 +146,4 @@ class MainContext implements Context
 
         throw new \Exception("Can't find customer");
     }
-
 }
