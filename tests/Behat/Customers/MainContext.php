@@ -128,6 +128,33 @@ class MainContext implements Context
     }
 
     /**
+     * @When I use the API to list customers with parameter :arg1 with value :arg2
+     */
+    public function iUseTheApiToListCustomersWithParameterWithValue($filter, $value)
+    {
+        $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer?%s=%s', $filter, $value));
+    }
+
+    /**
+     * @Then I should not see in the API response the customer :arg1
+     */
+    public function iShouldNotSeeInTheApiResponseTheCustomer($email)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['data'])) {
+            throw new \Exception('No data found');
+        }
+
+        foreach ($data['data'] as $customer) {
+            if ($customer['email'] === $email) {
+
+                throw new \Exception("Found customer");
+            }
+        }
+    }
+
+    /**
      * @Then I should see in the API response the customer :arg1
      */
     public function iShouldSeeInTheApiResponseTheCustomer($email)
@@ -146,4 +173,16 @@ class MainContext implements Context
 
         throw new \Exception("Can't find customer");
     }
+
+
+    /**
+     * @When I use the API to list customers with the last_key from the last response
+     */
+    public function iUseTheApiToListCustomersWithTheLastKeyFromTheLastResponse()
+    {
+        $data = $this->getJsonContent();
+
+        $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer?last_key=%s', $data['last_key']));
+    }
+
 }

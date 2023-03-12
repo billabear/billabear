@@ -2,11 +2,17 @@
 
 namespace App\Dto\Response;
 
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
 class ListResponse
 {
     protected array $data = [];
 
+    #[SerializedName('has_more')]
     protected bool $hasMore;
+
+    #[SerializedName('last_key')]
+    protected ?string $lastKey;
 
     public function getData(): array
     {
@@ -26,5 +32,21 @@ class ListResponse
     public function setHasMore(bool $hasMore): void
     {
         $this->hasMore = $hasMore;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastKey(): string
+    {
+        return $this->lastKey;
+    }
+
+    /**
+     * @param string $lastId
+     */
+    public function setLastKey(?string $lastId): void
+    {
+        $this->lastKey = $lastId;
     }
 }

@@ -2,11 +2,15 @@
 
 namespace App\Controller\Api;
 
+use App\Api\Filters\CustomerList;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\ListResponse;
 use App\Repository\CustomerRepositoryInterface;
+use Parthenon\Athena\Filters\ContainsFilter;
+use Parthenon\Athena\Filters\ExactChoiceFilter;
+use Parthenon\Athena\Filters\FilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,14 +65,41 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
     ): Response {
-        $resultSet = $customerRepository->getList();
+        $lastKey = $request->get('last_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is below 1'
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is above 100'
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new CustomerList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $customerRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+        );
 
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($resultSet->getResults());
+        $listResponse->setLastKey($resultSet->getLastKey());
 
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
     }
+
+
 }
