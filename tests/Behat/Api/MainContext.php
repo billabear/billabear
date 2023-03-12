@@ -5,6 +5,7 @@ namespace App\Tests\Behat\Api;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use Symfony\Component\HttpFoundation\Response;
 
 class MainContext implements Context
 {
@@ -12,6 +13,16 @@ class MainContext implements Context
 
     public function __construct(private Session $session)
     {
+    }
+
+    /**
+     * @Then I should be told there is a conflict
+     */
+    public function iShouldBeToldThereIsAConflict()
+    {
+        if ($this->session->getStatusCode() !== Response::HTTP_CONFLICT) {
+            throw new \Exception("No conflict response given");
+        }
     }
 
     /**

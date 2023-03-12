@@ -44,3 +44,14 @@ Feature: Customer Creation
     Then there should be a customer for "customer@example.org"
     And the customer "customer@example.org" should have the external reference "cust_4945959"
     And the customer "customer@example.org" should have the reference "Test Customer"
+
+
+  Scenario: Customer already exists
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer@example.org | DE      | cust_jf9j545       | Customer One |
+    When I create a customer with the following info
+      | Email   | customer@example.org |
+      | Country | DE                   |
+    Then I should be told there is a conflict

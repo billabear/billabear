@@ -42,6 +42,11 @@ class CustomerController
         }
 
         $customer = $customerFactory->createCustomer($dto);
+
+        if ($customerRepository->hasCustomerByEmail($customer->getBillingEmail())) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_CONFLICT);
+        }
+
         if (!$customer->hasExternalsCustomerReference()) {
             $externalRegister->register($customer);
         }

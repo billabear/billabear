@@ -37,7 +37,7 @@ class Customer implements CustomerInterface
     #[SerializedName('external_reference')]
     private string $externalCustomerReference;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', unique: true)]
     #[SerializedName('email')]
     private string $billingEmail;
 
