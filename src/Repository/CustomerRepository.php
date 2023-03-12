@@ -16,11 +16,10 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
     }
 
     /**
-     * @param string $email
-     * @return Customer
      * @throws NoEntityFoundException
      */
-    public function findByEmail(string $email): Customer {
+    public function findByEmail(string $email): Customer
+    {
         $customer = $this->entityRepository->findOneBy(['billingEmail' => $email]);
 
         if (!$customer instanceof Customer) {
@@ -30,10 +29,11 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
         return $customer;
     }
 
-    public function hasCustomerByEmail(string $email) : bool
+    public function hasCustomerByEmail(string $email): bool
     {
         try {
             $this->findByEmail($email);
+
             return true;
         } catch (NoEntityFoundException $e) {
             return false;
