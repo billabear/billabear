@@ -8,9 +8,6 @@ use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\ListResponse;
 use App\Repository\CustomerRepositoryInterface;
-use Parthenon\Athena\Filters\ContainsFilter;
-use Parthenon\Athena\Filters\ExactChoiceFilter;
-use Parthenon\Athena\Filters\FilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,14 +68,14 @@ class CustomerController
         if ($resultsPerPage < 1) {
             return new JsonResponse([
                 'success' => false,
-                'reason' => 'per_page is below 1'
+                'reason' => 'per_page is below 1',
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'success' => false,
-                'reason' => 'per_page is above 100'
+                'reason' => 'per_page is above 100',
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
@@ -100,6 +97,4 @@ class CustomerController
 
         return new JsonResponse($json, json: true);
     }
-
-
 }

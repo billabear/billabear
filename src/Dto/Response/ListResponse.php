@@ -34,9 +34,6 @@ class ListResponse
         $this->hasMore = $hasMore;
     }
 
-    /**
-     * @return string
-     */
     public function getLastKey(): string
     {
         return $this->lastKey;

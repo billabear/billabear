@@ -2,16 +2,15 @@
 
 namespace App\Api\Filters;
 
-use Parthenon\Athena\Filters\ContainsFilter;
-use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Athena\Filters\FilterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class FilterList
 {
-    abstract protected function getFilters() : array;
+    abstract protected function getFilters(): array;
 
-    public function buildFilters(Request $request) : array {
+    public function buildFilters(Request $request): array
+    {
         $output = [];
         $filterTypes = $this->getFilters();
 
