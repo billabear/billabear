@@ -64,3 +64,25 @@ Feature: Customer List
     When I use the API to list customers with the last_key from the last response
     Then I should see in the API response with only 1 result in the data set
     And the I should not see in the API response there are more results
+
+  Scenario: Reference filter
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    When I use the API to list customers with parameter "reference" with value "One"
+    Then I should see in the API response with only 1 result in the data set
+    Then I should see in the API response the customer "customer.one@example.org"
+    Then I should not see in the API response the customer "customer.two@example.org"
+
+  Scenario: External Reference filter
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    When I use the API to list customers with parameter "external_reference" with value "dfugfdu"
+    Then I should see in the API response with only 1 result in the data set
+    Then I should see in the API response the customer "customer.two@example.org"
+    Then I should not see in the API response the customer "customer.one@example.org"

@@ -19,11 +19,11 @@ class CustomerList extends FilterList
                 'filter' => ExactChoiceFilter::class,
             ],
             'reference' => [
-                'field' => 'customerReference',
+                'field' => 'reference',
                 'filter' => ContainsFilter::class,
             ],
             'external_reference' => [
-                'field' => 'customerReference',
+                'field' => 'externalCustomerReference',
                 'filter' => ContainsFilter::class,
             ],
         ];
