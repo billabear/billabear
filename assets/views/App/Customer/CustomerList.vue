@@ -2,6 +2,9 @@
   <div>
     <h1 class="page-title">{{ $t('app.customer.list.title') }}</h1>
 
+    <div class="top-button-container">
+      <router-link :to="{name: 'app.customer.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.customer.list.create_new') }}</router-link>
+    </div>
     <div class="mt-3 card-body">
       <LoadingScreen :ready="ready">
         <table class="table-auto w-full">

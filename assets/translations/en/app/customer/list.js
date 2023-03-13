@@ -4,5 +4,6 @@ export const CUSTOMER_LIST_TRANSLATIONS = {
     email: "Email",
     country: "Country",
     reference: "Reference",
-    no_customers: "There are currently no customers existing"
+    no_customers: "There are currently no customers existing",
+    create_new: "Create",
 }

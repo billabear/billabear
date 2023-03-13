@@ -7,6 +7,7 @@ import Billing from "../views/App/Billing/Billing";
 import BillingAddress from "../views/App/Billing/BillingAddress";
 import BillingMethods from "../views/App/Billing/BillingMethods";
 import CustomerList from "../views/App/Customer/CustomerList.vue";
+import CustomerCreate from "../views/App/Customer/CustomerCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -39,6 +40,11 @@ export const APP_ROUTES = [
         name: 'app.customer.list',
         path: 'customer/list',
         component: CustomerList
+    },
+    {
+        name: 'app.customer.create',
+        path: 'customer/create',
+        component: CustomerCreate,
     },
     {
         name: 'app.billing',
