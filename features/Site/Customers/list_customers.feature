@@ -1,6 +1,6 @@
 Feature: Customer List
   In order to keep track of customers
-  As an API user
+  As an APP user
   I need to be see what customers are
 
   Background:

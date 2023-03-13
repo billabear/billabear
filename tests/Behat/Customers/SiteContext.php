@@ -4,6 +4,7 @@ namespace App\Tests\Behat\Customers;
 
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 
 class SiteContext implements Context
@@ -123,5 +124,28 @@ class SiteContext implements Context
         if ($data['has_more']) {
             throw new \Exception('API Response does say there are more');
         }
+    }
+
+    /**
+     * @When I create a customer via the app with the following info
+     */
+    public function iCreateACustomerViaTheAppWithTheFollowingInfo(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'email' => $data['Email'],
+            'country' => $data['Country'],
+        ];
+
+        if (isset($data['External Reference'])) {
+            $payload['external_reference'] = $data['External Reference'];
+        }
+
+        if (isset($data['Reference'])) {
+            $payload['reference'] = $data['Reference'];
+        }
+
+        $this->sendJsonRequest('POST', '/app/customer', $payload);
     }
 }
