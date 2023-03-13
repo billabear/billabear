@@ -45,7 +45,7 @@ const actions = {
 
                     const url = localStorage.getItem('app_redirect')
                     if (url === null) {
-                        router.push('/app/home');
+                        router.push('/site/home');
                     } else {
                         localStorage.removeItem('app_redirect')
                         router.push(url)
