@@ -7,6 +7,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     advance: "advance",
     submit_btn: "Create Customer",
     show_advanced: "Advanced",
+    success_message: "Successfully created customer",
     help_info: {
         email: "The email for the customer where the invoices are to go",
         country: "The customer's billing country",

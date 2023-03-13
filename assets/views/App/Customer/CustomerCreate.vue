@@ -49,6 +49,7 @@
         <div class="form-field-submit-ctn">
           <SubmitButton :in-progress="sendingInProgress">{{ $t('app.customer.create.submit_btn') }}</SubmitButton>
         </div>
+        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.customer.create.success_message') }}</p>
       </form>
     </div>
   </div>
@@ -69,21 +70,24 @@ export default {
       },
       sendingInProgress: false,
       showAdvance: false,
+      success: false,
       errors: {
-
       }
     }
   },
   methods: {
     send: function () {
       this.sendingInProgress = true;
+      this.success = false;
       axios.post('/app/customer', this.customer).then(
           response => {
             this.sendingInProgress = false;
+            this.success = true;
           }
       ).catch(error => {
         this.errors = error.response.data.errors;
         this.sendingInProgress = false;
+        this.success = false;
       })
     }
   }

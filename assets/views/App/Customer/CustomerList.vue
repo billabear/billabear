@@ -46,6 +46,7 @@ export default {
   },
   mounted() {
     axios.get('/app/customer').then(response => {
+      this.customers = response.data.data;
       this.ready = true;
     })
   }
