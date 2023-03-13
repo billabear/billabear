@@ -7,7 +7,9 @@ use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\ListResponse;
+use App\Dto\Response\Site\CustomerView;
 use App\Repository\CustomerRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -97,5 +99,21 @@ class CustomerController
         $customerRepository->save($customer);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
+    }
+
+    #[Route('/app/customer/{id}', name: 'app_customer_view', methods: ['GET'])]
+    public function viewCustomer(Request $request, CustomerRepositoryInterface $customerRepository, SerializerInterface $serializer): Response
+    {
+        try {
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $dto = new CustomerView();
+        $dto->setCustomer($customer);
+        $output = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($output, json: true);
     }
 }
