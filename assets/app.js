@@ -17,7 +17,8 @@ import {ENGLISH_TRANSLATIONS} from "./translations/en";
 import {createI18n} from "vue-i18n";
 
 import '@fortawesome/fontawesome-free/css/all.css'
-import ParthenonMenu from "@parthenon/vue-menu/src";
+import ParthenonMenu from "@parthenon/vue-menu";
+import ParthenonUI from "@parthenon/ui";
 
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS
@@ -36,5 +37,6 @@ app.use(router);
 app.use(i18n);
 app.use(store);
 app.use(ParthenonMenu);
+app.use(ParthenonUI);
 
 app.mount('#app');
