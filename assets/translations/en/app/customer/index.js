@@ -1,0 +1,5 @@
+import {CUSTOMER_LIST_TRANSLATIONS} from "./list";
+
+export const CUSTOMER_TRANSLATIONS = {
+    list: CUSTOMER_LIST_TRANSLATIONS
+}

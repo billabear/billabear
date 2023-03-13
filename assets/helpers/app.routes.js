@@ -6,6 +6,7 @@ import UserInvite from "../views/App/User/UserInvite";
 import Billing from "../views/App/Billing/Billing";
 import BillingAddress from "../views/App/Billing/BillingAddress";
 import BillingMethods from "../views/App/Billing/BillingMethods";
+import CustomerList from "../views/App/Customer/CustomerList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -33,6 +34,11 @@ export const APP_ROUTES = [
         name: "app.user.invite",
         path: "user/invite",
         component: UserInvite,
+    },
+    {
+        name: 'app.customer.list',
+        path: 'customer/list',
+        component: CustomerList
     },
     {
         name: 'app.billing',

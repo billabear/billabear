@@ -36,7 +36,7 @@ trait SendRequestTrait
         $content = $this->session->getPage()->getContent();
         $json = json_decode($content, true);
         if (!$json) {
-            throw new \Exception('No valid JSON found');
+            throw new \Exception(sprintf('No valid JSON found. Got status code %s', $this->session->getStatusCode()));
         }
 
         return $json;

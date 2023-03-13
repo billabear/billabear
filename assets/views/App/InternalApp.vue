@@ -5,11 +5,8 @@
       <Menu>
         <MenuGroup :name="$t('app.menu.main.title')">
           <MenuItem route-name="app.home"><i class="fa-solid fa-house"></i> {{ $t('app.menu.main.home') }}</MenuItem>
-          <MenuItem route-name="app.team"><i class="fa-solid fa-people-group"></i> {{ $t('app.menu.main.team') }}</MenuItem>
-          <MenuItem route-name="app.plan"><i class="fa-regular fa-pen-to-square"></i> {{ $t('app.menu.main.plan') }}</MenuItem>
+          <MenuItem route-name="app.customer.list"><i class="fa-solid fa-coins"></i> {{ $t('app.menu.main.customer') }}</MenuItem>
           <MenuItem route-name="app.user.settings"><i class="fa-solid fa-gear"></i> {{ $t('app.menu.main.user_settings') }}</MenuItem>
-          <MenuItem route-name="app.billing.details"><i class="fa-solid fa-coins"></i> {{ $t('app.menu.main.billing') }}</MenuItem>
-          <MenuItem route-name="app.user.invite"><i class="fa-solid fa-user-plus"></i> {{ $t('app.menu.main.user_invite') }}</MenuItem>
         </MenuGroup>
       </Menu>
     </div>

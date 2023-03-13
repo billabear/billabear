@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    #[Route('/api/v1.0/customer', name: 'api_customer_create', methods: ['PUT'])]
+    #[Route('/api/v1.0/customer', name: 'api_v1.0_customer_create', methods: ['PUT'])]
     public function createCustomer(
         Request $request,
         SerializerInterface $serializer,
@@ -56,7 +56,7 @@ class CustomerController
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
     }
 
-    #[Route('/api/v1.0/customer', name: 'api_customer_list', methods: ['GET'])]
+    #[Route('/api/v1.0/customer', name: 'api_v1.0_customer_list', methods: ['GET'])]
     public function listCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
