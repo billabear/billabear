@@ -19,6 +19,7 @@ class CreateCustomerDto
     private ?string $externalReference = null;
 
     #[Assert\NotBlank]
+    #[Assert\Country]
     #[SerializedName('country')]
     private ?string $country;
 
