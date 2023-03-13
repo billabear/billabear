@@ -50,5 +50,5 @@ axios.interceptors.response.use(response => {
         localStorage.setItem('user', null);
         router.push('/login')
     }
-    return error;
+    return Promise.reject(error);
 });

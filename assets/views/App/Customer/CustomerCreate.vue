@@ -8,25 +8,28 @@
             {{ $t('app.customer.create.email') }}
           </label>
           <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
-          <input type="email" class="form-field-input" id="email" />
+          <input type="email" class="form-field-input" id="email" v-model="customer.email" />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.email') }}</p>
         </div>
+
         <div class="form-field-ctn">
-          <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
           <label class="form-field-lbl" for="country">
             {{ $t('app.customer.create.country') }}
           </label>
-          <input type="text" class="form-field-input" id="country" />
+          <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
+          <input type="text" class="form-field-input" id="country"  v-model="customer.country"  />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.country') }}</p>
         </div>
+
         <div class="form-field-ctn">
-          <p class="form-field-error" v-if="errors.reference != undefined">{{ errors.reference }}</p>
           <label class="form-field-lbl" for="reference">
             {{ $t('app.customer.create.reference') }}
           </label>
-          <input type="text" class="form-field-input" id="reference" />
+          <p class="form-field-error" v-if="errors.reference != undefined">{{ errors.reference }}</p>
+          <input type="text" class="form-field-input" id="reference" v-model="customer.reference"  />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.reference') }}</p>
         </div>
+
         <div class="form-field-ctn">
           <p @click="showAdvance = !showAdvance" class="cursor-pointer">
             <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
@@ -40,7 +43,7 @@
             {{ $t('app.customer.create.external_reference') }}
           </label>
           <p class="form-field-error" v-if="errors.external_reference != undefined">{{ errors.external_reference }}</p>
-          <input type="text" class="form-field-input" id="email" />
+          <input type="text" class="form-field-input" id="external_reference" v-model="customer.external_reference"  />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.external_reference') }}</p>
         </div>
         <div class="form-field-submit-ctn">
@@ -52,6 +55,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "CustomerCreate",
   data() {
@@ -72,6 +77,14 @@ export default {
   methods: {
     send: function () {
       this.sendingInProgress = true;
+      axios.post('/app/customer', this.customer).then(
+          response => {
+            this.sendingInProgress = false;
+          }
+      ).catch(error => {
+        this.errors = error.response.data.errors;
+        this.sendingInProgress = false;
+      })
     }
   }
 }

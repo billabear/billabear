@@ -10,7 +10,7 @@ class CreateCustomerDto
     #[Assert\NotBlank]
     #[Assert\Email]
     #[SerializedName('email')]
-    private string $email;
+    private ?string $email;
 
     #[SerializedName('reference')]
     private ?string $reference = null;
@@ -20,14 +20,14 @@ class CreateCustomerDto
 
     #[Assert\NotBlank]
     #[SerializedName('country')]
-    private string $country;
+    private ?string $country;
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
@@ -42,12 +42,12 @@ class CreateCustomerDto
         $this->reference = $reference;
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function setCountry(string $country): void
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }

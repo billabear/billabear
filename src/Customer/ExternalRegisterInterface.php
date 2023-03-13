@@ -2,9 +2,9 @@
 
 namespace App\Customer;
 
-use Parthenon\Billing\Entity\CustomerInterface;
+use App\Entity\Customer;
 
 interface ExternalRegisterInterface
 {
-    public function register(CustomerInterface $customer): CustomerInterface;
+    public function register(Customer $customer): Customer;
 }

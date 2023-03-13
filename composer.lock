@@ -1904,12 +1904,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "ea88c515aba76118334f98ffe8599437ceb7059c"
+                "reference": "8dee83ba4827f395da4c5158b78ff93043247148"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/ea88c515aba76118334f98ffe8599437ceb7059c",
-                "reference": "ea88c515aba76118334f98ffe8599437ceb7059c",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/8dee83ba4827f395da4c5158b78ff93043247148",
+                "reference": "8dee83ba4827f395da4c5158b78ff93043247148",
                 "shasum": ""
             },
             "require": {
@@ -1946,7 +1946,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-03-08T11:44:24+00:00"
+            "time": "2023-03-13T14:44:36+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -8229,16 +8229,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.14.4",
+            "version": "v3.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "1b3d9dba63d93b8a202c31e824748218781eae6b"
+                "reference": "7306744c63e9cc1337894252b4eec4920c38b053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/1b3d9dba63d93b8a202c31e824748218781eae6b",
-                "reference": "1b3d9dba63d93b8a202c31e824748218781eae6b",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/7306744c63e9cc1337894252b4eec4920c38b053",
+                "reference": "7306744c63e9cc1337894252b4eec4920c38b053",
                 "shasum": ""
             },
             "require": {
@@ -8305,9 +8305,15 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
+            "keywords": [
+                "Static code analysis",
+                "fixer",
+                "standards",
+                "static analysis"
+            ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.14.4"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.15.0"
             },
             "funding": [
                 {
@@ -8315,7 +8321,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-09T21:49:13+00:00"
+            "time": "2023-03-12T22:44:55+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
