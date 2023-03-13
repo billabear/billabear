@@ -31,7 +31,7 @@ services:
   nginx:
     image: getparthenon/ubuntu-nginx:21.04
     volumes:
-      - ..:/var/www
+      - .:/var/www
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/sites/:/etc/nginx/sites-available
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d
