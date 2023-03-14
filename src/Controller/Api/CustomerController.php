@@ -61,6 +61,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
+        CustomerFactory $customerFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -88,9 +89,11 @@ class CustomerController
             lastId: $lastKey,
         );
 
+        $dtos = array_map([$customerFactory, 'createDtoFromCustomer'], $resultSet->getResults());
+
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
-        $listResponse->setData($resultSet->getResults());
+        $listResponse->setData($dtos);
         $listResponse->setLastKey($resultSet->getLastKey());
 
         $json = $serializer->serialize($listResponse, 'json');

@@ -9,7 +9,6 @@ use Parthenon\Billing\Exception\NoSubscriptionException;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'customers')]
@@ -30,16 +29,16 @@ class Customer implements CustomerInterface
     private ?Address $billingAddress;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[SerializedName('reference')]
     private ?string $reference;
 
     #[ORM\Column(type: 'string')]
-    #[SerializedName('external_reference')]
     private string $externalCustomerReference;
 
     #[ORM\Column(type: 'string', unique: true)]
-    #[SerializedName('email')]
     private string $billingEmail;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $name = null;
 
     public function hasSubscription(): bool
     {
@@ -50,7 +49,6 @@ class Customer implements CustomerInterface
         return false;
     }
 
-    #[Ignore]
     public function hasActiveSubscription(): bool
     {
         if (isset($this->subscription) && $this->subscription->isActive()) {
@@ -157,5 +155,15 @@ class Customer implements CustomerInterface
     public function getDisplayName(): string
     {
         return $this->billingEmail;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 }

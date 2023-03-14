@@ -1,38 +1,55 @@
 <?php
 
-namespace App\Dto;
+namespace App\Dto\Generic;
 
-use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;
-use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateCustomerDto
+class Customer
 {
-    #[Assert\NotBlank(allowNull: true)]
-    #[SerializedName('name')]
-    private ?string $name = null;
+    #[SerializedName('id')]
+    protected string $id;
 
-    #[Assert\NotBlank]
-    #[Assert\Email]
+    #[SerializedName('name')]
+    protected ?string $name = null;
+
     #[SerializedName('email')]
-    private ?string $email;
+    protected string $email;
 
     #[SerializedName('reference')]
-    private ?string $reference = null;
+    protected ?string $reference = null;
 
     #[SerializedName('external_reference')]
-    private ?string $externalReference = null;
+    protected string $externalReference;
 
-    #[Assert\Valid]
     #[SerializedName('address')]
-    private Address $address;
+    protected Address $address;
 
-    public function getEmail(): ?string
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function setEmail(?string $email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -47,12 +64,12 @@ class CreateCustomerDto
         $this->reference = $reference;
     }
 
-    public function getExternalReference(): ?string
+    public function getExternalReference(): string
     {
         return $this->externalReference;
     }
 
-    public function setExternalReference(?string $externalReference): void
+    public function setExternalReference(string $externalReference): void
     {
         $this->externalReference = $externalReference;
     }
@@ -65,15 +82,5 @@ class CreateCustomerDto
     public function setAddress(Address $address): void
     {
         $this->address = $address;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
     }
 }

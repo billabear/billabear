@@ -2,7 +2,7 @@
 
 namespace App\Dto\Response\Site;
 
-use App\Entity\Customer;
+use App\Dto\Generic\Customer;
 
 class CustomerView
 {
