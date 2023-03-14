@@ -7,8 +7,16 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
     main: {
         title: "Main Details",
         email: "Email",
-        country: "Country",
         reference: "Internal Reference",
         external_reference: "External Reference"
+    },
+    address: {
+        title: "Address",
+        street_line_one: "Street Line 1",
+        street_line_two: "Street Line 2",
+        city: "City",
+        region: "Region",
+        post_code: "Post Code",
+        country: "Country",
     }
 }
