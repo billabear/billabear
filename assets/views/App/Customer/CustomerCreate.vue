@@ -17,7 +17,7 @@
             {{ $t('app.customer.create.country') }}
           </label>
           <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
-          <input type="text" class="form-field-input" id="country"  v-model="customer.country"  />
+          <input type="text" class="form-field-input" id="country"  v-model="customer.address.country"  />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.country') }}</p>
         </div>
 
@@ -64,7 +64,9 @@ export default {
     return {
       customer: {
         email: null,
-        country: null,
+        address: {
+          country: null,
+        },
         reference: null,
         external_reference: null,
       },
