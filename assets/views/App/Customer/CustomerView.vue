@@ -5,15 +5,24 @@
     <div class="mt-3 card-body">
       <LoadingScreen :ready="ready">
         <div v-if="!error">
+          <h2 class="mb-3">{{ $t('app.customer.view.main.title') }}</h2>
           <dl>
-            <dt>{{ $t('app.customer.view.main.email') }}</dt>
-            <dd>{{ customer.email }}</dd>
-            <dt>{{ $t('app.customer.view.main.country') }}</dt>
-            <dd>{{ customer.country }}</dd>
-            <dt>{{ $t('app.customer.view.main.reference') }}</dt>
-            <dd>{{ customer.reference }}</dd>
-            <dt>{{ $t('app.customer.view.main.external_reference') }}</dt>
-            <dd>{{ customer.external_reference }}</dd>
+            <div class="bg-gray-50 rounded-t-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">{{ $t('app.customer.view.main.email') }}</dt>
+              <dd  class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ customer.email }}</dd>
+            </div>
+            <div class="bg-gray-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt>{{ $t('app.customer.view.main.country') }}</dt>
+              <dd>{{ customer.country }}</dd>
+            </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt>{{ $t('app.customer.view.main.reference') }}</dt>
+              <dd>{{ customer.reference }}</dd>
+            </div>
+            <div class="bg-gray-100 rounded-b-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt>{{ $t('app.customer.view.main.external_reference') }}</dt>
+              <dd>{{ customer.external_reference }}</dd>
+            </div>
           </dl>
 
         </div>

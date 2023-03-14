@@ -5,6 +5,7 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         unknown: "An unknown error has occurred"
     },
     main: {
+        title: "Main Details",
         email: "Email",
         country: "Country",
         reference: "Internal Reference",
