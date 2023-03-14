@@ -11,7 +11,12 @@ class CustomerFactory
     public function createCustomer(CreateCustomerDto $createCustomerDto): Customer
     {
         $address = new Address();
-        $address->setCountry($createCustomerDto->getCountry());
+        $address->setStreetLineOne($createCustomerDto->getAddress()->getStreetLineOne());
+        $address->setStreetLineTwo($createCustomerDto->getAddress()->getStreetLineTwo());
+        $address->setCountry($createCustomerDto->getAddress()->getCountry());
+        $address->setCity($createCustomerDto->getAddress()->getCity());
+        $address->setRegion($createCustomerDto->getAddress()->getRegion());
+        $address->setPostcode($createCustomerDto->getAddress()->getPostcode());
 
         $customer = new Customer();
         $customer->setBillingEmail($createCustomerDto->getEmail());

@@ -29,7 +29,9 @@ class MainContext implements Context
 
         $payload = [
             'email' => $data['Email'],
-            'country' => $data['Country'],
+            'address' => [
+                'country' => $data['Country'],
+            ],
         ];
 
         if (isset($data['External Reference'])) {
@@ -148,8 +150,7 @@ class MainContext implements Context
 
         foreach ($data['data'] as $customer) {
             if ($customer['email'] === $email) {
-
-                throw new \Exception("Found customer");
+                throw new \Exception('Found customer');
             }
         }
     }
@@ -174,7 +175,6 @@ class MainContext implements Context
         throw new \Exception("Can't find customer");
     }
 
-
     /**
      * @When I use the API to list customers with the last_key from the last response
      */
@@ -184,5 +184,4 @@ class MainContext implements Context
 
         $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer?last_key=%s', $data['last_key']));
     }
-
 }

@@ -135,7 +135,9 @@ class SiteContext implements Context
 
         $payload = [
             'email' => $data['Email'],
-            'country' => $data['Country'],
+            'address' => [
+                'country' => $data['Country'],
+            ],
         ];
 
         if (isset($data['External Reference'])) {

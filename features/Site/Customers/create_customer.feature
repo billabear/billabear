@@ -30,7 +30,7 @@ Feature: Customer Creation
     When I create a customer via the app with the following info
       | Email   | customer@example.org |
       | Country |                    |
-    Then there should be an error for "country"
+    Then there should be an error for "address.country"
     And there should not be an error for "email"
 
   Scenario: Invalid email
