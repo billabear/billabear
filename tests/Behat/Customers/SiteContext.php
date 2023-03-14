@@ -2,6 +2,7 @@
 
 namespace App\Tests\Behat\Customers;
 
+use App\Repository\Orm\CustomerRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -10,8 +11,9 @@ use Behat\Mink\Session;
 class SiteContext implements Context
 {
     use SendRequestTrait;
+    use CustomerTrait;
 
-    public function __construct(private Session $session)
+    public function __construct(private Session $session, protected CustomerRepository $customerRepository)
     {
     }
 
@@ -149,5 +151,35 @@ class SiteContext implements Context
         }
 
         $this->sendJsonRequest('POST', '/app/customer', $payload);
+    }
+
+    /**
+     * @When I view the customer info via the site for :arg1
+     */
+    public function iViewTheCustomerInfoViaTheSiteFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('GET', sprintf('/app/customer/%s', $customer->getId()));
+    }
+
+    /**
+     * @Then I will see the :arg1 data with the :arg2 value :arg3
+     */
+    public function iWillSeeTheDataWithTheValue($arg1, $arg2, $arg3)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data[$arg1])) {
+            throw new \Exception(sprintf('The key "%s" doesn\'t exist', $arg1));
+        }
+
+        if (!isset($data[$arg1][$arg2])) {
+            throw new \Exception(sprintf('The key "%s" in "%s" doesn\'t exist', $arg2, $arg1));
+        }
+
+        if ($data[$arg1][$arg2] != $arg3) {
+            throw new \Exception("Expected '%s' but got '%s'", $arg3, $data[$arg1][$arg2]);
+        }
     }
 }

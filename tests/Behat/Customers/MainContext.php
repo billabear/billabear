@@ -13,6 +13,7 @@ use Parthenon\Common\Address;
 class MainContext implements Context
 {
     use SendRequestTrait;
+    use CustomerTrait;
 
     public function __construct(
         private Session $session,
@@ -75,24 +76,6 @@ class MainContext implements Context
         if ($customer->getReference() !== $arg2) {
             throw new \Exception(sprintf("Expected '%s' but got '%s'", $arg2, $customer->getReference()));
         }
-    }
-
-    /**
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function getCustomerByEmail($email): Customer
-    {
-        $customer = $this->customerRepository->findOneBy(['billingEmail' => $email]);
-
-        if (!$customer instanceof Customer) {
-            throw new \Exception(sprintf("No customer for '%s'", $email));
-        }
-
-        $this->customerRepository->getEntityManager()->refresh($customer);
-
-        return $customer;
     }
 
     /**
