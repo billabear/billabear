@@ -54,8 +54,10 @@ class CustomerController
             $externalRegister->register($customer);
         }
         $customerRepository->save($customer);
+        $dto = $customerFactory->createDtoFromCustomer($customer);
+        $jsonResponse = $serializer->serialize(['success' => true, 'customer' => $dto], 'json');
 
-        return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
     #[Route('/api/v1.0/customer', name: 'api_v1.0_customer_list', methods: ['GET'])]

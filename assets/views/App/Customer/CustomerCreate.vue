@@ -29,8 +29,8 @@
         <label class="form-field-lbl" for="street_line_one">
           {{ $t('app.customer.create.street_line_one') }}
         </label>
-        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.street_line_one }}</p>
-        <input type="text" class="form-field-input" id="country"  v-model="customer.address.street_line_one"  />
+        <p class="form-field-error" v-if="errors['address.street_line_one'] != undefined">{{ errors.street_line_one }}</p>
+        <input type="text" class="form-field-input" id="street_line_one"  v-model="customer.address.street_line_one"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.street_line_one') }}</p>
       </div>
 
@@ -38,7 +38,7 @@
         <label class="form-field-lbl" for="street_line_two">
           {{ $t('app.customer.create.street_line_two') }}
         </label>
-        <p class="form-field-error" v-if="errors.street_line_two != undefined">{{ errors.street_line_two }}</p>
+        <p class="form-field-error" v-if="errors['address.street_line_two'] != undefined">{{ errors.street_line_two }}</p>
         <input type="text" class="form-field-input" id="street_line_two"  v-model="customer.address.street_line_two"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.street_line_two') }}</p>
       </div>
@@ -47,7 +47,7 @@
         <label class="form-field-lbl" for="city">
           {{ $t('app.customer.create.city') }}
         </label>
-        <p class="form-field-error" v-if="errors.city != undefined">{{ errors.city }}</p>
+        <p class="form-field-error" v-if="errors['address.city'] != undefined">{{ errors.city }}</p>
         <input type="text" class="form-field-input" id="city"  v-model="customer.address.city"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.city') }}</p>
       </div>
@@ -56,7 +56,7 @@
         <label class="form-field-lbl" for="region">
           {{ $t('app.customer.create.region') }}
         </label>
-        <p class="form-field-error" v-if="errors.region != undefined">{{ errors.region }}</p>
+        <p class="form-field-error" v-if="errors['address.region'] != undefined">{{ errors.region }}</p>
         <input type="text" class="form-field-input" id="region"  v-model="customer.address.region"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.region') }}</p>
       </div>
@@ -65,7 +65,7 @@
         <label class="form-field-lbl" for="country">
           {{ $t('app.customer.create.country') }}
         </label>
-        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
+        <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
         <input type="text" class="form-field-input" id="country"  v-model="customer.address.country"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.country') }}</p>
       </div>
@@ -73,7 +73,7 @@
         <label class="form-field-lbl" for="post_code">
           {{ $t('app.customer.create.post_code') }}
         </label>
-        <p class="form-field-error" v-if="errors.post_code != undefined">{{ errors.post_code }}</p>
+        <p class="form-field-error" v-if="errors['address.post_code'] != undefined">{{ errors.post_code }}</p>
         <input type="text" class="form-field-input" id="post_code"  v-model="customer.address.post_code"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.post_code') }}</p>
       </div>
