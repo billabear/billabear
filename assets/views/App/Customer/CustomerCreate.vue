@@ -1,8 +1,9 @@
 <template>
   <div>
     <h1 class="page-title">{{ $t('app.customer.create.title') }}</h1>
+
+    <form @submit.prevent="send">
     <div class="mt-3 card-body">
-      <form @submit.prevent="send">
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="email">
             {{ $t('app.customer.create.email') }}
@@ -13,15 +14,6 @@
         </div>
 
         <div class="form-field-ctn">
-          <label class="form-field-lbl" for="country">
-            {{ $t('app.customer.create.country') }}
-          </label>
-          <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
-          <input type="text" class="form-field-input" id="country"  v-model="customer.address.country"  />
-          <p class="form-field-help">{{ $t('app.customer.create.help_info.country') }}</p>
-        </div>
-
-        <div class="form-field-ctn">
           <label class="form-field-lbl" for="reference">
             {{ $t('app.customer.create.reference') }}
           </label>
@@ -29,29 +21,88 @@
           <input type="text" class="form-field-input" id="reference" v-model="customer.reference"  />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.reference') }}</p>
         </div>
-
-        <div class="form-field-ctn">
-          <p @click="showAdvance = !showAdvance" class="cursor-pointer">
-            <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
-            <i class="fa-solid fa-caret-down" v-else></i>
-            <span class="ml-2">{{ $t('app.customer.create.show_advanced') }}</span>
-          </p>
-        </div>
-
-        <div class="form-field-ctn" v-if="showAdvance">
-          <label class="form-field-lbl" for="email">
-            {{ $t('app.customer.create.external_reference') }}
-          </label>
-          <p class="form-field-error" v-if="errors.external_reference != undefined">{{ errors.external_reference }}</p>
-          <input type="text" class="form-field-input" id="external_reference" v-model="customer.external_reference"  />
-          <p class="form-field-help">{{ $t('app.customer.create.help_info.external_reference') }}</p>
-        </div>
-        <div class="form-field-submit-ctn">
-          <SubmitButton :in-progress="sendingInProgress">{{ $t('app.customer.create.submit_btn') }}</SubmitButton>
-        </div>
-        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.customer.create.success_message') }}</p>
-      </form>
     </div>
+
+    <div class="card-body mt-5">
+      <h2 class="mb-3">{{ $t('app.customer.create.address_title') }}</h2>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="street_line_one">
+          {{ $t('app.customer.create.street_line_one') }}
+        </label>
+        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.street_line_one }}</p>
+        <input type="text" class="form-field-input" id="country"  v-model="customer.address.street_line_one"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.street_line_one') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="street_line_two">
+          {{ $t('app.customer.create.street_line_two') }}
+        </label>
+        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.street_line_two }}</p>
+        <input type="text" class="form-field-input" id="country"  v-model="customer.address.street_line_two"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.street_line_two') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="city">
+          {{ $t('app.customer.create.city') }}
+        </label>
+        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.city }}</p>
+        <input type="text" class="form-field-input" id="country"  v-model="customer.address.city"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.city') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="region">
+          {{ $t('app.customer.create.region') }}
+        </label>
+        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.region }}</p>
+        <input type="text" class="form-field-input" id="country"  v-model="customer.address.region"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.region') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="country">
+          {{ $t('app.customer.create.country') }}
+        </label>
+        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
+        <input type="text" class="form-field-input" id="country"  v-model="customer.address.country"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.country') }}</p>
+      </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="country">
+          {{ $t('app.customer.create.country') }}
+        </label>
+        <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
+        <input type="text" class="form-field-input" id="country"  v-model="customer.address.country"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.country') }}</p>
+      </div>
+    </div>
+
+      <div class="form-field-ctn">
+        <p @click="showAdvance = !showAdvance" class="cursor-pointer">
+          <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
+          <i class="fa-solid fa-caret-down" v-else></i>
+          <span class="ml-2">{{ $t('app.customer.create.show_advanced') }}</span>
+        </p>
+      </div>
+    <div class="card-body mt-5" v-if="showAdvance">
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="email">
+          {{ $t('app.customer.create.external_reference') }}
+        </label>
+        <p class="form-field-error" v-if="errors.external_reference != undefined">{{ errors.external_reference }}</p>
+        <input type="text" class="form-field-input" id="external_reference" v-model="customer.external_reference"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.external_reference') }}</p>
+      </div>
+
+    </div>
+
+    <div class="form-field-submit-ctn">
+      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.customer.create.submit_btn') }}</SubmitButton>
+    </div>
+    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.customer.create.success_message') }}</p>
+    </form>
   </div>
 </template>
 
