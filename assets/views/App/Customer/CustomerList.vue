@@ -29,9 +29,8 @@
         </table>
     </div>
       <div class="mt-4">
-
-        <a v-if="show_back" @click="prevPage" class="btn--main cursor-pointer">{{ $t('app.customer.list.prev') }}</a>
-        <a v-if="has_more" @click="nextPage" class="btn--main ml-3 cursor-pointer">{{ $t('app.customer.list.next') }}</a>
+        <router-link :to="{name: 'app.customer.list', query: {first_key: this.first_key}}" v-if="show_back" >{{ $t('app.customer.list.prev') }}</router-link>
+        <router-link :to="{name: 'app.customer.list', query: {last_key: this.last_key}}" v-if="has_more" >{{ $t('app.customer.list.next') }}</router-link>
       </div>
     </LoadingScreen>
   </div>
@@ -51,48 +50,48 @@ export default {
       first_key: null,
       previous_last_key: null,
       next_page_in_progress: false,
-      show_back: false
+      show_back: false,
     }
   },
   mounted() {
-    axios.get('/app/customer').then(response => {
-      this.customers = response.data.data;
-      this.has_more = response.data.has_more;
-      this.last_key = response.data.last_key;
-      this.first_key = response.data.first_key;
-      this.ready = true;
-    })
+    this.doStuff();
+  },
+  watch: {
+    '$route.query': function (id) {
+      this.doStuff()
+    }
   },
   methods: {
-    nextPage: function () {
-      // To go backwards
-      this.previous_last_key = this.last_key;
-      this.next_page_in_progress = true;
-      this.ready = false;
-      axios.get('/app/customer?last_key='+this.last_key).then(response => {
-        this.ready = true;
-        this.customers = response.data.data;
-        this.has_more = response.data.has_more;
-        this.last_key = response.data.last_key;
-        this.first_key = response.data.first_key;
-        this.next_page_in_progress = false;
+    doStuff: function ()
+    {
+      var mode = 'normal';
+      let urlString = '/app/customer?';
+      if (this.$route.query.last_key !== undefined) {
+        urlString = urlString + '&last_key=' + this.$route.query.last_key;
         this.show_back = true;
-      })
-    },
-    prevPage: function () {
-
-      this.previous_last_key = this.last_key;
-      this.next_page_in_progress = true;
-      this.ready = false;
-      axios.get('/app/customer?first_key='+this.first_key).then(response => {
-        this.ready = true;
-        this.customers = response.data.data;
+        mode = 'normal';
+      } else if (this.$route.query.first_key !== undefined) {
+        urlString = urlString + '&first_key=' + this.$route.query.first_key;
         this.has_more = true;
+        mode = 'first_key';
+      }
+
+      console.log(urlString);
+      axios.get(urlString).then(response => {
+
+        this.customers = response.data.data;
+        if (mode === 'normal') {
+          this.has_more = response.data.has_more;
+        } else {
+          this.show_back = response.data.has_more;
+          this.has_more = true;
+        }
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
-        this.show_back = response.data.has_more;
+        this.ready = true;
       })
-    }
+
+    },
   }
 }
 </script>
