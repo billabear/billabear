@@ -14,6 +14,9 @@ class ListResponse
     #[SerializedName('last_key')]
     protected ?string $lastKey;
 
+    #[SerializedName('first_key')]
+    protected ?string $firstKey;
+
     public function getData(): array
     {
         return $this->data;
@@ -45,5 +48,15 @@ class ListResponse
     public function setLastKey(?string $lastId): void
     {
         $this->lastKey = $lastId;
+    }
+
+    public function getFirstKey(): ?string
+    {
+        return $this->firstKey;
+    }
+
+    public function setFirstKey(?string $firstKey): void
+    {
+        $this->firstKey = $firstKey;
     }
 }

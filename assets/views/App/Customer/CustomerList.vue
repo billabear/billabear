@@ -5,8 +5,8 @@
     <div class="top-button-container">
       <router-link :to="{name: 'app.customer.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.customer.list.create_new') }}</router-link>
     </div>
+    <LoadingScreen :ready="ready">
     <div class="mt-3 card-body">
-      <LoadingScreen :ready="ready">
         <table class="table-auto w-full">
           <thead>
             <tr>
@@ -27,8 +27,13 @@
             </tr>
           </tbody>
         </table>
-      </LoadingScreen>
     </div>
+      <div class="mt-4">
+
+        <a v-if="show_back" @click="prevPage" class="btn--main cursor-pointer">{{ $t('app.customer.list.prev') }}</a>
+        <a v-if="has_more" @click="nextPage" class="btn--main ml-3 cursor-pointer">{{ $t('app.customer.list.next') }}</a>
+      </div>
+    </LoadingScreen>
   </div>
 </template>
 
@@ -43,8 +48,10 @@ export default {
       customers: [],
       has_more: false,
       last_key: null,
+      first_key: null,
       previous_last_key: null,
-      next_page_in_progress: false
+      next_page_in_progress: false,
+      show_back: false
     }
   },
   mounted() {
@@ -52,6 +59,7 @@ export default {
       this.customers = response.data.data;
       this.has_more = response.data.has_more;
       this.last_key = response.data.last_key;
+      this.first_key = response.data.first_key;
       this.ready = true;
     })
   },
@@ -60,15 +68,30 @@ export default {
       // To go backwards
       this.previous_last_key = this.last_key;
       this.next_page_in_progress = true;
+      this.ready = false;
       axios.get('/app/customer?last_key='+this.last_key).then(response => {
+        this.ready = true;
         this.customers = response.data.data;
         this.has_more = response.data.has_more;
         this.last_key = response.data.last_key;
+        this.first_key = response.data.first_key;
         this.next_page_in_progress = false;
+        this.show_back = true;
       })
     },
     prevPage: function () {
 
+      this.previous_last_key = this.last_key;
+      this.next_page_in_progress = true;
+      this.ready = false;
+      axios.get('/app/customer?first_key='+this.first_key).then(response => {
+        this.ready = true;
+        this.customers = response.data.data;
+        this.has_more = true;
+        this.last_key = response.data.last_key;
+        this.first_key = response.data.first_key;
+        this.show_back = response.data.has_more;
+      })
     }
   }
 }

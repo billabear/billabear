@@ -28,6 +28,7 @@ class CustomerController
         CustomerFactory $customerFactory,
     ): Response {
         $lastKey = $request->get('last_key');
+        $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
 
         if ($resultsPerPage < 1) {
@@ -51,6 +52,7 @@ class CustomerController
             filters: $filters,
             limit: $resultsPerPage,
             lastId: $lastKey,
+            firstId: $firstKey,
         );
 
         $dtos = array_map([$customerFactory, 'createDtoFromCustomer'], $resultSet->getResults());
@@ -58,6 +60,7 @@ class CustomerController
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
         $listResponse->setLastKey($resultSet->getLastKey());
+        $listResponse->setFirstKey($resultSet->getFirstKey());
 
         $json = $serializer->serialize($listResponse, 'json');
 

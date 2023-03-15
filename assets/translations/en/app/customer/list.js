@@ -6,4 +6,6 @@ export const CUSTOMER_LIST_TRANSLATIONS = {
     reference: "Reference",
     no_customers: "There are currently no customers existing",
     create_new: "Create",
+    next: "Next Page",
+    prev: "Previous Page",
 }
