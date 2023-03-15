@@ -6,7 +6,7 @@ use App\Api\Filters\CustomerList;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
-use App\Dto\Response\ListResponse;
+use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;

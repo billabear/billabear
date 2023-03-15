@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Response;
+namespace App\Dto\Response\Api;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -13,9 +13,6 @@ class ListResponse
 
     #[SerializedName('last_key')]
     protected ?string $lastKey;
-
-    #[SerializedName('first_key')]
-    protected ?string $firstKey;
 
     public function getData(): array
     {
@@ -48,15 +45,5 @@ class ListResponse
     public function setLastKey(?string $lastId): void
     {
         $this->lastKey = $lastId;
-    }
-
-    public function getFirstKey(): ?string
-    {
-        return $this->firstKey;
-    }
-
-    public function setFirstKey(?string $firstKey): void
-    {
-        $this->firstKey = $firstKey;
     }
 }
