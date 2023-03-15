@@ -110,4 +110,39 @@ class MainContext implements Context
             throw new \Exception('API Response does say there are more');
         }
     }
+
+    /**
+     * @Then I will see the :arg1 data with the :arg2 value :arg3
+     */
+    public function iWillSeeTheDataWithTheValue($arg1, $arg2, $arg3)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data[$arg1])) {
+            throw new \Exception(sprintf('The key "%s" doesn\'t exist', $arg1));
+        }
+
+        if (!isset($data[$arg1][$arg2])) {
+            throw new \Exception(sprintf('The key "%s" in "%s" doesn\'t exist', $arg2, $arg1));
+        }
+
+        if ($data[$arg1][$arg2] != $arg3) {
+            throw new \Exception("Expected '%s' but got '%s'", $arg3, $data[$arg1][$arg2]);
+        }
+    }
+
+    /**
+     * @Then I will see the data :arg1 with value :arg2
+     */
+    public function iWillSeeTheDataWithValue($arg1, $arg2)
+    {
+        $data = $this->getJsonContent();
+        if (!isset($data[$arg1])) {
+            throw new \Exception(sprintf('The key "%s" doesn\'t exist', $arg1));
+        }
+
+        if ($data[$arg1] != $arg2) {
+            throw new \Exception("Expected '%s' but got '%s'", $arg3, $data[$arg1]);
+        }
+    }
 }

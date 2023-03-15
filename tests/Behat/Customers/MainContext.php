@@ -167,4 +167,14 @@ class MainContext implements Context
 
         $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer?last_key=%s', $data['last_key']));
     }
+
+    /**
+     * @When I view the customer info via the API for :arg1
+     */
+    public function iViewTheCustomerInfoViaTheApiFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer/%s', $customer->getId()));
+    }
 }

@@ -1,6 +1,6 @@
-Feature: Customer Read APP
+Feature: Customer Read API
   In order to manage a customer
-  As an APP user
+  As an API user
   I need to be see what the customer info
 
   Background:
@@ -11,10 +11,10 @@ Feature: Customer Read APP
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
 
   Scenario: Get customer info
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
-    When I view the customer info via the site for "customer.one@example.org"
-    Then I will see the "customer" data with the "email" value "customer.one@example.org"
+    When I view the customer info via the API for "customer.one@example.org"
+    Then I will see the data "email" with value "customer.one@example.org"
