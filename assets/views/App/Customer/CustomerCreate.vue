@@ -132,6 +132,7 @@ export default {
     send: function () {
       this.sendingInProgress = true;
       this.success = false;
+      this.errors = {};
       axios.post('/app/customer', this.customer).then(
           response => {
             this.sendingInProgress = false;
