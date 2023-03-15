@@ -43,13 +43,33 @@ export default {
       customers: [],
       has_more: false,
       last_key: null,
+      previous_last_key: null,
+      next_page_in_progress: false.
     }
   },
   mounted() {
     axios.get('/app/customer').then(response => {
       this.customers = response.data.data;
+      this.has_more = response.data.has_more;
+      this.last_key = response.data.last_key;
       this.ready = true;
     })
+  },
+  methods: {
+    nextPage: function () {
+      // To go backwards
+      this.previous_last_key = this.last_key;
+      this.next_page_in_progress = true;
+      axios.get('/app/customer?last_key='+this.last_key).then(response => {
+        this.customers = response.data.data;
+        this.has_more = response.data.has_more;
+        this.last_key = response.data.last_key;
+        this.next_page_in_progress = false;
+      })
+    },
+    prevPage: function () {
+
+    }
   }
 }
 </script>
