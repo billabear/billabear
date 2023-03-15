@@ -44,7 +44,7 @@ export default {
       has_more: false,
       last_key: null,
       previous_last_key: null,
-      next_page_in_progress: false.
+      next_page_in_progress: false
     }
   },
   mounted() {
