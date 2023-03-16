@@ -106,7 +106,6 @@ class CustomerController
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
         $listResponse->setLastKey($resultSet->getLastKey());
-        $listResponse->setFirstKey($resultSet->getFirstKey());
 
         $json = $serializer->serialize($listResponse, 'json');
 

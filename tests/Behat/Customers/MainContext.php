@@ -53,7 +53,7 @@ class MainContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
-        $this->sendJsonRequest('PUT', '/api/v1.0/customer', $payload);
+        $this->sendJsonRequest('POST', '/api/v1.0/customer', $payload);
     }
 
     /**
