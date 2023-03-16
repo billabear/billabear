@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    #[Route('/api/v1.0/customer', name: 'api_v1.0_customer_create', methods: ['PUT'])]
+    #[Route('/api/v1.0/customer', name: 'api_v1.0_customer_create', methods: ['POST'])]
     public function createCustomer(
         Request $request,
         SerializerInterface $serializer,
