@@ -26,6 +26,7 @@ class ObolRegister implements ExternalRegisterInterface
         $creation = $this->provider->customers()->create($obolCustomer);
 
         $customer->setExternalCustomerReference($creation->getId());
+        $customer->setPaymentProviderDetailsUrl($creation->getDetailsUrl());
 
         return $customer;
     }

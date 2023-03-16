@@ -8,7 +8,6 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Exception\NoSubscriptionException;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
-use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'customers')]
@@ -21,11 +20,9 @@ class Customer implements CustomerInterface
     private $id;
 
     #[ORM\Embedded(class: Subscription::class)]
-    #[Ignore]
     private ?Subscription $subscription;
 
     #[ORM\Embedded(class: Address::class)]
-    #[Ignore]
     private ?Address $billingAddress;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -39,6 +36,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $name = null;
+
+    #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
+    protected ?string $paymentProviderDetailsUrl;
 
     public function hasSubscription(): bool
     {
@@ -111,7 +111,6 @@ class Customer implements CustomerInterface
         $this->externalCustomerReference = $externalCustomerReference;
     }
 
-    #[Ignore]
     public function hasExternalsCustomerReference(): bool
     {
         return isset($this->externalCustomerReference);
@@ -151,7 +150,6 @@ class Customer implements CustomerInterface
         return $this->billingAddress->getCountry();
     }
 
-    #[Ignore]
     public function getDisplayName(): string
     {
         return $this->billingEmail;
@@ -165,5 +163,15 @@ class Customer implements CustomerInterface
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
+    {
+        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
+    }
+
+    public function getPaymentProviderDetailsUrl()
+    {
+        return $this->paymentProviderDetailsUrl;
     }
 }

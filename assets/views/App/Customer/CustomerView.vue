@@ -17,7 +17,10 @@
             </div>
             <div class="bg-gray-50 rounded-b-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">{{ $t('app.customer.view.main.external_reference') }}</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ customer.external_reference }}</dd>
+              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                <a v-if="customer.payment_provider_details_url" target="_blank" :href="customer.payment_provider_details_url">{{ customer.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                <span v-else>{{ customer.external_reference }}</span>
+              </dd>
             </div>
           </dl>
 

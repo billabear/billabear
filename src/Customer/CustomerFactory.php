@@ -4,7 +4,8 @@ namespace App\Customer;
 
 use App\Dto\CreateCustomerDto;
 use App\Dto\Generic\Address as AddressDto;
-use App\Dto\Generic\Customer as CustomerDto;
+use App\Dto\Generic\Api\Customer as CustomerApiDto;
+use App\Dto\Generic\Site\Customer as CustomerAppDto;
 use App\Entity\Customer;
 use Parthenon\Common\Address;
 
@@ -35,7 +36,7 @@ class CustomerFactory
         return $customer;
     }
 
-    public function createDtoFromCustomer(Customer $customer): CustomerDto
+    public function createApiDtoFromCustomer(Customer $customer): CustomerApiDto
     {
         $address = new AddressDto();
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
@@ -45,13 +46,35 @@ class CustomerFactory
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostcode($customer->getBillingAddress()->getPostcode());
 
-        $dto = new CustomerDto();
+        $dto = new CustomerApiDto();
         $dto->setName($customer->getName());
         $dto->setId((string) $customer->getId());
         $dto->setReference($customer->getReference());
         $dto->setEmail($customer->getBillingEmail());
         $dto->setExternalReference($customer->getExternalCustomerReference());
         $dto->setAddress($address);
+
+        return $dto;
+    }
+
+    public function createAppDtoFromCustomer(Customer $customer): CustomerAppDto
+    {
+        $address = new AddressDto();
+        $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
+        $address->setStreetLineTwo($customer->getBillingAddress()->getStreetLineTwo());
+        $address->setCity($customer->getBillingAddress()->getCity());
+        $address->setRegion($customer->getBillingAddress()->getRegion());
+        $address->setCountry($customer->getBillingAddress()->getCountry());
+        $address->setPostcode($customer->getBillingAddress()->getPostcode());
+
+        $dto = new CustomerAppDto();
+        $dto->setName($customer->getName());
+        $dto->setId((string) $customer->getId());
+        $dto->setReference($customer->getReference());
+        $dto->setEmail($customer->getBillingEmail());
+        $dto->setExternalReference($customer->getExternalCustomerReference());
+        $dto->setAddress($address);
+        $dto->setPaymentProviderDetailsUrl($customer->getPaymentProviderDetailsUrl());
 
         return $dto;
     }

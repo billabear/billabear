@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Dto\Generic;
+namespace App\Dto\Generic\Site;
 
+use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Customer
@@ -20,6 +21,9 @@ class Customer
 
     #[SerializedName('external_reference')]
     protected string $externalReference;
+
+    #[SerializedName('payment_provider_details_url')]
+    protected ?string $paymentProviderDetailsUrl = null;
 
     #[SerializedName('address')]
     protected Address $address;
@@ -82,5 +86,15 @@ class Customer
     public function setAddress(Address $address): void
     {
         $this->address = $address;
+    }
+
+    public function getPaymentProviderDetailsUrl(): ?string
+    {
+        return $this->paymentProviderDetailsUrl;
+    }
+
+    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
+    {
+        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
     }
 }

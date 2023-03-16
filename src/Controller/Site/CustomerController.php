@@ -55,7 +55,7 @@ class CustomerController
             firstId: $firstKey,
         );
 
-        $dtos = array_map([$customerFactory, 'createDtoFromCustomer'], $resultSet->getResults());
+        $dtos = array_map([$customerFactory, 'createAppDtoFromCustomer'], $resultSet->getResults());
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
@@ -119,7 +119,7 @@ class CustomerController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $customerDto = $customerFactory->createDtoFromCustomer($customer);
+        $customerDto = $customerFactory->createAppDtoFromCustomer($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
         $output = $serializer->serialize($dto, 'json');
