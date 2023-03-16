@@ -174,4 +174,9 @@ class Customer implements CustomerInterface
     {
         return $this->paymentProviderDetailsUrl;
     }
+
+    public function hasExternalCustomerReference(): bool
+    {
+        return isset($this->externalCustomerReference);
+    }
 }
