@@ -39,7 +39,6 @@ class CustomerController
             }
 
             return new JsonResponse([
-                'success' => false,
                 'errors' => $errorOutput,
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
@@ -47,7 +46,7 @@ class CustomerController
         $customer = $customerFactory->createCustomer($dto);
 
         if ($customerRepository->hasCustomerByEmail($customer->getBillingEmail())) {
-            return new JsonResponse(['success' => false], JsonResponse::HTTP_CONFLICT);
+            return new JsonResponse(null, JsonResponse::HTTP_CONFLICT);
         }
 
         if (!$customer->hasExternalsCustomerReference()) {
@@ -55,7 +54,7 @@ class CustomerController
         }
         $customerRepository->save($customer);
         $dto = $customerFactory->createDtoFromCustomer($customer);
-        $jsonResponse = $serializer->serialize(['success' => true, 'customer' => $dto], 'json');
+        $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
@@ -72,14 +71,12 @@ class CustomerController
 
         if ($resultsPerPage < 1) {
             return new JsonResponse([
-                'success' => false,
                 'reason' => 'per_page is below 1',
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
-                'success' => false,
                 'reason' => 'per_page is above 100',
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
@@ -117,7 +114,7 @@ class CustomerController
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
-            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
         $dto = $customerFactory->createDtoFromCustomer($customer);
         $data = $serializer->serialize($dto, 'json');
