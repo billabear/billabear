@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Response\Site;
+namespace App\Dto\Response\App;
 
-use App\Dto\Generic\Site\Customer;
+use App\Dto\Generic\App\Customer;
 
 class CustomerView
 {

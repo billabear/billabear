@@ -5,7 +5,7 @@ namespace App\Customer;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\Api\Customer as CustomerApiDto;
-use App\Dto\Generic\Site\Customer as CustomerAppDto;
+use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
 use Parthenon\Common\Address;
 

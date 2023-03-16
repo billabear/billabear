@@ -14,7 +14,7 @@ default:
 
                 # Customers
                 - App\Tests\Behat\Customers\MainContext
-                - App\Tests\Behat\Customers\SiteContext
+                - App\Tests\Behat\Customers\AppContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

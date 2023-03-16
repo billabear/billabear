@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controller\Site;
+namespace App\Controller\App;
 
 use App\Api\Filters\CustomerList;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
-use App\Dto\Response\Site\CustomerView;
-use App\Dto\Response\Site\ListResponse;
+use App\Dto\Response\App\CustomerView;
+use App\Dto\Response\App\ListResponse;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;

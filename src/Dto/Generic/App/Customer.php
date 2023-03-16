@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Generic\Site;
+namespace App\Dto\Generic\App;
 
 use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;

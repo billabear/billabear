@@ -8,7 +8,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 
-class SiteContext implements Context
+class AppContext implements Context
 {
     use SendRequestTrait;
     use CustomerTrait;

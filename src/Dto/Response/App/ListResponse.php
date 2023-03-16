@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Response\Site;
+namespace App\Dto\Response\App;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
