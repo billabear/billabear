@@ -8,4 +8,12 @@ export const CUSTOMER_LIST_TRANSLATIONS = {
     create_new: "Create",
     next: "Next Page",
     prev: "Previous Page",
+    filter: {
+        title: "Filters",
+        email: "Email",
+        reference: "Reference",
+        external_reference: "External Reference",
+        button: "Filters",
+        search: "Filter"
+    }
 }
