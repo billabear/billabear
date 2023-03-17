@@ -103,7 +103,6 @@ export default {
     }
   },
   mounted() {
-    this.addQueryToFilters();
     this.doStuff();
 
   },
@@ -113,7 +112,7 @@ export default {
     }
   },
   methods: {
-    addQueryToFilters: function () {
+    syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {
           this.filters[key].value = this.$route.query[key];
@@ -121,7 +120,6 @@ export default {
             this.active_filters.push(key);
           }
         } else {
-          console.log('jsdjs')
           this.filters[key].value = null;
             if (this.active_filters.indexOf(key) !== -1) {
               console.log(key)
@@ -131,8 +129,8 @@ export default {
       });
     },
     doSearch: function () {
-      var queryVals = this.buildFilterQuery();
-       this.$router.push({query: queryVals})
+        var queryVals = this.buildFilterQuery();
+        this.$router.push({query: queryVals})
     },
     buildFilterQuery: function () {
       var queryVals = {};
@@ -159,7 +157,7 @@ export default {
     },
     doStuff: function ()
     {
-      this.addQueryToFilters();
+      this.syncQueryToFilters();
       var mode = 'normal';
       let urlString = '/app/customer?';
       if (this.$route.query.last_key !== undefined) {
@@ -177,9 +175,6 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
-      if (this.$route.query.email !== undefined) {
-      }
-
       axios.get(urlString).then(response => {
 
         this.customers = response.data.data;
