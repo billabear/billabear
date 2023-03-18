@@ -56,9 +56,20 @@
           </tbody>
         </table>
     </div>
-      <div class="mt-4">
-        <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.customer.list.prev') }}</button>
-        <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.customer.list.next') }}</button>
+      <div class="sm:grid sm:grid-cols-2">
+
+        <div class="mt-4">
+          <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.customer.list.prev') }}</button>
+          <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.customer.list.next') }}</button>
+        </div>
+        <div class="mt-4 text-end">
+          <select @change="changePerPage" v-model="per_page">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
       </div>
     </LoadingScreen>
   </div>
@@ -83,6 +94,7 @@ export default {
       show_back: false,
       show_filter_menu: false,
       active_filters: [],
+      per_page: "10",
       filters: {
         email: {
           label: 'app.customer.list.filter.email',
@@ -142,6 +154,11 @@ export default {
         }
       }
 
+      if (this.$route.query.per_page !== undefined) {
+        queryVals.per_page = this.$route.query.per_page;
+        this.per_page=this.$route.query.per_page;
+      }
+
       return queryVals;
     },
     nextPage: function () {
@@ -154,6 +171,19 @@ export default {
       var queryVals = this.buildFilterQuery();
       queryVals.first_key = this.first_key;
       this.$router.push({query: queryVals})
+    },
+    changePerPage: function ($event) {
+      var queryVals = this.buildFilterQuery();
+      queryVals.per_page = $event.target.value;
+      this.per_page=queryVals.per_page;
+
+      if (this.$route.query.last_key !== undefined) {
+        queryVals.last_key = this.$route.query.last_key;
+      } else if (this.$route.query.first_key !== undefined) {
+        queryVals.first_key = this.$route.query.first_key;
+      }
+
+      this.$router.push({query: queryVals});
     },
     doStuff: function ()
     {
@@ -168,6 +198,10 @@ export default {
         urlString = urlString + '&first_key=' + this.$route.query.first_key;
         this.has_more = true;
         mode = 'first_key';
+      }
+
+      if (this.$route.query.per_page !== undefined) {
+        urlString = urlString + '&per_page=' + this.$route.query.per_page;
       }
 
       Object.keys(this.filters).forEach(key => {
