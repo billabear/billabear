@@ -164,7 +164,9 @@ class CustomerController
         $newCustomer = $customerFactory->createCustomer($dto, $customer);
 
         $customerRepository->save($newCustomer);
+        $dto = $customerFactory->createApiDtoFromCustomer($newCustomer);
+        $jsonResponse = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }
