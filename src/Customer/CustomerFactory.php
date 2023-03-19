@@ -43,6 +43,7 @@ class CustomerFactory
 
         if (isset($externalCustomerReference)) {
             $customer->setExternalCustomerReference($externalCustomerReference);
+            $customer->setPaymentProviderDetailsUrl(null);
         }
 
         return $customer;
