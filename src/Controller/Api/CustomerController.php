@@ -130,4 +130,41 @@ class CustomerController
 
         return new JsonResponse($data, json: true);
     }
+
+    #[Route('/api/v1.0/customer/{id}', name: 'api_v1.0_customer_update', methods: ['PUT'])]
+    public function updateCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        CustomerFactory $customerFactory,
+    ): Response {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var CreateCustomerDto $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $newCustomer = $customerFactory->createCustomer($dto, $customer);
+
+        $customerRepository->save($newCustomer);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
 }

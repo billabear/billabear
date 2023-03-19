@@ -57,6 +57,33 @@ class MainContext implements Context
     }
 
     /**
+     * @When I update the customer info via the API for :arg1 with:
+     */
+    public function iUpdateTheCustomerInfoViaTheApiForWith($email, TableNode $table)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'email' => $data['Email'],
+            'address' => [
+                'country' => $data['Country'],
+            ],
+        ];
+
+        if (isset($data['External Reference'])) {
+            $payload['external_reference'] = $data['External Reference'];
+        }
+
+        if (isset($data['Reference'])) {
+            $payload['reference'] = $data['Reference'];
+        }
+
+        $this->sendJsonRequest('PUT', '/api/v1.0/customer/'.$customer->getId(), $payload);
+    }
+
+    /**
      * @Then there should be a customer for :arg1
      */
     public function thereShouldBeACustomerFor($email)

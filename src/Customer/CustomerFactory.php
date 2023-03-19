@@ -21,7 +21,7 @@ use Parthenon\Common\Address;
 
 class CustomerFactory
 {
-    public function createCustomer(CreateCustomerDto $createCustomerDto): Customer
+    public function createCustomer(CreateCustomerDto $createCustomerDto, Customer $customer = null): Customer
     {
         $address = new Address();
         $address->setStreetLineOne($createCustomerDto->getAddress()->getStreetLineOne());
@@ -31,7 +31,9 @@ class CustomerFactory
         $address->setRegion($createCustomerDto->getAddress()->getRegion());
         $address->setPostcode($createCustomerDto->getAddress()->getPostcode());
 
-        $customer = new Customer();
+        if (!$customer) {
+            $customer = new Customer();
+        }
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
