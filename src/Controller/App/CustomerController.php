@@ -18,6 +18,7 @@ use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
+use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -135,5 +136,44 @@ class CustomerController
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
+    }
+
+    #[Route('/app/customer/{id}', name: 'app_customer_update', methods: ['POST'])]
+    public function updateCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        CustomerFactory $customerFactory,
+    ): Response {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var CreateCustomerDto $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $newCustomer = $customerFactory->createCustomer($dto, $customer);
+
+        $customerRepository->save($newCustomer);
+        $dto = $customerFactory->createAppDtoFromCustomer($newCustomer);
+        $jsonResponse = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }

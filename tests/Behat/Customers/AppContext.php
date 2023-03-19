@@ -172,4 +172,30 @@ class AppContext implements Context
 
         $this->sendJsonRequest('GET', sprintf('/app/customer/%s', $customer->getId()));
     }
+
+    /**
+     * @When I update the customer info via the APP for :arg1 with:
+     */
+    public function iUpdateTheCustomerInfoViaTheAppForWith($email, TableNode $table)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'email' => $data['Email'],
+            'address' => [
+                'country' => $data['Country'],
+            ],
+        ];
+
+        if (isset($data['External Reference'])) {
+            $payload['external_reference'] = $data['External Reference'];
+        }
+
+        if (isset($data['Reference'])) {
+            $payload['reference'] = $data['Reference'];
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s', $customer->getId()), $payload);
+    }
 }
