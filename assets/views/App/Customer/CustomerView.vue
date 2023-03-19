@@ -4,7 +4,10 @@
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="mt-3 card-body">
+        <div class="mt-3 text-end">
+          <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
+        </div>
+        <div class="mt-5 card-body">
           <h2 class="mb-3">{{ $t('app.customer.view.main.title') }}</h2>
           <dl>
             <div class="bg-gray-50 rounded-t-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

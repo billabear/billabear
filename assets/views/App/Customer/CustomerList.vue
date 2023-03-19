@@ -46,7 +46,7 @@
           <tbody>
             <tr v-for="customer in customers" class="mt-5">
               <td>{{ customer.email }}</td>
-              <td>{{ customer.country }}</td>
+              <td>{{ customer.address.country }}</td>
               <td>{{ customer.reference }}</td>
               <td class="mt-2"><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">View</router-link></td>
             </tr>

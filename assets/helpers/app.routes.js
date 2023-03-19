@@ -9,6 +9,7 @@ import BillingMethods from "../views/App/Billing/BillingMethods";
 import CustomerList from "../views/App/Customer/CustomerList.vue";
 import CustomerCreate from "../views/App/Customer/CustomerCreate.vue";
 import CustomerView from "../views/App/Customer/CustomerView.vue";
+import CustomerUpdate from "../views/App/Customer/CustomerUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -51,6 +52,11 @@ export const APP_ROUTES = [
         name: 'app.customer.view',
         path: 'customer/view/:id',
         component: CustomerView
+    },
+    {
+        name: 'app.customer.update',
+        path: 'customer/update/:id',
+        component: CustomerUpdate
     },
     {
         name: 'app.billing',
