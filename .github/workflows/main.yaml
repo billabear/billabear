@@ -40,13 +40,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Runs Elasticsearch
         uses: elastic/elastic-github-actions/elasticsearch@master
         with:
           stack-version: 7.14.0
           port: 9200
-
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
@@ -59,25 +57,20 @@ jobs:
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
-
       - name: Install dependencies
         run: |
           composer install
-
       - name: PHP_CS_FIXER_IGNORE_ENV - php 8.2 workaround
         run: echo "PHP_CS_FIXER_IGNORE_ENV=true" >> $GITHUB_ENV
-
       - name: Code Style
         run: |
           vendor/bin/php-cs-fixer fix src --dry-run

@@ -16,6 +16,9 @@ default:
                 - App\Tests\Behat\Customers\MainContext
                 - App\Tests\Behat\Customers\AppContext
 
+                # Product
+                - App\Tests\Behat\Products\ApiContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
