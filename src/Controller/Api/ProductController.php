@@ -12,7 +12,7 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\CustomerList;
+use App\Api\Filters\ProductList;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\ProductFactory;
@@ -82,7 +82,7 @@ class ProductController
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
-        $filterBuilder = new CustomerList();
+        $filterBuilder = new ProductList();
         $filters = $filterBuilder->buildFilters($request);
 
         $resultSet = $productRepository->getList(
