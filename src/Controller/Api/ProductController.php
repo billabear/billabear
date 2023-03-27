@@ -16,6 +16,7 @@ use App\Api\Filters\ProductList;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\ProductFactory;
+use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,7 +54,11 @@ class ProductController
 
         $product = $productFactory->createFromApiCreate($dto);
         if (!$product->hasExternalReference()) {
-            $product = $productRegister->registerProduct($product);
+            try {
+                $product = $productRegister->registerProduct($product);
+            } catch (ProviderFailureException $e) {
+                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
+            }
         }
         $productRepository->save($product);
 

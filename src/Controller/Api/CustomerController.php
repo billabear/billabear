@@ -19,6 +19,7 @@ use App\Dto\CreateCustomerDto;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
+use Obol\Exception\ProviderFailureException;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +61,11 @@ class CustomerController
         }
 
         if (!$customer->hasExternalsCustomerReference()) {
-            $externalRegister->register($customer);
+            try {
+                $externalRegister->register($customer);
+            } catch (ProviderFailureException $e) {
+                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
+            }
         }
         $customerRepository->save($customer);
         $dto = $customerFactory->createApiDtoFromCustomer($customer);

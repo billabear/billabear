@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b16eaaed3348041f458b7684321a1cc",
+    "content-hash": "e73b1db681b7482ba7980dd2085787f4",
     "packages": [
         {
             "name": "brick/math",
@@ -1905,12 +1905,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "9ac9666f37239bb2c14b4c9af78cce5c208f1937"
+                "reference": "ce582251f169244343e1782576e3f659c973a9a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/9ac9666f37239bb2c14b4c9af78cce5c208f1937",
-                "reference": "9ac9666f37239bb2c14b4c9af78cce5c208f1937",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/ce582251f169244343e1782576e3f659c973a9a3",
+                "reference": "ce582251f169244343e1782576e3f659c973a9a3",
                 "shasum": ""
             },
             "require": {
@@ -1947,7 +1947,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-03-24T10:44:29+00:00"
+            "time": "2023-03-27T15:09:56+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -1955,12 +1955,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "02c0f008f0f00d700ea95989911ef4d377f545fc"
+                "reference": "e595211d45586032d3d99f9e93bdff4b034b67d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/02c0f008f0f00d700ea95989911ef4d377f545fc",
-                "reference": "02c0f008f0f00d700ea95989911ef4d377f545fc",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/e595211d45586032d3d99f9e93bdff4b034b67d9",
+                "reference": "e595211d45586032d3d99f9e93bdff4b034b67d9",
                 "shasum": ""
             },
             "require": {
@@ -1975,8 +1975,6 @@
                 "php": ">=8.1",
                 "psr/http-client": "^1.0",
                 "psr/http-message": "^1.0",
-                "ramsey/uuid": "^4",
-                "ramsey/uuid-doctrine": "^1.8.1",
                 "sendgrid/sendgrid": "~7.11.0",
                 "sensio/framework-extra-bundle": "^6.1",
                 "stripe/stripe-php": "^v7.128",
@@ -2016,6 +2014,8 @@
                 "phpstan/phpstan": "^0.12.40",
                 "phpunit/php-code-coverage": "^9.2",
                 "phpunit/phpunit": "^9.5",
+                "ramsey/uuid": "^4",
+                "ramsey/uuid-doctrine": "^1.8.1",
                 "roave/security-advisories": "dev-master",
                 "symfony/mailer": ">=6.0.0",
                 "symfony/messenger": ">=v6.0.0",
@@ -2026,7 +2026,9 @@
                 "knplabs/knp-snappy": "^1.2",
                 "mailgun/mailgun-php": "^3.5",
                 "mpdf/mpdf": "^8.0",
-                "parthenon/docraptor": "^2.0.3"
+                "parthenon/docraptor": "^2.0.3",
+                "ramsey/uuid": "^4",
+                "ramsey/uuid-doctrine": "^1.8.1"
             },
             "default-branch": true,
             "type": "library",
@@ -2042,7 +2044,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-03-25T18:41:05+00:00"
+            "time": "2023-03-26T18:45:44+00:00"
         },
         {
             "name": "php-http/discovery",
