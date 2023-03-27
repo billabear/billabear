@@ -12,3 +12,13 @@ Feature: Product List
     When I use the API to list product
     Then I should see in the API response the product "Product Two"
     And I should see in the API response the product "Product One"
+
+  Scenario: Limited to one
+    Given I have authenticated to the API
+    And the follow products exist:
+      | Name        |
+      | Product One |
+      | Product Two |
+    When I use the API to list products with parameter "name" with value "One"
+    Then I should see in the API response with only 1 result in the data set
+    And I should see in the API response the product "Product One"

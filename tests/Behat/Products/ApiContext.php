@@ -92,4 +92,12 @@ class ApiContext implements Context
 
         throw new \Exception("Can't find product");
     }
+
+    /**
+     * @When I use the API to list products with parameter :arg1 with value :arg2
+     */
+    public function iUseTheApiToListProductsWithParameterWithValue($filter, $value)
+    {
+        $this->sendJsonRequest('GET', sprintf('/api/v1.0/product?%s=%s', $filter, $value));
+    }
 }
