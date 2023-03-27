@@ -82,17 +82,17 @@ class CustomerController
         CustomerFactory $customerFactory,
     ): Response {
         $lastKey = $request->get('last_key');
-        $resultsPerPage = (int) $request->get('per_page', 10);
+        $resultsPerPage = (int) $request->get('limit', 10);
 
         if ($resultsPerPage < 1) {
             return new JsonResponse([
-                'reason' => 'per_page is below 1',
+                'reason' => 'limit is below 1',
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
-                'reason' => 'per_page is above 100',
+                'reason' => 'limit is above 100',
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
