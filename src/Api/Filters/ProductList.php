@@ -24,7 +24,7 @@ class ProductList extends FilterList
                 'filter' => ContainsFilter::class,
             ],
             'external_reference' => [
-                'field' => 'externalCustomerReference',
+                'field' => 'externalReference',
                 'filter' => ContainsFilter::class,
             ],
         ];

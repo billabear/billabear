@@ -60,6 +60,7 @@ class ApiContext implements Context
         foreach ($table->getColumnsHash() as $row) {
             $product = new Product();
             $product->setName($row['Name']);
+            $product->setExternalReference($row['External Reference'] ?? null);
             $this->productRepository->getEntityManager()->persist($product);
         }
         $this->productRepository->getEntityManager()->flush();
