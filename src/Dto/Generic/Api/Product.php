@@ -23,7 +23,7 @@ class Product
     protected string $name;
 
     #[SerializedName('external_reference')]
-    protected string $externalReference;
+    protected ?string $externalReference = null;
 
     public function getId(): string
     {
@@ -33,5 +33,31 @@ class Product
     public function setId(string $id): void
     {
         $this->id = $id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalReference(): ?string
+    {
+        return $this->externalReference;
+    }
+
+    /**
+     * @param string $externalReference
+     */
+    public function setExternalReference(?string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
     }
 }

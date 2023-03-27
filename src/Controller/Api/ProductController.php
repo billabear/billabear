@@ -12,7 +12,9 @@
 
 namespace App\Controller\Api;
 
+use App\Api\Filters\CustomerList;
 use App\Dto\Request\Api\CreateProduct;
+use App\Dto\Response\Api\ListResponse;
 use App\Factory\ProductFactory;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -56,5 +58,48 @@ class ProductController
         $productRepository->save($product);
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/api/v1.0/product', name: 'api_v1.0_product_list', methods: ['GET'])]
+    public function listProduct(
+        Request $request,
+        ProductRepositoryInterface $productRepository,
+        SerializerInterface $serializer,
+        ProductFactory $productFactory,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'reason' => 'per_page is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'reason' => 'per_page is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new CustomerList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $productRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+        );
+
+        $dtos = array_map([$productFactory, 'createApiDtoFromProduct'], $resultSet->getResults());
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }

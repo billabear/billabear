@@ -16,6 +16,7 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 
 class ApiContext implements Context
@@ -49,5 +50,46 @@ class ApiContext implements Context
         if (!$product) {
             throw new \Exception("Can't find product");
         }
+    }
+
+    /**
+     * @Given the follow products exist:
+     */
+    public function theFollowProductsExist(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $product = new Product();
+            $product->setName($row['Name']);
+            $this->productRepository->getEntityManager()->persist($product);
+        }
+        $this->productRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I use the API to list product
+     */
+    public function iUseTheApiToListProduct()
+    {
+        $this->sendJsonRequest('GET', '/api/v1.0/product');
+    }
+
+    /**
+     * @Then I should see in the API response the product :arg1
+     */
+    public function iShouldSeeInTheApiResponseTheProduct($name)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['data'])) {
+            throw new \Exception('No data found');
+        }
+
+        foreach ($data['data'] as $product) {
+            if ($product['name'] === $name) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find product");
     }
 }

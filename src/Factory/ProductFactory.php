@@ -12,6 +12,7 @@
 
 namespace App\Factory;
 
+use App\Dto\Generic\Api\Product as ProductDto;
 use App\Dto\Request\Api\CreateProduct;
 use Parthenon\Billing\Entity\Product;
 
@@ -24,5 +25,15 @@ class ProductFactory
         $product->setExternalReference($createProduct->getExternalReference());
 
         return $product;
+    }
+
+    public function createApiDtoFromProduct(Product $product): ProductDto
+    {
+        $dto = new ProductDto();
+        $dto->setId((string) $product->getId());
+        $dto->setName($product->getName());
+        $dto->setExternalReference($product->getExternalReference());
+
+        return $dto;
     }
 }
