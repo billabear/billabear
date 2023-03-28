@@ -23,8 +23,10 @@ class AppContext implements Context
     use SendRequestTrait;
     use ProductTrait;
 
-    public function __construct(private Session $session, private ProductServiceRepository $productRepository)
-    {
+    public function __construct(
+        private Session $session,
+        private ProductServiceRepository $productRepository,
+    ) {
     }
 
     /**
