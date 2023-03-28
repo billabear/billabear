@@ -18,6 +18,7 @@ default:
 
                 # Product
                 - App\Tests\Behat\Products\ApiContext
+                - App\Tests\Behat\Products\AppContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:
