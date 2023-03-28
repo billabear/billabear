@@ -19,9 +19,12 @@ use Parthenon\Billing\Entity\Product;
 
 class ProductFactory
 {
-    public function createFromApiCreate(CreateProduct $createProduct): Product
+    public function createFromApiCreate(CreateProduct $createProduct, ?Product $product = null): Product
     {
-        $product = new Product();
+        if (!$product) {
+            $product = new Product();
+        }
+
         $product->setName($createProduct->getName());
         $product->setExternalReference($createProduct->getExternalReference());
 

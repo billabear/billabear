@@ -59,4 +59,19 @@ class AppContext implements Context
 
         $this->sendJsonRequest('GET', '/app/product/'.$product->getId());
     }
+
+    /**
+     * @When I update the product info via the APP for :arg1:
+     */
+    public function iUpdateTheProductInfoViaTheAppFor($name, TableNode $table)
+    {
+        $product = $this->getProductByName($name);
+
+        $data = $table->getRowsHash();
+        $payload = [
+            'name' => $data['Name'],
+        ];
+
+        $this->sendJsonRequest('POST', '/app/product/'.$product->getId(), $payload);
+    }
 }

@@ -18,6 +18,7 @@ use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
 use App\Factory\ProductFactory;
 use Obol\Exception\ProviderFailureException;
+use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -131,5 +132,45 @@ class ProductController
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
+    }
+
+    #[Route('/app/product/{id}', name: 'app_product_update', methods: ['POST'])]
+    public function updateProduct(
+        Request $request,
+        ProductRepositoryInterface $productRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        ProductFactory $productFactory,
+    ): Response {
+        try {
+            /** @var Product $product */
+            $product = $productRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var CreateProduct $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateProduct::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $newProduct = $productFactory->createFromApiCreate($dto, $product);
+
+        $productRepository->save($newProduct);
+        $dto = $productFactory->createAppDtoFromProduct($newProduct);
+        $jsonResponse = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }
