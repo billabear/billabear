@@ -130,4 +130,43 @@ class ProductController
 
         return new JsonResponse($data, json: true);
     }
+
+    #[Route('/api/v1.0/product/{id}', name: 'api_v1.0_product_update', methods: ['PUT'])]
+    public function updateProduct(
+        Request $request,
+        ProductRepositoryInterface $productRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        ProductFactory $productFactory,
+    ): Response {
+        try {
+            /** @var Product $product */
+            $product = $productRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var CreateProduct $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateProduct::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $newProduct = $productFactory->createFromApiCreate($dto, $product);
+
+        $productRepository->save($newProduct);
+        $dto = $productFactory->createApiDtoFromProduct($newProduct);
+        $jsonResponse = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
 }

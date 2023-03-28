@@ -112,4 +112,19 @@ class ApiContext implements Context
 
         $this->sendJsonRequest('GET', '/api/v1.0/product/'.$product->getId());
     }
+
+    /**
+     * @When I update the product info via the API for :arg1:
+     */
+    public function iUpdateTheProductInfoViaTheApiFor($name, TableNode $table)
+    {
+        $product = $this->getProductByName($name);
+
+        $data = $table->getRowsHash();
+        $payload = [
+            'name' => $data['Name'],
+        ];
+
+        $this->sendJsonRequest('PUT', '/api/v1.0/product/'.$product->getId(), $payload);
+    }
 }
