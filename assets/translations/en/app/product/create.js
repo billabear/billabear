@@ -1,6 +1,6 @@
 export const PRODUCT_CREATE_TRANSLATIONS = {
     title: "Create new product",
-    name: "Email",
+    name: "Name",
     external_reference: "External Reference",
     advance: "advance",
     submit_btn: "Create Product",
