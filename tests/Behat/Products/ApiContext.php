@@ -22,6 +22,7 @@ use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 class ApiContext implements Context
 {
     use SendRequestTrait;
+    use ProductTrait;
 
     public function __construct(private Session $session, private ProductServiceRepository $productRepository)
     {
@@ -100,5 +101,15 @@ class ApiContext implements Context
     public function iUseTheApiToListProductsWithParameterWithValue($filter, $value)
     {
         $this->sendJsonRequest('GET', sprintf('/api/v1.0/product?%s=%s', $filter, $value));
+    }
+
+    /**
+     * @When I use the API to view product :arg1
+     */
+    public function iUseTheApiToViewProduct($name)
+    {
+        $product = $this->getProductByName($name);
+
+        $this->sendJsonRequest('GET', '/api/v1.0/product/'.$product->getId());
     }
 }

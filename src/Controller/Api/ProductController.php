@@ -17,8 +17,10 @@ use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\ProductFactory;
 use Obol\Exception\ProviderFailureException;
+use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,5 +110,24 @@ class ProductController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/api/v1.0/product/{id}', name: 'api_v1.0_product_read', methods: ['GET'])]
+    public function viewProduct(
+        Request $request,
+        ProductRepositoryInterface $productRepository,
+        SerializerInterface $serializer,
+        ProductFactory $productFactory,
+    ): Response {
+        try {
+            /** @var Product $product */
+            $product = $productRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $dto = $productFactory->createApiDtoFromProduct($product);
+        $data = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($data, json: true);
     }
 }
