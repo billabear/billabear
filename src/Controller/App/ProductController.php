@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Controller\Api;
+namespace App\Controller\App;
 
 use App\Api\Filters\ProductList;
 use App\Dto\Request\Api\CreateProduct;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
-    #[Route('/api/v1.0/product', name: 'api_v1.0_product_create', methods: ['POST'])]
+    #[Route('/app/product', name: 'app_product_create', methods: ['POST'])]
     public function createProduct(
         Request $request,
         SerializerInterface $serializer,
@@ -67,7 +67,7 @@ class ProductController
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1.0/product', name: 'api_v1.0_product_list', methods: ['GET'])]
+    #[Route('/app/product', name: 'app_product_list', methods: ['GET'])]
     public function listProduct(
         Request $request,
         ProductRepositoryInterface $productRepository,

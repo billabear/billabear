@@ -57,7 +57,7 @@ Feature: Customer List
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
-    When I use the site to list customers with parameter "limit" with value "1"
+    When I use the site to list customers with parameter "per_page" with value "1"
     Then I should see in the site response with only 1 result in the data set
     And the I should see in the site response there are more results
 
@@ -67,7 +67,7 @@ Feature: Customer List
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
-    And I use the site to list customers with parameter "limit" with value "1"
+    And I use the site to list customers with parameter "per_page" with value "1"
     When I use the site to list customers with the last_key from the last response
     Then I should see in the site response with only 1 result in the data set
     And the I should not see in the site response there are more results

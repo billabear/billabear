@@ -6,6 +6,7 @@
         <MenuGroup :name="$t('app.menu.main.title')">
           <MenuItem route-name="app.home"><i class="fa-solid fa-house"></i> {{ $t('app.menu.main.home') }}</MenuItem>
           <MenuItem route-name="app.customer.list"><i class="fa-solid fa-coins"></i> {{ $t('app.menu.main.customer') }}</MenuItem>
+          <MenuItem route-name="app.product.list"><i class="fa-solid fa-coins"></i> {{ $t('app.menu.main.product') }}</MenuItem>
           <MenuItem route-name="app.user.settings"><i class="fa-solid fa-gear"></i> {{ $t('app.menu.main.user_settings') }}</MenuItem>
         </MenuGroup>
       </Menu>

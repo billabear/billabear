@@ -10,6 +10,10 @@ import CustomerList from "../views/App/Customer/CustomerList.vue";
 import CustomerCreate from "../views/App/Customer/CustomerCreate.vue";
 import CustomerView from "../views/App/Customer/CustomerView.vue";
 import CustomerUpdate from "../views/App/Customer/CustomerUpdate.vue";
+import ProductList from "../views/App/Product/ProductList.vue";
+import ProductUpdate from "../views/App/Product/ProductUpdate.vue";
+import ProductView from "../views/App/Product/ProductView.vue";
+import ProductCreate from "../views/App/Product/ProductCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -57,6 +61,26 @@ export const APP_ROUTES = [
         name: 'app.customer.update',
         path: 'customer/update/:id',
         component: CustomerUpdate
+    },
+    {
+        name: 'app.product.list',
+        path: 'product/list',
+        component: ProductList
+    },
+    {
+        name: 'app.product.create',
+        path: 'product/create',
+        component: ProductCreate,
+    },
+    {
+        name: 'app.product.view',
+        path: 'product/view/:id',
+        component: ProductView
+    },
+    {
+        name: 'app.product.update',
+        path: 'product/update/:id',
+        component: ProductUpdate
     },
     {
         name: 'app.billing',
