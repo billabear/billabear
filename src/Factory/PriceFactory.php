@@ -40,7 +40,7 @@ class PriceFactory
         return $price;
     }
 
-    public function createApiDtoFromCustomer(Price $price): ApiDto
+    public function createApiDto(Price $price): ApiDto
     {
         $dto = new ApiDto();
         $dto->setId((string) $price->getId());

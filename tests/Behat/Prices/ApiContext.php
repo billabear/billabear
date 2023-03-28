@@ -73,4 +73,51 @@ class ApiContext implements Context
 
         throw new \Exception("Can't find price");
     }
+
+    /**
+     * @Given the follow prices exist:
+     */
+    public function theFollowPricesExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+
+        foreach ($data as $row) {
+            $product = $this->getProductByName($row['Product']);
+
+            $price = new Price();
+            $price->setProduct($product);
+            $price->setAmount($row['Amount']);
+            $price->setCurrency($row['Currency']);
+            $price->setRecurring('true' === strtolower($row['Recurring']));
+            $price->setSchedule($row['Schedule'] ?? null);
+            $price->setPublic('true' === strtolower($row['Recurring'] ?? 'true'));
+            $this->priceRepository->getEntityManager()->persist($price);
+        }
+        $this->priceRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I fetch all prices for the product :arg1 via API
+     */
+    public function iFetchAllPricesForTheProductViaApi($productName)
+    {
+        $product = $this->getProductByName($productName);
+        $this->sendJsonRequest('GET', '/api/v1.0/product/'.$product->getId().'/price');
+    }
+
+    /**
+     * @Then there should be a price for :arg1 in the data set
+     */
+    public function thereShouldBeAPriceForInTheDataSet($amount)
+    {
+        $json = $this->getJsonContent();
+
+        foreach ($json['data'] as $price) {
+            if ($amount == $price['amount']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find price");
+    }
 }

@@ -12,7 +12,9 @@
 
 namespace App\Controller\Api;
 
+use App\Api\Filters\ProductList;
 use App\Dto\Request\Api\CreatePrice;
+use App\Dto\Response\Api\ListResponse;
 use App\Factory\PriceFactory;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
@@ -22,6 +24,7 @@ use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -76,5 +79,55 @@ class PriceController
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/api/v1.0/product/{id}/price', name: 'api_v1.0_product_price_list', methods: ['GET'])]
+    public function listProduct(
+        Request $request,
+        ProductRepositoryInterface $productRepository,
+        PriceRepositoryInterface $priceRepository,
+        SerializerInterface $serializer,
+        PriceFactory $priceFactory,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $resultsPerPage = (int) $request->get('limit', 10);
+
+        try {
+            /** @var Product $product */
+            $product = $productRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'reason' => 'limit is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'reason' => 'limit is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new ProductList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $priceRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+        );
+
+        $dtos = array_map([$priceFactory, 'createApiDto'], $resultSet->getResults());
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }
