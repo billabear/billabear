@@ -13,6 +13,7 @@
 namespace App\Factory;
 
 use App\Dto\Generic\Api\Product as ProductDto;
+use App\Dto\Generic\App\Product as AppDto;
 use App\Dto\Request\Api\CreateProduct;
 use Parthenon\Billing\Entity\Product;
 
@@ -33,6 +34,17 @@ class ProductFactory
         $dto->setId((string) $product->getId());
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
+
+        return $dto;
+    }
+
+    public function createAppDtoFromProduct(Product $product): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setId((string) $product->getId());
+        $dto->setName($product->getName());
+        $dto->setExternalReference($product->getExternalReference());
+        $dto->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
 
         return $dto;
     }

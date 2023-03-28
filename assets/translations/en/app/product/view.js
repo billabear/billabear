@@ -7,8 +7,7 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
     },
     main: {
         title: "Main Details",
-        email: "Email",
-        reference: "Internal Reference",
+        name: "Name",
         external_reference: "External Reference"
     },
 }
