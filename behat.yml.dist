@@ -20,6 +20,10 @@ default:
                 - App\Tests\Behat\Products\ApiContext
                 - App\Tests\Behat\Products\AppContext
 
+                # Product
+                - App\Tests\Behat\Prices\ApiContext
+                - App\Tests\Behat\Prices\AppContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

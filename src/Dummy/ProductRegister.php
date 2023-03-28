@@ -12,13 +12,20 @@
 
 namespace App\Dummy;
 
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Product;
+use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 
-class ProductRegister implements ProductRegisterInterface
+class ProductRegister implements ProductRegisterInterface, PriceRegisterInterface
 {
     public function registerProduct(Product $product): Product
     {
         return $product;
+    }
+
+    public function registerPrice(Price $price): Price
+    {
+        return $price;
     }
 }

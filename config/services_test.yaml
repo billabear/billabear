@@ -11,3 +11,4 @@ services:
     App\Customer\ExternalRegisterInterface: '@App\Customer\DummyRegister'
 
     Parthenon\Billing\Obol\ProductRegisterInterface: '@App\Dummy\ProductRegister'
+    Parthenon\Billing\Obol\PriceRegisterInterface: '@App\Dummy\ProductRegister'

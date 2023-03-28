@@ -18,6 +18,8 @@
         "doctrine/orm": "^2.13",
         "parthenon/obol": "dev-main",
         "parthenon/parthenon": "dev-main",
+        "ramsey/uuid": "^4.7",
+        "ramsey/uuid-doctrine": "^1.8",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2",
@@ -26,9 +28,7 @@
         "symfony/mailer": "6.*",
         "symfony/runtime": "6.1.*",
         "symfony/webpack-encore-bundle": "^1.15",
-        "symfony/yaml": "6.1.*",
-        "ramsey/uuid-doctrine": "^1.8",
-        "ramsey/uuid": "^4.7"
+        "symfony/yaml": "6.1.*"
     },
     "require-dev": {
         "behat/behat": "^3.11",
