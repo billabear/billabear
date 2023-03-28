@@ -4,10 +4,10 @@ export const MENU_TRANSLATIONS = {
         home: "Home",
         team: "Manage Team",
         plan: "Plan",
-        product: "Product",
+        product: "Products",
         billing: "Billing",
         user_settings: "User Settings",
         user_invite: "Invite A Friend",
-        customer: "Customer"
+        customer: "Customers"
     }
 }
