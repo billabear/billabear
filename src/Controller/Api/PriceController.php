@@ -12,7 +12,6 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\ProductList;
 use App\Dto\Request\Api\CreatePrice;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\PriceFactory;
@@ -109,9 +108,8 @@ class PriceController
                 'reason' => 'limit is above 100',
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
-
-        $filterBuilder = new ProductList();
-        $filters = $filterBuilder->buildFilters($request);
+        // TODO add filters
+        $filters = [];
 
         $resultSet = $priceRepository->getList(
             filters: $filters,
