@@ -16,13 +16,16 @@ default:
                 - App\Tests\Behat\Customers\MainContext
                 - App\Tests\Behat\Customers\AppContext
 
-                # Product
+                # Products
                 - App\Tests\Behat\Products\ApiContext
                 - App\Tests\Behat\Products\AppContext
 
-                # Product
+                # Prices
                 - App\Tests\Behat\Prices\ApiContext
                 - App\Tests\Behat\Prices\AppContext
+
+                # Features
+                - App\Tests\Behat\Features\AppContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:
