@@ -6,7 +6,7 @@
       <router-link :to="{name: 'app.feature.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.feature.list.create_new') }}</router-link>
       <div class="list">
 
-        <div class="list_button">
+        <div class="list_button" v-if="Object.keys(features.length) > 0">
           <button class="btn--secondary" @click="show_filter_menu = !show_filter_menu">
               <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
               <i v-else class="fa-solid fa-caret-up"></i>
