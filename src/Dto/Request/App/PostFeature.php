@@ -21,42 +21,42 @@ class PostFeature
     #[Assert\NotBlank()]
     #[UniqueFeature]
     #[SerializedName('code')]
-    private string $code;
+    private $code;
 
     #[Assert\NotBlank()]
     #[SerializedName('name')]
-    private string $name;
+    private $name;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('description')]
-    private ?string $description;
+    private $description;
 
-    public function getCode(): string
+    public function getCode()
     {
         return $this->code;
     }
 
-    public function setCode(string $code): void
+    public function setCode($code): void
     {
         $this->code = $code;
     }
 
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName($name): void
     {
         $this->name = $name;
     }
 
-    public function getDescription(): ?string
+    public function getDescription()
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): void
+    public function setDescription($description): void
     {
         $this->description = $description;
     }

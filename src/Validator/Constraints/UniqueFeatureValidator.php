@@ -25,6 +25,10 @@ class UniqueFeatureValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint)
     {
+        if (empty($value)) {
+            return;
+        }
+
         try {
             $this->subscriptionFeatureRepository->findByCode($value);
         } catch (NoEntityFoundException $exception) {
