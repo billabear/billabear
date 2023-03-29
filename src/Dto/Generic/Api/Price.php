@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Price
 {
-    #[SerializedName('amount')]
+    #[SerializedName('id')]
     private string $id;
 
     #[SerializedName('amount')]
