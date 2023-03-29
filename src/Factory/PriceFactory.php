@@ -13,6 +13,7 @@
 namespace App\Factory;
 
 use App\Dto\Generic\Api\Price as ApiDto;
+use App\Dto\Generic\App\Price as AppDto;
 use App\Dto\Request\Api\CreatePrice;
 use Parthenon\Billing\Entity\Price;
 
@@ -50,6 +51,21 @@ class PriceFactory
         $dto->setRecurring($price->isRecurring());
         $dto->setSchedule($price->getSchedule());
         $dto->setPublic($price->isPublic());
+
+        return $dto;
+    }
+
+    public function createAppDto(Price $price): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setId((string) $price->getId());
+        $dto->setExternalReference($price->getExternalReference());
+        $dto->setAmount($price->getAmount());
+        $dto->setCurrency($price->getCurrency());
+        $dto->setRecurring($price->isRecurring());
+        $dto->setSchedule($price->getSchedule());
+        $dto->setPublic($price->isPublic());
+        $dto->setPaymentProviderDetailsUrl($price->getPaymentProviderDetailsUrl());
 
         return $dto;
     }

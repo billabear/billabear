@@ -1,7 +1,7 @@
-Feature: Price Creation
-  In order to charge customers for products
+Feature: Price List
+  In order to ensure the price data is correct for a product
   As an API user
-  I need to create a price for a product
+  I need to be able to view the prices for a product
 
   Background:
     Given the follow products exist:

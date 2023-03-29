@@ -142,6 +142,26 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I will see the :arg1 contains :arg2 items
+     */
+    public function iWillSeeTheContainsItems($arg1, $arg2)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data[$arg1])) {
+            throw new \Exception(sprintf('The key "%s" doesn\'t exist', $arg1));
+        }
+
+        if (!is_array($data[$arg1])) {
+            throw new \Exception(sprintf('The key "%s" isn\'t an array', $arg1));
+        }
+
+        if (sizeof($data[$arg1]) != $arg2) {
+            throw new \Exception(sprintf('The count for key "%s" isn\'t %d', $arg1, $arg2));
+        }
+    }
+
+    /**
      * @Then I will see the data :arg1 with value :arg2
      */
     public function iWillSeeTheDataWithValue($arg1, $arg2)

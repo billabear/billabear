@@ -16,10 +16,12 @@ use App\Api\Filters\ProductList;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
+use App\Factory\PriceFactory;
 use App\Factory\ProductFactory;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -117,8 +119,10 @@ class ProductController
     public function viewProduct(
         Request $request,
         ProductRepositoryInterface $productRepository,
+        PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
         ProductFactory $productFactory,
+        PriceFactory $priceFactory,
     ): Response {
         try {
             $product = $productRepository->getById($request->get('id'));
@@ -126,9 +130,14 @@ class ProductController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $prices = $priceRepository->getAllForProduct($product);
+
+        $pricesDtos = array_map([$priceFactory, 'createAppDto'], $prices);
         $productDto = $productFactory->createAppDtoFromProduct($product);
+
         $dto = new ProductView();
         $dto->setProduct($productDto);
+        $dto->setPrices($pricesDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

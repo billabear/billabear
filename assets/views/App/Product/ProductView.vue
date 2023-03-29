@@ -25,6 +25,42 @@
           </dl>
         </div>
 
+        <div class="mt-5 card-body">
+          <h2 class="mb-3">{{ $t('app.product.view.price.title') }}</h2>
+
+          <table class="table-auto w-full block">
+            <thead>
+            <tr>
+              <th>{{ $t('app.product.view.price.list.amount') }}</th>
+              <th>{{ $t('app.product.view.price.list.currency') }}</th>
+              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
+              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
+              <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
+              <th>{{ $t('app.product.view.price.list.public') }}</th>
+              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="price in prices" class="mt-5">
+              <td>{{ price.amount }}</td>
+              <td>{{ price.currency }}</td>
+              <td>{{ price.recurring }}</td>
+              <td>{{ price.schedule }}</td>
+              <td>{{ price.including_tax }}</td>
+              <td>{{ price.public }}</td>
+              <td>
+                <a v-if="price.payment_provider_details_url" target="_blank" :href="price.payment_provider_details_url">{{ price.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                <span v-else>{{ price.external_reference }}</span>
+              </td>
+            </tr>
+            <tr v-if="prices.length === 0">
+              <td colspan="4" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
+        </div>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
@@ -43,14 +79,18 @@ export default {
       ready: false,
       error: false,
       errorMessage: null,
+      id: null,
       product: {
-      }
+      },
+      prices: [],
     }
   },
   mounted() {
     var productId = this.$route.params.id
+    this.id = productId;
     axios.get('/app/product/'+productId).then(response => {
       this.product = response.data.product;
+      this.prices = response.data.prices;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

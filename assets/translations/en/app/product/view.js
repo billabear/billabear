@@ -10,4 +10,17 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
         name: "Name",
         external_reference: "External Reference"
     },
+    price: {
+        title: "Prices",
+        create: "Create New Price",
+        list: {
+            amount: "Amount",
+            currency: "Currency",
+            recurring: "Recurring Payment",
+            schedule: "Payment Schedule",
+            including_tax: "Price Includes Tax",
+            public: "Public Price",
+            external_reference: "External Reference"
+        }
+    }
 }

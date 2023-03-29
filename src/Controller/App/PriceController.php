@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Controller\Api;
+namespace App\Controller\App;
 
 use App\Dto\Request\Api\CreatePrice;
 use App\Dto\Response\Api\ListResponse;
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceController
 {
-    #[Route('/api/v1.0/product/{id}/price', name: 'api_v1.0_product_price_create', methods: ['POST'])]
+    #[Route('/app/product/{id}/price', name: 'app_product_price_create', methods: ['POST'])]
     public function createPrice(
         Request $request,
         SerializerInterface $serializer,
@@ -80,8 +80,8 @@ class PriceController
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1.0/product/{id}/price', name: 'api_v1.0_product_price_list', methods: ['GET'])]
-    public function listProduct(
+    #[Route('/app/product/{id}/price', name: 'app_product_price_list', methods: ['GET'])]
+    public function listPrices(
         Request $request,
         ProductRepositoryInterface $productRepository,
         PriceRepositoryInterface $priceRepository,

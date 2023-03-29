@@ -18,6 +18,8 @@ class ProductView
 {
     private Product $product;
 
+    private array $prices;
+
     public function getProduct(): Product
     {
         return $this->product;
@@ -26,5 +28,15 @@ class ProductView
     public function setProduct(Product $product): void
     {
         $this->product = $product;
+    }
+
+    public function getPrices(): array
+    {
+        return $this->prices;
+    }
+
+    public function setPrices(array $prices): void
+    {
+        $this->prices = $prices;
     }
 }

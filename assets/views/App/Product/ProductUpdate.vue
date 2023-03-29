@@ -6,7 +6,7 @@
     <div class="mt-3 card-body">
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="email">
-            {{ $t('app.product.update.email') }}
+            {{ $t('app.product.update.name') }}
           </label>
           <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
           <input type="text" class="form-field-input" id="name" v-model="product.name" />
@@ -97,27 +97,4 @@ export default {
 </script>
 
 <style scoped>
-.form-field-error {
-  @apply text-red-500 text-xs italic mb-2;
-}
-
-.form-field-ctn {
-  @apply w-full md:w-1/2 px-3 mb-6 md:mb-0 pt-2;
-}
-
-.form-field-lbl {
-  @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
-}
-
-.form-field-input {
-  @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
-}
-
-.form-field-help {
-  @apply text-gray-600 text-xs italic;
-}
-
-.form-field-submit-ctn {
-  @apply mt-3;
-}
 </style>
