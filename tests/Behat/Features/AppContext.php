@@ -86,4 +86,12 @@ class AppContext implements Context
         }
         $this->subscriptionFeatureRepository->getEntityManager()->flush();
     }
+
+    /**
+     * @When I get the list of features via the APP
+     */
+    public function iGetTheListOfFeaturesViaTheApp()
+    {
+        $this->sendJsonRequest('GET', '/app/feature');
+    }
 }

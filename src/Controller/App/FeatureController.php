@@ -13,6 +13,7 @@
 namespace App\Controller\App;
 
 use App\Dto\Request\App\PostFeature;
+use App\Dto\Response\Api\ListResponse;
 use App\Factory\FeatureFactory;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,5 +54,47 @@ class FeatureController
         $jsonResponse = $serializer->serialize($featureDto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/feature', name: 'app_feature_list', methods: ['GET'])]
+    public function listFeatures(
+        Request $request,
+        SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
+        SerializerInterface $serializer,
+        FeatureFactory $featureFactory,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $resultsPerPage = (int) $request->get('limit', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'reason' => 'limit is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'reason' => 'limit is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filters = [];
+
+        $resultSet = $subscriptionFeatureRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+        );
+
+        $dtos = array_map([$featureFactory, 'createAppDto'], $resultSet->getResults());
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }
