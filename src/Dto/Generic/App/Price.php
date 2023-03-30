@@ -43,6 +43,14 @@ class Price
     #[SerializedName('payment_provider_details_url')]
     protected ?string $paymentProviderDetailsUrl = null;
 
+    #[SerializedName('display_value')]
+    protected string $displayValue;
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
     public function getId(): string
     {
         return $this->id;
@@ -131,5 +139,15 @@ class Price
     public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
     {
         $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
+    }
+
+    public function getDisplayValue(): string
+    {
+        return $this->displayValue;
+    }
+
+    public function setDisplayValue(string $displayValue): void
+    {
+        $this->displayValue = $displayValue;
     }
 }

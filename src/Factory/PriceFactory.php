@@ -63,9 +63,10 @@ class PriceFactory
         $dto->setAmount($price->getAmount());
         $dto->setCurrency($price->getCurrency());
         $dto->setRecurring($price->isRecurring());
-        $dto->setSchedule($price->getSchedule());
+        $dto->setSchedule($price->isRecurring() ? $price->getSchedule() : 'one-off');
         $dto->setPublic($price->isPublic());
         $dto->setPaymentProviderDetailsUrl($price->getPaymentProviderDetailsUrl());
+        $dto->setDisplayValue((string) $price->getAsMoney());
 
         return $dto;
     }

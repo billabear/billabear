@@ -11,7 +11,6 @@ export const FEATURE_CREATE_TRANSLATIONS = {
         description: "Description"
     },
     help_info: {
-
         name: "The name for the feature",
         code: "The code name for the feature. This is used when register a usage or when checking limits.",
         description: "The description for the feature"

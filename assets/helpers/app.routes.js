@@ -17,6 +17,8 @@ import ProductCreate from "../views/App/Product/ProductCreate.vue";
 import PriceCreate from "../views/App/Price/PriceCreate.vue";
 import FeatureList from "../views/App/Feature/FeatureList.vue";
 import FeatureCreate from "../views/App/Feature/FeatureCreate.vue";
+import {SUBCLASSING} from "core-js/internals/promise-constructor-detection";
+import SubscriptionPlanCreate from "../views/App/SubscriptionPlan/SubscriptionPlanCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -99,6 +101,11 @@ export const APP_ROUTES = [
         name: 'app.price.create',
         path: 'product/:productId/price/create',
         component: PriceCreate,
+    },
+    {
+        name: 'app.subscription_plan.create',
+        path: 'product/:productId/subscription-plan/create',
+        component: SubscriptionPlanCreate,
     },
     {
         name: 'app.billing',

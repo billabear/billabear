@@ -22,6 +22,7 @@ use Parthenon\Billing\Repository\Orm\SubscriptionFeatureServiceRepository;
 class AppContext implements Context
 {
     use SendRequestTrait;
+    use FeatureTrait;
 
     public function __construct(
         private Session $session,
@@ -62,11 +63,7 @@ class AppContext implements Context
      */
     public function thereShouldBeAFeatureWithTheName($name)
     {
-        $feature = $this->subscriptionFeatureRepository->findOneBy(['name' => $name]);
-
-        if (!$feature instanceof SubscriptionFeature) {
-            throw new \Exception('No feature found');
-        }
+        $this->getFeatureByName($name);
     }
 
     /**

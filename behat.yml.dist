@@ -27,6 +27,9 @@ default:
                 # Features
                 - App\Tests\Behat\Features\AppContext
 
+                # Subscription Plan
+                - App\Tests\Behat\SubscriptionPlan\AppContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

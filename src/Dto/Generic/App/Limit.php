@@ -1,0 +1,46 @@
+<?php
+
+/*
+ * Copyright Iain Cambridge 2023.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ *
+ * Change Date: TBD ( 3 years after 1.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
+namespace App\Dto\Generic\App;
+
+class Limit
+{
+    protected Feature $feature;
+
+    protected $limit;
+
+    public function getFeature(): Feature
+    {
+        return $this->feature;
+    }
+
+    public function setFeature(Feature $feature): void
+    {
+        $this->feature = $feature;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param mixed $limit
+     */
+    public function setLimit($limit): void
+    {
+        $this->limit = $limit;
+    }
+}

@@ -28,6 +28,11 @@ class Feature
     #[SerializedName('description')]
     private ?string $description;
 
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
     public function getId(): string
     {
         return $this->id;

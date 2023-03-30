@@ -12,27 +12,11 @@
 
 namespace App\Dto\Response\App;
 
-use App\Dto\Generic\App\Product;
-use Symfony\Component\Serializer\Annotation\SerializedName;
-
-class ProductView
+class SubscriptionPlanCreationInfo
 {
-    private Product $product;
-
     private array $prices;
 
-    #[SerializedName('subscription_plans')]
-    private array $subscriptionPlans;
-
-    public function getProduct(): Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(Product $product): void
-    {
-        $this->product = $product;
-    }
+    private array $features;
 
     public function getPrices(): array
     {
@@ -42,5 +26,15 @@ class ProductView
     public function setPrices(array $prices): void
     {
         $this->prices = $prices;
+    }
+
+    public function getFeatures(): array
+    {
+        return $this->features;
+    }
+
+    public function setFeatures(array $features): void
+    {
+        $this->features = $features;
     }
 }

@@ -22,5 +22,9 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
             public: "Public Price",
             external_reference: "External Reference"
         }
+    },
+    subscription_plan: {
+        title: "Subscription Plans",
+        create: "Create new Plan"
     }
 }

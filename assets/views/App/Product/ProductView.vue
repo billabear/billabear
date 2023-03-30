@@ -61,6 +61,32 @@
 
           <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
         </div>
+        <div class="mt-5 card-body">
+          <h2 class="mb-3">{{ $t('app.product.view.subscription_plan.title') }}</h2>
+
+          <table class="table-auto w-full block">
+            <thead>
+            <tr>
+              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="plan in subscriptionPlans" class="mt-5">
+              <td>{{ plan.name }}</td>
+              <td>
+                <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                <span v-else>{{ plan.external_reference }}</span>
+              </td>
+            </tr>
+            <tr v-if="prices.length === 0">
+              <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
+        </div>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
@@ -83,6 +109,7 @@ export default {
       product: {
       },
       prices: [],
+      subscriptionPlans: [],
     }
   },
   mounted() {
@@ -91,6 +118,7 @@ export default {
     axios.get('/app/product/'+productId).then(response => {
       this.product = response.data.product;
       this.prices = response.data.prices;
+      this.subscriptionPlans = response.data.subscription_plans;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
