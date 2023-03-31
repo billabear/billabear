@@ -211,3 +211,39 @@
 .form-field-submit-ctn {
     @apply mt-3;
 }
+
+.list-table {
+    @apply min-w-full divide-y divide-gray-200 dark:divide-gray-700;
+}
+.list-table thead,tfoot tr {
+    @apply bg-gray-100 dark:bg-gray-800;
+}
+
+.list-table thead th {
+    @apply py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400;
+}
+
+.list-table tfoot th {
+    @apply py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400;
+}
+
+.list-table thead th:first-child {
+    @apply rounded-tl-xl;
+}
+.list-table tfoot th:first-child {
+    @apply rounded-bl-xl;
+}
+.list-table thead th:last-child {
+    @apply rounded-tr-xl;
+}
+.list-table tfoot th:last-child {
+    @apply rounded-br-xl;
+}
+
+.list-table tbody {
+    @apply bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900;
+}
+
+.list-table td {
+    @apply px-4 py-4 text-sm whitespace-nowrap;
+}

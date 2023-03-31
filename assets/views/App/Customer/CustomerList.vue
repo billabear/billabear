@@ -34,32 +34,32 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table class="list-table">
           <thead class="bg-gray-100 dark:bg-gray-800">
             <tr>
-              <th scope="col" class="rounded-tl-xl py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.email') }}</th>
-              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.country')}}</th>
-              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.reference') }}</th>
-              <th class="rounded-tr-xl"></th>
+              <th>{{ $t('app.customer.list.email') }}</th>
+              <th>{{ $t('app.customer.list.country')}}</th>
+              <th>{{ $t('app.customer.list.reference') }}</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+          <tbody>
             <tr v-for="customer in customers" class="mt-5">
-              <td class="px-4 py-4 text-sm whitespace-nowrap">{{ customer.email }}</td>
-              <td class="px-4 py-4 text-sm whitespace-nowrap">{{ customer.address.country }}</td>
-              <td class="px-4 py-4 text-sm whitespace-nowrap">{{ customer.reference }}</td>
-              <td class="px-4 py-4 text-sm whitespace-nowrap"><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">View</router-link></td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.address.country }}</td>
+              <td>{{ customer.reference }}</td>
+              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">View</router-link></td>
             </tr>
             <tr v-if="customers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
             </tr>
           </tbody>
           <tfoot>
-            <tr class="bg-gray-100 dark:bg-gray-800">
-              <th scope="col" class="rounded-bl-xl py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.email') }}</th>
-              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.country')}}</th>
-              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.reference') }}</th>
-              <th class="rounded-br-xl"></th>
+            <tr class="">
+              <th>{{ $t('app.customer.list.email') }}</th>
+              <th>{{ $t('app.customer.list.country')}}</th>
+              <th>{{ $t('app.customer.list.reference') }}</th>
+              <th></th>
             </tr>
           </tfoot>
         </table>
