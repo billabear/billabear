@@ -247,3 +247,23 @@
 .list-table td {
     @apply px-4 py-4 text-sm whitespace-nowrap;
 }
+
+.detail-list {
+    @apply border border-slate-200;
+}
+
+.detail-list div:nth-child(even) {
+    @apply bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6;
+}
+
+.detail-list div:nth-child(odd) {
+    @apply bg-gray-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6;
+}
+
+.detail-list dt {
+    @apply text-sm font-medium text-gray-500;
+}
+
+.detail-list dd {
+    @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+}
