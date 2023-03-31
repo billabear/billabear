@@ -59,6 +59,7 @@
             <option></option>
             <option v-for="featureInfo in features" :value="featureInfo">{{ featureInfo.name }}</option>
           </select>
+          <i class="ml-3 fa-solid fa-trash cursor-pointer" @click="removeFeature(key)"></i>
         </div>
         <button @click.prevent="subscription_plan.features.push({})"  class="mt-5 btn--main">{{ $t('app.subscription_plan.create.features.add_feature') }}</button>
       </div>
@@ -72,6 +73,7 @@
             <option v-for="featureInfo in features" :value="featureInfo">{{ featureInfo.name }}</option>
           </select>
           <input type="number" class="form-field" v-model="subscription_plan.limits[key].limit" />
+          <i class="ml-3 fa-solid fa-trash cursor-pointer" @click="removeLimit(key)"></i>
         </div>
         <button @click.prevent="subscription_plan.limits.push({feature: {}, limit: 0})" class="mt-5 btn--main">{{ $t('app.subscription_plan.create.limits.add_limit') }}</button>
       </div>
@@ -85,6 +87,7 @@
             <option></option>
             <option v-for="priceInfo in prices" :value="priceInfo">{{ priceInfo.display_value }} - {{ priceInfo.schedule }}</option>
           </select>
+          <i class="ml-3 fa-solid fa-trash cursor-pointer" @click="removePrice(key)"></i>
         </div>
         <button @click.prevent="subscription_plan.prices.push({})" class="mt-5 btn--main">{{ $t('app.subscription_plan.create.prices.add_price') }}</button>
       </div>
@@ -144,6 +147,15 @@ export default {
     })
   },
   methods: {
+    removeFeature: function (key) {
+      this.subscription_plan.features.splice(key, 1);
+    },
+    removeLimit: function (key) {
+      this.subscription_plan.limits.splice(key, 1);
+    },
+    removePrice: function (key) {
+      this.subscription_plan.prices.splice(key, 1);
+    },
     send: function () {
       var productId = this.$route.params.productId
       this.sendingInProgress = true;
@@ -186,7 +198,7 @@ export default {
         }
       }
       payload.prices = prices;
-      
+
       axios.post('/app/product/'+productId+'/plan', payload).then(
           response => {
             this.sendingInProgress = false;
