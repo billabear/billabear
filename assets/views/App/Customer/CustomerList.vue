@@ -3,11 +3,9 @@
     <h1 class="page-title">{{ $t('app.customer.list.title') }}</h1>
 
     <div class="top-button-container">
-      <router-link :to="{name: 'app.customer.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.customer.list.create_new') }}</router-link>
       <div class="list">
-
         <div class="list_button">
-          <button class="btn--secondary" @click="show_filter_menu = !show_filter_menu">
+          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
               <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
               <i v-else class="fa-solid fa-caret-up"></i>
               {{ $t('app.customer.list.filter.button') }}
@@ -19,6 +17,7 @@
           </span>
         </div>
       </div>
+      <router-link :to="{name: 'app.customer.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.customer.list.create_new') }}</router-link>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
@@ -30,30 +29,39 @@
         </div>
       </div>
 
-      <button @click="doSearch" class="btn--main mt-3">{{ $t('app.customer.list.filter.search') }}</button>
+      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3 card-body">
-        <table class="table-auto w-full">
-          <thead>
+    <div class="mt-3">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-100 dark:bg-gray-800">
             <tr>
-              <th>{{ $t('app.customer.list.email') }}</th>
-              <th>{{ $t('app.customer.list.country')}}</th>
-              <th>{{ $t('app.customer.list.reference') }}</th>
+              <th scope="col" class="rounded-tl-xl py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.email') }}</th>
+              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.country')}}</th>
+              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.reference') }}</th>
+              <th class="rounded-tr-xl"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
             <tr v-for="customer in customers" class="mt-5">
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.address.country }}</td>
-              <td>{{ customer.reference }}</td>
-              <td class="mt-2"><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">View</router-link></td>
+              <td class="px-4 py-4 text-sm whitespace-nowrap">{{ customer.email }}</td>
+              <td class="px-4 py-4 text-sm whitespace-nowrap">{{ customer.address.country }}</td>
+              <td class="px-4 py-4 text-sm whitespace-nowrap">{{ customer.reference }}</td>
+              <td class="px-4 py-4 text-sm whitespace-nowrap"><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">View</router-link></td>
             </tr>
             <tr v-if="customers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr class="bg-gray-100 dark:bg-gray-800">
+              <th scope="col" class="rounded-bl-xl py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.email') }}</th>
+              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.country')}}</th>
+              <th scope="col" class="py-3.5 px-4 font-extrabold text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">{{ $t('app.customer.list.reference') }}</th>
+              <th class="rounded-br-xl"></th>
+            </tr>
+          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
@@ -266,7 +274,7 @@ export default {
 
   @apply p-5 rounded-xl	border-slate-50 shadow-xl;
   float: left;
-  right: 10px;
+  right: 80px;
 }
 .list_container li {padding : 30px;}
 
