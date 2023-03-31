@@ -213,7 +213,7 @@
 }
 
 .list-table {
-    @apply min-w-full divide-y divide-gray-200 dark:divide-gray-700;
+    @apply min-w-full divide-y divide-gray-200 dark:divide-gray-700 mb-5;
 }
 .list-table thead,tfoot tr {
     @apply bg-gray-100 dark:bg-gray-800;

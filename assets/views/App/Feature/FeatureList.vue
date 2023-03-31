@@ -34,8 +34,8 @@
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3 card-body">
-        <table class="table-auto w-full">
+    <div class="mt-3 ">
+        <table class="list-table">
           <thead>
             <tr>
               <th>{{ $t('app.feature.list.name') }}</th>
@@ -51,6 +51,12 @@
               <td colspan="4" class="text-center">{{ $t('app.feature.list.no_features') }}</td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <th>{{ $t('app.feature.list.name') }}</th>
+              <th>{{ $t('app.feature.list.code')}}</th>
+            </tr>
+          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">

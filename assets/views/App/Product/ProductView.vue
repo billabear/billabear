@@ -8,7 +8,7 @@
           <router-link :to="{name: 'app.product.update'}" class="btn--main">{{ $t('app.product.view.update') }}</router-link>
         </div>
 
-        <div class="mt-5 card-body">
+        <div class="mt-5">
           <h2 class="mb-3">{{ $t('app.product.view.main.title') }}</h2>
           <dl>
             <div class="bg-gray-50 rounded-t-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -25,10 +25,10 @@
           </dl>
         </div>
 
-        <div class="mt-5 card-body">
+        <div class="mt-5">
           <h2 class="mb-3">{{ $t('app.product.view.price.title') }}</h2>
 
-          <table class="table-auto w-full block">
+          <table class="list-table">
             <thead>
             <tr>
               <th>{{ $t('app.product.view.price.list.amount') }}</th>
@@ -54,17 +54,28 @@
               </td>
             </tr>
             <tr v-if="prices.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
+              <td colspan="7" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+              <th>{{ $t('app.product.view.price.list.amount') }}</th>
+              <th>{{ $t('app.product.view.price.list.currency') }}</th>
+              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
+              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
+              <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
+              <th>{{ $t('app.product.view.price.list.public') }}</th>
+              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
+            </tr>
+            </tfoot>
           </table>
 
           <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
         </div>
-        <div class="mt-5 card-body">
+        <div class="mt-5">
           <h2 class="mb-3">{{ $t('app.product.view.subscription_plan.title') }}</h2>
 
-          <table class="table-auto w-full block">
+          <table class="list-table mb-5">
             <thead>
             <tr>
               <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
@@ -79,10 +90,16 @@
                 <span v-else>{{ plan.external_reference }}</span>
               </td>
             </tr>
-            <tr v-if="prices.length === 0">
+            <tr v-if="subscriptionPlans.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+            </tr>
+            </tfoot>
           </table>
 
           <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>

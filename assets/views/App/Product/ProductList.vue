@@ -3,7 +3,6 @@
     <h1 class="page-title">{{ $t('app.product.list.title') }}</h1>
 
     <div class="top-button-container">
-      <router-link :to="{name: 'app.product.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.product.list.create_new') }}</router-link>
       <div class="list">
 
         <div class="list_button">
@@ -19,6 +18,7 @@
           </span>
         </div>
       </div>
+      <router-link :to="{name: 'app.product.create'}" class="ml-3 btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.product.list.create_new') }}</router-link>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
@@ -34,11 +34,12 @@
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3 card-body">
-        <table class="table-auto w-full">
+    <div class="mt-3">
+        <table class="list-table">
           <thead>
             <tr>
               <th>{{ $t('app.product.list.name') }}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +51,12 @@
               <td colspan="4" class="text-center">{{ $t('app.product.list.no_products') }}</td>
             </tr>
           </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.product.list.name') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
