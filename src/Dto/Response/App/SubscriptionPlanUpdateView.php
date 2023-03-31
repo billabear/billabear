@@ -15,10 +15,34 @@ namespace App\Dto\Response\App;
 use App\Dto\Generic\App\SubscriptionPlan;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class SubscriptionPlanView
+class SubscriptionPlanUpdateView
 {
     #[SerializedName('subscription_plan')]
     private SubscriptionPlan $subscriptionPlan;
+
+    private array $prices;
+
+    private array $features;
+
+    public function getPrices(): array
+    {
+        return $this->prices;
+    }
+
+    public function setPrices(array $prices): void
+    {
+        $this->prices = $prices;
+    }
+
+    public function getFeatures(): array
+    {
+        return $this->features;
+    }
+
+    public function setFeatures(array $features): void
+    {
+        $this->features = $features;
+    }
 
     public function getSubscriptionPlan(): SubscriptionPlan
     {

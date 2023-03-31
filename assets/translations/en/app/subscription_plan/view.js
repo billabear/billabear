@@ -1,18 +1,33 @@
-export const PRODUCT_VIEW_TRANSLATIONS = {
-    title: 'View Product Details',
+export const SUBSCRIPTION_PLAN_VIEW_TRANSLATIONS = {
+    title: 'View Subscription Plan Details',
     update: 'Update',
     error: {
-        not_found: "No such product found",
+        not_found: "No such subscription plan found",
         unknown: "An unknown error has occurred"
     },
     main: {
         title: "Main Details",
         name: "Name",
-        external_reference: "External Reference"
+        per_seat: "Per Seat",
+        free: "Free",
+        user_count: "User Count",
+        public: "Publicly Available"
+    },
+    limits: {
+        title: "Limits",
+        list: {
+            feature: "Feature",
+            limit: "Limit",
+        }
+    },
+    features: {
+        title: "Features",
+        list: {
+            feature: "Feature"
+        }
     },
     price: {
         title: "Prices",
-        create: "Create New Price",
         list: {
             amount: "Amount",
             currency: "Currency",
@@ -20,15 +35,6 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
             schedule: "Payment Schedule",
             including_tax: "Price Includes Tax",
             public: "Public Price",
-            external_reference: "External Reference"
-        }
-    },
-    subscription_plan: {
-        title: "Subscription Plans",
-        create: "Create new Plan",
-        view: "View",
-        list: {
-            name: "Name",
             external_reference: "External Reference"
         }
     }

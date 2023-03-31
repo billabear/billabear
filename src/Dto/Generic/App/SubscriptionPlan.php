@@ -12,14 +12,18 @@
 
 namespace App\Dto\Generic\App;
 
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
 class SubscriptionPlan
 {
     private $id;
 
     private string $name;
 
+    #[SerializedName('user_count')]
     private int $userCount;
 
+    #[SerializedName('per_seat')]
     private bool $perSeat;
 
     private bool $free;

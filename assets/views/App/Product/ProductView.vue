@@ -80,6 +80,7 @@
             <tr>
               <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
@@ -88,6 +89,9 @@
               <td>
                 <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <span v-else>{{ plan.external_reference }}</span>
+              </td>
+              <td>
+                <router-link :to="{name: 'app.subscription_plan.view', params: {productId: id, subscriptionPlanId: plan.id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.view') }}</router-link>
               </td>
             </tr>
             <tr v-if="subscriptionPlans.length === 0">
@@ -98,6 +102,7 @@
             <tr>
               <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+              <th></th>
             </tr>
             </tfoot>
           </table>

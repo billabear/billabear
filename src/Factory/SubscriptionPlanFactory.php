@@ -33,9 +33,12 @@ class SubscriptionPlanFactory
     ) {
     }
 
-    public function createFromPostSubscriptionPlan(PostSubscriptionPlan $dto): SubscriptionPlan
+    public function createFromPostSubscriptionPlan(PostSubscriptionPlan $dto, ?SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
     {
-        $subscriptionPlan = new SubscriptionPlan();
+        if (!$subscriptionPlan) {
+            $subscriptionPlan = new SubscriptionPlan();
+        }
+
         $subscriptionPlan->setName($dto->getName());
         $subscriptionPlan->setPublic($dto->getPublic());
         $subscriptionPlan->setPerSeat($dto->getPerSeat());
@@ -77,6 +80,7 @@ class SubscriptionPlanFactory
     public function createAppDto(SubscriptionPlan $subscriptionPlan): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $subscriptionPlan->getId());
         $dto->setName($subscriptionPlan->getName());
         $dto->setPerSeat($subscriptionPlan->isPerSeat());
         $dto->setPublic($subscriptionPlan->isPublic());
