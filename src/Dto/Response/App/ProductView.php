@@ -43,4 +43,14 @@ class ProductView
     {
         $this->prices = $prices;
     }
+
+    public function getSubscriptionPlans(): array
+    {
+        return $this->subscriptionPlans;
+    }
+
+    public function setSubscriptionPlans(array $subscriptionPlans): void
+    {
+        $this->subscriptionPlans = $subscriptionPlans;
+    }
 }

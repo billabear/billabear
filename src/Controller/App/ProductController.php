@@ -18,11 +18,13 @@ use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
 use App\Factory\PriceFactory;
 use App\Factory\ProductFactory;
+use App\Factory\SubscriptionPlanFactory;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -120,9 +122,11 @@ class ProductController
         Request $request,
         ProductRepositoryInterface $productRepository,
         PriceRepositoryInterface $priceRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SerializerInterface $serializer,
         ProductFactory $productFactory,
         PriceFactory $priceFactory,
+        SubscriptionPlanFactory $subscriptionPlanFactory,
     ): Response {
         try {
             $product = $productRepository->getById($request->get('id'));
@@ -131,13 +135,16 @@ class ProductController
         }
 
         $prices = $priceRepository->getAllForProduct($product);
-
         $pricesDtos = array_map([$priceFactory, 'createAppDto'], $prices);
-        $productDto = $productFactory->createAppDtoFromProduct($product);
 
+        $plans = $subscriptionPlanRepository->getAllForProduct($product);
+        $planDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $plans);
+
+        $productDto = $productFactory->createAppDtoFromProduct($product);
         $dto = new ProductView();
         $dto->setProduct($productDto);
         $dto->setPrices($pricesDtos);
+        $dto->setSubscriptionPlans($planDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
