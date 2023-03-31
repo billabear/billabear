@@ -110,9 +110,9 @@ export default {
         per_seat: false,
         free: false,
         public: true,
-        prices: [],
-        limits: [],
-        features: []
+        prices: [{}],
+        limits: [{}],
+        features: [{}]
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -149,7 +149,45 @@ export default {
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
-      axios.post('/app/product/'+productId+'/plan', this.subscription_plan).then(
+      var payload = {
+        name: this.subscription_plan.name,
+        free: this.subscription_plan.free,
+        per_seat: this.subscription_plan.per_seat,
+        user_count: this.subscription_plan.user_count,
+        public: this.subscription_plan.public,
+        features: [],
+        limits: [],
+        prices: [],
+      };
+      var count = this.subscription_plan.features.length;
+      var features = [];
+      for (var i = 0; i  < count; i++) {
+        if (this.subscription_plan.features[i].id !== undefined && this.subscription_plan.features[i].id !== null) {
+          features.push(this.subscription_plan.features[i])
+        }
+      }
+      payload.features = features;
+
+      var count = this.subscription_plan.limits.length;
+      var limits = [];
+      for (var i = 0; i  < count; i++) {
+        if (this.subscription_plan.limits[i].feature !== undefined && this.subscription_plan.limits[i].feature.id !== undefined && this.subscription_plan.limits[i].feature.id !== null &&
+            this.subscription_plan.limits[i].limit !== undefined && this.subscription_plan.limits[i].limit !== null) {
+          limits.push(this.subscription_plan.limits[i])
+        }
+      }
+      payload.limits = limits;
+
+      var count = this.subscription_plan.prices.length;
+      var prices = [];
+      for (var i = 0; i  < count; i++) {
+        if (this.subscription_plan.prices[i].id !== undefined && this.subscription_plan.prices[i].id !== null) {
+          prices.push(this.subscription_plan.prices[i])
+        }
+      }
+      payload.prices = prices;
+      
+      axios.post('/app/product/'+productId+'/plan', payload).then(
           response => {
             this.sendingInProgress = false;
             this.success = true;
