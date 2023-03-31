@@ -10,14 +10,14 @@
 
         <div class="mt-5">
           <h2 class="mb-3">{{ $t('app.product.view.main.title') }}</h2>
-          <dl>
-            <div class="bg-gray-50 rounded-t-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">{{ $t('app.product.view.main.name') }}</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ product.name }}</dd>
+          <dl class="detail-list">
+            <div>
+              <dt>{{ $t('app.product.view.main.name') }}</dt>
+              <dd>{{ product.name }}</dd>
             </div>
-            <div class="bg-gray-50 rounded-b-xl px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">{{ $t('app.product.view.main.external_reference') }}</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+            <div>
+              <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
+              <dd>
                 <a v-if="product.payment_provider_details_url" target="_blank" :href="product.payment_provider_details_url">{{ product.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <span v-else>{{ product.external_reference }}</span>
               </dd>
