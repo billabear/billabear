@@ -1,5 +1,5 @@
 <template>
-  <img src="/images/logo.svg" alt="" class="m-auto" width="450" />
+  <img src="/images/public-logo.png" alt="" class="m-auto" width="450" />
 </template>
 
 <script>

@@ -14,6 +14,7 @@ namespace App\Controller\App;
 
 use App\Dto\Request\App\PostSubscriptionPlan;
 use App\Dto\Response\App\SubscriptionPlanCreationInfo;
+use App\Dto\Response\App\SubscriptionPlanView;
 use App\Factory\FeatureFactory;
 use App\Factory\PriceFactory;
 use App\Factory\SubscriptionPlanFactory;
@@ -103,5 +104,26 @@ class SubscriptionPlanController
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/product/{productId}/plan/{id}', name: 'app_product_plan_view', methods: ['GET'])]
+    public function viewPlan(
+        Request $request,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        SerializerInterface $serializer,
+        SubscriptionPlanFactory $factory,
+    ): Response {
+        try {
+            $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $subscriptionPlanDto = $factory->createAppDto($subscriptionPlan);
+        $dto = new SubscriptionPlanView();
+        $dto->setSubscriptionPlan($subscriptionPlanDto);
+        $output = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($output, json: true);
     }
 }
