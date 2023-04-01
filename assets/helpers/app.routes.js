@@ -21,6 +21,7 @@ import {SUBCLASSING} from "core-js/internals/promise-constructor-detection";
 import SubscriptionPlanCreate from "../views/App/SubscriptionPlan/SubscriptionPlanCreate.vue";
 import SubscriptionPlanView from "../views/App/SubscriptionPlan/SubscriptionPlanView.vue";
 import SubscriptionPlanUpdate from "../views/App/SubscriptionPlan/SubscriptionPlanUpdate.vue";
+import AddPaymentDetails from "../views/App/PaymentDetails/AddPaymentDetails.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -68,6 +69,11 @@ export const APP_ROUTES = [
         name: 'app.customer.update',
         path: 'customer/update/:id',
         component: CustomerUpdate
+    },
+    {
+        name: 'app.customer.payment_details.add',
+        path: 'customer/:customerId/payment-details/add',
+        component: AddPaymentDetails
     },
     {
         name: 'app.feature.list',

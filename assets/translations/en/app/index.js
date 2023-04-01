@@ -8,6 +8,7 @@ import {PRODUCT_TRANSLATIONS} from "./product";
 import {PRICE_TRANSLATIONS} from "./price";
 import {FEATURE_TRANSLATIONS} from "./feature";
 import {SUBSCRIPTION_PLAN_TRANSLATIONS} from "./subscription_plan";
+import {PAYMENT_DETAILS_TRANSLATIONS} from "./payment_details";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -20,4 +21,5 @@ export const APP_TRANSLATIONS = {
     price: PRICE_TRANSLATIONS,
     feature: FEATURE_TRANSLATIONS,
     subscription_plan: SUBSCRIPTION_PLAN_TRANSLATIONS,
+    payment_details: PAYMENT_DETAILS_TRANSLATIONS,
 };

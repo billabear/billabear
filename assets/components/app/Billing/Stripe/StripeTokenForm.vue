@@ -36,6 +36,15 @@ export default {
       stripe: {}
     }
   },
+  props: {
+    customerId: {
+      type: String,
+      required: true,
+      default() {
+        return "btn--main"
+      }
+    },
+  },
   mounted() {
 
     var imported = document.createElement('script');
@@ -43,7 +52,7 @@ export default {
     document.head.appendChild(imported);
 
     var that = this
-    billingservice.getAddCardToken().then(
+    billingservice.getAddCardToken(this.customerId).then(
       tokenResponse => {
         this.stripe = Stripe(tokenResponse.data.api_info);
         this.loading = false
@@ -68,10 +77,10 @@ export default {
       stripeservice.sendCard(this.stripe, this.card).then(
         response => {
           var token = response.token.id;
-          billingservice.saveToken(token).then(response => {
+          billingservice.saveToken(this.customerId, token).then(response => {
             var paymentDetails = response.data.payment_details;
-            this.cardAdded({paymentDetails});
-            that.sending = false
+            that.sending = false;
+            this.$router.push({name: 'app.customer.view', params: {id: this.customerId}})
           })
         }
       )
