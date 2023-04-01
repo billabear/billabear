@@ -20,7 +20,7 @@ class PaymentDetails
     protected string $id;
 
     #[SerializedName('name')]
-    protected string $name;
+    protected ?string $name = null;
 
     #[SerializedName('default')]
     protected bool $default = true;

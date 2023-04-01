@@ -36,6 +36,7 @@ class AppContext implements Context
         private SubscriptionPlanServiceRepository $planRepository,
         private ProductServiceRepository $productRepository,
         private SubscriptionFeatureServiceRepository $subscriptionFeatureRepository,
+        private SubscriptionPlanServiceRepository $planServiceRepository,
     ) {
     }
 
@@ -71,17 +72,68 @@ class AppContext implements Context
         $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/plan', $payload);
     }
 
-    protected function getPlanByName(string $name): SubscriptionPlan
+    /**
+     * @Given a Subscription Plan exists for product :arg1 with a feature :arg2 and a limit for :arg3 with a limit of :arg5 and price :arg4 with:
+     */
+    public function aSubscriptionPlanExistsForProductWithAFeatureAndALimitForWithALimitOfAndPriceWith($productName, $featureName, $limitFeatureName, $limit, $price, TableNode $table)
     {
-        $plan = $this->planRepository->findOneBy(['name' => $name]);
+        $data = $table->getRowsHash();
 
-        if (!$plan instanceof SubscriptionPlan) {
-            throw new \Exception('No Plan found');
+        $product = $this->getProductByName($productName);
+        $feature = $this->getFeatureByName($featureName);
+        $limitFeature = $this->getFeatureByName($limitFeatureName);
+
+        $subscriptionLimit = new SubscriptionPlanLimit();
+        $subscriptionLimit->setSubscriptionFeature($limitFeature);
+        $subscriptionLimit->setLimit(intval($limit));
+
+        $subscriptionPlan = new SubscriptionPlan();
+        $subscriptionPlan->setName($data['Name']);
+        $subscriptionPlan->setPublic('true' === strtolower($data['Public']));
+        $subscriptionPlan->setPerSeat('true' === strtolower($data['Per Seat']));
+        $subscriptionPlan->setFree('true' === strtolower($data['Free'] ?? 'false'));
+        $subscriptionPlan->setUserCount(intval($data['User Count']));
+        $subscriptionPlan->setProduct($product);
+        $subscriptionPlan->addFeature($feature);
+        $subscriptionPlan->addLimit($subscriptionLimit);
+
+        $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
+        $this->subscriptionFeatureRepository->getEntityManager()->flush();
+    }
+
+    protected function findSubscriptionPlanByName(string $planName): SubscriptionPlan
+    {
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
+
+        if (!$subscriptionPlan instanceof SubscriptionPlan) {
+            throw new \Exception("Can't find plan");
         }
 
-        $this->planRepository->getEntityManager()->refresh($plan);
+        $this->planRepository->getEntityManager()->refresh($subscriptionPlan);
 
-        return $plan;
+        return $subscriptionPlan;
+    }
+
+    /**
+     * @When I view the subscription plan :arg1
+     */
+    public function iViewTheSubscriptionPlan($planName)
+    {
+        $plan = $this->findSubscriptionPlanByName($planName);
+        $product = $plan->getProduct();
+        $this->sendJsonRequest('GET', '/app/product/'.$product->getId().'/plan/'.$plan->getId());
+    }
+
+    /**
+     * @Then the user count in the response should be :arg1
+     */
+    public function thereShouldBeAFor($value)
+    {
+        $content = $this->getJsonContent();
+
+        if ($content['subscription_plan']['user_count'] != $value) {
+            throw new \Exception("Can't find data");
+        }
     }
 
     /**
@@ -89,7 +141,7 @@ class AppContext implements Context
      */
     public function thereShouldBeASubscriptionPlanCalled($planName)
     {
-        $this->getPlanByName($planName);
+        $this->findSubscriptionPlanByName($planName);
     }
 
     /**
@@ -97,7 +149,7 @@ class AppContext implements Context
      */
     public function theSubscriptionPlanShouldHaveAFeature($planName, $featureName)
     {
-        $plan = $this->getPlanByName($planName);
+        $plan = $this->findSubscriptionPlanByName($planName);
 
         /** @var SubscriptionFeature $feature */
         foreach ($plan->getFeatures() as $feature) {
@@ -114,7 +166,7 @@ class AppContext implements Context
      */
     public function theSubscriptionPlanShouldHaveALimitWithALimitOf($planName, $featureName, $arg3)
     {
-        $plan = $this->getPlanByName($planName);
+        $plan = $this->findSubscriptionPlanByName($planName);
 
         /** @var SubscriptionPlanLimit $limit */
         foreach ($plan->getLimits() as $limit) {
@@ -131,13 +183,5 @@ class AppContext implements Context
         }
 
         throw new \Exception('No limit found');
-    }
-
-    /**
-     * @Then the subscription Plan :arg1 should have a price :arg2
-     */
-    public function theSubscriptionPlanShouldHaveAPrice($planName, $arg2)
-    {
-        throw new PendingException();
     }
 }
