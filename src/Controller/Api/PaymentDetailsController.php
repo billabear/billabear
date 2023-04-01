@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentDetailsController
 {
-    #[Route('/api/v1.0/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
+    #[Route('/api/v1/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
@@ -50,7 +50,7 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1.0/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
+    #[Route('/api/v1/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
     public function finishFrontendAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,

@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
-    #[Route('/api/v1.0/product', name: 'api_v1.0_product_create', methods: ['POST'])]
+    #[Route('/api/v1/product', name: 'api_v1.0_product_create', methods: ['POST'])]
     public function createProduct(
         Request $request,
         SerializerInterface $serializer,
@@ -69,7 +69,7 @@ class ProductController
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1.0/product', name: 'api_v1.0_product_list', methods: ['GET'])]
+    #[Route('/api/v1/product', name: 'api_v1.0_product_list', methods: ['GET'])]
     public function listProduct(
         Request $request,
         ProductRepositoryInterface $productRepository,
@@ -112,7 +112,7 @@ class ProductController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1.0/product/{id}', name: 'api_v1.0_product_read', methods: ['GET'])]
+    #[Route('/api/v1/product/{id}', name: 'api_v1.0_product_read', methods: ['GET'])]
     public function viewProduct(
         Request $request,
         ProductRepositoryInterface $productRepository,
@@ -131,7 +131,7 @@ class ProductController
         return new JsonResponse($data, json: true);
     }
 
-    #[Route('/api/v1.0/product/{id}', name: 'api_v1.0_product_update', methods: ['PUT'])]
+    #[Route('/api/v1/product/{id}', name: 'api_v1.0_product_update', methods: ['PUT'])]
     public function updateProduct(
         Request $request,
         ProductRepositoryInterface $productRepository,

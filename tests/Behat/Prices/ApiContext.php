@@ -48,7 +48,7 @@ class ApiContext implements Context
             'recurring' => (true === strtolower($data['Recurring'])),
         ];
 
-        $this->sendJsonRequest('POST', '/api/v1.0/product/'.$product->getId().'/price', $payload);
+        $this->sendJsonRequest('POST', '/api/v1/product/'.$product->getId().'/price', $payload);
     }
 
     /**
@@ -102,7 +102,7 @@ class ApiContext implements Context
     public function iFetchAllPricesForTheProductViaApi($productName)
     {
         $product = $this->getProductByName($productName);
-        $this->sendJsonRequest('GET', '/api/v1.0/product/'.$product->getId().'/price');
+        $this->sendJsonRequest('GET', '/api/v1/product/'.$product->getId().'/price');
     }
 
     /**

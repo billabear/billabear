@@ -38,7 +38,7 @@ class ApiContext implements Context
             'name' => $data['Name'],
         ];
 
-        $this->sendJsonRequest('POST', '/api/v1.0/product', $payload);
+        $this->sendJsonRequest('POST', '/api/v1/product', $payload);
     }
 
     /**
@@ -72,7 +72,7 @@ class ApiContext implements Context
      */
     public function iUseTheApiToListProduct()
     {
-        $this->sendJsonRequest('GET', '/api/v1.0/product');
+        $this->sendJsonRequest('GET', '/api/v1/product');
     }
 
     /**
@@ -100,7 +100,7 @@ class ApiContext implements Context
      */
     public function iUseTheApiToListProductsWithParameterWithValue($filter, $value)
     {
-        $this->sendJsonRequest('GET', sprintf('/api/v1.0/product?%s=%s', $filter, $value));
+        $this->sendJsonRequest('GET', sprintf('/api/v1/product?%s=%s', $filter, $value));
     }
 
     /**
@@ -110,7 +110,7 @@ class ApiContext implements Context
     {
         $product = $this->getProductByName($name);
 
-        $this->sendJsonRequest('GET', '/api/v1.0/product/'.$product->getId());
+        $this->sendJsonRequest('GET', '/api/v1/product/'.$product->getId());
     }
 
     /**
@@ -125,6 +125,6 @@ class ApiContext implements Context
             'name' => $data['Name'],
         ];
 
-        $this->sendJsonRequest('PUT', '/api/v1.0/product/'.$product->getId(), $payload);
+        $this->sendJsonRequest('PUT', '/api/v1/product/'.$product->getId(), $payload);
     }
 }

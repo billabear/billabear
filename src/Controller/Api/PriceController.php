@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceController
 {
-    #[Route('/api/v1.0/product/{id}/price', name: 'api_v1.0_product_price_create', methods: ['POST'])]
+    #[Route('/api/v1/product/{id}/price', name: 'api_v1.0_product_price_create', methods: ['POST'])]
     public function createPrice(
         Request $request,
         SerializerInterface $serializer,
@@ -80,7 +80,7 @@ class PriceController
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1.0/product/{id}/price', name: 'api_v1.0_product_price_list', methods: ['GET'])]
+    #[Route('/api/v1/product/{id}/price', name: 'api_v1.0_product_price_list', methods: ['GET'])]
     public function listProduct(
         Request $request,
         ProductRepositoryInterface $productRepository,

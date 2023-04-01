@@ -53,7 +53,7 @@ class MainContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
-        $this->sendJsonRequest('POST', '/api/v1.0/customer', $payload);
+        $this->sendJsonRequest('POST', '/api/v1/customer', $payload);
     }
 
     /**
@@ -80,7 +80,7 @@ class MainContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
-        $this->sendJsonRequest('PUT', '/api/v1.0/customer/'.$customer->getId(), $payload);
+        $this->sendJsonRequest('PUT', '/api/v1/customer/'.$customer->getId(), $payload);
     }
 
     /**
@@ -146,7 +146,7 @@ class MainContext implements Context
      */
     public function iUseTheApiToListCustomers()
     {
-        $this->sendJsonRequest('GET', '/api/v1.0/customer');
+        $this->sendJsonRequest('GET', '/api/v1/customer');
     }
 
     /**
@@ -154,7 +154,7 @@ class MainContext implements Context
      */
     public function iUseTheApiToListCustomersWithParameterWithValue($filter, $value)
     {
-        $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer?%s=%s', $filter, $value));
+        $this->sendJsonRequest('GET', sprintf('/api/v1/customer?%s=%s', $filter, $value));
     }
 
     /**
@@ -202,7 +202,7 @@ class MainContext implements Context
     {
         $data = $this->getJsonContent();
 
-        $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer?last_key=%s', $data['last_key']));
+        $this->sendJsonRequest('GET', sprintf('/api/v1/customer?last_key=%s', $data['last_key']));
     }
 
     /**
@@ -212,6 +212,6 @@ class MainContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
 
-        $this->sendJsonRequest('GET', sprintf('/api/v1.0/customer/%s', $customer->getId()));
+        $this->sendJsonRequest('GET', sprintf('/api/v1/customer/%s', $customer->getId()));
     }
 }
