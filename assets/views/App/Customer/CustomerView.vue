@@ -57,6 +57,38 @@
             </div>
           </dl>
         </div>
+        <div class="mt-3">
+          <h2 class="mb-3">{{ $t('app.customer.view.payment_details.title') }}</h2>
+          <table class="list-table">
+            <thead class="bg-gray-100 dark:bg-gray-800">
+            <tr>
+              <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
+              <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
+              <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
+              <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="paymentDetail in paymentDetails" class="mt-5">
+              <td>{{ paymentDetail.last_four }}</td>
+              <td>{{ paymentDetail.expiry_month }}</td>
+              <td>{{ paymentDetail.expiry_year }}</td>
+              <td>{{ paymentDetail.default }}</td>
+              <td></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
+              <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
+              <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
+              <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
@@ -76,13 +108,15 @@ export default {
       error: false,
       errorMessage: null,
       customer: {
-      }
+      },
+      paymentDetails: [],
     }
   },
   mounted() {
     var customerId = this.$route.params.id
     axios.get('/app/customer/'+customerId).then(response => {
       this.customer = response.data.customer;
+      this.paymentDetails = response.data.payment_details;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

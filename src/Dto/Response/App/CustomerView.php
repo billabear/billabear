@@ -13,10 +13,14 @@
 namespace App\Dto\Response\App;
 
 use App\Dto\Generic\App\Customer;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class CustomerView
 {
     protected Customer $customer;
+
+    #[SerializedName('payment_details')]
+    protected array $paymentDetails = [];
 
     protected bool $success = true;
 
@@ -28,6 +32,16 @@ class CustomerView
     public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getPaymentDetails(): array
+    {
+        return $this->paymentDetails;
+    }
+
+    public function setPaymentDetails(array $paymentDetails): void
+    {
+        $this->paymentDetails = $paymentDetails;
     }
 
     public function isSuccess(): bool

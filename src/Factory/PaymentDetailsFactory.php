@@ -13,6 +13,7 @@
 namespace App\Factory;
 
 use App\Dto\Generic\Api\PaymentDetails as ApiDto;
+use App\Dto\Generic\App\PaymentDetails as AppDto;
 use Parthenon\Billing\Entity\PaymentDetails;
 
 class PaymentDetailsFactory
@@ -20,6 +21,20 @@ class PaymentDetailsFactory
     public function createApiDto(PaymentDetails $paymentDetails): ApiDto
     {
         $dto = new ApiDto();
+        $dto->setId($paymentDetails->getId());
+        $dto->setName($paymentDetails->getName());
+        $dto->setBrand($paymentDetails->getBrand());
+        $dto->setExpiryMonth($paymentDetails->getExpiryMonth());
+        $dto->setExpiryYear($paymentDetails->getExpiryYear());
+        $dto->setLastFour($paymentDetails->getLastFour());
+        $dto->setDefault($paymentDetails->isDefaultPaymentOption());
+
+        return $dto;
+    }
+
+    public function createAppDto(PaymentDetails $paymentDetails): AppDto
+    {
+        $dto = new AppDto();
         $dto->setId($paymentDetails->getId());
         $dto->setName($paymentDetails->getName());
         $dto->setBrand($paymentDetails->getBrand());

@@ -19,5 +19,16 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         region: "Region",
         post_code: "Post Code",
         country: "Country",
+    },
+    payment_details: {
+        title: "Payment Details",
+        list: {
+            brand: "Brand",
+            last_four: "Last Four",
+            default: "Default Payment",
+            expiry_month: "Expiry Month",
+            expiry_year: "Expiry Year",
+            name: "Name"
+        }
     }
 }
