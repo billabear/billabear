@@ -48,6 +48,24 @@
         <input type="number" class="form-field-input" id="user_count" v-model="subscription_plan.user_count" :class="{disabled: subscription_plan.per_seat_plan}" :disabled="subscription_plan.per_seat_plan" />
         <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.user_count') }}</p>
       </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="has_trial">
+          {{ $t('app.subscription_plan.create.fields.has_trial') }}
+        </label>
+        <p class="form-field-error" v-if="errors.has_trial != undefined">{{ errors.has_trial }}</p>
+        <input type="checkbox" id="has_trial" v-model="subscription_plan.has_trial" />
+        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.has_trial') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="trial_length_days">
+          {{ $t('app.subscription_plan.create.fields.trial_length_days') }}
+        </label>
+        <p class="form-field-error" v-if="errors.trial_length_days != undefined">{{ errors.trial_length_days }}</p>
+        <input type="number" class="form-field-input" id="trial_length_days" v-model="subscription_plan.trial_length_days" />
+        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.trial_length_days') }}</p>
+      </div>
     </div>
 
 
@@ -115,7 +133,9 @@ export default {
         public: true,
         prices: [{}],
         limits: [{}],
-        features: [{}]
+        features: [{}],
+        has_trial: false,
+        trial_length_days: 0
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -170,6 +190,8 @@ export default {
         features: [],
         limits: [],
         prices: [],
+        has_trial: this.subscription_plan.has_trial,
+        trial_length_days: this.subscription_plan.trial_length_days,
       };
       var count = this.subscription_plan.features.length;
       var features = [];

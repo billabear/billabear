@@ -26,6 +26,12 @@ class SubscriptionPlan
     #[SerializedName('per_seat')]
     private bool $perSeat;
 
+    #[SerializedName('has_trial')]
+    private ?bool $hasTrial;
+
+    #[SerializedName('trial_length_days')]
+    private ?int $trialLengthDays;
+
     private bool $free;
 
     private bool $public;
@@ -130,5 +136,31 @@ class SubscriptionPlan
     public function setUserCount(int $userCount): void
     {
         $this->userCount = $userCount;
+    }
+
+    public function isHasTrial(): bool
+    {
+        return $this->hasTrial;
+    }
+
+    /**
+     * @param bool $hasTrial
+     */
+    public function setHasTrial(?bool $hasTrial): void
+    {
+        $this->hasTrial = $hasTrial;
+    }
+
+    public function getTrialLengthDays(): int
+    {
+        return $this->trialLengthDays;
+    }
+
+    /**
+     * @param int $trialLengthDays
+     */
+    public function setTrialLengthDays(?int $trialLengthDays): void
+    {
+        $this->trialLengthDays = $trialLengthDays;
     }
 }

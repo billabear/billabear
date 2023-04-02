@@ -32,6 +32,15 @@ class PostSubscriptionPlan
     #[SerializedName('free')]
     protected $free;
 
+    #[Assert\Type('boolean')]
+    #[SerializedName('has_trial')]
+    protected $hasTrial;
+
+    #[Assert\Type('integer')]
+    #[Assert\PositiveOrZero]
+    #[SerializedName('trial_length_days')]
+    protected $trialLengthDays;
+
     #[Assert\Type('integer')]
     #[SerializedName('user_count')]
     protected $userCount;
@@ -173,5 +182,37 @@ class PostSubscriptionPlan
     public function addLimit(PostLimit $limit)
     {
         $this->limits[] = $limit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasTrial()
+    {
+        return $this->hasTrial;
+    }
+
+    /**
+     * @param mixed $hasTrial
+     */
+    public function setHasTrial($hasTrial): void
+    {
+        $this->hasTrial = $hasTrial;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrialLengthDays()
+    {
+        return $this->trialLengthDays;
+    }
+
+    /**
+     * @param mixed $trialLengthDays
+     */
+    public function setTrialLengthDays($trialLengthDays): void
+    {
+        $this->trialLengthDays = $trialLengthDays;
     }
 }

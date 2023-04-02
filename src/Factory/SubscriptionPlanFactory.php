@@ -44,7 +44,10 @@ class SubscriptionPlanFactory
         $subscriptionPlan->setPerSeat($dto->getPerSeat());
         $subscriptionPlan->setUserCount($dto->getUserCount());
         $subscriptionPlan->setFree($dto->getFree());
+        $subscriptionPlan->setHasTrial($dto->getHasTrial());
+        $subscriptionPlan->setTrialLengthDays($dto->getTrialLengthDays());
 
+        $subscriptionPlan->getPrices()->clear();
         /** @var Price $priceDto */
         foreach ($dto->getPrices() as $priceDto) {
             if (!$priceDto->hasId()) {
@@ -54,6 +57,7 @@ class SubscriptionPlanFactory
             $subscriptionPlan->addPrice($price);
         }
 
+        $subscriptionPlan->getFeatures()->clear();
         /** @var Feature $featureDto */
         foreach ($dto->getFeatures() as $featureDto) {
             if (!$featureDto->hasId()) {
@@ -63,6 +67,7 @@ class SubscriptionPlanFactory
             $subscriptionPlan->addFeature($feature);
         }
 
+        $subscriptionPlan->getLimits()->clear();
         /** @var Limit $limitDto */
         foreach ($dto->getLimits() as $limitDto) {
             $feature = $this->subscriptionFeatureRepository->getById($limitDto->getFeature()->getId());
@@ -86,6 +91,8 @@ class SubscriptionPlanFactory
         $dto->setPublic($subscriptionPlan->isPublic());
         $dto->setFree($subscriptionPlan->isFree());
         $dto->setUserCount($subscriptionPlan->getUserCount());
+        $dto->setHasTrial($subscriptionPlan->getHasTrial());
+        $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
 
         $priceEntities = $subscriptionPlan->getPrices() instanceof Collection ? $subscriptionPlan->getPrices()->toArray() : $subscriptionPlan->getPrices();
         $featuresEntities = $subscriptionPlan->getFeatures() instanceof Collection ? $subscriptionPlan->getFeatures()->toArray() : $subscriptionPlan->getFeatures();

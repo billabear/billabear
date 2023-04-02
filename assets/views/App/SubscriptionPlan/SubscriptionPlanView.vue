@@ -30,6 +30,14 @@
               <dt>{{ $t('app.subscription_plan.view.main.free') }}</dt>
               <dd>{{ subscription_plan.free }}</dd>
             </div>
+            <div>
+              <dt>{{ $t('app.subscription_plan.view.main.has_trial') }}</dt>
+              <dd>{{ subscription_plan.has_trial }}</dd>
+            </div>
+            <div>
+              <dt>{{ $t('app.subscription_plan.view.main.trial_length_days') }}</dt>
+              <dd>{{ subscription_plan.trial_length_days }}</dd>
+            </div>
           </dl>
 
         </div>

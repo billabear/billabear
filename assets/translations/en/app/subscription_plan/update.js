@@ -13,14 +13,18 @@ export const SUBSCRIPTION_PLAN_UPDATE_TRANSLATIONS = {
         free: "Free",
         prices: "Prices",
         features: "Features",
-        limits: "Limits"
+        limits: "Limits",
+        has_trial: "Has Trial",
+        trial_length_days: "Trial Length"
     },
     help_info: {
         name: "The name for the plan",
         user_count: "The number of users allowed for this plan",
         public: "Is the plan available to the public or a custom plan",
         free: "Is this a free plan?",
-        per_seat_plan: "Is the plan charged per seat?"
+        per_seat_plan: "Is the plan charged per seat?",
+        has_trial: "If the plan has a trial period by default",
+        trial_length_days: "How long the trial should be in days"
     },
     features: {
         title: 'Features',

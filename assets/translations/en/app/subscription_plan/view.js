@@ -11,7 +11,9 @@ export const SUBSCRIPTION_PLAN_VIEW_TRANSLATIONS = {
         per_seat: "Per Seat",
         free: "Free",
         user_count: "User Count",
-        public: "Publicly Available"
+        public: "Publicly Available",
+        has_trial: "Has Trial",
+        trial_length_days: "Trial Length"
     },
     limits: {
         title: "Limits",
