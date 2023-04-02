@@ -19,7 +19,7 @@ use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
 
-class DefaultContext implements Context
+class MainContext implements Context
 {
     use SendRequestTrait;
     use CustomerTrait;

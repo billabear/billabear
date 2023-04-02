@@ -31,7 +31,7 @@ default:
                 - App\Tests\Behat\SubscriptionPlan\AppContext
 
                 # Payment Details
-                - App\Tests\Behat\PaymentDetails\DefaultContext
+                - App\Tests\Behat\PaymentDetails\MainContext
                 - App\Tests\Behat\PaymentDetails\ApiContext
                 - App\Tests\Behat\PaymentDetails\AppContext
 
