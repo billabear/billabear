@@ -76,7 +76,7 @@
                 <td>{{ paymentDetail.expiry_year }}</td>
                 <td>{{ paymentDetail.default }}</td>
                 <td>
-                  <button @click.prevent="defaultPayment(paymentDetail.id)" class="btn--secondary" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
+                  <button @click="defaultPayment(paymentDetail.id)" class="btn--secondary" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
                   <button @click="deletePayment(paymentDetail.id)" class="btn--danger ml-3" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.delete') }}</button>
                 </td>
               </tr>
