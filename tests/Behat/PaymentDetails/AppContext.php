@@ -43,8 +43,8 @@ class AppContext implements Context
         foreach ($rows as $row) {
             $customer = $this->getCustomerByEmail($row['Customer Email']);
             $paymentDetails = new PaymentDetails();
-            $paymentDetails->setName('One');
-            $paymentDetails->setBrand('dummy');
+            $paymentDetails->setName($row['Name'] ?? 'One');
+            $paymentDetails->setBrand($row['Brand'] ?? 'dummy');
             $paymentDetails->setLastFour($row['Last Four']);
             $paymentDetails->setExpiryMonth($row['Expiry Month']);
             $paymentDetails->setExpiryYear($row['Expiry Year']);
@@ -52,6 +52,7 @@ class AppContext implements Context
             $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
             $paymentDetails->setCustomer($customer);
             $paymentDetails->setCreatedAt(new \DateTime());
+            $paymentDetails->setDefaultPaymentOption(true);
 
             $this->paymentDetailsRepository->getEntityManager()->persist($paymentDetails);
         }
