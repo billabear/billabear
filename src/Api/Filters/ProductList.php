@@ -14,7 +14,7 @@ namespace App\Api\Filters;
 
 use Parthenon\Athena\Filters\ContainsFilter;
 
-class ProductList extends FilterList
+class ProductList extends AbstractFilterList
 {
     protected function getFilters(): array
     {

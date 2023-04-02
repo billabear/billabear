@@ -15,7 +15,7 @@ namespace App\Api\Filters;
 use Parthenon\Athena\Filters\ContainsFilter;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 
-class CustomerList extends FilterList
+class CustomerList extends AbstractFilterList
 {
     protected function getFilters(): array
     {

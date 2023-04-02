@@ -15,7 +15,7 @@ namespace App\Api\Filters;
 use Parthenon\Athena\Filters\FilterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class FilterList
+abstract class AbstractFilterList
 {
     abstract protected function getFilters(): array;
 
