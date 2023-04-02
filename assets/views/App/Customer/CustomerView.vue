@@ -61,38 +61,38 @@
           <h2 class="mb-3">{{ $t('app.customer.view.payment_details.title') }}</h2>
           <table class="list-table">
             <thead class="bg-gray-100 dark:bg-gray-800">
-            <tr>
-              <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
-              <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
-              <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
-              <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
-              <th></th>
-            </tr>
+              <tr>
+                <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
+                <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
+                <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
+                <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="paymentDetail in paymentDetails" class="mt-5">
-              <td>{{ paymentDetail.last_four }}</td>
-              <td>{{ paymentDetail.expiry_month }}</td>
-              <td>{{ paymentDetail.expiry_year }}</td>
-              <td>{{ paymentDetail.default }}</td>
-              <td>
-                <button @click.prevent="defaultPayment(paymentDetail.id)" class="btn--secondary" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
-                <button @click="deletePayment(paymentDetail.id)" class="btn--danger ml-3" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.delete') }}</button>
-              </td>
-            </tr>
-            <tr v-if="paymentDetails.length == 0">
-              <td colspan="5" class="text-center">{{$t('app.customer.view.payment_details.no_payment_details') }}</td>
-            </tr>
+              <tr v-for="paymentDetail in paymentDetails" class="mt-5">
+                <td>{{ paymentDetail.last_four }}</td>
+                <td>{{ paymentDetail.expiry_month }}</td>
+                <td>{{ paymentDetail.expiry_year }}</td>
+                <td>{{ paymentDetail.default }}</td>
+                <td>
+                  <button @click.prevent="defaultPayment(paymentDetail.id)" class="btn--secondary" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
+                  <button @click="deletePayment(paymentDetail.id)" class="btn--danger ml-3" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.delete') }}</button>
+                </td>
+              </tr>
+              <tr v-if="paymentDetails.length == 0">
+                <td colspan="5" class="text-center">{{$t('app.customer.view.payment_details.no_payment_details') }}</td>
+              </tr>
             </tbody>
             <tfoot>
-            <tr>
-              <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
-              <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
-              <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
-              <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
-              <th>
-              </th>
-            </tr>
+              <tr>
+                <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
+                <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
+                <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
+                <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
+                <th>
+                </th>
+              </tr>
             </tfoot>
           </table>
         </div>
