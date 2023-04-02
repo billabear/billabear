@@ -77,7 +77,10 @@
                 <td>{{ paymentDetail.default }}</td>
                 <td>
                   <button @click="defaultPayment(paymentDetail.id)" class="btn--secondary" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
-                  <button @click="deletePayment(paymentDetail.id)" class="btn--danger ml-3" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.delete') }}</button>
+                  <button @click="deletePayment(paymentDetail.id)" class="btn--danger ml-3" v-if="!paymentDetail.default">
+                    <i class="fa-solid fa-trash"></i>
+                    {{$t('app.customer.view.payment_details.delete') }}
+                  </button>
                 </td>
               </tr>
               <tr v-if="paymentDetails.length == 0">
