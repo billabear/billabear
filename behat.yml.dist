@@ -30,6 +30,9 @@ default:
                 # Subscription Plan
                 - App\Tests\Behat\SubscriptionPlan\AppContext
 
+                # Payment Details
+                - App\Tests\Behat\PaymentDetails\AppContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
