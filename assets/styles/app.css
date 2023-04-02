@@ -247,6 +247,12 @@
 .list-table td {
     @apply px-4 py-4 text-sm whitespace-nowrap;
 }
+.list-table tbody tr:nth-child(even) {
+     @apply bg-white hover:bg-sky-50;
+ }
+.list-table tbody tr:nth-child(odd) {
+    @apply bg-slate-50 hover:bg-sky-50;
+}
 
 .detail-list {
     @apply border border-slate-200;
