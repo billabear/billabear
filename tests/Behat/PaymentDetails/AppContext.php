@@ -25,6 +25,7 @@ class AppContext implements Context
 {
     use SendRequestTrait;
     use CustomerTrait;
+    use PaymentDetailsTrait;
 
     public function __construct(
         private Session $session,
@@ -74,5 +75,27 @@ class AppContext implements Context
         if (count($data['payment_details']) != $arg1) {
             throw new \Exception('Wrong count');
         }
+    }
+
+    /**
+     * @When I make the payment details :arg1 for :arg2 default via APP
+     */
+    public function iMakeThePaymentDetailsForDefault($name, $email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $paymentDetails = $this->findPaymentDetails($customer, $name);
+
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId().'/default');
+    }
+
+    /**
+     * @When I delete the payment details :arg1 for :arg2 via APP
+     */
+    public function iDeleteThePaymentDetailsFor($name, $email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $paymentDetails = $this->findPaymentDetails($customer, $name);
+
+        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId());
     }
 }

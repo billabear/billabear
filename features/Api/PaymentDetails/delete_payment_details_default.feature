@@ -1,6 +1,6 @@
 Feature: Payment Details Delete
   In order to remove invalid payment details
-  As an APP user
+  As an API user
   I need to be able to delete payment details
 
   Background:

@@ -18,7 +18,11 @@ use App\Entity\Customer;
 use App\Factory\PaymentDetailsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Config\FrontendConfig;
+use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
+use Parthenon\Billing\PaymentDetails\DeleterInterface;
 use Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface;
+use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,5 +94,57 @@ class PaymentDetailsController
         $json = $serializer->serialize($output, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]
+    public function makeDefault(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        DefaultPaymentManagerInterface $defaultPaymentManager,
+    ): Response {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('customerId'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        try {
+            /** @var PaymentDetails $paymentDetails */
+            $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $defaultPaymentManager->makePaymentDetailsDefault($customer, $paymentDetails);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}', name: 'app_payment_details_delete', methods: ['DELETE'])]
+    public function deletePaymentDetails(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        DeleterInterface $deleter,
+    ): Response {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('customerId'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        try {
+            /** @var PaymentDetails $paymentDetails */
+            $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $deleter->delete($paymentDetails);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

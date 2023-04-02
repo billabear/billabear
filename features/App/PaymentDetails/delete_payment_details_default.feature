@@ -1,7 +1,7 @@
-Feature: Customer Read APP
-  In order to manage payment details
-  As an API user
-  I need to be see customer's payment details
+Feature: Payment Details Delete
+  In order to remove invalid payment details
+  As an APP user
+  I need to be able to delete payment details
 
   Background:
     Given the following accounts exist:
@@ -19,7 +19,6 @@ Feature: Customer Read APP
       | customer.one@example.org | 0444      | 03           | 25          | Card Two |
 
   Scenario: Get customer info
-    Given I have authenticated to the API
-    When I make the payment details "Card One" for "customer.one@example.org" default
-    Then the payment details "Card One" for "customer.one@example.org" should be default
-    Then the payment details "Card Two" for "customer.one@example.org" should not be default
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I delete the payment details "Card One" for "customer.one@example.org" via APP
+    Then the payment details "Card One" for "customer.one@example.org" should be deleted
