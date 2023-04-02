@@ -29,6 +29,9 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             expiry_month: "Expiry Month",
             expiry_year: "Expiry Year",
             name: "Name"
-        }
+        },
+        no_payment_details: "No payment details",
+        delete: "Delete",
+        make_default: "Make Default"
     }
 }
