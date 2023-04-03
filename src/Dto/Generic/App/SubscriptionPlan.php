@@ -138,7 +138,7 @@ class SubscriptionPlan
         $this->userCount = $userCount;
     }
 
-    public function isHasTrial(): bool
+    public function isHasTrial(): ?bool
     {
         return $this->hasTrial;
     }
@@ -151,7 +151,7 @@ class SubscriptionPlan
         $this->hasTrial = $hasTrial;
     }
 
-    public function getTrialLengthDays(): int
+    public function getTrialLengthDays(): ?int
     {
         return $this->trialLengthDays;
     }
