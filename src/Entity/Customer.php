@@ -29,9 +29,6 @@ class Customer implements CustomerInterface
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\Embedded(class: Subscription::class)]
-    private ?Subscription $subscription;
-
     #[ORM\Embedded(class: Address::class)]
     private ?Address $billingAddress;
 
