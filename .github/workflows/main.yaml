@@ -38,13 +38,6 @@ jobs:
         image: redis
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Runs Elasticsearch
-        uses: elastic/elastic-github-actions/elasticsearch@master
-        with:
-          stack-version: 7.14.0
-          port: 9200
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
