@@ -4,5 +4,6 @@ export const SUBSCRIPTION_CREATE_TRANSLATION = {
     payment_details: "Payment Details",
     no_eligible_prices: 'There are no eligible prices',
     prices: "Prices",
+    success_message: "Successfully created subscription",
     submit_btn: "Create"
 }

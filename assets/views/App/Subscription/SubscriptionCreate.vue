@@ -19,7 +19,7 @@
         <h2>{{ $t('app.subscription.create.prices') }}</h2>
 
         <div>
-          <select class="form-field" :disabled="subscription_plan == null || eligiblePrices.length == 0">
+          <select class="form-field" v-model="price" :disabled="subscription_plan == null || eligiblePrices.length == 0">
             <option v-for="price in eligiblePrices" :value="price.id">{{ price.display_value }} - {{ price.schedule }}</option>
             <option v-if="subscription_plan == null" selected></option>
             <option v-else-if="eligiblePrices.length == 0" selected>{{ $t('app.subscription.create.no_eligible_prices') }}</option>
@@ -31,7 +31,7 @@
         <h2>{{ $t('app.subscription.create.payment_details') }}</h2>
 
         <div>
-          <select class="form-field">
+          <select class="form-field" v-model="payment_detail">
             <option v-for="paymentDetail in payment_details" :value="paymentDetail.id">{{ paymentDetail.last_four }} - {{ paymentDetail.expiry_month }}/{{ paymentDetail.expiry_year }}</option>
           </select>
         </div>
@@ -54,6 +54,8 @@ export default {
       subscription_plan: null,
       subscription_plans: [],
       payment_details: [],
+      payment_detail: null,
+      price: null,
       sendingInProgress: false,
       eligible_currency: null,
       showAdvance: false,
@@ -88,7 +90,7 @@ export default {
   },
   mounted() {
 
-    var customerId = this.$route.params.customerId
+    const customerId = this.$route.params.customerId
     this.id = customerId;
     axios.get('/app/customer/'+customerId+'/subscription').then(response => {
       this.subscription_plans = response.data.subscription_plans;
@@ -107,17 +109,36 @@ export default {
     })
   },
   methods: {
-    removeFeature: function (key) {
-      this.subscription_plan.features.splice(key, 1);
-    },
-    removeLimit: function (key) {
-      this.subscription_plan.limits.splice(key, 1);
-    },
-    removePrice: function (key) {
-      this.subscription_plan.prices.splice(key, 1);
-    },
     send: function () {
 
+      if (
+          this.payment_detail === null ||
+          this.price === null ||
+          this.subscription_plan === null
+      ) {
+        return;
+      }
+
+      const customerId = this.$route.params.customerId
+      const payload = {
+        payment_details: this.payment_detail,
+        price: this.price,
+        subscription_plan: this.subscription_plan.id
+      }
+      this.sendingInProgress = true;
+      axios.post('/app/customer/'+customerId+'/subscription', payload).then(response => {
+        this.sendingInProgress = false;
+        this.success = true;
+      }).catch(error => {
+        if (error.response.status == 404) {
+          this.errorMessage = this.$t('app.product.view.error.not_found')
+        } else {
+          this.errorMessage = this.$t('app.product.view.error.unknown')
+        }
+
+        this.error = true;
+        this.ready = true;
+      })
     }
   }
 }

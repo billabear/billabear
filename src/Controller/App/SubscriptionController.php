@@ -12,19 +12,24 @@
 
 namespace App\Controller\App;
 
+use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Factory\PaymentDetailsFactory;
+use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionController
 {
@@ -72,9 +77,48 @@ class SubscriptionController
         return new JsonResponse($json, json: true);
     }
 
+    #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_write', methods: ['POST'])]
     public function createSubscription(
         Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SubscriptionManagerInterface $subscriptionManager,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PriceRepositoryInterface $priceRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        SubscriptionFactory $subscriptionFactory,
     ): Response {
-        return new JsonResponse();
+        try {
+            $customer = $customerRepository->findById($request->get('customerId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var CreateSubscription $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateSubscription::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());
+        $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
+        $price = $priceRepository->findById($dto->getPrice());
+
+        $subscription = $subscriptionManager->startSubscriptionWithEntities($customer, $subscriptionPlan, $price, $paymentDetails, 1);
+        $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
+        $json = $serializer->serialize($subscriptionDto, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }

@@ -12,14 +12,14 @@
 
 namespace App\Validator\Constraints;
 
-use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class PriceExistsValidator extends ConstraintValidator
+class PaymentDetailsExistsValidator extends ConstraintValidator
 {
-    public function __construct(private PriceRepositoryInterface $priceRepository)
+    public function __construct(private PaymentDetailsRepositoryInterface $paymentDetailsRepository)
     {
     }
 
@@ -30,7 +30,7 @@ class PriceExistsValidator extends ConstraintValidator
         }
 
         try {
-            $this->priceRepository->findById($value);
+            $this->paymentDetailsRepository->findById($value);
 
             return;
         } catch (NoEntityFoundException $exception) {

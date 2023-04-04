@@ -12,49 +12,77 @@
 
 namespace App\Dto\Request\App;
 
+use App\Validator\Constraints\PaymentDetailsExists;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateSubscription
 {
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[SubscriptionPlanExists]
-    private $subscriptionPlanId;
+    #[SerializedName('subscription_plan')]
+    private $subscriptionPlan;
 
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[PriceExists]
-    private $priceId;
+    #[SerializedName('price')]
+    private $price;
+
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[PaymentDetailsExists]
+    #[SerializedName('payment_details')]
+    private $paymentDetails;
 
     /**
      * @return mixed
      */
-    public function getSubscriptionPlanId()
+    public function getSubscriptionPlan()
     {
-        return $this->subscriptionPlanId;
+        return $this->subscriptionPlan;
     }
 
     /**
-     * @param mixed $subscriptionPlanId
+     * @param mixed $subscriptionPlan
      */
-    public function setSubscriptionPlanId($subscriptionPlanId): void
+    public function setSubscriptionPlan($subscriptionPlan): void
     {
-        $this->subscriptionPlanId = $subscriptionPlanId;
+        $this->subscriptionPlan = $subscriptionPlan;
     }
 
     /**
      * @return mixed
      */
-    public function getPriceId()
+    public function getPrice()
     {
-        return $this->priceId;
+        return $this->price;
     }
 
     /**
-     * @param mixed $priceId
+     * @param mixed $price
      */
-    public function setPriceId($priceId): void
+    public function setPrice($price): void
     {
-        $this->priceId = $priceId;
+        $this->price = $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPaymentDetails()
+    {
+        return $this->paymentDetails;
+    }
+
+    /**
+     * @param mixed $paymentDetails
+     */
+    public function setPaymentDetails($paymentDetails): void
+    {
+        $this->paymentDetails = $paymentDetails;
     }
 }
