@@ -58,6 +58,10 @@
           </dl>
         </div>
         <div class="mt-3">
+          <h2 class="mb-3">{{ $t('app.customer.view.subscriptions.title') }}</h2>
+          <router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.create_add') }}</router-link>
+        </div>
+        <div class="mt-3">
           <h2 class="mb-3">{{ $t('app.customer.view.payment_details.title') }}</h2>
           <table class="list-table">
             <thead class="bg-gray-100 dark:bg-gray-800">

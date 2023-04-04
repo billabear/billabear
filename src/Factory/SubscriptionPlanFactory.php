@@ -30,6 +30,7 @@ class SubscriptionPlanFactory
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         private PriceFactory $priceFactory,
         private FeatureFactory $featureFactory,
+        private ProductFactory $productFactory,
     ) {
     }
 
@@ -93,6 +94,7 @@ class SubscriptionPlanFactory
         $dto->setUserCount($subscriptionPlan->getUserCount());
         $dto->setHasTrial($subscriptionPlan->getHasTrial());
         $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
+        $dto->setProduct($this->productFactory->createAppDtoFromProduct($subscriptionPlan->getProduct()));
 
         $priceEntities = $subscriptionPlan->getPrices() instanceof Collection ? $subscriptionPlan->getPrices()->toArray() : $subscriptionPlan->getPrices();
         $featuresEntities = $subscriptionPlan->getFeatures() instanceof Collection ? $subscriptionPlan->getFeatures()->toArray() : $subscriptionPlan->getFeatures();

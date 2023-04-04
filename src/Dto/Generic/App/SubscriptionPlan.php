@@ -42,6 +42,8 @@ class SubscriptionPlan
 
     private array $limits = [];
 
+    private Product $product;
+
     /**
      * @return mixed
      */
@@ -162,5 +164,15 @@ class SubscriptionPlan
     public function setTrialLengthDays(?int $trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
     }
 }
