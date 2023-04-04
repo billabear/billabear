@@ -1905,12 +1905,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "21adf0a9edd27dcc6ed2b125d7b2f8c31a0dc91f"
+                "reference": "f74fc844a1ab2318d43572c7b8e076db19d45e28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/21adf0a9edd27dcc6ed2b125d7b2f8c31a0dc91f",
-                "reference": "21adf0a9edd27dcc6ed2b125d7b2f8c31a0dc91f",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/f74fc844a1ab2318d43572c7b8e076db19d45e28",
+                "reference": "f74fc844a1ab2318d43572c7b8e076db19d45e28",
                 "shasum": ""
             },
             "require": {
@@ -1947,7 +1947,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-04-02T18:00:42+00:00"
+            "time": "2023-04-03T19:28:25+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -1955,12 +1955,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "1e6836562f3b71e0ef538b4eeacf51bdf3b2c628"
+                "reference": "a106300116f9b517fb22787847fc9f0ac895aceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/1e6836562f3b71e0ef538b4eeacf51bdf3b2c628",
-                "reference": "1e6836562f3b71e0ef538b4eeacf51bdf3b2c628",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/a106300116f9b517fb22787847fc9f0ac895aceb",
+                "reference": "a106300116f9b517fb22787847fc9f0ac895aceb",
                 "shasum": ""
             },
             "require": {
@@ -2044,7 +2044,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-04-02T18:00:36+00:00"
+            "time": "2023-04-04T08:43:33+00:00"
         },
         {
             "name": "php-http/discovery",
@@ -8312,16 +8312,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.15.1",
+            "version": "v3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "d48755372a113bddb99f749e34805d83f3acfe04"
+                "reference": "d40f9436e1c448d309fa995ab9c14c5c7a96f2dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/d48755372a113bddb99f749e34805d83f3acfe04",
-                "reference": "d48755372a113bddb99f749e34805d83f3acfe04",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/d40f9436e1c448d309fa995ab9c14c5c7a96f2dc",
+                "reference": "d40f9436e1c448d309fa995ab9c14c5c7a96f2dc",
                 "shasum": ""
             },
             "require": {
@@ -8396,7 +8396,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.15.1"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.16.0"
             },
             "funding": [
                 {
@@ -8404,7 +8404,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-13T23:26:30+00:00"
+            "time": "2023-04-02T19:30:06+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
