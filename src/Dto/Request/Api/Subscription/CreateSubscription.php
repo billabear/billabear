@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Request\App;
+namespace App\Dto\Request\Api\Subscription;
 
 use App\Validator\Constraints\PaymentDetailsExists;
 use App\Validator\Constraints\PriceExists;

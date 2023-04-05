@@ -12,6 +12,7 @@
 
 namespace App\Factory;
 
+use App\Dto\Generic\Api\Subscription as ApiDto;
 use App\Dto\Generic\App\Subscription as AppDto;
 use Parthenon\Billing\Entity\Subscription as Entity;
 
@@ -26,6 +27,22 @@ class SubscriptionFactory
     public function createAppDto(Entity $subscription): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $subscription->getId());
+        $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
+        $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
+        $dto->setChildExternalReference($subscription->getChildExternalReference());
+        $dto->setExternalMainReference($subscription->getMainExternalReference());
+        $dto->setExternalMainReferenceDetailsUrl($subscription->getMainExternalReferenceDetailsUrl());
+        $dto->setCreatedAt($subscription->getCreatedAt());
+        $dto->setUpdatedAt($subscription->getUpdatedAt());
+        $dto->setValidUntil($subscription->getValidUntil());
+
+        return $dto;
+    }
+
+    public function createApiDto(Entity $subscription): ApiDto
+    {
+        $dto = new ApiDto();
         $dto->setId((string) $subscription->getId());
         $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
         $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
