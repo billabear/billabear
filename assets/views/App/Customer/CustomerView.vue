@@ -57,10 +57,51 @@
             </div>
           </dl>
         </div>
+
+
         <div class="mt-3">
-          <h2 class="mb-3">{{ $t('app.customer.view.subscriptions.title') }}</h2>
-          <router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.create_add') }}</router-link>
+          <div class="grid grid-cols-2">
+            <div><h2 class="mb-3">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
+            <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
+          </div>
+
+
+
+          <table class="list-table">
+            <thead class="bg-gray-100 dark:bg-gray-800">
+            <tr>
+              <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.created_at') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="subscription in subscriptions" class="mt-5">
+              <td>{{ subscription.plan.name }}</td>
+              <td>{{ subscription.status }}</td>
+              <td>{{ subscription.schedule }}</td>
+              <td>{{ subscription.created_at }}</td>
+              <td>{{ subscription.valid_until }}</td>
+              <td></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.created_at') }}</th>
+              <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
+              <th></th>
+            </tr>
+            </tfoot>
+          </table>
         </div>
+
+
         <div class="mt-3">
           <h2 class="mb-3">{{ $t('app.customer.view.payment_details.title') }}</h2>
           <table class="list-table">
@@ -124,6 +165,7 @@ export default {
       customer: {
       },
       paymentDetails: [],
+      subscriptions: [],
     }
   },
   methods: {
@@ -155,6 +197,7 @@ export default {
     axios.get('/app/customer/'+customerId).then(response => {
       this.customer = response.data.customer;
       this.paymentDetails = response.data.payment_details;
+      this.subscriptions = response.data.subscriptions;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

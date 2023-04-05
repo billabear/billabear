@@ -28,6 +28,8 @@ class SubscriptionFactory
     {
         $dto = new AppDto();
         $dto->setId((string) $subscription->getId());
+        $dto->setStatus($subscription->getStatus());
+        $dto->setSchedule($subscription->getPaymentSchedule());
         $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
         $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
         $dto->setChildExternalReference($subscription->getChildExternalReference());

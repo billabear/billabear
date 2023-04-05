@@ -20,8 +20,10 @@ use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
 use App\Factory\PaymentDetailsFactory;
+use App\Factory\SubscriptionFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,6 +129,8 @@ class CustomerController
         CustomerFactory $customerFactory,
         PaymentDetailsRepositoryInterface $paymentDetailsRepository,
         PaymentDetailsFactory $paymentDetailsFactory,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionFactory $subscriptionFactory,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));
@@ -137,10 +141,14 @@ class CustomerController
         $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
+        $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
+        $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
+
         $customerDto = $customerFactory->createAppDtoFromCustomer($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
         $dto->setPaymentDetails($paymentDetailsDto);
+        $dto->setSubscriptions($subscriptionDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

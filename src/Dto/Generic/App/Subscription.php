@@ -12,26 +12,38 @@
 
 namespace App\Dto\Generic\App;
 
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
 class Subscription
 {
     private string $id;
 
     private string $schedule;
 
+    private string $status;
+
+    #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
 
+    #[SerializedName('updated_at')]
     private \DateTimeInterface $updatedAt;
 
+    #[SerializedName('ended_at')]
     private ?\DateTimeInterface $endedAt = null;
 
+    #[SerializedName('valid_until')]
     private \DateTimeInterface $validUntil;
 
+    #[SerializedName('main_external_reference')]
     private string $externalMainReference;
 
+    #[SerializedName('external_main_reference_details_url')]
     private ?string $externalMainReferenceDetailsUrl = null;
 
+    #[SerializedName('child_external_reference')]
     private string $childExternalReference;
 
+    #[SerializedName('plan')]
     private SubscriptionPlan $subscriptionPlan;
 
     private Price $price;
@@ -144,5 +156,15 @@ class Subscription
     public function setPrice(Price $price): void
     {
         $this->price = $price;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

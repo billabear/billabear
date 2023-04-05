@@ -20,6 +20,17 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         post_code: "Post Code",
         country: "Country",
     },
+    subscriptions: {
+        title: "Subscriptions",
+        list: {
+            plan_name: "Plan",
+            status: "Status",
+            schedule: "Schedule",
+            created_at: "Created At",
+            valid_until: "Next Billed"
+        },
+        add_new: "Add New Subscription"
+    },
     payment_details: {
         title: "Payment Details",
         list: {
