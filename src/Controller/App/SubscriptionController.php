@@ -56,12 +56,18 @@ class SubscriptionController
         $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
 
         $currency = null;
+        $schedule = null;
         foreach ($subscriptions as $subscription) {
+            $currentSchedule = $subscription->getPaymentSchedule();
             $currentCurrency = $subscription->getCurrency();
             if (null !== $currentCurrency && null !== $currency && $currentCurrency !== $currency) {
                 throw new \LogicException('It should not be possible for there to be active subscriptions with different currencies');
             }
+            if (null !== $schedule && $currentSchedule !== $schedule) {
+                throw new \LogicException('It should not be possible for there to be active subscriptions with different schedules');
+            }
             $currency = $currentCurrency;
+            $schedule = $currentSchedule;
         }
 
         $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
@@ -71,6 +77,7 @@ class SubscriptionController
         $dto->setSubscriptionPlans($subscriptionPlanDtos);
         $dto->setPaymentDetails($paymentDetailDtos);
         $dto->setEligibleCurrency($currency);
+        $dto->setEligibleSchedule($schedule);
 
         $json = $serializer->serialize($dto, 'json');
 

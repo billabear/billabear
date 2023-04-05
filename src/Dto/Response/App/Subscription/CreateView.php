@@ -25,6 +25,9 @@ class CreateView
     #[SerializedName('eligible_currency')]
     private ?string $eligibleCurrency = null;
 
+    #[SerializedName('eligible_schedule')]
+    private ?string $eligibleSchedule = null;
+
     public function getSubscriptionPlans(): array
     {
         return $this->subscriptionPlans;
@@ -53,5 +56,15 @@ class CreateView
     public function setEligibleCurrency(?string $eligibleCurrency): void
     {
         $this->eligibleCurrency = $eligibleCurrency;
+    }
+
+    public function getEligibleSchedule(): ?string
+    {
+        return $this->eligibleSchedule;
+    }
+
+    public function setEligibleSchedule(?string $eligibleSchedule): void
+    {
+        $this->eligibleSchedule = $eligibleSchedule;
     }
 }
