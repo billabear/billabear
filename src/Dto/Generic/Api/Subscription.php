@@ -12,31 +12,37 @@
 
 namespace App\Dto\Generic\Api;
 
-use App\Dto\Generic\App\Price;
-use App\Dto\Generic\App\SubscriptionPlan;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Subscription
 {
     private string $id;
 
+    #[SerializedName('schedule')]
     private string $schedule;
 
+    #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
 
+    #[SerializedName('updated_at')]
     private \DateTimeInterface $updatedAt;
 
+    #[SerializedName('ended_at')]
     private ?\DateTimeInterface $endedAt = null;
 
+    #[SerializedName('valid_until')]
     private \DateTimeInterface $validUntil;
 
+    #[SerializedName('main_external_reference')]
     private string $externalMainReference;
 
-    private ?string $externalMainReferenceDetailsUrl = null;
-
+    #[SerializedName('child_external_reference')]
     private string $childExternalReference;
 
+    #[SerializedName('subscription_plan')]
     private SubscriptionPlan $subscriptionPlan;
 
+    #[SerializedName('price')]
     private Price $price;
 
     public function getId(): string

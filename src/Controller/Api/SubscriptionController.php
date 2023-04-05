@@ -64,13 +64,21 @@ class SubscriptionController
         }
 
         $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());
-        $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
+        if ($dto->hasPaymentDetails()) {
+            $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
+        } else {
+            try {
+                $paymentDetails = $paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
+            } catch (NoEntityFoundException $e) {
+                return new JsonResponse(['error' => 'No default payment method'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+            }
+        }
         $price = $priceRepository->findById($dto->getPrice());
 
         $subscription = $subscriptionManager->startSubscriptionWithEntities($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
-        return new JsonResponse($json, json: true);
+        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 }

@@ -32,14 +32,13 @@ class CreateSubscription
     #[SerializedName('price')]
     private $price;
 
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
     #[PaymentDetailsExists]
     #[SerializedName('payment_details')]
-    private $paymentDetails;
+    private $paymentDetails = null;
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[SerializedName('seat_numbrers')]
     private $seatNumbers = 1;
 
     /**
@@ -98,5 +97,10 @@ class CreateSubscription
     public function setSeatNumbers(int $seatNumbers): void
     {
         $this->seatNumbers = $seatNumbers;
+    }
+
+    public function hasPaymentDetails(): bool
+    {
+        return isset($this->paymentDetails);
     }
 }

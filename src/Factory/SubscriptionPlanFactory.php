@@ -12,6 +12,7 @@
 
 namespace App\Factory;
 
+use App\Dto\Generic\Api\SubscriptionPlan as ApiDto;
 use App\Dto\Generic\App\Feature;
 use App\Dto\Generic\App\Limit;
 use App\Dto\Generic\App\Price;
@@ -109,6 +110,10 @@ class SubscriptionPlanFactory
         $dto->setLimits($limitsDto);
 
         return $dto;
+    }
+
+    public function createApiDto(SubscriptionPlan $subscriptionPlan): ApiDto
+    {
     }
 
     private function createLimitDto(SubscriptionPlanLimit $subscriptionPlanLimit): Limit

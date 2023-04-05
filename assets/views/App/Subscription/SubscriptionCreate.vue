@@ -58,6 +58,7 @@ export default {
       price: null,
       sendingInProgress: false,
       eligible_currency: null,
+      eligible_schedule: null,
       showAdvance: false,
       success: false,
       errors: {
@@ -80,7 +81,7 @@ export default {
       var output = [];
 
       for (var i = 0; i < this.subscription_plan.prices.length; i++) {
-        if (this.subscription_plan.prices[i].currency == this.eligible_currency) {
+        if (this.subscription_plan.prices[i].currency == this.eligible_currency && this.subscription_plan[i].schedule == this.eligible_schedule) {
           output.push(this.subscription_plan.prices[i]);
         }
       }
@@ -96,6 +97,7 @@ export default {
       this.subscription_plans = response.data.subscription_plans;
       this.payment_details = response.data.payment_details;
       this.eligible_currency = response.data.eligible_currency;
+      this.eligible_schedule = response.data.eligible_schedule;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
