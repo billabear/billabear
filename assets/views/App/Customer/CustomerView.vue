@@ -85,7 +85,7 @@
               <td>{{ subscription.schedule }}</td>
               <td>{{ subscription.created_at }}</td>
               <td>{{ subscription.valid_until }}</td>
-              <td></td>
+              <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
             </tr>
             </tbody>
             <tfoot>

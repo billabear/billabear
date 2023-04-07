@@ -27,7 +27,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             status: "Status",
             schedule: "Schedule",
             created_at: "Created At",
-            valid_until: "Next Billed"
+            valid_until: "Next Billed",
+            view: "View",
         },
         add_new: "Add New Subscription"
     },

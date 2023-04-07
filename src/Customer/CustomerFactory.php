@@ -17,6 +17,7 @@ use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Common\Address;
 
 class CustomerFactory
@@ -70,7 +71,7 @@ class CustomerFactory
         return $dto;
     }
 
-    public function createAppDtoFromCustomer(Customer $customer): CustomerAppDto
+    public function createAppDtoFromCustomer(CustomerInterface $customer): CustomerAppDto
     {
         $address = new AddressDto();
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());

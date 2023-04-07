@@ -12,11 +12,17 @@
 
 namespace App\Dto\Response\App\Subscription;
 
+use App\Dto\Generic\App\Customer;
+use App\Dto\Generic\App\Product;
 use App\Dto\Generic\App\Subscription;
 
 class ViewSubscription
 {
     private Subscription $subscription;
+
+    private Customer $customer;
+
+    private Product $product;
 
     public function getSubscription(): Subscription
     {
@@ -26,5 +32,25 @@ class ViewSubscription
     public function setSubscription(Subscription $subscription): void
     {
         $this->subscription = $subscription;
+    }
+
+    public function getCustomer(): Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(Customer $customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
     }
 }

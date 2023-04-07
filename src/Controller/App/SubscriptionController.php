@@ -12,13 +12,16 @@
 
 namespace App\Controller\App;
 
+use App\Customer\CustomerFactory;
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
 use App\Factory\PaymentDetailsFactory;
+use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
 use App\Repository\CustomerRepositoryInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -135,17 +138,23 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
+        CustomerFactory $customerFactory,
+        ProductFactory $productFactory,
         SerializerInterface $serializer
     ): Response {
         try {
+            /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
         } catch (NoEntityFoundException $exception) {
             throw new NoEntityFoundException();
         }
 
         $dto = $subscriptionFactory->createAppDto($subscription);
+        $customerDto = $customerFactory->createAppDtoFromCustomer($subscription->getCustomer());
         $view = new ViewSubscription();
         $view->setSubscription($dto);
+        $view->setCustomer($customerDto);
+        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getSubscriptionPlan()->getProduct()));
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);

@@ -38,5 +38,6 @@ app.use(i18n);
 app.use(store);
 app.use(ParthenonMenu);
 app.use(ParthenonUI);
+app.use(require('vue-moment-v3'))
 
 app.mount('#app');
