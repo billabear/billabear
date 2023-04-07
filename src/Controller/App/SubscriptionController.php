@@ -14,6 +14,7 @@ namespace App\Controller\App;
 
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Response\App\Subscription\CreateView;
+use App\Dto\Response\App\Subscription\ViewSubscription;
 use App\Factory\PaymentDetailsFactory;
 use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
@@ -125,6 +126,27 @@ class SubscriptionController
         $subscription = $subscriptionManager->startSubscriptionWithEntities($customer, $subscriptionPlan, $price, $paymentDetails, $dto->get);
         $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/subscription/{subscriptionId}', name: 'app_subscription_view', methods: ['GET'])]
+    public function viewSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionFactory $subscriptionFactory,
+        SerializerInterface $serializer
+    ): Response {
+        try {
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            throw new NoEntityFoundException();
+        }
+
+        $dto = $subscriptionFactory->createAppDto($subscription);
+        $view = new ViewSubscription();
+        $view->setSubscription($dto);
+        $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
     }

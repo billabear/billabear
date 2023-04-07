@@ -90,4 +90,54 @@ class MainContext implements Context
 
         throw new \Exception('No subscription found');
     }
+
+    /**
+     * @When I view the subscription :arg1 for :arg2
+     */
+    public function iViewTheSubscriptionFor($planName, $customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
+
+        $subscription = $this->subscriptionRepository->findOneBy(['subscriptionPlan' => $subscriptionPlan, 'customer' => $customer]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception("Can't find subscription");
+        }
+
+        $this->sendJsonRequest('GET', '/app/subscription/'.(string) $subscription->getId());
+    }
+
+    /**
+     * @Then I will see the subscription has the plan :arg1
+     */
+    public function iWillSeeTheSubscriptionHasThePlan($planName)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['subscription'])) {
+            throw new \Exception('No subscription data');
+        }
+        if (!isset($data['subscription']['plan'])) {
+            throw new \Exception('No subscription plan data');
+        }
+        if ($data['subscription']['plan']['name'] !== $planName) {
+            throw new \Exception("Name doesn't match");
+        }
+    }
+
+    /**
+     * @Then I will see the subscription has the schedule :arg1
+     */
+    public function iWillSeeTheSubscriptionHasTheSchedule($schedule)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['subscription'])) {
+            throw new \Exception('No subscription data');
+        }
+        if ($data['subscription']['schedule'] !== $schedule) {
+            throw new \Exception("Schedule doesn't match");
+        }
+    }
 }
