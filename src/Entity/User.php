@@ -13,9 +13,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Parthenon\Billing\Entity\BillingAdminInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'users')]
-class User extends \Parthenon\User\Entity\User
+class User extends \Parthenon\User\Entity\User implements BillingAdminInterface
 {
+    public function getDisplayName(): string
+    {
+        return $this->email;
+    }
 }

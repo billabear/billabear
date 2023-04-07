@@ -13,6 +13,7 @@ doctrine:
             Parthenon\User\Entity\UserInterface: App\Entity\User
             Parthenon\User\Entity\TeamInterface: App\Entity\User
             Parthenon\Billing\Entity\CustomerInterface: App\Entity\Customer
+            Parthenon\Billing\Entity\BillingAdminInterface: App\Entity\User
         mappings:
             App:
                 is_bundle: false
