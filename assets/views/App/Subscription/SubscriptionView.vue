@@ -67,18 +67,69 @@
             </div>
           </dl>
         </div>
+
+        <div class="mt-5 text-end">
+
+          <button class="btn--danger" @click="options.modelValue = true">
+            {{ $t('app.subscription.view.buttons.cancel') }}
+          </button>
+        </div>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
     </LoadingScreen>
+
+    <VueFinalModal
+        v-model="options.modelValue"
+        :teleport-to="options.teleportTo"
+        :display-directive="options.displayDirective"
+        :hide-overlay="options.hideOverlay"
+        :overlay-transition="options.overlayTransition"
+        :content-transition="options.contentTransition"
+        :click-to-close="options.clickToClose"
+        :esc-to-close="options.escToClose"
+        :background="options.background"
+        :lock-scroll="options.lockScroll"
+        :swipe-to-close="options.swipeToClose"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      <div>
+        <h3 class="mb-4 text-2xl font-semibold">{{ $t('app.subscription.view.modal.cancel.title') }}</h3>
+        <div>
+          <span class="block text-lg font-medium">{{ $t('app.subscription.view.modal.cancel.when.title') }}</span>
+          <select v-model="cancelValues.when" class="form-field">
+            <option value="end-of-run">{{ $t('app.subscription.view.modal.cancel.when.end_of_run') }}</option>
+            <option value="instantly">{{ $t('app.subscription.view.modal.cancel.when.instantly') }}</option>
+            <option value="specific-date">{{ $t('app.subscription.view.modal.cancel.when.specific_date') }}</option>
+          </select>
+        </div>
+        <div class="mt-2">
+
+          <span class="block text-lg font-medium">{{ $t('app.subscription.view.modal.cancel.refund_type.title') }}</span>
+          <select v-model="cancelValues.refundType"  class="form-field" :disabled="cancelValues.when == 'end-of-run'">
+            <option value="none">{{ $t('app.subscription.view.modal.cancel.refund_type.none') }}</option>
+            <option value="prorate">{{ $t('app.subscription.view.modal.cancel.refund_type.prorate') }}</option>
+            <option value="full">{{ $t('app.subscription.view.modal.cancel.refund_type.full') }}</option>
+          </select>
+        </div>
+
+        <div class="mt-5 text-center">
+          <button class="btn--secondary mr-3" @click="options.modelValue = false">Close</button>
+          <button class="btn--main">Confirm</button>
+        </div>
+      </div>
+    </VueFinalModal>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import {useModal, VueFinalModal} from "vue-final-modal";
 
 export default {
   name: "SubscriptionView",
+  components: {VueFinalModal},
   data() {
     return {
       subscription: {},
@@ -89,6 +140,23 @@ export default {
       ready: false,
       error: false,
       errorMessage: undefined,
+      cancelValues: {
+          when: "end-of-run",
+          refundType: "none"
+      },
+      options: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
     };
   },
   mounted() {
@@ -107,6 +175,30 @@ export default {
 
       this.error = true;
       this.ready = true;
+    })
+  },
+  methods: {
+    open: useModal({
+      // Open the modal or not when the modal was created, the default value is `false`.
+      defaultModelValue: false,
+      /**
+       * If set `keepAlive` to `true`:
+       * 1. The `displayDirective` will be set to `show` by default.
+       * 2. The modal component will not be removed after the modal closed until you manually execute `destroy()`.
+       */
+      keepAlive: false,
+      // `component` is optional and the default value is `<VueFinalModal>`.
+      component: VueFinalModal,
+      attrs: {
+        // Bind props to the modal component (VueFinalModal in this case).
+        clickToClose: true,
+        escToClose: true,
+        // Bind events to the modal component (VueFinalModal in this case).
+        onBeforeOpen() { /* on before open */ },
+        onOpened() { /* on opened */ },
+        onBeforeClose() { /* on before close */ },
+        onClosed() { /* on closed */ },
+      }
     })
   }
 }

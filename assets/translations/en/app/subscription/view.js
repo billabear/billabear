@@ -14,5 +14,27 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         price: "Price",
         recurring: "Recurring",
         schedule: "Schedule",
+    },
+    buttons: {
+        cancel: "Cancel"
+    },
+    modal: {
+        cancel: {
+            title: "Cancel Subscription",
+            cancel_btn: "Confirm",
+            close_btn: "Close",
+            when: {
+                title: "When",
+                end_of_run: "End of current billing period",
+                instantly: "Instantly",
+                specific_date: "Specific Date",
+            },
+            refund_type: {
+                title: "Refund Type",
+                none: "None",
+                prorate: "Prorate Refund based on usage",
+                full: "Full Refund"
+            }
+        }
     }
 }

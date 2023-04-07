@@ -7,12 +7,15 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+import 'vue-final-modal/style.css';
+
 
 import App from "./views/App";
 
 import {router} from "./helpers/router"
 import {store} from './store'
 import { createApp } from "vue";
+import { createVfm } from 'vue-final-modal'
 import {ENGLISH_TRANSLATIONS} from "./translations/en";
 import {createI18n} from "vue-i18n";
 
@@ -33,11 +36,14 @@ var app = createApp(
     App
 );
 
+const vfm = createVfm()
+
 app.use(router);
 app.use(i18n);
 app.use(store);
 app.use(ParthenonMenu);
 app.use(ParthenonUI);
 app.use(require('vue-moment-v3'))
+app.use(vfm)
 
 app.mount('#app');
