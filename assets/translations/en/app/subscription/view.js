@@ -8,5 +8,11 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         created_at: "Created At",
         ended_at: "Ended At",
         valid_until: "Valid Until"
+    },
+    pricing: {
+        title: "Pricing",
+        price: "Price",
+        recurring: "Recurring",
+        schedule: "Schedule",
     }
 }

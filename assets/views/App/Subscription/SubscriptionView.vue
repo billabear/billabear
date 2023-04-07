@@ -48,7 +48,23 @@
               <dd> {{ $filters.moment(subscription.valid_until, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}
               </dd>
             </div>
-
+          </dl>
+        </div>
+        <div class="mt-5">
+          <h2 class="mb-3">{{ $t('app.subscription.view.pricing.title') }}</h2>
+          <dl class="detail-list">
+            <div>
+              <dt>{{ $t('app.subscription.view.pricing.price') }}</dt>
+              <dd>{{ subscription.price.display_value }}</dd>
+            </div>
+            <div>
+              <dt>{{ $t('app.subscription.view.pricing.recurring') }}</dt>
+              <dd>{{ subscription.price.recurring }}</dd>
+            </div>
+            <div v-if="subscription.price.recurring">
+              <dt>{{ $t('app.subscription.view.pricing.schedule') }}</dt>
+              <dd>{{ subscription.price.schedule }}</dd>
+            </div>
           </dl>
         </div>
       </div>
