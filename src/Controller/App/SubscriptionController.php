@@ -13,15 +13,19 @@
 namespace App\Controller\App;
 
 use App\Customer\CustomerFactory;
+use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
+use App\Entity\CancellationRequest;
 use App\Factory\PaymentDetailsFactory;
 use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
+use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -32,6 +36,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -126,7 +131,7 @@ class SubscriptionController
         $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         $price = $priceRepository->findById($dto->getPrice());
 
-        $subscription = $subscriptionManager->startSubscriptionWithEntities($customer, $subscriptionPlan, $price, $paymentDetails, $dto->get);
+        $subscription = $subscriptionManager->startSubscriptionWithEntities($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
         $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
@@ -158,5 +163,74 @@ class SubscriptionController
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/subscription/{subscriptionId}/cancel', name: 'app_subscription_cancel', methods: ['POST'])]
+    public function cancelSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionManagerInterface $subscriptionManager,
+        RefundManagerInterface $refundManager,
+        CancellationRequestRepositoryInterface $cancellationRequestRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        Security $security,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            throw new NoEntityFoundException();
+        }
+
+        /** @var CancelSubscription $dto */
+        $dto = $serializer->deserialize($request->getContent(), CancelSubscription::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $billingDate = clone $subscription->getValidUntil();
+
+        if (CancelSubscription::WHEN_END_OF_RUN === $dto->getWhen()) {
+            $subscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
+        } elseif (CancelSubscription::WHEN_INSTANTLY === $dto->getWhen()) {
+            $subscriptionManager->cancelSubscriptionInstantly($subscription);
+        } else {
+            $when = new \DateTime($dto->getDate());
+            $subscriptionManager->cancelSubscriptionOnDate($subscription, $when);
+        }
+
+        $user = $security->getUser();
+        if (CancelSubscription::REFUND_PRORATE === $dto->getRefundType()) {
+            $newValidUntil = $subscription->getValidUntil();
+
+            $refundManager->issueProrateRefundForSubscription($subscription, $user, $billingDate, $newValidUntil);
+        } elseif (CancelSubscription::REFUND_FULL === $dto->getRefundType()) {
+            $refundManager->issueFullRefundForSubscription($subscription, $user);
+        }
+
+        $cancellationRequest = new CancellationRequest();
+        $cancellationRequest->setSubscription($subscription);
+        $cancellationRequest->setBillingAdmin($user);
+        $cancellationRequest->setCreatedAt(new \DateTime());
+        $cancellationRequest->setWhen($dto->getWhen());
+        $cancellationRequest->setSpecificDate($dto->getComment());
+        $cancellationRequest->setRefundType($dto->getRefundType());
+        $cancellationRequest->setComment($dto->getComment());
+
+        $cancellationRequestRepository->save($cancellationRequest);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 }

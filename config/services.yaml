@@ -55,6 +55,12 @@ services:
     app.repository.orm.customer:
         class: App\Repository\Orm\CustomerRepository
 
+    App\Repository\CancellationRequestRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.cancellation_request'
+    app.repository.orm.cancellation_request:
+        class: App\Repository\Orm\CancellationRequestRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

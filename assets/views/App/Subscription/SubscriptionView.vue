@@ -117,8 +117,8 @@
         </div>
 
         <div class="mt-5 text-center">
-          <button class="btn--secondary mr-3" @click="options.modelValue = false">Close</button>
-          <button class="btn--main">Confirm</button>
+          <button class="btn--secondary mr-3" @click="options.modelValue = false">{{ $t('app.subscription.view.modal.cancel.close_btn') }}</button>
+          <SubmitButton @click="sendCancel" :in-progress="cancelSending">{{ $t('app.subscription.view.modal.cancel.cancel_btn') }}</SubmitButton>
         </div>
       </div>
     </VueFinalModal>
@@ -147,6 +147,7 @@ export default {
           refundType: "none",
           date: null,
       },
+      cancelSending: false,
       options: {
         teleportTo: 'body',
         modelValue: false,
@@ -181,28 +182,18 @@ export default {
     })
   },
   methods: {
-    open: useModal({
-      // Open the modal or not when the modal was created, the default value is `false`.
-      defaultModelValue: false,
-      /**
-       * If set `keepAlive` to `true`:
-       * 1. The `displayDirective` will be set to `show` by default.
-       * 2. The modal component will not be removed after the modal closed until you manually execute `destroy()`.
-       */
-      keepAlive: false,
-      // `component` is optional and the default value is `<VueFinalModal>`.
-      component: VueFinalModal,
-      attrs: {
-        // Bind props to the modal component (VueFinalModal in this case).
-        clickToClose: true,
-        escToClose: true,
-        // Bind events to the modal component (VueFinalModal in this case).
-        onBeforeOpen() { /* on before open */ },
-        onOpened() { /* on opened */ },
-        onBeforeClose() { /* on before close */ },
-        onClosed() { /* on closed */ },
+    sendCancel: function () {
+      this.cancelSending = true
+      var subscriptionId = this.$route.params.subscriptionId
+      const payload = {
+        when: this.cancelValues.when,
+        date: this.cancelValues.date,
+        refund_type: this.cancelValues.refundType,
       }
-    })
+      axios.post('/app/subscription/' + subscriptionId+'/cancel', payload).then(response => {
+        this.cancelSending = false;
+      })
+    }
   }
 }
 </script>
