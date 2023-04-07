@@ -23,6 +23,10 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import ParthenonMenu from "@parthenon/vue-menu";
 import ParthenonUI from "@parthenon/ui";
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
+
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS
 };
@@ -45,5 +49,7 @@ app.use(ParthenonMenu);
 app.use(ParthenonUI);
 app.use(require('vue-moment-v3'))
 app.use(vfm)
+
+app.component('VueDatePicker', VueDatePicker);
 
 app.mount('#app');

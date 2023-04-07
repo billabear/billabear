@@ -104,6 +104,8 @@
             <option value="specific-date">{{ $t('app.subscription.view.modal.cancel.when.specific_date') }}</option>
           </select>
         </div>
+
+        <VueDatePicker  class="mt-2" v-model="cancelValues.date"  :enable-time-picker="false" v-if="cancelValues.when == 'specific-date'"></VueDatePicker>
         <div class="mt-2">
 
           <span class="block text-lg font-medium">{{ $t('app.subscription.view.modal.cancel.refund_type.title') }}</span>
@@ -142,7 +144,8 @@ export default {
       errorMessage: undefined,
       cancelValues: {
           when: "end-of-run",
-          refundType: "none"
+          refundType: "none",
+          date: null,
       },
       options: {
         teleportTo: 'body',
