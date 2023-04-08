@@ -1,6 +1,6 @@
-Feature: Customer Subscription List
+Feature: Customer Subscription Read APP
   In order to manage a customer's subscriptions
-  As an APP user
+  As an API user
   I need to be see customer's Subscription
 
   Background:
@@ -28,14 +28,9 @@ Feature: Customer Subscription List
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
-    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
-      | Name       | Test Two  |
-      | Public     | True      |
-      | Per Seat   | False     |
-      | User Count | 10        |
 
 
-  Scenario: Get customer info
+  Scenario: Get subscription
     Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
@@ -44,7 +39,6 @@ Feature: Customer Subscription List
     And the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
-      | Test Plan         | 3000         | USD            | month          | customer.two@example.org |
-      | Test Two          | 3000         | USD            | month          | customer.one@example.org |
-    When I request the subscription list api
-    Then I will see a subscription in the list for "Test Plan"
+    When I request via the API the subscription "Test Plan" for "customer.one@example.org"
+    Then I will see the REST subscription has the plan "Test Plan"
+    Then I will see the REST subscription has the schedule "month"

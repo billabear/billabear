@@ -130,4 +130,23 @@ class SubscriptionController
 
         return new JsonResponse($json, json: true);
     }
+
+    #[Route('/api/v1/subscription/{id}', name: 'api_v1_subscription_view', methods: ['GET'])]
+    public function viewSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+        SubscriptionFactory $subscriptionFactory,
+    ): Response {
+        try {
+            $subscription = $subscriptionRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse(null, status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $dto = $subscriptionFactory->createAppDto($subscription);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
 }

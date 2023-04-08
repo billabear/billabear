@@ -12,16 +12,27 @@
 
 namespace App\Tests\Behat\Subscriptions;
 
+use App\Repository\Orm\CustomerRepository;
+use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
+use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
+use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
 
 class ApiContext implements Context
 {
     use SendRequestTrait;
+    use CustomerTrait;
 
     public function __construct(
         private Session $session,
+        private SubscriptionServiceRepository $subscriptionRepository,
+        private PriceServiceRepository $priceRepository,
+        private SubscriptionPlanServiceRepository $planRepository,
+        private CustomerRepository $customerRepository,
     ) {
     }
 
@@ -31,5 +42,46 @@ class ApiContext implements Context
     public function iRequestTheSubscriptionListApi()
     {
         $this->sendJsonRequest('GET', '/api/v1/subscription');
+    }
+
+    /**
+     * @When I request via the API the subscription :arg1 for :arg2
+     */
+    public function iRequestViaTheApiTheSubscriptionFor($planName, $customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
+
+        $subscription = $this->subscriptionRepository->findOneBy(['subscriptionPlan' => $subscriptionPlan, 'customer' => $customer]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception("Can't find subscription");
+        }
+
+        $this->sendJsonRequest('GET', '/api/v1/subscription/'.(string) $subscription->getId());
+    }
+
+    /**
+     * @Then I will see the REST subscription has the plan :arg1
+     */
+    public function iWillSeeTheRestSubscriptionHasThePlan($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['plan']['name'] !== $arg1) {
+            throw new \Exception("Doesn't match");
+        }
+    }
+
+    /**
+     * @Then I will see the REST subscription has the schedule :arg1
+     */
+    public function iWillSeeTheRestSubscriptionHasTheSchedule($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['schedule'] !== $arg1) {
+            throw new \Exception("Doesn't match");
+        }
     }
 }
