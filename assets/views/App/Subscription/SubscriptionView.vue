@@ -70,7 +70,7 @@
 
         <div class="mt-5 text-end">
 
-          <button class="btn--danger" @click="options.modelValue = true">
+          <button class="btn--danger" @click="options.modelValue = true" :class="{'btn--danager--disabled': subscription.status == 'cancelled'}" :disabled="subscription.status == 'cancelled'">
             {{ $t('app.subscription.view.buttons.cancel') }}
           </button>
         </div>
