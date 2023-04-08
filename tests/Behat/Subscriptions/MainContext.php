@@ -92,6 +92,34 @@ class MainContext implements Context
     }
 
     /**
+     * @When I view the subscription list
+     */
+    public function iViewTheSubscriptionList()
+    {
+        $this->sendJsonRequest('GET', '/app/subscription');
+    }
+
+    /**
+     * @Then I will see a subscription in the list for :arg1
+     */
+    public function iWillSeeASubscriptionInTheListFor($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['data'])) {
+            throw new \Exception('No subscriptions found');
+        }
+
+        foreach ($data['data'] as $subscription) {
+            if ($subscription['plan']['name'] === $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception('No subscription found');
+    }
+
+    /**
      * @When I view the subscription :arg1 for :arg2
      */
     public function iViewTheSubscriptionFor($planName, $customerEmail)

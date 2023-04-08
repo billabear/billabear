@@ -12,9 +12,11 @@
 
 namespace App\Controller\App;
 
+use App\Api\Filters\SubscriptionList;
 use App\Customer\CustomerFactory;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
+use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
 use App\Entity\CancellationRequest;
@@ -135,6 +137,53 @@ class SubscriptionController
         $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
         $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/subscription', name: 'site_subscription_list', methods: ['GET'])]
+    public function listSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+        SubscriptionFactory $subscriptionFactory,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $firstKey = $request->get('first_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new SubscriptionList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $subscriptionRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+            firstId: $firstKey,
+        );
+
+        $dtos = array_map([$subscriptionFactory, 'createAppDto'], $resultSet->getResults());
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+        $listResponse->setFirstKey($resultSet->getFirstKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
     }
