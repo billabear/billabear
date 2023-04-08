@@ -34,7 +34,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
                 none: "None",
                 prorate: "Prorate Refund based on usage",
                 full: "Full Refund"
-            }
+            },
+            cancelled_message: "Successfully cancelled"
         }
     }
 }

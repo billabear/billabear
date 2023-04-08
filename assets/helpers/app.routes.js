@@ -24,6 +24,7 @@ import SubscriptionPlanUpdate from "../views/App/SubscriptionPlan/SubscriptionPl
 import AddPaymentDetails from "../views/App/PaymentDetails/AddPaymentDetails.vue";
 import SubscriptionCreate from "../views/App/Subscription/SubscriptionCreate.vue";
 import SubscriptionView from "../views/App/Subscription/SubscriptionView.vue";
+import SubscriptionList from "../views/App/Subscription/SubscriptionList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -116,6 +117,11 @@ export const APP_ROUTES = [
         name: 'app.subscription.view',
         path: 'subscription/:subscriptionId',
         component: SubscriptionView
+    },
+    {
+        name: 'app.subscription.list',
+        path: 'subscription',
+        component: SubscriptionList
     },
     {
         name: 'app.price.create',

@@ -9,6 +9,7 @@ export const MENU_TRANSLATIONS = {
         user_settings: "User Settings",
         user_invite: "Invite A Friend",
         customer: "Customers",
-        feature: "Features"
+        feature: "Features",
+        subscriptions: "Subscriptions"
     }
 }

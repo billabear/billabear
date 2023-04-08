@@ -98,6 +98,7 @@
         <h3 class="mb-4 text-2xl font-semibold">{{ $t('app.subscription.view.modal.cancel.title') }}</h3>
         <div>
           <span class="block text-lg font-medium">{{ $t('app.subscription.view.modal.cancel.when.title') }}</span>
+          <span class="font-red" v-if="cancelValues.errors.when != undefined">{{ cancelValues.errors.when }}</span>
           <select v-model="cancelValues.when" class="form-field">
             <option value="end-of-run">{{ $t('app.subscription.view.modal.cancel.when.end_of_run') }}</option>
             <option value="instantly">{{ $t('app.subscription.view.modal.cancel.when.instantly') }}</option>
@@ -105,10 +106,12 @@
           </select>
         </div>
 
+        <span class="font-red" v-if="cancelValues.errors.date != undefined">{{ cancelValues.errors.date }}</span>
         <VueDatePicker  class="mt-2" v-model="cancelValues.date"  :enable-time-picker="false" v-if="cancelValues.when == 'specific-date'"></VueDatePicker>
         <div class="mt-2">
 
           <span class="block text-lg font-medium">{{ $t('app.subscription.view.modal.cancel.refund_type.title') }}</span>
+          <span class="font-red" v-if="cancelValues.errors.refundType != undefined">{{ cancelValues.errors.refundType }}</span>
           <select v-model="cancelValues.refundType"  class="form-field" :disabled="cancelValues.when == 'end-of-run'">
             <option value="none">{{ $t('app.subscription.view.modal.cancel.refund_type.none') }}</option>
             <option value="prorate">{{ $t('app.subscription.view.modal.cancel.refund_type.prorate') }}</option>
@@ -116,9 +119,13 @@
           </select>
         </div>
 
-        <div class="mt-5 text-center">
+
+        <div class="mt-5 text-center" v-if="cancelValues.cancelled == false">
           <button class="btn--secondary mr-3" @click="options.modelValue = false">{{ $t('app.subscription.view.modal.cancel.close_btn') }}</button>
           <SubmitButton @click="sendCancel" :in-progress="cancelSending">{{ $t('app.subscription.view.modal.cancel.cancel_btn') }}</SubmitButton>
+        </div>
+        <div class="mt-5 text-center" v-else>
+          {{ $t('app.subscription.view.modal.cancel.cancelled_message') }}
         </div>
       </div>
     </VueFinalModal>
@@ -146,6 +153,8 @@ export default {
           when: "end-of-run",
           refundType: "none",
           date: null,
+          errors: {},
+          cancelled: false
       },
       cancelSending: false,
       options: {
@@ -192,7 +201,9 @@ export default {
       }
       axios.post('/app/subscription/' + subscriptionId+'/cancel', payload).then(response => {
         this.cancelSending = false;
-      }).toLocaleString(response => {
+        this.cancelValues.cancelled = true;
+      }).toLocaleString(error => {
+        this.cancelValues.errors = error.response.data.errors;
         this.cancelSending = false;
       })
     }

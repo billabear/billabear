@@ -48,6 +48,8 @@ class Subscription
 
     private Price $price;
 
+    private Customer $customer;
+
     public function getId(): string
     {
         return $this->id;
@@ -166,5 +168,15 @@ class Subscription
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getCustomer(): Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(Customer $customer): void
+    {
+        $this->customer = $customer;
     }
 }
