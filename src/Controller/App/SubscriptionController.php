@@ -24,8 +24,8 @@ use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -39,6 +39,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class SubscriptionController
 {
@@ -131,7 +132,7 @@ class SubscriptionController
         $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         $price = $priceRepository->findById($dto->getPrice());
 
-        $subscription = $subscriptionManager->startSubscriptionWithEntities($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
+        $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
         $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
@@ -169,12 +170,11 @@ class SubscriptionController
     public function cancelSubscription(
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionManagerInterface $subscriptionManager,
-        RefundManagerInterface $refundManager,
         CancellationRequestRepositoryInterface $cancellationRequestRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         Security $security,
+        WorkflowInterface $cancellationRequestStateMachine,
     ): Response {
         try {
             /** @var Subscription $subscription */
@@ -200,24 +200,10 @@ class SubscriptionController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $billingDate = clone $subscription->getValidUntil();
-
-        if (CancelSubscription::WHEN_END_OF_RUN === $dto->getWhen()) {
-            $subscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
-        } elseif (CancelSubscription::WHEN_INSTANTLY === $dto->getWhen()) {
-            $subscriptionManager->cancelSubscriptionInstantly($subscription);
-        } else {
-            $when = new \DateTime($dto->getDate());
-            $subscriptionManager->cancelSubscriptionOnDate($subscription, $when);
-        }
-
         $user = $security->getUser();
-        if (CancelSubscription::REFUND_PRORATE === $dto->getRefundType()) {
-            $newValidUntil = $subscription->getValidUntil();
 
-            $refundManager->issueProrateRefundForSubscription($subscription, $user, $billingDate, $newValidUntil);
-        } elseif (CancelSubscription::REFUND_FULL === $dto->getRefundType()) {
-            $refundManager->issueFullRefundForSubscription($subscription, $user);
+        if (!$user instanceof BillingAdminInterface) {
+            throw new \LogicException('User is not a billing admin');
         }
 
         $cancellationRequest = new CancellationRequest();
@@ -228,6 +214,21 @@ class SubscriptionController
         $cancellationRequest->setSpecificDate($dto->getComment());
         $cancellationRequest->setRefundType($dto->getRefundType());
         $cancellationRequest->setComment($dto->getComment());
+        $cancellationRequest->setState('started');
+
+        $cancellationRequestRepository->save($cancellationRequest);
+
+        try {
+            $cancellationRequestStateMachine->apply($cancellationRequest, 'cancel_subscription');
+            $cancellationRequestStateMachine->apply($cancellationRequest, 'issue_refund');
+            $cancellationRequestStateMachine->apply($cancellationRequest, 'send_customer_notice');
+            $cancellationRequestStateMachine->apply($cancellationRequest, 'send_internal_notice');
+        } catch (\Throwable $exception) {
+            $cancellationRequestRepository->save($cancellationRequest);
+            throw $exception;
+
+            return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
+        }
 
         $cancellationRequestRepository->save($cancellationRequest);
 

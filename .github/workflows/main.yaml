@@ -38,6 +38,9 @@ jobs:
         image: redis
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:

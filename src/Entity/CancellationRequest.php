@@ -27,7 +27,10 @@ class CancellationRequest
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\Column('when', type: 'string')]
+    #[ORM\Column('state', type: 'string')]
+    private string $state;
+
+    #[ORM\Column('when_to_cancel', type: 'string')]
     private string $when;
 
     #[ORM\Column('specific_date', type: 'datetimetz', nullable: true)]
@@ -39,10 +42,10 @@ class CancellationRequest
     #[ORM\Column('comment', type: 'string', nullable: true)]
     private ?string $comment;
 
-    #[ORM\ManyToOne(className: Subscription::class)]
+    #[ORM\ManyToOne(targetEntity: Subscription::class)]
     private Subscription $subscription;
 
-    #[ORM\ManyToOne(className: BillingAdminInterface::class)]
+    #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
     private BillingAdminInterface $billingAdmin;
 
     #[ORM\Column('created_at', type: 'datetimetz')]
@@ -132,5 +135,15 @@ class CancellationRequest
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
     }
 }

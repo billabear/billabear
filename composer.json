@@ -28,6 +28,7 @@
         "symfony/mailer": "6.*",
         "symfony/runtime": "6.1.*",
         "symfony/webpack-encore-bundle": "^1.15",
+        "symfony/workflow": "6.1.*",
         "symfony/yaml": "6.1.*"
     },
     "require-dev": {

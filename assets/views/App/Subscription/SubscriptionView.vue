@@ -192,6 +192,8 @@ export default {
       }
       axios.post('/app/subscription/' + subscriptionId+'/cancel', payload).then(response => {
         this.cancelSending = false;
+      }).then(response => {
+        this.cancelSending = false;
       })
     }
   }
