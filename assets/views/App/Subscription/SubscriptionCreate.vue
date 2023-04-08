@@ -81,7 +81,7 @@ export default {
       var output = [];
 
       for (var i = 0; i < this.subscription_plan.prices.length; i++) {
-        if (this.subscription_plan.prices[i].currency == this.eligible_currency && this.subscription_plan[i].schedule == this.eligible_schedule) {
+        if (this.subscription_plan.prices[i].currency == this.eligible_currency && this.subscription_plan.prices[i].schedule == this.eligible_schedule) {
           output.push(this.subscription_plan.prices[i]);
         }
       }
@@ -131,6 +131,7 @@ export default {
       axios.post('/app/customer/'+customerId+'/subscription', payload).then(response => {
         this.sendingInProgress = false;
         this.success = true;
+        this.$router.push({'name': 'app.subscription.view', params: {subscriptionId: response.data.id}})
       }).catch(error => {
         if (error.response.status == 404) {
           this.errorMessage = this.$t('app.product.view.error.not_found')
