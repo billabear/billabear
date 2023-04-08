@@ -260,9 +260,10 @@ class SubscriptionController
         $cancellationRequest->setBillingAdmin($user);
         $cancellationRequest->setCreatedAt(new \DateTime());
         $cancellationRequest->setWhen($dto->getWhen());
-        $cancellationRequest->setSpecificDate($dto->getComment());
+        $cancellationRequest->setSpecificDate(new \DateTime($dto->getDate()));
         $cancellationRequest->setRefundType($dto->getRefundType());
         $cancellationRequest->setComment($dto->getComment());
+        $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
         $cancellationRequest->setState('started');
 
         $cancellationRequestRepository->save($cancellationRequest);

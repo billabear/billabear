@@ -31,10 +31,10 @@ class IssueRefundTransition implements EventSubscriberInterface
         $subscription = $cancellationRequest->getSubscription();
         $user = $cancellationRequest->getBillingAdmin();
 
-        if (CancelSubscription::REFUND_PRORATE === $dto->getRefundType()) {
+        if (CancelSubscription::REFUND_PRORATE === $cancellationRequest->getRefundType()) {
             $newValidUntil = $subscription->getValidUntil();
-            $this->refundManager->issueProrateRefundForSubscription($subscription, $user, $billingDate, $newValidUntil);
-        } elseif (CancelSubscription::REFUND_FULL === $dto->getRefundType()) {
+            $this->refundManager->issueProrateRefundForSubscription($subscription, $user, $cancellationRequest->getOriginalValidUntil(), $newValidUntil);
+        } elseif (CancelSubscription::REFUND_FULL === $cancellationRequest->getRefundType()) {
             $this->refundManager->issueFullRefundForSubscription($subscription, $user);
         }
     }

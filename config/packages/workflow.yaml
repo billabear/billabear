@@ -1,0 +1,31 @@
+framework:
+    workflows:
+        cancellation_request:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\CancellationRequest
+            initial_marking: started
+            places:
+                - started
+                - subscription_cancelled
+                - refund_issued
+                - customer_notice_sent
+                - internal_notice_sent
+                - completed
+            transitions:
+                cancel_subscription:
+                    from: started
+                    to: subscription_cancelled
+                issue_refund:
+                    from: subscription_cancelled
+                    to: refund_issued
+                send_customer_notice:
+                    from: refund_issued
+                    to: customer_notice_sent
+                send_internal_notice:
+                    from: customer_notice_sent
+                    to: completed
+

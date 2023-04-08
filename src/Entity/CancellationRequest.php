@@ -48,6 +48,9 @@ class CancellationRequest
     #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
     private BillingAdminInterface $billingAdmin;
 
+    #[ORM\Column('original_valid_until', type: 'datetimetz')]
+    private \DateTimeInterface $originalValidUntil;
+
     #[ORM\Column('created_at', type: 'datetimetz')]
     private \DateTimeInterface $createdAt;
 
@@ -145,5 +148,15 @@ class CancellationRequest
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    public function getOriginalValidUntil(): \DateTimeInterface
+    {
+        return $this->originalValidUntil;
+    }
+
+    public function setOriginalValidUntil(\DateTimeInterface $originalValidUntil): void
+    {
+        $this->originalValidUntil = $originalValidUntil;
     }
 }

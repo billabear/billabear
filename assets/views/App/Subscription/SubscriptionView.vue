@@ -192,7 +192,7 @@ export default {
       }
       axios.post('/app/subscription/' + subscriptionId+'/cancel', payload).then(response => {
         this.cancelSending = false;
-      }).then(response => {
+      }).toLocaleString(response => {
         this.cancelSending = false;
       })
     }
