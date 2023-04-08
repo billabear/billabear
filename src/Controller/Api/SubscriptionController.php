@@ -12,12 +12,15 @@
 
 namespace App\Controller\Api;
 
+use App\Api\Filters\SubscriptionList;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
+use App\Dto\Response\Api\ListResponse;
 use App\Factory\SubscriptionFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,5 +83,51 @@ class SubscriptionController
         $json = $serializer->serialize($subscriptionDto, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/api/v1/subscription', name: 'api_v1_subscription_list', methods: ['GET'])]
+    public function listSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+        SubscriptionFactory $subscriptionFactory,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $firstKey = $request->get('first_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new SubscriptionList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $subscriptionRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+            firstId: $firstKey,
+        );
+
+        $dtos = array_map([$subscriptionFactory, 'createAppDto'], $resultSet->getResults());
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }
