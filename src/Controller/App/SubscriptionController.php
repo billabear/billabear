@@ -19,13 +19,13 @@ use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
-use App\Entity\CancellationRequest;
 use App\Factory\PaymentDetailsFactory;
 use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use App\Subscription\CancellationRequestProcessor;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
@@ -41,7 +41,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Workflow\WorkflowInterface;
 
 class SubscriptionController
 {
@@ -223,7 +222,8 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         Security $security,
-        WorkflowInterface $cancellationRequestStateMachine,
+        CancellationRequestProcessor $cancellationRequestProcessor,
+        \App\Factory\CancellationRequestFactory $cancellationRequestFactory,
     ): Response {
         try {
             /** @var Subscription $subscription */
@@ -255,27 +255,14 @@ class SubscriptionController
             throw new \LogicException('User is not a billing admin');
         }
 
-        $cancellationRequest = new CancellationRequest();
-        $cancellationRequest->setSubscription($subscription);
-        $cancellationRequest->setBillingAdmin($user);
-        $cancellationRequest->setCreatedAt(new \DateTime());
-        $cancellationRequest->setWhen($dto->getWhen());
-        $cancellationRequest->setSpecificDate(new \DateTime($dto->getDate()));
-        $cancellationRequest->setRefundType($dto->getRefundType());
-        $cancellationRequest->setComment($dto->getComment());
-        $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
-        $cancellationRequest->setState('started');
+        $cancellationRequest = $cancellationRequestFactory->getCancellationRequestEntity($subscription, $dto, $user);
 
         $cancellationRequestRepository->save($cancellationRequest);
 
         try {
-            $cancellationRequestStateMachine->apply($cancellationRequest, 'cancel_subscription');
-            $cancellationRequestStateMachine->apply($cancellationRequest, 'issue_refund');
-            $cancellationRequestStateMachine->apply($cancellationRequest, 'send_customer_notice');
-            $cancellationRequestStateMachine->apply($cancellationRequest, 'send_internal_notice');
+            $cancellationRequestProcessor->process($cancellationRequest);
         } catch (\Throwable $exception) {
             $cancellationRequestRepository->save($cancellationRequest);
-            throw $exception;
 
             return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
         }

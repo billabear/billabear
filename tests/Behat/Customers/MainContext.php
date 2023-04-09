@@ -18,6 +18,7 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Common\Address;
 
 class MainContext implements Context
@@ -136,6 +137,23 @@ class MainContext implements Context
             $customer->setReference($reference);
 
             $this->customerRepository->getEntityManager()->persist($customer);
+            $this->customerRepository->getEntityManager()->flush();
+
+            $paymentDetails = new PaymentDetails();
+            $paymentDetails->setCustomer($customer);
+            $paymentDetails->setProvider('test_dummy');
+            $paymentDetails->setName('Test');
+            $paymentDetails->setCreatedAt(new \DateTime());
+            $paymentDetails->setStoredCustomerReference($externalCustomerReference);
+            $paymentDetails->setLastFour('4242');
+            $paymentDetails->setExpiryMonth('02');
+            $paymentDetails->setExpiryYear('32');
+            $paymentDetails->setBrand('brand');
+            $paymentDetails->setDefaultPaymentOption(true);
+            $paymentDetails->setDeleted(false);
+            $paymentDetails->setStoredPaymentReference(bin2hex(random_bytes(32)));
+            $this->customerRepository->getEntityManager()->persist($paymentDetails);
+            $this->customerRepository->getEntityManager()->flush();
         }
 
         $this->customerRepository->getEntityManager()->flush();

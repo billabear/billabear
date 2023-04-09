@@ -25,6 +25,7 @@ use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
 class ApiContext implements Context
 {
     use SendRequestTrait;
+    use SubscriptionTrait;
     use CustomerTrait;
 
     public function __construct(
@@ -83,5 +84,20 @@ class ApiContext implements Context
         if ($data['schedule'] !== $arg1) {
             throw new \Exception("Doesn't match");
         }
+    }
+
+    /**
+     * @When I cancel via the API the subscription :arg1 for :arg2
+     */
+    public function iCancelViaTheApiTheSubscriptionFor($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $payload = [
+            'when' => 'end-of-run',
+            'refund_type' => 'none',
+        ];
+
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/cancel', $payload);
     }
 }

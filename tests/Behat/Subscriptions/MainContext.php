@@ -18,8 +18,11 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
@@ -28,6 +31,7 @@ class MainContext implements Context
 {
     use CustomerTrait;
     use SendRequestTrait;
+    use SubscriptionTrait;
 
     public function __construct(
         private Session $session,
@@ -35,6 +39,7 @@ class MainContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
+        private PaymentDetailsServiceRepository $paymentDetailsRepository
     ) {
     }
 
@@ -50,6 +55,13 @@ class MainContext implements Context
             $customer = $this->getCustomerByEmail($row['Customer']);
             /** @var Price $price */
             $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+            $paymentDetails = $this->paymentDetailsRepository->findOneBy(['customer' => $customer]);
+
+            if (!$paymentDetails instanceof PaymentDetails) {
+                throw new \Exception('Customer had no payment details');
+            }
+
+            $paymentReference = $paymentDetails->getStoredPaymentReference();
 
             $subscription = new Subscription();
             $subscription->setStatus('active');
@@ -64,11 +76,28 @@ class MainContext implements Context
             $subscription->setChildExternalReference('saddsa');
             $subscription->setCreatedAt(new \DateTime('now'));
             $subscription->setUpdatedAt(new \DateTime('now'));
+            $subscription->setPaymentExternalReference($paymentReference);
             $subscription->setValidUntil(new \DateTime('+1 '.$row['Price Schedule']));
 
             $this->subscriptionRepository->getEntityManager()->persist($subscription);
+            $this->subscriptionRepository->getEntityManager()->flush();
+
+            $payment = new Payment();
+            $payment->addSubscription($subscription);
+            $payment->setPaymentReference($paymentReference);
+            $payment->setMoneyAmount($price->getAsMoney());
+            $payment->setCustomer($customer);
+            $payment->setRefunded(false);
+            $payment->setCompleted(true);
+            $payment->setChargedBack(true);
+            $payment->setCreatedAt(new \DateTime('now'));
+            $payment->setUpdatedAt(new \DateTime('now'));
+
+            $payment->setProvider('test_dummy');
+
+            $this->subscriptionRepository->getEntityManager()->persist($payment);
+            $this->subscriptionRepository->getEntityManager()->flush();
         }
-        $this->subscriptionRepository->getEntityManager()->flush();
     }
 
     /**
@@ -124,16 +153,22 @@ class MainContext implements Context
      */
     public function iViewTheSubscriptionFor($planName, $customerEmail)
     {
-        $customer = $this->getCustomerByEmail($customerEmail);
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
-
-        $subscription = $this->subscriptionRepository->findOneBy(['subscriptionPlan' => $subscriptionPlan, 'customer' => $customer]);
-
-        if (!$subscription instanceof Subscription) {
-            throw new \Exception("Can't find subscription");
-        }
+        $subscription = $this->getSubscription($customerEmail, $planName);
 
         $this->sendJsonRequest('GET', '/app/subscription/'.(string) $subscription->getId());
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will be cancelled
+     */
+    public function theSubscriptionForWillBeCancelled($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        if ('cancelled' !== $subscription->getStatus()) {
+            echo $this->session->getPage()->getContent();
+            throw new \Exception('Not cancelled');
+        }
     }
 
     /**

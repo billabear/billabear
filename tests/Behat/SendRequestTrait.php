@@ -39,6 +39,10 @@ trait SendRequestTrait
             [],
             $headers,
             $jsonBody);
+
+        if (500 === $this->session->getStatusCode()) {
+            throw new \Exception('Got '.$this->session->getPage()->getContent());
+        }
     }
 
     protected function getJsonContent(): array

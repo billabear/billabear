@@ -46,13 +46,16 @@ class CancellationRequest
     private Subscription $subscription;
 
     #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
-    private BillingAdminInterface $billingAdmin;
+    private ?BillingAdminInterface $billingAdmin = null;
 
     #[ORM\Column('original_valid_until', type: 'datetimetz')]
     private \DateTimeInterface $originalValidUntil;
 
     #[ORM\Column('created_at', type: 'datetimetz')]
     private \DateTimeInterface $createdAt;
+
+    #[ORM\Column('error', type: 'string', nullable: true)]
+    private ?string $error = null;
 
     /**
      * @return mixed
@@ -120,12 +123,12 @@ class CancellationRequest
         $this->subscription = $subscription;
     }
 
-    public function getBillingAdmin(): BillingAdminInterface
+    public function getBillingAdmin(): ?BillingAdminInterface
     {
         return $this->billingAdmin;
     }
 
-    public function setBillingAdmin(BillingAdminInterface $billingAdmin): void
+    public function setBillingAdmin(?BillingAdminInterface $billingAdmin): void
     {
         $this->billingAdmin = $billingAdmin;
     }
@@ -158,5 +161,15 @@ class CancellationRequest
     public function setOriginalValidUntil(\DateTimeInterface $originalValidUntil): void
     {
         $this->originalValidUntil = $originalValidUntil;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
+
+    public function setError(?string $error): void
+    {
+        $this->error = $error;
     }
 }

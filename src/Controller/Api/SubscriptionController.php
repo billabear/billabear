@@ -13,10 +13,14 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\SubscriptionList;
+use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
 use App\Dto\Response\Api\ListResponse;
+use App\Factory\CancellationRequestFactory;
 use App\Factory\SubscriptionFactory;
+use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use App\Subscription\CancellationRequestProcessor;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -32,6 +36,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionController
 {
+    private CancellationRequestFactory $cancellationRequestFactory;
+
+    public function __construct()
+    {
+        $this->cancellationRequestFactory = new CancellationRequestFactory();
+    }
+
     #[Route('/api/v1/customer/{customerId}/subscription/start', name: 'api_v1_subscription_start', methods: ['POST'])]
     public function createSubscription(
         Request $request,
@@ -148,5 +159,54 @@ class SubscriptionController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/api/v1/subscription/{id}/cancel', name: 'api_v1_subscription_cancel', methods: ['POST'])]
+    public function cancelSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        CancellationRequestProcessor $cancellationRequestProcessor,
+        CancellationRequestRepositoryInterface $cancellationRequestRepository,
+        CancellationRequestFactory $cancellationRequestFactory,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        try {
+            $subscription = $subscriptionRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse(null, status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var CancelSubscription $dto */
+        $dto = $serializer->deserialize($request->getContent(), CancelSubscription::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $cancellationRequest = $cancellationRequestFactory->getCancellationRequestEntity($subscription, $dto);
+
+        $cancellationRequestRepository->save($cancellationRequest);
+
+        try {
+            $cancellationRequestProcessor->process($cancellationRequest);
+        } catch (\Throwable $exception) {
+            $cancellationRequestRepository->save($cancellationRequest);
+
+            // return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
+        }
+
+        $cancellationRequestRepository->save($cancellationRequest);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 }
