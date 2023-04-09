@@ -133,7 +133,7 @@ class SubscriptionController
         $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         $price = $priceRepository->findById($dto->getPrice());
 
-        $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
+        $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers(), $dto->getHasTrial(), $dto->getTrialLengthDays());
         $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 

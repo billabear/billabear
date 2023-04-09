@@ -42,6 +42,15 @@ class CreateSubscription
     #[Assert\Positive]
     private $seatNumbers = 1;
 
+    #[SerializedName('has_trial')]
+    #[Assert\Type('boolean')]
+    private $hasTrial;
+
+    #[SerializedName('trial_length_days')]
+    #[Assert\Positive]
+    #[Assert\Type('integer')]
+    private $trialLengthDays;
+
     /**
      * @return mixed
      */
@@ -98,5 +107,37 @@ class CreateSubscription
     public function setSeatNumbers(int $seatNumbers): void
     {
         $this->seatNumbers = $seatNumbers;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasTrial()
+    {
+        return $this->hasTrial;
+    }
+
+    /**
+     * @param mixed $hasTrial
+     */
+    public function setHasTrial($hasTrial): void
+    {
+        $this->hasTrial = $hasTrial;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTrialLengthDays()
+    {
+        return $this->trialLengthDays;
+    }
+
+    /**
+     * @param mixed $trialLengthDays
+     */
+    public function setTrialLengthDays($trialLengthDays): void
+    {
+        $this->trialLengthDays = $trialLengthDays;
     }
 }

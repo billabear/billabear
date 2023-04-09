@@ -5,5 +5,12 @@ export const SUBSCRIPTION_CREATE_TRANSLATION = {
     no_eligible_prices: 'There are no eligible prices',
     prices: "Prices",
     success_message: "Successfully created subscription",
-    submit_btn: "Create"
+    submit_btn: "Create",
+    trial: "Free Trial",
+    trial_length_days: "Number of days",
+    help_info: {
+        eligible_prices: "When a customer already has an active subscription any new subscriptions must be for the same billing period and currency.",
+        trial: "When a customer already has an active subscription they're not eligible for another free trial.",
+        no_trial: "This plan doesn't have a free trial"
+    }
 }

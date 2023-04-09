@@ -8,7 +8,7 @@
         <h2>{{ $t('app.subscription.create.subscription_plans') }}</h2>
 
         <div>
-          <select class="form-field" v-model="subscription_plan">
+          <select class="form-field" v-model="subscription_plan" @change="refreshTrial">
             <option :value="null"></option>
             <option v-for="subscriptionPlan in subscription_plans" :value="subscriptionPlan">{{ subscriptionPlan.product.name }} - {{ subscriptionPlan.name }}</option>
           </select>
@@ -25,6 +25,7 @@
             <option v-else-if="eligiblePrices.length == 0" selected>{{ $t('app.subscription.create.no_eligible_prices') }}</option>
           </select>
         </div>
+        <p class="form-field-help" v-if="eligible_currency != null">{{ $t('app.subscription.create.help_info.eligible_prices') }}</p>
       </div>
 
       <div class="mt-3 card-body">
@@ -34,6 +35,26 @@
           <select class="form-field" v-model="payment_detail">
             <option v-for="paymentDetail in payment_details" :value="paymentDetail.id">{{ paymentDetail.last_four }} - {{ paymentDetail.expiry_month }}/{{ paymentDetail.expiry_year }}</option>
           </select>
+        </div>
+      </div>
+
+      <div class="mt-3 card-body">
+        <h2>{{ $t('app.subscription.create.trial') }}</h2>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="country">
+            {{ $t('app.subscription.create.trial') }}
+          </label>
+          <p class="form-field-error" v-if="errors['trial'] != undefined">{{ errors['trial'] }}</p>
+          <input type="checkbox"  v-model="trial" :disabled="eligible_currency != null" />
+          <p class="form-field-help" v-if="eligible_currency != null">{{ $t('app.subscription.create.help_info.trial') }}</p>
+          <p class="form-field-help" v-if="subscription_plan != null && !subscription_plan.has_trial">{{ $t('app.subscription.create.help_info.no_trial') }}</p>
+        </div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="country">
+            {{ $t('app.subscription.create.trial_length_days') }}
+          </label>
+          <input type="number" class="form-field" v-model="trial_length_days" :disabled="eligible_currency != null || !trial" />
         </div>
       </div>
       <div class="form-field-submit-ctn">
@@ -65,7 +86,9 @@ export default {
       },
       product: {},
       prices: [],
-      features: []
+      features: [],
+      trial: true,
+      trial_length_days: 0
     }
   },
   computed: {
@@ -98,6 +121,9 @@ export default {
       this.payment_details = response.data.payment_details;
       this.eligible_currency = response.data.eligible_currency;
       this.eligible_schedule = response.data.eligible_schedule;
+      if (this.eligible_currency != null) {
+        this.trial = false;
+      }
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
@@ -111,6 +137,14 @@ export default {
     })
   },
   methods: {
+    refreshTrial: function () {
+        if (this.eligible_currency != null) {
+          this.trial = false;
+          return;
+        }
+        this.trial = this.subscription_plan.has_trial;
+        this.trial_length_days = this.subscription_plan.trial_length_days;
+    },
     send: function () {
 
       if (
@@ -125,7 +159,9 @@ export default {
       const payload = {
         payment_details: this.payment_detail,
         price: this.price,
-        subscription_plan: this.subscription_plan.id
+        subscription_plan: this.subscription_plan.id,
+        has_trial: this.trial,
+        trial_length_days: this.trial_length_days
       }
       this.sendingInProgress = true;
       axios.post('/app/customer/'+customerId+'/subscription', payload).then(response => {
