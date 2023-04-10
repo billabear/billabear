@@ -22,6 +22,7 @@ use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
@@ -69,6 +70,7 @@ class MainContext implements Context
             $subscription->setCustomer($customer);
             $subscription->setPrice($price);
             $subscription->setSubscriptionPlan($subscriptionPlan);
+            $subscription->setStatus(SubscriptionStatus::ACTIVE);
             $subscription->setCurrency($price->getCurrency());
             $subscription->setAmount($price->getAmount());
             $subscription->setMainExternalReference('sdasd');

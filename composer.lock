@@ -1906,12 +1906,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "4e25945e293c81f1b5d88590671f0ed9ce2a2af4"
+                "reference": "2a829031d25944f8efc1494a7976b1b18a621cf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/4e25945e293c81f1b5d88590671f0ed9ce2a2af4",
-                "reference": "4e25945e293c81f1b5d88590671f0ed9ce2a2af4",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/2a829031d25944f8efc1494a7976b1b18a621cf0",
+                "reference": "2a829031d25944f8efc1494a7976b1b18a621cf0",
                 "shasum": ""
             },
             "require": {
@@ -1948,7 +1948,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-04-10T12:01:59+00:00"
+            "time": "2023-04-10T17:00:16+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -1956,12 +1956,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "9552e351ebd7eb9e6ddc46bdd44f3a32ed5ed04d"
+                "reference": "6ac7cdc7b6d1b4e04ef808b9d6b8190482b63aa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/9552e351ebd7eb9e6ddc46bdd44f3a32ed5ed04d",
-                "reference": "9552e351ebd7eb9e6ddc46bdd44f3a32ed5ed04d",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/6ac7cdc7b6d1b4e04ef808b9d6b8190482b63aa1",
+                "reference": "6ac7cdc7b6d1b4e04ef808b9d6b8190482b63aa1",
                 "shasum": ""
             },
             "require": {
@@ -2045,7 +2045,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-04-10T15:27:16+00:00"
+            "time": "2023-04-10T19:04:22+00:00"
         },
         {
             "name": "php-http/discovery",
