@@ -78,6 +78,26 @@ class AppContext implements Context
     }
 
     /**
+     * @Then I will see the payment details with the last four :arg1
+     */
+    public function iWillSeeThePaymentDetailsWithTheLastFour($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['payment_details'])) {
+            throw new \Exception('No payment details found');
+        }
+
+        foreach ($data['payment_details'] as $paymentDetails) {
+            if ($paymentDetails['last_four'] == $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find payment details");
+    }
+
+    /**
      * @When I make the payment details :arg1 for :arg2 default via APP
      */
     public function iMakeThePaymentDetailsForDefault($name, $email)

@@ -20,4 +20,4 @@ Feature: Customer Read APP
       | Customer Email           | Last Four | Expiry Month | Expiry Year |
       | customer.one@example.org | 0444      | 03           | 25          |
     When I view the customer info via the site for "customer.one@example.org"
-    Then I will see 1 payment details
+    Then I will see the payment details with the last four "0444"
