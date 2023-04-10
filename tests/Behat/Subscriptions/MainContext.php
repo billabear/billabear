@@ -65,7 +65,6 @@ class MainContext implements Context
             $paymentReference = $paymentDetails->getStoredPaymentReference();
 
             $subscription = new Subscription();
-            $subscription->setStatus('active');
             $subscription->setPaymentSchedule($row['Price Schedule']);
             $subscription->setCustomer($customer);
             $subscription->setPrice($price);
@@ -192,7 +191,7 @@ class MainContext implements Context
     {
         $subscription = $this->getSubscription($customerEmail, $planName);
 
-        if ('cancelled' !== $subscription->getStatus()) {
+        if (SubscriptionStatus::CANCELLED !== $subscription->getStatus()) {
             echo $this->session->getPage()->getContent();
             throw new \Exception('Not cancelled');
         }

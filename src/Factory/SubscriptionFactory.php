@@ -30,7 +30,7 @@ class SubscriptionFactory
     {
         $dto = new AppDto();
         $dto->setId((string) $subscription->getId());
-        $dto->setStatus($subscription->getStatus());
+        $dto->setStatus($subscription->getStatus()->value);
         $dto->setSchedule($subscription->getPaymentSchedule());
         $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
         $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));

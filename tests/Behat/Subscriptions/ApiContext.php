@@ -97,7 +97,7 @@ class ApiContext implements Context
         $subscription = $this->getSubscription($customerEmail, $planName);
 
         $payload = [
-            'when' => 'end-of-run',
+            'when' => 'instantly',
             'refund_type' => 'none',
         ];
 
