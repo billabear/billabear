@@ -67,8 +67,33 @@
             </div>
           </dl>
         </div>
+        <div class="mt-5">
+          <h2 class="mb-3">{{ $t('app.subscription.view.payment_method.title') }}</h2>
+          <dl class="detail-list">
+            <div>
+              <dt>{{ $t('app.subscription.view.payment_method.last_four') }}</dt>
+              <dd>**** **** **** {{ paymentDetails.last_four }}</dd>
+            </div>
+            <div>
+              <dt>{{ $t('app.subscription.view.payment_method.brand') }}</dt>
+              <dd>{{ paymentDetails.brand }}</dd>
+            </div>
+            <div>
+              <dt>{{ $t('app.subscription.view.payment_method.expiry_month') }}</dt>
+              <dd>{{ paymentDetails.expiry_month }}</dd>
+            </div>
+            <div>
+              <dt>{{ $t('app.subscription.view.payment_method.expiry_year') }}</dt>
+              <dd>{{ paymentDetails.expiry_year }}</dd>
+            </div>
+          </dl>
+        </div>
 
         <div class="mt-5 text-end">
+
+          <button class="btn--secondary mr-2" @click="showChangePaymentMethods">
+            {{ $t('app.subscription.view.buttons.payment_method') }}
+          </button>
 
           <button class="btn--danger" @click="options.modelValue = true" :class="{'btn--danager--disabled': subscription.status == 'cancelled'}" :disabled="subscription.status == 'cancelled'">
             {{ $t('app.subscription.view.buttons.cancel') }}
@@ -79,6 +104,39 @@
       <div v-else>{{ errorMessage }}</div>
     </LoadingScreen>
 
+    <VueFinalModal
+        v-model="paymentMethodOptions.modelValue"
+        :teleport-to="paymentMethodOptions.teleportTo"
+        :display-directive="paymentMethodOptions.displayDirective"
+        :hide-overlay="paymentMethodOptions.hideOverlay"
+        :overlay-transition="paymentMethodOptions.overlayTransition"
+        :content-transition="paymentMethodOptions.contentTransition"
+        :click-to-close="paymentMethodOptions.clickToClose"
+        :esc-to-close="paymentMethodOptions.escToClose"
+        :background="paymentMethodOptions.background"
+        :lock-scroll="paymentMethodOptions.lockScroll"
+        :swipe-to-close="paymentMethodOptions.swipeToClose"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      <LoadingMessage v-if="!paymentMethodReady" />
+      <div v-else>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="street_line_two">
+            {{ $t('app.subscription.view.modal.payment_method.payment_method') }}
+          </label>
+          <select class="form-field" v-model="newPaymentMethod">
+            <option v-for="paymentMethod in paymentMethods" :value="paymentMethod">{{ paymentMethod.brand }} - **** **** **** {{ paymentMethod.last_four }} - {{paymentMethod.expiry_month }}/{{paymentMethod.expiry_year }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.subscription.view.modal.payment_method.payment_method_help') }}</p>
+        </div>
+        <div class="mt-4">
+          <SubmitButton :in-progress="paymentMethodsSending" @click="sendChangePaymentMethods">{{ $t('app.subscription.view.modal.payment_method.payment_method_help') }}</SubmitButton>
+        </div>
+      </div>
+
+    </VueFinalModal>
     <VueFinalModal
         v-model="options.modelValue"
         :teleport-to="options.teleportTo"
@@ -144,6 +202,7 @@ export default {
       subscription: {},
       customer: {},
       product: {},
+      paymentDetails: {},
       payments: [],
       refunds: [],
       ready: false,
@@ -157,6 +216,19 @@ export default {
           cancelled: false
       },
       cancelSending: false,
+      paymentMethodOptions: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
       options: {
         teleportTo: 'body',
         modelValue: false,
@@ -170,6 +242,10 @@ export default {
         lockScroll: true,
         swipeToClose: 'none',
       },
+      paymentMethodReady: false,
+      paymentMethods: [],
+      newPaymentMethod: {},
+      paymentMethodsSending: false
     };
   },
   mounted() {
@@ -178,6 +254,7 @@ export default {
       this.product = response.data.product;
       this.subscription = response.data.subscription;
       this.customer = response.data.customer;
+      this.paymentDetails = response.data.payment_details;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
@@ -191,6 +268,26 @@ export default {
     })
   },
   methods: {
+    showChangePaymentMethods: function () {
+        this.paymentMethodOptions.modelValue = true;
+        axios.get('/app/customer/'+this.customer.id+'/payment-details').then(response => {
+            this.newPaymentMethod = this.paymentDetails;
+            this.paymentMethods = response.data.data;
+            this.paymentMethodReady = true;
+
+        })
+    },
+    sendChangePaymentMethods: function () {
+        this.paymentMethodsSending = true;
+        var subscriptionId = this.$route.params.subscriptionId
+        const payload = {
+          payment_details: this.newPaymentMethod.id,
+        };
+        axios.post('/app/subscription/' + subscriptionId+'/payment-method', payload).then(response => {
+          this.paymentMethodsSending = false;
+          this.paymentDetails = this.newPaymentMethod;
+        })
+    },
     sendCancel: function () {
       this.cancelSending = true
       var subscriptionId = this.$route.params.subscriptionId

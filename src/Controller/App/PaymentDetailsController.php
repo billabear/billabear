@@ -13,6 +13,7 @@
 namespace App\Controller\App;
 
 use App\Dto\Request\Api\PaymentDetails\FrontendTokenComplete;
+use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\PaymentDetails\FrontendToken;
 use App\Entity\Customer;
 use App\Factory\PaymentDetailsFactory;
@@ -94,6 +95,31 @@ class PaymentDetailsController
         $json = $serializer->serialize($output, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/customer/{customerId}/payment-details', name: 'app_payment_details_list', methods: ['GET'])]
+    public function listCustomerPaymentMethods(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentDetailsFactory $paymentDetailsFactory,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('customerId'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
+        $paymentDetailsDtos = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
+        $listView = new ListResponse();
+        $listView->setData($paymentDetailsDtos);
+
+        $json = $serializer->serialize($listView, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 
     #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]

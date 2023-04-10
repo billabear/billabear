@@ -22,6 +22,7 @@ use Obol\PriceServiceInterface;
 use Obol\ProductServiceInterface;
 use Obol\Provider\ProviderInterface;
 use Obol\RefundServiceInterface;
+use Obol\SubscriptionServiceInterface;
 
 class Provider implements ProviderInterface
 {
@@ -32,7 +33,7 @@ class Provider implements ProviderInterface
 
     public function hostedCheckouts(): HostedCheckoutServiceInterface
     {
-        // TODO: Implement hostedCheckouts() method.
+        return new HostedCheckoutService();
     }
 
     public function customers(): CustomerServiceInterface
@@ -58,5 +59,10 @@ class Provider implements ProviderInterface
     public function getName(): string
     {
         return 'test_dummy';
+    }
+
+    public function subscriptions(): SubscriptionServiceInterface
+    {
+        return new SubscriptionService();
     }
 }

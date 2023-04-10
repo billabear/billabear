@@ -15,10 +15,23 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         recurring: "Recurring",
         schedule: "Schedule",
     },
+    payment_method: {
+        title: "Payment Method",
+        last_four: "Last Four",
+        expiry_month: "Expiry Month",
+        expiry_year: "Expiry Year",
+        brand: 'Card Type'
+    },
     buttons: {
-        cancel: "Cancel"
+        cancel: "Cancel",
+        payment_method: "Update Payment Details"
     },
     modal: {
+        payment_method: {
+            payment_method: "Use Payment Details",
+            payment_method_help: "These details will be used for the next time we charge the customer.",
+            update_button: "Update Payment Details"
+        },
         cancel: {
             title: "Cancel Subscription",
             cancel_btn: "Confirm",

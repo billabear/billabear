@@ -159,6 +159,31 @@ class MainContext implements Context
     }
 
     /**
+     * @When I update the subscription :arg1 for :arg2 to use the Payment method :arg3
+     */
+    public function iUpdateTheSubscriptionForToUseThePaymentMethod($planName, $customerEmail, $lastFour)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        /** @var PaymentDetails $paymentDetails */
+        $paymentDetails = $this->paymentDetailsRepository->findOneBy(['lastFour' => $lastFour]);
+
+        $this->sendJsonRequest('POST', '/app/subscription/'.(string) $subscription->getId().'/payment-method', ['payment_details' => (string) $paymentDetails->getId()]);
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will have the Payment Method :arg3
+     */
+    public function theSubscriptionForWillHaveThePaymentMethod($planName, $customerEmail, $lastFour)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        if ($subscription->getPaymentDetails()?->getLastFour() != $lastFour) {
+            throw new \Exception('Got different payment details');
+        }
+    }
+
+    /**
      * @Then the subscription :arg1 for :arg2 will be cancelled
      */
     public function theSubscriptionForWillBeCancelled($planName, $customerEmail)

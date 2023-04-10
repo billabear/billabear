@@ -46,6 +46,22 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I will see the payment details in the list with the last four :arg1
+     */
+    public function iWillSeeThePaymentDetailsInTheListWithTheLastFour($lastFour)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $paymentDetails) {
+            if ($paymentDetails['last_four'] == $lastFour) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't see details");
+    }
+
+    /**
      * @Then the payment details :arg1 for :arg2 should be default
      */
     public function thePaymentDetailsShouldBeDefault($name, $email)

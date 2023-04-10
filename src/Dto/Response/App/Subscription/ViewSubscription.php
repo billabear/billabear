@@ -13,8 +13,10 @@
 namespace App\Dto\Response\App\Subscription;
 
 use App\Dto\Generic\App\Customer;
+use App\Dto\Generic\App\PaymentDetails;
 use App\Dto\Generic\App\Product;
 use App\Dto\Generic\App\Subscription;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class ViewSubscription
 {
@@ -23,6 +25,9 @@ class ViewSubscription
     private Customer $customer;
 
     private Product $product;
+
+    #[SerializedName('payment_details')]
+    private PaymentDetails $paymentDetails;
 
     public function getSubscription(): Subscription
     {
@@ -52,5 +57,15 @@ class ViewSubscription
     public function setProduct(Product $product): void
     {
         $this->product = $product;
+    }
+
+    public function getPaymentDetails(): PaymentDetails
+    {
+        return $this->paymentDetails;
+    }
+
+    public function setPaymentDetails(PaymentDetails $paymentDetails): void
+    {
+        $this->paymentDetails = $paymentDetails;
     }
 }

@@ -16,6 +16,7 @@ use App\Api\Filters\SubscriptionList;
 use App\Customer\CustomerFactory;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
+use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
@@ -26,6 +27,7 @@ use App\Factory\SubscriptionPlanFactory;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
+use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
@@ -193,6 +195,7 @@ class SubscriptionController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
         CustomerFactory $customerFactory,
+        PaymentDetailsFactory $paymentDetailsFactory,
         ProductFactory $productFactory,
         SerializerInterface $serializer
     ): Response {
@@ -208,10 +211,50 @@ class SubscriptionController
         $view = new ViewSubscription();
         $view->setSubscription($dto);
         $view->setCustomer($customerDto);
+        $view->setPaymentDetails($paymentDetailsFactory->createAppDto($subscription->getPaymentDetails()));
         $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getSubscriptionPlan()->getProduct()));
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/subscription/{subscriptionId}/payment-method', name: 'app_subscription_payment_method_update', methods: ['POST'])]
+    public function updatePaymentMethod(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodUpdateProcessor $methodUpdateProcessor,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            throw new NoEntityFoundException();
+        }
+
+        /** @var UpdatePaymentMethod $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdatePaymentMethod::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
+        $methodUpdateProcessor->process($subscription, $paymentDetails);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 
     #[Route('/app/subscription/{subscriptionId}/cancel', name: 'app_subscription_cancel', methods: ['POST'])]

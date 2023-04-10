@@ -98,6 +98,16 @@ class AppContext implements Context
     }
 
     /**
+     * @When I view the payment details info for the customer via the site for :arg1
+     */
+    public function iViewThePaymentDetailsInfoForTheCustomerViaTheSiteFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-details');
+    }
+
+    /**
      * @When I make the payment details :arg1 for :arg2 default via APP
      */
     public function iMakeThePaymentDetailsForDefault($name, $email)
