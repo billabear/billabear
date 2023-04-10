@@ -76,7 +76,7 @@ class MainContext implements Context
             $subscription->setChildExternalReference('saddsa');
             $subscription->setCreatedAt(new \DateTime('now'));
             $subscription->setUpdatedAt(new \DateTime('now'));
-            $subscription->setPaymentExternalReference($paymentReference);
+            $subscription->setPaymentDetails($paymentDetails);
             $subscription->setValidUntil(new \DateTime('+1 '.$row['Price Schedule']));
 
             $this->subscriptionRepository->getEntityManager()->persist($subscription);

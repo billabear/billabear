@@ -15,12 +15,15 @@ namespace App\Controller\Api;
 use App\Api\Filters\SubscriptionList;
 use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
+use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\CancellationRequestFactory;
 use App\Factory\SubscriptionFactory;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
+use App\Subscription\PaymentMethodUpdateProcessor;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -206,6 +209,45 @@ class SubscriptionController
         }
 
         $cancellationRequestRepository->save($cancellationRequest);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/api/v1/subscription/{subscriptionId}/payment-method', name: 'api_v1_subscription_payment_method_update', methods: ['PUT'])]
+    public function updatePaymentMethod(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodUpdateProcessor $methodUpdateProcessor,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            throw new NoEntityFoundException();
+        }
+
+        /** @var UpdatePaymentMethod $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdatePaymentMethod::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
+        $methodUpdateProcessor->process($subscription, $paymentDetails);
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }

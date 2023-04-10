@@ -17,7 +17,9 @@ use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
@@ -34,6 +36,7 @@ class ApiContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
+        private PaymentDetailsServiceRepository $paymentDetailsRepository,
     ) {
     }
 
@@ -99,5 +102,18 @@ class ApiContext implements Context
         ];
 
         $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/cancel', $payload);
+    }
+
+    /**
+     * @When I update the subscription :arg1 for :arg2 to use the Payment method :arg3 via API
+     */
+    public function iUpdateTheSubscriptionForToUseThePaymentMethodViaApi($planName, $customerEmail, $lastFour)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        /** @var PaymentDetails $paymentDetails */
+        $paymentDetails = $this->paymentDetailsRepository->findOneBy(['lastFour' => $lastFour]);
+
+        $this->sendJsonRequest('PUT', '/api/v1/subscription/'.(string) $subscription->getId().'/payment-method', ['payment_details' => (string) $paymentDetails->getId()]);
     }
 }
