@@ -26,9 +26,6 @@
             <LoadingMessage>{{ $t('public.login.logging_in') }}</LoadingMessage>
           </button>
         </div>
-        <div class="mt-5 px-5 mb-3  text-center">
-          <router-link :to="{name: 'public.signup'}" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">{{ $t('public.login.signup_link') }}</router-link>
-        </div>
       </div>
     </form>
   </div>
