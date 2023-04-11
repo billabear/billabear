@@ -1,0 +1,7 @@
+import {PAYMENT_LIST_TRANSLATIONS} from "./list";
+import {PAYMENT_VIEW_TRANSLATION} from "./view";
+
+export const PAYMENT_TRANSLATIONS = {
+    list: PAYMENT_LIST_TRANSLATIONS,
+    view: PAYMENT_VIEW_TRANSLATION
+}

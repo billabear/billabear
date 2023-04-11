@@ -22,6 +22,7 @@ use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
@@ -88,6 +89,7 @@ class MainContext implements Context
             $payment->setPaymentReference($paymentReference);
             $payment->setMoneyAmount($price->getAsMoney());
             $payment->setCustomer($customer);
+            $payment->setStatus(PaymentStatus::COMPLETED);
             $payment->setRefunded(false);
             $payment->setCompleted(true);
             $payment->setChargedBack(true);

@@ -47,7 +47,7 @@ class CreateSubscription
     private $hasTrial;
 
     #[SerializedName('trial_length_days')]
-    #[Assert\Positive]
+    #[Assert\PositiveOrZero]
     #[Assert\Type('integer')]
     private $trialLengthDays;
 
