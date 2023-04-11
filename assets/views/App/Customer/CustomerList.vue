@@ -35,7 +35,7 @@
     <LoadingScreen :ready="ready">
     <div class="mt-3">
         <table class="list-table">
-          <thead class="bg-gray-100 dark:bg-gray-800">
+          <thead>
             <tr>
               <th>{{ $t('app.customer.list.email') }}</th>
               <th>{{ $t('app.customer.list.country')}}</th>
@@ -44,24 +44,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="customer in customers" class="mt-5">
+            <tr v-for="customer in customers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.customer.view', params: {id: customer.id}})">
               <td>{{ customer.email }}</td>
               <td>{{ customer.address.country }}</td>
               <td>{{ customer.reference }}</td>
-              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">View</router-link></td>
+              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">View</router-link></td>
             </tr>
             <tr v-if="customers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
             </tr>
           </tbody>
-          <tfoot>
-            <tr class="">
-              <th>{{ $t('app.customer.list.email') }}</th>
-              <th>{{ $t('app.customer.list.country')}}</th>
-              <th>{{ $t('app.customer.list.reference') }}</th>
-              <th></th>
-            </tr>
-          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
