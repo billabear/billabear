@@ -2,6 +2,7 @@
   <div>
     <LoadingScreen :ready="ready">
       <div v-if="!error">
+        <div class="grid grid-cols-2 gap-3">
         <div class="mt-5">
           <h2 class="mb-3">{{ $t('app.subscription.view.title') }}</h2>
           <dl class="detail-list">
@@ -88,7 +89,7 @@
             </div>
           </dl>
         </div>
-
+        </div>
         <div class="mt-5 text-end">
 
           <button class="btn--secondary mr-2" @click="showChangePaymentMethods">
