@@ -7,7 +7,7 @@
         <div class="mt-3 text-end">
           <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
         </div>
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-3">
           <div class="mt-5">
             <h2 class="mb-3">{{ $t('app.customer.view.main.title') }}</h2>
             <dl class="detail-list">
@@ -58,8 +58,6 @@
               </div>
             </dl>
           </div>
-        </div>
-
 
         <div class="mt-3">
           <div class="grid grid-cols-2">
@@ -130,6 +128,8 @@
           </table>
         </div>
       </div>
+      </div>
+
 
       <div v-else>{{ errorMessage }}</div>
     </LoadingScreen>
