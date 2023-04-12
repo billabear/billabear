@@ -68,7 +68,7 @@ class CustomerController
             }
         }
         $customerRepository->save($customer);
-        $dto = $customerFactory->createApiDtoFromCustomer($customer);
+        $dto = $customerFactory->createApiDto($customer);
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
@@ -105,7 +105,7 @@ class CustomerController
             lastId: $lastKey,
         );
 
-        $dtos = array_map([$customerFactory, 'createApiDtoFromCustomer'], $resultSet->getResults());
+        $dtos = array_map([$customerFactory, 'createApiDto'], $resultSet->getResults());
 
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
@@ -130,7 +130,7 @@ class CustomerController
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
-        $dto = $customerFactory->createApiDtoFromCustomer($customer);
+        $dto = $customerFactory->createApiDto($customer);
         $data = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($data, json: true);
@@ -169,7 +169,7 @@ class CustomerController
         $newCustomer = $customerFactory->createCustomer($dto, $customer);
 
         $customerRepository->save($newCustomer);
-        $dto = $customerFactory->createApiDtoFromCustomer($newCustomer);
+        $dto = $customerFactory->createApiDto($newCustomer);
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);

@@ -70,7 +70,7 @@ class CustomerController
             firstId: $firstKey,
         );
 
-        $dtos = array_map([$customerFactory, 'createAppDtoFromCustomer'], $resultSet->getResults());
+        $dtos = array_map([$customerFactory, 'createAppDto'], $resultSet->getResults());
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
@@ -144,7 +144,7 @@ class CustomerController
         $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
         $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
 
-        $customerDto = $customerFactory->createAppDtoFromCustomer($customer);
+        $customerDto = $customerFactory->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
         $dto->setPaymentDetails($paymentDetailsDto);
@@ -187,7 +187,7 @@ class CustomerController
         $newCustomer = $customerFactory->createCustomer($dto, $customer);
 
         $customerRepository->save($newCustomer);
-        $dto = $customerFactory->createAppDtoFromCustomer($newCustomer);
+        $dto = $customerFactory->createAppDto($newCustomer);
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);

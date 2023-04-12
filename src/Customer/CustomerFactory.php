@@ -50,7 +50,7 @@ class CustomerFactory
         return $customer;
     }
 
-    public function createApiDtoFromCustomer(Customer $customer): CustomerApiDto
+    public function createApiDto(Customer $customer): CustomerApiDto
     {
         $address = new AddressDto();
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
@@ -71,7 +71,7 @@ class CustomerFactory
         return $dto;
     }
 
-    public function createAppDtoFromCustomer(CustomerInterface $customer): CustomerAppDto
+    public function createAppDto(CustomerInterface $customer): CustomerAppDto
     {
         $address = new AddressDto();
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());

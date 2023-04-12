@@ -39,6 +39,10 @@ default:
                 - App\Tests\Behat\PaymentDetails\ApiContext
                 - App\Tests\Behat\PaymentDetails\AppContext
 
+                # Refund
+                - App\Tests\Behat\Refund\MainContext
+
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

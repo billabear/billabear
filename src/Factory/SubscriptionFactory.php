@@ -40,7 +40,7 @@ class SubscriptionFactory
         $dto->setCreatedAt($subscription->getCreatedAt());
         $dto->setUpdatedAt($subscription->getUpdatedAt());
         $dto->setValidUntil($subscription->getValidUntil());
-        $dto->setCustomer($this->customerFactory->createAppDtoFromCustomer($subscription->getCustomer()));
+        $dto->setCustomer($this->customerFactory->createAppDto($subscription->getCustomer()));
 
         return $dto;
     }

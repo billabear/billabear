@@ -32,7 +32,7 @@ class PaymentFactory
         $dto->setCurrency($payment->getCurrency());
         $dto->setExternalReference($payment->getPaymentReference());
         $dto->setCreatedAt($payment->getCreatedAt());
-        $dto->setCustomer($this->customerFactory->createAppDtoFromCustomer($payment->getCustomer()));
+        $dto->setCustomer($this->customerFactory->createAppDto($payment->getCustomer()));
         $dto->setPaymentProviderDetailsUrl($payment->getPaymentProviderDetailsUrl());
 
         return $dto;

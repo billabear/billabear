@@ -207,7 +207,7 @@ class SubscriptionController
         }
 
         $dto = $subscriptionFactory->createAppDto($subscription);
-        $customerDto = $customerFactory->createAppDtoFromCustomer($subscription->getCustomer());
+        $customerDto = $customerFactory->createAppDto($subscription->getCustomer());
         $view = new ViewSubscription();
         $view->setSubscription($dto);
         $view->setCustomer($customerDto);
