@@ -76,17 +76,6 @@
               <td colspan="7" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.subscription_plan.view.price.list.amount') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.currency') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.recurring') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.schedule') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.including_tax') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.public') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.external_reference') }}</th>
-            </tr>
-            </tfoot>
           </table>
         </div>
 
@@ -105,12 +94,6 @@
               <td>{{ limit.limit }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.subscription_plan.view.limits.list.feature') }}</th>
-              <th>{{ $t('app.subscription_plan.view.limits.list.limit') }}</th>
-            </tr>
-            </tfoot>
           </table>
         </div>
 
@@ -127,11 +110,6 @@
               <td>{{ feature.name }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.subscription_plan.view.limits.list.feature') }}</th>
-            </tr>
-            </tfoot>
           </table>
         </div>
 
