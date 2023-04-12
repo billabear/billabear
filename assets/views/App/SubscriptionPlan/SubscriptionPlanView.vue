@@ -79,42 +79,42 @@
           </table>
         </div>
 
-        <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription_plan.view.limits.title') }}</h2>
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.subscription_plan.view.limits.list.feature') }}</th>
-              <th>{{ $t('app.subscription_plan.view.limits.list.limit') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="limit in subscription_plan.limits" class="mt-5">
-              <td>{{ limit.feature.name }}</td>
-              <td>{{ limit.limit }}</td>
-            </tr>
-            </tbody>
-          </table>
+        <div class="grid grid-cols-2 gap-2">
+
+          <div class="mt-5">
+            <h2 class="mb-3">{{ $t('app.subscription_plan.view.limits.title') }}</h2>
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.subscription_plan.view.limits.list.feature') }}</th>
+                <th>{{ $t('app.subscription_plan.view.limits.list.limit') }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="limit in subscription_plan.limits" class="mt-5">
+                <td>{{ limit.feature.name }}</td>
+                <td>{{ limit.limit }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-5">
+            <h2 class="mb-3">{{ $t('app.subscription_plan.view.features.title') }}</h2>
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.subscription_plan.view.features.list.feature') }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="feature in subscription_plan.features" class="mt-5">
+                <td>{{ feature.name }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
-        <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription_plan.view.features.title') }}</h2>
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.subscription_plan.view.features.list.feature') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="feature in subscription_plan.features" class="mt-5">
-              <td>{{ feature.name }}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-
-
-
       </div>
 
       <div v-else>{{ errorMessage }}</div>
