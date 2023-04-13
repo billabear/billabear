@@ -35,10 +35,10 @@ class Subscription
     private \DateTimeInterface $validUntil;
 
     #[SerializedName('main_external_reference')]
-    private string $externalMainReference;
+    private string $mainExternalReference;
 
     #[SerializedName('external_main_reference_details_url')]
-    private ?string $externalMainReferenceDetailsUrl = null;
+    private ?string $paymentProviderDetailsUrl = null;
 
     #[SerializedName('child_external_reference')]
     private string $childExternalReference;
@@ -110,24 +110,24 @@ class Subscription
         $this->validUntil = $validUntil;
     }
 
-    public function getExternalMainReference(): string
+    public function getMainExternalReference(): string
     {
-        return $this->externalMainReference;
+        return $this->mainExternalReference;
     }
 
-    public function setExternalMainReference(string $externalMainReference): void
+    public function setMainExternalReference(string $mainExternalReference): void
     {
-        $this->externalMainReference = $externalMainReference;
+        $this->mainExternalReference = $mainExternalReference;
     }
 
-    public function getExternalMainReferenceDetailsUrl(): ?string
+    public function getPaymentProviderDetailsUrl(): ?string
     {
-        return $this->externalMainReferenceDetailsUrl;
+        return $this->paymentProviderDetailsUrl;
     }
 
-    public function setExternalMainReferenceDetailsUrl(?string $externalMainReferenceDetailsUrl): void
+    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
     {
-        $this->externalMainReferenceDetailsUrl = $externalMainReferenceDetailsUrl;
+        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
     }
 
     public function getChildExternalReference(): string
