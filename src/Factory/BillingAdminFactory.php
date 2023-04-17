@@ -12,6 +12,7 @@
 
 namespace App\Factory;
 
+use App\Dto\Generic\Api\BillingAdmin as ApiDto;
 use App\Dto\Generic\App\BillingAdmin as AppDto;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 
@@ -24,6 +25,19 @@ class BillingAdminFactory
         }
 
         $dto = new AppDto();
+        $dto->setId((string) $billingAdmin->getId());
+        $dto->setDisplayName($billingAdmin->getDisplayName());
+
+        return $dto;
+    }
+
+    public function createApiDto(?BillingAdminInterface $billingAdmin): ?ApiDto
+    {
+        if (!$billingAdmin) {
+            return null;
+        }
+
+        $dto = new ApiDto();
         $dto->setId((string) $billingAdmin->getId());
         $dto->setDisplayName($billingAdmin->getDisplayName());
 

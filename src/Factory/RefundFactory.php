@@ -13,6 +13,7 @@
 namespace App\Factory;
 
 use App\Customer\CustomerFactory;
+use App\Dto\Generic\Api\Refund as ApiDto;
 use App\Dto\Generic\App\Refund as AppDto;
 use Parthenon\Billing\Entity\Refund;
 
@@ -34,6 +35,20 @@ class RefundFactory
         $dto->setStatus($refund->getStatus()->value);
         $dto->setPayment($this->paymentFactory->createAppDto($refund->getPayment()));
         $dto->setCustomer($this->customerFactory->createAppDto($refund->getCustomer()));
+        $dto->setBillingAdmin($this->billingAdminFactory->createAppDto($refund->getBillingAdmin()));
+
+        return $dto;
+    }
+
+    public function createApiDto(Refund $refund): ApiDto
+    {
+        $dto = new ApiDto();
+        $dto->setAmount($refund->getAmount());
+        $dto->setCurrency($refund->getCurrency());
+        $dto->setComment($refund->getReason());
+        $dto->setStatus($refund->getStatus()->value);
+        $dto->setPayment($this->paymentFactory->createApiDto($refund->getPayment()));
+        $dto->setCustomer($this->customerFactory->createApiDto($refund->getCustomer()));
         $dto->setBillingAdmin($this->billingAdminFactory->createAppDto($refund->getBillingAdmin()));
 
         return $dto;

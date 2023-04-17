@@ -41,6 +41,7 @@ default:
                 - App\Tests\Behat\PaymentDetails\AppContext
 
                 # Refund
+                - App\Tests\Behat\Refund\ApiContext
                 - App\Tests\Behat\Refund\MainContext
 
 
