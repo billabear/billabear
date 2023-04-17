@@ -12,16 +12,24 @@
 
 namespace App\Tests\Behat\Refund;
 
+use App\Repository\Orm\CustomerRepository;
+use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use Parthenon\Billing\Entity\Refund;
+use Parthenon\Billing\Repository\Orm\RefundServiceRepository;
 
 class ApiContext implements Context
 {
     use SendRequestTrait;
+    use CustomerTrait;
 
-    public function __construct(private Session $session)
-    {
+    public function __construct(
+        private Session $session,
+        private CustomerRepository $customerRepository,
+        private RefundServiceRepository $refundRepository,
+    ) {
     }
 
     /**
@@ -46,5 +54,33 @@ class ApiContext implements Context
         }
 
         throw new \Exception('No such refund');
+    }
+
+    /**
+     * @When I view the full refund for a payment for :arg1 for :arg2 via API
+     */
+    public function iViewTheFullRefundForAPaymentForForViaApi($email, $amount)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $refund = $this->refundRepository->findOneBy(['customer' => $customer, 'amount' => $amount]);
+
+        if (!$refund instanceof Refund) {
+            throw new \Exception("Can't find refund");
+        }
+
+        $this->sendJsonRequest('GET', '/api/v1/refund/'.(string) $refund->getId());
+    }
+
+    /**
+     * @Then I will see the refund api response has the amount of :arg1
+     */
+    public function iWillSeeTheRefundApiResponseHasTheAmountOf($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['amount'] != $arg1) {
+            throw new \Exception("Can't match");
+        }
     }
 }
