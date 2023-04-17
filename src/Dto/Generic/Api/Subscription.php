@@ -34,7 +34,7 @@ class Subscription
     private \DateTimeInterface $validUntil;
 
     #[SerializedName('main_external_reference')]
-    private string $externalMainReference;
+    private string $mainExternalReference;
 
     #[SerializedName('child_external_reference')]
     private string $childExternalReference;
@@ -105,24 +105,14 @@ class Subscription
         $this->validUntil = $validUntil;
     }
 
-    public function getExternalMainReference(): string
+    public function getMainExternalReference(): string
     {
-        return $this->externalMainReference;
+        return $this->mainExternalReference;
     }
 
-    public function setExternalMainReference(string $externalMainReference): void
+    public function setMainExternalReference(string $mainExternalReference): void
     {
-        $this->externalMainReference = $externalMainReference;
-    }
-
-    public function getExternalMainReferenceDetailsUrl(): ?string
-    {
-        return $this->externalMainReferenceDetailsUrl;
-    }
-
-    public function setExternalMainReferenceDetailsUrl(?string $externalMainReferenceDetailsUrl): void
-    {
-        $this->externalMainReferenceDetailsUrl = $externalMainReferenceDetailsUrl;
+        $this->mainExternalReference = $mainExternalReference;
     }
 
     public function getChildExternalReference(): string

@@ -52,7 +52,7 @@ class SubscriptionFactory
         $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
         $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
         $dto->setChildExternalReference($subscription->getChildExternalReference());
-        $dto->setExternalMainReference($subscription->getMainExternalReference());
+        $dto->setMainExternalReference($subscription->getMainExternalReference());
         $dto->setExternalMainReferenceDetailsUrl($subscription->getMainExternalReferenceDetailsUrl());
         $dto->setCreatedAt($subscription->getCreatedAt());
         $dto->setUpdatedAt($subscription->getUpdatedAt());
