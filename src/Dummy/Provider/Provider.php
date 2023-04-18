@@ -53,7 +53,7 @@ class Provider implements ProviderInterface
 
     public function refunds(): RefundServiceInterface
     {
-        return new PaymentService();
+        return new RefundService();
     }
 
     public function getName(): string

@@ -12,16 +12,23 @@
 
 namespace App\Tests\Behat\Payments;
 
+use App\Repository\Orm\CustomerRepository;
+use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use Parthenon\Billing\Repository\Orm\PaymentServiceRepository;
 
 class ApiContext implements Context
 {
     use SendRequestTrait;
+    use CustomerTrait;
 
-    public function __construct(private Session $session)
-    {
+    public function __construct(
+        private Session $session,
+        private CustomerRepository $customerRepository,
+        private PaymentServiceRepository $paymentRepository,
+    ) {
     }
 
     /**
@@ -46,5 +53,20 @@ class ApiContext implements Context
         }
 
         throw new \Exception("Can't find payment");
+    }
+
+    /**
+     * @When I refund :refundAmount :refundCurrency the payment for :email for :paymentAmount via API
+     */
+    public function iRefundThePaymentForForViaApi($email, $refundAmount, $refundCurrency, $paymentAmount)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $payload = [
+          'amount' => (int) $refundAmount,
+          'currency' => strtoupper($refundCurrency),
+        ];
+        $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
+
+        $this->sendJsonRequest('POST', '/api/v1/payment/'.$payment->getId().'/refund', $payload);
     }
 }

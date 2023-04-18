@@ -21,12 +21,12 @@ class CreatePrice
     #[Assert\Type(type: 'integer')]
     #[Assert\Positive]
     #[SerializedName('amount')]
-    private int $amount;
+    private $amount;
 
     #[Assert\NotBlank()]
     #[Assert\Currency]
     #[SerializedName('currency')]
-    private string $currency;
+    private $currency;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('external_reference')]

@@ -91,4 +91,17 @@ class MainContext implements Context
 
         throw new \Exception('No such refund');
     }
+
+    /**
+     * @Then there will be a refund for :arg1 of :arg2
+     */
+    public function thereWillBeARefundForOf($email, $amount)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $refund = $this->refundRepository->findOneBy(['customer' => $customer, 'amount' => $amount]);
+
+        if (!$refund instanceof Refund) {
+            throw new \Exception('Refund not found');
+        }
+    }
 }
