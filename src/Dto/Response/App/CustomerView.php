@@ -25,6 +25,8 @@ class CustomerView
     #[SerializedName('subscriptions')]
     protected array $subscriptions = [];
 
+    protected array $payments = [];
+
     protected bool $success = true;
 
     public function getCustomer(): Customer
@@ -65,5 +67,15 @@ class CustomerView
     public function setSubscriptions(array $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
+    }
+
+    public function getPayments(): array
+    {
+        return $this->payments;
+    }
+
+    public function setPayments(array $payments): void
+    {
+        $this->payments = $payments;
     }
 }

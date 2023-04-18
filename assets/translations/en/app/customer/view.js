@@ -32,6 +32,16 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         },
         add_new: "Add New Subscription"
     },
+    payments: {
+        title: "Payments",
+        list: {
+            amount: "Amount",
+            currency: "Currency",
+            status: "Status",
+            created_at: "Created At"
+        },
+        no_payments: "No payments for this customer yet"
+    },
     payment_details: {
         title: "Payment Details",
         list: {

@@ -44,4 +44,20 @@ class AppContext implements Context
 
         $this->sendJsonRequest('POST', '/app/payment/'.$payment->getId().'/refund', $payload);
     }
+
+    /**
+     * @Then I will see payments
+     */
+    public function iWillSeePayments()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['payments'])) {
+            throw new \Exception('No payments');
+        }
+
+        if (0 === count($data['payments'])) {
+            throw new \Exception('No payments');
+        }
+    }
 }
