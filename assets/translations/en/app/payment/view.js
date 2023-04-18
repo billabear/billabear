@@ -4,7 +4,29 @@ export const PAYMENT_VIEW_TRANSLATION = {
         title: "Main Details",
         amount: "Amount",
         currency: "Currency",
-        external_reference: "External Reference"
+        external_reference: "External Reference",
+        status: "Status",
+        created_at: "Created At"
+    },
+    customer: {
+        title: "Customer",
+        email: "Email",
+        more_info: "More Info",
+        country: "Country"
+    },
+    refunds: {
+        title: "Refunds",
+        amount: "Amount",
+        reason: "Reason",
+        created_by: "Created By",
+        created_at: "Created At",
+        none: "No refunds found"
+    },
+    subscriptions: {
+        title: "Subscriptions",
+        plan_name: "Plan Name",
+        more_info: "More Info",
+        none: "Payment not linked to subscriptions"
     },
     buttons: {
         refund: "Issue Refund"

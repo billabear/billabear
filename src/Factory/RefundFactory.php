@@ -31,8 +31,9 @@ class RefundFactory
         $dto = new AppDto();
         $dto->setAmount($refund->getAmount());
         $dto->setCurrency($refund->getCurrency());
-        $dto->setComment($refund->getReason());
+        $dto->setReason($refund->getReason());
         $dto->setStatus($refund->getStatus()->value);
+        $dto->setCreatedAt($refund->getCreatedAt());
         $dto->setPayment($this->paymentFactory->createAppDto($refund->getPayment()));
         $dto->setCustomer($this->customerFactory->createAppDto($refund->getCustomer()));
         $dto->setBillingAdmin($this->billingAdminFactory->createAppDto($refund->getBillingAdmin()));
@@ -47,6 +48,7 @@ class RefundFactory
         $dto->setCurrency($refund->getCurrency());
         $dto->setComment($refund->getReason());
         $dto->setStatus($refund->getStatus()->value);
+        $dto->setCreatedAt($refund->getCreatedAt());
         $dto->setPayment($this->paymentFactory->createApiDto($refund->getPayment()));
         $dto->setCustomer($this->customerFactory->createApiDto($refund->getCustomer()));
         $dto->setBillingAdmin($this->billingAdminFactory->createAppDto($refund->getBillingAdmin()));

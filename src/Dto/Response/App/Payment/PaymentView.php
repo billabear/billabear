@@ -24,6 +24,8 @@ class PaymentView
 
     private array $refunds;
 
+    private array $subscriptions;
+
     #[SerializedName('max_refundable')]
     private int $maxRefundable;
 
@@ -65,5 +67,15 @@ class PaymentView
     public function setMaxRefundable(int $maxRefundable): void
     {
         $this->maxRefundable = $maxRefundable;
+    }
+
+    public function getSubscriptions(): array
+    {
+        return $this->subscriptions;
+    }
+
+    public function setSubscriptions(array $subscriptions): void
+    {
+        $this->subscriptions = $subscriptions;
     }
 }

@@ -29,7 +29,7 @@ class Refund
 
     private string $status;
 
-    private ?string $comment = null;
+    private ?string $reason = null;
 
     #[SerializedName('external_reference')]
     private string $externalReference;
@@ -97,14 +97,14 @@ class Refund
         $this->status = $status;
     }
 
-    public function getComment(): ?string
+    public function getReason(): ?string
     {
-        return $this->comment;
+        return $this->reason;
     }
 
-    public function setComment(?string $comment): void
+    public function setReason(?string $reason): void
     {
-        $this->comment = $comment;
+        $this->reason = $reason;
     }
 
     public function getExternalReference(): string

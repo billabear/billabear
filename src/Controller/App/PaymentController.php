@@ -18,6 +18,7 @@ use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Payment\PaymentView;
 use App\Factory\PaymentFactory;
 use App\Factory\RefundFactory;
+use App\Factory\SubscriptionFactory;
 use Brick\Money\Currency;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\Payment;
@@ -25,11 +26,13 @@ use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -87,6 +90,8 @@ class PaymentController
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
         RefundRepositoryInterface $refundRepository,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionFactory $subscriptionFactory,
         RefundFactory $refundFactory,
         PaymentFactory $paymentFactory,
         SerializerInterface $serializer,
@@ -98,6 +103,7 @@ class PaymentController
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $payment->getSubscriptions()->toArray());
         $refunds = $refundRepository->getForPayment($payment);
         $totalRefunded = $refundRepository->getTotalRefundedForPayment($payment);
         $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
@@ -107,6 +113,7 @@ class PaymentController
         $view->setPayment($paymentFactory->createAppDto($payment));
         $view->setRefunds($refundDtos);
         $view->setMaxRefundable($maxRefundable->getMinorAmount()->toInt());
+        $view->setSubscriptions($subscriptionDtos);
 
         $json = $serializer->serialize($view, 'json');
 
@@ -120,6 +127,7 @@ class PaymentController
         RefundManagerInterface $refundManager,
         RefundFactory $refundFactory,
         SerializerInterface $serializer,
+        Security $security,
         ValidatorInterface $validator,
     ) {
         try {
@@ -149,7 +157,7 @@ class PaymentController
 
         $amount = Money::ofMinor($dto->getAmount(), Currency::of($payment->getCurrency()));
         try {
-            $refundManager->issueRefundForPayment($payment, $amount, null, $dto->getReason());
+            $refundManager->issueRefundForPayment($payment, $amount, $security->getUser(), $dto->getReason());
         } catch (RefundLimitExceededException $e) {
             return new JsonResponse(['message' => $e->getMessage()], status: JsonResponse::HTTP_NOT_ACCEPTABLE);
         }

@@ -26,6 +26,71 @@
             </dl>
 
           </div>
+          <div class="mt-5">
+
+            <h2 class="mb-3">{{ $t('app.payment.view.customer.title') }}</h2>
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.payment.view.customer.email') }}</dt>
+                <dd>{{ payment.customer.email }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.payment.view.customer.country') }}</dt>
+                <dd>{{payment.customer.address.country }}</dd>
+              </div>
+              <div>
+                <router-link :to="{name: 'app.customer.view', params: {id: payment.customer.id}}">{{ $t('app.payment.view.customer.more_info') }}</router-link>
+              </div>
+            </dl>
+          </div>
+
+          <div class="mt-5">
+            <h2 class="mb-5">{{ $t('app.payment.view.refunds.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.payment.view.refunds.amount') }}</th>
+                <th>{{ $t('app.payment.view.refunds.reason') }}</th>
+                <th>{{ $t('app.payment.view.refunds.created_by') }}</th>
+                <th>{{ $t('app.payment.view.refunds.created_at') }}</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr v-for="refund in refunds">
+                  <td>{{ refund.amount }}</td>
+                  <td>{{ refund.reason }}</td>
+                  <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
+                  <td v-else>API</td>
+                  <td>{{ $filters.moment(refund.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                </tr>
+                <tr v-if="refunds.length == 0">
+                  <td colspan="4" class="text-center">{{ $t('app.payment.view.refunds.none') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-5">
+            <h2 class="mb-5">{{ $t('app.payment.view.subscriptions.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.payment.view.subscriptions.plan_name') }}</th>
+                <th>{{ $t('app.payment.view.subscriptions.more_info') }}</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr v-for="subscription in subscriptions">
+                  <td>{{ subscription.plan.name }}</td>
+                  <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.payment.view.subscriptions.more_info') }}</router-link></td>
+                </tr>
+                <tr v-if="subscriptions.length == 0">
+                  <td colspan="2" class="text-center">{{ $t('app.payment.view.subscriptions.none') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div class="text-end mt-4">
@@ -86,6 +151,7 @@ export default {
       errorMessage: null,
       payment: {},
       refunds: [],
+      subscriptions: [],
       refundValues: {
         errors: {},
         refundValue: 0,
@@ -128,6 +194,8 @@ export default {
     var paymentId = this.$route.params.id
     axios.get('/app/payments/'+paymentId).then(response => {
       this.payment = response.data.payment;
+      this.refunds = response.data.refunds;
+      this.subscriptions = response.data.subscriptions;
       this.refundValues.refundValue = response.data.max_refundable;
       this.ready = true;
     }).catch(error => {
