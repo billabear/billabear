@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentController
 {
@@ -79,6 +80,7 @@ class PaymentController
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
         RefundManagerInterface $refundManager,
+        ValidatorInterface $validator,
         SerializerInterface $serializer,
     ) {
         try {
@@ -90,6 +92,20 @@ class PaymentController
 
         /** @var RefundPayment $dto */
         $dto = $serializer->deserialize($request->getContent(), RefundPayment::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
         $amount = Money::ofMinor($dto->getAmount(), Currency::of($dto->getCurrency() ?? $payment->getCurrency()));
         try {
             $refundManager->issueRefundForPayment($payment, $amount, null, $dto->getReason());

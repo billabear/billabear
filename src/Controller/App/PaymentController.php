@@ -13,16 +13,25 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\PaymentList;
+use App\Dto\Request\App\Payments\RefundPayment;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Payment\PaymentView;
 use App\Factory\PaymentFactory;
+use App\Factory\RefundFactory;
+use Brick\Money\Currency;
+use Brick\Money\Money;
+use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Exception\RefundLimitExceededException;
+use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentController
 {
@@ -77,19 +86,74 @@ class PaymentController
     public function viewPayment(
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
+        RefundRepositoryInterface $refundRepository,
+        RefundFactory $refundFactory,
         PaymentFactory $paymentFactory,
         SerializerInterface $serializer,
     ) {
         try {
+            /** @var Payment $payment */
             $payment = $paymentRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $refunds = $refundRepository->getForPayment($payment);
+        $totalRefunded = $refundRepository->getTotalRefundedForPayment($payment);
+        $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
+        $maxRefundable = $payment->getMoneyAmount()->minus($totalRefunded);
+
         $view = new PaymentView();
         $view->setPayment($paymentFactory->createAppDto($payment));
+        $view->setRefunds($refundDtos);
+        $view->setMaxRefundable($maxRefundable->getMinorAmount()->toInt());
+
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/payment/{id}/refund', name: 'app_payment_refund', methods: ['POST'])]
+    public function createRefundForPayment(
+        Request $request,
+        PaymentRepositoryInterface $paymentRepository,
+        RefundManagerInterface $refundManager,
+        RefundFactory $refundFactory,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ) {
+        try {
+            /** @var Payment $payment */
+            $payment = $paymentRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var RefundPayment $dto */
+        $dto = $serializer->deserialize($request->getContent(), RefundPayment::class, 'json');
+
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $amount = Money::ofMinor($dto->getAmount(), Currency::of($payment->getCurrency()));
+        try {
+            $refundManager->issueRefundForPayment($payment, $amount, null, $dto->getReason());
+        } catch (RefundLimitExceededException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], status: JsonResponse::HTTP_NOT_ACCEPTABLE);
+        }
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 }

@@ -14,12 +14,18 @@ namespace App\Dto\Response\App\Payment;
 
 use App\Dto\Generic\App\Customer;
 use App\Dto\Generic\App\Payment;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class PaymentView
 {
     private Payment $payment;
 
     private Customer $customer;
+
+    private array $refunds;
+
+    #[SerializedName('max_refundable')]
+    private int $maxRefundable;
 
     public function getPayment(): Payment
     {
@@ -39,5 +45,25 @@ class PaymentView
     public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getRefunds(): array
+    {
+        return $this->refunds;
+    }
+
+    public function setRefunds(array $refunds): void
+    {
+        $this->refunds = $refunds;
+    }
+
+    public function getMaxRefundable(): int
+    {
+        return $this->maxRefundable;
+    }
+
+    public function setMaxRefundable(int $maxRefundable): void
+    {
+        $this->maxRefundable = $maxRefundable;
     }
 }

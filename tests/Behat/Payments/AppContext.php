@@ -1,0 +1,47 @@
+<?php
+
+/*
+ * Copyright Iain Cambridge 2023.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ *
+ * Change Date: TBD ( 3 years after 1.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
+namespace App\Tests\Behat\Payments;
+
+use App\Repository\Orm\CustomerRepository;
+use App\Tests\Behat\Customers\CustomerTrait;
+use App\Tests\Behat\SendRequestTrait;
+use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
+use Parthenon\Billing\Repository\Orm\PaymentServiceRepository;
+
+class AppContext implements Context
+{
+    use SendRequestTrait;
+    use CustomerTrait;
+
+    public function __construct(
+        private Session $session,
+        private CustomerRepository $customerRepository,
+        private PaymentServiceRepository $paymentRepository,
+    ) {
+    }
+
+    /**
+     * @When I refund :refundAmount the payment for :email for :paymentAmount
+     */
+    public function iRefundThePaymentForForViaApi($email, $refundAmount, $paymentAmount)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $payload = [
+          'amount' => (int) $refundAmount,
+        ];
+        $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
+
+        $this->sendJsonRequest('POST', '/app/payment/'.$payment->getId().'/refund', $payload);
+    }
+}

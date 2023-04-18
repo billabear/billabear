@@ -12,6 +12,7 @@ default:
                 # Payments
                 - App\Tests\Behat\Payments\MainContext
                 - App\Tests\Behat\Payments\ApiContext
+                - App\Tests\Behat\Payments\AppContext
 
                 # Customers
                 - App\Tests\Behat\Customers\MainContext
