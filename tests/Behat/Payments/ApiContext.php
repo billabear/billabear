@@ -56,14 +56,14 @@ class ApiContext implements Context
     }
 
     /**
-     * @When I refund :refundAmount :refundCurrency the payment for :email for :paymentAmount via API
+     * @When I refund :refundAmount the payment for :email for :paymentAmount via API
      */
-    public function iRefundThePaymentForForViaApi($email, $refundAmount, $refundCurrency, $paymentAmount)
+    public function iRefundThePaymentForForViaApi($email, $refundAmount, $paymentAmount)
     {
         $customer = $this->getCustomerByEmail($email);
         $payload = [
           'amount' => (int) $refundAmount,
-          'currency' => strtoupper($refundCurrency),
+          'currency' => null,
         ];
         $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
 

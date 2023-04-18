@@ -23,10 +23,10 @@ class RefundPayment
     #[SerializedName('amount')]
     private $amount;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Currency]
     #[SerializedName('currency')]
-    private $currency;
+    private $currency = null;
 
     #[Assert\NotBlank(allowNull: true)]
     private $reason = null;

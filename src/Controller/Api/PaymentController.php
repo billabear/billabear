@@ -18,6 +18,7 @@ use App\Dto\Response\Api\ListResponse;
 use App\Factory\PaymentFactory;
 use Brick\Money\Currency;
 use Brick\Money\Money;
+use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -81,6 +82,7 @@ class PaymentController
         SerializerInterface $serializer,
     ) {
         try {
+            /** @var Payment $payment */
             $payment = $paymentRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
@@ -88,7 +90,7 @@ class PaymentController
 
         /** @var RefundPayment $dto */
         $dto = $serializer->deserialize($request->getContent(), RefundPayment::class, 'json');
-        $amount = Money::ofMinor($dto->getAmount(), Currency::of($dto->getCurrency()));
+        $amount = Money::ofMinor($dto->getAmount(), Currency::of($dto->getCurrency() ?? $payment->getCurrency()));
         try {
             $refundManager->issueRefundForPayment($payment, $amount, null, $dto->getReason());
         } catch (RefundLimitExceededException $e) {

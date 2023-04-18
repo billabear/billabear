@@ -49,5 +49,5 @@ Feature: Payment List Read APP
     And there is a payments for:
       | Subscription Plan | Customer                 | Amount |
       | Test Plan         | customer.one@example.org | 3500   |
-    When I refund 3500 "USD" the payment for "customer.one@example.org" for 3500 via API
+    When I refund 3500 the payment for "customer.one@example.org" for 3500 via API
     Then there will be a refund for "customer.one@example.org" of 3500
