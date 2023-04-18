@@ -42,6 +42,16 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         },
         no_payments: "No payments for this customer yet"
     },
+    refunds: {
+        title: "Refunds",
+        list: {
+            amount: "Amount",
+            currency: "Currency",
+            created_by: "Created By",
+            created_at: "Created At"
+        },
+        no_refunds: "No refunds for this customer"
+    },
     payment_details: {
         title: "Payment Details",
         list: {

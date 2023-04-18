@@ -27,6 +27,8 @@ class CustomerView
 
     protected array $payments = [];
 
+    protected array $refunds = [];
+
     protected bool $success = true;
 
     public function getCustomer(): Customer
@@ -77,5 +79,15 @@ class CustomerView
     public function setPayments(array $payments): void
     {
         $this->payments = $payments;
+    }
+
+    public function getRefunds(): array
+    {
+        return $this->refunds;
+    }
+
+    public function setRefunds(array $refunds): void
+    {
+        $this->refunds = $refunds;
     }
 }

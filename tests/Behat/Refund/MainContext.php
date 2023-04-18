@@ -104,4 +104,20 @@ class MainContext implements Context
             throw new \Exception('Refund not found');
         }
     }
+
+    /**
+     * @Then I will see refunds
+     */
+    public function iWillSeeRefunds()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['refunds'])) {
+            throw new \Exception('No refunds');
+        }
+
+        if (0 === count($data['refunds'])) {
+            throw new \Exception('No refunds');
+        }
+    }
 }

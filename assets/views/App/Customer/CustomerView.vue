@@ -129,31 +129,58 @@
           </div>
 
           <div class="mt-3">
-          <h2 class="mb-3">{{ $t('app.customer.view.payments.title') }}</h2>
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.customer.view.payments.list.amount') }}</th>
-              <th>{{ $t('app.customer.view.payments.list.currency') }}</th>
-              <th>{{ $t('app.customer.view.payments.list.status') }}</th>
-              <th>{{ $t('app.customer.view.payments.list.created_at') }}</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="payment in payments" class="mt-5">
-              <td>{{ payment.amount }}</td>
-              <td>{{ payment.currency }}</td>
-              <td>{{ payment.status }}</td>
-              <td>{{ $filters.moment(payment.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
-              <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
-            </tr>
-            <tr v-if="payments.length == 0">
-              <td colspan="5" class="text-center">{{$t('app.customer.view.payments.no_payments') }}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+            <h2 class="mb-3">{{ $t('app.customer.view.payments.title') }}</h2>
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.customer.view.payments.list.amount') }}</th>
+                <th>{{ $t('app.customer.view.payments.list.currency') }}</th>
+                <th>{{ $t('app.customer.view.payments.list.status') }}</th>
+                <th>{{ $t('app.customer.view.payments.list.created_at') }}</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="payment in payments" class="mt-5">
+                <td>{{ payment.amount }}</td>
+                <td>{{ payment.currency }}</td>
+                <td>{{ payment.status }}</td>
+                <td>{{ $filters.moment(payment.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
+              </tr>
+              <tr v-if="payments.length == 0">
+                <td colspan="5" class="text-center">{{$t('app.customer.view.payments.no_payments') }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3">
+            <h2 class="mb-5">{{ $t('app.customer.view.refunds.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.customer.view.refunds.list.amount') }}</th>
+                <th>{{ $t('app.customer.view.refunds.list.currency') }}</th>
+                <th>{{ $t('app.customer.view.refunds.list.created_by') }}</th>
+                <th>{{ $t('app.customer.view.refunds.list.created_at') }}</th>
+                <td></td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="refund in refunds">
+                <td>{{ refund.amount }}</td>
+                <td>{{ refund.currency }}</td>
+                <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
+                <td v-else>API</td>
+                <td>{{ $filters.moment(refund.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+              </tr>
+              <tr v-if="refunds.length == 0">
+                <td colspan="4" class="text-center">{{ $t('app.customer.view.refunds.no_refunds') }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
       </div>
       </div>
 
@@ -178,6 +205,7 @@ export default {
       },
       paymentDetails: [],
       payments: [],
+      refunds: [],
       subscriptions: [],
     }
   },
@@ -212,6 +240,7 @@ export default {
       this.paymentDetails = response.data.payment_details;
       this.subscriptions = response.data.subscriptions;
       this.payments = response.data.payments;
+      this.refunds = response.data.refunds;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

@@ -21,10 +21,12 @@ use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
 use App\Factory\PaymentDetailsFactory;
 use App\Factory\PaymentFactory;
+use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -133,6 +135,8 @@ class CustomerController
         PaymentDetailsFactory $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
         PaymentFactory $paymentFactory,
+        RefundRepositoryInterface $refundRepository,
+        RefundFactory $refundFactory,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
     ): Response {
@@ -144,6 +148,9 @@ class CustomerController
 
         $payments = $paymentRepository->getPaymentsForCustomer($customer);
         $paymentDtos = array_map([$paymentFactory, 'createAppDto'], $payments);
+
+        $refunds = $refundRepository->getForCustomer($customer);
+        $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
 
         $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
@@ -157,6 +164,7 @@ class CustomerController
         $dto->setPaymentDetails($paymentDetailsDto);
         $dto->setSubscriptions($subscriptionDtos);
         $dto->setPayments($paymentDtos);
+        $dto->setRefunds($refundDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
