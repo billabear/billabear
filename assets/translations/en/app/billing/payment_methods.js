@@ -6,5 +6,5 @@ export const BILLING_PAYMENT_METHODS_TRANSLATIONS = {
     make_default_btn: "Make Default",
     delete_btn: "Delete",
     add_card_btn: "Add New Card",
-    no_saved_payment_methods: "No save payment-refund methods"
+    no_saved_payment_methods: "No save payment methods"
 }

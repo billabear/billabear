@@ -32,7 +32,7 @@ class AppContext implements Context
     }
 
     /**
-     * @When I refund :refundAmount the payment-refund for :email for :paymentAmount
+     * @When I refund :refundAmount the payment for :email for :paymentAmount
      */
     public function iRefundThePaymentForForViaApi($email, $refundAmount, $paymentAmount)
     {
@@ -42,7 +42,7 @@ class AppContext implements Context
         ];
         $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
 
-        $this->sendJsonRequest('POST', '/app/payment-refund/'.$payment->getId().'/refund', $payload);
+        $this->sendJsonRequest('POST', '/app/payment/'.$payment->getId().'/refund', $payload);
     }
 
     /**

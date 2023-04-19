@@ -120,7 +120,7 @@ class PaymentController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/payment-refund/{id}/refund', name: 'app_payment_refund', methods: ['POST'])]
+    #[Route('/app/payment/{id}/refund', name: 'app_payment_refund', methods: ['POST'])]
     public function createRefundForPayment(
         Request $request,
         PaymentRepositoryInterface $paymentRepository,

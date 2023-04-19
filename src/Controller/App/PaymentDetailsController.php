@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentDetailsController
 {
-    #[Route('/app/customer/{customerId}/payment-refund-details/frontend-payment-refund-token', name: 'app_payment_details_frontend_payment_token_start', methods: ['GET'])]
+    #[Route('/app/customer/{customerId}/payment-details/frontend-payment-token', name: 'app_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
@@ -58,7 +58,7 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/customer/{customerId}/payment-refund-details/frontend-payment-refund-token', name: 'app_payment_details_frontend_payment_token_complete', methods: ['POST'])]
+    #[Route('/app/customer/{customerId}/payment-details/frontend-payment-token', name: 'app_payment_details_frontend_payment_token_complete', methods: ['POST'])]
     public function finishFrontendAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
@@ -97,7 +97,7 @@ class PaymentDetailsController
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/app/customer/{customerId}/payment-refund-details', name: 'app_payment_details_list', methods: ['GET'])]
+    #[Route('/app/customer/{customerId}/payment-details', name: 'app_payment_details_list', methods: ['GET'])]
     public function listCustomerPaymentMethods(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -122,7 +122,7 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/customer/{customerId}/payment-refund-details/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]
+    #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -148,7 +148,7 @@ class PaymentDetailsController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/app/customer/{customerId}/payment-refund-details/{paymentDetailsId}', name: 'app_payment_details_delete', methods: ['DELETE'])]
+    #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}', name: 'app_payment_details_delete', methods: ['DELETE'])]
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,

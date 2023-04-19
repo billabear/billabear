@@ -32,15 +32,15 @@ class ApiContext implements Context
     }
 
     /**
-     * @When I view the payment-refund list via the API
+     * @When I view the payment list via the API
      */
     public function iViewThePaymentListViaTheApi()
     {
-        $this->sendJsonRequest('GET', '/api/v1/payment-refund');
+        $this->sendJsonRequest('GET', '/api/v1/payment');
     }
 
     /**
-     * @Then I will see a payment-refund for :arg1 for :arg2 in the list
+     * @Then I will see a payment for :arg1 for :arg2 in the list
      */
     public function iWillSeeAPaymentForForInTheList($customerEmail, $amount)
     {
@@ -52,11 +52,11 @@ class ApiContext implements Context
             }
         }
 
-        throw new \Exception("Can't find payment-refund");
+        throw new \Exception("Can't find payment");
     }
 
     /**
-     * @Then I will not see a payment-refund for :arg1 for :arg2 in the list
+     * @Then I will not see a payment for :arg1 for :arg2 in the list
      */
     public function iWillNotSeeAPaymentForForInTheList($customerEmail, $amount)
     {
@@ -64,13 +64,13 @@ class ApiContext implements Context
 
         foreach ($data['data'] as $payment) {
             if ($payment['amount'] == $amount && $payment['customer']['email'] == $customerEmail) {
-                throw new \Exception('Found payment-refund');
+                throw new \Exception('Found payment');
             }
         }
     }
 
     /**
-     * @When I refund :refundAmount the payment-refund for :email for :paymentAmount via API
+     * @When I refund :refundAmount the payment for :email for :paymentAmount via API
      */
     public function iRefundThePaymentForForViaApi($email, $refundAmount, $paymentAmount)
     {
@@ -81,7 +81,7 @@ class ApiContext implements Context
         ];
         $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
 
-        $this->sendJsonRequest('POST', '/api/v1/payment-refund/'.$payment->getId().'/refund', $payload);
+        $this->sendJsonRequest('POST', '/api/v1/payment/'.$payment->getId().'/refund', $payload);
     }
 
     /**
@@ -90,6 +90,6 @@ class ApiContext implements Context
     public function iViewTheCustomerPaymentsViaTheApiFor($email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/payment-refund');
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/payment');
     }
 }

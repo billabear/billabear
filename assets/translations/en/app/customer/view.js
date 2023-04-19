@@ -62,7 +62,7 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             expiry_year: "Expiry Year",
             name: "Name"
         },
-        no_payment_details: "No payment-refund details",
+        no_payment_details: "No payment details",
         delete: "Delete",
         make_default: "Make Default"
     }

@@ -35,7 +35,7 @@ class AppContext implements Context
     }
 
     /**
-     * @When the following payment-refund details:
+     * @When the following payment details:
      */
     public function theFollowingPaymentDetails(TableNode $table)
     {
@@ -62,14 +62,14 @@ class AppContext implements Context
     }
 
     /**
-     * @Then I will see :arg1 payment-refund details
+     * @Then I will see :arg1 payment details
      */
     public function iWillSeePaymentDetails($arg1)
     {
         $data = $this->getJsonContent();
 
         if (!isset($data['payment_details'])) {
-            throw new \Exception('No payment-refund details found');
+            throw new \Exception('No payment details found');
         }
 
         if (count($data['payment_details']) != $arg1) {
@@ -78,14 +78,14 @@ class AppContext implements Context
     }
 
     /**
-     * @Then I will see the payment-refund details with the last four :arg1
+     * @Then I will see the payment details with the last four :arg1
      */
     public function iWillSeeThePaymentDetailsWithTheLastFour($arg1)
     {
         $data = $this->getJsonContent();
 
         if (!isset($data['payment_details'])) {
-            throw new \Exception('No payment-refund details found');
+            throw new \Exception('No payment details found');
         }
 
         foreach ($data['payment_details'] as $paymentDetails) {
@@ -94,38 +94,38 @@ class AppContext implements Context
             }
         }
 
-        throw new \Exception("Can't find payment-refund details");
+        throw new \Exception("Can't find payment details");
     }
 
     /**
-     * @When I view the payment-refund details info for the customer via the site for :arg1
+     * @When I view the payment details info for the customer via the site for :arg1
      */
     public function iViewThePaymentDetailsInfoForTheCustomerViaTheSiteFor($email)
     {
         $customer = $this->getCustomerByEmail($email);
 
-        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-refund-details');
+        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-details');
     }
 
     /**
-     * @When I make the payment-refund details :arg1 for :arg2 default via APP
+     * @When I make the payment details :arg1 for :arg2 default via APP
      */
     public function iMakeThePaymentDetailsForDefault($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
         $paymentDetails = $this->findPaymentDetails($customer, $name);
 
-        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-refund-details/'.$paymentDetails->getId().'/default');
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId().'/default');
     }
 
     /**
-     * @When I delete the payment-refund details :arg1 for :arg2 via APP
+     * @When I delete the payment details :arg1 for :arg2 via APP
      */
     public function iDeleteThePaymentDetailsFor($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
         $paymentDetails = $this->findPaymentDetails($customer, $name);
 
-        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-refund-details/'.$paymentDetails->getId());
+        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId());
     }
 }

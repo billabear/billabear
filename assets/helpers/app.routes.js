@@ -99,7 +99,7 @@ export const APP_ROUTES = [
     },
     {
         name: 'app.customer.payment_details.add',
-        path: 'customer/:customerId/payment-refund-details/add',
+        path: 'customer/:customerId/payment-details/add',
         component: AddPaymentDetails
     },
     {

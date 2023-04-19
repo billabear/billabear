@@ -71,7 +71,7 @@ class ApiContext implements Context
     }
 
     /**
-     * @When I view the full refund for a payment-refund for :arg1 for :arg2 via API
+     * @When I view the full refund for a payment for :arg1 for :arg2 via API
      */
     public function iViewTheFullRefundForAPaymentForForViaApi($email, $amount)
     {

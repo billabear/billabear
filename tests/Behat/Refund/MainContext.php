@@ -47,7 +47,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When there is a full refund for a payment-refund for :arg1 for :arg2
+     * @When there is a full refund for a payment for :arg1 for :arg2
      */
     public function thereIsAFullRefundForAPaymentForFor($customerEmail, $amount)
     {
@@ -106,7 +106,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When I view the full refund for a payment-refund for :arg1 for :arg2 via APP
+     * @When I view the full refund for a payment for :arg1 for :arg2 via APP
      */
     public function iViewTheFullRefundForAPaymentForForViaApp($email, $amount)
     {

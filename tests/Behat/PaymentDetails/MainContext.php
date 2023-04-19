@@ -33,7 +33,7 @@ class MainContext implements Context
     }
 
     /**
-     * @Then the payment-refund details :arg1 for :arg2 should be deleted
+     * @Then the payment details :arg1 for :arg2 should be deleted
      */
     public function thePaymentDetailsForShouldBeDeleted($name, $email)
     {
@@ -46,7 +46,7 @@ class MainContext implements Context
     }
 
     /**
-     * @Then I will see the payment-refund details in the list with the last four :arg1
+     * @Then I will see the payment details in the list with the last four :arg1
      */
     public function iWillSeeThePaymentDetailsInTheListWithTheLastFour($lastFour)
     {
@@ -62,7 +62,7 @@ class MainContext implements Context
     }
 
     /**
-     * @Then the payment-refund details :arg1 for :arg2 should be default
+     * @Then the payment details :arg1 for :arg2 should be default
      */
     public function thePaymentDetailsShouldBeDefault($name, $email)
     {
@@ -75,7 +75,7 @@ class MainContext implements Context
     }
 
     /**
-     * @Then the payment-refund details :arg1 for :arg2 should not be default
+     * @Then the payment details :arg1 for :arg2 should not be default
      */
     public function thePaymentDetailsCardTwoShouldNotBeDefault($name, $email)
     {

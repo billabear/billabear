@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentController
 {
-    #[Route('/api/v1/payment-refund', name: 'api_v1.0_payment_list', methods: ['GET'])]
+    #[Route('/api/v1/payment', name: 'api_v1.0_payment_list', methods: ['GET'])]
     public function listPayment(
         Request $request,
         PaymentRepositoryInterface $repository,
@@ -75,7 +75,7 @@ class PaymentController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1/payment-refund/{id}/refund', name: 'api_v1.0_payment_refund', methods: ['POST'])]
+    #[Route('/api/v1/payment/{id}/refund', name: 'api_v1.0_payment_refund', methods: ['POST'])]
     public function refundPayment(
         Request $request,
         PaymentRepositoryInterface $paymentRepository,

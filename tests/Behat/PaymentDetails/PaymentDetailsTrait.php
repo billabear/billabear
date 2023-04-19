@@ -22,7 +22,7 @@ trait PaymentDetailsTrait
         $paymentDetails = $this->paymentDetailsRepository->findOneBy(['customer' => $customer, 'name' => $paymentDetailsName]);
 
         if (!$paymentDetails instanceof PaymentDetails) {
-            throw new \Exception('No payment-refund details found');
+            throw new \Exception('No payment details found');
         }
 
         $this->paymentDetailsRepository->getEntityManager()->refresh($paymentDetails);

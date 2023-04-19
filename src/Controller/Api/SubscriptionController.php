@@ -87,7 +87,7 @@ class SubscriptionController
             try {
                 $paymentDetails = $paymentDetailsRepository->getDefaultPaymentDetailsForCustomer($customer);
             } catch (NoEntityFoundException $e) {
-                return new JsonResponse(['error' => 'No default payment-refund method'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+                return new JsonResponse(['error' => 'No default payment method'], JsonResponse::HTTP_NOT_ACCEPTABLE);
             }
         }
         $price = $priceRepository->findById($dto->getPrice());
@@ -213,7 +213,7 @@ class SubscriptionController
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/api/v1/subscription/{subscriptionId}/payment-refund-method', name: 'api_v1_subscription_payment_method_update', methods: ['PUT'])]
+    #[Route('/api/v1/subscription/{subscriptionId}/payment-method', name: 'api_v1_subscription_payment_method_update', methods: ['PUT'])]
     public function updatePaymentMethod(
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,

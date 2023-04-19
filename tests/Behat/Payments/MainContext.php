@@ -70,7 +70,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When I view the payment-refund list
+     * @When I view the payment list
      */
     public function iViewThePaymentList()
     {
@@ -78,7 +78,7 @@ class MainContext implements Context
     }
 
     /**
-     * @Then I will see a payment-refund for :arg1 for :arg2
+     * @Then I will see a payment for :arg1 for :arg2
      */
     public function iWillSeeAPaymentForFor($arg1, $arg2)
     {
@@ -90,11 +90,11 @@ class MainContext implements Context
             }
         }
 
-        throw new \Exception("Can't find payment-refund");
+        throw new \Exception("Can't find payment");
     }
 
     /**
-     * @When I view the payment-refund for :arg1 for :arg2
+     * @When I view the payment for :arg1 for :arg2
      */
     public function iViewThePaymentForFor($customerEmail, $amount)
     {
@@ -105,14 +105,14 @@ class MainContext implements Context
     }
 
     /**
-     * @Then I will see the details for the payment-refund
+     * @Then I will see the details for the payment
      */
     public function iWillSeeTheDetailsForThePayment()
     {
         $data = $this->getJsonContent();
 
-        if (!isset($data['payment-refund'])) {
-            throw new \Exception("Can't see any payment-refund info");
+        if (!isset($data['payment'])) {
+            throw new \Exception("Can't see any payment info");
         }
     }
 }
