@@ -57,6 +57,20 @@ class ApiContext implements Context
     }
 
     /**
+     * @Then I will not see a refund for :arg1 for :arg2 in the list
+     */
+    public function iWillNotSeeARefundForForInTheList($arg1, $arg2)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $refund) {
+            if ($refund['customer']['email'] === $customerEmail && $refund['amount'] == $amount) {
+                throw new \Exception('Found refund');
+            }
+        }
+    }
+
+    /**
      * @When I view the full refund for a payment for :arg1 for :arg2 via API
      */
     public function iViewTheFullRefundForAPaymentForForViaApi($email, $amount)
@@ -82,5 +96,14 @@ class ApiContext implements Context
         if ($data['amount'] != $arg1) {
             throw new \Exception("Can't match");
         }
+    }
+
+    /**
+     * @When I view the customer refund via API for :arg1
+     */
+    public function iViewTheCustomerRefundViaApiFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.(string) $customer->getId().'/refund');
     }
 }
