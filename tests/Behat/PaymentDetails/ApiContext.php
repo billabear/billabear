@@ -17,7 +17,7 @@ use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
 
 class ApiContext implements Context
 {
@@ -27,30 +27,30 @@ class ApiContext implements Context
 
     public function __construct(
         private Session $session,
-        private PaymentDetailsServiceRepository $paymentDetailsRepository,
+        private PaymentMethodServiceRepository $paymentDetailsRepository,
         protected CustomerRepository $customerRepository
     ) {
     }
 
     /**
-     * @When I make the payment details :arg1 for :arg2 default
+     * @When I make the payment methods :arg1 for :arg2 default
      */
     public function iMakeThePaymentDetailsForDefault($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
-        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId().'/default');
+        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId().'/default');
     }
 
     /**
-     * @When I delete the payment details :arg1 for :arg2
+     * @When I delete the payment methods :arg1 for :arg2
      */
     public function iDeleteThePaymentDetailsFor($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
-        $this->sendJsonRequest('DELETE', '/api/v1/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId());
+        $this->sendJsonRequest('DELETE', '/api/v1/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId());
     }
 }

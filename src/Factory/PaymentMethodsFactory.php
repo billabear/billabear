@@ -12,13 +12,14 @@
 
 namespace App\Factory;
 
-use App\Dto\Generic\Api\PaymentDetails as ApiDto;
-use App\Dto\Generic\App\PaymentDetails as AppDto;
+use App\Dto\Generic\Api\PaymentMethod as ApiDto;
+use App\Dto\Generic\App\PaymentMethod as AppDto;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentMethod;
 
-class PaymentDetailsFactory
+class PaymentMethodsFactory
 {
-    public function createApiDto(PaymentDetails $paymentDetails): ApiDto
+    public function createApiDto(PaymentMethod $paymentDetails): ApiDto
     {
         $dto = new ApiDto();
         $dto->setId($paymentDetails->getId());
@@ -32,7 +33,7 @@ class PaymentDetailsFactory
         return $dto;
     }
 
-    public function createAppDto(PaymentDetails $paymentDetails): AppDto
+    public function createAppDto(PaymentMethod $paymentDetails): AppDto
     {
         $dto = new AppDto();
         $dto->setId($paymentDetails->getId());

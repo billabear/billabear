@@ -20,7 +20,7 @@ use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
-use App\Factory\PaymentDetailsFactory;
+use App\Factory\PaymentMethodsFactory;
 use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
@@ -30,7 +30,7 @@ use App\Subscription\CancellationRequestProcessor;
 use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -52,8 +52,8 @@ class SubscriptionController
         CustomerRepositoryInterface $customerRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanFactory $subscriptionPlanFactory,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
-        PaymentDetailsFactory $paymentDetailsFactory,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodsFactory $paymentDetailsFactory,
         SerializerInterface $serializer,
         SubscriptionRepositoryInterface $subscriptionRepository,
     ): Response {
@@ -83,7 +83,7 @@ class SubscriptionController
             $schedule = $currentSchedule;
         }
 
-        $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
+        $paymentDetails = $paymentDetailsRepository->getPaymentMethodForCustomer($customer);
         $paymentDetailDtos = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
         $dto = new CreateView();
@@ -103,7 +103,7 @@ class SubscriptionController
         CustomerRepositoryInterface $customerRepository,
         SubscriptionManagerInterface $subscriptionManager,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
@@ -195,7 +195,7 @@ class SubscriptionController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
         CustomerFactory $customerFactory,
-        PaymentDetailsFactory $paymentDetailsFactory,
+        PaymentMethodsFactory $paymentDetailsFactory,
         ProductFactory $productFactory,
         SerializerInterface $serializer
     ): Response {
@@ -224,7 +224,7 @@ class SubscriptionController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
         try {

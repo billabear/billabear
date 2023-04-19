@@ -1,7 +1,7 @@
 
 export const REFUND_LIST_TRANSLATIONS = {
     title: "Refunds",
-    no_payments: "There are currently no payments",
+    no_refunds: "There are currently no refunds",
     create_new: "Create",
     next: "Next Page",
     prev: "Previous Page",

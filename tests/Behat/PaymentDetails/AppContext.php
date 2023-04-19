@@ -18,8 +18,8 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\PaymentDetails;
-use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
+use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
 
 class AppContext implements Context
 {
@@ -29,7 +29,7 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private PaymentDetailsServiceRepository $paymentDetailsRepository,
+        private PaymentMethodServiceRepository $paymentDetailsRepository,
         protected CustomerRepository $customerRepository
     ) {
     }
@@ -43,7 +43,7 @@ class AppContext implements Context
 
         foreach ($rows as $row) {
             $customer = $this->getCustomerByEmail($row['Customer Email']);
-            $paymentDetails = new PaymentDetails();
+            $paymentDetails = new PaymentMethod();
             $paymentDetails->setName($row['Name'] ?? 'One');
             $paymentDetails->setBrand($row['Brand'] ?? 'dummy');
             $paymentDetails->setLastFour($row['Last Four']);
@@ -104,7 +104,7 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
 
-        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-details');
+        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-methods');
     }
 
     /**
@@ -113,9 +113,9 @@ class AppContext implements Context
     public function iMakeThePaymentDetailsForDefault($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
-        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId().'/default');
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId().'/default');
     }
 
     /**
@@ -124,8 +124,8 @@ class AppContext implements Context
     public function iDeleteThePaymentDetailsFor($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
-        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId());
+        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId());
     }
 }

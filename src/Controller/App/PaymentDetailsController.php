@@ -16,14 +16,14 @@ use App\Dto\Request\Api\PaymentDetails\FrontendTokenComplete;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\PaymentDetails\FrontendToken;
 use App\Entity\Customer;
-use App\Factory\PaymentDetailsFactory;
+use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Config\FrontendConfig;
-use Parthenon\Billing\Entity\PaymentDetails;
-use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
-use Parthenon\Billing\PaymentDetails\DeleterInterface;
-use Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
+use Parthenon\Billing\PaymentMethod\DeleterInterface;
+use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,7 +65,7 @@ class PaymentDetailsController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        PaymentDetailsFactory $paymentDetailsFactory,
+        PaymentMethodsFactory $paymentDetailsFactory,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -97,12 +97,12 @@ class PaymentDetailsController
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/app/customer/{customerId}/payment-details', name: 'app_payment_details_list', methods: ['GET'])]
+    #[Route('/app/customer/{customerId}/payment-methods', name: 'app_payment_details_list', methods: ['GET'])]
     public function listCustomerPaymentMethods(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
-        PaymentDetailsFactory $paymentDetailsFactory,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodsFactory $paymentDetailsFactory,
         SerializerInterface $serializer,
     ): Response {
         try {
@@ -112,7 +112,7 @@ class PaymentDetailsController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
+        $paymentDetails = $paymentDetailsRepository->getPaymentMethodForCustomer($customer);
         $paymentDetailsDtos = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
         $listView = new ListResponse();
         $listView->setData($paymentDetailsDtos);
@@ -122,11 +122,11 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]
+    #[Route('/app/customer/{customerId}/payment-methods/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
         try {
@@ -148,11 +148,11 @@ class PaymentDetailsController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/app/customer/{customerId}/payment-details/{paymentDetailsId}', name: 'app_payment_details_delete', methods: ['DELETE'])]
+    #[Route('/app/customer/{customerId}/payment-methods/{paymentDetailsId}', name: 'app_payment_details_delete', methods: ['DELETE'])]
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
         try {
@@ -163,7 +163,7 @@ class PaymentDetailsController
         }
 
         try {
-            /** @var PaymentDetails $paymentDetails */
+            /** @var PaymentMethod $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);

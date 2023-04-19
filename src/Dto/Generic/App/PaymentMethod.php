@@ -14,7 +14,7 @@ namespace App\Dto\Generic\App;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class PaymentDetails
+class PaymentMethod
 {
     #[SerializedName('id')]
     protected string $id;

@@ -17,7 +17,7 @@ use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
 
 class MainContext implements Context
 {
@@ -27,7 +27,7 @@ class MainContext implements Context
 
     public function __construct(
         private Session $session,
-        private PaymentDetailsServiceRepository $paymentDetailsRepository,
+        private PaymentMethodServiceRepository $paymentDetailsRepository,
         protected CustomerRepository $customerRepository
     ) {
     }
@@ -38,7 +38,7 @@ class MainContext implements Context
     public function thePaymentDetailsForShouldBeDeleted($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
         if (!$paymentDetails->isDeleted()) {
             throw new \Exception('Is not deleted');
@@ -67,7 +67,7 @@ class MainContext implements Context
     public function thePaymentDetailsShouldBeDefault($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
         if (!$paymentDetails->isDefaultPaymentOption()) {
             throw new \Exception('Is not default');
@@ -80,7 +80,7 @@ class MainContext implements Context
     public function thePaymentDetailsCardTwoShouldNotBeDefault($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
-        $paymentDetails = $this->findPaymentDetails($customer, $name);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
 
         if ($paymentDetails->isDefaultPaymentOption()) {
             throw new \Exception('Is default');

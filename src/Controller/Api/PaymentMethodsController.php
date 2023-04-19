@@ -15,13 +15,13 @@ namespace App\Controller\Api;
 use App\Dto\Request\Api\PaymentDetails\FrontendTokenComplete;
 use App\Dto\Response\Api\PaymentDetails\FrontendToken;
 use App\Entity\Customer;
-use App\Factory\PaymentDetailsFactory;
+use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Entity\PaymentDetails;
-use Parthenon\Billing\PaymentDetails\DefaultPaymentManagerInterface;
-use Parthenon\Billing\PaymentDetails\DeleterInterface;
-use Parthenon\Billing\PaymentDetails\FrontendAddProcessorInterface;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
+use Parthenon\Billing\PaymentMethod\DeleterInterface;
+use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,9 +30,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PaymentDetailsController
+class PaymentMethodsController
 {
-    #[Route('/api/v1/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
+    #[Route('/api/v1/customer/{customerId}/payment-methods/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
@@ -54,14 +54,14 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
+    #[Route('/api/v1/customer/{customerId}/payment-methods/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
     public function finishFrontendAdd(
-        Request $request,
+        Request                       $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
-        CustomerRepositoryInterface $customerRepository,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
-        PaymentDetailsFactory $paymentDetailsFactory,
+        CustomerRepositoryInterface   $customerRepository,
+        SerializerInterface           $serializer,
+        ValidatorInterface            $validator,
+        PaymentMethodsFactory         $paymentDetailsFactory,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -93,11 +93,11 @@ class PaymentDetailsController
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-details/{paymentDetailsId}/default', name: 'api_v1.0_payment_details_default', methods: ['POST'])]
+    #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}/default', name: 'api_v1.0_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
         try {
@@ -119,11 +119,11 @@ class PaymentDetailsController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-details/{paymentDetailsId}', name: 'api_v1.0_payment_details_delete', methods: ['DELETE'])]
+    #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}', name: 'api_v1.0_payment_details_delete', methods: ['DELETE'])]
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
         try {

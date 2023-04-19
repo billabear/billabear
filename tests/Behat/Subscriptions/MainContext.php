@@ -20,11 +20,12 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentMethod;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\SubscriptionStatus;
-use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
@@ -41,7 +42,7 @@ class MainContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
-        private PaymentDetailsServiceRepository $paymentDetailsRepository
+        private PaymentMethodServiceRepository $paymentDetailsRepository
     ) {
     }
 
@@ -59,7 +60,7 @@ class MainContext implements Context
             $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
             $paymentDetails = $this->paymentDetailsRepository->findOneBy(['customer' => $customer]);
 
-            if (!$paymentDetails instanceof PaymentDetails) {
+            if (!$paymentDetails instanceof PaymentMethod) {
                 throw new \Exception('Customer had no payment details');
             }
 

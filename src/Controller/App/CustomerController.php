@@ -19,12 +19,12 @@ use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
-use App\Factory\PaymentDetailsFactory;
 use App\Factory\PaymentFactory;
+use App\Factory\PaymentMethodsFactory;
 use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
 use App\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Repository\PaymentDetailsRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -131,8 +131,8 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         CustomerFactory $customerFactory,
-        PaymentDetailsRepositoryInterface $paymentDetailsRepository,
-        PaymentDetailsFactory $paymentDetailsFactory,
+        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodsFactory $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
         PaymentFactory $paymentFactory,
         RefundRepositoryInterface $refundRepository,
@@ -152,7 +152,7 @@ class CustomerController
         $refunds = $refundRepository->getForCustomer($customer);
         $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
 
-        $paymentDetails = $paymentDetailsRepository->getPaymentDetailsForCustomer($customer);
+        $paymentDetails = $paymentDetailsRepository->getPaymentMethodForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
         $subscriptions = $subscriptionRepository->getAllForCustomer($customer);

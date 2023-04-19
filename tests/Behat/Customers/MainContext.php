@@ -18,7 +18,7 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentMethod;
 use Parthenon\Common\Address;
 
 class MainContext implements Context
@@ -139,7 +139,7 @@ class MainContext implements Context
             $this->customerRepository->getEntityManager()->persist($customer);
             $this->customerRepository->getEntityManager()->flush();
 
-            $paymentDetails = new PaymentDetails();
+            $paymentDetails = new PaymentMethod();
             $paymentDetails->setCustomer($customer);
             $paymentDetails->setProvider('test_dummy');
             $paymentDetails->setName('Test');

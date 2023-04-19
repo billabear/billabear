@@ -19,7 +19,7 @@ use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Repository\Orm\PaymentDetailsServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
@@ -36,7 +36,7 @@ class ApiContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
-        private PaymentDetailsServiceRepository $paymentDetailsRepository,
+        private PaymentMethodServiceRepository $paymentDetailsRepository,
     ) {
     }
 
