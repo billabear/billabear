@@ -56,6 +56,20 @@ class ApiContext implements Context
     }
 
     /**
+     * @Then I will not see a payment for :arg1 for :arg2 in the list
+     */
+    public function iWillNotSeeAPaymentForForInTheList($customerEmail, $amount)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $payment) {
+            if ($payment['amount'] == $amount && $payment['customer']['email'] == $customerEmail) {
+                throw new \Exception('Found payment');
+            }
+        }
+    }
+
+    /**
      * @When I refund :refundAmount the payment for :email for :paymentAmount via API
      */
     public function iRefundThePaymentForForViaApi($email, $refundAmount, $paymentAmount)
@@ -68,5 +82,14 @@ class ApiContext implements Context
         $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
 
         $this->sendJsonRequest('POST', '/api/v1/payment/'.$payment->getId().'/refund', $payload);
+    }
+
+    /**
+     * @When I view the customer payments via the API for :arg1
+     */
+    public function iViewTheCustomerPaymentsViaTheApiFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/payment');
     }
 }
