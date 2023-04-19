@@ -8,6 +8,6 @@ export const PRODUCT_CREATE_TRANSLATIONS = {
     success_message: "Successfully created product",
     help_info: {
         name: "The name of the product",
-        external_reference: "The reference for the product that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference."
+        external_reference: "The reference for the product that is used by the payment-refund provider. Leave empty unless you're extremely confident you have the correct reference."
     }
 }

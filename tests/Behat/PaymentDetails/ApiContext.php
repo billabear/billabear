@@ -33,24 +33,24 @@ class ApiContext implements Context
     }
 
     /**
-     * @When I make the payment details :arg1 for :arg2 default
+     * @When I make the payment-refund details :arg1 for :arg2 default
      */
     public function iMakeThePaymentDetailsForDefault($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
         $paymentDetails = $this->findPaymentDetails($customer, $name);
 
-        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId().'/default');
+        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/payment-refund-details/'.$paymentDetails->getId().'/default');
     }
 
     /**
-     * @When I delete the payment details :arg1 for :arg2
+     * @When I delete the payment-refund details :arg1 for :arg2
      */
     public function iDeleteThePaymentDetailsFor($name, $email)
     {
         $customer = $this->getCustomerByEmail($email);
         $paymentDetails = $this->findPaymentDetails($customer, $name);
 
-        $this->sendJsonRequest('DELETE', '/api/v1/customer/'.$customer->getId().'/payment-details/'.$paymentDetails->getId());
+        $this->sendJsonRequest('DELETE', '/api/v1/customer/'.$customer->getId().'/payment-refund-details/'.$paymentDetails->getId());
     }
 }

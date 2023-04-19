@@ -53,7 +53,7 @@ describe("planservice", () => {
         it("Should return response if successful", async () => {
 
             const planName = "plan-name";
-            const paymentSchedule = "payment-schedule";
+            const paymentSchedule = "payment-refund-schedule";
 
             mock.onPost(`/app/billing/plans/change/` + planName + '/' + paymentSchedule).reply(200, {success: true});
 
@@ -68,7 +68,7 @@ describe("planservice", () => {
         it("Should return error", async () => {
 
             const planName = "plan-name";
-            const paymentSchedule = "payment-schedule";
+            const paymentSchedule = "payment-refund-schedule";
 
             mock.onPost(`/app/billing/plans/change/` + planName + '/' + paymentSchedule).reply(400, {success: false, error: "Error message here"});
 
@@ -87,7 +87,7 @@ describe("planservice", () => {
         it("Should return response if successful", async () => {
 
             const planName = "plan-name";
-            const paymentSchedule = "payment-schedule";
+            const paymentSchedule = "payment-refund-schedule";
             const currency = "usd";
 
             mock.onPost(`/app/billing/plans/checkout/` + planName + '/' + paymentSchedule + '/' + currency).reply(200, {success: true});
@@ -103,7 +103,7 @@ describe("planservice", () => {
         it("Should return error", async () => {
 
             const planName = "plan-name";
-            const paymentSchedule = "payment-schedule";
+            const paymentSchedule = "payment-refund-schedule";
             const currency = "usd";
 
             mock.onPost(`/app/billing/plans/checkout/` + planName + '/' + paymentSchedule + '/' + currency).reply(400, {success: false, error: "Error message here"});
@@ -122,7 +122,7 @@ describe("planservice", () => {
         it("Should return response if successful", async () => {
 
             const planName = "plan-name";
-            const paymentSchedule = "payment-schedule";
+            const paymentSchedule = "payment-refund-schedule";
             const currency = "usd";
 
             mock.onPost(`/app/billing/plans/checkout/` + planName + '/' + paymentSchedule + '/' + currency, {seats: 1}).reply(200, {success: true});
@@ -138,7 +138,7 @@ describe("planservice", () => {
         it("Should return error", async () => {
 
             const planName = "plan-name";
-            const paymentSchedule = "payment-schedule";
+            const paymentSchedule = "payment-refund-schedule";
             const currency = "usd";
 
             mock.onPost(`/app/billing/plans/checkout/` + planName + '/' + paymentSchedule + '/' + currency, {seats: 1}).reply(400, {success: false, error: "Error message here"});

@@ -27,6 +27,8 @@ import SubscriptionView from "../views/App/Subscription/SubscriptionView.vue";
 import SubscriptionList from "../views/App/Subscription/SubscriptionList.vue";
 import PaymentList from "../views/App/Payments/PaymentList.vue";
 import PaymentView from "../views/App/Payments/PaymentView.vue";
+import RefundView from "../views/App/Refund/RefundView.vue";
+import RefundList from "../views/App/Refund/RefundList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -86,8 +88,18 @@ export const APP_ROUTES = [
         component: PaymentView
     },
     {
+        name: 'app.refund.list',
+        path: 'refunds/list',
+        component: RefundList
+    },
+    {
+        name: 'app.refund.view',
+        path: 'refunds/view/:id',
+        component: RefundView
+    },
+    {
         name: 'app.customer.payment_details.add',
-        path: 'customer/:customerId/payment-details/add',
+        path: 'customer/:customerId/payment-refund-details/add',
         component: AddPaymentDetails
     },
     {

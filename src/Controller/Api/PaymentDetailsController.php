@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentDetailsController
 {
-    #[Route('/api/v1/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
+    #[Route('/api/v1/customer/{customerId}/payment-refund-details/frontend-payment-refund-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
@@ -54,7 +54,7 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-details/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
+    #[Route('/api/v1/customer/{customerId}/payment-refund-details/frontend-payment-refund-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
     public function finishFrontendAdd(
         Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
@@ -93,7 +93,7 @@ class PaymentDetailsController
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-details/{paymentDetailsId}/default', name: 'api_v1.0_payment_details_default', methods: ['POST'])]
+    #[Route('/api/v1/customer/{customerId}/payment-refund-details/{paymentDetailsId}/default', name: 'api_v1.0_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -119,7 +119,7 @@ class PaymentDetailsController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-details/{paymentDetailsId}', name: 'api_v1.0_payment_details_delete', methods: ['DELETE'])]
+    #[Route('/api/v1/customer/{customerId}/payment-refund-details/{paymentDetailsId}', name: 'api_v1.0_payment_details_delete', methods: ['DELETE'])]
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,

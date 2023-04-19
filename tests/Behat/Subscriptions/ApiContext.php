@@ -114,6 +114,6 @@ class ApiContext implements Context
         /** @var PaymentDetails $paymentDetails */
         $paymentDetails = $this->paymentDetailsRepository->findOneBy(['lastFour' => $lastFour]);
 
-        $this->sendJsonRequest('PUT', '/api/v1/subscription/'.(string) $subscription->getId().'/payment-method', ['payment_details' => (string) $paymentDetails->getId()]);
+        $this->sendJsonRequest('PUT', '/api/v1/subscription/'.(string) $subscription->getId().'/payment-refund-method', ['payment_details' => (string) $paymentDetails->getId()]);
     }
 }

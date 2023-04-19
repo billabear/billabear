@@ -30,7 +30,7 @@ final class Version20230328093900 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE payment ADD payment_provider_details_url VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE payment-refund ADD payment_provider_details_url VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE price ADD public BOOLEAN DEFAULT NULL');
         $this->addSql('ALTER TABLE price ADD payment_provider_details_url VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE product ADD payment_provider_details_url VARCHAR(255) DEFAULT NULL');
@@ -40,7 +40,7 @@ final class Version20230328093900 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE payment DROP payment_provider_details_url');
+        $this->addSql('ALTER TABLE payment-refund DROP payment_provider_details_url');
         $this->addSql('ALTER TABLE price DROP public');
         $this->addSql('ALTER TABLE price DROP payment_provider_details_url');
         $this->addSql('ALTER TABLE product DROP payment_provider_details_url');

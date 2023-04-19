@@ -47,7 +47,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When there is a full refund for a payment for :arg1 for :arg2
+     * @When there is a full refund for a payment-refund for :arg1 for :arg2
      */
     public function thereIsAFullRefundForAPaymentForFor($customerEmail, $amount)
     {
@@ -102,6 +102,38 @@ class MainContext implements Context
 
         if (!$refund instanceof Refund) {
             throw new \Exception('Refund not found');
+        }
+    }
+
+    /**
+     * @When I view the full refund for a payment-refund for :arg1 for :arg2 via APP
+     */
+    public function iViewTheFullRefundForAPaymentForForViaApp($email, $amount)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $refund = $this->refundRepository->findOneBy(['customer' => $customer, 'amount' => $amount]);
+
+        if (!$refund instanceof Refund) {
+            throw new \Exception("Can't find refund");
+        }
+
+        $this->sendJsonRequest('GET', '/app/refund/'.(string) $refund->getId());
+    }
+
+    /**
+     * @Then I will see the refund response has the amount of :arg1
+     */
+    public function iWillSeeTheRefundResponseHasTheAmountOf($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['refund']['amount'])) {
+            throw new \Exception('Refund not set');
+        }
+
+        if ($data['refund']['amount'] != $arg1) {
+            throw new \Exception('Refund not the same amount');
         }
     }
 

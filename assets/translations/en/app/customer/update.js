@@ -27,6 +27,6 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
         country: "The customer's billing country - ISO 3166-1 alpha-2 country code.",
         post_code: "The post code for the billing address",
         reference: "Your internal reference for the customer",
-        external_reference: "The reference for the customer that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference."
+        external_reference: "The reference for the customer that is used by the payment-refund provider. Leave empty unless you're extremely confident you have the correct reference."
     }
 }

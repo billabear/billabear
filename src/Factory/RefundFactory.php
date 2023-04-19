@@ -29,6 +29,7 @@ class RefundFactory
     public function createAppDto(Refund $refund): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $refund->getId());
         $dto->setAmount($refund->getAmount());
         $dto->setCurrency($refund->getCurrency());
         $dto->setReason($refund->getReason());
@@ -44,6 +45,7 @@ class RefundFactory
     public function createApiDto(Refund $refund): ApiDto
     {
         $dto = new ApiDto();
+        $dto->setId((string) $refund->getId());
         $dto->setAmount($refund->getAmount());
         $dto->setCurrency($refund->getCurrency());
         $dto->setComment($refund->getReason());

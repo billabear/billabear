@@ -146,7 +146,7 @@
                 <td>{{ payment.currency }}</td>
                 <td>{{ payment.status }}</td>
                 <td>{{ $filters.moment(payment.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
-                <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
+                <td><router-link :to="{name: 'app.payment-refund.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
               </tr>
               <tr v-if="payments.length == 0">
                 <td colspan="5" class="text-center">{{$t('app.customer.view.payments.no_payments') }}</td>

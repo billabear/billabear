@@ -14,8 +14,10 @@ namespace App\Controller\App;
 
 use App\Api\Filters\RefundList;
 use App\Dto\Response\App\ListResponse;
+use App\Dto\Response\App\RefundView;
 use App\Factory\RefundFactory;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,6 +69,27 @@ class RefundController
         $listResponse->setFirstKey($resultSet->getFirstKey());
 
         $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/refund/{id}', name: 'app_refund_view', methods: ['GET'])]
+    public function veiwRefund(
+        Request $request,
+        RefundRepositoryInterface $repository,
+        RefundFactory $factory,
+        SerializerInterface $serializer,
+    ) {
+        try {
+            $refund = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $dto = $factory->createAppDto($refund);
+        $dtoView = new RefundView();
+        $dtoView->setRefund($dto);
+        $json = $serializer->serialize($dtoView, 'json');
 
         return new JsonResponse($json, json: true);
     }

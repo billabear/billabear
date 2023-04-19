@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Refund
 {
+    private string $id;
+
     private int $amount;
 
     private string $currency;
@@ -36,6 +38,16 @@ class Refund
 
     #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getAmount(): int
     {

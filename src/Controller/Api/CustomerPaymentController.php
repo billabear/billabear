@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CustomerPaymentController
 {
-    #[Route('/api/v1/customer/{id}/payment', name: 'api_v1.0_customer_payment_list', methods: ['GET'])]
+    #[Route('/api/v1/customer/{id}/payment-refund', name: 'api_v1.0_customer_payment_list', methods: ['GET'])]
     public function listPayment(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
