@@ -56,12 +56,12 @@ class PaymentMethodsController
 
     #[Route('/api/v1/customer/{customerId}/payment-methods/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_complete', methods: ['POST'])]
     public function finishFrontendAdd(
-        Request                       $request,
+        Request $request,
         FrontendAddProcessorInterface $addCardByTokenDriver,
-        CustomerRepositoryInterface   $customerRepository,
-        SerializerInterface           $serializer,
-        ValidatorInterface            $validator,
-        PaymentMethodsFactory         $paymentDetailsFactory,
+        CustomerRepositoryInterface $customerRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        PaymentMethodsFactory $paymentDetailsFactory,
     ): Response {
         try {
             /** @var Customer $customer */
