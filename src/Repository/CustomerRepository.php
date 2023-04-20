@@ -14,6 +14,7 @@ namespace App\Repository;
 
 use App\Entity\Customer;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\User\Entity\UserInterface;
@@ -48,5 +49,16 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
         } catch (NoEntityFoundException $e) {
             return false;
         }
+    }
+
+    public function getByExternalReference(string $externalReference): CustomerInterface
+    {
+        $customer = $this->entityRepository->findOneBy(['externalCustomerReference' => $externalReference]);
+
+        if (!$customer instanceof Customer) {
+            throw new NoEntityFoundException(sprintf("No customer found for external reference '%s'", $externalReference));
+        }
+
+        return $customer;
     }
 }
