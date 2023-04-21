@@ -20,3 +20,4 @@ parthenon:
       stripe:
         private_api_key: '%env(resolve:STRIPE_PRIVATE_API_KEY)%'
         public_api_key: '%env(resolve:STRIPE_PUBLIC_API_KEY)%'
+        webhook_secret: '%env(resolve:STRIPE_WEBHOOK_SECRET)%'
