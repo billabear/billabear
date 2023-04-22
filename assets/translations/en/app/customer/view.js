@@ -30,7 +30,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             valid_until: "Next Billed",
             view: "View",
         },
-        add_new: "Add New Subscription"
+        add_new: "Add New Subscription",
+        no_subscriptions: "No Subscriptions"
     },
     payments: {
         title: "Payments",

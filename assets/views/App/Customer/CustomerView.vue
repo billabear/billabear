@@ -88,7 +88,7 @@
               <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="list-btn">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
             </tr>
             <tr v-if="subscriptions.length == 0">
-              <td colspan="6" class="text-center">sdfds</td>
+              <td colspan="6" class="text-center">{{ $t('app.customer.view.subscriptions.no_subscriptions') }}</td>
             </tr>
             </tbody>
           </table>
