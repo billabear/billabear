@@ -16,10 +16,13 @@ use App\Api\Filters\CustomerList;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Dto\CreateCustomerDto;
+use App\Dto\Response\Api\Customer\Limits;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
+use Parthenon\Billing\Entity\SubscriptionPlanLimit;
+use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,6 +134,52 @@ class CustomerController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
         $dto = $customerFactory->createApiDto($customer);
+        $data = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($data, json: true);
+    }
+
+    #[Route('/api/v1/customer/{id}/limits', name: 'api_v1.0_customer_read_limits', methods: ['GET'])]
+    public function readCustomerLimits(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
+
+        $limits = [];
+        $features = [];
+        $userCount = 0;
+
+        foreach ($subscriptions as $subscription) {
+            /** @var SubscriptionPlanLimit $limit */
+            foreach ($subscription->getSubscriptionPlan()->getLimits() as $limit) {
+                $name = $limit->getSubscriptionFeature()->getName();
+
+                if (!isset($limits[$name])) {
+                    $limits[$name] = 0;
+                }
+                $limits[$name] += $limit->getLimit();
+            }
+            foreach ($subscription->getSubscriptionPlan()->getFeatures() as $feature) {
+                $features[] = $feature->getName();
+            }
+            $userCount += $subscription->getSubscriptionPlan()->getUserCount();
+        }
+        $features = array_unique($features);
+
+        $dto = new Limits();
+        $dto->setUserCount($userCount);
+        $dto->setLimits($limits);
+        $dto->setFeatures($features);
         $data = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($data, json: true);

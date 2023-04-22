@@ -33,6 +33,32 @@ class MainContext implements Context
     }
 
     /**
+     * @When I request the limits for customer :arg1
+     */
+    public function iRequestTheLimitsForCustomer($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/limits');
+    }
+
+    /**
+     * @Then I should see that :arg1 is limited to :arg2
+     */
+    public function iShouldSeeThatIsLimitedTo($limitName, $limit)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['limits'][$limitName])) {
+            throw new \Exception('Limit not set');
+        }
+
+        if ($data['limits'][$limitName] != $limit) {
+            throw new \Exception('Limit is not the same');
+        }
+    }
+
+    /**
      * @When I create a customer with the following info
      */
     public function iCreateACustomerWithTheFollowingInfo(TableNode $table)
