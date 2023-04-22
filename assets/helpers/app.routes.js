@@ -29,6 +29,12 @@ import PaymentList from "../views/App/Payments/PaymentList.vue";
 import PaymentView from "../views/App/Payments/PaymentView.vue";
 import RefundView from "../views/App/Refund/RefundView.vue";
 import RefundList from "../views/App/Refund/RefundList.vue";
+import TransactionView from "../views/App/transactions/TransactionView.vue";
+import SettingsGroup from "../views/App/Settings/SettingsGroup.vue";
+import SubscriptionGroup from "../views/App/Subscription/SubscriptionGroup.vue";
+import SubscriptionPlanGroup from "../views/App/SubscriptionPlan/SubscriptionPlanGroup.vue";
+import ProductGroup from "../views/App/Product/ProductGroup.vue";
+import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -38,150 +44,162 @@ export const APP_ROUTES = [
         component: Dashboard,
     },
     {
-        name: 'app.team',
-        path: "team",
-        component: TeamSettings,
-    },
-    {
-        name: 'app.plan',
-        path: "plan",
-        component: Plan
-    },
-    {
-        name: 'app.user.settings',
-        path: "user/settings",
-        component: UserSettings,
-    },
-    {
-        name: "app.user.invite",
-        path: "user/invite",
-        component: UserInvite,
-    },
-    {
-        name: 'app.customer.list',
-        path: 'customer/list',
-        component: CustomerList
-    },
-    {
-        name: 'app.customer.create',
-        path: 'customer/create',
-        component: CustomerCreate,
-    },
-    {
-        name: 'app.customer.view',
-        path: 'customer/view/:id',
-        component: CustomerView
-    },
-    {
-        name: 'app.customer.update',
-        path: 'customer/update/:id',
-        component: CustomerUpdate
-    },
-    {
-        name: 'app.payment.list',
-        path: 'payments/list',
-        component: PaymentList
-    },
-    {
-        name: 'app.payment.view',
-        path: 'payments/view/:id',
-        component: PaymentView
-    },
-    {
-        name: 'app.refund.list',
-        path: 'refunds/list',
-        component: RefundList
-    },
-    {
-        name: 'app.refund.view',
-        path: 'refunds/view/:id',
-        component: RefundView
-    },
-    {
-        name: 'app.customer.payment_details.add',
-        path: 'customer/:customerId/payment-details/add',
-        component: AddPaymentDetails
-    },
-    {
-        name: 'app.feature.list',
-        path: 'feature/list',
-        component: FeatureList
-    },
-    {
-        name: 'app.feature.create',
-        path: 'feature/create',
-        component: FeatureCreate
-    },
-    {
-        name: 'app.product.list',
-        path: 'product/list',
-        component: ProductList
-    },
-    {
-        name: 'app.product.create',
-        path: 'product/create',
-        component: ProductCreate,
-    },
-    {
-        name: 'app.product.view',
-        path: 'product/view/:id',
-        component: ProductView
-    },
-    {
-        name: 'app.product.update',
-        path: 'product/update/:id',
-        component: ProductUpdate
-    },
-    {
-        name: 'app.subscription.create',
-        path: 'customer/:customerId/subscription/add',
-        component: SubscriptionCreate
-    },
-    {
-        name: 'app.subscription.view',
-        path: 'subscription/:subscriptionId',
-        component: SubscriptionView
-    },
-    {
-        name: 'app.subscription.list',
-        path: 'subscription',
-        component: SubscriptionList
-    },
-    {
-        name: 'app.price.create',
-        path: 'product/:productId/price/create',
-        component: PriceCreate,
-    },
-    {
-        name: 'app.subscription_plan.create',
-        path: 'product/:productId/subscription-plan/create',
-        component: SubscriptionPlanCreate,
-    },
-    {
-        name: 'app.subscription_plan.view',
-        path: 'product/:productId/subscription-plan/view/:subscriptionPlanId',
-        component: SubscriptionPlanView,
-    },
-    {
-        name: 'app.subscription_plan.update',
-        path: 'product/:productId/subscription-plan/update/:subscriptionPlanId',
-        component: SubscriptionPlanUpdate,
-    },
-    {
-        name: 'app.billing',
-        path: 'billing',
-        component: Billing,
+        name: 'app.customer',
+        path: 'customers',
+        component: CustomerGroup,
         children: [
             {
-                name: 'app.billing.details',
-                path: '',
-                component: BillingAddress
+                name: 'app.customer.list',
+                path: 'customer/list',
+                component: CustomerList
             },
             {
-                name: 'app.billing.methods',
-                path: 'methods',
-                component: BillingMethods,
-            }
+                name: 'app.customer.create',
+                path: 'customer/create',
+                component: CustomerCreate,
+            },
+            {
+                name: 'app.customer.view',
+                path: 'customer/view/:id',
+                component: CustomerView
+            },
+            {
+                name: 'app.customer.update',
+                path: 'customer/update/:id',
+                component: CustomerUpdate
+            },
+            {
+                name: 'app.customer.payment_details.add',
+                path: 'customer/:customerId/payment-details/add',
+                component: AddPaymentDetails
+            },
+            {
+                name: 'app.subscription.create',
+                path: 'customer/:customerId/subscription/add',
+                component: SubscriptionCreate
+            },
+        ]
+    },
+    {
+        name: 'app.settings',
+        path: 'settings',
+        component: SettingsGroup,
+        children: [
+            {
+                name: 'app.user.settings',
+                path: "user",
+                component: UserSettings,
+            },
+            {
+                name: "app.user.invite",
+                path: "user/invite",
+                component: UserInvite,
+            },
+        ]
+    },
+    {
+        name: 'app.product',
+        path: 'product',
+        component: ProductGroup,
+        children: [
+            {
+                name: 'app.price.create',
+                path: 'product/:productId/price/create',
+                component: PriceCreate,
+            },
+            {
+                name: 'app.subscription_plan.create',
+                path: 'product/:productId/subscription-plan/create',
+                component: SubscriptionPlanCreate,
+            },
+            {
+                name: 'app.subscription_plan.view',
+                path: 'product/:productId/subscription-plan/view/:subscriptionPlanId',
+                component: SubscriptionPlanView,
+            },
+            {
+                name: 'app.subscription_plan.update',
+                path: 'product/:productId/subscription-plan/update/:subscriptionPlanId',
+                component: SubscriptionPlanUpdate,
+            },
+            {
+                name: 'app.feature.list',
+                path: 'feature/list',
+                component: FeatureList
+            },
+            {
+                name: 'app.feature.create',
+                path: 'feature/create',
+                component: FeatureCreate
+            },
+            {
+                name: 'app.product.list',
+                path: 'product/list',
+                component: ProductList
+            },
+            {
+                name: 'app.product.create',
+                path: 'product/create',
+                component: ProductCreate,
+            },
+            {
+                name: 'app.product.view',
+                path: 'product/view/:id',
+                component: ProductView
+            },
+            {
+                name: 'app.product.update',
+                path: 'product/update/:id',
+                component: ProductUpdate
+            },]
+    },
+    {
+        name: 'app.subscription',
+        path: 'subscriptions',
+        component: SubscriptionGroup,
+        children: [
+            {
+                name: 'app.subscription.view',
+                path: 'subscription/:subscriptionId',
+                component: SubscriptionView
+            },
+            {
+                name: 'app.subscription.list',
+                path: 'subscription',
+                component: SubscriptionList
+            },
+        ]
+    },
+    {
+        name: 'app.transactions',
+        path: 'transactions',
+        component: TransactionView,
+        children: [
+            {
+                name: 'app.payment.dummy',
+                path: '',
+                component: PaymentList
+            },
+            {
+                name: 'app.payment.list',
+                path: 'payments/list',
+                component: PaymentList
+            },
+            {
+                name: 'app.payment.view',
+                path: 'payments/view/:id',
+                component: PaymentView
+            },
+            {
+                name: 'app.refund.list',
+                path: 'refunds/list',
+                component: RefundList
+            },
+            {
+                name: 'app.refund.view',
+                path: 'refunds/view/:id',
+                component: RefundView
+            },
         ]
     }
 ]

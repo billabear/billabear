@@ -13,7 +13,7 @@ services:
       - ./docker/database/data:/var/lib/postgresql/data
       - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - parthenon
+      - billabear
 
   php-fpm:
     image: getparthenon/ubuntu-php-fpm:8.1
@@ -26,7 +26,7 @@ services:
     volumes:
       - .:/var/www
     networks:
-      - parthenon
+      - billabear
 
   nginx:
     image: getparthenon/ubuntu-nginx:21.04
@@ -40,8 +40,8 @@ services:
     ports:
       - "80:80"
     networks:
-      - parthenon
+      - billabear
 
 networks:
-  parthenon:
+  billabear:
     driver: bridge

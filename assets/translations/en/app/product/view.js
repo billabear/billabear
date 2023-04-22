@@ -13,6 +13,7 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
     price: {
         title: "Prices",
         create: "Create New Price",
+        no_prices: "There are currently no prices",
         list: {
             amount: "Amount",
             currency: "Currency",

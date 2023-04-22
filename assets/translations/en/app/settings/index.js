@@ -1,0 +1,5 @@
+import {SETTINGS_MENU_TRANSACTIONS} from "./menu";
+
+export const SETTINGS_TRANSLATIONS = {
+    menu: SETTINGS_MENU_TRANSACTIONS,
+};

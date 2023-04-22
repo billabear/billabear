@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full text-center mb-5">
-    <img src="/images/app-logo.png" alt="" class="m-auto" width="175" />
+  <div class="w-full mb-5">
+    <img src="/images/app-logo.png" alt="" class="" width="175" />
   </div>
 </template>
 

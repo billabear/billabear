@@ -54,16 +54,31 @@
     @apply bg-green-300 p-3 w-full border font-bold rounded-xl border-green-700 text-green-700;
 }
 
+#app {
+
+    @apply flex justify-center;
+}
+.page {
+    width: 90%;
+}
+
+.page-header {
+}
+
 .menu-group-title {
     @apply font-medium text-xl text-slate-900 mb-3;
 }
 
+.menu-list {
+    @apply border-b mb-5;
+}
+
 .menu-item {
-    @apply my-3;
+    @apply inline-block;
 }
 
 .menu-link {
-    @apply pl-2 hover:bg-slate-200 rounded-xl p-2 w-full inline-block;
+    @apply pl-2 p-2 w-full inline-block hover:bg-slate-50;
 }
 
 .router-link-active {

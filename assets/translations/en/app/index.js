@@ -12,6 +12,8 @@ import {PAYMENT_DETAILS_TRANSLATIONS} from "./payment_details";
 import {SUBSCRIPTION_TRANSLATIONS} from "./subscription";
 import {PAYMENT_TRANSLATIONS} from "./payment";
 import {REFUND_TRANSLATIONS} from "./refund";
+import {TRANSACTIONS_TRANSLATIONS} from "./transactions";
+import {SETTINGS_TRANSLATIONS} from "./settings";
 
 
 export const APP_TRANSLATIONS = {
@@ -29,4 +31,6 @@ export const APP_TRANSLATIONS = {
     subscription: SUBSCRIPTION_TRANSLATIONS,
     payment: PAYMENT_TRANSLATIONS,
     refund: REFUND_TRANSLATIONS,
+    transactions: TRANSACTIONS_TRANSLATIONS,
+    settings: SETTINGS_TRANSLATIONS,
 };
