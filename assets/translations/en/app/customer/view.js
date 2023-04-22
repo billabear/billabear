@@ -65,5 +65,20 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         no_payment_details: "No payment details",
         delete: "Delete",
         make_default: "Make Default"
+    },
+    limits: {
+        title: "Limits",
+        list: {
+            feature: "Feature",
+            limit: "Limit"
+        },
+        no_limits: "No Limits"
+    },
+    features: {
+        title: "Features",
+        list: {
+            feature: "Feature"
+        },
+        no_features: "No features"
     }
 }

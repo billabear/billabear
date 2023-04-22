@@ -43,6 +43,7 @@ class PostSubscriptionPlan
 
     #[Assert\Type('integer')]
     #[SerializedName('user_count')]
+    #[Assert\PositiveOrZero]
     protected $userCount;
 
     #[Assert\Type('boolean')]

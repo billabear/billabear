@@ -13,6 +13,7 @@
 namespace App\Dto\Response\App;
 
 use App\Dto\Generic\App\Customer;
+use App\Dto\Response\App\Customer\Limits;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class CustomerView
@@ -30,6 +31,8 @@ class CustomerView
     protected array $refunds = [];
 
     protected bool $success = true;
+
+    protected Limits $limits;
 
     public function getCustomer(): Customer
     {
@@ -89,5 +92,15 @@ class CustomerView
     public function setRefunds(array $refunds): void
     {
         $this->refunds = $refunds;
+    }
+
+    public function getLimits(): Limits
+    {
+        return $this->limits;
+    }
+
+    public function setLimits(Limits $limits): void
+    {
+        $this->limits = $limits;
     }
 }

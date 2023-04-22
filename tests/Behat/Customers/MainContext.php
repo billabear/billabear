@@ -59,6 +59,22 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I should see the limit info that :arg1 is limited to :arg2
+     */
+    public function iShouldSeeTheLimitInfoThatIsLimitedTo($limitName, $limit)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['limits']['limits'][$limitName])) {
+            throw new \Exception('Limit not set');
+        }
+
+        if ($data['limits']['limits'][$limitName] != $limit) {
+            throw new \Exception('Limit is not the same');
+        }
+    }
+
+    /**
      * @When I create a customer with the following info
      */
     public function iCreateACustomerWithTheFollowingInfo(TableNode $table)

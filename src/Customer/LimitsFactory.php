@@ -1,0 +1,74 @@
+<?php
+
+/*
+ * Copyright Iain Cambridge 2023.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ *
+ * Change Date: TBD ( 3 years after 1.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
+namespace App\Customer;
+
+use App\Dto\Response\Api\Customer\Limits as ApiDto;
+use App\Dto\Response\App\Customer\Limits as AppDto;
+use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlanLimit;
+
+class LimitsFactory
+{
+    /**
+     * @param Subscription[] $subscriptions
+     */
+    public function createApiDto(array $subscriptions): ApiDto
+    {
+        list($limits, $features, $userCount) = $this->getVariables($subscriptions);
+
+        $dto = new ApiDto();
+        $dto->setUserCount($userCount);
+        $dto->setLimits($limits);
+        $dto->setFeatures($features);
+
+        return $dto;
+    }
+
+    public function createAppDto(array $subscriptions): AppDto
+    {
+        list($limits, $features, $userCount) = $this->getVariables($subscriptions);
+
+        $dto = new AppDto();
+        $dto->setUserCount($userCount);
+        $dto->setLimits($limits);
+        $dto->setFeatures($features);
+
+        return $dto;
+    }
+
+    public function getVariables(array $subscriptions): array
+    {
+        $limits = [];
+        $features = [];
+        $userCount = 0;
+
+        foreach ($subscriptions as $subscription) {
+            /** @var SubscriptionPlanLimit $limit */
+            foreach ($subscription->getSubscriptionPlan()->getLimits() as $limit) {
+                $name = $limit->getSubscriptionFeature()->getName();
+
+                if (!isset($limits[$name])) {
+                    $limits[$name] = 0;
+                }
+                $limits[$name] += $limit->getLimit();
+            }
+            foreach ($subscription->getSubscriptionPlan()->getFeatures() as $feature) {
+                $features[] = $feature->getName();
+            }
+            $userCount += $subscription->getSubscriptionPlan()->getUserCount();
+        }
+        $features = array_unique($features);
+
+        return [$limits, $features, $userCount];
+    }
+}

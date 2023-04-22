@@ -181,6 +181,46 @@
               </tbody>
             </table>
           </div>
+          <div class="mt-3">
+            <h2 class="mb-5">{{ $t('app.customer.view.limits.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.customer.view.limits.list.feature') }}</th>
+                <th>{{ $t('app.customer.view.limits.list.limit') }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(limit, key) in limits.limits">
+                <td>{{ key }}</td>
+                <td>{{ limit }}</td>
+              </tr>
+              <tr v-if="Object.keys(limits.limits).length == 0">
+                <td colspan="4" class="text-center">{{ $t('app.customer.view.limits.no_limits') }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3">
+            <h2 class="mb-5">{{ $t('app.customer.view.features.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.customer.view.features.list.feature') }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="feature in limits.features">
+                <td>{{ feature }}</td>
+              </tr>
+              <tr v-if="limits.features.length == 0">
+                <td colspan="4" class="text-center">{{ $t('app.customer.view.features.no_features') }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
       </div>
       </div>
 
@@ -207,6 +247,7 @@ export default {
       payments: [],
       refunds: [],
       subscriptions: [],
+      limits: {}
     }
   },
   methods: {
@@ -241,6 +282,7 @@ export default {
       this.subscriptions = response.data.subscriptions;
       this.payments = response.data.payments;
       this.refunds = response.data.refunds;
+      this.limits = response.data.limits;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

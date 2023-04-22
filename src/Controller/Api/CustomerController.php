@@ -15,13 +15,12 @@ namespace App\Controller\Api;
 use App\Api\Filters\CustomerList;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
+use App\Customer\LimitsFactory;
 use App\Dto\CreateCustomerDto;
-use App\Dto\Response\Api\Customer\Limits;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
-use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -145,6 +144,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
+        LimitsFactory $factory,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -154,32 +154,7 @@ class CustomerController
         }
 
         $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
-
-        $limits = [];
-        $features = [];
-        $userCount = 0;
-
-        foreach ($subscriptions as $subscription) {
-            /** @var SubscriptionPlanLimit $limit */
-            foreach ($subscription->getSubscriptionPlan()->getLimits() as $limit) {
-                $name = $limit->getSubscriptionFeature()->getName();
-
-                if (!isset($limits[$name])) {
-                    $limits[$name] = 0;
-                }
-                $limits[$name] += $limit->getLimit();
-            }
-            foreach ($subscription->getSubscriptionPlan()->getFeatures() as $feature) {
-                $features[] = $feature->getName();
-            }
-            $userCount += $subscription->getSubscriptionPlan()->getUserCount();
-        }
-        $features = array_unique($features);
-
-        $dto = new Limits();
-        $dto->setUserCount($userCount);
-        $dto->setLimits($limits);
-        $dto->setFeatures($features);
+        $dto = $factory->createApiDto($subscriptions);
         $data = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($data, json: true);

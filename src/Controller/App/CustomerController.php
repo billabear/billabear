@@ -15,6 +15,7 @@ namespace App\Controller\App;
 use App\Api\Filters\CustomerList;
 use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
+use App\Customer\LimitsFactory;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
@@ -139,6 +140,7 @@ class CustomerController
         RefundFactory $refundFactory,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
+        LimitsFactory $limitsFactory,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));
@@ -158,6 +160,8 @@ class CustomerController
         $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
         $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
 
+        $limits = $limitsFactory->createAppDto($subscriptions);
+
         $customerDto = $customerFactory->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
@@ -165,6 +169,7 @@ class CustomerController
         $dto->setSubscriptions($subscriptionDtos);
         $dto->setPayments($paymentDtos);
         $dto->setRefunds($refundDtos);
+        $dto->setLimits($limits);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
