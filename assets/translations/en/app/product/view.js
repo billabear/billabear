@@ -27,6 +27,7 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
     subscription_plan: {
         title: "Subscription Plans",
         create: "Create new Plan",
+        no_subscription_plans: "There are currently no subscription plans",
         view: "View",
         list: {
             name: "Name",
