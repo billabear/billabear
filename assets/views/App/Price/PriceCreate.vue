@@ -38,7 +38,7 @@
         </div>
         <div class="form-field-ctn" v-if="price.recurring">
           <label class="form-field-lbl" for="schedule">
-            {{ $t('app.price.create.shedule_label') }}
+            {{ $t('app.price.create.schedule_label') }}
           </label>
           <p class="form-field-error" v-if="errors.schedule != undefined">{{ errors.schedule }}</p>
           <select class="form-field-input" id="name" v-model="price.schedule">

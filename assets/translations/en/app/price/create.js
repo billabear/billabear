@@ -6,7 +6,7 @@ export const PRICE_CREATE_TRANSLATIONS = {
     submit_btn: "Create Price",
     show_advanced: "Advanced",
     success_message: "Successfully created price",
-    shedule_label: "Payment Schedule",
+    schedule_label: "Payment Schedule",
     currency: "Currency",
     recurring: "Is A Recurring?",
     including_tax: "Does Price includes tax?",
