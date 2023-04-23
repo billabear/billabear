@@ -48,7 +48,7 @@
               <td>{{ customer.email }}</td>
               <td>{{ customer.address.country }}</td>
               <td>{{ customer.reference }}</td>
-              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">View</router-link></td>
+              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.customer.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="customers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>

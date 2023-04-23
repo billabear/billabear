@@ -8,6 +8,7 @@ export const CUSTOMER_LIST_TRANSLATIONS = {
     create_new: "Create",
     next: "Next Page",
     prev: "Previous Page",
+    view_btn: "View",
     filter: {
         title: "Filters",
         email: "Email",
