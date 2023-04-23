@@ -18,7 +18,6 @@ use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Common\Address;
 
 class CustomerFactory
@@ -41,7 +40,6 @@ class CustomerFactory
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
         $customer->setName($createCustomerDto->getName());
-
 
         $externalCustomerReference = $createCustomerDto->getExternalReference();
 
