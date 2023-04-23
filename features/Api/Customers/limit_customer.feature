@@ -48,3 +48,18 @@ Feature: Customer Subscription List
       | Test Two          | 3000         | USD            | month          | customer.one@example.org |
     When I request the limits for customer "customer.one@example.org"
     Then I should see that "Feature Two" is limited to 25
+
+  Scenario: Disabled
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org |
+    And customer "customer.one@example.org" is disabled
+    When I request the limits for customer "customer.one@example.org"
+    Then I should see an empty limits API response

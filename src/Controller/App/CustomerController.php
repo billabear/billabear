@@ -13,13 +13,14 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\CustomerList;
-use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
+use App\Enum\CustomerStatus;
+use App\Factory\CustomerFactory;
 use App\Factory\PaymentFactory;
 use App\Factory\PaymentMethodsFactory;
 use App\Factory\RefundFactory;
@@ -126,6 +127,24 @@ class CustomerController
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
     }
 
+    #[Route('/app/customer/{id}/disable', name: 'app_customer_disable', methods: ['POST'])]
+    public function disableCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+    ) {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $customer->setStatus(CustomerStatus::DISABLED);
+        $customerRepository->save($customer);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+    }
+
     #[Route('/app/customer/{id}', name: 'app_customer_view', methods: ['GET'])]
     public function viewCustomer(
         Request $request,
@@ -160,7 +179,7 @@ class CustomerController
         $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
         $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
 
-        $limits = $limitsFactory->createAppDto($subscriptions);
+        $limits = $limitsFactory->createAppDto($customer, $subscriptions);
 
         $customerDto = $customerFactory->createAppDto($customer);
         $dto = new CustomerView();

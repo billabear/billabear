@@ -12,7 +12,6 @@
 
 namespace App\Factory;
 
-use App\Customer\CustomerFactory;
 use App\Dto\Generic\Api\Refund as ApiDto;
 use App\Dto\Generic\App\Refund as AppDto;
 use Parthenon\Billing\Entity\Refund;

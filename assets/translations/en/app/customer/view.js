@@ -1,6 +1,7 @@
 export const CUSTOMER_VIEW_TRANSLATIONS = {
     title: 'View Customer Details',
     update: 'Update',
+    disable: "Disable",
     error: {
         not_found: "No such customer found",
         unknown: "An unknown error has occurred"
@@ -9,7 +10,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         title: "Main Details",
         email: "Email",
         reference: "Internal Reference",
-        external_reference: "External Reference"
+        external_reference: "External Reference",
+        status: "Status"
     },
     address: {
         title: "Address",

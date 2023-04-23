@@ -38,6 +38,9 @@ class Customer
     #[SerializedName('address')]
     protected Address $address;
 
+    #[SerializedName('status')]
+    protected string $status;
+
     public function getId(): string
     {
         return $this->id;
@@ -106,5 +109,15 @@ class Customer
     public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
     {
         $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

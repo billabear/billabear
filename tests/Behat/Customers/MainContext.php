@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\Customers;
 
 use App\Entity\Customer;
+use App\Enum\CustomerStatus;
 use App\Repository\Orm\CustomerRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -155,6 +156,69 @@ class MainContext implements Context
 
         if ($customer->getReference() !== $arg2) {
             throw new \Exception(sprintf("Expected '%s' but got '%s'", $arg2, $customer->getReference()));
+        }
+    }
+
+    /**
+     * @When I disable the customer info via the site for :arg1
+     */
+    public function iDisableTheCustomerInfoViaTheSiteFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/disable');
+    }
+
+    /**
+     * @Then the customer :arg1 is disabled
+     */
+    public function theCustomerIsDisabled($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        if (!$customer->isDisabled()) {
+            throw new \Exception('Not disabled');
+        }
+    }
+
+    /**
+     * @When customer :arg1 is disabled
+     */
+    public function customerIsDisabled($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $customer->setStatus(CustomerStatus::DISABLED);
+        $this->customerRepository->getEntityManager()->persist($customer);
+        $this->customerRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Then I should see an empty limits response
+     */
+    public function iShouldSeeAnEmptyLimitsResponse()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['limits']['limits'])) {
+            throw new \Exception('Limit not set');
+        }
+
+        if (!empty($data['limits']['limits'])) {
+            throw new \Exception('Limit is not empty');
+        }
+    }
+
+    /**
+     * @Then I should see an empty limits API response
+     */
+    public function iShouldSeeAnEmptyLimitsApiResponse()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['limits'])) {
+            throw new \Exception('Limit not set');
+        }
+
+        if (!empty($data['limits'])) {
+            throw new \Exception('Limit is not empty');
         }
     }
 

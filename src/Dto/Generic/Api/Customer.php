@@ -35,6 +35,9 @@ class Customer
     #[SerializedName('address')]
     protected Address $address;
 
+    #[SerializedName('status')]
+    protected string $status;
+
     public function getId(): string
     {
         return $this->id;
@@ -93,5 +96,15 @@ class Customer
     public function setAddress(Address $address): void
     {
         $this->address = $address;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

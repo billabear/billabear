@@ -12,7 +12,6 @@
 
 namespace App\Factory;
 
-use App\Customer\CustomerFactory;
 use App\Dto\Generic\Api\Subscription as ApiDto;
 use App\Dto\Generic\App\Subscription as AppDto;
 use Parthenon\Billing\Entity\Subscription as Entity;

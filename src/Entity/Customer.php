@@ -12,6 +12,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CustomerStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
@@ -46,6 +47,12 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
     protected ?string $paymentProviderDetailsUrl;
+
+    #[ORM\Column(name: 'status', type: 'string', nullable: true, enumType: CustomerStatus::class)]
+    protected CustomerStatus $status;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    protected ?bool $disabled = false;
 
     public function hasSubscription(): bool
     {
@@ -185,5 +192,35 @@ class Customer implements CustomerInterface
     public function hasExternalCustomerReference(): bool
     {
         return isset($this->externalCustomerReference);
+    }
+
+    public function getStatus(): CustomerStatus
+    {
+        if (!isset($this->status)) {
+            return CustomerStatus::UNKNOWN;
+        }
+
+        return $this->status;
+    }
+
+    public function setStatus(CustomerStatus $status): void
+    {
+        if (CustomerStatus::DISABLED === $status) {
+            $this->disabled = true;
+        } else {
+            $this->disabled = false;
+        }
+
+        $this->status = $status;
+    }
+
+    public function isDisabled(): bool
+    {
+        return true == $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): void
+    {
+        $this->disabled = $disabled;
     }
 }

@@ -14,6 +14,7 @@ namespace App\Customer;
 
 use App\Dto\Response\Api\Customer\Limits as ApiDto;
 use App\Dto\Response\App\Customer\Limits as AppDto;
+use App\Entity\Customer;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 
@@ -22,9 +23,9 @@ class LimitsFactory
     /**
      * @param Subscription[] $subscriptions
      */
-    public function createApiDto(array $subscriptions): ApiDto
+    public function createApiDto(Customer $customer, array $subscriptions): ApiDto
     {
-        list($limits, $features, $userCount) = $this->getVariables($subscriptions);
+        list($limits, $features, $userCount) = $this->getVariables($customer, $subscriptions);
 
         $dto = new ApiDto();
         $dto->setUserCount($userCount);
@@ -34,9 +35,9 @@ class LimitsFactory
         return $dto;
     }
 
-    public function createAppDto(array $subscriptions): AppDto
+    public function createAppDto(Customer $customer, array $subscriptions): AppDto
     {
-        list($limits, $features, $userCount) = $this->getVariables($subscriptions);
+        list($limits, $features, $userCount) = $this->getVariables($customer, $subscriptions);
 
         $dto = new AppDto();
         $dto->setUserCount($userCount);
@@ -46,11 +47,15 @@ class LimitsFactory
         return $dto;
     }
 
-    public function getVariables(array $subscriptions): array
+    public function getVariables(Customer $customer, array $subscriptions): array
     {
         $limits = [];
         $features = [];
         $userCount = 0;
+
+        if ($customer->isDisabled()) {
+            return [$limits, $features, $userCount];
+        }
 
         foreach ($subscriptions as $subscription) {
             /** @var SubscriptionPlanLimit $limit */

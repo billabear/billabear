@@ -12,7 +12,6 @@
 
 namespace App\Factory;
 
-use App\Customer\CustomerFactory;
 use App\Dto\Generic\Api\Payment as ApiDto;
 use App\Dto\Generic\App\Payment as AppDto;
 use Parthenon\Billing\Entity\Payment;

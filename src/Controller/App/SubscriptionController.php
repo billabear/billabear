@@ -13,13 +13,13 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\SubscriptionList;
-use App\Customer\CustomerFactory;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
+use App\Factory\CustomerFactory;
 use App\Factory\PaymentMethodsFactory;
 use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;

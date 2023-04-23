@@ -13,12 +13,12 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\CustomerList;
-use App\Customer\CustomerFactory;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
+use App\Factory\CustomerFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -154,7 +154,7 @@ class CustomerController
         }
 
         $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
-        $dto = $factory->createApiDto($subscriptions);
+        $dto = $factory->createApiDto($customer, $subscriptions);
         $data = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($data, json: true);

@@ -5,6 +5,7 @@
     <LoadingScreen :ready="ready">
       <div v-if="!error">
         <div class="mt-3 text-end">
+          <button class="btn--danger mr-3" v-if="customer.status != 'disabled'" @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
           <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
         </div>
         <div class="grid grid-cols-2 gap-3">
@@ -14,6 +15,10 @@
               <div>
                 <dt>{{ $t('app.customer.view.main.email') }}</dt>
                 <dd>{{ customer.email }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.customer.view.main.status') }}</dt>
+                <dd>{{ customer.status }}</dd>
               </div>
               <div>
                 <dt>{{ $t('app.customer.view.main.reference') }}</dt>
@@ -251,6 +256,15 @@ export default {
     }
   },
   methods: {
+    disableCustomer: function() {
+      var customerId = this.$route.params.id;
+      axios.post('/app/customer/'+customerId+'/disable').then(response => {
+        this.customer.status = 'disabled';
+      })
+    },
+    enableCustomer: function()  {
+
+    },
     deletePayment: function (id) {
       var customerId = this.$route.params.id
       axios.delete('/app/customer/'+customerId+'/payment-details/'+id).then(response => {

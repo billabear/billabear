@@ -10,13 +10,14 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Customer;
+namespace App\Factory;
 
 use App\Dto\CreateCustomerDto;
 use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
+use App\Enum\CustomerStatus;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Common\Address;
 
@@ -34,11 +35,13 @@ class CustomerFactory
 
         if (!$customer) {
             $customer = new Customer();
+            $customer->setStatus(CustomerStatus::NEW);
         }
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
         $customer->setName($createCustomerDto->getName());
+
 
         $externalCustomerReference = $createCustomerDto->getExternalReference();
 
@@ -67,11 +70,12 @@ class CustomerFactory
         $dto->setEmail($customer->getBillingEmail());
         $dto->setExternalReference($customer->getExternalCustomerReference());
         $dto->setAddress($address);
+        $dto->setStatus($customer->getStatus()->value);
 
         return $dto;
     }
 
-    public function createAppDto(CustomerInterface $customer): CustomerAppDto
+    public function createAppDto(Customer $customer): CustomerAppDto
     {
         $address = new AddressDto();
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
@@ -89,6 +93,7 @@ class CustomerFactory
         $dto->setExternalReference($customer->getExternalCustomerReference());
         $dto->setAddress($address);
         $dto->setPaymentProviderDetailsUrl($customer->getPaymentProviderDetailsUrl());
+        $dto->setStatus($customer->getStatus()->value);
 
         return $dto;
     }
