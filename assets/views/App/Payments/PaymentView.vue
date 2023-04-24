@@ -94,7 +94,7 @@
         </div>
 
         <div class="text-end mt-4">
-          <button class="btn--secondary" @click="generateReceipt">Generate Receipt</button>
+          <button class="btn--secondary mr-3" @click="generateReceipt">Generate Receipt</button>
           <button class="btn--main" @click="options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
         </div>
       </div>
