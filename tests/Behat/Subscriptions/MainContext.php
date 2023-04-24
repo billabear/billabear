@@ -23,6 +23,7 @@ use Parthenon\Billing\Entity\PaymentDetails;
 use Parthenon\Billing\Entity\PaymentMethod;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
@@ -54,6 +55,7 @@ class MainContext implements Context
         $rows = $table->getColumnsHash();
 
         foreach ($rows as $row) {
+            /** @var SubscriptionPlan $subscriptionPlan */
             $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
             $customer = $this->getCustomerByEmail($row['Customer']);
             /** @var Price $price */
@@ -71,6 +73,7 @@ class MainContext implements Context
             $subscription->setCustomer($customer);
             $subscription->setPrice($price);
             $subscription->setSubscriptionPlan($subscriptionPlan);
+            $subscription->setPlanName($subscriptionPlan->getName());
             $subscription->setStatus(SubscriptionStatus::ACTIVE);
             $subscription->setCurrency($price->getCurrency());
             $subscription->setAmount($price->getAmount());

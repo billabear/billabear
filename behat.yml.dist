@@ -45,6 +45,8 @@ default:
                 - App\Tests\Behat\Refund\ApiContext
                 - App\Tests\Behat\Refund\MainContext
 
+                # Receipt
+                - App\Tests\Behat\Receipt\AppContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

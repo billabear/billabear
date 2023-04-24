@@ -94,6 +94,7 @@
         </div>
 
         <div class="text-end mt-4">
+          <button class="btn--secondary" @click="generateReceipt">Generate Receipt</button>
           <button class="btn--main" @click="options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
         </div>
       </div>
@@ -174,6 +175,13 @@ export default {
     }
   },
   methods: {
+    generateReceipt: function (){
+
+      const paymentId = this.$route.params.id
+      axios.post('/app/payment/'+paymentId+'/generate-receipt').then(response => {
+      }).catch(error => {
+      })
+    },
     sendRefund: function () {
       const paymentId = this.$route.params.id
       const payload = {

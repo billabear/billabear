@@ -1956,12 +1956,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "ed0bb0375d4fb23ba48df9ec4d94794a6cb54357"
+                "reference": "c10eb70a74e28e836290d3d9df70e18974d8ba38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/ed0bb0375d4fb23ba48df9ec4d94794a6cb54357",
-                "reference": "ed0bb0375d4fb23ba48df9ec4d94794a6cb54357",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/c10eb70a74e28e836290d3d9df70e18974d8ba38",
+                "reference": "c10eb70a74e28e836290d3d9df70e18974d8ba38",
                 "shasum": ""
             },
             "require": {
@@ -2045,7 +2045,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-04-24T13:14:56+00:00"
+            "time": "2023-04-24T16:20:59+00:00"
         },
         {
             "name": "php-http/discovery",
