@@ -81,20 +81,41 @@
               </tr>
               </thead>
               <tbody>
-                <tr v-for="subscription in subscriptions">
-                  <td>{{ subscription.plan.name }}</td>
-                  <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.payment.view.subscriptions.more_info') }}</router-link></td>
-                </tr>
-                <tr v-if="subscriptions.length == 0">
-                  <td colspan="2" class="text-center">{{ $t('app.payment.view.subscriptions.none') }}</td>
-                </tr>
+              <tr v-for="subscription in subscriptions">
+                <td>{{ subscription.plan.name }}</td>
+                <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.payment.view.subscriptions.more_info') }}</router-link></td>
+              </tr>
+              <tr v-if="subscriptions.length == 0">
+                <td colspan="2" class="text-center">{{ $t('app.payment.view.subscriptions.none') }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-5">
+            <h2 class="mb-5">{{ $t('app.payment.view.receipts.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.payment.view.receipts.created_at') }}</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="receipt in receipts">
+                <td>{{ $filters.moment(receipt.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td><a :href="'/app/receipt/'+receipt.id+'/download'" class="btn--main">{{ $t('app.payment.view.receipts.download') }}</a></td>
+              </tr>
+              <tr v-if="receipts.length == 0">
+                <td colspan="2" class="text-center">{{ $t('app.payment.view.receipts.none') }}</td>
+              </tr>
               </tbody>
             </table>
           </div>
         </div>
 
         <div class="text-end mt-4">
-          <button class="btn--secondary mr-3" @click="generateReceipt">Generate Receipt</button>
+          <SubmitButton :in-progress="generatingReceipt" button-class="btn--secondary mr-3" @click="generateReceipt">{{ $t('app.payment.view.buttons.generate_receipt') }}</SubmitButton>
           <button class="btn--main" @click="options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
         </div>
       </div>
@@ -152,6 +173,7 @@ export default {
       errorMessage: null,
       payment: {},
       refunds: [],
+      receipts: [],
       subscriptions: [],
       refundValues: {
         errors: {},
@@ -159,6 +181,7 @@ export default {
         reason: null,
         inProgress: false,
       },
+      generatingReceipt: false,
       options: {
         teleportTo: 'body',
         modelValue: false,
@@ -176,10 +199,13 @@ export default {
   },
   methods: {
     generateReceipt: function (){
-
+      this.generatingReceipt = true;
       const paymentId = this.$route.params.id
       axios.post('/app/payment/'+paymentId+'/generate-receipt').then(response => {
+        this.generatingReceipt = false;
+        this.receipts.push(response.data)
       }).catch(error => {
+        this.generatingReceipt = false;
       })
     },
     sendRefund: function () {
@@ -205,6 +231,7 @@ export default {
       this.refunds = response.data.refunds;
       this.subscriptions = response.data.subscriptions;
       this.refundValues.refundValue = response.data.max_refundable;
+      this.receipts = response.data.receipts;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

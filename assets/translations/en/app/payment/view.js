@@ -28,8 +28,15 @@ export const PAYMENT_VIEW_TRANSLATION = {
         more_info: "More Info",
         none: "Payment not linked to subscriptions"
     },
+    receipts: {
+        title: "Receipts",
+        created_at: "Created At",
+        download: "Download",
+        none: "Payment has no receipts"
+    },
     buttons: {
-        refund: "Issue Refund"
+        refund: "Issue Refund",
+        generate_receipt: "Generate Receipt"
     },
     modal: {
         refund: {

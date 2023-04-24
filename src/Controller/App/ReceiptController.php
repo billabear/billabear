@@ -12,6 +12,8 @@
 
 namespace App\Controller\App;
 
+use App\Dto\Generic\App\Receipt;
+use App\Factory\ReceiptFactory;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Receipt\ReceiptGeneratorInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -21,6 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ReceiptController
 {
@@ -29,7 +32,9 @@ class ReceiptController
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
         ReceiptRepositoryInterface $receiptRepository,
-        ReceiptGeneratorInterface $receiptGenerator
+        ReceiptGeneratorInterface $receiptGenerator,
+        ReceiptFactory $receiptFactory,
+        SerializerInterface $serializer
     ): Response {
         try {
             /** @var Payment $payment */
@@ -41,6 +46,26 @@ class ReceiptController
         $receipt = $receiptGenerator->generateReceiptForPayment($payment);
         $receiptRepository->save($receipt);
 
-        return new JsonResponse([]);
+        $dto = $receiptFactory->createAppDto($receipt);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/receipt/{id}/download', name: 'app_payment_download', methods: ['GET'])]
+    public function downloadReceipt(
+        Request $request,
+
+        ReceiptRepositoryInterface $receiptRepository,
+        ReceiptGeneratorInterface $receiptGenerator,
+        ReceiptFactory $receiptFactory,
+        SerializerInterface $serializer
+    ): Response {
+        try {
+            /** @var Receipt $receipt */
+            $receipt = $receiptRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 }

@@ -17,6 +17,7 @@ use App\Dto\Request\App\Payments\RefundPayment;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Payment\PaymentView;
 use App\Factory\PaymentFactory;
+use App\Factory\ReceiptFactory;
 use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
 use Brick\Money\Currency;
@@ -25,6 +26,7 @@ use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -94,6 +96,8 @@ class PaymentController
         SubscriptionFactory $subscriptionFactory,
         RefundFactory $refundFactory,
         PaymentFactory $paymentFactory,
+        ReceiptRepositoryInterface $receiptRepository,
+        ReceiptFactory $receiptFactory,
         SerializerInterface $serializer,
     ) {
         try {
@@ -108,12 +112,15 @@ class PaymentController
         $totalRefunded = $refundRepository->getTotalRefundedForPayment($payment);
         $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
         $maxRefundable = $payment->getMoneyAmount()->minus($totalRefunded);
+        $receipts = $receiptRepository->getForPayment($payment);
+        $receiptDtos = array_map([$receiptFactory, 'createAppDto'], $receipts);
 
         $view = new PaymentView();
         $view->setPayment($paymentFactory->createAppDto($payment));
         $view->setRefunds($refundDtos);
         $view->setMaxRefundable($maxRefundable->getMinorAmount()->toInt());
         $view->setSubscriptions($subscriptionDtos);
+        $view->setReceipts($receiptDtos);
 
         $json = $serializer->serialize($view, 'json');
 
