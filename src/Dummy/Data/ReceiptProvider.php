@@ -49,6 +49,7 @@ class ReceiptProvider
         $receipt->setTotal(30000);
         $receipt->setSubTotal(24000);
         $receipt->setVatTotal(6000);
+        $receipt->setCurrency('EUR');
         $receipt->setValid(true);
 
         $payeeAddress = new Address();
