@@ -12,6 +12,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Template;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class TemplateRepository extends DoctrineRepository implements TemplateRepositoryInterface
@@ -19,5 +21,16 @@ class TemplateRepository extends DoctrineRepository implements TemplateRepositor
     public function getByGroup(string $group): array
     {
         return $this->entityRepository->findBy(['group' => $group]);
+    }
+
+    public function getByNameAndGroup(string $name, string $group): Template
+    {
+        $template = $this->entityRepository->findOneBy(['name' => $name, 'group' => $group]);
+
+        if (!$template instanceof Template) {
+            throw new NoEntityFoundException(sprintf("Can't find a template for name '%s' and group '%s'", $name, $group));
+        }
+
+        return $template;
     }
 }

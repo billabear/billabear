@@ -28,7 +28,7 @@ class Template
     #[ORM\Column(type: 'string', nullable: false)]
     private string $name;
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(type: 'text', nullable: false)]
     private string $content;
 
     #[ORM\Column(type: 'string', nullable: false)]

@@ -13,6 +13,7 @@
       </div>
 
       <div class="mt-5">
+        <SubmitButton :in-progress="downloadInProgress" @click="download" button-class="btn--secondary mr-4">{{ $t('app.settings.template.update.download') }}</SubmitButton>
         <SubmitButton :in-progress="sendingUpdate" @click="save">{{ $t('app.settings.template.update.save') }}</SubmitButton>
       </div>
     </LoadingScreen>
@@ -28,6 +29,7 @@ export default {
     return {
       ready: false,
       sendingUpdate: false,
+      downloadInProgress: false,
       template: {template: {}},
       errors: {}
     }
@@ -42,6 +44,15 @@ export default {
     })
   },
   methods: {
+    download: function () {
+      const templateId = this.$route.params.id;
+      this.downloadInProgress = true;
+      axios.get('/app/settings/template/'+templateId+'/receipt-download', {  responseType: 'blob'}).then(response => {
+        var fileDownload = require('js-file-download');
+        fileDownload(response.data, 'report.pdf');
+        this.downloadInProgress = false;
+      })
+    },
     save: function () {
       const templateId = this.$route.params.id;
       this.sendingUpdate = true;

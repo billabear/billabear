@@ -1,4 +1,9 @@
 parthenon:
+  common:
+    pdf:
+      generator: 'wkhtmltopdf'
+      wkhtmltopdf:
+        bin: '/usr/bin/wkhtmltopdf'
   user:
     enabled: true
     user_class: App\Entity\User

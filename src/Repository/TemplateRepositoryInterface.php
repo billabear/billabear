@@ -12,9 +12,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Template;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface TemplateRepositoryInterface extends RepositoryInterface
 {
     public function getByGroup(string $group): array;
+
+    public function getByNameAndGroup(string $name, string $group): Template;
 }

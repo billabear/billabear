@@ -15,13 +15,17 @@ namespace App\Controller\App;
 use App\Dto\Request\App\Template\PdfTemplate;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Template\TemplateView;
+use App\Dummy\Data\ReceiptProvider;
 use App\Entity\Template;
 use App\Factory\TemplateFactory;
+use App\Pdf\ReceiptPdfGenerator;
 use App\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -113,5 +117,36 @@ class SettingsController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/template/{id}/receipt-download', name: 'app_settings_template_receipt_download', methods: ['GET'])]
+    public function downloadReceipt(
+        Request $request,
+        TemplateRepositoryInterface $templateRepository,
+        ReceiptPdfGenerator $generator,
+        ReceiptProvider $provider,
+    ): Response {
+        try {
+            /** @var Template $template */
+            $template = $templateRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $receipt = $provider->getDummyReceipt();
+        $pdf = $generator->generate($receipt);
+        $tmpFile = tempnam('/tmp', 'pdf');
+        file_put_contents($tmpFile, $pdf);
+
+        $response = new BinaryFileResponse($tmpFile);
+        $filename = 'dummy.pdf';
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
     }
 }

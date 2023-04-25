@@ -16,6 +16,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
+        "knplabs/knp-snappy": "^1.4",
         "parthenon/obol": "dev-main",
         "parthenon/parthenon": "dev-main",
         "ramsey/uuid": "^4.7",
