@@ -13,15 +13,19 @@
 namespace App\Controller\App;
 
 use App\Dto\Generic\App\Receipt;
+use App\Dummy\Data\ReceiptProvider;
 use App\Factory\ReceiptFactory;
+use App\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Receipt\ReceiptGeneratorInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -57,9 +61,8 @@ class ReceiptController
         Request $request,
 
         ReceiptRepositoryInterface $receiptRepository,
-        ReceiptGeneratorInterface $receiptGenerator,
-        ReceiptFactory $receiptFactory,
-        SerializerInterface $serializer
+        ReceiptPdfGenerator $generator,
+        ReceiptProvider $provider,
     ): Response {
         try {
             /** @var Receipt $receipt */
@@ -67,5 +70,19 @@ class ReceiptController
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $pdf = $generator->generate($receipt);
+        $tmpFile = tempnam('/tmp', 'pdf');
+        file_put_contents($tmpFile, $pdf);
+
+        $response = new BinaryFileResponse($tmpFile);
+        $filename = 'dummy.pdf';
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
     }
 }

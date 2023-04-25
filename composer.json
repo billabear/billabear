@@ -21,16 +21,16 @@
         "parthenon/parthenon": "dev-main",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
-        "symfony/console": "6.1.*",
-        "symfony/dotenv": "6.1.*",
+        "symfony/console": "6.2.*",
+        "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.1.*",
-        "symfony/intl": "6.1.*",
-        "symfony/mailer": "6.*",
-        "symfony/runtime": "6.1.*",
+        "symfony/framework-bundle": "6.2.*",
+        "symfony/intl": "6.2.*",
+        "symfony/mailer": "6.2.*",
+        "symfony/runtime": "6.2.*",
         "symfony/webpack-encore-bundle": "^1.15",
-        "symfony/workflow": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/workflow": "6.2.*",
+        "symfony/yaml": "6.2.*"
     },
     "require-dev": {
         "behat/behat": "^3.11",
@@ -90,7 +90,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.1.*",
+            "require": "6.2.*",
             "docker": false
         }
     }
