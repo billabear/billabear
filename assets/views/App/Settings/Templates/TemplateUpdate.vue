@@ -8,7 +8,7 @@
           {{ $t('app.settings.template.update.reference') }}
         </label>
         <p class="form-field-error" v-if="errors.content != undefined">{{ errors.content }}</p>
-        <textarea v-model="template.content"></textarea>
+        <textarea class="form-field" rows="10" cols="80" v-model="template.content"></textarea>
         <p class="form-field-help">{{ $t('app.settings.template.update.help_info.tenplate') }}</p>
       </div>
 
