@@ -47,7 +47,7 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(name: 'customer_group', type: 'string', nullable: false)]
     private string $group = self::DEFAULT_GROUP;
 
     #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
