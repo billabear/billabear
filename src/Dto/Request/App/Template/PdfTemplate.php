@@ -10,11 +10,23 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Request\App\Template;
 
-use Parthenon\Common\Repository\RepositoryInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-interface TemplateRepositoryInterface extends RepositoryInterface
+class PdfTemplate
 {
-    public function getByGroup(string $group): array;
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    private $content;
+
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function setContent($content): void
+    {
+        $this->content = $content;
+    }
 }

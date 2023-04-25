@@ -16,4 +16,8 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class TemplateRepository extends DoctrineRepository implements TemplateRepositoryInterface
 {
+    public function getByGroup(string $group): array
+    {
+        return $this->entityRepository->findBy(['group' => $group]);
+    }
 }

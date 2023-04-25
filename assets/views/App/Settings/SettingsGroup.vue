@@ -4,7 +4,9 @@
       <div class="mt-5 rounded-lg p-5 border shadow-lg">
         <ul>
           <li class="my-3"><router-link :to="{name: 'app.user.settings'}">{{ $t('app.settings.menu.user_settings') }}</router-link></li>
+          <li class="my-3"><router-link :to="{name: 'app.settings.template.list'}">{{ $t('app.settings.menu.templates') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.user.invite'}">{{ $t('app.settings.menu.invite') }}</router-link></li>
+
         </ul>
       </div>
     </div>

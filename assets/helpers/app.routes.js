@@ -35,6 +35,8 @@ import SubscriptionGroup from "../views/App/Subscription/SubscriptionGroup.vue";
 import SubscriptionPlanGroup from "../views/App/SubscriptionPlan/SubscriptionPlanGroup.vue";
 import ProductGroup from "../views/App/Product/ProductGroup.vue";
 import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
+import TemplateList from "../views/App/Settings/Templates/TemplateList.vue";
+import TemplateUpdate from "../views/App/Settings/Templates/TemplateUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -95,6 +97,16 @@ export const APP_ROUTES = [
                 path: "user/invite",
                 component: UserInvite,
             },
+            {
+                name: "app.settings.template.list",
+                path: "templates/list",
+                component: TemplateList
+            },
+            {
+                name: "app.settings.template.update",
+                path: "templates/update/:id",
+                component: TemplateUpdate
+            }
         ]
     },
     {

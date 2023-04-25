@@ -10,11 +10,20 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Factory;
 
-use Parthenon\Common\Repository\RepositoryInterface;
+use App\Dto\Generic\App\Template as AppDto;
+use App\Entity\Template;
 
-interface TemplateRepositoryInterface extends RepositoryInterface
+class TemplateFactory
 {
-    public function getByGroup(string $group): array;
+    public function createAppDto(Template $template): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setId((string) $template->getId());
+        $dto->setName($template->getName());
+        $dto->setGroup($template->getGroup());
+
+        return $dto;
+    }
 }

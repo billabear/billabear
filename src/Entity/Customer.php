@@ -166,7 +166,7 @@ class Customer implements CustomerInterface
 
     public function getDisplayName(): string
     {
-        return $this->billingEmail;
+        return $this->name ?? $this->billingEmail;
     }
 
     public function getName(): ?string
