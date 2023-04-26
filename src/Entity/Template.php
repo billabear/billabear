@@ -31,7 +31,7 @@ class Template
     #[ORM\Column(type: 'text', nullable: false)]
     private string $content;
 
-    #[ORM\Column(type: 'string', nullable: false)]
+    #[ORM\Column(name: 'customer_group', type: 'string', nullable: false)]
     private string $group;
 
     public function getId()

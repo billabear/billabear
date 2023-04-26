@@ -48,6 +48,9 @@ default:
                 # Receipt
                 - App\Tests\Behat\Receipt\AppContext
 
+                # Settings
+                - App\Tests\Behat\Settings\PdfTemplatesContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
