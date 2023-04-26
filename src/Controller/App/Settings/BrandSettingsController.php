@@ -12,9 +12,11 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Dto\Response\App\BrandSettings\BrandSettingsView;
 use App\Dto\Response\App\ListResponse;
 use App\Factory\BrandSettingsFactory;
 use App\Repository\BrandSettingRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +43,27 @@ class BrandSettingsController
         $list->setLastKey(null);
 
         $json = $serializer->serialize($list, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/brand/{id}', name: 'app_settings_brand_view', methods: ['GET'])]
+    public function viewBrandSettings(
+        Request $request,
+        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsFactory $brandSettingsFactory,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            $brandSettings = $brandSettingRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $brandView = new BrandSettingsView();
+        $brandView->setBrandSettings($brandSettingsFactory->createAppDto($brandSettings));
+
+        $json = $serializer->serialize($brandView, 'json');
 
         return new JsonResponse($json, json: true);
     }

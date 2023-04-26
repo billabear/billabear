@@ -68,4 +68,38 @@ class BrandsContext implements Context
         }
         $this->brandSettingsRepository->getEntityManager()->flush();
     }
+
+    /**
+     * @When I go to view the brand :arg1
+     */
+    public function iGoToViewTheBrand($brandName)
+    {
+        $brand = $this->getBrandSettings($brandName);
+
+        $this->sendJsonRequest('GET', '/app/settings/brand/'.$brand->getId());
+    }
+
+    /**
+     * @Then I should see brand data for :arg1
+     */
+    public function iShouldSeeBrandDataFor($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['brand']['name'] !== $arg1) {
+            throw new \Exception('Not a valid brand settings');
+        }
+    }
+
+    protected function getBrandSettings(string $brandName): BrandSettings
+    {
+        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $brandName]);
+
+        if (!$brand instanceof BrandSettings) {
+            throw new \Exception('No brand found');
+        }
+        $this->brandSettingsRepository->getEntityManager()->refresh($brand);
+
+        return $brand;
+    }
 }
