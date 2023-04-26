@@ -16,4 +16,8 @@ use Parthenon\Common\Repository\RepositoryInterface;
 
 interface BrandSettingRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * @return BrandSettingsRepository[]
+     */
+    public function getAll(): array;
 }

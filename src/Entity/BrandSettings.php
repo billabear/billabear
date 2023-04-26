@@ -38,6 +38,9 @@ class BrandSettings
     #[ORM\Embedded(class: Address::class)]
     private Address $address;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isDefault = false;
+
     public function getId()
     {
         return $this->id;
@@ -86,5 +89,15 @@ class BrandSettings
     public function setEmailAddress(string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
+    }
+
+    public function getIsDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): void
+    {
+        $this->isDefault = $isDefault;
     }
 }

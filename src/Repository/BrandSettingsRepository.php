@@ -16,4 +16,8 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class BrandSettingsRepository extends DoctrineRepository implements BrandSettingRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }

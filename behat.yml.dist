@@ -50,6 +50,7 @@ default:
 
                 # Settings
                 - App\Tests\Behat\Settings\PdfTemplatesContext
+                - App\Tests\Behat\Settings\BrandsContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

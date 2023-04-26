@@ -12,10 +12,12 @@
 
 namespace App\Tests\Behat;
 
+use App\Entity\BrandSettings;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManagerInterface;
+use Parthenon\Common\Address;
 
 class GeneralContext implements Context
 {
@@ -44,5 +46,19 @@ class GeneralContext implements Context
             $this->session->stop();
         }
         $this->session->start();
+
+        $brand = new BrandSettings();
+        $brand->setCode('default');
+        $brand->setBrandName('Default');
+        $brand->setAddress(new Address());
+        $brand->setEmailAddress('info@example.org');
+        $brand->getAddress()->setStreetLineOne('1 Example Way');
+        $brand->getAddress()->setCity('Example Town');
+        $brand->getAddress()->setCountry('GB');
+        $brand->getAddress()->setPostcode('10367');
+        $brand->setIsDefault(true);
+
+        $em->persist($brand);
+        $em->flush();
     }
 }

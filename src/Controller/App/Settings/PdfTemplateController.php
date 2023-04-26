@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Controller\App;
+namespace App\Controller\App\Settings;
 
 use App\Dto\Request\App\Template\PdfTemplate;
 use App\Dto\Response\App\ListResponse;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SettingsController
+class PdfTemplateController
 {
     #[Route('/app/settings/template', name: 'app_settings_template_list', methods: ['GET'])]
     public function getTemplateList(
