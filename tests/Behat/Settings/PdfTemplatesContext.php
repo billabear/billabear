@@ -100,4 +100,25 @@ class PdfTemplatesContext implements Context
 
         return $template;
     }
+
+    /**
+     * @When I update the pdf template for :arg1 in group :arg2 with:
+     */
+    public function iUpdateThePdfTemplateForInGroupWith($templateName, $customerGroup, TableNode $table)
+    {
+        $template = $this->getTemplate($templateName, $customerGroup);
+
+        $this->sendJsonRequest('POST', '/app/settings/template/'.$template->getId(), ['content' => $table->getRowsHash()['Content']]);
+    }
+
+    /**
+     * @Then the pdf template for :arg1 in group :arg2 will have the content :arg3
+     */
+    public function thePdfTemplateForInGroupWillHaveTheContent($templateName, $customerGroup, $contentBody)
+    {
+        $template = $this->getTemplate($templateName, $customerGroup);
+        if ($template->getContent() !== $contentBody) {
+            throw new \Exception('Wrong content');
+        }
+    }
 }
