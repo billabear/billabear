@@ -14,7 +14,7 @@ namespace App\Factory;
 
 use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\App\BrandSettings as AppDto;
-use App\Dto\Request\App\BrandSettings\BrandSettings as EditDto;
+use App\Dto\Request\App\BrandSettings\EditBrandSettings as EditDto;
 use App\Entity\BrandSettings;
 use Parthenon\Common\Address;
 
@@ -22,7 +22,7 @@ class BrandSettingsFactory
 {
     public function createEntityFromEditDto(EditDto $dto, ?BrandSettings $brandSettings = null): BrandSettings
     {
-        if ($brandSettings instanceof BrandSettings) {
+        if (!$brandSettings instanceof BrandSettings) {
             $brandSettings = new BrandSettings();
             $brandSettings->setCode(str_replace(' ', '_', strtolower($dto->getName())));
             $brandSettings->setIsDefault(false);

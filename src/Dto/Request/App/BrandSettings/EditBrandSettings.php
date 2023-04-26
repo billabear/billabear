@@ -12,11 +12,10 @@
 
 namespace App\Dto\Request\App\BrandSettings;
 
-use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class BrandSettings
+class EditBrandSettings
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]

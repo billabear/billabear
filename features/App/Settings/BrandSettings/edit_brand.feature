@@ -18,5 +18,11 @@ Feature: Brands list
     When I go to update the brand "Example" with:
       | Name  | Example 2 |
       | Email | example@example.org |
-      | Country | DE                |
+      | Company Name | New Company  |
+      | Street Line One | 4 Example Way |
+      | City            | City          |
+      | Region          | Berlin        |
+      | Post Code       | 10343         |
+      | Country | DE  |
     Then there should be a brand with the name "Example 2"
+    Then there should not be a brand with the name "Example"

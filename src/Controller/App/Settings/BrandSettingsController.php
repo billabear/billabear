@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
-use App\Dto\Request\App\BrandSettings\BrandSettings;
+use App\Dto\Request\App\BrandSettings\EditBrandSettings;
 use App\Dto\Response\App\BrandSettings\BrandSettingsView;
 use App\Dto\Response\App\ListResponse;
 use App\Factory\BrandSettingsFactory;
@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BrandSettingsController
 {
@@ -75,14 +76,30 @@ class BrandSettingsController
         BrandSettingRepositoryInterface $brandSettingRepository,
         BrandSettingsFactory $brandSettingsFactory,
         SerializerInterface $serializer,
+        ValidatorInterface $validator,
     ): Response {
         try {
             $brandSettings = $brandSettingRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
-        /** @var BrandSettings $dto */
-        $dto = $serializer->deserialize($request->getContent(), BrandSettings::class, 'json');
+        /** @var EditBrandSettings $dto */
+        $dto = $serializer->deserialize($request->getContent(), EditBrandSettings::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         $brandSettings = $brandSettingsFactory->createEntityFromEditDto($dto, $brandSettings);
         $brandSettingRepository->save($brandSettings);
 

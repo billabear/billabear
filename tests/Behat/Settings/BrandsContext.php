@@ -110,11 +110,17 @@ class BrandsContext implements Context
     {
         $brand = $this->getBrandSettings($brandName);
 
+        $rowsHash = $table->getRowsHash();
         $payload = [
-            'name' => $table->getRowsHash()['Name'],
-            'email_address' => $table->getRowsHash()['Email'],
+            'name' => $rowsHash['Name'],
+            'email_address' => $rowsHash['Email'],
             'address' => [
-                'country' => $table->getRowsHash()['Country'],
+                'company_name' => $rowsHash['Company Name'],
+                'street_line_one' => $rowsHash['Street Line One'],
+                'city' => $rowsHash['City'],
+                'region' => $rowsHash['Region'],
+                'postcode' => $rowsHash['Post Code'],
+                'country' => $rowsHash['Country'],
             ],
         ];
 
@@ -127,5 +133,18 @@ class BrandsContext implements Context
     public function thereShouldBeABrandWithTheName($brandName)
     {
         $this->getBrandSettings($brandName);
+    }
+
+    /**
+     * @Then there should not be a brand with the name :arg1
+     */
+    public function thereShouldNotBeABrandWithTheName($brandName)
+    {
+        try {
+            $this->getBrandSettings($brandName);
+        } catch (\Exception $e) {
+            return;
+        }
+        throw new \Exception('Found brand');
     }
 }
