@@ -30,8 +30,13 @@ class ReceiptPdfGenerator
 
     public function generate(Receipt $receipt)
     {
+        $customer = $receipt->getCustomer();
+
+        if (!$customer instanceof Customer) {
+            throw new \LogicException('Invalid customer type');
+        }
         try {
-            $template = $this->templateRepository->getByNameAndBrand('receipt', $receipt->getCustomer()->getGroup());
+            $template = $this->templateRepository->getByNameAndBrand('receipt', $customer->getBrand());
         } catch (NoEntityFoundException $exception) {
             $template = $this->templateRepository->getByNameAndBrand('receipt', Customer::DEFAULT_BRAND);
         }
