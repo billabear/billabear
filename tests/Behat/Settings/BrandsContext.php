@@ -102,4 +102,30 @@ class BrandsContext implements Context
 
         return $brand;
     }
+
+    /**
+     * @When I go to update the brand :arg1 with:
+     */
+    public function iGoToUpdateTheBrandWith($brandName, TableNode $table)
+    {
+        $brand = $this->getBrandSettings($brandName);
+
+        $payload = [
+            'name' => $table->getRowsHash()['Name'],
+            'email_address' => $table->getRowsHash()['Email'],
+            'address' => [
+                'country' => $table->getRowsHash()['Country'],
+            ],
+        ];
+
+        $this->sendJsonRequest('POST', '/app/settings/brand/'.$brand->getId(), $payload);
+    }
+
+    /**
+     * @Then there should be a brand with the name :arg1
+     */
+    public function thereShouldBeABrandWithTheName($brandName)
+    {
+        $this->getBrandSettings($brandName);
+    }
 }

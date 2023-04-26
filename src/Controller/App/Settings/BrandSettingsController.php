@@ -12,6 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Dto\Request\App\BrandSettings\BrandSettings;
 use App\Dto\Response\App\BrandSettings\BrandSettingsView;
 use App\Dto\Response\App\ListResponse;
 use App\Factory\BrandSettingsFactory;
@@ -59,6 +60,31 @@ class BrandSettingsController
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+
+        $brandView = new BrandSettingsView();
+        $brandView->setBrandSettings($brandSettingsFactory->createAppDto($brandSettings));
+
+        $json = $serializer->serialize($brandView, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/brand/{id}', name: 'app_settings_brand_edit', methods: ['POST'])]
+    public function editBrandSettings(
+        Request $request,
+        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsFactory $brandSettingsFactory,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            $brandSettings = $brandSettingRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var BrandSettings $dto */
+        $dto = $serializer->deserialize($request->getContent(), BrandSettings::class, 'json');
+        $brandSettings = $brandSettingsFactory->createEntityFromEditDto($dto, $brandSettings);
+        $brandSettingRepository->save($brandSettings);
 
         $brandView = new BrandSettingsView();
         $brandView->setBrandSettings($brandSettingsFactory->createAppDto($brandSettings));

@@ -14,10 +14,34 @@ namespace App\Factory;
 
 use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\App\BrandSettings as AppDto;
+use App\Dto\Request\App\BrandSettings\BrandSettings as EditDto;
 use App\Entity\BrandSettings;
+use Parthenon\Common\Address;
 
 class BrandSettingsFactory
 {
+    public function createEntityFromEditDto(EditDto $dto, ?BrandSettings $brandSettings = null): BrandSettings
+    {
+        if ($brandSettings instanceof BrandSettings) {
+            $brandSettings = new BrandSettings();
+            $brandSettings->setCode(str_replace(' ', '_', strtolower($dto->getName())));
+            $brandSettings->setIsDefault(false);
+        }
+        $address = new Address();
+        $address->setStreetLineOne($dto->getAddress()->getStreetLineOne());
+        $address->setStreetLineTwo($dto->getAddress()->getStreetLineTwo());
+        $address->setCountry($dto->getAddress()->getCountry());
+        $address->setCity($dto->getAddress()->getCity());
+        $address->setRegion($dto->getAddress()->getRegion());
+        $address->setPostcode($dto->getAddress()->getPostcode());
+
+        $brandSettings->setBrandName($dto->getName());
+        $brandSettings->setAddress($address);
+        $brandSettings->setEmailAddress($dto->getEmailAddress());
+
+        return $brandSettings;
+    }
+
     public function createAppDto(BrandSettings $brandSettings): AppDto
     {
         $address = new AddressDto();
