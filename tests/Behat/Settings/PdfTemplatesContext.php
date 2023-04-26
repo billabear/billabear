@@ -65,4 +65,39 @@ class PdfTemplatesContext implements Context
 
         throw new \Exception("Can't find template");
     }
+
+    /**
+     * @When I go to the pdf template for :arg1 in group :arg2
+     */
+    public function iGoToThePdfTemplateForInGroup($templateName, $customerGroup)
+    {
+        $template = $this->getTemplate($templateName, $customerGroup);
+
+        $this->sendJsonRequest('GET', '/app/settings/template/'.$template->getId());
+    }
+
+    /**
+     * @Then I will see the the template content of :arg1
+     */
+    public function iWillSeeTheTheTemplateContentOf($contentBody)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['content'] !== $contentBody) {
+            throw new \Exception('Wrong content');
+        }
+    }
+
+    protected function getTemplate(string $templateName, string $customerGroup): Template
+    {
+        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'group' => $customerGroup]);
+
+        if (!$template instanceof Template) {
+            throw new \Exception("Can't find template");
+        }
+
+        $this->templateRepository->getEntityManager()->refresh($template);
+
+        return $template;
+    }
 }
