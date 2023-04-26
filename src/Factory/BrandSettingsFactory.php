@@ -24,7 +24,7 @@ class BrandSettingsFactory
         $address->setStreetLineOne($brandSettings->getAddress()->getStreetLineOne());
         $address->setStreetLineTwo($brandSettings->getAddress()->getStreetLineTwo());
         $address->setCity($brandSettings->getAddress()->getCity());
-        $address->setRegion($brandSettings->getAddress()->getRegion());git 
+        $address->setRegion($brandSettings->getAddress()->getRegion());
         $address->setCountry($brandSettings->getAddress()->getCountry());
         $address->setPostcode($brandSettings->getAddress()->getPostcode());
 
