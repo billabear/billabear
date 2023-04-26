@@ -24,7 +24,7 @@ class BrandSettingsFactory
         $address->setStreetLineOne($brandSettings->getAddress()->getStreetLineOne());
         $address->setStreetLineTwo($brandSettings->getAddress()->getStreetLineTwo());
         $address->setCity($brandSettings->getAddress()->getCity());
-        $address->setRegion($brandSettings->getAddress()->getRegion());
+        $address->setRegion($brandSettings->getAddress()->getRegion());git 
         $address->setCountry($brandSettings->getAddress()->getCountry());
         $address->setPostcode($brandSettings->getAddress()->getPostcode());
 
@@ -34,6 +34,7 @@ class BrandSettingsFactory
         $dto->setName($brandSettings->getBrandName());
         $dto->setEmailAddress($brandSettings->getEmailAddress());
         $dto->setAddress($address);
+        $dto->setIsDefault($brandSettings->getIsDefault());
 
         return $dto;
     }

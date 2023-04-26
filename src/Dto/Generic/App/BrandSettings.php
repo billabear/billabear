@@ -13,6 +13,7 @@
 namespace App\Dto\Generic\App;
 
 use App\Dto\Generic\Address;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class BrandSettings
 {
@@ -22,9 +23,13 @@ class BrandSettings
 
     private string $name;
 
+    #[SerializedName('email_address')]
     private string $emailAddress;
 
     private Address $address;
+
+    #[SerializedName('is_default')]
+    private bool $isDefault;
 
     public function getId(): string
     {
@@ -74,5 +79,15 @@ class BrandSettings
     public function setAddress(Address $address): void
     {
         $this->address = $address;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): void
+    {
+        $this->isDefault = $isDefault;
     }
 }
