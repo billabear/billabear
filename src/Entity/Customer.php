@@ -24,7 +24,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'customers')]
 class Customer implements CustomerInterface
 {
-    public const DEFAULT_GROUP = 'default';
+    public const DEFAULT_BRAND = 'default';
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -48,7 +48,7 @@ class Customer implements CustomerInterface
     private ?string $name = null;
 
     #[ORM\Column(name: 'brand', type: 'string', nullable: false)]
-    private string $brand = self::DEFAULT_GROUP;
+    private string $brand = self::DEFAULT_BRAND;
 
     #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
     protected ?string $paymentProviderDetailsUrl;

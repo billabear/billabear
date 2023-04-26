@@ -67,6 +67,12 @@ services:
     app.repository.orm.cancellation_request:
         class: App\Repository\Orm\CancellationRequestRepository
 
+    App\Repository\BrandSettingsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.brand_settings'
+    app.repository.orm.brand_settings:
+        class: App\Repository\Orm\BrandSettingsRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

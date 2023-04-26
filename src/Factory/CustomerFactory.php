@@ -40,7 +40,7 @@ class CustomerFactory
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
         $customer->setName($createCustomerDto->getName());
-        $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_GROUP);
+        $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_BRAND);
 
         $externalCustomerReference = $createCustomerDto->getExternalReference();
 
