@@ -47,8 +47,8 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'customer_group', type: 'string', nullable: false)]
-    private string $group = self::DEFAULT_GROUP;
+    #[ORM\Column(name: 'brand', type: 'string', nullable: false)]
+    private string $brand = self::DEFAULT_GROUP;
 
     #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
     protected ?string $paymentProviderDetailsUrl;
@@ -229,13 +229,13 @@ class Customer implements CustomerInterface
         $this->disabled = $disabled;
     }
 
-    public function getGroup(): string
+    public function getBrand(): string
     {
-        return $this->group;
+        return $this->brand;
     }
 
-    public function setGroup(string $group): void
+    public function setBrand(string $brand): void
     {
-        $this->group = $group;
+        $this->brand = $brand;
     }
 }

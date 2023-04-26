@@ -40,7 +40,7 @@ class CustomerFactory
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
         $customer->setName($createCustomerDto->getName());
-        $customer->setGroup($createCustomerDto->getGroup() ?? Customer::DEFAULT_GROUP);
+        $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_GROUP);
 
         $externalCustomerReference = $createCustomerDto->getExternalReference();
 
@@ -70,6 +70,7 @@ class CustomerFactory
         $dto->setExternalReference($customer->getExternalCustomerReference());
         $dto->setAddress($address);
         $dto->setStatus($customer->getStatus()->value);
+        $dto->setBrand($customer->getBrand());
 
         return $dto;
     }
@@ -93,6 +94,7 @@ class CustomerFactory
         $dto->setAddress($address);
         $dto->setPaymentProviderDetailsUrl($customer->getPaymentProviderDetailsUrl());
         $dto->setStatus($customer->getStatus()->value);
+        $dto->setBrand($customer->getBrand());
 
         return $dto;
     }

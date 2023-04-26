@@ -17,7 +17,7 @@ use Parthenon\Common\Repository\RepositoryInterface;
 
 interface TemplateRepositoryInterface extends RepositoryInterface
 {
-    public function getByGroup(string $group): array;
+    public function getByBrand(string $brand): array;
 
-    public function getByNameAndGroup(string $name, string $group): Template;
+    public function getByNameAndBrand(string $name, string $brand): Template;
 }

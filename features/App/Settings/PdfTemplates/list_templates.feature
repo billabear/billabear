@@ -37,7 +37,7 @@ Feature: Templates list
   Scenario: List templates
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the following pdf templates exist:
-      | Name    | Group   | Content         |
+      | Name    | Brand   | Content         |
       | receipt | default | A receipt body  |
       | invoice | default | An invoice body |
     When I go to the pdf templates

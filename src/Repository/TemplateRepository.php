@@ -18,17 +18,17 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class TemplateRepository extends DoctrineRepository implements TemplateRepositoryInterface
 {
-    public function getByGroup(string $group): array
+    public function getByBrand(string $brand): array
     {
-        return $this->entityRepository->findBy(['group' => $group]);
+        return $this->entityRepository->findBy(['brand' => $brand]);
     }
 
-    public function getByNameAndGroup(string $name, string $group): Template
+    public function getByNameAndBrand(string $name, string $brand): Template
     {
-        $template = $this->entityRepository->findOneBy(['name' => $name, 'group' => $group]);
+        $template = $this->entityRepository->findOneBy(['name' => $name, 'brand' => $brand]);
 
         if (!$template instanceof Template) {
-            throw new NoEntityFoundException(sprintf("Can't find a template for name '%s' and group '%s'", $name, $group));
+            throw new NoEntityFoundException(sprintf("Can't find a template for name '%s' and brand '%s'", $name, $brand));
         }
 
         return $template;

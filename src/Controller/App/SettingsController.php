@@ -39,7 +39,7 @@ class SettingsController
         TemplateFactory $factory,
         SerializerInterface $serializer
     ): Response {
-        $templates = $templateRepository->getByGroup($request->get('group', 'default'));
+        $templates = $templateRepository->getByBrand($request->get('brand', 'default'));
         $dtos = array_map([$factory, 'createAppDto'], $templates);
 
         $listResponse = new ListResponse();

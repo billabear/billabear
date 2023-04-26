@@ -23,8 +23,8 @@ class CreateCustomerDto
     private ?string $name = null;
 
     #[Assert\NotBlank(allowNull: true)]
-    #[SerializedName('group')]
-    private ?string $group = null;
+    #[SerializedName('brand')]
+    private ?string $brand = null;
 
     #[Assert\NotBlank]
     #[Assert\Email]
@@ -91,13 +91,13 @@ class CreateCustomerDto
         $this->name = $name;
     }
 
-    public function getGroup(): ?string
+    public function getBrand(): ?string
     {
-        return $this->group;
+        return $this->brand;
     }
 
-    public function setGroup(?string $group): void
+    public function setBrand(?string $brand): void
     {
-        $this->group = $group;
+        $this->brand = $brand;
     }
 }

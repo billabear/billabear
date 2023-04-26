@@ -31,9 +31,9 @@ class ReceiptPdfGenerator
     public function generate(Receipt $receipt)
     {
         try {
-            $template = $this->templateRepository->getByNameAndGroup('receipt', $receipt->getCustomer()->getGroup());
+            $template = $this->templateRepository->getByNameAndBrand('receipt', $receipt->getCustomer()->getGroup());
         } catch (NoEntityFoundException $exception) {
-            $template = $this->templateRepository->getByNameAndGroup('receipt', Customer::DEFAULT_GROUP);
+            $template = $this->templateRepository->getByNameAndBrand('receipt', Customer::DEFAULT_GROUP);
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());

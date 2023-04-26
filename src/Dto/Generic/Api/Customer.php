@@ -38,6 +38,9 @@ class Customer
     #[SerializedName('status')]
     protected string $status;
 
+    #[SerializedName('brand')]
+    protected string $brand;
+
     public function getId(): string
     {
         return $this->id;
@@ -106,5 +109,15 @@ class Customer
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getBrand(): string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): void
+    {
+        $this->brand = $brand;
     }
 }

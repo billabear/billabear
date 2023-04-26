@@ -31,8 +31,8 @@ class Template
     #[ORM\Column(type: 'text', nullable: false)]
     private string $content;
 
-    #[ORM\Column(name: 'customer_group', type: 'string', nullable: false)]
-    private string $group;
+    #[ORM\Column(name: 'brand', type: 'string', nullable: false)]
+    private string $brand;
 
     public function getId()
     {
@@ -64,13 +64,13 @@ class Template
         $this->content = $content;
     }
 
-    public function getGroup(): string
+    public function getBrand(): string
     {
-        return $this->group;
+        return $this->brand;
     }
 
-    public function setGroup(string $group): void
+    public function setBrand(string $brand): void
     {
-        $this->group = $group;
+        $this->brand = $brand;
     }
 }

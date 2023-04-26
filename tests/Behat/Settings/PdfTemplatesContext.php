@@ -35,7 +35,7 @@ class PdfTemplatesContext implements Context
         foreach ($table->getColumnsHash() as $row) {
             $template = new Template();
             $template->setName($row['Name']);
-            $template->setGroup($row['Group'] ?? 'default');
+            $template->setBrand($row['Brand'] ?? 'default');
             $template->setContent($row['Content']);
             $this->templateRepository->getEntityManager()->persist($template);
         }
@@ -67,7 +67,7 @@ class PdfTemplatesContext implements Context
     }
 
     /**
-     * @When I go to the pdf template for :arg1 in group :arg2
+     * @When I go to the pdf template for :arg1 in brand :arg2
      */
     public function iGoToThePdfTemplateForInGroup($templateName, $customerGroup)
     {
@@ -90,7 +90,7 @@ class PdfTemplatesContext implements Context
 
     protected function getTemplate(string $templateName, string $customerGroup): Template
     {
-        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'group' => $customerGroup]);
+        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'brand' => $customerGroup]);
 
         if (!$template instanceof Template) {
             throw new \Exception("Can't find template");
@@ -102,7 +102,7 @@ class PdfTemplatesContext implements Context
     }
 
     /**
-     * @When I update the pdf template for :arg1 in group :arg2 with:
+     * @When I update the pdf template for :arg1 in brand :arg2 with:
      */
     public function iUpdateThePdfTemplateForInGroupWith($templateName, $customerGroup, TableNode $table)
     {
@@ -112,7 +112,7 @@ class PdfTemplatesContext implements Context
     }
 
     /**
-     * @Then the pdf template for :arg1 in group :arg2 will have the content :arg3
+     * @Then the pdf template for :arg1 in brand :arg2 will have the content :arg3
      */
     public function thePdfTemplateForInGroupWillHaveTheContent($templateName, $customerGroup, $contentBody)
     {

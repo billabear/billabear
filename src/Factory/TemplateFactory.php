@@ -22,7 +22,7 @@ class TemplateFactory
         $dto = new AppDto();
         $dto->setId((string) $template->getId());
         $dto->setName($template->getName());
-        $dto->setGroup($template->getGroup());
+        $dto->setGroup($template->getBrand());
 
         return $dto;
     }
