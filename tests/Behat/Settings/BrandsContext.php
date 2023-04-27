@@ -147,4 +147,27 @@ class BrandsContext implements Context
         }
         throw new \Exception('Found brand');
     }
+
+    /**
+     * @When I create a new brand
+     */
+    public function iCreateANewBrand(TableNode $table)
+    {
+        $rowsHash = $table->getRowsHash();
+        $payload = [
+            'code' => $rowsHash['Code'],
+            'name' => $rowsHash['Name'],
+            'email_address' => $rowsHash['Email'],
+            'address' => [
+                'company_name' => $rowsHash['Company Name'],
+                'street_line_one' => $rowsHash['Street Line One'],
+                'city' => $rowsHash['City'],
+                'region' => $rowsHash['Region'],
+                'postcode' => $rowsHash['Post Code'],
+                'country' => $rowsHash['Country'],
+            ],
+        ];
+
+        $this->sendJsonRequest('POST', '/app/settings/brand', $payload);
+    }
 }

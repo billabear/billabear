@@ -12,6 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Dto\Request\App\BrandSettings\CreateBrandSettings;
 use App\Dto\Request\App\BrandSettings\EditBrandSettings;
 use App\Dto\Response\App\BrandSettings\BrandSettingsView;
 use App\Dto\Response\App\ListResponse;
@@ -101,6 +102,42 @@ class BrandSettingsController
         }
 
         $brandSettings = $brandSettingsFactory->createEntityFromEditDto($dto, $brandSettings);
+        $brandSettingRepository->save($brandSettings);
+
+        $brandView = new BrandSettingsView();
+        $brandView->setBrandSettings($brandSettingsFactory->createAppDto($brandSettings));
+
+        $json = $serializer->serialize($brandView, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/brand', name: 'app_settings_brand_create', methods: ['POST'])]
+    public function createBrandSettings(
+        Request $request,
+        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsFactory $brandSettingsFactory,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        /** @var CreateBrandSettings $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateBrandSettings::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $brandSettings = $brandSettingsFactory->createEntityFromEditDto($dto);
         $brandSettingRepository->save($brandSettings);
 
         $brandView = new BrandSettingsView();
