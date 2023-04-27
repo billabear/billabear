@@ -44,7 +44,7 @@ class Address
     private ?string $country = null;
 
     #[Assert\NotBlank]
-    #[SerializedName('post_code')]
+    #[SerializedName('postcode')]
     private ?string $postcode = null;
 
     public function getCompanyName(): ?string

@@ -14,7 +14,7 @@
           <tbody>
           <tr v-for="brand in brands" class="mt-5 cursor-pointer">
             <td>{{ brand.name }}</td>
-            <td><router-link :to="{name: 'app.settings.template.update', params: {id: brand.id}}" class="list-btn">{{ $t('app.settings.brand_settings.list.edit_btn') }}</router-link></td>
+            <td><router-link :to="{name: 'app.settings.brand_settings.update', params: {id: brand.id}}" class="list-btn">{{ $t('app.settings.brand_settings.list.edit_btn') }}</router-link></td>
           </tr>
           <tr v-if="brands.length === 0">
             <td colspan="2" class="text-center">{{ $t('app.settings.brand_settings.list.no_brands') }}</td>

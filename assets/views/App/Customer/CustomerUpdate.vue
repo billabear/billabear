@@ -124,6 +124,7 @@ export default {
       sendingInProgress: false,
       showAdvance: false,
       success: false,
+      ready: false,
       errors: {
       }
     }

@@ -29,6 +29,7 @@ class BrandSettingsFactory
             $brandSettings->setIsDefault(false);
         }
         $address = new Address();
+        $address->setCompanyName($dto->getAddress()->getCompanyName());
         $address->setStreetLineOne($dto->getAddress()->getStreetLineOne());
         $address->setStreetLineTwo($dto->getAddress()->getStreetLineTwo());
         $address->setCountry($dto->getAddress()->getCountry());
@@ -46,6 +47,7 @@ class BrandSettingsFactory
     public function createAppDto(BrandSettings $brandSettings): AppDto
     {
         $address = new AddressDto();
+        $address->setCompanyName($brandSettings->getAddress()->getCompanyName());
         $address->setStreetLineOne($brandSettings->getAddress()->getStreetLineOne());
         $address->setStreetLineTwo($brandSettings->getAddress()->getStreetLineTwo());
         $address->setCity($brandSettings->getAddress()->getCity());
