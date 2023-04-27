@@ -3,9 +3,6 @@ import TeamSettings from "../views/App/TeamSettings";
 import Plan from "../views/App/Plan";
 import UserSettings from "../views/App/User/UserSettings";
 import UserInvite from "../views/App/User/UserInvite";
-import Billing from "../views/App/Billing/Billing";
-import BillingAddress from "../views/App/Billing/BillingAddress";
-import BillingMethods from "../views/App/Billing/BillingMethods";
 import CustomerList from "../views/App/Customer/CustomerList.vue";
 import CustomerCreate from "../views/App/Customer/CustomerCreate.vue";
 import CustomerView from "../views/App/Customer/CustomerView.vue";
@@ -17,7 +14,6 @@ import ProductCreate from "../views/App/Product/ProductCreate.vue";
 import PriceCreate from "../views/App/Price/PriceCreate.vue";
 import FeatureList from "../views/App/Feature/FeatureList.vue";
 import FeatureCreate from "../views/App/Feature/FeatureCreate.vue";
-import {SUBCLASSING} from "core-js/internals/promise-constructor-detection";
 import SubscriptionPlanCreate from "../views/App/SubscriptionPlan/SubscriptionPlanCreate.vue";
 import SubscriptionPlanView from "../views/App/SubscriptionPlan/SubscriptionPlanView.vue";
 import SubscriptionPlanUpdate from "../views/App/SubscriptionPlan/SubscriptionPlanUpdate.vue";
@@ -32,14 +28,16 @@ import RefundList from "../views/App/Refund/RefundList.vue";
 import TransactionView from "../views/App/transactions/TransactionView.vue";
 import SettingsGroup from "../views/App/Settings/SettingsGroup.vue";
 import SubscriptionGroup from "../views/App/Subscription/SubscriptionGroup.vue";
-import SubscriptionPlanGroup from "../views/App/SubscriptionPlan/SubscriptionPlanGroup.vue";
 import ProductGroup from "../views/App/Product/ProductGroup.vue";
 import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
-import TemplateList from "../views/App/Settings/Templates/TemplateList.vue";
-import TemplateUpdate from "../views/App/Settings/Templates/TemplateUpdate.vue";
+import TemplateList from "../views/App/Settings/PdfTemplates/PdfTemplateList.vue";
+import TemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
 import BrandSettingsList from "../views/App/Settings/BrandSettings/BrandSettingsList.vue";
 import BrandSettingsUpdate from "../views/App/Settings/BrandSettings/BrandSettingsUpdate.vue";
 import BrandSettingsCreate from "../views/App/Settings/BrandSettings/BrandSettingsCreate.vue";
+import PdfTemplateList from "../views/App/Settings/PdfTemplates/PdfTemplateList.vue";
+import pdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
+import PdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -101,14 +99,14 @@ export const APP_ROUTES = [
                 component: UserInvite,
             },
             {
-                name: "app.settings.template.list",
+                name: "app.settings.pdf_template.list",
                 path: "templates/list",
-                component: TemplateList
+                component: PdfTemplateList
             },
             {
-                name: "app.settings.template.update",
+                name: "app.settings.pdf_template.update",
                 path: "templates/update/:id",
-                component: TemplateUpdate
+                component: PdfTemplateUpdate
             },
             {
                 name: "app.settings.brand_settings.list",

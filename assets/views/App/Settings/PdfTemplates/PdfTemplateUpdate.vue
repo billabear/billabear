@@ -1,20 +1,20 @@
 <template>
   <div>
     <LoadingScreen :ready="ready">
-      <h1 class="page-title">{{ $t('app.settings.template.update.title', {name: template.template.name}) }}</h1>
+      <h1 class="page-title">{{ $t('app.settings.pdf_template.update.title', {name: template.template.name}) }}</h1>
 
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="content">
-          {{ $t('app.settings.template.update.reference') }}
+          {{ $t('app.settings.pdf_template.update.template') }}
         </label>
         <p class="form-field-error" v-if="errors.content != undefined">{{ errors.content }}</p>
         <textarea class="form-field" rows="10" cols="80" v-model="template.content"></textarea>
-        <p class="form-field-help">{{ $t('app.settings.template.update.help_info.tenplate') }}</p>
+        <p class="form-field-help">{{ $t('app.settings.pdf_template.update.help_info.template') }}</p>
       </div>
 
       <div class="mt-5">
-        <SubmitButton :in-progress="downloadInProgress" @click="download" button-class="btn--secondary mr-4">{{ $t('app.settings.template.update.download') }}</SubmitButton>
-        <SubmitButton :in-progress="sendingUpdate" @click="save">{{ $t('app.settings.template.update.save') }}</SubmitButton>
+        <SubmitButton :in-progress="downloadInProgress" @click="download" button-class="btn--secondary mr-4">{{ $t('app.settings.pdf_template.update.download') }}</SubmitButton>
+        <SubmitButton :in-progress="sendingUpdate" @click="save">{{ $t('app.settings.pdf_template.update.save') }}</SubmitButton>
       </div>
     </LoadingScreen>
   </div>
@@ -24,7 +24,7 @@
 import axios from "axios";
 
 export default {
-  name: "TemplateView",
+  name: "PdfTemplateUpdate",
   data() {
     return {
       ready: false,
