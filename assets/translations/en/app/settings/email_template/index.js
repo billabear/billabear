@@ -1,0 +1,3 @@
+export const EMAIL_TEMPLATES_TRANSLATIONS = {
+
+};

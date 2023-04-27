@@ -61,6 +61,12 @@ services:
     app.repository.orm.template:
         class: App\Repository\Orm\TemplateRepository
 
+    App\Repository\EmailTemplateRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.email_template'
+    app.repository.orm.email_template:
+        class: App\Repository\Orm\EmailTemplateRepository
+
     App\Repository\CancellationRequestRepository:
         arguments:
             $entityRepository: '@app.repository.orm.cancellation_request'

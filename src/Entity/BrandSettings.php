@@ -26,7 +26,7 @@ class BrandSettings
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', unique: true)]
     private string $code;
 
     #[ORM\Column(type: 'string')]
