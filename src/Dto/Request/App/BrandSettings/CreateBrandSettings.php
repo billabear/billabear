@@ -23,6 +23,7 @@ class CreateBrandSettings
 
     #[Assert\NotBlank]
     #[Assert\Type('string')]
+    #[Assert\Regex('~[a-z0-9_]+~', message: 'Code must be lower case alphanumeric with underscores only')]
     private $code;
 
     #[Assert\NotBlank]

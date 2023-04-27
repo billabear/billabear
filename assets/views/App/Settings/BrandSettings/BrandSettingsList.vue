@@ -3,6 +3,9 @@
     <h1 class="page-title">{{ $t('app.settings.brand_settings.list.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="top-button-container">
+        <router-link :to="{name: 'app.settings.brand_settings.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.brand_settings.list.create_new') }}</router-link>
+      </div>
       <div class="mt-3">
         <table class="list-table">
           <thead>

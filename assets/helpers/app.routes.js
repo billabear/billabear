@@ -39,6 +39,7 @@ import TemplateList from "../views/App/Settings/Templates/TemplateList.vue";
 import TemplateUpdate from "../views/App/Settings/Templates/TemplateUpdate.vue";
 import BrandSettingsList from "../views/App/Settings/BrandSettings/BrandSettingsList.vue";
 import BrandSettingsUpdate from "../views/App/Settings/BrandSettings/BrandSettingsUpdate.vue";
+import BrandSettingsCreate from "../views/App/Settings/BrandSettings/BrandSettingsCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -118,6 +119,11 @@ export const APP_ROUTES = [
                 name: "app.settings.brand_settings.update",
                 path: "brand-settings/:id",
                 component: BrandSettingsUpdate
+            },
+            {
+                name: "app.settings.brand_settings.create",
+                path: "brand-settings/new",
+                component: BrandSettingsCreate
             }
         ]
     },
