@@ -32,17 +32,17 @@ class EmailTemplate
     #[ORM\Column(type: 'string', nullable: false)]
     private string $locale;
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    private string $subject;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $subject = null;
 
     #[ORM\Column(type: 'boolean', nullable: false)]
-    private bool $useTemplateId;
+    private bool $useEmspTemplate;
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    private string $templateId;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $templateId = null;
 
-    #[ORM\Column(type: 'text', nullable: false)]
-    private string $templateBody;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $templateBody = null;
 
     public function getId()
     {
@@ -74,42 +74,42 @@ class EmailTemplate
         $this->locale = $locale;
     }
 
-    public function getSubject(): string
+    public function getSubject(): ?string
     {
         return $this->subject;
     }
 
-    public function setSubject(string $subject): void
+    public function setSubject(?string $subject): void
     {
         $this->subject = $subject;
     }
 
-    public function isUseTemplateId(): bool
+    public function isUseEmspTemplate(): bool
     {
-        return $this->useTemplateId;
+        return $this->useEmspTemplate;
     }
 
-    public function setUseTemplateId(bool $useTemplateId): void
+    public function setUseEmspTemplate(bool $useEmspTemplate): void
     {
-        $this->useTemplateId = $useTemplateId;
+        $this->useEmspTemplate = $useEmspTemplate;
     }
 
-    public function getTemplateId(): string
+    public function getTemplateId(): ?string
     {
         return $this->templateId;
     }
 
-    public function setTemplateId(string $templateId): void
+    public function setTemplateId(?string $templateId): void
     {
         $this->templateId = $templateId;
     }
 
-    public function getTemplateBody(): string
+    public function getTemplateBody(): ?string
     {
         return $this->templateBody;
     }
 
-    public function setTemplateBody(string $templateBody): void
+    public function setTemplateBody(?string $templateBody): void
     {
         $this->templateBody = $templateBody;
     }
