@@ -16,13 +16,13 @@ Feature: Brands Create
       | Name    | Code    | Email               |
       | Example | example | example@example.org |
     When I create a new brand
-      | Name  | Example Created |
-      | Code  | example_created |
-      | Email | example@example.org |
-      | Company Name | New Company  |
-      | Street Line One | 4 Example Way |
-      | City            | City          |
-      | Region          | Berlin        |
-      | Post Code       | 10343         |
-      | Country | DE  |
+      | Name            | Example Created     |
+      | Code            | example_created     |
+      | Email           | example@example.org |
+      | Company Name    | New Company         |
+      | Street Line One | 4 Example Way       |
+      | City            | City                |
+      | Region          | Berlin              |
+      | Post Code       | 10343               |
+      | Country         | DE                  |
     Then there should be a brand with the name "Example Created"
