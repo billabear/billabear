@@ -10,7 +10,7 @@ Feature: Brands Create
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
 
-  Scenario: View brands
+  Scenario: Create brands
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow brands exist:
       | Name    | Code    | Email               |
