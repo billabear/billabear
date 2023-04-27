@@ -10,17 +10,18 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Validator\Constraints;
 
-use App\Entity\BrandSettings;
-use Parthenon\Common\Repository\RepositoryInterface;
+use Symfony\Component\Validator\Constraint;
 
-interface BrandSettingRepositoryInterface extends RepositoryInterface
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+class UniqueBrandCode extends Constraint
 {
-    /**
-     * @return BrandSettingsRepository[]
-     */
-    public function getAll(): array;
+    public const NOT_UNIQUE_ERROR = '23bd9dbf-6b9b-41cd-a99e-4844bcf3077f';
 
-    public function getByCode(string $code): BrandSettings;
+    protected const ERROR_NAMES = [
+        self::NOT_UNIQUE_ERROR => 'NOT_UNIQUE_ERROR',
+    ];
+
+    public $message = 'The code "{{ string }}" is already used.';
 }

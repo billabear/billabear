@@ -12,6 +12,8 @@
 
 namespace App\Repository;
 
+use App\Entity\BrandSettings;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class BrandSettingsRepository extends DoctrineRepository implements BrandSettingRepositoryInterface
@@ -19,5 +21,16 @@ class BrandSettingsRepository extends DoctrineRepository implements BrandSetting
     public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function getByCode(string $code): BrandSettings
+    {
+        $brandSettings = $this->entityRepository->findOneBy(['code' => $code]);
+
+        if (!$brandSettings instanceof BrandSettings) {
+            throw new NoEntityFoundException(sprintf("Can't find brand settings for code '%s'", $code));
+        }
+
+        return $brandSettings;
     }
 }

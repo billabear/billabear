@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\BrandSettings;
 
+use App\Validator\Constraints\UniqueBrandCode;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,7 @@ class CreateBrandSettings
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[Assert\Regex('~[a-z0-9_]+~', message: 'Code must be lower case alphanumeric with underscores only')]
+    #[UniqueBrandCode]
     private $code;
 
     #[Assert\NotBlank]
