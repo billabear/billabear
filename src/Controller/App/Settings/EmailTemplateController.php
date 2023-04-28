@@ -15,6 +15,7 @@ namespace App\Controller\App\Settings;
 use App\Api\Filters\EmailTemplateList;
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
 use App\Dto\Response\App\ListResponse;
+use App\Entity\EmailTemplate;
 use App\Factory\EmailTemplateFactory;
 use App\Repository\EmailTemplateRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +27,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmailTemplateController
 {
+    #[Route('/app/settings/email-template/create', name: 'app_app_settings_emailtemplate_create_read', methods: ['GET'])]
+    public function createRead(
+        SerializerInterface $serializer,
+    ): Response {
+        $dto = new \App\Dto\Response\App\EmailTemplate\CreateEmailTemplate();
+        $dto->setTemplateNames(EmailTemplate::TEMPLATE_NAMES);
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[Route('/app/settings/email-template', name: 'app_app_settings_emailtemplate_create', methods: ['POST'])]
     public function create(
         Request $request,

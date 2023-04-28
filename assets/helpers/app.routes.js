@@ -38,6 +38,8 @@ import BrandSettingsCreate from "../views/App/Settings/BrandSettings/BrandSettin
 import PdfTemplateList from "../views/App/Settings/PdfTemplates/PdfTemplateList.vue";
 import pdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
 import PdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
+import EmailTemplateList from "../views/App/Settings/EmailTemplates/EmailTemplateList.vue";
+import EmailTemplateCreate from "../views/App/Settings/EmailTemplates/EmailTemplateCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -122,6 +124,16 @@ export const APP_ROUTES = [
                 name: "app.settings.brand_settings.create",
                 path: "brand-settings/new",
                 component: BrandSettingsCreate
+            },
+            {
+                name: "app.settings.email_template.list",
+                path: "email-template/list",
+                component: EmailTemplateList
+            },
+            {
+                name: "app.settings.email_template.create",
+                path: "email-template/create",
+                component: EmailTemplateCreate
             }
         ]
     },
