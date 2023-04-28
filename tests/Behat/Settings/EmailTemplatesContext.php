@@ -68,13 +68,17 @@ class EmailTemplatesContext implements Context
         throw new \Exception('Found');
     }
 
-    public function getEmailTemplate($templateName, $locale): void
+    public function getEmailTemplate($templateName, $locale): EmailTemplate
     {
         $emailTemplate = $this->templateRepository->findOneBy(['name' => $templateName, 'locale' => $locale]);
 
         if (!$emailTemplate instanceof EmailTemplate) {
             throw new \Exception('No template found');
         }
+
+        $this->templateRepository->getEntityManager()->refresh($emailTemplate);
+
+        return $emailTemplate;
     }
 
     /**
@@ -131,6 +135,56 @@ class EmailTemplatesContext implements Context
             if ($template['name'] === $arg1 && $template['locale'] === $arg2) {
                 throw new \Exception('template found');
             }
+        }
+    }
+
+    /**
+     * @When I go to the email template for :arg1 with the locale :arg2
+     */
+    public function iGoToTheEmailTemplateForWithTheLocale($templateName, $locale)
+    {
+        $emailTemplate = $this->getEmailTemplate($templateName, $locale);
+        $this->sendJsonRequest('GET', '/app/settings/email-template/'.$emailTemplate->getId());
+    }
+
+    /**
+     * @Then I will see that the email template body is :arg1
+     */
+    public function iWillSeeThatTheEmailTemplateBodyIs($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['email_template']['template_body'] != $arg1) {
+            throw new \Exception('Not the same template body');
+        }
+    }
+
+    /**
+     * @When I update the email template for :arg1 with the locale :arg2:
+     */
+    public function iUpdateTheEmailTemplateForWithTheLocale($templateName, $locale, TableNode $table)
+    {
+        $data = $table->getRowsHash();
+        $emailTemplate = $this->getEmailTemplate($templateName, $locale);
+        $payload = [
+            'subject' => $data['Subject'] ?? null,
+            'template_body' => $data['Template Body'] ?? null,
+            'template_id' => $data['Template ID'] ?? null,
+            'use_emsp_template' => ('true' === strtolower($data['Use Emsp Template'] ?? 'false')),
+        ];
+
+        $this->sendJsonRequest('POST', '/app/settings/email-template/'.$emailTemplate->getId(), $payload);
+    }
+
+    /**
+     * @Then the email template for :arg1 with the locale :arg2 will have the template body is :arg3
+     */
+    public function theEmailTemplateForWithTheLocaleWillHaveTheTemplateBodyIs($templateName, $locale, $body)
+    {
+        $emailTemplate = $this->getEmailTemplate($templateName, $locale);
+
+        if ($emailTemplate->getTemplateBody() !== $body) {
+            throw new \Exception("Template body doesn't match");
         }
     }
 }

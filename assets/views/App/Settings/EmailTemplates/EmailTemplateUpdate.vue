@@ -1,67 +1,62 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.settings.email_template.create.title') }}</h1>
+    <h1 class="page-title">{{ $t('app.settings.email_template.update.title') }}</h1>
 
     <form @submit.prevent="send">
     <div class="mt-3 card-body">
-        <div class="form-field-ctn">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.settings.email_template.create.fields.name') }}
-          </label>
-          <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
-          <select v-model="emailTemplate.name" class="form-field">
-            <option v-for="name in allowedNames" :value="name">{{ name }}</option>
-          </select>
-          <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.name') }}</p>
-        </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="name">
+          {{ $t('app.settings.email_template.create.fields.name') }}
+        </label>
+        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
+        {{ emailTemplate.name }}
+      </div>
 
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="locale">
           {{ $t('app.settings.email_template.create.fields.locale') }}
         </label>
         <p class="form-field-error" v-if="errors.locale != undefined">{{ errors.locale }}</p>
-        <input type="text" class="form-field" id="locale" v-model="emailTemplate.locale"  />
-        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.locale') }}</p>
+        {{ emailTemplate.locale }}
       </div>
-
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="use_emsp_template">
-          {{ $t('app.settings.email_template.create.fields.use_emsp_template') }}
+          {{ $t('app.settings.email_template.update.fields.use_emsp_template') }}
         </label>
         <p class="form-field-error" v-if="errors.use_emsp_template != undefined">{{ errors.use_emsp_template }}</p>
         <input type="checkbox" class="form-field" id="use_emsp_template" v-model="emailTemplate.use_emsp_template"  />
-        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.use_emsp_template') }}</p>
+        <p class="form-field-help">{{ $t('app.settings.email_template.update.help_info.use_emsp_template') }}</p>
       </div>
       <div class="form-field-ctn" v-if="emailTemplate.use_emsp_template === false">
         <label class="form-field-lbl" for="subject">
-          {{ $t('app.settings.email_template.create.fields.subject') }}
+          {{ $t('app.settings.email_template.update.fields.subject') }}
         </label>
         <p class="form-field-error" v-if="errors.subject != undefined">{{ errors.subject }}</p>
         <input type="text" class="form-field" id="use_emsp_template" v-model="emailTemplate.subject"  />
-        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.use_emsp_template') }}</p>
+        <p class="form-field-help">{{ $t('app.settings.email_template.update.help_info.use_emsp_template') }}</p>
       </div>
       <div class="form-field-ctn" v-if="emailTemplate.use_emsp_template === false">
         <label class="form-field-lbl" for="subject">
-          {{ $t('app.settings.email_template.create.fields.template_body') }}
+          {{ $t('app.settings.email_template.update.fields.template_body') }}
         </label>
         <p class="form-field-error" v-if="errors.template_body != undefined">{{ errors.template_body }}</p>
         <textarea class="form-field" id="template_body" rows="9" cols="60" v-model="emailTemplate.template_body"></textarea>
-        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.template_body') }}</p>
+        <p class="form-field-help">{{ $t('app.settings.email_template.update.help_info.template_body') }}</p>
       </div>
       <div class="form-field-ctn" v-if="emailTemplate.use_emsp_template === true">
         <label class="form-field-lbl" for="template_id">
-          {{ $t('app.settings.email_template.create.fields.template_id') }}
+          {{ $t('app.settings.email_template.update.fields.template_id') }}
         </label>
         <p class="form-field-error" v-if="errors.template_id != undefined">{{ errors.template_id }}</p>
         <input type="text" class="form-field" id="template_id" v-model="emailTemplate.template_id"  />
-        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.template_id') }}</p>
+        <p class="form-field-help">{{ $t('app.settings.email_template.update.help_info.template_id') }}</p>
       </div>
     </div>
 
       <div class="form-field-submit-ctn">
-      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.settings.email_template.create.submit_btn') }}</SubmitButton>
+      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.settings.email_template.update.submit_btn') }}</SubmitButton>
     </div>
-    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.email_template.create.success_message') }}</p>
+    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.email_template.update.success_message') }}</p>
     </form>
   </div>
 </template>
@@ -90,16 +85,18 @@ export default {
     }
   },
   mounted() {
-    axios.get('/app/settings/email-template/create').then(response => {
-      this.allowedNames = response.data.template_names;
+    var id = this.$route.params.id
+    axios.get('/app/settings/email-template/'+id).then(response => {
+      this.emailTemplate = response.data.email_template;
     })
   },
   methods: {
     send: function () {
+      var id = this.$route.params.id
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
-      axios.post('/app/settings/email-template', this.emailTemplate).then(
+      axios.post('/app/settings/email-template/'+id, this.emailTemplate).then(
           response => {
             this.sendingInProgress = false;
             this.success = true;

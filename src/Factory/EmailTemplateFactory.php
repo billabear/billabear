@@ -13,7 +13,9 @@
 namespace App\Factory;
 
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
+use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use App\Dto\Response\App\EmailTemplate\EmailTemplate as AppDto;
+use App\Dto\Response\App\EmailTemplate\FullEmailTemplate as FullAppDto;
 use App\Entity\EmailTemplate;
 
 class EmailTemplateFactory
@@ -31,12 +33,36 @@ class EmailTemplateFactory
         return $emailTemplate;
     }
 
+    public function updateEntity(UpdateEmailTemplate $dto, EmailTemplate $emailTemplate): EmailTemplate
+    {
+        $emailTemplate->setUseEmspTemplate($dto->getUseEmspTemplate());
+        $emailTemplate->setTemplateId($dto->getTemplateId());
+        $emailTemplate->setSubject($dto->getSubject());
+        $emailTemplate->setTemplateBody($dto->getTemplateBody());
+
+        return $emailTemplate;
+    }
+
     public function createAppDto(EmailTemplate $entity): AppDto
     {
         $dto = new AppDto();
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
         $dto->setLocale($entity->getLocale());
+
+        return $dto;
+    }
+
+    public function createFullAppDto(EmailTemplate $entity): FullAppDto
+    {
+        $dto = new FullAppDto();
+        $dto->setId((string) $entity->getId());
+        $dto->setName($entity->getName());
+        $dto->setLocale($entity->getLocale());
+        $dto->setUseEmspTemplate($entity->isUseEmspTemplate());
+        $dto->setSubject($entity->getSubject());
+        $dto->setTemplateBody($entity->getTemplateBody());
+        $dto->setTemplateId($entity->getTemplateId());
 
         return $dto;
     }

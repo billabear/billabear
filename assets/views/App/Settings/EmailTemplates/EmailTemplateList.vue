@@ -44,13 +44,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="customer in email_templates" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.customer.view', params: {id: customer.id}})">
+            <tr v-for="customer in email_templates" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.settings.email_template.update', params: {id: customer.id}})">
               <td>{{ customer.name }}</td>
               <td>{{ customer.locale }}</td>
-              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.settings.email_template.list.view_btn') }}</router-link></td>
+              <td><router-link :to="{name: 'app.settings.email_template.update', params: {id: customer.id}}" class="list-btn">{{ $t('app.settings.email_template.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="email_templates.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
+              <td colspan="4" class="text-center">{{ $t('app.settings.email_template.list.no_customers') }}</td>
             </tr>
           </tbody>
         </table>

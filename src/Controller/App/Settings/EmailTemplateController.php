@@ -14,10 +14,13 @@ namespace App\Controller\App\Settings;
 
 use App\Api\Filters\EmailTemplateList;
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
+use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
+use App\Dto\Response\App\EmailTemplate\EmailTemplateView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\EmailTemplate;
 use App\Factory\EmailTemplateFactory;
 use App\Repository\EmailTemplateRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,6 +120,65 @@ class EmailTemplateController
         $listResponse->setFirstKey($resultSet->getFirstKey());
 
         $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/email-template/{id}', name: 'app_app_settings_emailtemplate_read', methods: ['GET'])]
+    public function read(
+        Request $request,
+        EmailTemplateRepositoryInterface $repository,
+        EmailTemplateFactory $factory,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            $template = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $dto = new EmailTemplateView();
+        $dto->setEmailTemplate($factory->createFullAppDto($template));
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/email-template/{id}', name: 'app_app_settings_emailtemplate_update', methods: ['POST'])]
+    public function update(
+        Request $request,
+        EmailTemplateRepositoryInterface $repository,
+        EmailTemplateFactory $factory,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        try {
+            $template = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var UpdateEmailTemplate $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdateEmailTemplate::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $template = $factory->updateEntity($dto, $template);
+        $repository->save($template);
+        $outputDto = $factory->createAppDto($template);
+
+        $json = $serializer->serialize($outputDto, 'json');
 
         return new JsonResponse($json, json: true);
     }
