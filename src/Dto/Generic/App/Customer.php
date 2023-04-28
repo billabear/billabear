@@ -44,6 +44,9 @@ class Customer
     #[SerializedName('brand')]
     protected string $brand;
 
+    #[SerializedName('locale')]
+    protected string $locale;
+
     public function getId(): string
     {
         return $this->id;
@@ -132,5 +135,15 @@ class Customer
     public function setBrand(string $brand): void
     {
         $this->brand = $brand;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
     }
 }

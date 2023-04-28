@@ -14,12 +14,14 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     show_advanced: "Advanced",
     success_message: "Successfully update customer",
     address_title: "Address",
+    locale: "Locale",
     error: {
         not_found: "No such customer found",
         unknown: "An unknown error has occurred"
     },
     help_info: {
         email: "The email for the customer where the invoices are to go",
+        locale: "The locale to be used for language",
         street_line_one: "The first line of the street billing address",
         street_line_two: "The second line of the street billing address",
         city: "The city for the billing address",

@@ -17,6 +17,14 @@
                 <dd>{{ customer.email }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.customer.view.main.locale') }}</dt>
+                <dd>{{ customer.locale }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.customer.view.main.brand') }}</dt>
+                <dd>{{ customer.brand }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.customer.view.main.status') }}</dt>
                 <dd>{{ customer.status }}</dd>
               </div>

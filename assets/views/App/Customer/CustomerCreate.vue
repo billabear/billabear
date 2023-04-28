@@ -13,14 +13,22 @@
           <p class="form-field-help">{{ $t('app.customer.create.help_info.email') }}</p>
         </div>
 
-        <div class="form-field-ctn">
-          <label class="form-field-lbl" for="reference">
-            {{ $t('app.customer.create.reference') }}
-          </label>
-          <p class="form-field-error" v-if="errors.reference != undefined">{{ errors.reference }}</p>
-          <input type="text" class="form-field-input" id="reference" v-model="customer.reference"  />
-          <p class="form-field-help">{{ $t('app.customer.create.help_info.reference') }}</p>
-        </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="reference">
+          {{ $t('app.customer.create.reference') }}
+        </label>
+        <p class="form-field-error" v-if="errors.reference != undefined">{{ errors.reference }}</p>
+        <input type="text" class="form-field-input" id="reference" v-model="customer.reference"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.reference') }}</p>
+      </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="locale">
+          {{ $t('app.customer.create.locale') }}
+        </label>
+        <p class="form-field-error" v-if="errors.locale != undefined">{{ errors.locale }}</p>
+        <input type="text" class="form-field-input" id="locale" v-model="customer.locale"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.locale') }}</p>
+      </div>
     </div>
 
     <div class="card-body mt-5">

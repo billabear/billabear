@@ -12,6 +12,14 @@
           <input type="email" class="form-field-input" id="email" v-model="customer.email" />
           <p class="form-field-help">{{ $t('app.customer.update.help_info.email') }}</p>
         </div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="locale">
+            {{ $t('app.customer.update.locale') }}
+          </label>
+          <p class="form-field-error" v-if="errors.locale != undefined">{{ errors.locale }}</p>
+          <input type="email" class="form-field-input" id="locale" v-model="customer.locale" />
+          <p class="form-field-help">{{ $t('app.customer.update.help_info.locale') }}</p>
+        </div>
 
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="reference">

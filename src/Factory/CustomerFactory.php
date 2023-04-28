@@ -72,6 +72,7 @@ class CustomerFactory
         $dto->setAddress($address);
         $dto->setStatus($customer->getStatus()->value);
         $dto->setBrand($customer->getBrand());
+        $dto->setLocale($customer->getLocale());
 
         return $dto;
     }
@@ -96,6 +97,7 @@ class CustomerFactory
         $dto->setPaymentProviderDetailsUrl($customer->getPaymentProviderDetailsUrl());
         $dto->setStatus($customer->getStatus()->value);
         $dto->setBrand($customer->getBrand());
+        $dto->setLocale($customer->getLocale());
 
         return $dto;
     }
