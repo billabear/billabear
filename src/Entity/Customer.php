@@ -25,6 +25,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 class Customer implements CustomerInterface
 {
     public const DEFAULT_BRAND = 'default';
+    public const DEFAULT_LOCALE = 'en';
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -49,6 +50,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(name: 'brand', type: 'string', nullable: false)]
     private string $brand = self::DEFAULT_BRAND;
+
+    #[ORM\Column(name: 'locale', type: 'string', nullable: false)]
+    private string $locale = self::DEFAULT_LOCALE;
 
     #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
     protected ?string $paymentProviderDetailsUrl;
@@ -237,5 +241,15 @@ class Customer implements CustomerInterface
     public function setBrand(string $brand): void
     {
         $this->brand = $brand;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
     }
 }

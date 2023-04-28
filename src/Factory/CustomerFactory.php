@@ -41,6 +41,7 @@ class CustomerFactory
         $customer->setBillingAddress($address);
         $customer->setName($createCustomerDto->getName());
         $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_BRAND);
+        $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
 
         $externalCustomerReference = $createCustomerDto->getExternalReference();
 

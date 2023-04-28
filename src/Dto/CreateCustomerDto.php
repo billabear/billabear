@@ -20,22 +20,27 @@ class CreateCustomerDto
 {
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('name')]
-    private ?string $name = null;
+    private $name = null;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('brand')]
-    private ?string $brand = null;
+    private $brand = null;
 
     #[Assert\NotBlank]
     #[Assert\Email]
     #[SerializedName('email')]
-    private ?string $email;
+    private $email;
+
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Locale()]
+    #[SerializedName('brand')]
+    private $locale;
 
     #[SerializedName('reference')]
-    private ?string $reference = null;
+    private $reference = null;
 
     #[SerializedName('external_reference')]
-    private ?string $externalReference = null;
+    private $externalReference = null;
 
     #[Assert\Valid]
     #[SerializedName('address')]
@@ -99,5 +104,15 @@ class CreateCustomerDto
     public function setBrand(?string $brand): void
     {
         $this->brand = $brand;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    public function setLocale($locale): void
+    {
+        $this->locale = $locale;
     }
 }
