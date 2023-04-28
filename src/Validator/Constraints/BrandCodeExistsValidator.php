@@ -12,15 +12,14 @@
 
 namespace App\Validator\Constraints;
 
-use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
-use App\Repository\EmailTemplateRepositoryInterface;
+use App\Repository\BrandSettingRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class UniqueEmailTemplateValidator extends ConstraintValidator
+class BrandCodeExistsValidator extends ConstraintValidator
 {
-    public function __construct(private EmailTemplateRepositoryInterface $repository)
+    public function __construct(private BrandSettingRepositoryInterface $brandSettingRepository)
     {
     }
 
@@ -30,17 +29,10 @@ class UniqueEmailTemplateValidator extends ConstraintValidator
             return;
         }
 
-        if (!$value instanceof CreateEmailTemplate) {
-            return;
-        }
-
         try {
-            $this->repository->getByNameAndLocaleAndBrand($value->getName(), $value->getLocale(), $value->getBrand());
+            $this->brandSettingRepository->getByCode($value);
         } catch (NoEntityFoundException $exception) {
-            return;
+            $this->context->buildViolation($constraint->message)->setParameter('{{ string }}', $value)->addViolation();
         }
-
-        $this->context->buildViolation($constraint->message)->atPath('name')->addViolation();
-        $this->context->buildViolation($constraint->message)->atPath('locale')->addViolation();
     }
 }

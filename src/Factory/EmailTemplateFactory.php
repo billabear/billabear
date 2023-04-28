@@ -17,9 +17,14 @@ use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use App\Dto\Response\App\EmailTemplate\EmailTemplate as AppDto;
 use App\Dto\Response\App\EmailTemplate\FullEmailTemplate as FullAppDto;
 use App\Entity\EmailTemplate;
+use App\Repository\BrandSettingRepositoryInterface;
 
 class EmailTemplateFactory
 {
+    public function __construct(private BrandSettingRepositoryInterface $brandSettingRepository)
+    {
+    }
+
     public function createEntity(CreateEmailTemplate $dto): EmailTemplate
     {
         $emailTemplate = new EmailTemplate();
@@ -29,6 +34,9 @@ class EmailTemplateFactory
         $emailTemplate->setTemplateId($dto->getTemplateId());
         $emailTemplate->setSubject($dto->getSubject());
         $emailTemplate->setTemplateBody($dto->getTemplateBody());
+
+        $brand = $this->brandSettingRepository->getByCode($dto->getBrand());
+        $emailTemplate->setBrand($brand);
 
         return $emailTemplate;
     }
@@ -49,6 +57,7 @@ class EmailTemplateFactory
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
         $dto->setLocale($entity->getLocale());
+        $dto->setBrand($entity->getBrand()->getBrandName());
 
         return $dto;
     }
@@ -63,6 +72,7 @@ class EmailTemplateFactory
         $dto->setSubject($entity->getSubject());
         $dto->setTemplateBody($entity->getTemplateBody());
         $dto->setTemplateId($entity->getTemplateId());
+        $dto->setBrand($entity->getBrand()->getBrandName());
 
         return $dto;
     }

@@ -10,7 +10,7 @@ export const BRAND_SETTINGS_CREATE_TRANSLATIONS = {
         region: "Region",
         country: "Country",
         post_code: "Post Code",
-        code: "Code"
+        code: "Code",
     },
     help_info: {
         name: "The name of the brand",

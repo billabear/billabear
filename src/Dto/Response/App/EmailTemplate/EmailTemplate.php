@@ -20,6 +20,8 @@ class EmailTemplate
 
     private string $locale;
 
+    private string $brand;
+
     public function getId(): string
     {
         return $this->id;
@@ -48,5 +50,15 @@ class EmailTemplate
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
+    }
+
+    public function getBrand(): string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): void
+    {
+        $this->brand = $brand;
     }
 }

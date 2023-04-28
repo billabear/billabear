@@ -19,6 +19,15 @@
         <p class="form-field-error" v-if="errors.locale != undefined">{{ errors.locale }}</p>
         {{ emailTemplate.locale }}
       </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="brand">
+          {{ $t('app.settings.email_template.create.fields.brand') }}
+        </label>
+        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.brand }}</p>
+        {{ emailTemplate.brand }}
+      </div>
+
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="use_emsp_template">
           {{ $t('app.settings.email_template.update.fields.use_emsp_template') }}

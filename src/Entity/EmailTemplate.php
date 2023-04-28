@@ -66,6 +66,9 @@ class EmailTemplate
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $templateBody = null;
 
+    #[ORM\ManyToOne(targetEntity: BrandSettings::class)]
+    private BrandSettings $brand;
+
     public function getId()
     {
         return $this->id;
@@ -134,5 +137,15 @@ class EmailTemplate
     public function setTemplateBody(?string $templateBody): void
     {
         $this->templateBody = $templateBody;
+    }
+
+    public function getBrand(): BrandSettings
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(BrandSettings $brand): void
+    {
+        $this->brand = $brand;
     }
 }

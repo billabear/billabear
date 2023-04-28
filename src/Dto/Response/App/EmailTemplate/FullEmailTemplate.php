@@ -22,6 +22,8 @@ class FullEmailTemplate
 
     private string $locale;
 
+    private string $brand;
+
     #[SerializedName('use_emsp_template')]
     private bool $useEmspTemplate;
 
@@ -61,6 +63,16 @@ class FullEmailTemplate
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
+    }
+
+    public function getBrand(): string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): void
+    {
+        $this->brand = $brand;
     }
 
     public function isUseEmspTemplate(): bool

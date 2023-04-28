@@ -4,16 +4,26 @@
 
     <form @submit.prevent="send">
     <div class="mt-3 card-body">
-        <div class="form-field-ctn">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.settings.email_template.create.fields.name') }}
-          </label>
-          <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
-          <select v-model="emailTemplate.name" class="form-field">
-            <option v-for="name in allowedNames" :value="name">{{ name }}</option>
-          </select>
-          <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.name') }}</p>
-        </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="name">
+          {{ $t('app.settings.email_template.create.fields.name') }}
+        </label>
+        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
+        <select v-model="emailTemplate.name" class="form-field">
+          <option v-for="name in allowedNames" :value="name">{{ name }}</option>
+        </select>
+        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.name') }}</p>
+      </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="brand">
+          {{ $t('app.settings.email_template.create.fields.brand') }}
+        </label>
+        <p class="form-field-error" v-if="errors.brand != undefined">{{ errors.brand }}</p>
+        <select v-model="emailTemplate.brand" class="form-field">
+          <option v-for="(name, code) in brands" :value="code">{{ name }}</option>
+        </select>
+        <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.brand') }}</p>
+      </div>
 
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="locale">
@@ -74,6 +84,7 @@ export default {
   data() {
     return {
       allowedNames: [],
+      brands: {},
       emailTemplate: {
         name: null,
         locale: null,
@@ -92,6 +103,7 @@ export default {
   mounted() {
     axios.get('/app/settings/email-template/create').then(response => {
       this.allowedNames = response.data.template_names;
+      this.brands = response.data.brands;
     })
   },
   methods: {

@@ -19,6 +19,9 @@ class CreateEmailTemplate
     #[SerializedName('template_names')]
     private array $templateNames;
 
+    #[SerializedName('brands')]
+    private array $brands;
+
     public function getTemplateNames(): array
     {
         return $this->templateNames;
@@ -27,5 +30,15 @@ class CreateEmailTemplate
     public function setTemplateNames(array $templateNames): void
     {
         $this->templateNames = $templateNames;
+    }
+
+    public function getBrands(): array
+    {
+        return $this->brands;
+    }
+
+    public function setBrands(array $brands): void
+    {
+        $this->brands = $brands;
     }
 }

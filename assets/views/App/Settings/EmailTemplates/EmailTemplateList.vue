@@ -38,8 +38,8 @@
           <thead>
             <tr>
               <th>{{ $t('app.settings.email_template.list.email') }}</th>
-              <th>{{ $t('app.settings.email_template.list.country')}}</th>
-              <th>{{ $t('app.settings.email_template.list.reference') }}</th>
+              <th>{{ $t('app.settings.email_template.list.locale')}}</th>
+              <th>{{ $t('app.settings.email_template.list.brand') }}</th>
               <th></th>
             </tr>
           </thead>
@@ -47,6 +47,7 @@
             <tr v-for="customer in email_templates" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.settings.email_template.update', params: {id: customer.id}})">
               <td>{{ customer.name }}</td>
               <td>{{ customer.locale }}</td>
+              <td>{{ customer.brand }}</td>
               <td><router-link :to="{name: 'app.settings.email_template.update', params: {id: customer.id}}" class="list-btn">{{ $t('app.settings.email_template.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="email_templates.length === 0">

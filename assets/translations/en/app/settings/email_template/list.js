@@ -3,10 +3,12 @@ export const EMAIL_TEMPLATES_LIST_TRANSLATIONS = {
     email: "Email",
     country: "Country",
     reference: "Reference",
-    no_customers: "There are currently no customers existing",
+    brand: "Brand",
+    no_customers: "There are currently no email templates existing",
     create_new: "Create",
     next: "Next Page",
     prev: "Previous Page",
+    locale: "Locale",
     view_btn: "View",
     filter: {
         title: "Filters",

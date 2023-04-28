@@ -13,6 +13,7 @@
 namespace App\Dto\Request\App\EmailTemplate;
 
 use App\Entity\EmailTemplate;
+use App\Validator\Constraints\BrandCodeExists;
 use App\Validator\Constraints\UniqueEmailTemplate;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,6 +32,11 @@ class CreateEmailTemplate
     #[Assert\Type('string')]
     #[Assert\Locale]
     private $locale;
+
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[BrandCodeExists]
+    private $brand;
 
     #[Assert\Type('boolean')]
     #[SerializedName('use_emsp_template')]
@@ -102,6 +108,16 @@ class CreateEmailTemplate
     public function setTemplateId($templateId): void
     {
         $this->templateId = $templateId;
+    }
+
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    public function setBrand($brand): void
+    {
+        $this->brand = $brand;
     }
 
     public function validate(ExecutionContextInterface $context, $payload)

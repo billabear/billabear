@@ -12,7 +12,9 @@
 
 namespace App\Tests\Behat\Settings;
 
+use App\Entity\Customer;
 use App\Entity\EmailTemplate;
+use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\EmailTemplateRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -26,6 +28,7 @@ class EmailTemplatesContext implements Context
     public function __construct(
         private Session $session,
         private EmailTemplateRepository $templateRepository,
+        private BrandSettingsRepository $brandSettingsRepository,
     ) {
     }
 
@@ -42,6 +45,7 @@ class EmailTemplatesContext implements Context
             'template_body' => $data['Template Body'] ?? null,
             'template_id' => $data['Template ID'] ?? null,
             'use_emsp_template' => ('true' === strtolower($data['Use Emsp Template'] ?? 'false')),
+            'brand' => $data['Brand'] ?? Customer::DEFAULT_BRAND,
         ];
 
         $this->sendJsonRequest('POST', '/app/settings/email-template', $payload);
@@ -87,6 +91,8 @@ class EmailTemplatesContext implements Context
     public function theFollowingEmailTemplatesExist(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $row) {
+            $brandSettings = $this->brandSettingsRepository->findOneBy(['code' => $row['Brand'] ?? Customer::DEFAULT_BRAND]);
+
             $emailTemplate = new EmailTemplate();
             $emailTemplate->setName($row['Name']);
             $emailTemplate->setLocale($row['Locale']);
@@ -94,6 +100,7 @@ class EmailTemplatesContext implements Context
             $emailTemplate->setTemplateBody($row['Template Body'] ?? null);
             $emailTemplate->setTemplateId($row['Template ID'] ?? null);
             $emailTemplate->setSubject($row['Subject'] ?? null);
+            $emailTemplate->setBrand($brandSettings);
 
             $this->templateRepository->getEntityManager()->persist($emailTemplate);
         }

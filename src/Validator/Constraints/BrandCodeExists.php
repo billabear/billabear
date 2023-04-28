@@ -10,14 +10,18 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Validator\Constraints;
 
-use App\Entity\EmailTemplate;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Symfony\Component\Validator\Constraint;
 
-interface EmailTemplateRepositoryInterface extends CrudRepositoryInterface
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+class BrandCodeExists extends Constraint
 {
-    public function getByNameAndLocale(string $name, string $locale): EmailTemplate;
+    public const NOT_UNIQUE_ERROR = '23bd9dbf-6b9b-41cd-a99e-4844bcf3077f';
 
-    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): EmailTemplate;
+    protected const ERROR_NAMES = [
+        self::NOT_UNIQUE_ERROR => 'NOT_UNIQUE_ERROR',
+    ];
+
+    public $message = 'The code "{{ string }}" does not exist.';
 }
