@@ -12,7 +12,9 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Api\Filters\EmailTemplateList;
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
+use App\Dto\Response\App\ListResponse;
 use App\Factory\EmailTemplateFactory;
 use App\Repository\EmailTemplateRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,6 +57,53 @@ class EmailTemplateController
         $outputDto = $factory->createAppDto($emailTemplate);
 
         $json = $serializer->serialize($outputDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/email-template', name: 'app_app_settings_emailtemplate_list', methods: ['GET'])]
+    public function listTemplates(
+        Request $request,
+        EmailTemplateRepositoryInterface $repository,
+        EmailTemplateFactory $factory,
+        SerializerInterface $serializer,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $firstKey = $request->get('first_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new EmailTemplateList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $repository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+            firstId: $firstKey,
+        );
+
+        $dtos = array_map([$factory, 'createAppDto'], $resultSet->getResults());
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+        $listResponse->setFirstKey($resultSet->getFirstKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
     }

@@ -76,4 +76,61 @@ class EmailTemplatesContext implements Context
             throw new \Exception('No template found');
         }
     }
+
+    /**
+     * @Given the following email templates exist:
+     */
+    public function theFollowingEmailTemplatesExist(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $emailTemplate = new EmailTemplate();
+            $emailTemplate->setName($row['Name']);
+            $emailTemplate->setLocale($row['Locale']);
+            $emailTemplate->setUseEmspTemplate('true' === strtolower($row['Use Emsp Template'] ?? 'false'));
+            $emailTemplate->setTemplateBody($row['Template Body'] ?? null);
+            $emailTemplate->setTemplateId($row['Template ID'] ?? null);
+            $emailTemplate->setSubject($row['Subject'] ?? null);
+
+            $this->templateRepository->getEntityManager()->persist($emailTemplate);
+        }
+        $this->templateRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I go to the email template list
+     */
+    public function iGoToTheEmailTemplateList()
+    {
+        $this->sendJsonRequest('GET', '/app/settings/email-template');
+    }
+
+    /**
+     * @Then I will see in the list of email templates one for :arg1 with the locale :arg2
+     */
+    public function iWillSeeInTheListOfEmailTemplatesOneForWithTheLocale($arg1, $arg2)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $template) {
+            if ($template['name'] === $arg1 && $template['locale'] === $arg2) {
+                return;
+            }
+        }
+
+        throw new \Exception('No template found');
+    }
+
+    /**
+     * @Then I will not see in the list of email templates one for :arg1 with the locale :arg2
+     */
+    public function iWillNotSeeInTheListOfEmailTemplatesOneForWithTheLocale($arg1, $arg2)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $template) {
+            if ($template['name'] === $arg1 && $template['locale'] === $arg2) {
+                throw new \Exception('template found');
+            }
+        }
+    }
 }

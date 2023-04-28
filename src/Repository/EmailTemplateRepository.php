@@ -12,8 +12,8 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class EmailTemplateRepository extends DoctrineRepository implements EmailTemplateRepositoryInterface
+class EmailTemplateRepository extends DoctrineCrudRepository implements EmailTemplateRepositoryInterface
 {
 }

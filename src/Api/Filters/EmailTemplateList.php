@@ -10,10 +10,12 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Api\Filters;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-
-interface EmailTemplateRepositoryInterface extends CrudRepositoryInterface
+class EmailTemplateList extends AbstractFilterList
 {
+    protected function getFilters(): array
+    {
+        return [];
+    }
 }
