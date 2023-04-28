@@ -57,3 +57,15 @@ Feature: Brands Create
       | Template Body | The subscription email body here |
     Then I will get an error response
     Then there will not be an email template for "subscription_created" with locale "eke"
+
+  Scenario: Already exits locale
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given the following email templates exist:
+      | Name                   | Locale | Subject                | Template Body             |
+      | subscription_created   | en     | Subscription Created   | A short text for the body |
+    When I create an email template:
+      | Name | subscription_created |
+      | Locale | en |
+      | Subject | Your subscription has now started! |
+      | Template Body | The subscription email body here |
+    Then I will get an error response

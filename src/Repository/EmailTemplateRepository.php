@@ -12,8 +12,20 @@
 
 namespace App\Repository;
 
+use App\Entity\EmailTemplate;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class EmailTemplateRepository extends DoctrineCrudRepository implements EmailTemplateRepositoryInterface
 {
+    public function getByNameAndLocale(string $name, string $locale): EmailTemplate
+    {
+        $emailTemplate = $this->entityRepository->findOneBy(['name' => $name, 'locale' => $locale]);
+
+        if (!$emailTemplate instanceof EmailTemplate) {
+            throw new NoEntityFoundException(sprintf("Can't find email template for name '%s' and locale '%s'", $name, $locale));
+        }
+
+        return $emailTemplate;
+    }
 }

@@ -69,7 +69,7 @@ class GeneralContext implements Context
     {
         $statusCode = $this->session->getStatusCode();
 
-        if ($statusCode < 400) {
+        if ($statusCode < 400 || $statusCode >= 500) {
             throw new \Exception('Did not get an error code');
         }
     }

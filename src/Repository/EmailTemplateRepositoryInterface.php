@@ -12,8 +12,10 @@
 
 namespace App\Repository;
 
+use App\Entity\EmailTemplate;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface EmailTemplateRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getByNameAndLocale(string $name, string $locale): EmailTemplate;
 }

@@ -13,11 +13,13 @@
 namespace App\Dto\Request\App\EmailTemplate;
 
 use App\Entity\EmailTemplate;
+use App\Validator\Constraints\UniqueEmailTemplate;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[Assert\Callback('validate')]
+#[UniqueEmailTemplate]
 class CreateEmailTemplate
 {
     #[Assert\NotBlank]
