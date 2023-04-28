@@ -20,6 +20,28 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\UniqueConstraint(name: 'name_locale', columns: ['name', 'locale'])]
 class EmailTemplate
 {
+    public const NAME_SUBSCRIPTION_CREATED = 'subscription_created';
+    public const NAME_SUBSCRIPTION_PAUSED = 'subscription_paused';
+    public const NAME_SUBSCRIPTION_CANCELLED = 'subscription_cancelled';
+
+    public const NAME_PAYMENT_SUCCEEDED = 'payment_suceeded';
+    public const NAME_PAYMENT_FAILED = 'payment_failed';
+    public const NAME_PAYMENT_FAILURE_WARNING = 'payment_failure_warning';
+
+    public const NAME_PAYMENT_METHOD_EXPIRY_WARNING = 'payment_method_expiry_warning';
+    public const NAME_PAYMENT_METHOD_NO_VALID_METHODS = 'payment_method_no_valid_methds';
+
+    public const TEMPLATE_NAMES = [
+        self::NAME_SUBSCRIPTION_CREATED,
+        self::NAME_SUBSCRIPTION_PAUSED,
+        self::NAME_SUBSCRIPTION_CANCELLED,
+        self::NAME_PAYMENT_SUCCEEDED,
+        self::NAME_PAYMENT_FAILED,
+        self::NAME_PAYMENT_FAILURE_WARNING,
+        self::NAME_PAYMENT_METHOD_EXPIRY_WARNING,
+        self::NAME_PAYMENT_METHOD_NO_VALID_METHODS,
+    ];
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

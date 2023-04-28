@@ -61,4 +61,16 @@ class GeneralContext implements Context
         $em->persist($brand);
         $em->flush();
     }
+
+    /**
+     * @Then I will get an error response
+     */
+    public function iWillGetAnErrorResponse()
+    {
+        $statusCode = $this->session->getStatusCode();
+
+        if ($statusCode < 400) {
+            throw new \Exception('Did not get an error code');
+        }
+    }
 }

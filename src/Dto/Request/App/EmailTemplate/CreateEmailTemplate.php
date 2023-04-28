@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\EmailTemplate;
 
+use App\Entity\EmailTemplate;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -21,10 +22,12 @@ class CreateEmailTemplate
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]
+    #[Assert\Choice(choices: EmailTemplate::TEMPLATE_NAMES)]
     private $name;
 
     #[Assert\NotBlank]
     #[Assert\Type('string')]
+    #[Assert\Locale]
     private $locale;
 
     #[Assert\Type('boolean')]
@@ -103,14 +106,14 @@ class CreateEmailTemplate
     {
         if ($this->useEmspTemplate) {
             if (empty($this->templateId)) {
-                $context->addViolation('must have template id when using emsp template');
+                $context->buildViolation('must have template id when using emsp template')->atPath('tenplate_id')->addViolation();
             }
         } else {
             if (empty($this->templateBody)) {
-                $context->addViolation('must have template body when not using emsp template');
+                $context->buildViolation('must have template body when not using emsp template')->atPath('template_body')->addViolation();
             }
             if (empty($this->subject)) {
-                $context->addViolation('must have subject when not using emsp template');
+                $context->buildViolation('must have subject when not using emsp template')->atPath('subject')->addViolation();
             }
         }
     }
