@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    #[Route('/api/v1/customer', name: 'api_v1.0_customer_create', methods: ['POST'])]
+    #[Route('/api/v1/customer', name: 'api_v1_customer_create', methods: ['POST'])]
     public function createCustomer(
         Request $request,
         SerializerInterface $serializer,
@@ -77,7 +77,7 @@ class CustomerController
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1/customer', name: 'api_v1.0_customer_list', methods: ['GET'])]
+    #[Route('/api/v1/customer', name: 'api_v1_customer_list', methods: ['GET'])]
     public function listCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -120,7 +120,7 @@ class CustomerController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1/customer/{id}', name: 'api_v1.0_customer_read', methods: ['GET'])]
+    #[Route('/api/v1/customer/{id}', name: 'api_v1_customer_read', methods: ['GET'])]
     public function readCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -139,7 +139,7 @@ class CustomerController
         return new JsonResponse($data, json: true);
     }
 
-    #[Route('/api/v1/customer/{id}/limits', name: 'api_v1.0_customer_read_limits', methods: ['GET'])]
+    #[Route('/api/v1/customer/{id}/limits', name: 'api_v1_customer_read_limits', methods: ['GET'])]
     public function readCustomerLimits(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -161,7 +161,7 @@ class CustomerController
         return new JsonResponse($data, json: true);
     }
 
-    #[Route('/api/v1/customer/{id}', name: 'api_v1.0_customer_update', methods: ['PUT'])]
+    #[Route('/api/v1/customer/{id}', name: 'api_v1_customer_update', methods: ['PUT'])]
     public function updateCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
