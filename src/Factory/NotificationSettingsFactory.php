@@ -12,11 +12,24 @@
 
 namespace App\Factory;
 
+use App\Dto\Request\App\NotificationSettings\NotificationSettings as RequestDto;
 use App\Dto\Response\App\NotificationSettings\NotificationSettings as AppDto;
 use App\Entity\Settings\NotificationSettings;
 
 class NotificationSettingsFactory
 {
+    public function updateEntity(RequestDto $dto, NotificationSettings $settings): NotificationSettings
+    {
+        $settings->setEmsp($dto->getEmsp());
+        $settings->setSendCustomerNotifications($dto->getSendCustomerNotifications());
+        $settings->setDefaultOutgoingEmail($dto->getDefaultOutgoingEmail());
+        $settings->setEmspApiKey($dto->getEmspApiKey());
+        $settings->setEmspApiUrl($dto->getEmspApiUrl());
+        $settings->setEmspDomain($dto->getEmspDomain());
+
+        return $settings;
+    }
+
     public function createAppDto(NotificationSettings $settings): AppDto
     {
         $dto = new AppDto();

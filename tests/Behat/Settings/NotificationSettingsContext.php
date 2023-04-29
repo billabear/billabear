@@ -37,6 +37,8 @@ class NotificationSettingsContext implements Context
             throw new \Exception('No settings found');
         }
 
+        $this->settingsRepository->getEntityManager()->refresh($settings);
+
         return $settings;
     }
 
@@ -63,6 +65,25 @@ class NotificationSettingsContext implements Context
     }
 
     /**
+     * @When I update the notification settings to:
+     */
+    public function iUpdateTheNotificationSettingsTo(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'emsp' => $data['EMSP'] ?? null,
+            'emsp_api_key' => $data['API Key'] ?? null,
+            'emsp_api_url' => $data['API URL'] ?? null,
+            'emsp_domain' => $data['Domain'] ?? null,
+            'default_outgoing_email' => $data['Outgoing Email'] ?? null,
+            'send_customer_notifications' => ('false' === strtolower($data['Send Customer Notification'] ?? 'false')),
+        ];
+
+        $this->sendJsonRequest('POST', '/app/settings/notification-settings', $payload);
+    }
+
+    /**
      * @When I view the notification settings
      */
     public function iViewTheNotificationSettings()
@@ -78,6 +99,19 @@ class NotificationSettingsContext implements Context
         $data = $this->getJsonContent();
 
         if ($data['emsp'] !== $arg1) {
+            throw new \Exception('Notification setting EMSP is different');
+        }
+    }
+
+    /**
+     * @Then the notification settings for EMSP will be :arg1
+     */
+    public function theNotificationSettingsForEmspWillBe($emsp)
+    {
+        $data = $this->getJsonContent();
+        $settings = $this->getSettings();
+
+        if ($settings->getNotificationSettings()->getEmsp() !== $emsp) {
             throw new \Exception('Notification setting EMSP is different');
         }
     }

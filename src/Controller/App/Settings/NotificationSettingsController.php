@@ -12,12 +12,15 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Dto\Request\App\NotificationSettings\NotificationSettings;
 use App\Factory\NotificationSettingsFactory;
 use App\Repository\SettingsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NotificationSettingsController
 {
@@ -28,6 +31,40 @@ class NotificationSettingsController
         SerializerInterface $serializer,
     ): Response {
         $settings = $settingsRepository->getDefaultSettings();
+        $dto = $factory->createAppDto($settings->getNotificationSettings());
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/notification-settings', name: 'app_app_settings_notificationsettings_updatesettings', methods: ['POST'])]
+    public function updateSettings(
+        Request $request,
+        SettingsRepository $settingsRepository,
+        NotificationSettingsFactory $factory,
+        ValidatorInterface $validator,
+        SerializerInterface $serializer,
+    ): Response {
+        $requestDto = $serializer->deserialize($request->getContent(), NotificationSettings::class, 'json');
+        $errors = $validator->validate($requestDto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $settings = $settingsRepository->getDefaultSettings();
+        $notificationSettings = $factory->updateEntity($requestDto, $settings->getNotificationSettings());
+        $settings->setNotificationSettings($notificationSettings);
+        $settingsRepository->save($settings);
         $dto = $factory->createAppDto($settings->getNotificationSettings());
         $json = $serializer->serialize($dto, 'json');
 

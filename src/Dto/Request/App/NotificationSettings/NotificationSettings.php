@@ -10,41 +10,38 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity\Settings;
+namespace App\Dto\Request\App\NotificationSettings;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Settings\NotificationSettings as Entity;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Embeddable]
 class NotificationSettings
 {
-    public const EMSP_LOCAL = 'local';
-    public const EMSP_SENDGRID = 'sendgrid';
-    public const EMSP_POSTFIX = 'postfix';
-    public const EMSP_MAILGUN = 'mailgun';
-    public const EMSP_CHOICES = [
-        self::EMSP_LOCAL,
-        self::EMSP_MAILGUN,
-        self::EMSP_POSTFIX,
-        self::EMSP_SENDGRID,
-    ];
+    #[Assert\Type('boolean')]
+    #[SerializedName('send_customer_notifications')]
+    private ?bool $sendCustomerNotifications;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private ?bool $sendCustomerNotifications = null;
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: Entity::EMSP_CHOICES)]
+    private ?string $emsp;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $emsp = null;
+    #[Assert\NotBlank(allowNull: true)]
+    #[SerializedName('emsp_api_key')]
+    private ?string $emspApiKey;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $emspApiKey = null;
+    #[Assert\NotBlank(allowNull: true)]
+    #[SerializedName('emsp_api_url')]
+    private ?string $emspApiUrl;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $emspApiUrl = null;
+    #[Assert\NotBlank(allowNull: true)]
+    #[SerializedName('emsp_domain')]
+    private ?string $emspDomain;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $emspDomain = null;
-
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $defaultOutgoingEmail = null;
+    #[Assert\NotBlank()]
+    #[Assert\Email]
+    #[SerializedName('default_outgoing_email')]
+    private ?string $defaultOutgoingEmail;
 
     public function getSendCustomerNotifications(): ?bool
     {
