@@ -16,7 +16,7 @@ Feature: Read Notification Settings
       | EMSP    | sendgrid       |
       | API Key | a-test-api-key |
     When I update the notification settings to:
-      | EMSP                       | local               |
+      | EMSP                       | system              |
       | Outgoing Email             | example@example.org |
       | Send Customer Notification | false               |
-    Then the notification settings for EMSP will be "local"
+    Then the notification settings for EMSP will be "system"

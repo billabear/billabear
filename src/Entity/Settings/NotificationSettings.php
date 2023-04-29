@@ -17,12 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Embeddable]
 class NotificationSettings
 {
-    public const EMSP_LOCAL = 'local';
+    public const EMSP_SYSTEM = 'system';
     public const EMSP_SENDGRID = 'sendgrid';
     public const EMSP_POSTFIX = 'postfix';
     public const EMSP_MAILGUN = 'mailgun';
     public const EMSP_CHOICES = [
-        self::EMSP_LOCAL,
+        self::EMSP_SYSTEM,
         self::EMSP_MAILGUN,
         self::EMSP_POSTFIX,
         self::EMSP_SENDGRID,

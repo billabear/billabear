@@ -13,6 +13,7 @@
 namespace App\Controller\App\Settings;
 
 use App\Dto\Request\App\NotificationSettings\NotificationSettings;
+use App\Dto\Response\App\NotificationSettings\NotificationSettingsView;
 use App\Factory\NotificationSettingsFactory;
 use App\Repository\SettingsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +32,11 @@ class NotificationSettingsController
         SerializerInterface $serializer,
     ): Response {
         $settings = $settingsRepository->getDefaultSettings();
-        $dto = $factory->createAppDto($settings->getNotificationSettings());
+        $notificationSettings = $factory->createAppDto($settings->getNotificationSettings());
+
+        $dto = new NotificationSettingsView();
+        $dto->setNotificationSettings($notificationSettings);
+        $dto->setEmspChoices(\App\Entity\Settings\NotificationSettings::EMSP_CHOICES);
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);

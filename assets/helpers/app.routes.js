@@ -41,6 +41,7 @@ import PdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpd
 import EmailTemplateList from "../views/App/Settings/EmailTemplates/EmailTemplateList.vue";
 import EmailTemplateCreate from "../views/App/Settings/EmailTemplates/EmailTemplateCreate.vue";
 import EmailTemplateUpdate from "../views/App/Settings/EmailTemplates/EmailTemplateUpdate.vue";
+import NotificationSettingsUpdate from "../views/App/Settings/NotificationSettings/NotificationSettingsUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -140,6 +141,11 @@ export const APP_ROUTES = [
                 name: "app.settings.email_template.update",
                 path: "email-template/:id/update",
                 component: EmailTemplateUpdate
+            },
+            {
+                name: "app.settings.notification_settings.update",
+                path: "notification-settings/update",
+                component: NotificationSettingsUpdate
             }
         ]
     },

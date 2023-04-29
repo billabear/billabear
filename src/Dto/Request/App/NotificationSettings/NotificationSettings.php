@@ -15,7 +15,9 @@ namespace App\Dto\Request\App\NotificationSettings;
 use App\Entity\Settings\NotificationSettings as Entity;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+#[Assert\Callback('validate')]
 class NotificationSettings
 {
     #[Assert\Type('boolean')]
@@ -101,5 +103,24 @@ class NotificationSettings
     public function setDefaultOutgoingEmail(?string $defaultOutgoingEmail): void
     {
         $this->defaultOutgoingEmail = $defaultOutgoingEmail;
+    }
+
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if (empty($this->emsp) || \App\Entity\Settings\NotificationSettings::EMSP_SYSTEM === $this->emsp) {
+            return;
+        }
+
+        if (empty($this->emspApiKey)) {
+            $context->buildViolation('must have an api key')->atPath('emsp_api_key')->addViolation();
+        }
+        if (\App\Entity\Settings\NotificationSettings::EMSP_MAILGUN === $this->emsp) {
+            if (empty($this->emspApiUrl)) {
+                $context->buildViolation('must have api url')->atPath('emsp_api_url')->addViolation();
+            }
+            if (empty($this->emspDomain)) {
+                $context->buildViolation('must have domain')->atPath('emsp_domain')->addViolation();
+            }
+        }
     }
 }
