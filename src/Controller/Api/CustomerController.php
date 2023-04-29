@@ -241,4 +241,26 @@ class CustomerController
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
+
+    #[Route('/api/v1/customer/{id}/enable', name: 'api_v1_customer_enable', methods: ['POST'])]
+    public function enableCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+    ) {
+        $this->getLogger()->info('Starting customer enable API request');
+
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            $this->getLogger()->info('Unable to find customer to enable', ['id' => (string) $request->get('id')]);
+
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $customer->setStatus(CustomerStatus::ACTIVE);
+        $customerRepository->save($customer);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+    }
 }
