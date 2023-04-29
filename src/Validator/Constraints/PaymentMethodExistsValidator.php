@@ -17,7 +17,7 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class PaymentDetailsExistsValidator extends ConstraintValidator
+class PaymentMethodExistsValidator extends ConstraintValidator
 {
     public function __construct(private PaymentMethodRepositoryInterface $repository)
     {

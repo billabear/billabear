@@ -15,7 +15,7 @@ namespace App\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
-class PaymentDetailsExists extends Constraint
+class PaymentMethodExists extends Constraint
 {
     public const DOES_NOT_EXIST = '23bd9dbf-6b9b-41cd-a99e-48dsfasdff';
 

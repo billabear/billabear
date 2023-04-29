@@ -12,7 +12,7 @@
 
 namespace App\Dto\Request\Api\Subscription;
 
-use App\Validator\Constraints\PaymentDetailsExists;
+use App\Validator\Constraints\PaymentMethodExists;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -32,7 +32,7 @@ class CreateSubscription
     #[SerializedName('price')]
     private $price;
 
-    #[PaymentDetailsExists]
+    #[PaymentMethodExists]
     #[SerializedName('payment_details')]
     private $paymentDetails = null;
 

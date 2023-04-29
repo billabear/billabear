@@ -12,7 +12,7 @@
 
 namespace App\Dto\Request\App;
 
-use App\Validator\Constraints\PaymentDetailsExists;
+use App\Validator\Constraints\PaymentMethodExists;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -34,7 +34,7 @@ class CreateSubscription
 
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[PaymentDetailsExists]
+    #[PaymentMethodExists]
     #[SerializedName('payment_details')]
     private $paymentDetails;
 
