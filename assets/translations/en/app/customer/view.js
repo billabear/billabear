@@ -2,6 +2,7 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
     title: 'View Customer Details',
     update: 'Update',
     disable: "Disable",
+    enable: "Enable",
     error: {
         not_found: "No such customer found",
         unknown: "An unknown error has occurred"
