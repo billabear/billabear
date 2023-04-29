@@ -14,6 +14,7 @@ namespace App\Tests\Behat\Customers;
 
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\CustomerRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -30,6 +31,7 @@ class MainContext implements Context
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
+        private BrandSettingsRepository $brandSettingRepository,
     ) {
     }
 
@@ -241,6 +243,11 @@ class MainContext implements Context
             $customer->setBillingAddress($billingAddress);
             $customer->setExternalCustomerReference($externalCustomerReference);
             $customer->setReference($reference);
+
+            $brand = $row['Brand'] ?? Customer::DEFAULT_BRAND;
+            $brandSettings = $this->brandSettingRepository->findOneBy(['code' => $brand]);
+            $customer->setBrandSettings($brandSettings);
+            $customer->setBrand($brand);
 
             $this->customerRepository->getEntityManager()->persist($customer);
             $this->customerRepository->getEntityManager()->flush();

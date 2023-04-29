@@ -51,6 +51,9 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'brand', type: 'string', nullable: false)]
     private string $brand = self::DEFAULT_BRAND;
 
+    #[ORM\ManyToOne(targetEntity: BrandSettings::class)]
+    private BrandSettings $brandSettings;
+
     #[ORM\Column(name: 'locale', type: 'string', nullable: false)]
     private string $locale = self::DEFAULT_LOCALE;
 
@@ -251,5 +254,15 @@ class Customer implements CustomerInterface
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
+    }
+
+    public function getBrandSettings(): BrandSettings
+    {
+        return $this->brandSettings;
+    }
+
+    public function setBrandSettings(BrandSettings $brandSettings): void
+    {
+        $this->brandSettings = $brandSettings;
     }
 }

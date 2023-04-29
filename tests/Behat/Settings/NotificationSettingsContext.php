@@ -98,7 +98,7 @@ class NotificationSettingsContext implements Context
     {
         $data = $this->getJsonContent();
 
-        if ($data['emsp'] !== $arg1) {
+        if ($data['notification_settings']['emsp'] !== $arg1) {
             throw new \Exception('Notification setting EMSP is different');
         }
     }

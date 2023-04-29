@@ -18,10 +18,15 @@ use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Repository\BrandSettingRepositoryInterface;
 use Parthenon\Common\Address;
 
 class CustomerFactory
 {
+    public function __construct(private BrandSettingRepositoryInterface $brandSettingRepository)
+    {
+    }
+
     public function createCustomer(CreateCustomerDto $createCustomerDto, Customer $customer = null): Customer
     {
         $address = new Address();
@@ -42,6 +47,9 @@ class CustomerFactory
         $customer->setName($createCustomerDto->getName());
         $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_BRAND);
         $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
+
+        $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
+        $customer->setBrandSettings($brandSettings);
 
         $externalCustomerReference = $createCustomerDto->getExternalReference();
 
