@@ -13,6 +13,7 @@
 namespace App\Tests\Behat;
 
 use App\Entity\BrandSettings;
+use App\Entity\Settings;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
@@ -59,6 +60,13 @@ class GeneralContext implements Context
         $brand->setIsDefault(true);
 
         $em->persist($brand);
+        $em->flush();
+
+        $settings = new Settings();
+        $settings->setTag(Settings::DEFAULT_TAG);
+        $settings->setNotificationSettings(new Settings\NotificationSettings());
+
+        $em->persist($settings);
         $em->flush();
     }
 

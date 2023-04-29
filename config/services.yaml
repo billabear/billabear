@@ -79,6 +79,12 @@ services:
     app.repository.orm.brand_settings:
         class: App\Repository\Orm\BrandSettingsRepository
 
+    App\Repository\SettingsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.settings'
+    app.repository.orm.settings:
+        class: App\Repository\Orm\SettingsRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

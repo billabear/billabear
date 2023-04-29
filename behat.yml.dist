@@ -52,6 +52,7 @@ default:
                 - App\Tests\Behat\Settings\PdfTemplatesContext
                 - App\Tests\Behat\Settings\BrandsContext
                 - App\Tests\Behat\Settings\EmailTemplatesContext
+                - App\Tests\Behat\Settings\NotificationSettingsContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:
