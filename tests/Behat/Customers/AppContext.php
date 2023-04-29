@@ -174,6 +174,16 @@ class AppContext implements Context
     }
 
     /**
+     * @When I enable the customer info via the APP for :arg1
+     */
+    public function iEnableTheCustomerInfoViaTheAppFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s/enable', $customer->getId()));
+    }
+
+    /**
      * @When I update the customer info via the APP for :arg1 with:
      */
     public function iUpdateTheCustomerInfoViaTheAppForWith($email, TableNode $table)

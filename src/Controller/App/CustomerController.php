@@ -31,6 +31,7 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +41,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    // Currently a copy of the API but separated so in the future the two aren't coupled.
+    use LoggerAwareTrait;
+
     #[Route('/app/customer', name: 'site_customer_list', methods: ['GET'])]
     public function listCustomer(
         Request $request,
@@ -140,6 +142,28 @@ class CustomerController
         }
 
         $customer->setStatus(CustomerStatus::DISABLED);
+        $customerRepository->save($customer);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/app/customer/{id}/enable', name: 'app_customer_enable', methods: ['POST'])]
+    public function enableCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+    ) {
+        $this->getLogger()->info('Starting customer enable APP request');
+
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            $this->getLogger()->info('Unable to find customer to enable via APP', ['id' => (string) $request->get('id')]);
+
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $customer->setStatus(CustomerStatus::ACTIVE);
         $customerRepository->save($customer);
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);

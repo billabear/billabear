@@ -3,15 +3,8 @@ Feature: Customer Disable APP
   As an API user
   I need to be see what the customer info
 
-  Background:
-    Given the following accounts exist:
-      | Name        | Email                   | Password  |
-      | Sally Brown | sally.brown@example.org | AF@k3P@ss |
-      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
-      | Sally Braun | sally.braun@example.org | AF@k3Pass |
-
   Scenario: Get customer info
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
