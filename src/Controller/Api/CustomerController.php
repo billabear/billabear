@@ -24,6 +24,7 @@ use App\Repository\CustomerRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/customer', name: 'api_v1_customer_create', methods: ['POST'])]
     public function createCustomer(
         Request $request,
@@ -42,6 +45,8 @@ class CustomerController
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository
     ): Response {
+        $this->getLogger()->info('Start create customer API request');
+
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
 
@@ -51,6 +56,7 @@ class CustomerController
                 $propertyPath = $error->getPropertyPath();
                 $errorOutput[$propertyPath] = $error->getMessage();
             }
+            $this->getLogger()->info('Customer creation validation errors', ['errors' => $errorOutput]);
 
             return new JsonResponse([
                 'errors' => $errorOutput,
@@ -59,17 +65,20 @@ class CustomerController
 
         $customer = $customerFactory->createCustomer($dto);
 
+        // Todo move to validation
         if ($customerRepository->hasCustomerByEmail($customer->getBillingEmail())) {
             return new JsonResponse(null, JsonResponse::HTTP_CONFLICT);
         }
 
         if (!$customer->hasExternalsCustomerReference()) {
             try {
+                $this->getLogger()->info('Registering customer with payment provider');
                 $externalRegister->register($customer);
             } catch (ProviderFailureException $e) {
                 return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
             }
         }
+        $this->getLogger()->info('Customer creation complete');
         $customerRepository->save($customer);
         $dto = $customerFactory->createApiDto($customer);
         $jsonResponse = $serializer->serialize($dto, 'json');
