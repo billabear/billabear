@@ -338,4 +338,14 @@ class MainContext implements Context
 
         $this->sendJsonRequest('GET', sprintf('/api/v1/customer/%s', $customer->getId()));
     }
+
+    /**
+     * @When I disable the customer info via the API for :arg1
+     */
+    public function iDisableTheCustomerInfoViaTheApiFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('POST', sprintf('/api/v1/customer/%s/disable', $customer->getId()));
+    }
 }

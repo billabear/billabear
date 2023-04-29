@@ -18,6 +18,7 @@ use App\Customer\LimitsFactory;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
+use App\Enum\CustomerStatus;
 use App\Factory\CustomerFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
@@ -197,5 +198,23 @@ class CustomerController
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    #[Route('/api/v1/customer/{id}/disable', name: 'api_v1_customer_disable', methods: ['POST'])]
+    public function disableCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+    ) {
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $customer->setStatus(CustomerStatus::DISABLED);
+        $customerRepository->save($customer);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 }
