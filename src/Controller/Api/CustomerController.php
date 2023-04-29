@@ -93,6 +93,8 @@ class CustomerController
         SerializerInterface $serializer,
         CustomerFactory $customerFactory,
     ): Response {
+        $this->getLogger()->info('Started list customer API request');
+
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
@@ -136,10 +138,13 @@ class CustomerController
         SerializerInterface $serializer,
         CustomerFactory $customerFactory,
     ): Response {
+        $this->getLogger()->info('Starting read customer API request');
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
+            $this->getLogger()->info('Unable to find customer for read request', ['id' => (string) $request->get('id')]);
+
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
         $dto = $customerFactory->createApiDto($customer);
@@ -156,10 +161,13 @@ class CustomerController
         SerializerInterface $serializer,
         LimitsFactory $factory,
     ): Response {
+        $this->getLogger()->info('Starting customer limits API request');
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
+            $this->getLogger()->info('Unable to find customer to provide limits for', ['id' => (string) $request->get('id')]);
+
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
@@ -178,10 +186,13 @@ class CustomerController
         ValidatorInterface $validator,
         CustomerFactory $customerFactory,
     ): Response {
+        $this->getLogger()->info('Starting customer update API request');
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
+            $this->getLogger()->info('Unable to find customer to update via API', ['id' => (string) $request->get('id')]);
+
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
         /** @var CreateCustomerDto $dto */
@@ -214,10 +225,14 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
     ) {
+        $this->getLogger()->info('Starting customer disable API request');
+
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
+            $this->getLogger()->info('Unable to find customer to disable', ['id' => (string) $request->get('id')]);
+
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
