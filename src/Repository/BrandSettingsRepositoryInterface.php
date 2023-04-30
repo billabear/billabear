@@ -15,7 +15,7 @@ namespace App\Repository;
 use App\Entity\BrandSettings;
 use Parthenon\Common\Repository\RepositoryInterface;
 
-interface BrandSettingRepositoryInterface extends RepositoryInterface
+interface BrandSettingsRepositoryInterface extends RepositoryInterface
 {
     /**
      * @return BrandSettings[]

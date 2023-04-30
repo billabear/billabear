@@ -18,12 +18,12 @@ use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
-use App\Repository\BrandSettingRepositoryInterface;
+use App\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Address;
 
 class CustomerFactory
 {
-    public function __construct(private BrandSettingRepositoryInterface $brandSettingRepository)
+    public function __construct(private BrandSettingsRepositoryInterface $brandSettingRepository)
     {
     }
 

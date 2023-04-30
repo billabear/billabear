@@ -17,7 +17,7 @@ use App\Dto\Request\App\BrandSettings\EditBrandSettings;
 use App\Dto\Response\App\BrandSettings\BrandSettingsView;
 use App\Dto\Response\App\ListResponse;
 use App\Factory\BrandSettingsFactory;
-use App\Repository\BrandSettingRepositoryInterface;
+use App\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class BrandSettingsController
     #[Route('/app/settings/brand', name: 'app_settings_brand_list', methods: ['GET'])]
     public function listBrandSettings(
         Request $request,
-        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsRepositoryInterface $brandSettingRepository,
         BrandSettingsFactory $brandFactory,
         SerializerInterface $serializer,
     ): Response {
@@ -53,7 +53,7 @@ class BrandSettingsController
     #[Route('/app/settings/brand/{id}', name: 'app_settings_brand_view', methods: ['GET'])]
     public function viewBrandSettings(
         Request $request,
-        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsRepositoryInterface $brandSettingRepository,
         BrandSettingsFactory $brandSettingsFactory,
         SerializerInterface $serializer,
     ): Response {
@@ -74,7 +74,7 @@ class BrandSettingsController
     #[Route('/app/settings/brand/{id}', name: 'app_settings_brand_edit', methods: ['POST'])]
     public function editBrandSettings(
         Request $request,
-        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsRepositoryInterface $brandSettingRepository,
         BrandSettingsFactory $brandSettingsFactory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
@@ -115,7 +115,7 @@ class BrandSettingsController
     #[Route('/app/settings/brand', name: 'app_settings_brand_create', methods: ['POST'])]
     public function createBrandSettings(
         Request $request,
-        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsRepositoryInterface $brandSettingRepository,
         BrandSettingsFactory $brandSettingsFactory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,

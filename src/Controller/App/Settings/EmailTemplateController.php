@@ -19,7 +19,7 @@ use App\Dto\Response\App\EmailTemplate\EmailTemplateView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\EmailTemplate;
 use App\Factory\EmailTemplateFactory;
-use App\Repository\BrandSettingRepositoryInterface;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\EmailTemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +33,7 @@ class EmailTemplateController
 {
     #[Route('/app/settings/email-template/create', name: 'app_app_settings_emailtemplate_create_read', methods: ['GET'])]
     public function createRead(
-        BrandSettingRepositoryInterface $brandSettingRepository,
+        BrandSettingsRepositoryInterface $brandSettingRepository,
         SerializerInterface $serializer,
     ): Response {
         $brands = $brandSettingRepository->getAll();

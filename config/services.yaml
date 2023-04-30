@@ -73,6 +73,12 @@ services:
     app.repository.orm.cancellation_request:
         class: App\Repository\Orm\CancellationRequestRepository
 
+    App\Repository\PaymentCreationRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.payment_creation'
+    app.repository.orm.payment_creation:
+        class: App\Repository\Orm\PaymentCreationRepository
+
     App\Repository\BrandSettingsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.brand_settings'

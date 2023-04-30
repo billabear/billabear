@@ -29,3 +29,32 @@ framework:
                     from: customer_notice_sent
                     to: completed
 
+        payment_creation:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\PaymentCreation
+            initial_marking: started
+            places:
+                - started
+                - receipt_generated
+                - report_inputs_generated
+                - customer_notice_sent
+                - internal_notice_sent
+                - completed
+            transitions:
+                create_receipt:
+                    from: started
+                    to: receipt_generated
+                generate_report_data:
+                    from: receipt_generated
+                    to: report_inputs_generated
+                send_customer_notice:
+                    from: report_inputs_generated
+                    to: customer_notice_sent
+                send_internal_notice:
+                    from: customer_notice_sent
+                    to: completed
+

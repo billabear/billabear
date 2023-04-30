@@ -12,14 +12,14 @@
 
 namespace App\Validator\Constraints;
 
-use App\Repository\BrandSettingRepositoryInterface;
+use App\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class UniqueBrandCodeValidator extends ConstraintValidator
 {
-    public function __construct(private BrandSettingRepositoryInterface $brandSettingRepository)
+    public function __construct(private BrandSettingsRepositoryInterface $brandSettingRepository)
     {
     }
 

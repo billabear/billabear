@@ -17,11 +17,11 @@ use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use App\Dto\Response\App\EmailTemplate\EmailTemplate as AppDto;
 use App\Dto\Response\App\EmailTemplate\FullEmailTemplate as FullAppDto;
 use App\Entity\EmailTemplate;
-use App\Repository\BrandSettingRepositoryInterface;
+use App\Repository\BrandSettingsRepositoryInterface;
 
 class EmailTemplateFactory
 {
-    public function __construct(private BrandSettingRepositoryInterface $brandSettingRepository)
+    public function __construct(private BrandSettingsRepositoryInterface $brandSettingRepository)
     {
     }
 

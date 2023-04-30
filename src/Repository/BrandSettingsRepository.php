@@ -16,7 +16,7 @@ use App\Entity\BrandSettings;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-class BrandSettingsRepository extends DoctrineRepository implements BrandSettingRepositoryInterface
+class BrandSettingsRepository extends DoctrineRepository implements BrandSettingsRepositoryInterface
 {
     public function getAll(): array
     {
