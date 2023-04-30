@@ -45,6 +45,9 @@ default:
                 - App\Tests\Behat\Refund\ApiContext
                 - App\Tests\Behat\Refund\MainContext
 
+                # ChargeBack
+                - App\Tests\Behat\ChargeBacks\AppContext
+
                 # Receipt
                 - App\Tests\Behat\Receipt\AppContext
 
