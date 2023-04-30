@@ -110,7 +110,11 @@
 
 
           <div class="mt-3">
-            <h2 class="mb-3">{{ $t('app.customer.view.payment_details.title') }}</h2>
+            <div class="grid grid-cols-2">
+              <div><h2 class="mb-3">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
+              <div><router-link class="btn--main" :to="{name: 'app.customer.payment_details.add', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_new') }}</router-link></div>
+            </div>
+
             <table class="list-table">
               <thead>
               <tr>
