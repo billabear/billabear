@@ -14,6 +14,7 @@ import {PAYMENT_TRANSLATIONS} from "./payment";
 import {REFUND_TRANSLATIONS} from "./refund";
 import {TRANSACTIONS_TRANSLATIONS} from "./transactions";
 import {SETTINGS_TRANSLATIONS} from "./settings";
+import {CHARGE_BACKS_TRANSLATIONS} from "./charge_backs";
 
 
 export const APP_TRANSLATIONS = {
@@ -33,4 +34,5 @@ export const APP_TRANSLATIONS = {
     refund: REFUND_TRANSLATIONS,
     transactions: TRANSACTIONS_TRANSLATIONS,
     settings: SETTINGS_TRANSLATIONS,
+    charge_backs: CHARGE_BACKS_TRANSLATIONS,
 };

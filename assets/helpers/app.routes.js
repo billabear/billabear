@@ -42,6 +42,7 @@ import EmailTemplateList from "../views/App/Settings/EmailTemplates/EmailTemplat
 import EmailTemplateCreate from "../views/App/Settings/EmailTemplates/EmailTemplateCreate.vue";
 import EmailTemplateUpdate from "../views/App/Settings/EmailTemplates/EmailTemplateUpdate.vue";
 import NotificationSettingsUpdate from "../views/App/Settings/NotificationSettings/NotificationSettingsUpdate.vue";
+import ChargeBacksList from "../views/App/ChargeBacks/ChargeBacksList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -251,6 +252,11 @@ export const APP_ROUTES = [
                 name: 'app.refund.view',
                 path: 'refunds/view/:id',
                 component: RefundView
+            },
+            {
+                name: 'app.charge_backs.list',
+                path: 'charge-backs/list',
+                component: ChargeBacksList
             },
         ]
     }
