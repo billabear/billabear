@@ -21,25 +21,13 @@ use Behat\Mink\Session;
 
 class NotificationSettingsContext implements Context
 {
+    use SettingsTrait;
     use SendRequestTrait;
 
     public function __construct(
         private Session $session,
         private SettingsRepository $settingsRepository,
     ) {
-    }
-
-    protected function getSettings(): Settings
-    {
-        $settings = $this->settingsRepository->findOneBy(['tag' => Settings::DEFAULT_TAG]);
-
-        if (!$settings instanceof Settings) {
-            throw new \Exception('No settings found');
-        }
-
-        $this->settingsRepository->getEntityManager()->refresh($settings);
-
-        return $settings;
     }
 
     /**

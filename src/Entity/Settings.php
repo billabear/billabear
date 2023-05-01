@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Entity\Settings\NotificationSettings;
+use App\Entity\Settings\SystemSettings;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -33,6 +34,9 @@ class Settings
 
     #[ORM\Embedded(class: NotificationSettings::class)]
     private NotificationSettings $notificationSettings;
+
+    #[ORM\Embedded(class: SystemSettings::class)]
+    private SystemSettings $systemSettings;
 
     public function getId()
     {
@@ -62,5 +66,15 @@ class Settings
     public function setNotificationSettings(NotificationSettings $notificationSettings): void
     {
         $this->notificationSettings = $notificationSettings;
+    }
+
+    public function getSystemSettings(): SystemSettings
+    {
+        return $this->systemSettings;
+    }
+
+    public function setSystemSettings(SystemSettings $systemSettings): void
+    {
+        $this->systemSettings = $systemSettings;
     }
 }

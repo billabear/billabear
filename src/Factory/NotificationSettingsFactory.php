@@ -12,8 +12,8 @@
 
 namespace App\Factory;
 
-use App\Dto\Request\App\NotificationSettings\NotificationSettings as RequestDto;
-use App\Dto\Response\App\NotificationSettings\NotificationSettings as AppDto;
+use App\Dto\Request\App\Settings\NotificationSettings as RequestDto;
+use App\Dto\Response\App\Settings\NotificationSettings as AppDto;
 use App\Entity\Settings\NotificationSettings;
 
 class NotificationSettingsFactory
