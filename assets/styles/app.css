@@ -172,11 +172,11 @@
 }
 
 .badge--green {
-    @apply text-white font-bold bg-green-500 p-2 rounded-xl;
+    @apply text-white font-bold bg-green-500 p-1 rounded;
 }
 
 .badge--red {
-    @apply text-white font-bold bg-red-500 p-2 rounded-xl;
+    @apply text-white font-bold bg-red-500 p-1 rounded;
 }
 
 
@@ -286,4 +286,25 @@
 
 .detail-list dd {
     @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+}
+
+.list {
+    @apply mt-5;
+    display: inline-block;
+}
+.list_container {
+    text-align: left;
+    transition: height .4s ease;
+    position: absolute;
+    z-index: 1;
+    background: white;
+
+    @apply p-5 rounded-xl	border-slate-50 shadow-xl;
+    float: left;
+    right: 80px;
+}
+.list_container li {padding : 30px;}
+
+.filter_field {
+    @apply rounded-lg border-black p-2 bg-slate-50 border;
 }

@@ -9,7 +9,7 @@
           <li class="my-3"><router-link :to="{name: 'app.settings.brand_settings.list'}">{{ $t('app.settings.menu.brand_settings') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.settings.notification_settings.update'}">{{ $t('app.settings.menu.notification_settings') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.settings.system_settings.update'}">{{ $t('app.settings.menu.system_settings') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.user.invite'}">{{ $t('app.settings.menu.invite') }}</router-link></li>
+          <li class="my-3"><router-link :to="{name: 'app.settings.users.list'}">{{ $t('app.settings.menu.users') }}</router-link></li>
 
         </ul>
       </div>

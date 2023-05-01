@@ -1,14 +1,15 @@
 <template>
+
   <div>
-    <h1 class="page-title">{{ $t('app.customer.list.title') }}</h1>
+    <h1 class="page-title">{{ $t('app.settings.user.list.title') }}</h1>
 
     <div class="top-button-container">
       <div class="list">
         <div class="list_button">
           <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.customer.list.filter.button') }}
+            <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
+            <i v-else class="fa-solid fa-caret-up"></i>
+            {{ $t('app.settings.user.list.filter.button') }}
           </button>
         </div>
         <div class="list_container" v-if="show_filter_menu">
@@ -17,11 +18,10 @@
           </span>
         </div>
       </div>
-      <router-link :to="{name: 'app.customer.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.customer.list.create_new') }}</router-link>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.customer.list.filter.title') }}</h2>
+      <h2>{{ $t('app.settings.user.list.filter.title') }}</h2>
       <div v-for="filter in active_filters">
         <div class="px-3 py-1 sm:flex sm:px-6">
           <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
@@ -33,34 +33,34 @@
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
+      <div class="mt-3">
         <table class="list-table">
           <thead>
-            <tr>
-              <th>{{ $t('app.customer.list.email') }}</th>
-              <th>{{ $t('app.customer.list.country')}}</th>
-              <th>{{ $t('app.customer.list.reference') }}</th>
-              <th></th>
-            </tr>
+          <tr>
+            <th>{{ $t('app.settings.user.list.list.email')}}</th>
+            <th>{{ $t('app.settings.user.list.list.role') }}</th>
+            <th></th>
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="customer in customers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.customer.view', params: {id: customer.id}})">
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.address.country }}</td>
-              <td>{{ customer.reference }}</td>
-              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.customer.list.view_btn') }}</router-link></td>
-            </tr>
-            <tr v-if="customers.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
-            </tr>
+          <tr v-for="user in users" class="mt-5 cursor-pointer">
+            <td>{{ user.email }}</td>
+            <td>
+              <span v-for="role in user.roles" class="badge--green">{{ role }}</span>
+            </td>
+            <td><router-link :to="{name: 'app.payment.view', params: {id: user.id}}" class="list-btn">{{ $t('app.settings.user.list.view_btn') }}</router-link></td>
+          </tr>
+          <tr v-if="users.length === 0">
+            <td colspan="4" class="text-center">{{ $t('app.settings.user.list.no_users') }}</td>
+          </tr>
           </tbody>
         </table>
-    </div>
+      </div>
       <div class="sm:grid sm:grid-cols-2">
 
         <div class="mt-4">
-          <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.customer.list.prev') }}</button>
-          <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.customer.list.next') }}</button>
+          <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.settings.user.list.prev') }}</button>
+          <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.settings.user.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
           <select @change="changePerPage" v-model="per_page">
@@ -77,11 +77,9 @@
 
 <script>
 import axios from "axios";
-import InternalApp from "../InternalApp.vue";
 
 export default {
   name: "CustomerList.vue",
-  components: {InternalApp},
   data() {
     return {
       ready: false,
@@ -97,20 +95,10 @@ export default {
       per_page: "10",
       filters: {
         email: {
-          label: 'app.customer.list.filter.email',
+          label: 'app.settings.user.list.filter.email',
           type: 'text',
           value: null
         },
-        reference: {
-          label: 'app.customer.list.filter.reference',
-          type: 'text',
-          value: null
-        },
-        external_reference: {
-          label: 'app.customer.list.filter.external_reference',
-          type: 'text',
-          value: null
-        }
       }
     }
   },
@@ -133,16 +121,16 @@ export default {
           }
         } else {
           this.filters[key].value = null;
-            if (this.active_filters.indexOf(key) !== -1) {
-              console.log(key)
-              this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
-            }
+          if (this.active_filters.indexOf(key) !== -1) {
+            console.log(key)
+            this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
+          }
         }
       });
     },
     doSearch: function () {
-        var queryVals = this.buildFilterQuery();
-        this.$router.push({query: queryVals})
+      var queryVals = this.buildFilterQuery();
+      this.$router.push({query: queryVals})
     },
     buildFilterQuery: function () {
       var queryVals = {};
@@ -189,7 +177,7 @@ export default {
     {
       this.syncQueryToFilters();
       var mode = 'normal';
-      let urlString = '/app/customer?';
+      let urlString = '/app/settings/user?';
       if (this.$route.query.last_key !== undefined) {
         urlString = urlString + '&last_key=' + this.$route.query.last_key;
         this.show_back = true;
@@ -211,7 +199,7 @@ export default {
       });
       axios.get(urlString).then(response => {
 
-        this.customers = response.data.data;
+        this.users = response.data.data;
         if (mode === 'normal') {
           this.has_more = response.data.has_more;
         } else {

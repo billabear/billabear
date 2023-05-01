@@ -44,6 +44,7 @@ import EmailTemplateUpdate from "../views/App/Settings/EmailTemplates/EmailTempl
 import NotificationSettingsUpdate from "../views/App/Settings/NotificationSettings/NotificationSettingsUpdate.vue";
 import ChargeBacksList from "../views/App/ChargeBacks/ChargeBacksList.vue";
 import SystemSettingsUpdate from "../views/App/Settings/SystemSettings/SystemSettingsUpdate.vue";
+import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -153,6 +154,11 @@ export const APP_ROUTES = [
                 name: "app.settings.system_settings.update",
                 path: "system/update",
                 component: SystemSettingsUpdate
+            },
+            {
+                name: "app.settings.users.list",
+                path: "users/list",
+                component: TeamUserList
             }
         ]
     },
