@@ -45,6 +45,7 @@ import NotificationSettingsUpdate from "../views/App/Settings/NotificationSettin
 import ChargeBacksList from "../views/App/ChargeBacks/ChargeBacksList.vue";
 import SystemSettingsUpdate from "../views/App/Settings/SystemSettings/SystemSettingsUpdate.vue";
 import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
+import SettingsUserUpdate from "../views/App/Settings/Team/SettingsUserUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -102,7 +103,7 @@ export const APP_ROUTES = [
             },
             {
                 name: "app.user.invite",
-                path: "user/invite",
+                path: "users/invite",
                 component: UserInvite,
             },
             {
@@ -159,6 +160,11 @@ export const APP_ROUTES = [
                 name: "app.settings.users.list",
                 path: "users/list",
                 component: TeamUserList
+            },
+            {
+                name: "app.settings.users.update",
+                path: "users/:id/update",
+                component: SettingsUserUpdate
             }
         ]
     },

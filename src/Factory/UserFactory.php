@@ -12,7 +12,8 @@
 
 namespace App\Factory;
 
-use App\Dto\Response\App\Team\User as AppDto;
+use App\Dto\Request\App\Settings\User\UserUpdate;
+use App\Dto\Response\App\Settings\User\User as AppDto;
 use App\Entity\User;
 
 class UserFactory
@@ -25,5 +26,13 @@ class UserFactory
         $dto->setRoles($user->getRoles());
 
         return $dto;
+    }
+
+    public function updateEntity(User $user, UserUpdate $userUpdate): User
+    {
+        $user->setEmail($userUpdate->getEmail());
+        $user->setRoles($userUpdate->getRoles());
+
+        return $user;
     }
 }

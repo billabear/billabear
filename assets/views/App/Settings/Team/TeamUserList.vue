@@ -18,6 +18,7 @@
           </span>
         </div>
       </div>
+      <router-link :to="{name: 'app.user.invite'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.user.list.invite') }}</router-link>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
@@ -46,9 +47,9 @@
           <tr v-for="user in users" class="mt-5 cursor-pointer">
             <td>{{ user.email }}</td>
             <td>
-              <span v-for="role in user.roles" class="badge--green">{{ role }}</span>
+              <span v-for="role in user.roles" class="badge--green mr-1">{{ role }}</span>
             </td>
-            <td><router-link :to="{name: 'app.payment.view', params: {id: user.id}}" class="list-btn">{{ $t('app.settings.user.list.view_btn') }}</router-link></td>
+            <td><router-link :to="{name: 'app.settings.users.update', params: {id: user.id}}" class="list-btn ">{{ $t('app.settings.user.list.view_btn') }}</router-link></td>
           </tr>
           <tr v-if="users.length === 0">
             <td colspan="4" class="text-center">{{ $t('app.settings.user.list.no_users') }}</td>

@@ -6,6 +6,7 @@ export const SETTINGS_USER_LIST_TRANSLATIONS = {
     reference: "Reference",
     no_customers: "There are currently no customers existing",
     create_new: "Create",
+    invite: "Invite New User",
     next: "Next Page",
     prev: "Previous Page",
     view_btn: "View",

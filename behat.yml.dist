@@ -57,6 +57,7 @@ default:
                 - App\Tests\Behat\Settings\EmailTemplatesContext
                 - App\Tests\Behat\Settings\NotificationSettingsContext
                 - App\Tests\Behat\Settings\SystemSettingsContext
+                - App\Tests\Behat\Settings\UserManagementContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:
