@@ -18,12 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
 class SystemSettings
 {
     #[ORM\Column(type: 'string', nullable: true)]
-    private string $webhookUrl;
+    private ?string $webhookUrl = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    private string $timezone;
+    private ?string $timezone = null;
 
-    public function getWebhookUrl(): string
+    public function getWebhookUrl(): ?string
     {
         return $this->webhookUrl;
     }
@@ -33,7 +33,7 @@ class SystemSettings
         $this->webhookUrl = $webhookUrl;
     }
 
-    public function getTimezone(): string
+    public function getTimezone(): ?string
     {
         return $this->timezone;
     }

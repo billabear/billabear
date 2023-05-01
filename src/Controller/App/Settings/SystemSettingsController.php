@@ -13,8 +13,9 @@
 namespace App\Controller\App\Settings;
 
 use App\Dto\Request\App\Settings\SystemSettings;
+use App\Dto\Response\App\Settings\SystemSettingsView;
 use App\Factory\SystemSettingsFactory;
-use App\Repository\SettingsRepository;
+use App\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +25,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SystemSettingsController
 {
+    #[Route('/app/settings/system', name: 'app_app_settings_systemsettings_readsettings', methods: ['GET'])]
+    public function readSettings(
+        Request $request,
+        SettingsRepositoryInterface $settingsRepository,
+        SerializerInterface $serializer,
+        SystemSettingsFactory $systemSettingsFactory,
+    ): Response {
+        $systemSettingsDto = $systemSettingsFactory->createAppDto($settingsRepository->getDefaultSettings()->getSystemSettings());
+        $dto = new SystemSettingsView();
+        $dto->setSystemSettings($systemSettingsDto);
+        $dto->setTimezones(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL));
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[Route('/app/settings/system', name: 'app_app_settings_systemsettings_updatesettings', methods: ['POST'])]
     public function updateSettings(
         Request $request,
-        SettingsRepository $settingsRepository,
+        SettingsRepositoryInterface $settingsRepository,
         SystemSettingsFactory $factory,
         ValidatorInterface $validator,
         SerializerInterface $serializer,

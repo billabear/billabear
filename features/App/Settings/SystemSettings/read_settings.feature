@@ -15,7 +15,5 @@ Feature: Update system Settings
     And the system settings are:
       | Webhook URL    | https://webhook.example.org       |
       | Timezone | Europe/Berlin                   |
-    When I update the system settings to:
-      | Webhook URL    | https://webhook.example.com       |
-      | Timezone | Europe/Berlin                   |
-    Then the system settings for webhook url will be "https://webhook.example.com"
+    When I fetch the system settings
+    Then I will see system settings for webhook url will be "https://webhook.example.org"

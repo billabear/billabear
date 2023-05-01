@@ -76,4 +76,24 @@ class SystemSettingsContext implements Context
             throw new \Exception("Webhook url doesn't match");
         }
     }
+
+    /**
+     * @When I fetch the system settings
+     */
+    public function iFetchTheSystemSettings()
+    {
+        $this->sendJsonRequest('GET', '/app/settings/system');
+    }
+
+    /**
+     * @Then I will see system settings for webhook url will be :arg1
+     */
+    public function iWillSeeSystemSettingsForWebhookUrlWillBe($webhookDomain)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['system_settings']['webhook_url'] !== $webhookDomain) {
+            throw new \Exception("Webhook domain doesn't match");
+        }
+    }
 }
