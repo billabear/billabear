@@ -128,7 +128,6 @@ class UserController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-
         $user = $userFactory->updateEntity($user, $input);
         $userRepository->save($user);
         $dto = $userFactory->createAppDto($user);
