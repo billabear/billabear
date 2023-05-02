@@ -19,7 +19,7 @@
               <div>
                 <dt>{{ $t('app.payment.view.main.external_reference') }}</dt>
                 <dd>
-                  <a v-if="payment.payment_provider_details_url" target="_blank" :href="custpaymentomer.payment_provider_details_url">{{ payment.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                  <a v-if="payment.payment_provider_details_url" target="_blank" :href="payment.payment_provider_details_url">{{ payment.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                   <span v-else>{{ payment.external_reference }}</span>
                 </dd>
               </div>

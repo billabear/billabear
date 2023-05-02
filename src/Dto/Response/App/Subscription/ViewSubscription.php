@@ -29,6 +29,8 @@ class ViewSubscription
     #[SerializedName('payment_details')]
     private PaymentMethod $paymentDetails;
 
+    private array $payments;
+
     public function getSubscription(): Subscription
     {
         return $this->subscription;
@@ -67,5 +69,15 @@ class ViewSubscription
     public function setPaymentDetails(PaymentMethod $paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;
+    }
+
+    public function getPayments(): array
+    {
+        return $this->payments;
+    }
+
+    public function setPayments(array $payments): void
+    {
+        $this->payments = $payments;
     }
 }

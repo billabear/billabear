@@ -68,27 +68,46 @@
             </div>
           </dl>
         </div>
-        <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription.view.payment_method.title') }}</h2>
-          <dl class="detail-list">
-            <div>
-              <dt>{{ $t('app.subscription.view.payment_method.last_four') }}</dt>
-              <dd>**** **** **** {{ paymentDetails.last_four }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription.view.payment_method.brand') }}</dt>
-              <dd>{{ paymentDetails.brand }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription.view.payment_method.expiry_month') }}</dt>
-              <dd>{{ paymentDetails.expiry_month }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription.view.payment_method.expiry_year') }}</dt>
-              <dd>{{ paymentDetails.expiry_year }}</dd>
-            </div>
-          </dl>
-        </div>
+          <div class="mt-5">
+            <h2 class="mb-3">{{ $t('app.subscription.view.payment_method.title') }}</h2>
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.subscription.view.payment_method.last_four') }}</dt>
+                <dd>**** **** **** {{ paymentDetails.last_four }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription.view.payment_method.brand') }}</dt>
+                <dd>{{ paymentDetails.brand }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription.view.payment_method.expiry_month') }}</dt>
+                <dd>{{ paymentDetails.expiry_month }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription.view.payment_method.expiry_year') }}</dt>
+                <dd>{{ paymentDetails.expiry_year }}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mt-5">
+            <h2 class="mb-3">{{ $t('app.subscription.view.payments.title') }}</h2>
+            <table class="table-list">
+              <thead>
+                <tr>
+                  <th>{{ $t('app.subscription.view.payments.amount') }}</th>
+                  <th>{{ $t('app.subscription.view.payments.created_at') }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="payment in payments">
+                  <td>{{ payment.amount }}</td>
+                  <td>{{ payment.created_at }}</td>
+                  <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="btn--main">{{ $t('app.subscription.view.payments.view') }}</router-link></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="mt-5 text-end">
 
@@ -206,6 +225,7 @@ export default {
       paymentDetails: {},
       payments: [],
       refunds: [],
+      payments: [],
       ready: false,
       error: false,
       errorMessage: undefined,
@@ -256,6 +276,7 @@ export default {
       this.subscription = response.data.subscription;
       this.customer = response.data.customer;
       this.paymentDetails = response.data.payment_details;
+      this.payments = response.data.payments;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

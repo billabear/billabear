@@ -20,6 +20,7 @@ use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
 use App\Factory\CustomerFactory;
+use App\Factory\PaymentFactory;
 use App\Factory\PaymentMethodsFactory;
 use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;
@@ -31,6 +32,7 @@ use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -197,7 +199,9 @@ class SubscriptionController
         CustomerFactory $customerFactory,
         PaymentMethodsFactory $paymentDetailsFactory,
         ProductFactory $productFactory,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        PaymentRepositoryInterface $paymentRepository,
+        PaymentFactory $paymentFactory,
     ): Response {
         try {
             /** @var Subscription $subscription */
@@ -208,9 +212,14 @@ class SubscriptionController
 
         $dto = $subscriptionFactory->createAppDto($subscription);
         $customerDto = $customerFactory->createAppDto($subscription->getCustomer());
+
+        $payments = $paymentRepository->getPaymentsForSubscription($subscription);
+        $paymentDtos = array_map([$paymentFactory, 'createAppDto'], $payments);
+
         $view = new ViewSubscription();
         $view->setSubscription($dto);
         $view->setCustomer($customerDto);
+        $view->setPayments($paymentDtos);
         $view->setPaymentDetails($paymentDetailsFactory->createAppDto($subscription->getPaymentDetails()));
         $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getSubscriptionPlan()->getProduct()));
         $json = $serializer->serialize($view, 'json');

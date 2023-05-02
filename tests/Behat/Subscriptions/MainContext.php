@@ -128,6 +128,18 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I will see the payments for the subscription
+     */
+    public function iWillSeeThePaymentsForTheSubscription()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['payments']) || empty($data['payments'])) {
+            throw new \Exception('No payments');
+        }
+    }
+
+    /**
      * @When I view the subscription list
      */
     public function iViewTheSubscriptionList()

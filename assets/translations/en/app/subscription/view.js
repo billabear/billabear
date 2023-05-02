@@ -15,6 +15,12 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         recurring: "Recurring",
         schedule: "Schedule",
     },
+    payments: {
+        title: "Payments",
+        amount: "Amount",
+        created_at: "Created At",
+        view: "View"
+    },
     payment_method: {
         title: "Payment Method",
         last_four: "Last Four",

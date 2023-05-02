@@ -42,3 +42,4 @@ Feature: Customer Subscription Read APP
     When I view the subscription "Test Plan" for "customer.one@example.org"
     Then I will see the subscription has the plan "Test Plan"
     Then I will see the subscription has the schedule "month"
+    Then I will see the payments for the subscription
