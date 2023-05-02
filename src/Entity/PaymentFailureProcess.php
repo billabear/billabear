@@ -20,6 +20,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'payment_failure_process')]
 class PaymentFailureProcess
 {
+    public const DEFAULT_NEXT_ATTEMPT = '+3 days';
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

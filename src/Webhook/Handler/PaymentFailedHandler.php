@@ -14,12 +14,14 @@ declare(strict_types=1);
 
 namespace App\Webhook\Handler;
 
+use App\Entity\PaymentFailureProcess;
+use App\Event\PaymentFailed;
+use App\Repository\PaymentFailureProcessRepositoryInterface;
 use Obol\Model\Events\ChargeFailed;
 use Obol\Model\Events\ChargeSucceeded;
 use Obol\Model\Events\EventInterface;
 use Parthenon\Billing\Customer\CustomerManagerInterface;
 use Parthenon\Billing\Enum\PaymentStatus;
-use Parthenon\Billing\Event\PaymentCreated;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -35,6 +37,7 @@ class PaymentFailedHandler implements HandlerInterface
         private CustomerManagerInterface $customerManager,
         private PaymentFactoryInterface $paymentFactory,
         private PaymentEventLinkerInterface $eventLinker,
+        private PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
         private EventDispatcherInterface $dispatcher,
     ) {
     }
@@ -69,6 +72,21 @@ class PaymentFailedHandler implements HandlerInterface
         $this->eventLinker->linkToSubscription($payment, $event);
 
         $this->paymentRepository->save($payment);
-        $this->dispatcher->dispatch(new PaymentCreated($payment), PaymentCreated::NAME);
+
+        $paymentFailureProcess = new PaymentFailureProcess();
+        $paymentFailureProcess->setState('started');
+        $paymentFailureProcess->setResolved(false);
+        $paymentFailureProcess->setRetryCount(0);
+        if (isset($customer)) {
+            $paymentFailureProcess->setCustomer($customer);
+        }
+        $paymentFailureProcess->setPayment($payment);
+        $paymentFailureProcess->setCreatedAt(new \DateTime('now'));
+        $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
+        $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));
+
+        $this->paymentFailureProcessRepository->save($paymentFailureProcess);
+
+        $this->dispatcher->dispatch(new PaymentFailed($payment, $paymentFailureProcess), PaymentFailed::NAME);
     }
 }
