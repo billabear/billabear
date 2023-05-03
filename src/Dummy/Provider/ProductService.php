@@ -25,4 +25,9 @@ class ProductService implements ProductServiceInterface
 
         return $productCreation;
     }
+
+    public function fetchProduct(string $productId): Product
+    {
+        // TODO: Implement fetchProduct() method.
+    }
 }
