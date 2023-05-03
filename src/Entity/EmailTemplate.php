@@ -24,7 +24,7 @@ class EmailTemplate
     public const NAME_SUBSCRIPTION_PAUSED = 'subscription_paused';
     public const NAME_SUBSCRIPTION_CANCELLED = 'subscription_cancelled';
 
-    public const NAME_PAYMENT_SUCCEEDED = 'payment_suceeded';
+    public const NAME_PAYMENT_SUCCEEDED = 'payment_succeeded';
     public const NAME_PAYMENT_FAILED = 'payment_failed';
     public const NAME_PAYMENT_FAILURE_WARNING = 'payment_failure_warning';
 
