@@ -30,13 +30,14 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/athena, roles: ROLE_ADMIN }
         - { path: ^/api/, roles: PUBLIC_ACCESS }
         - { path: ^/app/(authenticate|login|logout), roles: PUBLIC_ACCESS }
         - { path: ^/site/user/(signup|password|reset|confirm), roles: PUBLIC_ACCESS }
         - { path: ^/app/user/(signup|password|reset|confirm), roles: PUBLIC_ACCESS }
         - { path: ^/site/, roles: ROLE_USER }
         - { path: ^/app/, roles: ROLE_USER }
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
 
 
 when@test:
