@@ -30,7 +30,7 @@ class Payment
     #[SerializedName('payment_provider_details_url')]
     protected ?string $paymentProviderDetailsUrl = null;
 
-    private Customer $customer;
+    private ?Customer $customer = null;
 
     #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
@@ -85,12 +85,12 @@ class Payment
         $this->externalReference = $externalReference;
     }
 
-    public function getCustomer(): Customer
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(Customer $customer): void
+    public function setCustomer(?Customer $customer): void
     {
         $this->customer = $customer;
     }

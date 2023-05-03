@@ -50,12 +50,15 @@ class MainContext implements Context
     public function thereIsAPaymentsFor(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $row) {
-            $subscription = $this->getSubscription($row['Customer'], $row['Subscription Plan']);
-            $customer = $this->getCustomerByEmail($row['Customer']);
-
             $payment = new Payment();
-            $payment->setCustomer($customer);
-            $payment->addSubscription($subscription);
+            if (!empty($row['Customer'])) {
+                $subscription = $this->getSubscription($row['Customer'], $row['Subscription Plan']);
+
+                $customer = $this->getCustomerByEmail($row['Customer']);
+                $payment->setCustomer($customer);
+                $payment->addSubscription($subscription);
+            }
+
             $payment->setStatus(PaymentStatus::COMPLETED);
             $payment->setCreatedAt(new \DateTime('now'));
             $payment->setUpdatedAt(new \DateTime('now'));
@@ -85,6 +88,9 @@ class MainContext implements Context
         $data = $this->getJsonContent();
 
         foreach ($data['data'] as $payment) {
+            if (!isset($payment['customer'])) {
+                continue;
+            }
             if ($payment['amount'] == $arg2 && $payment['customer']['email'] == $arg1) {
                 return;
             }

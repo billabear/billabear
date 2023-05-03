@@ -46,8 +46,10 @@ Feature: Payment List Read APP
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
       | Test Plan         | 3000         | USD            | month          | customer.two@example.org |
       | Test Two          | 3000         | USD            | month          | customer.one@example.org |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org |
     And there is a payments for:
       | Subscription Plan | Customer                 | Amount |
       | Test Plan         | customer.one@example.org | 3500   |
+      | Test Plan         |                          | 3500   |
     When I view the payment list
     Then I will see a payment for "customer.one@example.org" for 3500
