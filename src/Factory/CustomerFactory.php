@@ -19,12 +19,40 @@ use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
 use App\Repository\BrandSettingsRepositoryInterface;
+use Obol\Model\Customer as ObolCustomer;
 use Parthenon\Common\Address;
 
 class CustomerFactory
 {
     public function __construct(private BrandSettingsRepositoryInterface $brandSettingRepository)
     {
+    }
+
+    public function createCustomerFromObol(ObolCustomer $obolCustomer, ?Customer $customer = null): Customer
+    {
+        if (!$customer) {
+            $customer = new Customer();
+            $customer->setStatus(CustomerStatus::NEW);
+        }
+
+        $customer->setBillingEmail($obolCustomer->getEmail());
+        $customer->setName($obolCustomer->getName());
+        $customer->setLocale(Customer::DEFAULT_LOCALE);
+        $customer->setExternalCustomerReference($obolCustomer->getId());
+        $customer->setPaymentProviderDetailsUrl($obolCustomer->getUrl());
+        $customer->setReference($obolCustomer->getDescription());
+
+        $address = new Address();
+        $address->setStreetLineTwo($obolCustomer->getAddress()->getStreetLineOne());
+        $address->setStreetLineTwo($obolCustomer->getAddress()->getStreetLineTwo());
+        $address->setCity($obolCustomer->getAddress()->getCity());
+        $address->setRegion($obolCustomer->getAddress()->getState());
+        $address->setPostcode($obolCustomer->getAddress()->getPostalCode());
+        $address->setCountry($obolCustomer->getAddress()->getCountryCode());
+
+        $customer->setBillingAddress($address);
+
+        return $customer;
     }
 
     public function createCustomer(CreateCustomerDto $createCustomerDto, Customer $customer = null): Customer

@@ -12,21 +12,41 @@
 
 namespace App\Import\Stripe;
 
+use App\Entity\StripeImport;
+use App\Factory\CustomerFactory;
 use App\Repository\CustomerRepositoryInterface;
+use Obol\Model\Customer;
 use Obol\Provider\ProviderInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CustomerImporter
 {
     public function __construct(
         private ProviderInterface $provider,
+        private CustomerFactory $factory,
         private CustomerRepositoryInterface $customerRepository
     ) {
     }
 
-    public function import(string $customerId)
+    public function import(StripeImport $stripeImport)
     {
         $provider = $this->provider;
-
-        $customer = $provider->customers()->fetch($customerId);
+        $limit = 25;
+        $lastId = null;
+        do {
+            $customerList = $provider->customers()->list($limit, $lastId);
+            /** @var Customer $customerModel */
+            foreach ($customerList as $customerModel) {
+                try {
+                    $customer = $this->customerRepository->getByExternalReference($customerModel->getId());
+                } catch (NoEntityFoundException $exception) {
+                    $customer = null;
+                }
+                $customer = $this->factory->createCustomerFromObol($customerModel, $customer);
+                $this->customerRepository->save($customer);
+                $lastId = $customerModel->getId();
+                var_dump($lastId);
+            }
+        } while (sizeof($customerList) == $limit);
     }
 }

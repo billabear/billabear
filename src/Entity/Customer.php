@@ -42,8 +42,8 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'string')]
     private string $externalCustomerReference;
 
-    #[ORM\Column(type: 'string', unique: true)]
-    private string $billingEmail;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $billingEmail;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $name = null;
@@ -142,12 +142,12 @@ class Customer implements CustomerInterface
         return isset($this->externalCustomerReference);
     }
 
-    public function getBillingEmail(): string
+    public function getBillingEmail(): ?string
     {
         return $this->billingEmail;
     }
 
-    public function setBillingEmail(string $billingEmail): void
+    public function setBillingEmail(?string $billingEmail): void
     {
         $this->billingEmail = $billingEmail;
     }
