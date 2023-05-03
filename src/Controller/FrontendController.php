@@ -29,7 +29,9 @@ class FrontendController
     #[Route('/confirm-email/{code}', name: 'app_confirm_email', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/site/{vueRouting}', name: 'app_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/app/plan', name: 'app_plan', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    public function home(Environment $twig, SettingsRepositoryInterface $settingsRepository)
+    public function home(
+        Environment $twig,
+        SettingsRepositoryInterface $settingsRepository)
     {
         try {
             $settings = $settingsRepository->getDefaultSettings();

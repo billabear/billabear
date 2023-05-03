@@ -20,8 +20,10 @@ use App\Install\Steps\SystemSettingsStep;
 use App\Install\Steps\TemplateStep;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Parthenon\User\Creator\UserCreatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +38,13 @@ class InstallController
     #[Route('/install', name: 'app_install', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function installDefault(Environment $twig, SettingsRepositoryInterface $settingsRepository): Response
     {
-        return new Response($twig->render('index.html.twig'));
+        try {
+            $settings = $settingsRepository->getDefaultSettings();
+        } catch (TableNotFoundException $exception) {
+            return new Response($twig->render('index.html.twig'));
+        }
+
+        return new RedirectResponse('/login');
     }
 
     #[Route('/install/process', name: 'app_install_post', methods: ['POST'])]
