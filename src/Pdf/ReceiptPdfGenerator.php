@@ -13,6 +13,7 @@
 namespace App\Pdf;
 
 use App\Entity\Customer;
+use App\Entity\Template;
 use App\Repository\TemplateRepositoryInterface;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -36,9 +37,9 @@ class ReceiptPdfGenerator
             throw new \LogicException('Invalid customer type');
         }
         try {
-            $template = $this->templateRepository->getByNameAndBrand('receipt', $customer->getBrand());
+            $template = $this->templateRepository->getByNameAndBrand(Template::NAME_RECEIPT, $customer->getBrand());
         } catch (NoEntityFoundException $exception) {
-            $template = $this->templateRepository->getByNameAndBrand('receipt', Customer::DEFAULT_BRAND);
+            $template = $this->templateRepository->getByNameAndBrand(Template::NAME_RECEIPT, Customer::DEFAULT_BRAND);
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());

@@ -8,6 +8,7 @@ import ForgotPasswordConfirm from "../views/Public/ForgotPasswordConfirm";
 import ConfirmEmail from "../views/Public/ConfirmEmail";
 import {APP_ROUTES} from "./app.routes";
 import InternalApp from "../views/App/InternalApp";
+import StartingPoint from "../views/Install/StartingPoint.vue";
 
 
 export const router = createRouter({
@@ -22,6 +23,9 @@ export const router = createRouter({
             path: '/site/',
             component: InternalApp,
             children: APP_ROUTES,
+        },
+        {
+            path: '/install', component: StartingPoint
         },
         // otherwise redirect to home
         { path: '/:pathMatch(.*)/', redirect: '/login' }

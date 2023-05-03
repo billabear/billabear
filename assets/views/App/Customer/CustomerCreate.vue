@@ -99,7 +99,7 @@
         <label class="form-field-lbl" for="email">
           {{ $t('app.customer.create.external_reference') }}
         </label>
-        <p class="form-field-error" v-if="errors.external_reference != undefined">{{ errors.external_reference }}</p>
+        <p class="form-field-error" v-if="errors.externalReference != undefined">{{ errors.externalReference }}</p>
         <input type="text" class="form-field-input" id="external_reference" v-model="customer.external_reference"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.external_reference') }}</p>
       </div>

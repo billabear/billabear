@@ -12,6 +12,9 @@
 
 namespace App\Controller;
 
+use App\Repository\SettingsRepositoryInterface;
+use Doctrine\DBAL\Exception\TableNotFoundException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -26,8 +29,14 @@ class FrontendController
     #[Route('/confirm-email/{code}', name: 'app_confirm_email', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/site/{vueRouting}', name: 'app_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/app/plan', name: 'app_plan', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    public function home(Environment $twig)
+    public function home(Environment $twig, SettingsRepositoryInterface $settingsRepository)
     {
+        try {
+            $settings = $settingsRepository->getDefaultSettings();
+        } catch (TableNotFoundException $exception) {
+            return new RedirectResponse('/install');
+        }
+
         return new Response($twig->render('index.html.twig'));
     }
 }
