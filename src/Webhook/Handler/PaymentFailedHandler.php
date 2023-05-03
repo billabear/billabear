@@ -21,7 +21,9 @@ use Obol\Model\Events\ChargeFailed;
 use Obol\Model\Events\ChargeSucceeded;
 use Obol\Model\Events\EventInterface;
 use Parthenon\Billing\Customer\CustomerManagerInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -70,6 +72,11 @@ class PaymentFailedHandler implements HandlerInterface
         }
 
         $this->eventLinker->linkToSubscription($payment, $event);
+
+        /** @var Subscription $subscription */
+        foreach ($payment->getSubscriptions() as $subscription) {
+            $subscription->setStatus(SubscriptionStatus::OVERDUE_PAYMENT_OPEN);
+        }
 
         $this->paymentRepository->save($payment);
 
