@@ -58,3 +58,32 @@ framework:
                     from: customer_notice_sent
                     to: completed
 
+        payment_failure_process:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\PaymentFailureProcess
+            initial_marking: started
+            places:
+                - started
+                - customer_notice_sent
+                - internal_notice_sent
+                - payment_retries
+                - payment_failure_no_more_retries
+                - payment_complete
+            transitions:
+                send_customer_notice:
+                    from: started
+                    to: customer_notice_sent
+                send_internal_notice:
+                    from: customer_notice_sent
+                    to: payment_retries
+                retries_failed:
+                    from: payment_retries
+                    to: payment_failure_no_more_retries
+                payment_succeed:
+                    from: payment_retries
+                    to: payment_complete
+
