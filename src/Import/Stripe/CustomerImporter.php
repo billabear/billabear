@@ -30,7 +30,7 @@ class CustomerImporter
     ) {
     }
 
-    public function import(StripeImport $stripeImport)
+    public function import(StripeImport $stripeImport, bool $save = true)
     {
         $provider = $this->provider;
         $limit = 25;
@@ -50,7 +50,9 @@ class CustomerImporter
             }
             $stripeImport->setLastId($lastId);
             $stripeImport->setUpdatedAt(new \DateTime());
-            // $this->stripeImportRepository->save($stripeImport);
+            if ($save) {
+                $this->stripeImportRepository->save($stripeImport);
+            }
         } while (sizeof($customerList) == $limit);
     }
 }

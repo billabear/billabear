@@ -13,25 +13,25 @@
 namespace App\Command;
 
 use App\Entity\StripeImport;
-use App\Import\Stripe\CustomerImporter;
+use App\Import\Stripe\ProductImporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'billabear:stripe:import-customer', description: 'Import customer data from stripe')]
-class StripeCustomerImportCommand extends Command
+#[AsCommand(name: 'billabear:stripe:import-product', description: 'Import product data from stripe')]
+class StripeProductImportCommand extends Command
 {
-    public function __construct(private CustomerImporter $customerImporter)
+    public function __construct(private ProductImporter $productImporter)
     {
         parent::__construct(null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Start stripe customer import command');
+        $output->writeln('Start stripe product import command');
         $import = new StripeImport();
-        $this->customerImporter->import($import, false);
+        $this->productImporter->import($import, false);
 
         return Command::SUCCESS;
     }

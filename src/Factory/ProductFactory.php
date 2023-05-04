@@ -51,4 +51,17 @@ class ProductFactory
 
         return $dto;
     }
+
+    public function createFromObol(\Obol\Model\Product $productModel, ?Product $product = null)
+    {
+        if (!$product) {
+            $product = new Product();
+        }
+
+        $product->setName($productModel->getName());
+        $product->setExternalReference($productModel->getId());
+        $product->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
+
+        return $product;
+    }
 }
