@@ -16,9 +16,14 @@ use App\Dto\Generic\Api\Price as ApiDto;
 use App\Dto\Generic\App\Price as AppDto;
 use App\Dto\Request\Api\CreatePrice;
 use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
 class PriceFactory
 {
+    public function __construct(private ProductRepositoryInterface $productRepository)
+    {
+    }
+
     public function createPriceFromDto(CreatePrice $createPrice, ?Price $price = null): Price
     {
         if (!$price) {
@@ -69,5 +74,25 @@ class PriceFactory
         $dto->setDisplayValue((string) $price->getAsMoney());
 
         return $dto;
+    }
+
+    public function createFromObol(\Obol\Model\Price $priceModel, ?Price $price = null)
+    {
+        if (!$price) {
+            $price = new Price();
+        }
+
+        $price->setPublic(false);
+        $price->setAmount($priceModel->getAmount());
+        $price->setCurrency(strtoupper($priceModel->getCurrency()));
+        $price->setRecurring($priceModel->isRecurring());
+        $price->setSchedule($priceModel->getSchedule());
+        $price->setExternalReference($priceModel->getId());
+        $price->setPaymentProviderDetailsUrl($priceModel->getUrl());
+
+        $product = $this->productRepository->getByExternalReference($priceModel->getProductReference());
+        $price->setProduct($product);
+
+        return $price;
     }
 }
