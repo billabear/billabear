@@ -30,4 +30,9 @@ class ProductService implements ProductServiceInterface
     {
         // TODO: Implement fetchProduct() method.
     }
+
+    public function list(int $limit = 10, ?string $lastId = null): array
+    {
+        // TODO: Implement list() method.
+    }
 }

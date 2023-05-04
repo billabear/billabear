@@ -15,6 +15,7 @@ namespace App\Import\Stripe;
 use App\Entity\StripeImport;
 use App\Factory\CustomerFactory;
 use App\Repository\CustomerRepositoryInterface;
+use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Customer;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -24,7 +25,8 @@ class CustomerImporter
     public function __construct(
         private ProviderInterface $provider,
         private CustomerFactory $factory,
-        private CustomerRepositoryInterface $customerRepository
+        private CustomerRepositoryInterface $customerRepository,
+        private StripeImportRepositoryInterface $stripeImportRepository,
     ) {
     }
 
@@ -45,8 +47,10 @@ class CustomerImporter
                 $customer = $this->factory->createCustomerFromObol($customerModel, $customer);
                 $this->customerRepository->save($customer);
                 $lastId = $customerModel->getId();
-                var_dump($lastId);
             }
+            $stripeImport->setLastId($lastId);
+            $stripeImport->setUpdatedAt(new \DateTime());
+            // $this->stripeImportRepository->save($stripeImport);
         } while (sizeof($customerList) == $limit);
     }
 }

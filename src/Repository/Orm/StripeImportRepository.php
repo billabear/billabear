@@ -16,7 +16,7 @@ use App\Entity\Settings;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class StripeImportRepositoryRepository extends CustomServiceRepository
+class StripeImportRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

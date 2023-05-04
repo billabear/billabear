@@ -98,6 +98,12 @@ services:
     app.repository.orm.payment_failure_process:
         class: App\Repository\Orm\PaymentFailureProcessRepository
 
+    App\Repository\StripeImportRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.stripe_import'
+    app.repository.orm.stripe_import:
+        class: App\Repository\Orm\StripeImportRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
