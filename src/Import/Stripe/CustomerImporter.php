@@ -14,10 +14,12 @@ namespace App\Import\Stripe;
 
 use App\Entity\StripeImport;
 use App\Factory\CustomerFactory;
+use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Customer;
 use Obol\Provider\ProviderInterface;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CustomerImporter
@@ -27,6 +29,8 @@ class CustomerImporter
         private CustomerFactory $factory,
         private CustomerRepositoryInterface $customerRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
+        private PaymentMethodRepositoryInterface $paymentMethodRepository,
+        private PaymentMethodsFactory $paymentMethodsFactory,
     ) {
     }
 
@@ -46,6 +50,20 @@ class CustomerImporter
                 }
                 $customer = $this->factory->createCustomerFromObol($customerModel, $customer);
                 $this->customerRepository->save($customer);
+
+                $cards = $provider->customers()->getCards($customerModel->getId(), 100);
+
+                foreach ($cards as $paymentMethodModel) {
+                    try {
+                        $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForReference($paymentMethodModel->getId());
+                    } catch (NoEntityFoundException $exception) {
+                        $paymentMethod = null;
+                    }
+                    $paymentMethod = $this->paymentMethodsFactory->createFromObol($paymentMethodModel, $paymentMethod);
+                    $paymentMethod->setDefaultPaymentOption($customerModel->getDefaultSource() === $paymentMethod->getStoredPaymentReference());
+                    $this->paymentMethodRepository->save($paymentMethod);
+                    $lastId = $paymentMethodModel->getId();
+                }
                 $lastId = $customerModel->getId();
             }
             $stripeImport->setLastId($lastId);

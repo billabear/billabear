@@ -36,4 +36,9 @@ class CustomerService implements CustomerServiceInterface
     {
         // TODO: Implement list() method.
     }
+
+    public function getCards(string $customerId, int $limit = 10, ?string $lastId = null): array
+    {
+        // TODO: Implement getCards() method.
+    }
 }

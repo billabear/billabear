@@ -14,10 +14,15 @@ namespace App\Factory;
 
 use App\Dto\Generic\Api\PaymentMethod as ApiDto;
 use App\Dto\Generic\App\PaymentMethod as AppDto;
+use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Entity\PaymentMethod;
 
 class PaymentMethodsFactory
 {
+    public function __construct(private CustomerRepositoryInterface $customerRepository)
+    {
+    }
+
     public function createApiDto(PaymentMethod $paymentDetails): ApiDto
     {
         $dto = new ApiDto();
@@ -44,5 +49,23 @@ class PaymentMethodsFactory
         $dto->setDefault($paymentDetails->isDefaultPaymentOption());
 
         return $dto;
+    }
+
+    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, ?PaymentMethod $entity = null)
+    {
+        if (!$entity) {
+            $entity = new PaymentMethod();
+        }
+        $customer = $this->customerRepository->getByExternalReference($paymentMethodModel->getCustomerReference());
+        $entity->setCustomer($customer);
+        $entity->setStoredCustomerReference($paymentMethodModel->getCustomerReference());
+        $entity->setStoredPaymentReference($paymentMethodModel->getId());
+        $entity->setBrand($paymentMethodModel->getBrand());
+        $entity->setExpiryYear($paymentMethodModel->getExpiryYear());
+        $entity->setExpiryMonth($paymentMethodModel->getExpiryMonth());
+        $entity->setLastFour($paymentMethodModel->getLastFour());
+        $entity->setCreatedAt($paymentMethodModel->getCreatedAt());
+
+        return $entity;
     }
 }
