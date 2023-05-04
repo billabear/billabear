@@ -46,7 +46,8 @@
           <tbody>
           <tr v-for="subscription in subscriptions" class="mt-5">
             <td>{{ subscription.customer.email }}</td>
-            <td>{{ subscription.plan.name }}</td>
+            <td v-if="subscription.plan !== null && subscription.plan !== undefined">{{ subscription.plan.name }}</td>
+            <td v-else></td>
             <td>{{ subscription.status }}</td>
             <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
           </tr>

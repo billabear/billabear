@@ -14,7 +14,12 @@ namespace App\Factory;
 
 use App\Dto\Generic\Api\Subscription as ApiDto;
 use App\Dto\Generic\App\Subscription as AppDto;
+use App\Repository\CustomerRepositoryInterface;
+use Obol\Model\Subscription as ObolModel;
 use Parthenon\Billing\Entity\Subscription as Entity;
+use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class SubscriptionFactory
 {
@@ -22,7 +27,47 @@ class SubscriptionFactory
         private SubscriptionPlanFactory $subscriptionPlanFactory,
         private PriceFactory $priceFactory,
         private CustomerFactory $customerFactory,
+        private CustomerRepositoryInterface $customerRepository,
+        private PriceRepositoryInterface $priceRepository,
+        private PaymentMethodRepositoryInterface $paymentMethodRepository,
     ) {
+    }
+
+    public function createFromObol(ObolModel $model, ?Entity $subscription = null): Entity
+    {
+        if (!$subscription) {
+            $subscription = new Entity();
+        }
+        $subscription->setMainExternalReference($model->getId());
+        $subscription->setChildExternalReference($model->getLineId());
+        $subscription->setCreatedAt($model->getCreatedAt());
+        $subscription->setUpdatedAt(new \DateTime());
+        $subscription->setStartOfCurrentPeriod($model->getStartOfCurrentPeriod());
+        $subscription->setValidUntil($model->getValidUntil());
+        $subscription->setHasTrial($model->hasTrial());
+        $subscription->setMoneyAmount($model->getCostPerSeat());
+        $status = match ($model->getStatus()) {
+            'active' => SubscriptionStatus::ACTIVE,
+            'overdue' => SubscriptionStatus::OVERDUE_PAYMENT_OPEN,
+            default => SubscriptionStatus::CANCELLED,
+        };
+        $subscription->setStatus($status);
+
+        $customer = $this->customerRepository->getByExternalReference($model->getCustomerReference());
+        $subscription->setCustomer($customer);
+
+        $price = $this->priceRepository->getByExternalReference($model->getPriceId());
+        $subscription->setPrice($price);
+
+        $subscription->setPlanName('Imported Subscription');
+        $subscription->setPaymentSchedule($price->getSchedule());
+
+        if ($model->getStoredPaymentReference()) {
+            $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForCustomerAndReference($customer, $model->getStoredPaymentReference());
+            $subscription->setPaymentDetails($paymentMethod);
+        }
+
+        return $subscription;
     }
 
     public function createAppDto(Entity $subscription): AppDto
@@ -31,7 +76,9 @@ class SubscriptionFactory
         $dto->setId((string) $subscription->getId());
         $dto->setStatus($subscription->getStatus()->value);
         $dto->setSchedule($subscription->getPaymentSchedule());
-        $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
+        if ($subscription->getSubscriptionPlan()) {
+            $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
+        }
         $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());

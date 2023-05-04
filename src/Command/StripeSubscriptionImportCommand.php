@@ -13,34 +13,25 @@
 namespace App\Command;
 
 use App\Entity\StripeImport;
-use App\Import\Stripe\CustomerImporter;
-use App\Import\Stripe\PriceImporter;
-use App\Import\Stripe\ProductImporter;
+use App\Import\Stripe\SubscriptionImporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'billabear:stripe:import', description: 'Import product data from stripe')]
-class StripeImportCommand extends Command
+#[AsCommand(name: 'billabear:stripe:import-subscription', description: 'Import subscription data from stripe')]
+class StripeSubscriptionImportCommand extends Command
 {
-    public function __construct(
-        private CustomerImporter $customerImporter,
-        private ProductImporter $productImporter,
-        private PriceImporter $priceImporter,
-    ) {
+    public function __construct(private SubscriptionImporter $subscriptionImporter)
+    {
         parent::__construct(null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Start stripe import command');
+        $output->writeln('Start stripe subscription import command');
         $import = new StripeImport();
-        $this->customerImporter->import($import, false);
-        $output->writeln('Start stripe product import command');
-        $this->productImporter->import($import, false);
-        $output->writeln('Start stripe price import command');
-        $this->priceImporter->import($import, false);
+        $this->subscriptionImporter->import($import, false);
 
         return Command::SUCCESS;
     }
