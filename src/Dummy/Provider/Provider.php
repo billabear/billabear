@@ -16,6 +16,7 @@ use Obol\ChargeBackServiceInterface;
 use Obol\CustomerServiceInterface;
 use Obol\HostedCheckoutServiceInterface;
 use Obol\InvoiceServiceInterface;
+use Obol\PaymentMethodServiceInterface;
 use Obol\PaymentServiceInterface;
 use Obol\PriceServiceInterface;
 use Obol\ProductServiceInterface;
@@ -79,5 +80,10 @@ class Provider implements ProviderInterface
     public function chargeBacks(): ChargeBackServiceInterface
     {
         return new ChargeBackService();
+    }
+
+    public function paymentMethods(): PaymentMethodServiceInterface
+    {
+        // TODO: Implement paymentMethods() method.
     }
 }
