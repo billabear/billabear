@@ -16,18 +16,20 @@ use App\Entity\StripeImport;
 use App\Import\Stripe\CustomerImporter;
 use App\Import\Stripe\PriceImporter;
 use App\Import\Stripe\ProductImporter;
+use App\Import\Stripe\SubscriptionImporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'billabear:stripe:import', description: 'Import product data from stripe')]
+#[AsCommand(name: 'billabear:stripe:import', description: 'Import all data from stripe')]
 class StripeImportCommand extends Command
 {
     public function __construct(
         private CustomerImporter $customerImporter,
         private ProductImporter $productImporter,
         private PriceImporter $priceImporter,
+        private SubscriptionImporter $subscriptionImporter,
     ) {
         parent::__construct(null);
     }
@@ -41,6 +43,8 @@ class StripeImportCommand extends Command
         $this->productImporter->import($import, false);
         $output->writeln('Start stripe price import command');
         $this->priceImporter->import($import, false);
+        $output->writeln('Start stripe subscription import command');
+        $this->subscriptionImporter->import($import, false);
 
         return Command::SUCCESS;
     }
