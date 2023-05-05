@@ -19,7 +19,7 @@ use Obol\Model\PaymentDetails;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Subscription\PaymentEventLinkerInterface;
+use Parthenon\Billing\Subscription\PaymentLinkerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class PaymentImporter
@@ -30,7 +30,7 @@ class PaymentImporter
         private PaymentRepositoryInterface $paymentRepository,
         private CustomerRepositoryInterface $customerRepository,
         private PaymentFactoryInterface $factory,
-        private PaymentEventLinkerInterface $paymentEventLinker,
+        private PaymentLinkerInterface $paymentLinker,
     ) {
     }
 
@@ -53,7 +53,7 @@ class PaymentImporter
 
                     $payment = $this->factory->createFromPaymentDetails($paymentDetails, $customer);
                     $payment->setCreatedAt($paymentDetails->getCreatedAt());
-                    $this->paymentEventLinker->linkPaymentDetailsToSubscription($payment, $paymentDetails);
+                    $this->paymentLinker->linkPaymentDetailsToSubscription($payment, $paymentDetails);
                     $this->paymentRepository->save($payment);
                     $this->paymentRepository->save($payment);
                 }

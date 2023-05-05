@@ -27,7 +27,7 @@ use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Exception\NoCustomerException;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Subscription\PaymentEventLinkerInterface;
+use Parthenon\Billing\Subscription\PaymentLinkerInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -38,7 +38,7 @@ class PaymentFailedHandler implements HandlerInterface
         private PaymentRepositoryInterface $paymentRepository,
         private CustomerManagerInterface $customerManager,
         private PaymentFactoryInterface $paymentFactory,
-        private PaymentEventLinkerInterface $eventLinker,
+        private PaymentLinkerInterface $eventLinker,
         private PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
         private EventDispatcherInterface $dispatcher,
     ) {
