@@ -20,9 +20,13 @@ use Parthenon\Billing\Entity\Subscription as Entity;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 
 class SubscriptionFactory
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private SubscriptionPlanFactory $subscriptionPlanFactory,
         private PriceFactory $priceFactory,
@@ -59,12 +63,15 @@ class SubscriptionFactory
         $price = $this->priceRepository->getByExternalReference($model->getPriceId());
         $subscription->setPrice($price);
 
-        $subscription->setPlanName('Imported Subscription');
+        $subscription->setPlanName($price->getProduct()->getName());
         $subscription->setPaymentSchedule($price->getSchedule());
 
         if ($model->getStoredPaymentReference()) {
-            $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForCustomerAndReference($customer, $model->getStoredPaymentReference());
-            $subscription->setPaymentDetails($paymentMethod);
+            try {
+                $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForReference($model->getStoredPaymentReference());
+                $subscription->setPaymentDetails($paymentMethod);
+            } catch (NoEntityFoundException $e) {
+            }
         }
 
         return $subscription;
@@ -99,7 +106,6 @@ class SubscriptionFactory
         $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());
-        $dto->setExternalMainReferenceDetailsUrl($subscription->getMainExternalReferenceDetailsUrl());
         $dto->setCreatedAt($subscription->getCreatedAt());
         $dto->setUpdatedAt($subscription->getUpdatedAt());
         $dto->setValidUntil($subscription->getValidUntil());
