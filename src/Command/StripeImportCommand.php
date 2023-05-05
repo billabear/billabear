@@ -14,6 +14,7 @@ namespace App\Command;
 
 use App\Entity\StripeImport;
 use App\Import\Stripe\CustomerImporter;
+use App\Import\Stripe\PaymentImporter;
 use App\Import\Stripe\PriceImporter;
 use App\Import\Stripe\ProductImporter;
 use App\Import\Stripe\SubscriptionImporter;
@@ -30,6 +31,7 @@ class StripeImportCommand extends Command
         private ProductImporter $productImporter,
         private PriceImporter $priceImporter,
         private SubscriptionImporter $subscriptionImporter,
+        private PaymentImporter $paymentImporter,
     ) {
         parent::__construct(null);
     }
@@ -44,6 +46,8 @@ class StripeImportCommand extends Command
         $output->writeln('Start stripe price import command');
         $this->priceImporter->import($import, false);
         $output->writeln('Start stripe subscription import command');
+        $this->subscriptionImporter->import($import, false);
+        $output->writeln('Start stripe payment import command');
         $this->subscriptionImporter->import($import, false);
 
         return Command::SUCCESS;
