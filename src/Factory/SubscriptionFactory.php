@@ -71,6 +71,7 @@ class SubscriptionFactory
                 $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForReference($model->getStoredPaymentReference());
                 $subscription->setPaymentDetails($paymentMethod);
             } catch (NoEntityFoundException $e) {
+                $this->getLogger()->warning('There is no payment method found', ['payment_method_reference' => $model->getStoredPaymentReference()]);
             }
         }
 
