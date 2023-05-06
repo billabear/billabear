@@ -34,7 +34,7 @@ class SubscriptionImporter
     {
         $provider = $this->provider;
         $limit = 25;
-        $lastId = null;
+        $lastId = $save ? $stripeImport->getLastId() : null;
         do {
             $subscriptionList = $provider->subscriptions()->list($limit, $lastId);
             /** @var Subscription $subscriptionModel */

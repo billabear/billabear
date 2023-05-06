@@ -34,7 +34,7 @@ class RefundImporter
     {
         $provider = $this->provider;
         $limit = 25;
-        $lastId = null;
+        $lastId = $save ? $stripeImport->getLastId() : null;
         do {
             $paymentList = $provider->refunds()->list($limit, $lastId);
             /** @var Refund $obolRefund */

@@ -34,7 +34,7 @@ class PriceImporter
     {
         $provider = $this->provider;
         $limit = 25;
-        $lastId = null;
+        $lastId = $save ? $stripeImport->getLastId() : null;
         do {
             $priceList = $provider->prices()->list($limit, $lastId);
             /** @var Price $priceModel */

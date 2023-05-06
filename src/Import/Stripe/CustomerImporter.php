@@ -38,7 +38,7 @@ class CustomerImporter
     {
         $provider = $this->provider;
         $limit = 25;
-        $lastId = null;
+        $lastId = $save ? $stripeImport->getLastId() : null;
         do {
             $customerList = $provider->customers()->list($limit, $lastId);
             /** @var Customer $customerModel */

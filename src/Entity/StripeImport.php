@@ -28,8 +28,8 @@ class StripeImport
     #[ORM\Column]
     private string $state;
 
-    #[ORM\Column()]
-    private string $lastId;
+    #[ORM\Column(nullable: true)]
+    private ?string $lastId = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $complete = false;

@@ -38,7 +38,7 @@ class PaymentImporter
     {
         $provider = $this->provider;
         $limit = 25;
-        $lastId = null;
+        $lastId = $save ? $stripeImport->getLastId() : null;
         do {
             $paymentList = $provider->payments()->list($limit, $lastId);
             /** @var PaymentDetails $paymentDetails */
