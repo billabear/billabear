@@ -11,7 +11,7 @@
               <dd>{{ subscription.status }}</dd>
             </div>
 
-            <div>
+            <div v-if="subscription.plan !== null && subscription.plan !== undefined">
               <dt>{{ $t('app.subscription.view.main.plan') }}</dt>
               <dd>
                 <router-link :to="{name: 'app.subscription_plan.view', params: {productId: product.id, subscriptionPlanId: subscription.plan.id}}">
@@ -19,6 +19,7 @@
                 </router-link>
               </dd>
             </div>
+            <div v-else></div>
             <div>
               <dt>{{ $t('app.subscription.view.main.customer') }}</dt>
               <dd>

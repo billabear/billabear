@@ -221,7 +221,7 @@ class SubscriptionController
         $view->setCustomer($customerDto);
         $view->setPayments($paymentDtos);
         $view->setPaymentDetails($paymentDetailsFactory->createAppDto($subscription->getPaymentDetails()));
-        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getSubscriptionPlan()->getProduct()));
+        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getPrice()->getProduct()));
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
