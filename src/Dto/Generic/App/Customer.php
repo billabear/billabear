@@ -24,7 +24,7 @@ class Customer
     protected ?string $name = null;
 
     #[SerializedName('email')]
-    protected string $email;
+    protected ?string $email = null;
 
     #[SerializedName('reference')]
     protected ?string $reference = null;
@@ -67,12 +67,12 @@ class Customer
         $this->name = $name;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
