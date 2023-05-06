@@ -57,7 +57,11 @@ class LimitsFactory
             return [$limits, $features, $userCount];
         }
 
+        /** @var Subscription $subscription */
         foreach ($subscriptions as $subscription) {
+            if (!$subscription->getSubscriptionPlan()) {
+                continue;
+            }
             /** @var SubscriptionPlanLimit $limit */
             foreach ($subscription->getSubscriptionPlan()->getLimits() as $limit) {
                 $name = $limit->getSubscriptionFeature()->getName();

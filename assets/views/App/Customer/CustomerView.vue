@@ -94,7 +94,8 @@
             </thead>
             <tbody>
             <tr v-for="subscription in subscriptions" class="mt-5">
-              <td>{{ subscription.plan.name }}</td>
+              <td v-if="subscription.plan !== undefined && subscription.plan !== null">{{ subscription.plan.name }}</td>
+              <td v-else>N/A</td>
               <td>{{ subscription.status }}</td>
               <td>{{ subscription.schedule }}</td>
               <td>{{ subscription.created_at }}</td>
