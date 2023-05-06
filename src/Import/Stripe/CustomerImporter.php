@@ -72,5 +72,6 @@ class CustomerImporter
                 $this->stripeImportRepository->save($stripeImport);
             }
         } while (sizeof($customerList) == $limit);
+        $stripeImport->setLastId(null);
     }
 }

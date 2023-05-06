@@ -54,5 +54,6 @@ class SubscriptionImporter
                 $this->stripeImportRepository->save($stripeImport);
             }
         } while (sizeof($subscriptionList) >= $limit);
+        $stripeImport->setLastId(null);
     }
 }

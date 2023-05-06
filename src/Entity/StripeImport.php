@@ -40,6 +40,12 @@ class StripeImport
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $error = null;
+
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private int $attempts = 0;
+
     public function getId()
     {
         return $this->id;
@@ -98,5 +104,25 @@ class StripeImport
     public function setLastId(?string $lastId): void
     {
         $this->lastId = $lastId;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
+
+    public function setError(?string $error): void
+    {
+        $this->error = $error;
+    }
+
+    public function getAttempts(): int
+    {
+        return $this->attempts;
+    }
+
+    public function setAttempts(int $attempts): void
+    {
+        $this->attempts = $attempts;
     }
 }

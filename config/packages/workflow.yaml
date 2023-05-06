@@ -58,6 +58,49 @@ framework:
                     from: customer_notice_sent
                     to: completed
 
+        stripe_import:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\StripeImport
+            places:
+                - started
+                - customers
+                - products
+                - prices
+                - subscriptions
+                - payments
+                - refunds
+                - charge_backs
+                - completed
+            transitions:
+                start:
+                    from: started
+                    to: customers
+                start_customers:
+                    from: customers
+                    to: products
+                start_products:
+                    from: products
+                    to: prices
+                start_prices:
+                    from: prices
+                    to: subscriptions
+                start_subscriptions:
+                    from: subscriptions
+                    to: payments
+                start_payments:
+                    from: payments
+                    to: refunds
+                start_refunds:
+                    from: refunds
+                    to: charge_backs
+                start_charge_backs:
+                    from: charge_backs
+                    to: completed
+
         payment_failure_process:
             type: 'state_machine'
             marking_store:

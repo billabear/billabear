@@ -12,14 +12,7 @@
 
 namespace App\Command;
 
-use App\Entity\StripeImport;
-use App\Import\Stripe\ChargeBackImporter;
-use App\Import\Stripe\CustomerImporter;
-use App\Import\Stripe\PaymentImporter;
-use App\Import\Stripe\PriceImporter;
-use App\Import\Stripe\ProductImporter;
-use App\Import\Stripe\RefundImporter;
-use App\Import\Stripe\SubscriptionImporter;
+use App\Import\Stripe\StripeImportProcessor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,13 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class StripeImportCommand extends Command
 {
     public function __construct(
-        private CustomerImporter $customerImporter,
-        private ProductImporter $productImporter,
-        private PriceImporter $priceImporter,
-        private SubscriptionImporter $subscriptionImporter,
-        private PaymentImporter $paymentImporter,
-        private RefundImporter $refundImporter,
-        private ChargeBackImporter $chargeBackImporter,
+        private StripeImportProcessor $importProcessor,
     ) {
         parent::__construct(null);
     }
@@ -43,20 +30,7 @@ class StripeImportCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start stripe import command');
-        $import = new StripeImport();
-        $this->customerImporter->import($import, false);
-        $output->writeln('Start stripe product import command');
-        $this->productImporter->import($import, false);
-        $output->writeln('Start stripe price import command');
-        $this->priceImporter->import($import, false);
-        $output->writeln('Start stripe subscription import command');
-        $this->subscriptionImporter->import($import, false);
-        $output->writeln('Start stripe payment import command');
-        $this->paymentImporter->import($import, false);
-        $output->writeln('Start stripe refund import command');
-        $this->refundImporter->import($import, false);
-        $output->writeln('Start stripe charge back import command');
-        $this->chargeBackImporter->import($import, false);
+        $this->importProcessor->process();
 
         return Command::SUCCESS;
     }

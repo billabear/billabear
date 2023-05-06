@@ -54,5 +54,6 @@ class ProductImporter
                 $this->stripeImportRepository->save($stripeImport);
             }
         } while (sizeof($productList) == $limit);
+        $stripeImport->setLastId(null);
     }
 }

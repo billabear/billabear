@@ -55,5 +55,6 @@ class RefundImporter
                 $this->stripeImportRepository->save($stripeImport);
             }
         } while (sizeof($paymentList) == $limit);
+        $stripeImport->setLastId(null);
     }
 }
