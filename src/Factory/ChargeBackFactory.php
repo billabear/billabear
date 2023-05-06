@@ -14,12 +14,16 @@ namespace App\Factory;
 
 use App\Dto\Generic\App\ChargeBack as AppDto;
 use Parthenon\Billing\Entity\ChargeBack;
+use Parthenon\Billing\Enum\ChargeBackReason;
+use Parthenon\Billing\Enum\ChargeBackStatus;
+use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
 class ChargeBackFactory
 {
     public function __construct(
         private CustomerFactory $customerFactory,
         private PaymentFactory $paymentFactory,
+        private PaymentRepositoryInterface $paymentRepository,
     ) {
     }
 
@@ -34,5 +38,27 @@ class ChargeBackFactory
         $dto->setCreatedAt($chargeBack->getCreatedAt());
 
         return $dto;
+    }
+
+    public function createEntity(\Obol\Model\ChargeBack\ChargeBack $model, ?ChargeBack $chargeBack): ChargeBack
+    {
+        if (!$chargeBack) {
+            $chargeBack = new ChargeBack();
+        }
+
+        $payment = $this->paymentRepository->getPaymentForReference($model->getPaymentReference());
+
+        $chargeBack->setPayment($payment);
+        $customer = $payment->getCustomer();
+        if ($customer) {
+            $chargeBack->setCustomer($customer);
+        }
+        $chargeBack->setExternalReference($model->getId());
+        $chargeBack->setStatus(ChargeBackStatus::fromName($model->getStatus()));
+        $chargeBack->setReason(ChargeBackReason::fromName($model->getReason()));
+        $chargeBack->setCreatedAt($model->getCreatedAt() ?? new \DateTime('now'));
+        $chargeBack->setUpdatedAt(new \DateTime('now'));
+
+        return $chargeBack;
     }
 }

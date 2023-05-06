@@ -13,6 +13,7 @@
 namespace App\Command;
 
 use App\Entity\StripeImport;
+use App\Import\Stripe\ChargeBackImporter;
 use App\Import\Stripe\CustomerImporter;
 use App\Import\Stripe\PaymentImporter;
 use App\Import\Stripe\PriceImporter;
@@ -34,6 +35,7 @@ class StripeImportCommand extends Command
         private SubscriptionImporter $subscriptionImporter,
         private PaymentImporter $paymentImporter,
         private RefundImporter $refundImporter,
+        private ChargeBackImporter $chargeBackImporter,
     ) {
         parent::__construct(null);
     }
@@ -53,6 +55,8 @@ class StripeImportCommand extends Command
         $this->paymentImporter->import($import, false);
         $output->writeln('Start stripe refund import command');
         $this->refundImporter->import($import, false);
+        $output->writeln('Start stripe charge back import command');
+        $this->chargeBackImporter->import($import, false);
 
         return Command::SUCCESS;
     }

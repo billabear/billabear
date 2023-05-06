@@ -71,7 +71,10 @@ class RefundFactory
 
         $refund->setAmount($model->getAmount());
         $refund->setCurrency(strtoupper($model->getCurrency()));
-        $refund->setCustomer($payment->getCustomer());
+        $customer = $payment->getCustomer();
+        if ($customer) {
+            $refund->setCustomer($customer);
+        }
         $refund->setPayment($payment);
         $refund->setCreatedAt($model->getCreatedAt() ?? new \DateTime());
         $refund->setExternalReference($model->getId());
