@@ -13,6 +13,7 @@
 namespace App\Factory;
 
 use App\Dto\Generic\App\ChargeBack as AppDto;
+use App\Entity\Customer;
 use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Enum\ChargeBackReason;
 use Parthenon\Billing\Enum\ChargeBackStatus;
@@ -32,7 +33,10 @@ class ChargeBackFactory
         $dto = new AppDto();
         $dto->setId((string) $chargeBack->getId());
         $dto->setPayment($this->paymentFactory->createAppDto($chargeBack->getPayment()));
-        $dto->setCustomer($this->customerFactory->createAppDto($chargeBack->getCustomer()));
+        $customer = $chargeBack->getCustomer();
+        if ($customer instanceof Customer) {
+            $dto->setCustomer($this->customerFactory->createAppDto($customer));
+        }
         $dto->setStatus($chargeBack->getStatus()->value);
         $dto->setReason($chargeBack->getReason()->value);
         $dto->setCreatedAt($chargeBack->getCreatedAt());

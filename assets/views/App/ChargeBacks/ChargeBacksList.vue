@@ -46,7 +46,8 @@
             <tr v-for="chargeback in chargeBacks" class="mt-5 cursor-pointer">
               <td>{{ chargeback.payment.amount }}</td>
               <td>{{ chargeback.payment.currency }}</td>
-              <td>{{ chargeback.payment.customer.email }}</td>
+              <td v-if="chargeback.customer == null || chargeback.customer == undefined">N/A</td>
+              <td v-else>{{ chargeback.customer.email }}</td>
               <td><router-link :to="{name: 'app.payment.view', params: {id: chargeback.payment.id}}" class="list-btn">{{ $t('app.charge_backs.list.view_payment') }}</router-link></td>
             </tr>
             <tr v-if="chargeBacks.length === 0">

@@ -47,7 +47,8 @@
             <tr v-for="refund in refunds" class="mt-5 cursor-pointer">
               <td>{{ refund.amount }}</td>
               <td>{{ refund.currency }}</td>
-              <td>{{ refund.customer.email }}</td>
+              <td v-if="refund.customer == null || refund.customer == undefined">N/A</td>
+              <td v-else>{{ refund.customer.email }}</td>
               <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
               <td v-else>API</td>
               <td><router-link :to="{name: 'app.refund.view', params: {id: refund.id}}" class="list-btn">View</router-link></td>
