@@ -10,6 +10,8 @@
           <li class="my-3"><router-link :to="{name: 'app.settings.notification_settings.update'}">{{ $t('app.settings.menu.notification_settings') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.settings.system_settings.update'}">{{ $t('app.settings.menu.system_settings') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.settings.users.list'}">{{ $t('app.settings.menu.users') }}</router-link></li>
+          <li class="my-3"><router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.settings.menu.import') }}</router-link></li>
+
 
         </ul>
       </div>

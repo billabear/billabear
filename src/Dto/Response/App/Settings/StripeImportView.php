@@ -10,14 +10,22 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Response\App\Settings;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class StripeImportRepository extends DoctrineRepository implements StripeImportRepositoryInterface
+class StripeImportView
 {
-    public function getAll(): array
+    #[SerializedName('stripe_imports')]
+    private array $stripeImports = [];
+
+    public function getStripeImports(): array
     {
-        return $this->entityRepository->findAll();
+        return $this->stripeImports;
+    }
+
+    public function setStripeImports(array $stripeImports): void
+    {
+        $this->stripeImports = $stripeImports;
     }
 }

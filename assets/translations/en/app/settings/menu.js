@@ -6,5 +6,6 @@ export const SETTINGS_MENU_TRANSACTIONS = {
     brand_settings: "Brand Settings",
     notification_settings: "Notification Settings",
     system_settings: "System Settings",
-    users: "Users"
+    users: "Users",
+    import: "Import"
 };

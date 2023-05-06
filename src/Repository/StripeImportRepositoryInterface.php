@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Entity\StripeImport;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface StripeImportRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * @return StripeImport[]
+     */
+    public function getAll(): array;
 }
