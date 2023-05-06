@@ -32,13 +32,15 @@
             <dl class="detail-list">
               <div>
                 <dt>{{ $t('app.payment.view.customer.email') }}</dt>
-                <dd>{{ payment.customer.email }}</dd>
+                <dd v-if="payment.customer == null || payment.customer == undefined">N/A</dd>
+                <dd v-else>{{ payment.customer.email }}</dd>
               </div>
               <div>
                 <dt>{{ $t('app.payment.view.customer.country') }}</dt>
-                <dd>{{payment.customer.address.country }}</dd>
+                <dd v-if="payment.customer == null || payment.customer == undefined">N/A</dd>
+                <dd v-else>{{ payment.customer.address.country }}</dd>
               </div>
-              <div>
+              <div v-if="payment.customer != null && payment.customer != undefined">
                 <router-link :to="{name: 'app.customer.view', params: {id: payment.customer.id}}">{{ $t('app.payment.view.customer.more_info') }}</router-link>
               </div>
             </dl>

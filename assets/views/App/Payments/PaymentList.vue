@@ -46,7 +46,8 @@
             <tr v-for="payment in payments" class="mt-5 cursor-pointer">
               <td>{{ payment.amount }}</td>
               <td>{{ payment.currency }}</td>
-              <td>{{ payment.customer.email }}</td>
+              <td v-if="payment.customer == null || payment.customer == undefined">N/A</td>
+              <td v-else>{{ payment.customer.email }}</td>
               <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
