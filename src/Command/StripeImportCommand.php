@@ -48,7 +48,7 @@ class StripeImportCommand extends Command
         $output->writeln('Start stripe subscription import command');
         $this->subscriptionImporter->import($import, false);
         $output->writeln('Start stripe payment import command');
-        $this->subscriptionImporter->import($import, false);
+        $this->paymentImporter->import($import, false);
 
         return Command::SUCCESS;
     }

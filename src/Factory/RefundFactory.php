@@ -67,7 +67,7 @@ class RefundFactory
             $refund = new Refund();
         }
         $payment = $this->paymentRepository->getPaymentForReference($model->getPaymentId());
-        $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
+        $payment->setStatus($payment->getAmount() === $refund->getAmount() ? PaymentStatus::FULLY_REFUNDED : PaymentStatus::PARTIALLY_REFUNDED);
 
         $refund->setAmount($model->getAmount());
         $refund->setCurrency(strtoupper($model->getCurrency()));
