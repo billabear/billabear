@@ -17,6 +17,7 @@ use App\Import\Stripe\CustomerImporter;
 use App\Import\Stripe\PaymentImporter;
 use App\Import\Stripe\PriceImporter;
 use App\Import\Stripe\ProductImporter;
+use App\Import\Stripe\RefundImporter;
 use App\Import\Stripe\SubscriptionImporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -32,6 +33,7 @@ class StripeImportCommand extends Command
         private PriceImporter $priceImporter,
         private SubscriptionImporter $subscriptionImporter,
         private PaymentImporter $paymentImporter,
+        private RefundImporter $refundImporter,
     ) {
         parent::__construct(null);
     }
@@ -49,6 +51,8 @@ class StripeImportCommand extends Command
         $this->subscriptionImporter->import($import, false);
         $output->writeln('Start stripe payment import command');
         $this->paymentImporter->import($import, false);
+        $output->writeln('Start stripe refund import command');
+        $this->refundImporter->import($import, false);
 
         return Command::SUCCESS;
     }
