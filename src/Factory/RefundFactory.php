@@ -15,6 +15,9 @@ namespace App\Factory;
 use App\Dto\Generic\Api\Refund as ApiDto;
 use App\Dto\Generic\App\Refund as AppDto;
 use Parthenon\Billing\Entity\Refund;
+use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Enum\RefundStatus;
+use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
 class RefundFactory
 {
@@ -22,6 +25,7 @@ class RefundFactory
         private PaymentFactory $paymentFactory,
         private CustomerFactory $customerFactory,
         private BillingAdminFactory $billingAdminFactory,
+        public PaymentRepositoryInterface $paymentRepository,
     ) {
     }
 
@@ -55,5 +59,25 @@ class RefundFactory
         $dto->setBillingAdmin($this->billingAdminFactory->createAppDto($refund->getBillingAdmin()));
 
         return $dto;
+    }
+
+    public function createEntity(\Obol\Model\Refund $model, ?Refund $refund = null): Refund
+    {
+        if (!$refund) {
+            $refund = new Refund();
+        }
+        $payment = $this->paymentRepository->getPaymentForReference($model->getPaymentId());
+        $payment->setStatus(PaymentStatus::PARTIALLY_REFUNDED);
+
+        $refund->setAmount($model->getAmount());
+        $refund->setCurrency(strtoupper($model->getCurrency()));
+        $refund->setCustomer($payment->getCustomer());
+        $refund->setPayment($payment);
+        $refund->setCreatedAt($model->getCreatedAt() ?? new \DateTime());
+        $refund->setExternalReference($model->getId());
+        $refund->setStatus(RefundStatus::ISSUED);
+        $refund->setReason('imported');
+
+        return $refund;
     }
 }
