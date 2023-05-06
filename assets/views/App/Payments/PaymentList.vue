@@ -44,7 +44,7 @@
           </thead>
           <tbody>
             <tr v-for="payment in payments" class="mt-5 cursor-pointer">
-              <td>{{ payment.amount }}</td>
+              <td>{{ currency(payment.amount) }}</td>
               <td>{{ payment.currency }}</td>
               <td v-if="payment.customer == null || payment.customer == undefined">N/A</td>
               <td v-else>{{ payment.customer.email }}</td>
@@ -78,6 +78,8 @@
 <script>
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
+import "currency.js"
+import currency from "currency.js";
 
 export default {
   name: "CustomerList.vue",
@@ -114,6 +116,9 @@ export default {
     }
   },
   methods: {
+    currency: function (value) {
+        return currency(value, { fromCents: true });
+    },
     syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {
