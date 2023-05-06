@@ -21,4 +21,6 @@ interface StripeImportRepositoryInterface extends RepositoryInterface
      * @return StripeImport[]
      */
     public function getAll(): array;
+
+    public function findActive(): ?StripeImport;
 }

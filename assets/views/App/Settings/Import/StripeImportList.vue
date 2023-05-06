@@ -3,7 +3,7 @@
     <h1>{{ $t('app.settings.stripe_import.main.title') }}</h1>
 
     <div class="my-5 text-end">
-      <SubmitButton :in-progress="sendingRequest">{{ $t('app.settings.stripe_import.main.start_button') }}</SubmitButton>
+      <SubmitButton :in-progress="sendingRequest" @click="createImportRequest">{{ $t('app.settings.stripe_import.main.start_button') }}</SubmitButton>
     </div>
 
     <LoadingScreen :ready="ready">
@@ -45,6 +45,20 @@ export default {
       ready: false,
       sendingRequest: false,
       importRequests: [],
+    }
+  },
+  methods: {
+    createImportRequest: function () {
+      this.sendingRequest = true;
+      axios.post('/app/settings/stripe-import/start').then(response => {
+        this.importRequests.push(response.data);
+        this.sendingRequest = false;
+      }).catch(error => {
+        this.sendingRequest = false;
+        if (error.response.status == 409) {
+          alert(this.$t('app.settings.stripe_import.main.already_in_progress'))
+        }
+      })
     }
   },
   mounted() {

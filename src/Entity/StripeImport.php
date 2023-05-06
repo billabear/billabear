@@ -90,12 +90,12 @@ class StripeImport
         $this->updatedAt = $updatedAt;
     }
 
-    public function getLastId(): string
+    public function getLastId(): ?string
     {
         return $this->lastId;
     }
 
-    public function setLastId(string $lastId): void
+    public function setLastId(?string $lastId): void
     {
         $this->lastId = $lastId;
     }

@@ -13,6 +13,7 @@
 namespace App\Controller\App\Settings;
 
 use App\Dto\Response\App\Settings\StripeImportView;
+use App\Entity\StripeImport;
 use App\Factory\Settings\StripeImportFactory;
 use App\Repository\StripeImportRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,5 +38,31 @@ class StripeImportController
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/stripe-import/start', name: 'app_app_settings_stripeimport_startimport', methods: ['POST'])]
+    public function startImport(
+        StripeImportRepositoryInterface $stripeImportRepository,
+        StripeImportFactory $importFactory,
+        SerializerInterface $serializer,
+    ): Response {
+        $stripeImport = $stripeImportRepository->findActive();
+
+        if ($stripeImport) {
+            return new JsonResponse([], JsonResponse::HTTP_CONFLICT);
+        }
+
+        $stripeImport = new StripeImport();
+        $stripeImport->setState('started');
+        $stripeImport->setLastId(null);
+        $stripeImport->setComplete(false);
+        $stripeImport->setUpdatedAt(new \DateTime());
+        $stripeImport->setCreatedAt(new \DateTime());
+
+        $stripeImportRepository->save($stripeImport);
+        $dto = $importFactory->createAppDto($stripeImport);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }

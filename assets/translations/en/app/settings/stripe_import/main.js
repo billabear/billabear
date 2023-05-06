@@ -1,6 +1,7 @@
 export const SETTINGS_STRIPE_IMPORT_MAIN_TRANSLATIONS = {
     title: "Stripe Import",
     start_button: "Start Button",
+    already_in_progress: "Import already in progress",
     list: {
         state: "State",
         last_id: "Last Id Processed",

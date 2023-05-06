@@ -12,6 +12,7 @@
 
 namespace App\Repository;
 
+use App\Entity\StripeImport;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class StripeImportRepository extends DoctrineRepository implements StripeImportRepositoryInterface
@@ -19,5 +20,10 @@ class StripeImportRepository extends DoctrineRepository implements StripeImportR
     public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function findActive(): ?StripeImport
+    {
+        return $this->entityRepository->findOneBy(['complete' => false]);
     }
 }
