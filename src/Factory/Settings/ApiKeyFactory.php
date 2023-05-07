@@ -32,7 +32,7 @@ class ApiKeyFactory
     public function createEntity(CreateApiKey $createApiKey): Entity
     {
         $apiKey = new Entity();
-        $apiKey->setKey(bin2hex(random_bytes(64)));
+        $apiKey->setKey(bin2hex(random_bytes(24)));
         $apiKey->setCreatedAt(new \DateTime());
         $apiKey->setUpdatedAt(new \DateTime());
         $apiKey->setName($createApiKey->getName());

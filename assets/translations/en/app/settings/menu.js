@@ -7,5 +7,6 @@ export const SETTINGS_MENU_TRANSACTIONS = {
     notification_settings: "Notification Settings",
     system_settings: "System Settings",
     users: "Users",
-    import: "Import"
+    import: "Import",
+    api_keys: "API Keys",
 };

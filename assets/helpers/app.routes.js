@@ -47,6 +47,7 @@ import SystemSettingsUpdate from "../views/App/Settings/SystemSettings/SystemSet
 import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
 import SettingsUserUpdate from "../views/App/Settings/Team/SettingsUserUpdate.vue";
 import StripeImportList from "../views/App/Settings/Import/StripeImportList.vue";
+import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -171,6 +172,11 @@ export const APP_ROUTES = [
                 name: "app.settings.import.stripe",
                 path: "import/stripe",
                 component: StripeImportList,
+            },
+            {
+                name: "app.settings.api_keys.main",
+                path: "api-keys",
+                component: ApiKeysMain,
             }
         ]
     },
