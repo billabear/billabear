@@ -104,6 +104,12 @@ services:
     app.repository.orm.stripe_import:
         class: App\Repository\Orm\StripeImportRepository
 
+    App\Repository\ApiKeyRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.api_key'
+    app.repository.orm.api_key:
+        class: App\Repository\Orm\ApiKeyRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
