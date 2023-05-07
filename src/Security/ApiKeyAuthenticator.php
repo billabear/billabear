@@ -51,9 +51,13 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('No API token provided');
         }
         try {
-            $this->apiKeyRepository->findActiveApiKeyForKey($apiKey);
+            $apiKeyEntity = $this->apiKeyRepository->findActiveApiKeyForKey($apiKey);
         } catch (NoEntityFoundException $e) {
             throw new CustomUserMessageAuthenticationException('No valid API key found');
+        }
+        $now = new \DateTime();
+        if ($now > $apiKeyEntity->getExpiresAt()) {
+            throw new CustomUserMessageAuthenticationException('No API expired found');
         }
 
         return new SelfValidatingPassport(new UserBadge($apiKey, function ($key) {

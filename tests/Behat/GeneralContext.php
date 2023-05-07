@@ -75,6 +75,27 @@ class GeneralContext implements Context
     }
 
     /**
+     * @When I use the API key :arg1
+     */
+    public function iUseTheApiKey($arg1)
+    {
+        $this->authenticate($arg1);
+        $this->sendJsonRequest('GET', '/api/v1/customer');
+    }
+
+    /**
+     * @Then I will get an unauthorised error response
+     */
+    public function iWillGetAnUnauthorisedErrorResponse()
+    {
+        $statusCode = $this->session->getStatusCode();
+
+        if (401 != $statusCode) {
+            throw new \Exception('Did not get an error code: '.$statusCode);
+        }
+    }
+
+    /**
      * @Then I will get an error response
      */
     public function iWillGetAnErrorResponse()
