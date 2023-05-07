@@ -35,7 +35,7 @@ Feature: Customer Creation
 
   Scenario: Invalid email
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a customer with the following info
+    When I create a customer via the app with the following info
       | Email   | a-word   |
       | Country | DE |
     Then there should be an error for "email"

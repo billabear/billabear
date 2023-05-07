@@ -70,6 +70,8 @@ class GeneralContext implements Context
 
         $em->persist($settings);
         $em->flush();
+
+        $this->authenticate(null);
     }
 
     /**

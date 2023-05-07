@@ -100,7 +100,6 @@ class ApiContext implements Context
             'when' => 'instantly',
             'refund_type' => 'none',
         ];
-
         $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/cancel', $payload);
     }
 

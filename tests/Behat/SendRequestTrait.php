@@ -16,9 +16,9 @@ trait SendRequestTrait
 {
     public static ?string $apiKey = null;
 
-    protected function authenticate(string $apiKey): void
+    protected function authenticate(?string $apiKey): void
     {
-        static::$apiKey = $apiKey;
+        ApiKeyHelper::$apiKey = $apiKey;
     }
 
     protected function sendJsonRequest(string $method, string $url, array $body = []): void
@@ -31,6 +31,11 @@ trait SendRequestTrait
             'Accept' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ];
+
+        if (isset(ApiKeyHelper::$apiKey)) {
+            $headers['HTTP_X-API-KEY'] = ApiKeyHelper::$apiKey;
+        }
+
         $client = $this->session->getDriver()->getClient();
         $client->request(
             $method,

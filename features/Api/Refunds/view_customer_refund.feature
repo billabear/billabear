@@ -36,7 +36,7 @@ Feature: Payment List Read APP
 
 
   Scenario: Get customer refund when customer has refunds
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
@@ -54,7 +54,7 @@ Feature: Payment List Read APP
     Then I will see a refund for "customer.one@example.org" for 3500 in the list
 
   Scenario: Don't see refund
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |

@@ -12,6 +12,8 @@
 
 namespace App\Tests\Behat\Api;
 
+use App\Entity\ApiKey;
+use App\Repository\Orm\ApiKeyRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
@@ -21,7 +23,7 @@ class MainContext implements Context
 {
     use SendRequestTrait;
 
-    public function __construct(private Session $session)
+    public function __construct(private Session $session, private ApiKeyRepository $apiKeyRepository)
     {
     }
 
@@ -40,6 +42,20 @@ class MainContext implements Context
      */
     public function iHaveAuthenticatedToTheApi()
     {
+        $key = bin2hex(random_bytes(24));
+
+        $this->authenticate($key);
+
+        $apiKey = new ApiKey();
+        $apiKey->setName('Behat');
+        $apiKey->setKey($key);
+        $apiKey->setActive(true);
+        $apiKey->setExpiresAt(new \DateTime('+1 hour'));
+        $apiKey->setCreatedAt(new \DateTime('now'));
+        $apiKey->setUpdatedAt(new \DateTime());
+
+        $this->apiKeyRepository->getEntityManager()->persist($apiKey);
+        $this->apiKeyRepository->getEntityManager()->flush();
     }
 
     /**

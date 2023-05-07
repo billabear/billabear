@@ -36,7 +36,7 @@ Feature: Refund Read API
 
 
   Scenario: Get customer info
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
