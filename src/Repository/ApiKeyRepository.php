@@ -12,6 +12,8 @@
 
 namespace App\Repository;
 
+use App\Entity\ApiKey;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class ApiKeyRepository extends DoctrineRepository implements ApiKeyRepositoryInterface
@@ -19,5 +21,23 @@ class ApiKeyRepository extends DoctrineRepository implements ApiKeyRepositoryInt
     public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function hasApiKeyForName(string $name): bool
+    {
+        $apiKey = $this->entityRepository->findOneBy(['name' => $name]);
+
+        return $apiKey instanceof ApiKey;
+    }
+
+    public function findApiKeyForKey(string $key): ApiKey
+    {
+        $apiKey = $this->entityRepository->findOneBy(['key' => $key]);
+
+        if (!$apiKey instanceof ApiKey) {
+            throw new NoEntityFoundException(sprintf("Unable to find api key for key '%s'", $key));
+        }
+
+        return $apiKey;
     }
 }

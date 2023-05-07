@@ -13,12 +13,14 @@
 namespace App\Dto\Request\App\Settings;
 
 use App\Validator\Constraints\InTheFuture;
+use App\Validator\Constraints\UniqueApiKeyName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateApiKey
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]
+    #[UniqueApiKeyName]
     private $name;
 
     #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]

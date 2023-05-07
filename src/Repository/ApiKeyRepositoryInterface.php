@@ -13,6 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\ApiKey;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface ApiKeyRepositoryInterface extends RepositoryInterface
@@ -21,4 +22,11 @@ interface ApiKeyRepositoryInterface extends RepositoryInterface
      * @return ApiKey[]
      */
     public function getAll(): array;
+
+    public function hasApiKeyForName(string $name): bool;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function findApiKeyForKey(string $key): ApiKey;
 }

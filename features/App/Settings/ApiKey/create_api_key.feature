@@ -24,3 +24,9 @@ Feature: API Key create
     When I create an API key for the name "" with the expires "+1 year"
     Then I will get an error response
     Then there will not be an API key with the name "New API Key"
+
+  Scenario: Create API Key - Name already used
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I create an API key for the name "New API Key" with the expires "+1 year"
+    When I create an API key for the name "New API Key" with the expires "+1 year"
+    Then I will get an error response
