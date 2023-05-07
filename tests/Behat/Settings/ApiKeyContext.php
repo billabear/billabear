@@ -70,4 +70,42 @@ class ApiKeyContext implements Context
 
         throw new \Exception("Can't find API Key");
     }
+
+    /**
+     * @When I create an API key for the name :arg1 with the expires :arg2
+     */
+    public function iCreateAnApiKeyForTheNameWithTheExpires($name, $datestring)
+    {
+        $date = new \DateTime($datestring);
+        $payload = [
+            'name' => $name,
+            'expires_at' => $date->format(\DATE_RFC3339_EXTENDED),
+        ];
+
+        $this->sendJsonRequest('POST', '/app/settings/api-key', $payload);
+    }
+
+    /**
+     * @Then there will be an API key with the name :arg1
+     */
+    public function thereWillBeAnApiKeyWithTheName($arg1)
+    {
+        $apiKey = $this->apiKeyRepository->findOneBy(['name' => $arg1]);
+
+        if (!$apiKey instanceof ApiKey) {
+            throw new \Exception('No API Key found');
+        }
+    }
+
+    /**
+     * @Then there will not be an API key with the name :arg1
+     */
+    public function thereWillNotBeAnApiKeyWithTheName($arg1)
+    {
+        $apiKey = $this->apiKeyRepository->findOneBy(['name' => $arg1]);
+
+        if ($apiKey instanceof ApiKey) {
+            throw new \Exception('API Key found');
+        }
+    }
 }

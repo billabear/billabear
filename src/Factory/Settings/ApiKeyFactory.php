@@ -12,6 +12,7 @@
 
 namespace App\Factory\Settings;
 
+use App\Dto\Request\App\Settings\CreateApiKey;
 use App\Dto\Response\App\Settings\ApiKey as AppDto;
 use App\Entity\ApiKey as Entity;
 
@@ -26,5 +27,17 @@ class ApiKeyFactory
         $dto->setExpiresAt($entity->getExpiresAt());
 
         return $dto;
+    }
+
+    public function createEntity(CreateApiKey $createApiKey): Entity
+    {
+        $apiKey = new Entity();
+        $apiKey->setKey(bin2hex(random_bytes(64)));
+        $apiKey->setCreatedAt(new \DateTime());
+        $apiKey->setUpdatedAt(new \DateTime());
+        $apiKey->setName($createApiKey->getName());
+        $apiKey->setExpiresAt(\DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $createApiKey->getExpiresAt()));
+
+        return $apiKey;
     }
 }

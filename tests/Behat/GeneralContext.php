@@ -22,6 +22,8 @@ use Parthenon\Common\Address;
 
 class GeneralContext implements Context
 {
+    use SendRequestTrait;
+
     private Session $session;
     private EntityManagerInterface $entityManager;
 
@@ -79,6 +81,19 @@ class GeneralContext implements Context
 
         if ($statusCode < 400 || $statusCode >= 500) {
             throw new \Exception('Did not get an error code');
+        }
+    }
+
+    /**
+     * @Then I will get a valid response
+     */
+    public function iWillGetAValidResponse()
+    {
+        $statusCode = $this->session->getStatusCode();
+
+        if ($statusCode > 299) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('Did not get a valid code');
         }
     }
 }
