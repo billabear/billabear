@@ -24,6 +24,7 @@
             <td>{{ key.key }}</td>
             <td>{{ key.expires_at }}</td>
             <td>{{ key.created_at }}</td>
+            <td><button v-if="key.active" @click="disable(key)" class="btn--danger">{{ $t('app.settings.api_keys.main.list.disable_button') }}</button></td>
           </tr>
           <tr v-if="apiKeys.length === 0">
             <td colspan="5" class="text-center">{{ $t('app.settings.api_keys.main.list.no_api_keys') }}</td>
@@ -109,6 +110,12 @@ export default {
     })
   },
   methods: {
+    disable: function (key) {
+      axios.post('/app/settings/api-key/'+key.id+'/disable').then(response => {
+
+        key.active = false;
+      })
+    },
     createApiKey: function () {
       this.sendingInProgress = true;
       const payload = {

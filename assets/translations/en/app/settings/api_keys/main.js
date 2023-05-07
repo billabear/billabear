@@ -6,7 +6,8 @@ export const SETTINGS_API_KEYS_MAIN_TRANSLATIONS = {
         key: "Key",
         expires_at: "Expires At",
         created_at: "Created At",
-        no_api_keys: "There currently are no API Keys"
+        no_api_keys: "There currently are no API Keys",
+        disable_button: "Disable"
     },
     create: {
         title: "Create New Key",

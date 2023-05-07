@@ -108,4 +108,26 @@ class ApiKeyContext implements Context
             throw new \Exception('API Key found');
         }
     }
+
+    /**
+     * @When I disable the api key :arg1
+     */
+    public function iDisableTheApiKey($arg1)
+    {
+        $apiKey = $this->apiKeyRepository->findOneBy(['name' => $arg1]);
+        $this->sendJsonRequest('POST', '/app/settings/api-key/'.(string) $apiKey->getId().'/disable');
+    }
+
+    /**
+     * @Then then the api key :arg1 is not active
+     */
+    public function thenTheApiKeyIsNotActive($arg1)
+    {
+        /** @var ApiKey $apiKey */
+        $apiKey = $this->apiKeyRepository->findOneBy(['name' => $arg1]);
+        $this->apiKeyRepository->getEntityManager()->refresh($apiKey);
+        if ($apiKey->isActive()) {
+            throw new \Exception('API key is not disabled');
+        }
+    }
 }

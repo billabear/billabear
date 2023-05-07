@@ -15,8 +15,10 @@ namespace App\Controller\App\Settings;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\Settings\CreateApiKey;
 use App\Dto\Response\App\ListResponse;
+use App\Entity\ApiKey;
 use App\Factory\Settings\ApiKeyFactory;
 use App\Repository\ApiKeyRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,5 +68,23 @@ class ApiKeyController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/api-key/{id}/disable', name: 'app_app_settings_apikey_disableapikey', methods: ['POST'])]
+    public function disableApiKey(
+        Request $request,
+        ApiKeyRepositoryInterface $apiKeyRepository,
+    ): Response {
+        try {
+            /** @var ApiKey $apiKey */
+            $apiKey = $apiKeyRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $apiKey->setActive(false);
+        $apiKeyRepository->save($apiKey);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

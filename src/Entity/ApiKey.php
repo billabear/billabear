@@ -40,6 +40,9 @@ class ApiKey
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $expiresAt;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $active = true;
+
     public function getId()
     {
         return $this->id;
@@ -98,5 +101,15 @@ class ApiKey
     public function setExpiresAt(\DateTimeInterface $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 }

@@ -21,10 +21,12 @@ class ApiKeyFactory
     public function createAppDto(Entity $entity): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $entity->getId());
         $dto->setKey($entity->getKey());
         $dto->setName($entity->getName());
         $dto->setCreatedAt($entity->getCreatedAt());
         $dto->setExpiresAt($entity->getExpiresAt());
+        $dto->setActive($entity->isActive());
 
         return $dto;
     }

@@ -22,6 +22,8 @@ class ApiKey
 
     private string $key;
 
+    private bool $active;
+
     #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
 
@@ -76,5 +78,15 @@ class ApiKey
     public function setExpiresAt(\DateTimeInterface $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 }
