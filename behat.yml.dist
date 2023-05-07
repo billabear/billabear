@@ -58,6 +58,7 @@ default:
                 - App\Tests\Behat\Settings\NotificationSettingsContext
                 - App\Tests\Behat\Settings\SystemSettingsContext
                 - App\Tests\Behat\Settings\UserManagementContext
+                - App\Tests\Behat\Settings\ApiKeyContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

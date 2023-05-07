@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Entity\ApiKey;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface ApiKeyRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * @return ApiKey[]
+     */
+    public function getAll(): array;
 }

@@ -10,14 +10,21 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Factory\Settings;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use App\Dto\Response\App\Settings\ApiKey as AppDto;
+use App\Entity\ApiKey as Entity;
 
-class ApiKeyRepository extends DoctrineRepository implements ApiKeyRepositoryInterface
+class ApiKeyFactory
 {
-    public function getAll(): array
+    public function createAppDto(Entity $entity): AppDto
     {
-        return $this->entityRepository->findAll();
+        $dto = new AppDto();
+        $dto->setKey($entity->getKey());
+        $dto->setName($entity->getName());
+        $dto->setCreatedAt($entity->getCreatedAt());
+        $dto->setExpiresAt($entity->getExpiresAt());
+
+        return $dto;
     }
 }
