@@ -30,9 +30,9 @@ class ApiKeyRepository extends DoctrineRepository implements ApiKeyRepositoryInt
         return $apiKey instanceof ApiKey;
     }
 
-    public function findApiKeyForKey(string $key): ApiKey
+    public function findActiveApiKeyForKey(string $key): ApiKey
     {
-        $apiKey = $this->entityRepository->findOneBy(['key' => $key]);
+        $apiKey = $this->entityRepository->findOneBy(['key' => $key, 'active' => true]);
 
         if (!$apiKey instanceof ApiKey) {
             throw new NoEntityFoundException(sprintf("Unable to find api key for key '%s'", $key));

@@ -28,5 +28,5 @@ interface ApiKeyRepositoryInterface extends RepositoryInterface
     /**
      * @throws NoEntityFoundException
      */
-    public function findApiKeyForKey(string $key): ApiKey;
+    public function findActiveApiKeyForKey(string $key): ApiKey;
 }
