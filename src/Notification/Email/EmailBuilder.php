@@ -12,6 +12,37 @@
 
 namespace App\Notification\Email;
 
+use App\Entity\Customer;
+use App\Notification\Email\Data\AbstractEmailData;
+use Parthenon\Notification\Email;
+use Twig\Environment;
+
 class EmailBuilder
 {
+    public function __construct(private Environment $twig, private EmailTemplateProvider $emailTemplateProvider)
+    {
+    }
+
+    public function build(Customer $customer, AbstractEmailData $emailData): Email
+    {
+        $emailTemplate = $this->emailTemplateProvider->createTemplateForCustomer($customer, $emailData->getTemplateName());
+
+        $email = new Email();
+        $email->setToAddress($customer->getBillingEmail());
+        $email->setFromAddress($customer->getBrandSettings()->getEmailAddress());
+        $email->setFromName($customer->getBrandSettings()->getBrandName());
+
+        if ($emailTemplate->getTemplateId()) {
+            $email->setTemplateName($emailTemplate->getTemplateId());
+            $email->setTemplateVariables($emailData->getData());
+        } else {
+            $twigTemplate = $this->twig->createTemplate($emailTemplate->getTemplateBody());
+            $content = $this->twig->render($twigTemplate, $emailData->getData());
+
+            $email->setSubject($emailTemplate->getSubject());
+            $email->setContent($content);
+        }
+
+        return $email;
+    }
 }

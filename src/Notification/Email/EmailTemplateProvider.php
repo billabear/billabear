@@ -23,7 +23,7 @@ class EmailTemplateProvider
     ) {
     }
 
-    public function createTemplateForCustomer(string $templateName, Customer $customer): EmailTemplate
+    public function createTemplateForCustomer(Customer $customer, string $templateName): EmailTemplate
     {
         $emailTemplate = $this->emailTemplateRepository->getByNameAndLocaleAndBrand($templateName, $customer->getLocale(), $customer->getBrand());
 
