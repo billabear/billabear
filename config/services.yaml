@@ -113,4 +113,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    Parthenon\Notification\EmailSenderInterface:
+        factory: [ '@App\Notification\EmailSenderFactory', 'create' ]
+
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'

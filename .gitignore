@@ -32,3 +32,7 @@ yarn-error.log
 
 yarn.lock
 symfony.lock
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

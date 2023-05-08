@@ -17,6 +17,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
         "knplabs/knp-snappy": "^1.4",
+        "mailgun/mailgun-php": "^3.5",
         "parthenon/obol": "dev-main",
         "parthenon/parthenon": "dev-main",
         "ramsey/uuid": "^4.7",
@@ -31,7 +32,8 @@
         "symfony/runtime": "6.2.*",
         "symfony/webpack-encore-bundle": "^1.15",
         "symfony/workflow": "6.2.*",
-        "symfony/yaml": "6.2.*"
+        "symfony/yaml": "6.2.*",
+        "wildbit/postmark-php": "^4.0"
     },
     "require-dev": {
         "behat/behat": "^3.11",
@@ -40,6 +42,7 @@
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.3",
         "friendsofphp/php-cs-fixer": "^v3.14.4",
+        "phpunit/phpunit": "^10.1",
         "symfony/web-profiler-bundle": "^6.1"
     },
     "config": {
