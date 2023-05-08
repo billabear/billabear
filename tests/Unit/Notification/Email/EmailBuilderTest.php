@@ -16,4 +16,8 @@ use PHPUnit\Framework\TestCase;
 
 class EmailBuilderTest extends TestCase
 {
+    public function testEmail()
+    {
+        $this->assertTrue(true);
+    }
 }
