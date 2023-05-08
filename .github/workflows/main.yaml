@@ -119,8 +119,7 @@ jobs:
         run: |
           vendor/bin/behat -f progress features/User
 
-
-  behat_app:
+  behat_user:
     needs: code_style
     name: Behat APP
     runs-on: ubuntu-latest
