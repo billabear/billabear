@@ -19,5 +19,5 @@ interface EmailTemplateRepositoryInterface extends CrudRepositoryInterface
 {
     public function getByNameAndLocale(string $name, string $locale): EmailTemplate;
 
-    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): EmailTemplate;
+    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): ?EmailTemplate;
 }

@@ -14,7 +14,6 @@ namespace App\Validator\Constraints;
 
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
 use App\Repository\EmailTemplateRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -34,9 +33,9 @@ class UniqueEmailTemplateValidator extends ConstraintValidator
             return;
         }
 
-        try {
-            $this->repository->getByNameAndLocaleAndBrand($value->getName(), $value->getLocale(), $value->getBrand());
-        } catch (NoEntityFoundException $exception) {
+        $emailTemplate = $this->repository->getByNameAndLocaleAndBrand($value->getName(), $value->getLocale(), $value->getBrand());
+
+        if (!$emailTemplate) {
             return;
         }
 

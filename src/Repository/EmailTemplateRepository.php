@@ -30,7 +30,7 @@ class EmailTemplateRepository extends DoctrineCrudRepository implements EmailTem
         return $emailTemplate;
     }
 
-    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): EmailTemplate
+    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): ?EmailTemplate
     {
         $qb = $this->entityRepository->createQueryBuilder('em');
 
@@ -46,11 +46,11 @@ class EmailTemplateRepository extends DoctrineCrudRepository implements EmailTem
         try {
             $result = $query->getSingleResult();
         } catch (NoResultException $e) {
-            throw new NoEntityFoundException(sprintf("Can't find email template for name '%s' and locale '%s' for brand '%s'", $name, $locale, $brand), previous: $e);
+            return null;
         }
 
         if (!$result instanceof EmailTemplate) {
-            throw new NoEntityFoundException(sprintf("Can't find email template for name '%s' and locale '%s' for brand '%s'", $name, $locale, $brand));
+            return null;
         }
 
         return $result;

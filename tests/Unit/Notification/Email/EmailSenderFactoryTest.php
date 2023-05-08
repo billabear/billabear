@@ -10,10 +10,10 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Tests\Unit\Notification;
+namespace App\Tests\Unit\Notification\Email;
 
 use App\Entity\Settings;
-use App\Notification\EmailSenderFactory;
+use App\Notification\Email\EmailSenderFactory;
 use App\Repository\SettingsRepositoryInterface;
 use Parthenon\Notification\Sender\MailgunEmailSender;
 use Parthenon\Notification\Sender\PostmarkEmailSender;
