@@ -611,6 +611,26 @@ class UserContext implements Context
     }
 
     /**
+     * @When I invite :arg1 with role :arg2
+     */
+    public function iInviteWithRole($email, $role)
+    {
+        $this->sendJsonRequest('POST', '/app/user/invite', ['email' => $email, 'role' => $role]);
+    }
+
+    /**
+     * @Then there will be an invite code for :arg1 with the role :arg2
+     */
+    public function thereWillBeAnInviteCodeForWithTheRole($email, $role)
+    {
+        $inviteCode = $this->inviteCodeRepository->findOneBy(['email' => $email, 'role' => $role]);
+
+        if (!$inviteCode) {
+            throw new \Exception('No invite code found');
+        }
+    }
+
+    /**
      * @Then there will be an invite code for :arg1
      */
     public function thereWillBeAnInviteCodeFor($email)
@@ -645,6 +665,31 @@ class UserContext implements Context
         $inviteCode->setCode($code);
         $this->inviteCodeRepository->getEntityManager()->persist($inviteCode);
         $this->inviteCodeRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the invite code :arg1 with role :arg2 exists
+     */
+    public function theInviteCodeWithRoleExists($code, $role)
+    {
+        $user = $this->createUser('inviteUser', 'fddfssdf', 'ddd', true);
+
+        $inviteCode = InviteCode::createForUser($user, 'random.email@example.org', $role);
+        $inviteCode->setCode($code);
+        $this->inviteCodeRepository->getEntityManager()->persist($inviteCode);
+        $this->inviteCodeRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Then the user :arg1 will have the role :arg2
+     */
+    public function theUserWillHaveTheRole($arg1, $arg2)
+    {
+        $user = $this->fetchUser($arg1);
+
+        if (!in_array($arg2, $user->getRoles())) {
+            throw new \Exception('wrong role');
+        }
     }
 
     /**
