@@ -698,8 +698,6 @@ class UserContext implements Context
     public function iTryToSignUpWithTheCode($code)
     {
         $this->count = $this->repository->count([]);
-
-        $this->count = $this->repository->count([]);
         $this->sendJsonRequest('POST', '/app/user/signup/'.$code, $this->formFields);
     }
 
