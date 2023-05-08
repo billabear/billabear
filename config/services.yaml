@@ -114,6 +114,6 @@ services:
     # please note that last definitions always *replace* previous ones
 
     Parthenon\Notification\EmailSenderInterface:
-        factory: [ '@App\Notification\EmailSenderFactory', 'create' ]
+        factory: [ '@App\Notification\Email\EmailSenderFactory', 'create' ]
 
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
