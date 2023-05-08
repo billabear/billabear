@@ -63,8 +63,8 @@ function updateSettings(user) {
     return axios.post("/app/user/settings", user).then(handleResponse);
 }
 
-function invite(email) {
-    return axios.post("/app/user/invite", {email}).then(handleResponse);
+function invite(email, role) {
+    return axios.post("/app/user/invite", {email, role}).then(handleResponse);
 }
 export const userservice = {
     login,

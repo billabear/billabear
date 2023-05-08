@@ -11,6 +11,17 @@
         <label class="label">{{ $t('app.user.invite.email') }}</label>
         <input type="email" class="form-field"  :class="{'form-error': errors.email !== undefined}"  v-model="email" />
         <span class="error-message" v-if="errors.email" v-for="error in errors.email">{{ error }}</span>
+
+        <div class="mt-3">
+
+          <label class="label">{{ $t('app.user.invite.role') }}</label>
+          <select v-model="role"  class="form-field"  :class="{'form-error': errors.email !== undefined}">
+            <option>ROLE_ADMIN</option>
+            <option>ROLE_DEVELOPER</option>
+            <option>ROLE_CUSTOMER_SUPPORT</option>
+            <option>ROLE_USER</option>
+          </select>
+        </div>
       </div>
 
       <div class="mt-3">
@@ -31,6 +42,7 @@ export default {
   data() {
     return {
       email: "",
+      role: "",
       sending_invite: false,
       alert: undefined,
       errors: {},
