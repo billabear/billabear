@@ -20,17 +20,15 @@ use Parthenon\Billing\Entity\Subscription;
 class SubscriptionCreatedEmailData extends AbstractEmailData
 {
     public function __construct(
-        private Customer $customer,
-        private BrandSettings $brandSettings,
         private Subscription $subscription,
     ) {
     }
 
-    public function getData(): array
+    public function getData(Customer $customer, BrandSettings $brandSettings): array
     {
         return [
-            'brand' => $this->getBrandData($this->brandSettings),
-            'customer' => $this->getCustomerData($this->customer),
+            'brand' => $this->getBrandData($brandSettings),
+            'customer' => $this->getCustomerData($customer),
             'subscription' => $this->getSubscriptionData($this->subscription),
         ];
     }

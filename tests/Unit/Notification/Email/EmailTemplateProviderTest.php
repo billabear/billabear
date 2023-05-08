@@ -38,7 +38,7 @@ class EmailTemplateProviderTest extends TestCase
             ->willReturn($emailTemplate);
 
         $subject = new EmailTemplateProvider($emailTemplateRepository);
-        $actual = $subject->createTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
+        $actual = $subject->getTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
         $this->assertEquals($emailTemplate, $actual);
     }
 
@@ -61,7 +61,7 @@ class EmailTemplateProviderTest extends TestCase
             ));
 
         $subject = new EmailTemplateProvider($emailTemplateRepository);
-        $actual = $subject->createTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
+        $actual = $subject->getTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
         $this->assertEquals($emailTemplate, $actual);
     }
 
@@ -85,7 +85,7 @@ class EmailTemplateProviderTest extends TestCase
             ));
 
         $subject = new EmailTemplateProvider($emailTemplateRepository);
-        $actual = $subject->createTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
+        $actual = $subject->getTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
         $this->assertEquals($emailTemplate, $actual);
     }
 
@@ -110,6 +110,6 @@ class EmailTemplateProviderTest extends TestCase
             ));
 
         $subject = new EmailTemplateProvider($emailTemplateRepository);
-        $actual = $subject->createTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
+        $actual = $subject->getTemplateForCustomer($customer, EmailTemplate::NAME_SUBSCRIPTION_CREATED);
     }
 }

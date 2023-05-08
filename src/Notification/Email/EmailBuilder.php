@@ -25,19 +25,20 @@ class EmailBuilder
 
     public function build(Customer $customer, AbstractEmailData $emailData): Email
     {
-        $emailTemplate = $this->emailTemplateProvider->createTemplateForCustomer($customer, $emailData->getTemplateName());
+        $emailTemplate = $this->emailTemplateProvider->getTemplateForCustomer($customer, $emailData->getTemplateName());
 
         $email = new Email();
         $email->setToAddress($customer->getBillingEmail());
         $email->setFromAddress($customer->getBrandSettings()->getEmailAddress());
         $email->setFromName($customer->getBrandSettings()->getBrandName());
 
+        $templateVariables = $emailData->getData($customer, $customer->getBrandSettings());
         if ($emailTemplate->getTemplateId()) {
             $email->setTemplateName($emailTemplate->getTemplateId());
-            $email->setTemplateVariables($emailData->getData());
+            $email->setTemplateVariables($templateVariables);
         } else {
             $twigTemplate = $this->twig->createTemplate($emailTemplate->getTemplateBody());
-            $content = $this->twig->render($twigTemplate, $emailData->getData());
+            $content = $this->twig->render($twigTemplate, $templateVariables);
 
             $email->setSubject($emailTemplate->getSubject());
             $email->setContent($content);

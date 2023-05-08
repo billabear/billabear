@@ -20,7 +20,7 @@ abstract class AbstractEmailData
 {
     abstract public function getTemplateName(): string;
 
-    abstract public function getData(): array;
+    abstract public function getData(Customer $customer, BrandSettings $brandSettings): array;
 
     protected function getCustomerData(Customer $customer): array
     {
