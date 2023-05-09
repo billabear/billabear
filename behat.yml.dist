@@ -60,6 +60,9 @@ default:
                 - App\Tests\Behat\Settings\UserManagementContext
                 - App\Tests\Behat\Settings\ApiKeyContext
 
+                # Stats
+                - App\Tests\Behat\Stats\MainContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

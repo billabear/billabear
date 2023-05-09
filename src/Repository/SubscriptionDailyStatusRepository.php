@@ -28,7 +28,7 @@ class SubscriptionDailyStatusRepository extends DoctrineRepository implements Su
             $stat = new SubscriptionDailyStats();
             $stat->setYear($year);
             $stat->setMonth($month);
-            $stat->setYear($year);
+            $stat->setDay($day);
         }
 
         return $stat;

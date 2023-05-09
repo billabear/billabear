@@ -40,4 +40,4 @@ Feature: Customer Subscription Create APP
       | Subscription Plan | Price Amount | Price Currency | Price Schedule |
       | Test Plan         | 3000         | USD            | month          |
     Then there should be a subscription for the user "customer.one@example.org"
-
+    And the subscriber daily stat for the day should be 1
