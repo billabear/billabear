@@ -16,9 +16,12 @@ use App\Repository\Orm\CustomerRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
@@ -114,5 +117,37 @@ class ApiContext implements Context
         $paymentDetails = $this->paymentDetailsRepository->findOneBy(['lastFour' => $lastFour]);
 
         $this->sendJsonRequest('PUT', '/api/v1/subscription/'.(string) $subscription->getId().'/payment-method', ['payment_details' => (string) $paymentDetails->getId()]);
+    }
+
+    /**
+     * @When I create a subscription via the API for :arg1 with the follow:
+     */
+    public function iCreateASubscriptionViaTheApiForWithTheFollow($customerEmail, TableNode $table)
+    {
+        $row = current($table->getColumnsHash());
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+
+        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/start', [
+            'subscription_plan' => (string) $subscriptionPlan->getId(),
+            'price' => (string) $price->getId(),
+        ]);
+    }
+
+    /**
+     * @Then there should be a subscription for the user :arg1
+     */
+    public function thereShouldBeASubscriptionForTheUser($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception('No subscription found');
+        }
     }
 }

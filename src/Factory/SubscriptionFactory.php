@@ -103,8 +103,8 @@ class SubscriptionFactory
     {
         $dto = new ApiDto();
         $dto->setId((string) $subscription->getId());
-        $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
-        $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
+        $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()));
+        $dto->setPrice($this->priceFactory->createApiDto($subscription->getPrice()));
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());
         $dto->setCreatedAt($subscription->getCreatedAt());

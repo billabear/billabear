@@ -114,6 +114,11 @@ class SubscriptionPlanFactory
 
     public function createApiDto(SubscriptionPlan $subscriptionPlan): ApiDto
     {
+        $dto = new ApiDto();
+        $dto->setId((string) $subscriptionPlan->getId());
+        $dto->setName($subscriptionPlan->getName());
+
+        return $dto;
     }
 
     private function createLimitDto(SubscriptionPlanLimit $subscriptionPlanLimit): Limit

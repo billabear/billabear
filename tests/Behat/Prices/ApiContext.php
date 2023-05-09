@@ -87,6 +87,7 @@ class ApiContext implements Context
             $price = new Price();
             $price->setProduct($product);
             $price->setAmount($row['Amount']);
+            $price->setExternalReference(bin2hex(random_bytes(12)));
             $price->setCurrency($row['Currency']);
             $price->setRecurring('true' === strtolower($row['Recurring']));
             $price->setSchedule($row['Schedule'] ?? null);
