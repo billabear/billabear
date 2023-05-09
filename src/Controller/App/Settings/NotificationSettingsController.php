@@ -14,7 +14,7 @@ namespace App\Controller\App\Settings;
 
 use App\Dto\Request\App\Settings\NotificationSettings;
 use App\Dto\Response\App\Settings\NotificationSettingsView;
-use App\Factory\NotificationSettingsFactory;
+use App\Factory\Settings\NotificationSettingsFactory;
 use App\Repository\SettingsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

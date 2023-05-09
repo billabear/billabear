@@ -17,7 +17,7 @@ use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Template\TemplateView;
 use App\Dummy\Data\ReceiptProvider;
 use App\Entity\Template;
-use App\Factory\TemplateFactory;
+use App\Factory\Settings\TemplateFactory;
 use App\Pdf\ReceiptPdfGenerator;
 use App\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;

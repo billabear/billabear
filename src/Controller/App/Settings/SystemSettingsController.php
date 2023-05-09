@@ -14,7 +14,7 @@ namespace App\Controller\App\Settings;
 
 use App\Dto\Request\App\Settings\SystemSettings;
 use App\Dto\Response\App\Settings\SystemSettingsView;
-use App\Factory\SystemSettingsFactory;
+use App\Factory\Settings\SystemSettingsFactory;
 use App\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

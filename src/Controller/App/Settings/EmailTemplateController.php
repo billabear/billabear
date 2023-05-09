@@ -18,7 +18,7 @@ use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use App\Dto\Response\App\EmailTemplate\EmailTemplateView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\EmailTemplate;
-use App\Factory\EmailTemplateFactory;
+use App\Factory\Settings\EmailTemplateFactory;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\EmailTemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
