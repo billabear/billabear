@@ -96,7 +96,7 @@ class TemplateStep
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_SUBSCRIPTION_PAUSED);
         $emailTemplate->setSubject('Subscription Paused');
-        $emailTemplate->setTemplateBody('Your subscription has been paused');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your subscription has been paused'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
