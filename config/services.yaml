@@ -110,6 +110,12 @@ services:
     app.repository.orm.api_key:
         class: App\Repository\Orm\ApiKeyRepository
 
+    App\Repository\SubscriptionCreationRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.subscription_creation'
+    app.repository.orm.subscription_creation:
+        class: App\Repository\Orm\SubscriptionCreationRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
