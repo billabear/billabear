@@ -47,5 +47,68 @@ class TemplateStep
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
         $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_SUCCEEDED);
+        $emailTemplate->setSubject('Payment Received');
+        $emailTemplate->setTemplateBody('Thanks for your payment. Here is the receipt.');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILED);
+        $emailTemplate->setSubject('Payment Failed');
+        $emailTemplate->setTemplateBody('Thanks for your payment. Here is the receipt.');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILURE_WARNING);
+        $emailTemplate->setSubject('Payment Failed');
+        $emailTemplate->setTemplateBody('Thanks for your payment. Here is the receipt. We\'ll try and charge you later.');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_SUBSCRIPTION_CANCELLED);
+        $emailTemplate->setSubject('Subscription Cancelled');
+        $emailTemplate->setTemplateBody('Your subscription has been cancelled');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_SUBSCRIPTION_PAUSED);
+        $emailTemplate->setSubject('Subscription Paused');
+        $emailTemplate->setTemplateBody('Your subscription has been paused');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_METHOD_NO_VALID_METHODS);
+        $emailTemplate->setSubject('You have no valid payment methods');
+        $emailTemplate->setTemplateBody('There are no valid payment methods attached to your account. Please add one.');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_METHOD_EXPIRY_WARNING);
+        $emailTemplate->setSubject('Payment Method Expiring Soon');
+        $emailTemplate->setTemplateBody('Your payment method is expiring soon. Please add one before it expires.');
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
     }
 }

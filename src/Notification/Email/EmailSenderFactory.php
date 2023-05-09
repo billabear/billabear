@@ -72,7 +72,7 @@ class EmailSenderFactory
         $postmarkClient = new PostmarkClient($notificationSettings->getEmspApiKey());
 
         $sender = new PostmarkEmailSender($postmarkClient);
-        $sender->setLogger($this->getLogger())git;
+        $sender->setLogger($this->getLogger());
 
         return $sender;
     }
@@ -81,7 +81,7 @@ class EmailSenderFactory
     {
         $mailGun = Mailgun::create($notificationSettings->getEmspApiKey());
 
-        $sender=  new MailgunEmailSender($mailGun, $notificationSettings->getEmspDomain(), $this->createConfiguration($notificationSettings));
+        $sender = new MailgunEmailSender($mailGun, $notificationSettings->getEmspDomain(), $this->createConfiguration($notificationSettings));
         $sender->setLogger($this->getLogger());
 
         return $sender;
