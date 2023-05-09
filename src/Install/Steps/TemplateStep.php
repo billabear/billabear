@@ -42,31 +42,13 @@ class TemplateStep
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_SUBSCRIPTION_CREATED);
         $emailTemplate->setSubject('Subscription Created');
-        $emailTemplate->setTemplateBody('<html>
-    <head>
-      <title></title>
-    </head>
-    <body style="background: rgb(254,234,0);
-background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%);; color: black;">
-    
-    <div style="padding-top: 40px;">
-      <div style="margin:auto; background-color: white; max-width: 700px; padding: 50px; border-radius: 15px; margin-top: 40px; ">
-        <h1 style="text-align:center;"><img src="https://ha-static-data.s3.eu-central-1.amazonaws.com/github-readme-logo.png" alt="{{ brand.name  }}" /></h1>
-        
-        <p>Your subscription for plan <strong>{{ subscription.plan_name }}</strong> has been started</p>
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('<p>Your subscription for plan <strong>{{ subscription.plan_name }}</strong> has been started</p>
         
         {% if subscription.has_trial %}
             <p>You have a trial which will last {{ subscription.trial_length  }} after which you will be charged {{ subscription.amount }}</p>
         {% endif %}
       
-        <p>If you have any questions just reach out and we\'ll be happy to answer them!</p>
-      </div>
-
-      </div>
-
-
-    </body>
-  </html>');
+        <p>If you have any questions just reach out and we\'ll be happy to answer them!</p>'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -75,7 +57,7 @@ background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_SUCCEEDED);
         $emailTemplate->setSubject('Payment Received');
-        $emailTemplate->setTemplateBody('Thanks for your payment. Here is the receipt.');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Thanks for your payment. Here is the receipt.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -84,7 +66,7 @@ background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILED);
         $emailTemplate->setSubject('Payment Failed');
-        $emailTemplate->setTemplateBody('Thanks for your payment. Here is the receipt.');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Thanks for your payment. Here is the receipt.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -93,7 +75,7 @@ background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILURE_WARNING);
         $emailTemplate->setSubject('Payment Failed');
-        $emailTemplate->setTemplateBody('Thanks for your payment. Here is the receipt. We\'ll try and charge you later.');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Thanks for your payment. Here is the receipt. We\'ll try and charge you later.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -102,28 +84,10 @@ background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_SUBSCRIPTION_CANCELLED);
         $emailTemplate->setSubject('Subscription Cancelled');
-        $emailTemplate->setTemplateBody('<html>
-    <head>
-      <title></title>
-    </head>
-    <body style="background: rgb(254,234,0);
-background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%);; color: black;">
-    
-    <div style="padding-top: 40px;">
-      <div style="margin:auto; background-color: white; max-width: 700px; padding: 50px; border-radius: 15px; margin-top: 40px; ">
-        <h1 style="text-align:center;"><img src="https://ha-static-data.s3.eu-central-1.amazonaws.com/github-readme-logo.png" alt="{{ brand.name  }}" /></h1>
-        
-        <p>Your subscription for plan <strong>{{ subscription.plan_name }}</strong> has been cancelled</p>
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('<p>Your subscription for plan <strong>{{ subscription.plan_name }}</strong> has been cancelled</p>
         <p>You will stop being able to use the system at {{ subscription.finishes_at }}</p>
       
-        <p>If you have any questions just reach out and we\'ll be happy to answer them!</p>
-      </div>
-
-      </div>
-
-
-    </body>
-  </html>');
+        <p>If you have any questions just reach out and we\'ll be happy to answer them!</p>'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -141,7 +105,7 @@ background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_METHOD_NO_VALID_METHODS);
         $emailTemplate->setSubject('You have no valid payment methods');
-        $emailTemplate->setTemplateBody('There are no valid payment methods attached to your account. Please add one.');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('There are no valid payment methods attached to your account. Please add one.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -150,10 +114,33 @@ background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_METHOD_EXPIRY_WARNING);
         $emailTemplate->setSubject('Payment Method Expiring Soon');
-        $emailTemplate->setTemplateBody('Your payment method is expiring soon. Please add one before it expires.');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your payment method is expiring soon. Please add one before it expires.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
         $this->emailTemplateRepository->save($emailTemplate);
+    }
+
+    private function getEmailTemplate(string $content): string
+    {
+        return '<html>
+    <head>
+      <title></title>
+    </head>
+    <body style="background: rgb(254,234,0);
+background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%);; color: black;">
+    
+    <div style="padding-top: 40px;">
+      <div style="margin:auto; background-color: white; max-width: 700px; padding: 50px; border-radius: 15px; margin-top: 40px; ">
+        <h1 style="text-align:center;"><img src="https://ha-static-data.s3.eu-central-1.amazonaws.com/github-readme-logo.png" alt="{{ brand.name  }}" /></h1>
+        
+        '.$content.'
+      </div>
+
+      </div>
+
+
+    </body>
+  </html>';
     }
 }
