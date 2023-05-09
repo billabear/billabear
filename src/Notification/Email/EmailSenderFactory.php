@@ -62,7 +62,7 @@ class EmailSenderFactory
 
     private function createConfiguration(NotificationSettings $notificationSettings): Configuration
     {
-        $config = new Configuration('BillaBear', $notificationSettings->getDefaultOutgoingEmail());
+        $config = new Configuration('BillaBear System', $notificationSettings->getDefaultOutgoingEmail());
 
         return $config;
     }
