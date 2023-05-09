@@ -51,7 +51,7 @@ class TemplateStep
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
                 font-size: 16px;
                 line-height: 24px;
-                font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                font-family: \'Helvetica Neue\', \'Helvetica\', Helvetica, Arial, sans-serif;
                 color: #555;
             }
 
@@ -124,7 +124,7 @@ class TemplateStep
             /** RTL **/
             .invoice-box.rtl {
                 direction: rtl;
-                font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                font-family: Tahoma, \'Helvetica Neue\', \'Helvetica\', Helvetica, Arial, sans-serif;
             }
 
             .invoice-box.rtl table {
