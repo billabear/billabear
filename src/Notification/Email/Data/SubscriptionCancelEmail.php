@@ -37,7 +37,7 @@ class SubscriptionCancelEmail extends AbstractEmailData
     {
         return [
             'plan_name' => $subscription->getPlanName(),
-            'finsihes_at' => $subscription->getValidUntil()->format(\DATE_ATOM),
+            'finishes_at' => $subscription->getValidUntil()->format(\DATE_ATOM),
         ];
     }
 
