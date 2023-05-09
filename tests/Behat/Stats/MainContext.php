@@ -12,14 +12,14 @@
 
 namespace App\Tests\Behat\Stats;
 
-use App\Entity\SubscriptionDailyStats;
-use App\Repository\Orm\SubscriptionDailyStatsRepository;
+use App\Entity\SubscriptionCreationDailyStats;
+use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
 use Behat\Behat\Context\Context;
 
 class MainContext implements Context
 {
     public function __construct(
-        private SubscriptionDailyStatsRepository $subscriptionDailyStatsRepository,
+        private SubscriptionCreationDailyStatsRepository $subscriptionDailyStatsRepository,
     ) {
     }
 
@@ -35,7 +35,7 @@ class MainContext implements Context
             'day' => $dateTime->format('d'),
             ]);
 
-        if (!$statEntity instanceof SubscriptionDailyStats) {
+        if (!$statEntity instanceof SubscriptionCreationDailyStats) {
             throw new \Exception('No stat found');
         }
 

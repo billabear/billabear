@@ -12,13 +12,13 @@
 
 namespace App\Stats;
 
-use App\Repository\SubscriptionDailyStatusRepositoryInterface;
+use App\Repository\SubscriptionCreationDailyStatusRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class SubscriptionCreationStats
 {
     public function __construct(
-        private SubscriptionDailyStatusRepositoryInterface $dailyStatusRepository,
+        private SubscriptionCreationDailyStatusRepositoryInterface $dailyStatusRepository,
     ) {
     }
 

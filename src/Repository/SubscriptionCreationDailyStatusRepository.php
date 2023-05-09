@@ -12,20 +12,20 @@
 
 namespace App\Repository;
 
-use App\Entity\SubscriptionDailyStats;
+use App\Entity\SubscriptionCreationDailyStats;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-class SubscriptionDailyStatusRepository extends DoctrineRepository implements SubscriptionDailyStatusRepositoryInterface
+class SubscriptionCreationDailyStatusRepository extends DoctrineRepository implements SubscriptionCreationDailyStatusRepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionDailyStats
+    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationDailyStats
     {
         $year = $dateTime->format('Y');
         $month = $dateTime->format('m');
         $day = $dateTime->format('d');
         $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day]);
 
-        if (!$stat instanceof SubscriptionDailyStats) {
-            $stat = new SubscriptionDailyStats();
+        if (!$stat instanceof SubscriptionCreationDailyStats) {
+            $stat = new SubscriptionCreationDailyStats();
             $stat->setYear($year);
             $stat->setMonth($month);
             $stat->setDay($day);
