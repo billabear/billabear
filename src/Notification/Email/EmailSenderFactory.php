@@ -71,14 +71,20 @@ class EmailSenderFactory
     {
         $postmarkClient = new PostmarkClient($notificationSettings->getEmspApiKey());
 
-        return new PostmarkEmailSender($postmarkClient);
+        $sender = new PostmarkEmailSender($postmarkClient);
+        $sender->setLogger($this->getLogger())git;
+
+        return $sender;
     }
 
     private function createMailgun(NotificationSettings $notificationSettings): MailgunEmailSender
     {
         $mailGun = Mailgun::create($notificationSettings->getEmspApiKey());
 
-        return new MailgunEmailSender($mailGun, $notificationSettings->getEmspDomain(), $this->createConfiguration($notificationSettings));
+        $sender=  new MailgunEmailSender($mailGun, $notificationSettings->getEmspDomain(), $this->createConfiguration($notificationSettings));
+        $sender->setLogger($this->getLogger());
+
+        return $sender;
     }
 
     private function createSymfony(NotificationSettings $notificationSettings): SymfonyEmailSender
