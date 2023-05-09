@@ -15,7 +15,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\ORM\MappedSuperclass()]
+#[ORM\MappedSuperclass()]
 class AbstractStats
 {
     #[ORM\Id]
@@ -25,7 +25,7 @@ class AbstractStats
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    private int $count;
+    private int $count = 0;
 
     #[ORM\Column(type: 'integer')]
     private int $year;
@@ -84,5 +84,15 @@ class AbstractStats
     public function setDay(int $day): void
     {
         $this->day = $day;
+    }
+
+    public function increaseCount()
+    {
+        if (!isset($this->count)) {
+            $this->count = 1;
+
+            return;
+        }
+        ++$this->count;
     }
 }
