@@ -15,6 +15,7 @@ namespace App\EventSubscriber;
 use App\Entity\SubscriptionCreation;
 use App\Repository\SubscriptionCreationRepositoryInterface;
 use App\Subscription\SubscriptionCreationProcessor;
+use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SubscriptionSubscriber implements EventSubscriberInterface
@@ -28,13 +29,13 @@ class SubscriptionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            SubscriptionCreation::NAME => [
+            SubscriptionCreated::NAME => [
                 'handleNewSubscription',
             ],
         ];
     }
 
-    public function handleNewSubscription(SubscriptionCreation $subscriptionCreation): void
+    public function handleNewSubscription(SubscriptionCreated $subscriptionCreation): void
     {
         $subscriptionCreation = new SubscriptionCreation();
         $subscriptionCreation->setState('started');
