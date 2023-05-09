@@ -42,3 +42,4 @@ Feature: Customer Subscription Create APP
     Then there should be a subscription for the user "customer.one@example.org"
     And the subscriber daily stat for the day should be 1
     And the subscriber weekly stat for the day should be 1
+    And the subscriber yearly stat for the day should be 1
