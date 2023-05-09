@@ -14,10 +14,10 @@ namespace App\Install\Steps;
 
 use App\Entity\Customer;
 use App\Entity\EmailTemplate;
-use App\Entity    emplate;
+use App\Entity\Template;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\EmailTemplateRepositoryInterface;
-use App\Repository    emplateRepositoryInterface;
+use App\Repository\TemplateRepositoryInterface;
 
 class TemplateStep
 {
@@ -146,12 +146,12 @@ class TemplateStep
                         <table>
                             <tr>
                                 <td class="title">
-                                    Humbly Arrogant
+                                    {{ brand.name }}
                                 </td>
 
                                 <td>
-                                    Invoice #: {{ receipt.id }}<br />
-                                    Created: {{ receipt.createdAt.format('Y-m-d') }} <br />
+                                    Receipt #: {{ receipt.id }}<br />
+                                    Created: {{ receipt.createdAt.format(\'Y-m-d\') }} <br />
                                 </td>
                             </tr>
                         </table>
