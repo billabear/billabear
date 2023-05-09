@@ -13,12 +13,14 @@
 namespace App\Stats;
 
 use App\Repository\SubscriptionCreationDailyStatusRepositoryInterface;
+use App\Repository\SubscriptionCreationWeeklyStatusRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class SubscriptionCreationStats
 {
     public function __construct(
         private SubscriptionCreationDailyStatusRepositoryInterface $dailyStatusRepository,
+        private SubscriptionCreationWeeklyStatusRepositoryInterface $weeklyStatusRepository,
     ) {
     }
 
@@ -27,5 +29,9 @@ class SubscriptionCreationStats
         $dailyStat = $this->dailyStatusRepository->getStatForDateTime($subscription->getCreatedAt());
         $dailyStat->increaseCount();
         $this->dailyStatusRepository->save($dailyStat);
+
+        $weeklyStat = $this->weeklyStatusRepository->getStatForDateTime($subscription->getCreatedAt());
+        $weeklyStat->increaseCount();
+        $this->weeklyStatusRepository->save($weeklyStat);
     }
 }
