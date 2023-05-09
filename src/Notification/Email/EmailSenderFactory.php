@@ -15,6 +15,7 @@ namespace App\Notification\Email;
 use App\Entity\Settings\NotificationSettings;
 use App\Repository\SettingsRepositoryInterface;
 use Mailgun\Mailgun;
+use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\Configuration;
 use Parthenon\Notification\EmailSenderInterface;
 use Parthenon\Notification\Sender\MailgunEmailSender;
@@ -26,6 +27,8 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class EmailSenderFactory
 {
+    use LoggerAwareTrait;
+
     public function __construct(private SettingsRepositoryInterface $settingsRepository, private MailerInterface $mailer)
     {
     }
@@ -51,7 +54,10 @@ class EmailSenderFactory
         $sendGrid = new \SendGrid($notificationSettings->getEmspApiKey());
         $config = $this->createConfiguration($notificationSettings);
 
-        return new SendGridEmailSender($sendGrid, $config);
+        $sendGridSender = new SendGridEmailSender($sendGrid, $config);
+        $sendGridSender->setLogger($this->getLogger());
+
+        return $sendGridSender;
     }
 
     private function createConfiguration(NotificationSettings $notificationSettings): Configuration

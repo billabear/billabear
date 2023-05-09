@@ -35,11 +35,11 @@ class SubscriptionSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function handleNewSubscription(SubscriptionCreated $subscriptionCreation): void
+    public function handleNewSubscription(SubscriptionCreated $subscriptionCreated): void
     {
         $subscriptionCreation = new SubscriptionCreation();
         $subscriptionCreation->setState('started');
-        $subscriptionCreation->setSubscription($subscriptionCreation->getSubscription());
+        $subscriptionCreation->setSubscription($subscriptionCreated->getSubscription());
         $subscriptionCreation->setCreatedAt(new \DateTime());
 
         $this->subscriptionCreationRepository->save($subscriptionCreation);
