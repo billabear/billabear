@@ -12,7 +12,7 @@
 
 namespace App\Repository\Orm;
 
-use App\Entity\SubscriptionCreationMonthlyStats;
+use App\Entity\Stats\SubscriptionCreationMonthlyStats;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 

@@ -12,9 +12,9 @@
 
 namespace App\Tests\Behat\Stats;
 
-use App\Entity\SubscriptionCreationDailyStats;
-use App\Entity\SubscriptionCreationMonthlyStats;
-use App\Entity\SubscriptionCreationYearlyStats;
+use App\Entity\Stats\SubscriptionCreationDailyStats;
+use App\Entity\Stats\SubscriptionCreationMonthlyStats;
+use App\Entity\Stats\SubscriptionCreationYearlyStats;
 use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationYearlyStatsRepository;

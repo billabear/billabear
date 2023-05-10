@@ -10,12 +10,12 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Repository\Stats;
 
-use App\Entity\SubscriptionCreationYearlyStats;
+use App\Entity\Stats\SubscriptionCreationDailyStats;
 use Parthenon\Common\Repository\RepositoryInterface;
 
-interface SubscriptionCreationYearlyStatsRepositoryInterface extends RepositoryInterface
+interface SubscriptionCreationDailyStatusRepositoryInterface extends RepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationYearlyStats;
+    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationDailyStats;
 }

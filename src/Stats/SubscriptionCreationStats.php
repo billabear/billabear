@@ -12,9 +12,9 @@
 
 namespace App\Stats;
 
-use App\Repository\SubscriptionCreationDailyStatusRepositoryInterface;
-use App\Repository\SubscriptionCreationMonthlyStatsRepositoryInterface;
-use App\Repository\SubscriptionCreationYearlyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCreationDailyStatusRepositoryInterface;
+use App\Repository\Stats\SubscriptionCreationMonthlyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCreationYearlyStatsRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class SubscriptionCreationStats

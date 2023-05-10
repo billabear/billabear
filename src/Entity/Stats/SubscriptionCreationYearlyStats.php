@@ -10,12 +10,13 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity;
+namespace App\Entity\Stats;
 
+use App\Entity\AbstractStats;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
-#[ORM\Table('subscription_monthly_stats')]
-class SubscriptionCreationMonthlyStats extends AbstractStats
+#[ORM\Table('subscription_yearly_stats')]
+class SubscriptionCreationYearlyStats extends AbstractStats
 {
 }

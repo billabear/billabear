@@ -10,9 +10,9 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Repository\Stats;
 
-use App\Entity\SubscriptionCreationYearlyStats;
+use App\Entity\Stats\SubscriptionCreationYearlyStats;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class SubscriptionCreationYearlyStatsRepository extends DoctrineRepository implements SubscriptionCreationYearlyStatsRepositoryInterface

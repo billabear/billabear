@@ -10,12 +10,12 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity;
+namespace App\Repository\Stats;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Stats\SubscriptionCreationMonthlyStats;
+use Parthenon\Common\Repository\RepositoryInterface;
 
-#[ORM\Entity()]
-#[ORM\Table('subscription_yearly_stats')]
-class SubscriptionCreationYearlyStats extends AbstractStats
+interface SubscriptionCreationMonthlyStatsRepositoryInterface extends RepositoryInterface
 {
+    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationMonthlyStats;
 }
