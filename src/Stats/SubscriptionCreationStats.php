@@ -12,6 +12,7 @@
 
 namespace App\Stats;
 
+use App\Entity\Customer;
 use App\Repository\Stats\SubscriptionCreationDailyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCreationMonthlyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCreationYearlyStatsRepositoryInterface;
@@ -28,15 +29,19 @@ class SubscriptionCreationStats
 
     public function handleStats(Subscription $subscription)
     {
-        $dailyStat = $this->dailyStatusRepository->getStatForDateTime($subscription->getCreatedAt());
+        /** @var Customer $customer */
+        $customer = $subscription->getCustomer();
+        $brandCode = $customer->getBrand();
+
+        $dailyStat = $this->dailyStatusRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
         $dailyStat->increaseCount();
         $this->dailyStatusRepository->save($dailyStat);
 
-        $weeklyStat = $this->weeklyStatusRepository->getStatForDateTime($subscription->getCreatedAt());
+        $weeklyStat = $this->weeklyStatusRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
         $weeklyStat->increaseCount();
         $this->weeklyStatusRepository->save($weeklyStat);
 
-        $yearStat = $this->yearlyStatsRepository->getStatForDateTime($subscription->getCreatedAt());
+        $yearStat = $this->yearlyStatsRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
         $yearStat->increaseCount();
         $this->yearlyStatsRepository->save($yearStat);
     }

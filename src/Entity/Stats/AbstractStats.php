@@ -36,6 +36,9 @@ class AbstractStats
     #[ORM\Column(type: 'integer')]
     protected int $day;
 
+    #[ORM\Column(type: 'string')]
+    protected string $brandCode;
+
     public function getId()
     {
         return $this->id;
@@ -94,5 +97,15 @@ class AbstractStats
             return;
         }
         ++$this->count;
+    }
+
+    public function getBrandCode(): string
+    {
+        return $this->brandCode;
+    }
+
+    public function setBrandCode(string $brandCode): void
+    {
+        $this->brandCode = $brandCode;
     }
 }

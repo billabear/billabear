@@ -17,18 +17,19 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class SubscriptionCreationMonthlyStatsRepository extends DoctrineRepository implements SubscriptionCreationMonthlyStatsRepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationMonthlyStats
+    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCreationMonthlyStats
     {
         $year = $dateTime->format('Y');
         $month = $dateTime->format('m');
         $day = 1;
-        $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day]);
+        $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day, 'brandCode' => $brandCode]);
 
         if (!$stat instanceof SubscriptionCreationMonthlyStats) {
             $stat = new SubscriptionCreationMonthlyStats();
             $stat->setYear($year);
             $stat->setMonth($month);
             $stat->setDay($day);
+            $stat->setBrandCode($brandCode);
         }
 
         return $stat;

@@ -17,5 +17,5 @@ use Parthenon\Common\Repository\RepositoryInterface;
 
 interface SubscriptionCreationMonthlyStatsRepositoryInterface extends RepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationMonthlyStats;
+    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCreationMonthlyStats;
 }
