@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center h-screen login">
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" v-if="!complete">
       <div class="p-5 public-form-body" :class="{'animate-shake': error_info.has_error}">
         <div class="w-full">
           <PublicLogo />
@@ -144,6 +144,13 @@
         </div>
       </div>
     </form>
+    <div v-else>
+      <p class="text-center">
+        {{ $t('install.complete_text') }}
+      </p>
+
+      <p class="text-center"><router-link :to="{name: 'public.login'}" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">{{ $t('install.login_link') }}</router-link></p>
+    </div>
   </div>
 </template>
 
@@ -167,6 +174,7 @@ export default {
       from_email: 'outgoing@example.org',
       timezone: 'Europe/Amsterdam',
       webhook_url: null,
+      complete: false,
     }
   },
   mounted() {
@@ -187,6 +195,7 @@ export default {
           response => {
             this.sendingInProgress = false;
             this.success = true;
+            this.complete = true;
           }
       ).catch(error => {
         this.errors = error.response.data.errors;
