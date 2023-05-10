@@ -67,7 +67,6 @@ class RefundFactory
             $refund = new Refund();
         }
         $payment = $this->paymentRepository->getPaymentForReference($model->getPaymentId());
-        $payment->setStatus($payment->getAmount() === $refund->getAmount() ? PaymentStatus::FULLY_REFUNDED : PaymentStatus::PARTIALLY_REFUNDED);
 
         $refund->setAmount($model->getAmount());
         $refund->setCurrency(strtoupper($model->getCurrency()));
@@ -80,6 +79,8 @@ class RefundFactory
         $refund->setExternalReference($model->getId());
         $refund->setStatus(RefundStatus::ISSUED);
         $refund->setReason('imported');
+
+        $payment->setStatus($payment->getAmount() === $refund->getAmount() ? PaymentStatus::FULLY_REFUNDED : PaymentStatus::PARTIALLY_REFUNDED);
 
         return $refund;
     }

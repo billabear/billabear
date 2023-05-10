@@ -61,6 +61,9 @@ class StripeImportProcessor
                 }
                 $this->stripeImportRepository->save($request);
             }
+            if ('completed' === $request->getState()) {
+                $request->setComplete(true);
+            }
         } catch (\Throwable $e) {
             $this->getLogger()->info('Cancellation stripe import failed', ['transition' => $transition, 'message' => $e->getMessage()]);
             $request->setError($e->getMessage());

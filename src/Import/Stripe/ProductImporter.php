@@ -17,7 +17,9 @@ use App\Factory\ProductFactory;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Product;
 use Obol\Provider\ProviderInterface;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class ProductImporter
@@ -25,6 +27,7 @@ class ProductImporter
     public function __construct(
         private ProviderInterface $provider,
         private ProductRepositoryInterface $productRepository,
+        private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private ProductFactory $productFactory,
     ) {
@@ -45,7 +48,17 @@ class ProductImporter
                     $product = null;
                 }
                 $product = $this->productFactory->createFromObol($productModel, $product);
+
                 $this->productRepository->save($product);
+
+                $subscriptionPlan = new SubscriptionPlan();
+                $subscriptionPlan->setName($product->getName());
+                $subscriptionPlan->setProduct($product);
+                $subscriptionPlan->setPerSeat(false);
+                $subscriptionPlan->setFree(false);
+                $subscriptionPlan->setHasTrial(false);
+                $subscriptionPlan->setUserCount(1);
+                $this->subscriptionPlanRepository->save($subscriptionPlan);
                 $lastId = $productModel->getId();
             }
             $stripeImport->setLastId($lastId);

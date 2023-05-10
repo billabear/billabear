@@ -20,6 +20,7 @@ use Parthenon\Billing\Entity\Subscription as Entity;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 
@@ -33,6 +34,7 @@ class SubscriptionFactory
         private CustomerFactory $customerFactory,
         private CustomerRepositoryInterface $customerRepository,
         private PriceRepositoryInterface $priceRepository,
+        private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private PaymentMethodRepositoryInterface $paymentMethodRepository,
     ) {
     }
@@ -63,8 +65,12 @@ class SubscriptionFactory
         $subscription->setCustomer($customer);
 
         $price = $this->priceRepository->getByExternalReference($model->getPriceId());
+        $subscriptionPlans = $this->subscriptionPlanRepository->getAllForProduct($price->getProduct());
+        if (!isset($subscriptionPlans[0])) {
+            throw new \Exception('No subscription plan');
+        }
         $subscription->setPrice($price);
-
+        $subscription->setSubscriptionPlan($subscriptionPlans[0]);
         $subscription->setPlanName($price->getProduct()->getName());
         $subscription->setPaymentSchedule($price->getSchedule());
 
