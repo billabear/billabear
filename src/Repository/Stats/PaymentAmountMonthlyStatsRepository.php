@@ -18,12 +18,18 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class PaymentAmountMonthlyStatsRepository extends DoctrineRepository implements PaymentAmountMonthlyStatsRepositoryInterface
 {
-    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency): PaymentAmountMonthlyStats
+    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): PaymentAmountMonthlyStats
     {
         $year = $dateTime->format('Y');
         $month = $dateTime->format('m');
         $day = 1;
-        $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day, 'currency' => $currency->getCurrencyCode()]);
+        $stat = $this->entityRepository->findOneBy([
+            'year' => $year,
+            'month' => $month,
+            'day' => $day,
+            'currency' => $currency->getCurrencyCode(),
+            'brandCode' => $brandCode,
+            ]);
 
         if (!$stat instanceof PaymentAmountMonthlyStats) {
             $stat = new PaymentAmountMonthlyStats();
@@ -31,6 +37,7 @@ class PaymentAmountMonthlyStatsRepository extends DoctrineRepository implements 
             $stat->setMonth($month);
             $stat->setDay($day);
             $stat->setCurrency($currency->getCurrencyCode());
+            $stat->setBrandCode($brandCode);
         }
 
         return $stat;

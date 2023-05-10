@@ -12,6 +12,7 @@
 
 namespace App\Stats;
 
+use App\Entity\Customer;
 use App\Repository\Stats\PaymentAmountDailyStatsRepositoryInterface;
 use App\Repository\Stats\PaymentAmountMonthlyStatsRepositoryInterface;
 use App\Repository\Stats\PaymentAmountYearlyStatsRepositoryInterface;
@@ -28,15 +29,19 @@ class PaymentAmountStats
 
     public function process(Payment $payment): void
     {
-        $dailyStat = $this->dailyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency());
+        /** @var Customer $customer */
+        $customer = $payment->getCustomer();
+        $brand = $customer?->getBrand() ?? Customer::DEFAULT_BRAND;
+
+        $dailyStat = $this->dailyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
         $dailyStat->increaseAmount($payment->getMoneyAmount());
         $this->dailyStatsRepository->save($dailyStat);
 
-        $monthlyStat = $this->monthlyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency());
+        $monthlyStat = $this->monthlyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
         $monthlyStat->increaseAmount($payment->getMoneyAmount());
         $this->dailyStatsRepository->save($monthlyStat);
 
-        $yearlyStat = $this->yearlyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency());
+        $yearlyStat = $this->yearlyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
         $yearlyStat->increaseAmount($payment->getMoneyAmount());
         $this->yearlyStatsRepository->save($yearlyStat);
     }

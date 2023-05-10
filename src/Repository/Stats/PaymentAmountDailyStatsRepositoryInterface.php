@@ -18,5 +18,5 @@ use Parthenon\Common\Repository\RepositoryInterface;
 
 interface PaymentAmountDailyStatsRepositoryInterface extends RepositoryInterface
 {
-    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency): PaymentAmountDailyStats;
+    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): PaymentAmountDailyStats;
 }

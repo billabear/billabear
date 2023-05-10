@@ -27,6 +27,7 @@ class AbstractMoneyStat
 
     #[ORM\Column(type: 'integer')]
     protected int $amount = 0;
+
     #[ORM\Column(type: 'string')]
     protected string $currency;
 
@@ -38,6 +39,9 @@ class AbstractMoneyStat
 
     #[ORM\Column(type: 'integer')]
     protected int $day;
+
+    #[ORM\Column(type: 'string')]
+    protected string $brandCode;
 
     public function getId()
     {
@@ -118,5 +122,15 @@ class AbstractMoneyStat
     {
         $this->amount = $newCount->getMinorAmount()->toInt();
         $this->currency = $newCount->getCurrency()->getCurrencyCode();
+    }
+
+    public function getBrandCode(): ?string
+    {
+        return $this->brandCode;
+    }
+
+    public function setBrandCode(?string $brandCode): void
+    {
+        $this->brandCode = $brandCode;
     }
 }
