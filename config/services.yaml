@@ -116,7 +116,7 @@ services:
     app.repository.orm.subscription_creation:
         class: App\Repository\Orm\SubscriptionCreationRepository
 
-    App\Repository\Stats\SubscriptionCreationDailyStatusRepository:
+    App\Repository\Stats\SubscriptionCreationDailyStatsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.subscription_daily_stats'
     app.repository.orm.subscription_daily_stats:
@@ -132,6 +132,24 @@ services:
             $entityRepository: '@app.repository.orm.subscription_yearly_stats'
     app.repository.orm.subscription_yearly_stats:
         class: App\Repository\Orm\SubscriptionCreationYearlyStatsRepository
+
+
+    App\Repository\Stats\PaymentAmountDailyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.payment_amount_daily_stats'
+    app.repository.orm.payment_amount_daily_stats:
+        class: App\Repository\Orm\PaymentAmountDailyStatsRepository
+
+    App\Repository\Stats\PaymentAmountMonthlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.payment_amount_weekly_stats'
+    app.repository.orm.payment_amount_weekly_stats:
+        class: App\Repository\Orm\PaymentAmountMonthlyStatsRepository
+    App\Repository\Stats\PaymentAmountYearlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.payment_amount_yearly_stats'
+    app.repository.orm.payment_amount_yearly_stats:
+        class: App\Repository\Orm\PaymentAmountYearlyStatsRepository
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

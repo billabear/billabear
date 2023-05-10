@@ -12,23 +12,25 @@
 
 namespace App\Repository\Stats;
 
-use App\Entity\Stats\SubscriptionCreationDailyStats;
+use App\Entity\Stats\PaymentAmountDailyStats;
+use Brick\Money\Currency;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-class SubscriptionCreationDailyStatusRepository extends DoctrineRepository implements SubscriptionCreationDailyStatusRepositoryInterface
+class PaymentAmountDailyStatsRepository extends DoctrineRepository implements PaymentAmountDailyStatsRepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationDailyStats
+    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency): PaymentAmountDailyStats
     {
         $year = $dateTime->format('Y');
         $month = $dateTime->format('m');
         $day = $dateTime->format('d');
-        $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day]);
+        $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day, 'currency' => $currency->getCurrencyCode()]);
 
-        if (!$stat instanceof SubscriptionCreationDailyStats) {
-            $stat = new SubscriptionCreationDailyStats();
+        if (!$stat instanceof PaymentAmountDailyStats) {
+            $stat = new PaymentAmountDailyStats();
             $stat->setYear($year);
             $stat->setMonth($month);
             $stat->setDay($day);
+            $stat->setCurrency($currency->getCurrencyCode());
         }
 
         return $stat;

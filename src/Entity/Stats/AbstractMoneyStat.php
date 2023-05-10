@@ -12,11 +12,12 @@
 
 namespace App\Entity\Stats;
 
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\MappedSuperclass()]
-class AbstractStats
+class AbstractMoneyStat
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -25,7 +26,9 @@ class AbstractStats
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    protected int $count = 0;
+    protected int $amount = 0;
+    #[ORM\Column(type: 'string')]
+    protected string $currency;
 
     #[ORM\Column(type: 'integer')]
     protected int $year;
@@ -44,16 +47,6 @@ class AbstractStats
     public function setId($id): void
     {
         $this->id = $id;
-    }
-
-    public function getCount(): int
-    {
-        return $this->count;
-    }
-
-    public function setCount(int $count): void
-    {
-        $this->count = $count;
     }
 
     public function getYear(): int
@@ -86,13 +79,44 @@ class AbstractStats
         $this->day = $day;
     }
 
-    public function increaseCount()
+    public function getAmount(): int
     {
-        if (!isset($this->count)) {
-            $this->count = 1;
+        return $this->amount;
+    }
 
-            return;
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function increaseAmount(Money $newMoney)
+    {
+        if (!isset($this->currency)) {
+            throw new \Exception('No currency set');
         }
-        ++$this->count;
+
+        $money = $this->getCountAsMoney();
+        $this->setAmountFromMoney($money->plus($newMoney));
+    }
+
+    public function getCountAsMoney(): Money
+    {
+        return Money::ofMinor($this->amount, $this->currency);
+    }
+
+    public function setAmountFromMoney(Money $newCount): void
+    {
+        $this->amount = $newCount->getMinorAmount()->toInt();
+        $this->currency = $newCount->getCurrency()->getCurrencyCode();
     }
 }

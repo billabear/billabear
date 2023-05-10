@@ -15,7 +15,7 @@ namespace App\Repository\Stats;
 use App\Entity\Stats\SubscriptionCreationDailyStats;
 use Parthenon\Common\Repository\RepositoryInterface;
 
-interface SubscriptionCreationDailyStatusRepositoryInterface extends RepositoryInterface
+interface SubscriptionCreationDailyStatsRepositoryInterface extends RepositoryInterface
 {
     public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationDailyStats;
 }
