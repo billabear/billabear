@@ -54,6 +54,31 @@ framework:
                     from: customer_notice_sent
                     to: completed
 
+        refund_created_process:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\RefundCreatedProcess
+            initial_marking: started
+            places:
+                - started
+                - stats_generated
+                - customer_notice_sent
+                - internal_notice_sent
+                - completed
+            transitions:
+                handle_stats:
+                    from: started
+                    to: stats_generated
+                send_customer_notice:
+                    from: stats_generated
+                    to: customer_notice_sent
+                send_internal_notice:
+                    from: customer_notice_sent
+                    to: completed
+
         payment_creation:
             type: 'state_machine'
             marking_store:
