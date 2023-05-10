@@ -43,3 +43,4 @@ Feature: Customer Subscription Create APP
     And the subscriber daily stat for the day should be 1
     And the subscriber monthly stat for the day should be 1
     And the subscriber yearly stat for the day should be 1
+    And the payment amount stats for the day should be 3000 in the currency "USD"
