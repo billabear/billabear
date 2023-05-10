@@ -39,6 +39,7 @@ class SubscriptionImporter
         $lastId = $save ? $stripeImport->getLastId() : null;
         do {
             $subscriptionList = $provider->subscriptions()->list($limit, $lastId);
+
             /** @var Subscription $subscriptionModel */
             foreach ($subscriptionList as $subscriptionModel) {
                 try {
@@ -56,7 +57,7 @@ class SubscriptionImporter
             if ($save) {
                 $this->stripeImportRepository->save($stripeImport);
             }
-        } while (sizeof($subscriptionList) >= $limit);
+        } while (!empty($subscriptionList));
         $stripeImport->setLastId(null);
     }
 }

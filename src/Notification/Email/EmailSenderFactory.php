@@ -14,11 +14,13 @@ namespace App\Notification\Email;
 
 use App\Entity\Settings\NotificationSettings;
 use App\Repository\SettingsRepositoryInterface;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Mailgun\Mailgun;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\Configuration;
 use Parthenon\Notification\EmailSenderInterface;
 use Parthenon\Notification\Sender\MailgunEmailSender;
+use Parthenon\Notification\Sender\NullEmailSender;
 use Parthenon\Notification\Sender\PostmarkEmailSender;
 use Parthenon\Notification\Sender\SendGridEmailSender;
 use Parthenon\Notification\Sender\SymfonyEmailSender;
@@ -35,7 +37,11 @@ class EmailSenderFactory
 
     public function create(): EmailSenderInterface
     {
-        $notificationSettings = $this->settingsRepository->getDefaultSettings()->getNotificationSettings();
+        try {
+            $notificationSettings = $this->settingsRepository->getDefaultSettings()->getNotificationSettings();
+        } catch (TableNotFoundException $e) {
+            return new NullEmailSender();
+        }
 
         switch ($notificationSettings->getEmsp()) {
             case NotificationSettings::EMSP_SENDGRID:
