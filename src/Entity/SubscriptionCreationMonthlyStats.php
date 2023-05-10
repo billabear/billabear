@@ -15,7 +15,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
-#[ORM\Table('subscription_weekly_stats')]
-class SubscriptionCreationWeeklyStats extends AbstractStats
+#[ORM\Table('subscription_monthly_stats')]
+class SubscriptionCreationMonthlyStats extends AbstractStats
 {
 }

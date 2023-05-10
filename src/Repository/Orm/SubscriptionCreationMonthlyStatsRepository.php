@@ -10,12 +10,16 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Repository\Orm;
 
-use App\Entity\SubscriptionCreationWeeklyStats;
-use Parthenon\Common\Repository\RepositoryInterface;
+use App\Entity\SubscriptionCreationMonthlyStats;
+use Doctrine\Persistence\ManagerRegistry;
+use Parthenon\Common\Repository\CustomServiceRepository;
 
-interface SubscriptionCreationWeeklyStatusRepositoryInterface extends RepositoryInterface
+class SubscriptionCreationMonthlyStatsRepository extends CustomServiceRepository
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime): SubscriptionCreationWeeklyStats;
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, SubscriptionCreationMonthlyStats::class);
+    }
 }

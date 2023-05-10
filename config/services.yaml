@@ -122,11 +122,16 @@ services:
     app.repository.orm.subscription_daily_stats:
         class: App\Repository\Orm\SubscriptionCreationDailyStatsRepository
 
-    App\Repository\SubscriptionCreationWeeklyStatusRepository:
+    App\Repository\SubscriptionCreationMonthlyStatsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.subscription_weekly_stats'
     app.repository.orm.subscription_weekly_stats:
-        class: App\Repository\Orm\SubscriptionCreationWeeklyStatsRepository
+        class: App\Repository\Orm\SubscriptionCreationMonthlyStatsRepository
+    App\Repository\SubscriptionCreationYearlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.subscription_yearly_stats'
+    app.repository.orm.subscription_yearly_stats:
+        class: App\Repository\Orm\SubscriptionCreationYearlyStatsRepository
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

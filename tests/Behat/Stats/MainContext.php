@@ -13,16 +13,19 @@
 namespace App\Tests\Behat\Stats;
 
 use App\Entity\SubscriptionCreationDailyStats;
-use App\Entity\SubscriptionCreationWeeklyStats;
+use App\Entity\SubscriptionCreationMonthlyStats;
+use App\Entity\SubscriptionCreationYearlyStats;
 use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
-use App\Repository\Orm\SubscriptionCreationWeeklyStatsRepository;
+use App\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
+use App\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
 use Behat\Behat\Context\Context;
 
 class MainContext implements Context
 {
     public function __construct(
         private SubscriptionCreationDailyStatsRepository $subscriptionDailyStatsRepository,
-        private SubscriptionCreationWeeklyStatsRepository $subscriptionCreationWeeklyStatsRepository,
+        private SubscriptionCreationMonthlyStatsRepository $subscriptionCreationMonthlyStatsRepository,
+        private SubscriptionCreationYearlyStatsRepository $subscriptionCreationYearlyStatsRepository,
     ) {
     }
 
@@ -48,18 +51,39 @@ class MainContext implements Context
     }
 
     /**
-     * @Then the subscriber weekly stat for the day should be :arg1
+     * @Then the subscriber monthly stat for the day should be :arg1
      */
     public function theSubscriberWeeklyStatForTheDayShouldBe($count)
     {
         $dateTime = new \DateTime('now');
-        $statEntity = $this->subscriptionCreationWeeklyStatsRepository->findOneBy([
+        $statEntity = $this->subscriptionCreationMonthlyStatsRepository->findOneBy([
             'year' => $dateTime->format('Y'),
             'month' => $dateTime->format('m'),
             'day' => 1,
         ]);
 
-        if (!$statEntity instanceof SubscriptionCreationWeeklyStats) {
+        if (!$statEntity instanceof SubscriptionCreationMonthlyStats) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity->getCount() != $count) {
+            throw new \Exception('Count is wrong');
+        }
+    }
+
+    /**
+     * @Then the subscriber yearly stat for the day should be :arg1
+     */
+    public function theSubscriberYearlyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->subscriptionCreationYearlyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => 1,
+            'day' => 1,
+        ]);
+
+        if (!$statEntity instanceof SubscriptionCreationYearlyStats) {
             throw new \Exception('No stat found');
         }
 
