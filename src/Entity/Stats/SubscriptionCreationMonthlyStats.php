@@ -12,7 +12,6 @@
 
 namespace App\Entity\Stats;
 
-use App\Entity\AbstractStats;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
