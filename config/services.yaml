@@ -104,6 +104,12 @@ services:
     app.repository.orm.stripe_import:
         class: App\Repository\Orm\StripeImportRepository
 
+    App\Repository\RefundCreatedProcessRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.refund_created_process'
+    app.repository.orm.refund_created_process:
+        class: App\Repository\Orm\RefundCreatedProcessRepository
+
     App\Repository\ApiKeyRepository:
         arguments:
             $entityRepository: '@app.repository.orm.api_key'
