@@ -55,6 +55,7 @@ class SubscriptionFactory
             'overdue' => SubscriptionStatus::OVERDUE_PAYMENT_OPEN,
             default => SubscriptionStatus::CANCELLED,
         };
+        $subscription->setEndedAt(SubscriptionStatus::CANCELLED === $status ? $model->getValidUntil() : null);
         $subscription->setStatus($status);
 
         $customer = $this->customerRepository->getByExternalReference($model->getCustomerReference());

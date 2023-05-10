@@ -15,6 +15,7 @@ namespace App\Import\Stripe;
 use App\Entity\StripeImport;
 use App\Factory\SubscriptionFactory;
 use App\Repository\StripeImportRepositoryInterface;
+use App\Stats\SubscriptionCreationStats;
 use Obol\Model\Subscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -27,6 +28,7 @@ class SubscriptionImporter
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private SubscriptionFactory $subscriptionFactory,
         private StripeImportRepositoryInterface $stripeImportRepository,
+        private SubscriptionCreationStats $subscriptionCreationStats,
     ) {
     }
 
@@ -40,12 +42,13 @@ class SubscriptionImporter
             /** @var Subscription $subscriptionModel */
             foreach ($subscriptionList as $subscriptionModel) {
                 try {
-                    $product = $this->subscriptionRepository->getForMainAndChildExternalReference($subscriptionModel->getId(), $subscriptionModel->getLineId());
+                    $subscription = $this->subscriptionRepository->getForMainAndChildExternalReference($subscriptionModel->getId(), $subscriptionModel->getLineId());
                 } catch (NoEntityFoundException $exception) {
-                    $product = null;
+                    $subscription = null;
                 }
-                $product = $this->subscriptionFactory->createFromObol($subscriptionModel, $product);
-                $this->subscriptionRepository->save($product);
+                $subscription = $this->subscriptionFactory->createFromObol($subscriptionModel, $subscription);
+                $this->subscriptionRepository->save($subscription);
+                $this->subscriptionCreationStats->handleStats($subscription);
                 $lastId = $subscriptionModel->getId();
             }
             $stripeImport->setLastId($lastId);
