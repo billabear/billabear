@@ -15,6 +15,7 @@ namespace App\Import\Stripe;
 use App\Entity\StripeImport;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;
+use App\Stats\PaymentAmountStats;
 use Obol\Model\PaymentDetails;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
@@ -31,6 +32,7 @@ class PaymentImporter
         private CustomerRepositoryInterface $customerRepository,
         private PaymentFactoryInterface $factory,
         private PaymentLinkerInterface $paymentLinker,
+        private PaymentAmountStats $paymentAmountStats,
     ) {
     }
 
@@ -55,7 +57,8 @@ class PaymentImporter
                     $payment->setCreatedAt($paymentDetails->getCreatedAt());
                     $this->paymentLinker->linkPaymentDetailsToSubscription($payment, $paymentDetails);
                     $this->paymentRepository->save($payment);
-                    $this->paymentRepository->save($payment);
+
+                    $this->paymentAmountStats->process($payment);
                 }
                 $lastId = $paymentDetails->getPaymentReference();
             }
