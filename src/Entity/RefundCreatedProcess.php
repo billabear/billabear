@@ -28,7 +28,7 @@ class RefundCreatedProcess
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Refund::class)]
-    private Refund $payment;
+    private Refund $refund;
 
     #[ORM\Column('state', type: 'string')]
     private string $state;
@@ -52,14 +52,14 @@ class RefundCreatedProcess
         $this->id = $id;
     }
 
-    public function getPayment(): Refund
+    public function getRefund(): Refund
     {
-        return $this->payment;
+        return $this->refund;
     }
 
-    public function setPayment(Refund $payment): void
+    public function setRefund(Refund $refund): void
     {
-        $this->payment = $payment;
+        $this->refund = $refund;
     }
 
     public function getState(): string
