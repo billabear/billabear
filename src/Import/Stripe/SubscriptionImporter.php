@@ -15,6 +15,7 @@ namespace App\Import\Stripe;
 use App\Entity\StripeImport;
 use App\Factory\SubscriptionFactory;
 use App\Repository\StripeImportRepositoryInterface;
+use App\Stats\SubscriptionCancellationStats;
 use App\Stats\SubscriptionCreationStats;
 use Obol\Model\Subscription;
 use Obol\Provider\ProviderInterface;
@@ -29,6 +30,7 @@ class SubscriptionImporter
         private SubscriptionFactory $subscriptionFactory,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private SubscriptionCreationStats $subscriptionCreationStats,
+        private SubscriptionCancellationStats $subscriptionCancellationStats,
     ) {
     }
 
@@ -50,6 +52,10 @@ class SubscriptionImporter
                 $subscription = $this->subscriptionFactory->createFromObol($subscriptionModel, $subscription);
                 $this->subscriptionRepository->save($subscription);
                 $this->subscriptionCreationStats->handleStats($subscription);
+
+                if ($subscription->getEndedAt()) {
+                    $this->subscriptionCancellationStats->handleStats($subscription);
+                }
                 $lastId = $subscriptionModel->getId();
             }
             $stripeImport->setLastId($lastId);
