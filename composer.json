@@ -22,17 +22,17 @@
         "parthenon/parthenon": "dev-main",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
-        "symfony/console": "6.2.*",
-        "symfony/dotenv": "6.2.*",
+        "symfony/console": "6.3.*",
+        "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.2.*",
-        "symfony/intl": "6.2.*",
-        "symfony/mailer": "6.2.*",
-        "symfony/messenger": "6.2.*",
-        "symfony/runtime": "6.2.*",
+        "symfony/intl": "6.3.*",
+        "symfony/mailer": "6.3.*",
+        "symfony/messenger": "6.3.*",
+        "symfony/runtime": "6.3.*",
         "symfony/webpack-encore-bundle": "^1.15",
-        "symfony/workflow": "6.2.*",
-        "symfony/yaml": "6.2.*",
+        "symfony/workflow": "6.3.*",
+        "symfony/yaml": "6.3.*",
         "wildbit/postmark-php": "^4.0"
     },
     "require-dev": {
@@ -94,7 +94,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.2.*",
+            "require": "6.3.*",
             "docker": false
         }
     }
