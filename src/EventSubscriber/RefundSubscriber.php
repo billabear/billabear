@@ -42,6 +42,7 @@ class RefundSubscriber implements EventSubscriberInterface
         $paymentCreation = new RefundCreatedProcess();
         $paymentCreation->setRefund($refund);
         $paymentCreation->setCreatedAt(new \DateTime('now'));
+        $paymentCreation->setUpdatedAt(new \DateTime('now'));
         $paymentCreation->setState('started');
 
         $this->refundCreatedProcessRepository->save($paymentCreation);

@@ -51,3 +51,4 @@ Feature: Payment List Read APP
       | Test Plan         | customer.one@example.org | 3500   |
     When I refund 3500 the payment for "customer.one@example.org" for 3500
     Then there will be a refund for "customer.one@example.org" of 3500
+    Then there will be a refund amount daily stat for 3500 in the currency "USD"

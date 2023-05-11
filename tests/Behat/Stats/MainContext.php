@@ -13,10 +13,12 @@
 namespace App\Tests\Behat\Stats;
 
 use App\Entity\Stats\PaymentAmountDailyStats;
+use App\Entity\Stats\RefundAmountDailyStats;
 use App\Entity\Stats\SubscriptionCreationDailyStats;
 use App\Entity\Stats\SubscriptionCreationMonthlyStats;
 use App\Entity\Stats\SubscriptionCreationYearlyStats;
 use App\Repository\Orm\PaymentAmountDailyStatsRepository;
+use App\Repository\Orm\RefundAmountDailyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
@@ -29,6 +31,7 @@ class MainContext implements Context
         private SubscriptionCreationMonthlyStatsRepository $subscriptionCreationMonthlyStatsRepository,
         private SubscriptionCreationYearlyStatsRepository $subscriptionCreationYearlyStatsRepository,
         private PaymentAmountDailyStatsRepository $paymentAmountDailyStatsRepository,
+        private RefundAmountDailyStatsRepository $refundAmountDailyStatsRepository,
     ) {
     }
 
@@ -108,6 +111,30 @@ class MainContext implements Context
         ]);
 
         if (!$statEntity instanceof PaymentAmountDailyStats) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity->getAmount() != $amount) {
+            throw new \Exception('Amount is wrong');
+        }
+        if ($statEntity->getCurrency() != $currency) {
+            throw new \Exception('Currency is wrong');
+        }
+    }
+
+    /**
+     * @Then there will be a refund amount daily stat for :arg2 in the currency :arg1
+     */
+    public function thereWillBeARefundAmountDailyStatForInTheCurrency($amount, $currency)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->refundAmountDailyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => $dateTime->format('d'),
+        ]);
+
+        if (!$statEntity instanceof RefundAmountDailyStats) {
             throw new \Exception('No stat found');
         }
 
