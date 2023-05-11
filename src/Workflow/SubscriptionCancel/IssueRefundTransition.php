@@ -10,17 +10,17 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\Cancel;
+namespace App\Workflow\SubscriptionCancel;
 
 use App\Dto\Request\App\CancelSubscription;
 use App\Entity\CancellationRequest;
-use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
+use Parthenon\Billing\Refund\RefundManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class CancelSubscriptionTransition implements EventSubscriberInterface
+class IssueRefundTransition implements EventSubscriberInterface
 {
-    public function __construct(private SubscriptionManagerInterface $subscriptionManager)
+    public function __construct(private RefundManagerInterface $refundManager)
     {
     }
 
@@ -29,20 +29,20 @@ class CancelSubscriptionTransition implements EventSubscriberInterface
         /** @var CancellationRequest $cancellationRequest */
         $cancellationRequest = $event->getSubject();
         $subscription = $cancellationRequest->getSubscription();
+        $user = $cancellationRequest->getBillingAdmin();
 
-        if (CancelSubscription::WHEN_END_OF_RUN === $cancellationRequest->getWhen()) {
-            $this->subscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
-        } elseif (CancelSubscription::WHEN_INSTANTLY === $cancellationRequest->getWhen()) {
-            $this->subscriptionManager->cancelSubscriptionInstantly($subscription);
-        } else {
-            $this->subscriptionManager->cancelSubscriptionOnDate($subscription, $cancellationRequest->getSpecificDate());
+        if (CancelSubscription::REFUND_PRORATE === $cancellationRequest->getRefundType()) {
+            $newValidUntil = $subscription->getValidUntil();
+            $this->refundManager->issueProrateRefundForSubscription($subscription, $user, $cancellationRequest->getOriginalValidUntil(), $newValidUntil);
+        } elseif (CancelSubscription::REFUND_FULL === $cancellationRequest->getRefundType()) {
+            $this->refundManager->issueFullRefundForSubscription($subscription, $user);
         }
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancellation_request.transition.cancel_subscription' => ['transition'],
+            'workflow.cancellation_request.transition.issue_refund' => ['transition'],
         ];
     }
 }

@@ -10,21 +10,16 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\Cancel;
+namespace App\Repository\Orm;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Workflow\Event\Event;
+use App\Entity\Stats\SubscriptionCancellationDailyStats;
+use Doctrine\Persistence\ManagerRegistry;
+use Parthenon\Common\Repository\CustomServiceRepository;
 
-class SendInternalNoticeTransition implements EventSubscriberInterface
+class SubscriptionCancellationDailyStatsRepository extends CustomServiceRepository
 {
-    public function transition(Event $event)
+    public function __construct(ManagerRegistry $registry)
     {
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            'workflow.cancellation_request.transition.send_internal_notice' => ['transition'],
-        ];
+        parent::__construct($registry, SubscriptionCancellationDailyStats::class);
     }
 }
