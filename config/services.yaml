@@ -162,7 +162,6 @@ services:
             $entityRepository: '@app.repository.orm.refund_amount_daily_stats'
     app.repository.orm.refund_amount_daily_stats:
         class: App\Repository\Orm\RefundAmountDailyStatsRepository
-
     App\Repository\Stats\RefundAmountMonthlyStatsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.refund_amount_weekly_stats'
@@ -173,6 +172,22 @@ services:
             $entityRepository: '@app.repository.orm.refund_amount_yearly_stats'
     app.repository.orm.refund_amount_yearly_stats:
         class: App\Repository\Orm\RefundAmountYearlyStatsRepository
+
+    App\Repository\Stats\ChargeBackAmountDailyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.charge_back_amount_daily_stats'
+    app.repository.orm.charge_back_amount_daily_stats:
+        class: App\Repository\Orm\ChargeBackAmountDailyStatsRepository
+    App\Repository\Stats\ChargeBackAmountMonthlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.charge_back_amount_weekly_stats'
+    app.repository.orm.charge_back_amount_weekly_stats:
+        class: App\Repository\Orm\ChargeBackAmountMonthlyStatsRepository
+    App\Repository\Stats\ChargeBackAmountYearlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.charge_back_amount_yearly_stats'
+    app.repository.orm.charge_back_amount_yearly_stats:
+        class: App\Repository\Orm\ChargeBackAmountYearlyStatsRepository
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
