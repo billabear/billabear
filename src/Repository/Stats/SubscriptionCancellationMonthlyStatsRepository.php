@@ -12,20 +12,20 @@
 
 namespace App\Repository\Stats;
 
-use App\Entity\Stats\SubscriptionCancellationDailyStats;
+use App\Entity\Stats\SubscriptionCancellationMonthlyStats;
 use Parthenon\Common\Repository\DoctrineRepository;
 
-class SubscriptionCancellationMonthlyStatsRepository extends DoctrineRepository implements SubscriptionCancellationDailyStatsRepositoryInterface
+class SubscriptionCancellationMonthlyStatsRepository extends DoctrineRepository implements SubscriptionCancellationMonthlyStatsRepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCancellationDailyStats
+    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCancellationMonthlyStats
     {
         $year = $dateTime->format('Y');
         $month = $dateTime->format('m');
         $day = $dateTime->format('d');
         $stat = $this->entityRepository->findOneBy(['year' => $year, 'month' => $month, 'day' => $day, 'brandCode' => $brandCode]);
 
-        if (!$stat instanceof SubscriptionCancellationDailyStats) {
-            $stat = new SubscriptionCancellationDailyStats();
+        if (!$stat instanceof SubscriptionCancellationMonthlyStats) {
+            $stat = new SubscriptionCancellationMonthlyStats();
             $stat->setYear($year);
             $stat->setMonth($month);
             $stat->setDay($day);
