@@ -15,6 +15,7 @@ namespace App\Import\Stripe;
 use App\Entity\StripeImport;
 use App\Factory\RefundFactory;
 use App\Repository\StripeImportRepositoryInterface;
+use App\Stats\RefundAmountStats;
 use Obol\Model\Refund;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -27,6 +28,7 @@ class RefundImporter
         private StripeImportRepositoryInterface $stripeImportRepository,
         private RefundRepositoryInterface $refundRepository,
         private RefundFactory $factory,
+        private RefundAmountStats $amountStats,
     ) {
     }
 
@@ -47,6 +49,7 @@ class RefundImporter
                 $refund = $this->factory->createEntity($obolRefund, $refund);
 
                 $this->refundRepository->save($refund);
+                $this->amountStats->process($refund);
                 $lastId = $obolRefund->getId();
             }
             $stripeImport->setLastId($lastId);

@@ -15,6 +15,7 @@ namespace App\Import\Stripe;
 use App\Entity\StripeImport;
 use App\Factory\ChargeBackFactory;
 use App\Repository\StripeImportRepositoryInterface;
+use App\Stats\ChargeBackAmountStats;
 use Obol\Model\ChargeBack\ChargeBack;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
@@ -27,6 +28,7 @@ class ChargeBackImporter
         private StripeImportRepositoryInterface $stripeImportRepository,
         private ChargeBackRepositoryInterface $chargeBackRepository,
         private ChargeBackFactory $factory,
+        private ChargeBackAmountStats $amountStats,
     ) {
     }
 
@@ -47,6 +49,7 @@ class ChargeBackImporter
                 $chargeBack = $this->factory->createEntity($obolChargeBack, $chargeBack);
 
                 $this->chargeBackRepository->save($chargeBack);
+                $this->amountStats->process($chargeBack);
                 $lastId = $obolChargeBack->getId();
             }
             $stripeImport->setLastId($lastId);
