@@ -12,11 +12,11 @@
 
 namespace App\Stats;
 
-use App\Entity\CancellationRequest;
 use App\Entity\Customer;
 use App\Repository\Stats\SubscriptionCancellationDailyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCancellationMonthlyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCancellationYearlyStatsRepositoryInterface;
+use Parthenon\Billing\Entity\Subscription;
 
 class SubscriptionCancellationStats
 {
@@ -27,21 +27,21 @@ class SubscriptionCancellationStats
     ) {
     }
 
-    public function handleStats(CancellationRequest $cancellationRequest)
+    public function handleStats(Subscription $subscription)
     {
         /** @var Customer $customer */
-        $customer = $cancellationRequest->getSubscription()->getCustomer();
+        $customer = $subscription->getCustomer();
         $brandCode = $customer->getBrand();
 
-        $dailyStat = $this->dailyStatusRepository->getStatForDateTime($cancellationRequest->getCreatedAt(), $brandCode);
+        $dailyStat = $this->dailyStatusRepository->getStatForDateTime($subscription->getEndedAt(), $brandCode);
         $dailyStat->increaseCount();
         $this->dailyStatusRepository->save($dailyStat);
 
-        $weeklyStat = $this->weeklyStatusRepository->getStatForDateTime($cancellationRequest->getCreatedAt(), $brandCode);
+        $weeklyStat = $this->weeklyStatusRepository->getStatForDateTime($subscription->getEndedAt(), $brandCode);
         $weeklyStat->increaseCount();
         $this->weeklyStatusRepository->save($weeklyStat);
 
-        $yearStat = $this->yearlyStatsRepository->getStatForDateTime($cancellationRequest->getCreatedAt(), $brandCode);
+        $yearStat = $this->yearlyStatsRepository->getStatForDateTime($subscription->getEndedAt(), $brandCode);
         $yearStat->increaseCount();
         $this->yearlyStatsRepository->save($yearStat);
     }

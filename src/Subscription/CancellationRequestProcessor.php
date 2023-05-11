@@ -21,7 +21,7 @@ class CancellationRequestProcessor
 {
     use LoggerAwareTrait;
 
-    public const TRANSITIONS = ['cancel_subscription', 'issue_refund', 'send_customer_notice', 'send_internal_notice'];
+    public const TRANSITIONS = ['cancel_subscription', 'issue_refund', 'handle_stats', 'send_customer_notice', 'send_internal_notice'];
 
     public function __construct(
         private WorkflowInterface $cancellationRequestStateMachine,
