@@ -108,4 +108,9 @@ class AbstractStats
     {
         $this->brandCode = $brandCode;
     }
+
+    public function getDateAsDateTime(): \DateTime
+    {
+        return new \DateTime(sprintf('%d-%d-%d', $this->year, $this->month, $this->day));
+    }
 }
