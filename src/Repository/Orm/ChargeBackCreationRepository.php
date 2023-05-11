@@ -12,14 +12,14 @@
 
 namespace App\Repository\Orm;
 
-use App\Entity\Stats\RefundAmountYearlyStats;
+use App\Entity\ChargeBackCreation;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class RefundAmountYearlyStatsRepository extends CustomServiceRepository
+class ChargeBackCreationRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, RefundAmountYearlyStats::class);
+        parent::__construct($registry, ChargeBackCreation::class);
     }
 }

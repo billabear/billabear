@@ -189,6 +189,12 @@ services:
     app.repository.orm.charge_back_amount_yearly_stats:
         class: App\Repository\Orm\ChargeBackAmountYearlyStatsRepository
 
+    App\Repository\ChargeBackCreationRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.charge_back_creation'
+    app.repository.orm.charge_back_creation:
+        class: App\Repository\Orm\ChargeBackCreationRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

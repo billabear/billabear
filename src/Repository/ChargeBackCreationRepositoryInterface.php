@@ -10,16 +10,10 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository\Orm;
+namespace App\Repository;
 
-use App\Entity\Stats\RefundAmountYearlyStats;
-use Doctrine\Persistence\ManagerRegistry;
-use Parthenon\Common\Repository\CustomServiceRepository;
+use Parthenon\Common\Repository\RepositoryInterface;
 
-class RefundAmountYearlyStatsRepository extends CustomServiceRepository
+interface ChargeBackCreationRepositoryInterface extends RepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, RefundAmountYearlyStats::class);
-    }
 }
