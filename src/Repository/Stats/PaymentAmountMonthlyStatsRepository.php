@@ -14,9 +14,8 @@ namespace App\Repository\Stats;
 
 use App\Entity\Stats\PaymentAmountMonthlyStats;
 use Brick\Money\Currency;
-use Parthenon\Common\Repository\DoctrineRepository;
 
-class PaymentAmountMonthlyStatsRepository extends DoctrineRepository implements PaymentAmountMonthlyStatsRepositoryInterface
+class PaymentAmountMonthlyStatsRepository extends AbstractAmountRepository implements PaymentAmountMonthlyStatsRepositoryInterface
 {
     public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): PaymentAmountMonthlyStats
     {

@@ -36,6 +36,9 @@ class AbstractStats
     #[ORM\Column(type: 'integer')]
     protected int $day;
 
+    #[ORM\Column(type: 'date')]
+    protected \DateTime $date;
+
     #[ORM\Column(type: 'string')]
     protected string $brandCode;
 
@@ -67,6 +70,7 @@ class AbstractStats
     public function setYear(int $year): void
     {
         $this->year = $year;
+        $this->setDatetime();
     }
 
     public function getMonth(): int
@@ -77,6 +81,7 @@ class AbstractStats
     public function setMonth(int $month): void
     {
         $this->month = $month;
+        $this->setDatetime();
     }
 
     public function getDay(): int
@@ -87,6 +92,7 @@ class AbstractStats
     public function setDay(int $day): void
     {
         $this->day = $day;
+        $this->setDatetime();
     }
 
     public function increaseCount()
@@ -112,5 +118,32 @@ class AbstractStats
     public function getDateAsDateTime(): \DateTime
     {
         return new \DateTime(sprintf('%d-%d-%d', $this->year, $this->month, $this->day));
+    }
+
+    public function getDate(): \DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    protected function setDatetime(): void
+    {
+        if (!isset($this->year)) {
+            return;
+        }
+
+        if (!isset($this->month)) {
+            return;
+        }
+
+        if (!isset($this->day)) {
+            return;
+        }
+
+        $this->date = new \DateTime(sprintf('%d-%d-%d', $this->year, $this->month, $this->day));
     }
 }

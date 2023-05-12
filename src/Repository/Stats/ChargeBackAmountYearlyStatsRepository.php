@@ -14,9 +14,8 @@ namespace App\Repository\Stats;
 
 use App\Entity\Stats\ChargeBackAmountYearlyStats;
 use Brick\Money\Currency;
-use Parthenon\Common\Repository\DoctrineRepository;
 
-class ChargeBackAmountYearlyStatsRepository extends DoctrineRepository implements ChargeBackAmountYearlyStatsRepositoryInterface
+class ChargeBackAmountYearlyStatsRepository extends AbstractAmountRepository implements ChargeBackAmountYearlyStatsRepositoryInterface
 {
     public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): ChargeBackAmountYearlyStats
     {

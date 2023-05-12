@@ -12,8 +12,19 @@
 
 namespace App\Tests\Behat\Stats;
 
+use App\Entity\Customer;
+use App\Entity\Stats\ChargeBackAmountDailyStats;
+use App\Entity\Stats\ChargeBackAmountMonthlyStats;
+use App\Entity\Stats\ChargeBackAmountYearlyStats;
 use App\Entity\Stats\PaymentAmountDailyStats;
+use App\Entity\Stats\PaymentAmountMonthlyStats;
+use App\Entity\Stats\PaymentAmountYearlyStats;
 use App\Entity\Stats\RefundAmountDailyStats;
+use App\Entity\Stats\RefundAmountMonthlyStats;
+use App\Entity\Stats\RefundAmountYearlyStats;
+use App\Entity\Stats\SubscriptionCancellationDailyStats;
+use App\Entity\Stats\SubscriptionCancellationMonthlyStats;
+use App\Entity\Stats\SubscriptionCancellationYearlyStats;
 use App\Entity\Stats\SubscriptionCreationDailyStats;
 use App\Entity\Stats\SubscriptionCreationMonthlyStats;
 use App\Entity\Stats\SubscriptionCreationYearlyStats;
@@ -22,11 +33,16 @@ use App\Repository\Orm\RefundAmountDailyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
+use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
 
 class MainContext implements Context
 {
+    use SendRequestTrait;
+
     public function __construct(
+        private Session $session,
         private SubscriptionCreationDailyStatsRepository $subscriptionDailyStatsRepository,
         private SubscriptionCreationMonthlyStatsRepository $subscriptionCreationMonthlyStatsRepository,
         private SubscriptionCreationYearlyStatsRepository $subscriptionCreationYearlyStatsRepository,
@@ -143,6 +159,228 @@ class MainContext implements Context
         }
         if ($statEntity->getCurrency() != $currency) {
             throw new \Exception('Currency is wrong');
+        }
+    }
+
+    /**
+     * @Given that there are stats for :arg1 years existing for default brand
+     */
+    public function thatThereAreStatsForYearsExistingForDefaultBrand($yearCount)
+    {
+        for ($i = $yearCount; $i >= 0; --$i) {
+            $startDate = new \DateTime(sprintf('-%d years', $i));
+            $startDate->modify('first day of january');
+            $this->generateYearStats($startDate);
+            $this->generateMonthlyStats($startDate);
+            for ($y = 0; $y < 11; ++$y) {
+                $startDate->modify('+1 month');
+                $this->generateMonthlyStats($startDate);
+            }
+
+            $startDate->modify('first day of january');
+            $endDate = clone $startDate;
+            $endDate->modify('last day of december');
+            while ($startDate <= $endDate) {
+                $this->generateDailyStats($startDate);
+                $startDate->modify('+1 day');
+            }
+        }
+    }
+
+    private function generateYearStats(\DateTime $dateTime)
+    {
+        $subscriptionCreationStat = new SubscriptionCreationYearlyStats();
+        $subscriptionCreationStat->setYear((int) $dateTime->format('Y'));
+        $subscriptionCreationStat->setMonth(1);
+        $subscriptionCreationStat->setDay(1);
+        $subscriptionCreationStat->setCount(random_int(1, 3000));
+        $subscriptionCreationStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $subscriptionCancellation = new SubscriptionCancellationYearlyStats();
+        $subscriptionCancellation->setYear((int) $dateTime->format('Y'));
+        $subscriptionCancellation->setMonth(1);
+        $subscriptionCancellation->setDay(1);
+        $subscriptionCancellation->setCount(random_int(1, 3000));
+        $subscriptionCancellation->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $paymentAmountStat = new PaymentAmountYearlyStats();
+        $paymentAmountStat->setYear((int) $dateTime->format('Y'));
+        $paymentAmountStat->setMonth(1);
+        $paymentAmountStat->setDay(1);
+        $paymentAmountStat->setAmount(random_int(100, 300000));
+        $paymentAmountStat->setCurrency('USD');
+        $paymentAmountStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $refundAmount = new RefundAmountYearlyStats();
+        $refundAmount->setYear((int) $dateTime->format('Y'));
+        $refundAmount->setMonth(1);
+        $refundAmount->setDay(1);
+        $refundAmount->setAmount(random_int(100, 300000));
+        $refundAmount->setCurrency('USD');
+        $refundAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $chargeBackAmount = new ChargeBackAmountYearlyStats();
+        $chargeBackAmount->setYear((int) $dateTime->format('Y'));
+        $chargeBackAmount->setMonth(1);
+        $chargeBackAmount->setDay(1);
+        $chargeBackAmount->setAmount(random_int(100, 300000));
+        $chargeBackAmount->setCurrency('USD');
+        $chargeBackAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCreationStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCancellation);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
+    }
+
+    private function generateMonthlyStats(\DateTime $dateTime)
+    {
+        $subscriptionCreationStat = new SubscriptionCreationMonthlyStats();
+        $subscriptionCreationStat->setYear((int) $dateTime->format('Y'));
+        $subscriptionCreationStat->setMonth((int) $dateTime->format('m'));
+        $subscriptionCreationStat->setDay(1);
+        $subscriptionCreationStat->setCount(random_int(1, 3000));
+        $subscriptionCreationStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $subscriptionCancellation = new SubscriptionCancellationMonthlyStats();
+        $subscriptionCancellation->setYear((int) $dateTime->format('Y'));
+        $subscriptionCancellation->setMonth((int) $dateTime->format('m'));
+        $subscriptionCancellation->setDay(1);
+        $subscriptionCancellation->setCount(random_int(1, 3000));
+        $subscriptionCancellation->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $paymentAmountStat = new PaymentAmountMonthlyStats();
+        $paymentAmountStat->setYear((int) $dateTime->format('Y'));
+        $paymentAmountStat->setMonth((int) $dateTime->format('m'));
+        $paymentAmountStat->setDay(1);
+        $paymentAmountStat->setAmount(random_int(100, 300000));
+        $paymentAmountStat->setCurrency('USD');
+        $paymentAmountStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $refundAmount = new RefundAmountMonthlyStats();
+        $refundAmount->setYear((int) $dateTime->format('Y'));
+        $refundAmount->setMonth((int) $dateTime->format('m'));
+        $refundAmount->setDay(1);
+        $refundAmount->setAmount(random_int(100, 300000));
+        $refundAmount->setCurrency('USD');
+        $refundAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $chargeBackAmount = new ChargeBackAmountMonthlyStats();
+        $chargeBackAmount->setYear((int) $dateTime->format('Y'));
+        $chargeBackAmount->setMonth((int) $dateTime->format('m'));
+        $chargeBackAmount->setDay(1);
+        $chargeBackAmount->setAmount(random_int(100, 300000));
+        $chargeBackAmount->setCurrency('USD');
+        $chargeBackAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCreationStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCancellation);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
+    }
+
+    private function generateDailyStats(\DateTime $dateTime)
+    {
+        $subscriptionCreationStat = new SubscriptionCreationDailyStats();
+        $subscriptionCreationStat->setYear((int) $dateTime->format('Y'));
+        $subscriptionCreationStat->setMonth((int) $dateTime->format('m'));
+        $subscriptionCreationStat->setDay((int) $dateTime->format('d'));
+        $subscriptionCreationStat->setCount(random_int(1, 3000));
+        $subscriptionCreationStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $subscriptionCancellation = new SubscriptionCancellationDailyStats();
+        $subscriptionCancellation->setYear((int) $dateTime->format('Y'));
+        $subscriptionCancellation->setMonth((int) $dateTime->format('m'));
+        $subscriptionCancellation->setDay((int) $dateTime->format('d'));
+        $subscriptionCancellation->setCount(random_int(1, 3000));
+        $subscriptionCancellation->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $paymentAmountStat = new PaymentAmountDailyStats();
+        $paymentAmountStat->setYear((int) $dateTime->format('Y'));
+        $paymentAmountStat->setMonth((int) $dateTime->format('m'));
+        $paymentAmountStat->setDay((int) $dateTime->format('d'));
+        $paymentAmountStat->setAmount(random_int(100, 300000));
+        $paymentAmountStat->setCurrency('USD');
+        $paymentAmountStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $refundAmount = new RefundAmountDailyStats();
+        $refundAmount->setYear((int) $dateTime->format('Y'));
+        $refundAmount->setMonth((int) $dateTime->format('m'));
+        $refundAmount->setDay((int) $dateTime->format('d'));
+        $refundAmount->setAmount(random_int(100, 300000));
+        $refundAmount->setCurrency('USD');
+        $refundAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $chargeBackAmount = new ChargeBackAmountDailyStats();
+        $chargeBackAmount->setYear((int) $dateTime->format('Y'));
+        $chargeBackAmount->setMonth((int) $dateTime->format('m'));
+        $chargeBackAmount->setDay((int) $dateTime->format('d'));
+        $chargeBackAmount->setAmount(random_int(100, 300000));
+        $chargeBackAmount->setCurrency('USD');
+        $chargeBackAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCreationStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCancellation);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the overall stats
+     */
+    public function iViewTheOverallStats()
+    {
+        $this->sendJsonRequest('GET', '/app/stats');
+    }
+
+    /**
+     * @Then I will see that there are stats for the default brand
+     */
+    public function iWillSeeThatThereAreStatsForTheDefaultBrand()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND])) {
+            throw new \Exception("Can't see subscritpion creation stats");
+        }
+    }
+
+    /**
+     * @Then I will see there is :arg1 days of daily stats
+     */
+    public function iWillSeeThereIsDaysOfDailyStats($arg1)
+    {
+        $data = $this->getJsonContent();
+        if (count($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND]) != $arg1) {
+            throw new \Exception('wrong count');
+        }
+    }
+
+    /**
+     * @Then I will see there is :arg1 months of monthly stats
+     */
+    public function iWillSeeThereIsMonthsOfMonthlyStats($arg1)
+    {
+        $data = $this->getJsonContent();
+        if (count($data['subscription_creation']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
+            throw new \Exception('wrong count');
+        }
+    }
+
+    /**
+     * @Then I will see there is :arg1 years of yearly stats
+     */
+    public function iWillSeeThereIsYearsOfYearlyStats($arg1)
+    {
+        $data = $this->getJsonContent();
+        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) != $arg1) {
+            throw new \Exception('wrong count');
         }
     }
 }

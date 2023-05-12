@@ -12,10 +12,13 @@
 
 namespace App\Repository\Stats;
 
-use App\Entity\Stats\PaymentAmountYearlyStats;
-use Brick\Money\Currency;
+use App\Entity\Stats\AbstractMoneyStat;
+use Parthenon\Common\Repository\RepositoryInterface;
 
-interface PaymentAmountYearlyStatsRepositoryInterface extends AmountRepositoryInterface
+interface AmountRepositoryInterface extends RepositoryInterface
 {
-    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): PaymentAmountYearlyStats;
+    /**
+     * @return AbstractMoneyStat
+     */
+    public function getFromToStats(\DateTime $start, \DateTime $end): array;
 }

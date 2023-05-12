@@ -12,10 +12,17 @@
 
 namespace App\Repository\Stats;
 
-use App\Entity\Stats\PaymentAmountYearlyStats;
-use Brick\Money\Currency;
+use Parthenon\Common\Repository\DoctrineRepository;
 
-interface PaymentAmountYearlyStatsRepositoryInterface extends AmountRepositoryInterface
+abstract class AbstractAmountRepository extends DoctrineRepository implements AmountRepositoryInterface
 {
-    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): PaymentAmountYearlyStats;
+    public function getFromToStats(\DateTime $start, \DateTime $end): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('a');
+        $qb->where('a.date >= :startYear')
+            ->andWhere('a.date <= :endYear');
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

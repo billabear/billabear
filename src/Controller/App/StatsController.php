@@ -10,12 +10,17 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository\Stats;
+namespace App\Controller\App;
 
-use App\Entity\Stats\PaymentAmountYearlyStats;
-use Brick\Money\Currency;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-interface PaymentAmountYearlyStatsRepositoryInterface extends AmountRepositoryInterface
+class StatsController
 {
-    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): PaymentAmountYearlyStats;
+    #[Route('/app/stats', name: 'app_app_stats_returnstats', methods: ['GET'])]
+    public function returnStats(): Response
+    {
+        return new JsonResponse([]);
+    }
 }

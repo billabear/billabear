@@ -14,9 +14,8 @@ namespace App\Repository\Stats;
 
 use App\Entity\Stats\RefundAmountYearlyStats;
 use Brick\Money\Currency;
-use Parthenon\Common\Repository\DoctrineRepository;
 
-class RefundAmountYearlyStatsRepository extends DoctrineRepository implements RefundAmountYearlyStatsRepositoryInterface
+class RefundAmountYearlyStatsRepository extends AbstractAmountRepository implements RefundAmountYearlyStatsRepositoryInterface
 {
     public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): RefundAmountYearlyStats
     {

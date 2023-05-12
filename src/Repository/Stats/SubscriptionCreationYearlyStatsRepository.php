@@ -13,9 +13,8 @@
 namespace App\Repository\Stats;
 
 use App\Entity\Stats\SubscriptionCreationYearlyStats;
-use Parthenon\Common\Repository\DoctrineRepository;
 
-class SubscriptionCreationYearlyStatsRepository extends DoctrineRepository implements SubscriptionCreationYearlyStatsRepositoryInterface
+class SubscriptionCreationYearlyStatsRepository extends AbstractAmountRepository implements SubscriptionCreationYearlyStatsRepositoryInterface
 {
     public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCreationYearlyStats
     {
