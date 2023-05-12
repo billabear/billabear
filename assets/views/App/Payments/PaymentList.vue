@@ -42,7 +42,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="payment in payments" class="mt-5 cursor-pointer">
               <td>{{ currency(payment.amount) }}</td>
               <td>{{ payment.currency }}</td>
@@ -52,6 +52,13 @@
             </tr>
             <tr v-if="payments.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.payment.list.no_payments') }}</td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="4" class="text-center">
+                <LoadingMessage>{{ $t('app.payment.list.loading') }}</LoadingMessage>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -209,6 +216,8 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+      
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.payments = response.data.data;
@@ -221,6 +230,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
