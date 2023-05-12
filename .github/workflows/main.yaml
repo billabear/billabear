@@ -121,7 +121,7 @@ jobs:
 
   behat_stats:
     needs: code_style
-    name: Behat User
+    name: Behat Stats
     runs-on: ubuntu-latest
 
     strategy:
@@ -171,7 +171,7 @@ jobs:
 
       - name: Behat
         run: |
-          vendor/bin/behat -f progress features/stats
+          vendor/bin/behat -f progress features/Stats
 
   behat_app_app:
     needs: code_style
