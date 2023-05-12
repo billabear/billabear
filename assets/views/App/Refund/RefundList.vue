@@ -43,7 +43,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="refund in refunds" class="mt-5 cursor-pointer">
               <td>{{ refund.amount }}</td>
               <td>{{ refund.currency }}</td>
@@ -57,6 +57,13 @@
             <tr v-if="refunds.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.refund.list.no_refunds') }}</td>
             </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="4" class="text-center">
+              <LoadingMessage>{{ $t('app.feature.list.loading') }}</LoadingMessage>
+            </td>
+          </tr>
           </tbody>
         </table>
     </div>
@@ -76,6 +83,9 @@
         </div>
       </div>
     </LoadingScreen>
+  </div>
+  <div v-else class="error-page">
+    {{ $t('app.refund.list.error_message') }}
   </div>
 </template>
 
@@ -200,6 +210,7 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.refunds = response.data.data;
@@ -212,6 +223,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
