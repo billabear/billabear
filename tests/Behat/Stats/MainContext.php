@@ -380,7 +380,7 @@ class MainContext implements Context
     public function iWillSeeThereIsYearsOfYearlyStats($arg1)
     {
         $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) >= $arg1) {
+        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
             throw new \Exception('wrong count');
         }
     }
