@@ -16,5 +16,6 @@ export const FEATURE_LIST_TRANSLATIONS = {
         button: "Filters",
         search: "Filter"
     },
-    error_message: "An error has occurred"
+    error_message: "An error has occurred",
+    loading: "Loading features"
 }

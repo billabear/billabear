@@ -42,7 +42,7 @@
               <th>{{ $t('app.feature.list.code')}}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="feature in features" class="mt-5">
               <td>{{ feature.name }}</td>
               <td>{{ feature.code }}</td>
@@ -51,12 +51,13 @@
               <td colspan="4" class="text-center">{{ $t('app.feature.list.no_features') }}</td>
             </tr>
           </tbody>
-          <tfoot>
+          <tbody v-else>
             <tr>
-              <th>{{ $t('app.feature.list.name') }}</th>
-              <th>{{ $t('app.feature.list.code')}}</th>
+              <td colspan="4" class="text-center">
+                <LoadingMessage>{{ $t('app.feature.list.loading') }}</LoadingMessage>
+              </td>
             </tr>
-          </tfoot>
+          </tbody>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
@@ -202,6 +203,7 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.features = response.data.data;
@@ -214,6 +216,7 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
       })
 
     },
