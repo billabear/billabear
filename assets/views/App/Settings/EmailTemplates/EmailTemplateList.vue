@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.settings.email_template.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -43,7 +43,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="customer in email_templates" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.settings.email_template.update', params: {id: customer.id}})">
               <td>{{ customer.name }}</td>
               <td>{{ customer.locale }}</td>
@@ -53,6 +53,13 @@
             <tr v-if="email_templates.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.settings.email_template.list.no_customers') }}</td>
             </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="4" class="text-center">
+              <LoadingMessage>{{ $t('app.settings.email_template.list.loading') }}</LoadingMessage>
+            </td>
+          </tr>
           </tbody>
         </table>
     </div>
@@ -73,6 +80,9 @@
       </div>
     </LoadingScreen>
   </div>
+  <div v-else class="error-page">
+    {{ $t('app.settings.email_template.list.error_message') }}
+  </div>
 </template>
 
 <script>
@@ -85,6 +95,8 @@ export default {
       ready: false,
       email_templates: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,
@@ -192,6 +204,8 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.email_templates = response.data.data;
@@ -204,6 +218,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
