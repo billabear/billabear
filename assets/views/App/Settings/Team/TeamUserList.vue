@@ -1,6 +1,5 @@
 <template>
-
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.settings.user.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -43,7 +42,7 @@
             <th></th>
           </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
           <tr v-for="user in users" class="mt-5 cursor-pointer">
             <td>{{ user.email }}</td>
             <td>
@@ -53,6 +52,13 @@
           </tr>
           <tr v-if="users.length === 0">
             <td colspan="4" class="text-center">{{ $t('app.settings.user.list.no_users') }}</td>
+          </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="4" class="text-center">
+              <LoadingMessage>{{ $t('app.settings.user.list.loading') }}</LoadingMessage>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -74,6 +80,9 @@
       </div>
     </LoadingScreen>
   </div>
+  <div v-else class="error-page">
+    {{ $t('app.settings.user.list.error_message') }}
+  </div>
 </template>
 
 <script>
@@ -86,6 +95,8 @@ export default {
       ready: false,
       customers: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,
@@ -198,6 +209,8 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.users = response.data.data;
@@ -210,6 +223,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
