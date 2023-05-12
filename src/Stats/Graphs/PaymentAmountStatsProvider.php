@@ -31,8 +31,10 @@ class PaymentAmountStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
-        $oneYear = new \DateTime('-1 year');
+        $oneYear = new \DateTime('-11 months');
+        $oneYear = $oneYear->modify('first day of this month');
         $tenYears = new \DateTime('-9 years');
+        $tenYears = $tenYears->modify('first day of january');
 
         $daily = $this->paymentAmountDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
         $monthly = $this->paymentAmountMonthlyStatsRepository->getFromToStats($oneYear, $now);

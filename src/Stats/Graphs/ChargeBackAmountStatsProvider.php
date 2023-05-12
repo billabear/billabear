@@ -31,8 +31,10 @@ class ChargeBackAmountStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
-        $oneYear = new \DateTime('-1 year');
+        $oneYear = new \DateTime('-11 months');
+        $oneYear = $oneYear->modify('first day of this month');
         $tenYears = new \DateTime('-9 years');
+        $tenYears = $tenYears->modify('first day of january');
 
         $daily = $this->chargeBackAmountDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
         $monthly = $this->chargeBackAmountMonthlyStatsRepository->getFromToStats($oneYear, $now);
