@@ -13,17 +13,17 @@
 namespace App\Stats\Graphs;
 
 use App\Dto\Response\App\Stats\DashboardStats;
-use App\Repository\Stats\SubscriptionCreationDailyStatsRepositoryInterface;
-use App\Repository\Stats\SubscriptionCreationMonthlyStatsRepositoryInterface;
-use App\Repository\Stats\SubscriptionCreationYearlyStatsRepositoryInterface;
+use App\Repository\Stats\ChargeBackAmountDailyStatsRepositoryInterface;
+use App\Repository\Stats\ChargeBackAmountMonthlyStatsRepositoryInterface;
+use App\Repository\Stats\ChargeBackAmountYearlyStatsRepositoryInterface;
 
-class SubscriptionCreationStatsProvider
+class ChargeBackAmountStatsProvider
 {
     public function __construct(
-        private SubscriptionCreationDailyStatsRepositoryInterface $subscriptionCreationDailyStatsRepository,
-        private SubscriptionCreationMonthlyStatsRepositoryInterface $subscriptionCreationMonthlyStatsRepository,
-        private SubscriptionCreationYearlyStatsRepositoryInterface $subscriptionCreationYearlyStatsRepository,
-        private StatOutputConverter $statOutputConverter,
+        private ChargeBackAmountDailyStatsRepositoryInterface $chargeBackAmountDailyStatsRepository,
+        private ChargeBackAmountMonthlyStatsRepositoryInterface $chargeBackAmountMonthlyStatsRepository,
+        private ChargeBackAmountYearlyStatsRepositoryInterface $chargeBackAmountYearlyStatsRepository,
+        private MoneyStatOutputConverter $statOutputConverter,
     ) {
     }
 
@@ -31,12 +31,12 @@ class SubscriptionCreationStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
-        $oneYear = new \DateTime('-11 months');
+        $oneYear = new \DateTime('-1 year');
         $tenYears = new \DateTime('-9 years');
 
-        $daily = $this->subscriptionCreationDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
-        $monthly = $this->subscriptionCreationMonthlyStatsRepository->getFromToStats($oneYear, $now);
-        $yearly = $this->subscriptionCreationYearlyStatsRepository->getFromToStats($tenYears, $now);
+        $daily = $this->chargeBackAmountDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
+        $monthly = $this->chargeBackAmountMonthlyStatsRepository->getFromToStats($oneYear, $now);
+        $yearly = $this->chargeBackAmountYearlyStatsRepository->getFromToStats($tenYears, $now);
 
         $stats = new DashboardStats();
         $stats->setDaily($this->statOutputConverter->convertToDailyOutput($thirtyDaysAgo, $now, $daily));

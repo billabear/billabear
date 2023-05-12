@@ -30,11 +30,11 @@ class SubscriptionCancellationStatsProvider
     public function getMainDashboard(): DashboardStats
     {
         $now = new \DateTime();
-        $thirtyDaysAgo = new \DateTime('-30 days');
+        $thirtyDaysAgo = new \DateTime('-29 days');
         $oneYear = new \DateTime('-1 year');
-        $tenYears = new \DateTime('-10 years');
+        $tenYears = new \DateTime('-9 years');
 
-        $daily - $this->subscriptionCancellationDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
+        $daily = $this->subscriptionCancellationDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
         $monthly = $this->subscriptionCancellationMonthlyStatsRepository->getFromToStats($oneYear, $now);
         $yearly = $this->subscriptionCancellationYearlyStatsRepository->getFromToStats($tenYears, $now);
 

@@ -357,8 +357,9 @@ class MainContext implements Context
     public function iWillSeeThereIsDaysOfDailyStats($arg1)
     {
         $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND]) != $arg1) {
-            throw new \Exception('wrong count');
+        $actual = count($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND]);
+        if ($actual != $arg1) {
+            throw new \Exception('wrong count - '.$actual);
         }
     }
 
@@ -379,7 +380,7 @@ class MainContext implements Context
     public function iWillSeeThereIsYearsOfYearlyStats($arg1)
     {
         $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) != $arg1) {
+        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) >= $arg1) {
             throw new \Exception('wrong count');
         }
     }

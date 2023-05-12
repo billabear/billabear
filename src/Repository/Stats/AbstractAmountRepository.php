@@ -19,8 +19,10 @@ abstract class AbstractAmountRepository extends DoctrineRepository implements Am
     public function getFromToStats(\DateTime $start, \DateTime $end): array
     {
         $qb = $this->entityRepository->createQueryBuilder('a');
-        $qb->where('a.date >= :startYear')
-            ->andWhere('a.date <= :endYear');
+        $qb->where('a.date >= :startDate')
+            ->andWhere('a.date <= :endDate')
+            ->setParameter(':startDate', $start)
+            ->setParameter(':endDate', $end);
         $query = $qb->getQuery();
 
         return $query->getResult();

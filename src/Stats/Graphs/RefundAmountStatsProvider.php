@@ -13,17 +13,17 @@
 namespace App\Stats\Graphs;
 
 use App\Dto\Response\App\Stats\DashboardStats;
-use App\Repository\Stats\SubscriptionCreationDailyStatsRepositoryInterface;
-use App\Repository\Stats\SubscriptionCreationMonthlyStatsRepositoryInterface;
-use App\Repository\Stats\SubscriptionCreationYearlyStatsRepositoryInterface;
+use App\Repository\Stats\RefundAmountDailyStatsRepositoryInterface;
+use App\Repository\Stats\RefundAmountMonthlyStatsRepositoryInterface;
+use App\Repository\Stats\RefundAmountYearlyStatsRepositoryInterface;
 
-class SubscriptionCreationStatsProvider
+class RefundAmountStatsProvider
 {
     public function __construct(
-        private SubscriptionCreationDailyStatsRepositoryInterface $subscriptionCreationDailyStatsRepository,
-        private SubscriptionCreationMonthlyStatsRepositoryInterface $subscriptionCreationMonthlyStatsRepository,
-        private SubscriptionCreationYearlyStatsRepositoryInterface $subscriptionCreationYearlyStatsRepository,
-        private StatOutputConverter $statOutputConverter,
+        private RefundAmountDailyStatsRepositoryInterface $refundAmountDailyStatsRepository,
+        private RefundAmountMonthlyStatsRepositoryInterface $refundAmountMonthlyStatsRepository,
+        private RefundAmountYearlyStatsRepositoryInterface $refundAmountYearlyStatsRepository,
+        private MoneyStatOutputConverter $statOutputConverter,
     ) {
     }
 
@@ -31,12 +31,12 @@ class SubscriptionCreationStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
-        $oneYear = new \DateTime('-11 months');
+        $oneYear = new \DateTime('-1 year');
         $tenYears = new \DateTime('-9 years');
 
-        $daily = $this->subscriptionCreationDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
-        $monthly = $this->subscriptionCreationMonthlyStatsRepository->getFromToStats($oneYear, $now);
-        $yearly = $this->subscriptionCreationYearlyStatsRepository->getFromToStats($tenYears, $now);
+        $daily = $this->refundAmountDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
+        $monthly = $this->refundAmountMonthlyStatsRepository->getFromToStats($oneYear, $now);
+        $yearly = $this->refundAmountYearlyStatsRepository->getFromToStats($tenYears, $now);
 
         $stats = new DashboardStats();
         $stats->setDaily($this->statOutputConverter->convertToDailyOutput($thirtyDaysAgo, $now, $daily));
