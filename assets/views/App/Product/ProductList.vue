@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.product.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -42,7 +42,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="product in products" class="mt-5">
               <td>{{ product.name }}</td>
               <td class="mt-2"><router-link :to="{name: 'app.product.view', params: {id: product.id}}" class="btn--main">View</router-link></td>
@@ -50,6 +50,13 @@
             <tr v-if="products.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.product.list.no_products') }}</td>
             </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="4" class="text-center">
+              <LoadingMessage>{{ $t('app.product.list.loading') }}</LoadingMessage>
+            </td>
+          </tr>
           </tbody>
           <tfoot>
           <tr>
@@ -75,6 +82,9 @@
         </div>
       </div>
     </LoadingScreen>
+  </div>
+  <div v-else class="error-page">
+    {{ $t('app.product.list.error_message') }}
   </div>
 </template>
 
@@ -209,6 +219,7 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.products = response.data.data;
@@ -221,6 +232,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },

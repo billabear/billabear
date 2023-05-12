@@ -216,7 +216,7 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
-      
+
       this.loaded = false;
       axios.get(urlString).then(response => {
 
