@@ -20,5 +20,6 @@ export const REFUND_LIST_TRANSLATIONS = {
         external_reference: "External Reference",
         button: "Filters",
         search: "Filter"
-    }
+    },
+    error_message: "An error has occurred"
 }

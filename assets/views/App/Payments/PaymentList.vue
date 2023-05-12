@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.payment.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -73,6 +73,9 @@
       </div>
     </LoadingScreen>
   </div>
+  <div v-else class="error-page">
+    {{ $t('app.payment.list.error_message') }}
+  </div>
 </template>
 
 <script>
@@ -89,6 +92,8 @@ export default {
       ready: false,
       payments: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,

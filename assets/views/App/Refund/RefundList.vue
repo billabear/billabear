@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.refund.list.title') }}</h1>
 
     <div class="top-button-container" v-if="Object.keys(filters).length > 0">
@@ -91,6 +91,8 @@ export default {
       ready: false,
       refunds: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,

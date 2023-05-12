@@ -90,6 +90,8 @@ export default {
       ready: false,
       products: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,

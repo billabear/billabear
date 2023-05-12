@@ -16,5 +16,7 @@ export const CUSTOMER_LIST_TRANSLATIONS = {
         external_reference: "External Reference",
         button: "Filters",
         search: "Filter"
-    }
+    },
+    loading: "Loading results",
+    error_message: "An error has occurred"
 }

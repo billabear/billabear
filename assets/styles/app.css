@@ -308,3 +308,11 @@
 .filter_field {
     @apply rounded-lg border-black p-2 bg-slate-50 border;
 }
+
+
+.error-page {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}

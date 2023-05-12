@@ -1,6 +1,5 @@
 <template>
-
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.subscription.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -96,6 +95,8 @@ export default {
       ready: false,
       subscriptions: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,

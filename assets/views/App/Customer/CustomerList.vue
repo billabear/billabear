@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.customer.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -43,7 +43,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="customer in customers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.customer.view', params: {id: customer.id}})">
               <td>{{ customer.email }}</td>
               <td>{{ customer.address.country }}</td>
@@ -52,6 +52,13 @@
             </tr>
             <tr v-if="customers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="4" class="text-center">
+                <LoadingMessage>{{ $t('app.customer.list.loading') }}</LoadingMessage>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -73,6 +80,9 @@
       </div>
     </LoadingScreen>
   </div>
+  <div v-else class="error-page">
+    {{ $t('app.customer.list.error_message') }}
+  </div>
 </template>
 
 <script>
@@ -85,6 +95,8 @@ export default {
   data() {
     return {
       ready: false,
+      loaded: false,
+      has_error: false,
       customers: [],
       has_more: false,
       last_key: null,
@@ -209,6 +221,8 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.customers = response.data.data;
@@ -221,6 +235,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
