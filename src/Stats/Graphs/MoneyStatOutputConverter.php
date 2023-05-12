@@ -12,6 +12,7 @@
 
 namespace App\Stats\Graphs;
 
+use App\Entity\Customer;
 use App\Entity\Stats\AbstractMoneyStat;
 
 class MoneyStatOutputConverter
@@ -46,6 +47,10 @@ class MoneyStatOutputConverter
             $output[$brand][$date][$stat->getCurrency()] = $stat->getAmount();
         }
 
+        if (empty($output)) {
+            $output = [Customer::DEFAULT_BRAND => []];
+            $foundCurrencies = ['USD'];
+        }
         foreach ($output as $brand => $data) {
             $newStart = clone $start;
             while ($newStart <= $end) {
@@ -98,6 +103,10 @@ class MoneyStatOutputConverter
                 $output[$brand][$date] = [];
             }
             $output[$brand][$date][$stat->getCurrency()] = $stat->getAmount();
+        }
+        if (empty($output)) {
+            $output = [Customer::DEFAULT_BRAND => []];
+            $foundCurrencies = ['USD'];
         }
 
         foreach ($output as $brand => $data) {
@@ -156,6 +165,10 @@ class MoneyStatOutputConverter
                 $output[$brand][$date] = [];
             }
             $output[$brand][$date][$stat->getCurrency()] = $stat->getAmount();
+        }
+        if (empty($output)) {
+            $output = [Customer::DEFAULT_BRAND => []];
+            $foundCurrencies = ['USD'];
         }
 
         foreach ($output as $brand => $data) {

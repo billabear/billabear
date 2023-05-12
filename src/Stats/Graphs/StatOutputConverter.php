@@ -12,6 +12,7 @@
 
 namespace App\Stats\Graphs;
 
+use App\Entity\Customer;
 use App\Entity\Stats\AbstractStats;
 
 class StatOutputConverter
@@ -37,6 +38,9 @@ class StatOutputConverter
 
             $date = $stat->getDateAsDateTime()->format('Y-m-d');
             $output[$brand][$date] = $stat->getCount();
+        }
+        if (empty($output)) {
+            $output = [Customer::DEFAULT_BRAND => []];
         }
 
         foreach ($output as $brand => $data) {
@@ -78,6 +82,10 @@ class StatOutputConverter
             }
             $date = $monthDate->format('Y-m-d');
             $output[$brand][$date] = $stat->getCount();
+        }
+
+        if (empty($output)) {
+            $output = [Customer::DEFAULT_BRAND => []];
         }
 
         foreach ($output as $brand => $data) {
@@ -125,6 +133,9 @@ class StatOutputConverter
             $output[$brand][$date] = $stat->getCount();
         }
 
+        if (empty($output)) {
+            $output = [Customer::DEFAULT_BRAND => []];
+        }
         foreach ($output as $brand => $data) {
             $newStart = clone $start;
             $newEnd = clone $end;
