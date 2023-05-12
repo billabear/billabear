@@ -15,6 +15,7 @@ import {REFUND_TRANSLATIONS} from "./refund";
 import {TRANSACTIONS_TRANSLATIONS} from "./transactions";
 import {SETTINGS_TRANSLATIONS} from "./settings";
 import {CHARGE_BACKS_TRANSLATIONS} from "./charge_backs";
+import {REPORTS_INDEX_TRANSLATION} from "./reports";
 
 
 export const APP_TRANSLATIONS = {
@@ -35,4 +36,5 @@ export const APP_TRANSLATIONS = {
     transactions: TRANSACTIONS_TRANSLATIONS,
     settings: SETTINGS_TRANSLATIONS,
     charge_backs: CHARGE_BACKS_TRANSLATIONS,
+    reports: REPORTS_INDEX_TRANSLATION,
 };

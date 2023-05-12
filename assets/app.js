@@ -18,6 +18,7 @@ import { createApp } from "vue";
 import { createVfm } from 'vue-final-modal'
 import {ENGLISH_TRANSLATIONS} from "./translations/en";
 import {createI18n} from "vue-i18n";
+import VueApexCharts from "vue3-apexcharts";
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import ParthenonMenu from "@parthenon/vue-menu";
@@ -47,6 +48,7 @@ app.use(i18n);
 app.use(store);
 app.use(ParthenonMenu);
 app.use(ParthenonUI);
+app.use(VueApexCharts)
 app.use(require('vue-moment-v3'))
 app.use(vfm)
 
