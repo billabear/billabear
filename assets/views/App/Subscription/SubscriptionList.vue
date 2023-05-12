@@ -42,7 +42,7 @@
             <th></th>
           </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
           <tr v-for="subscription in subscriptions" class="mt-5">
             <td>{{ subscription.customer.email }}</td>
             <td v-if="subscription.plan !== null && subscription.plan !== undefined">{{ subscription.plan.name }}</td>
@@ -52,6 +52,13 @@
           </tr>
           <tr v-if="subscriptions.length === 0">
             <td colspan="4" class="text-center">{{ $t('app.subscription.list.no_subscriptions') }}</td>
+          </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="4" class="text-center">
+              <LoadingMessage>{{ $t('app.subscription.list.loading') }}</LoadingMessage>
+            </td>
           </tr>
           </tbody>
           <tfoot>
@@ -80,6 +87,9 @@
         </div>
       </div>
     </LoadingScreen>
+  </div>
+  <div v-else class="error-page">
+    {{ $t('app.subscription.list.error_message') }}
   </div>
 </template>
 
@@ -203,6 +213,7 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.subscriptions = response.data.data;
@@ -215,6 +226,9 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
