@@ -220,6 +220,8 @@ export default {
         this.first_key = response.data.first_key;
         this.ready = true;
         this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
       })
 
     },
