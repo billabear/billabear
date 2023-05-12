@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.charge_backs.list.title') }}</h1>
 
     <div class="top-button-container">
@@ -42,7 +42,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="loaded">
             <tr v-for="chargeback in chargeBacks" class="mt-5 cursor-pointer">
               <td>{{ chargeback.payment.amount }}</td>
               <td>{{ chargeback.payment.currency }}</td>
@@ -53,6 +53,13 @@
             <tr v-if="chargeBacks.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.charge_backs.list.no_charge_backs') }}</td>
             </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="4" class="text-center">
+              <LoadingMessage>{{ $t('app.customer.list.loading') }}</LoadingMessage>
+            </td>
+          </tr>
           </tbody>
         </table>
     </div>
@@ -73,6 +80,9 @@
       </div>
     </LoadingScreen>
   </div>
+  <div v-else class="error-page">
+    {{ $t('app.charge_backs.list.error_message') }}
+  </div>
 </template>
 
 <script>
@@ -87,6 +97,8 @@ export default {
       ready: false,
       chargeBacks: [],
       has_more: false,
+      has_error: false,
+      loaded: true,
       last_key: null,
       first_key: null,
       previous_last_key: null,
@@ -194,6 +206,7 @@ export default {
           urlString = urlString + '&'+key+'=' + this.$route.query[key];
         }
       });
+      this.loaded = false;
       axios.get(urlString).then(response => {
 
         this.chargeBacks = response.data.data;
@@ -206,6 +219,7 @@ export default {
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
         this.ready = true;
+        this.loaded = true;
       })
 
     },
