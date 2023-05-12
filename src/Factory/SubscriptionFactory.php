@@ -58,7 +58,7 @@ class SubscriptionFactory
             default => SubscriptionStatus::CANCELLED,
         };
 
-        $subscription->setEndedAt(SubscriptionStatus::CANCELLED === $status ? $model->getValidUntil() : null);
+        $subscription->setEndedAt($model->getCancelledAt());
         $subscription->setStatus($status);
 
         $customer = $this->customerRepository->getByExternalReference($model->getCustomerReference());

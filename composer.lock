@@ -2434,12 +2434,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "5216e01531be198012f1cd72a912aa1b499efc73"
+                "reference": "c740b7164b7cb73c3af67a782f3068c2f71d5801"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/5216e01531be198012f1cd72a912aa1b499efc73",
-                "reference": "5216e01531be198012f1cd72a912aa1b499efc73",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/c740b7164b7cb73c3af67a782f3068c2f71d5801",
+                "reference": "c740b7164b7cb73c3af67a782f3068c2f71d5801",
                 "shasum": ""
             },
             "require": {
@@ -2476,7 +2476,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-05-06T13:33:27+00:00"
+            "time": "2023-05-12T15:51:13+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -2901,6 +2901,7 @@
                 "issues": "https://github.com/php-http/message-factory/issues",
                 "source": "https://github.com/php-http/message-factory/tree/1.1.0"
             },
+            "abandoned": "psr/http-factory",
             "time": "2023-04-14T14:16:17+00:00"
         },
         {
