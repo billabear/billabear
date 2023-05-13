@@ -11,6 +11,7 @@
           <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
           <input type="number" class="form-field-input" id="amount" v-model="price.amount" />
           <p class="form-field-help">{{ $t('app.price.create.help_info.amount') }}</p>
+          <p class="form-field-help">{{ $t('app.price.create.help_info.display_amount', {amount: currency(price.amount)}) }}</p>
         </div>
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="currency">
@@ -97,6 +98,7 @@
 
 <script>
 import axios from "axios";
+import currency from "currency.js";
 
 export default {
   name: "PriceCreate",
@@ -118,6 +120,9 @@ export default {
     }
   },
   methods: {
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
     send: function () {
       var productId = this.$route.params.productId
       this.sendingInProgress = true;

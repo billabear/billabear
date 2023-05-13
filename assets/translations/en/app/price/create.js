@@ -13,6 +13,7 @@ export const PRICE_CREATE_TRANSLATIONS = {
     public: "Public",
     help_info: {
         amount: "The price is the minor level currency. So 1.00 USD would be 100 and 9.99 would be 999.",
+        display_amount: "This price would be {amount}.",
         external_reference: "The reference for the product that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference.",
         recurring: "If this is recurring payment or one-off.",
         currency: "The currency that the customer should be charged in",
