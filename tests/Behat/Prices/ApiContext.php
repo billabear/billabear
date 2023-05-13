@@ -59,7 +59,7 @@ class ApiContext implements Context
         $product = $this->getProductByName($productName);
 
         /** @var Price[] $prices */
-        $prices = $this->priceRepository->findBy(['product' => $product]);
+        $prices = $this->priceRepository->findBy(['product' => $product, 'deleted' => false]);
 
         if (empty($prices)) {
             throw new \Exception('Price not found');
@@ -72,6 +72,23 @@ class ApiContext implements Context
         }
 
         throw new \Exception("Can't find price");
+    }
+
+    /**
+     * @Then there should not be a price for :arg1 with the amount :arg2
+     */
+    public function thereShouldNotBeAPriceForWithTheAmount($productName, $amount)
+    {
+        $product = $this->getProductByName($productName);
+
+        /** @var Price[] $prices */
+        $prices = $this->priceRepository->findBy(['product' => $product, 'deleted' => false]);
+
+        foreach ($prices as $price) {
+            if ($price->getAmount() == $amount) {
+                throw new \Exception('Found price');
+            }
+        }
     }
 
     /**
@@ -92,6 +109,7 @@ class ApiContext implements Context
             $price->setRecurring('true' === strtolower($row['Recurring']));
             $price->setSchedule($row['Schedule'] ?? null);
             $price->setPublic('true' === strtolower($row['Recurring'] ?? 'true'));
+            $price->setCreatedAt(new \DateTime('now'));
             $this->priceRepository->getEntityManager()->persist($price);
         }
         $this->priceRepository->getEntityManager()->flush();

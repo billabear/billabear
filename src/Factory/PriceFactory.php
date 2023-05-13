@@ -42,6 +42,7 @@ class PriceFactory
         $price->setRecurring($createPrice->isRecurring());
         $price->setSchedule($createPrice->getSchedule());
         $price->setIncludingTax($createPrice->isIncludingTax());
+        $price->setCreatedAt(new \DateTime('now'));
 
         return $price;
     }

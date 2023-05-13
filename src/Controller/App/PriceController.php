@@ -16,6 +16,7 @@ use App\Dto\Request\Api\CreatePrice;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\PriceFactory;
 use Obol\Exception\ProviderFailureException;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -127,5 +128,23 @@ class PriceController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/product/{id}/price/{priceId}/delete', name: 'app_product_price_delete', methods: ['POST'])]
+    public function deletePrice(
+        Request $request,
+        PriceRepositoryInterface $priceRepository,
+    ) {
+        try {
+            /** @var Price $price */
+            $price = $priceRepository->findById($request->get('priceId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $price->markAsDeleted();
+        $priceRepository->save($price);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

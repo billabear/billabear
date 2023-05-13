@@ -38,10 +38,11 @@
               <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
               <th>{{ $t('app.product.view.price.list.public') }}</th>
               <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="price in prices" class="mt-5">
+            <tr v-for="(price, key) in prices" class="mt-5">
               <td>{{ currency(price.amount) }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
@@ -52,9 +53,12 @@
                 <a v-if="price.payment_provider_details_url" target="_blank" :href="price.payment_provider_details_url">{{ price.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <span v-else>{{ price.external_reference }}</span>
               </td>
+              <td>
+                <button class="btn--danger" @click="deletePrice(price, key)"><i class="fa-solid fa-trash"></i></button>
+              </td>
             </tr>
             <tr v-if="prices.length === 0">
-              <td colspan="7" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
+              <td colspan="8" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
             <tfoot>
@@ -155,7 +159,15 @@ export default {
     })
   },
   methods: {
+    deletePrice: function (price, key) {
+      var productId = this.$route.params.id
+      axios.post('/app/product/'+productId+'/price/'+price.id+'/delete').then(response => {
 
+        this.prices.splice(key,1)
+      }).catch(error => {
+        alert(this.$t("app.product.view.error_delete"))
+      })
+    },
     currency: function (value) {
       return currency(value, { fromCents: true });
     },

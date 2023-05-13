@@ -135,6 +135,9 @@ class ProductController
         }
 
         $prices = $priceRepository->getAllForProduct($product);
+        $prices = array_filter($prices, function ($price) {
+            return !$price->isDeleted();
+        });
         $pricesDtos = array_map([$priceFactory, 'createAppDto'], $prices);
 
         $plans = $subscriptionPlanRepository->getAllForProduct($product);

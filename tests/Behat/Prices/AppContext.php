@@ -49,4 +49,16 @@ class AppContext implements Context
 
         $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/price', $payload);
     }
+
+    /**
+     * @When I use the APP to delete a price from :arg1 for :arg3 per :arg2
+     */
+    public function iUseTheAppToDeleteAPriceFromForPer($productName, $amount, $schedule)
+    {
+        $product = $this->getProductByName($productName);
+
+        $price = $this->priceRepository->findOneBy(['product' => $product, 'amount' => $amount, 'schedule' => $schedule]);
+
+        $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/price/'.$price->getId().'/delete');
+    }
 }
