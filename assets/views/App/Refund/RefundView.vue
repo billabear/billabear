@@ -10,7 +10,7 @@
             <dl class="detail-list">
               <div>
                 <dt>{{ $t('app.refund.view.main.amount') }}</dt>
-                <dd>{{ refund.amount }}</dd>
+                <dd>{{ currency(refund.amount) }}</dd>
               </div>
               <div>
                 <dt>{{ $t('app.refund.view.main.currency') }}</dt>
@@ -29,6 +29,7 @@
 <script>
 import axios from "axios";
 import {VueFinalModal} from "vue-final-modal";
+import currency from "currency.js";
 
 export default {
   name: "PaymentView",
@@ -77,6 +78,11 @@ export default {
       this.error = true;
       this.ready = true;
     })
+  },
+  methods: {
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
   }
 }
 </script>
