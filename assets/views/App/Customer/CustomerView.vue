@@ -201,7 +201,7 @@
               </thead>
               <tbody>
               <tr v-for="payment in payments" class="mt-5">
-                <td>{{ payment.amount }}</td>
+                <td>{{ currency(payment.amount) }}</td>
                 <td>{{ payment.currency }}</td>
                 <td>{{ payment.status }}</td>
                 <td>{{ $filters.moment(payment.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
@@ -228,7 +228,7 @@
               </thead>
               <tbody>
               <tr v-for="refund in refunds">
-                <td>{{ refund.amount }}</td>
+                <td>{{ currency(refund.amount) }}</td>
                 <td>{{ refund.currency }}</td>
                 <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
                 <td v-else>API</td>
@@ -252,6 +252,7 @@
 
 <script>
 import axios from "axios";
+import currency from "currency.js";
 
 export default {
   name: "CustomerView",
@@ -270,6 +271,9 @@ export default {
     }
   },
   methods: {
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
     disableCustomer: function() {
       var customerId = this.$route.params.id;
       axios.post('/app/customer/'+customerId+'/disable').then(response => {
