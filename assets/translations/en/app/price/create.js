@@ -19,7 +19,7 @@ export const PRICE_CREATE_TRANSLATIONS = {
         currency: "The currency that the customer should be charged in",
         schedule: "How often the customer should be charged",
         including_tax: "If you want to hide the tax within the price or if you want to make the customer pay the tax themselves",
-        public: "If this is a publically displayable price"
+        public: "If this is a publicly displayable price"
     },
     schedule: {
         week: "Weekly",
