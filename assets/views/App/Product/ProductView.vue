@@ -42,7 +42,7 @@
             </thead>
             <tbody>
             <tr v-for="price in prices" class="mt-5">
-              <td>{{ price.amount }}</td>
+              <td>{{ currency(price.amount) }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
               <td>{{ price.schedule }}</td>
@@ -119,6 +119,7 @@
 
 <script>
 import axios from "axios";
+import currency from "currency.js";
 
 export default {
   name: "productView",
@@ -152,6 +153,12 @@ export default {
       this.error = true;
       this.ready = true;
     })
+  },
+  methods: {
+
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
   }
 }
 </script>
