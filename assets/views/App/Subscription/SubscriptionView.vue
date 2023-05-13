@@ -102,7 +102,7 @@
               </thead>
               <tbody>
                 <tr v-for="payment in payments">
-                  <td>{{ payment.amount }}</td>
+                  <td>{{ currency(payment.amount) }}</td>
                   <td>{{ payment.created_at }}</td>
                   <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="btn--main">{{ $t('app.subscription.view.payments.view') }}</router-link></td>
                 </tr>
@@ -214,6 +214,7 @@
 <script>
 import axios from "axios";
 import {useModal, VueFinalModal} from "vue-final-modal";
+import currency from "currency.js";
 
 export default {
   name: "SubscriptionView",
@@ -226,7 +227,6 @@ export default {
       paymentDetails: {},
       payments: [],
       refunds: [],
-      payments: [],
       ready: false,
       error: false,
       errorMessage: undefined,
@@ -291,6 +291,9 @@ export default {
     })
   },
   methods: {
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
     showChangePaymentMethods: function () {
         this.paymentMethodOptions.modelValue = true;
         axios.get('/app/customer/'+this.customer.id+'/payment-details').then(response => {
