@@ -13,8 +13,10 @@
 namespace App\Entity;
 
 use App\Enum\CustomerStatus;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -63,6 +65,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     protected ?bool $disabled = false;
+
+    #[Orm\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
+    protected Collection $subscriptions;
 
     /**
      * @return mixed
@@ -230,5 +235,15 @@ class Customer implements CustomerInterface
     public function setBrandSettings(BrandSettings $brandSettings): void
     {
         $this->brandSettings = $brandSettings;
+    }
+
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function setSubscriptions(Collection $subscriptions): void
+    {
+        $this->subscriptions = $subscriptions;
     }
 }
