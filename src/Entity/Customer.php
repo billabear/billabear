@@ -15,8 +15,6 @@ namespace App\Entity;
 use App\Enum\CustomerStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Exception\NoSubscriptionException;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -66,24 +64,6 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'boolean', nullable: true)]
     protected ?bool $disabled = false;
 
-    public function hasSubscription(): bool
-    {
-        if (isset($this->subscription) && !empty($this->subscription->getPlanName())) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function hasActiveSubscription(): bool
-    {
-        if (isset($this->subscription) && $this->subscription->isActive()) {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * @return mixed
      */
@@ -98,20 +78,6 @@ class Customer implements CustomerInterface
     public function setId($id): void
     {
         $this->id = $id;
-    }
-
-    public function getSubscription(): Subscription
-    {
-        if (!isset($this->subscription)) {
-            throw new NoSubscriptionException();
-        }
-
-        return $this->subscription;
-    }
-
-    public function setSubscription(?Subscription $subscription): void
-    {
-        $this->subscription = $subscription;
     }
 
     public function getReference(): ?string
