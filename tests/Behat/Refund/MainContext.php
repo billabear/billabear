@@ -21,7 +21,7 @@ use Behat\Mink\Session;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Enum\RefundStatus;
-use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 use Parthenon\Billing\Repository\Orm\PaymentServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\RefundServiceRepository;
@@ -40,7 +40,7 @@ class MainContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
-        private PaymentMethodServiceRepository $paymentDetailsRepository,
+        private PaymentCardServiceRepository $paymentDetailsRepository,
         private PaymentServiceRepository $paymentRepository,
         private RefundServiceRepository $refundRepository,
     ) {

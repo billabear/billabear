@@ -12,14 +12,14 @@
 
 namespace App\Validator\Constraints;
 
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use App\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class PaymentMethodExistsValidator extends ConstraintValidator
 {
-    public function __construct(private PaymentMethodRepositoryInterface $repository)
+    public function __construct(private PaymentCardRepositoryInterface $repository)
     {
     }
 

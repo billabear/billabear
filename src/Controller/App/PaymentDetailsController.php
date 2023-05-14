@@ -19,11 +19,11 @@ use App\Entity\Customer;
 use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Config\FrontendConfig;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
 use Parthenon\Billing\PaymentMethod\DeleterInterface;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -101,7 +101,7 @@ class PaymentDetailsController
     public function listCustomerPaymentMethods(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodsFactory $paymentDetailsFactory,
         SerializerInterface $serializer,
     ): Response {
@@ -112,7 +112,7 @@ class PaymentDetailsController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $paymentDetails = $paymentDetailsRepository->getPaymentMethodForCustomer($customer);
+        $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailsDtos = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
         $listView = new ListResponse();
         $listView->setData($paymentDetailsDtos);
@@ -126,7 +126,7 @@ class PaymentDetailsController
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
         try {
@@ -137,7 +137,7 @@ class PaymentDetailsController
         }
 
         try {
-            /** @var PaymentDetails $paymentDetails */
+            /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
@@ -152,7 +152,7 @@ class PaymentDetailsController
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
         try {
@@ -163,7 +163,7 @@ class PaymentDetailsController
         }
 
         try {
-            /** @var PaymentMethod $paymentDetails */
+            /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);

@@ -18,11 +18,11 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\PaymentDetails;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
-use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
@@ -39,7 +39,7 @@ class ApiContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
-        private PaymentMethodServiceRepository $paymentDetailsRepository,
+        private PaymentCardServiceRepository $paymentDetailsRepository,
     ) {
     }
 
@@ -113,7 +113,7 @@ class ApiContext implements Context
     {
         $subscription = $this->getSubscription($customerEmail, $planName);
 
-        /** @var PaymentDetails $paymentDetails */
+        /** @var PaymentCard $paymentDetails */
         $paymentDetails = $this->paymentDetailsRepository->findOneBy(['lastFour' => $lastFour]);
 
         $this->sendJsonRequest('PUT', '/api/v1/subscription/'.(string) $subscription->getId().'/payment-method', ['payment_details' => (string) $paymentDetails->getId()]);

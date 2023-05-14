@@ -17,7 +17,7 @@ use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
+use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 
 class MainContext implements Context
 {
@@ -27,7 +27,7 @@ class MainContext implements Context
 
     public function __construct(
         private Session $session,
-        private PaymentMethodServiceRepository $paymentDetailsRepository,
+        private PaymentCardServiceRepository $paymentDetailsRepository,
         protected CustomerRepository $customerRepository
     ) {
     }

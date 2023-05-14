@@ -63,6 +63,9 @@ default:
                 # Stats
                 - App\Tests\Behat\Stats\MainContext
 
+                # Reports
+                - App\Tests\Behat\Reports\ExpiringCards\AppContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

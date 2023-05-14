@@ -17,11 +17,11 @@ use App\Dto\Response\Api\PaymentDetails\FrontendToken;
 use App\Entity\Customer;
 use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Entity\PaymentDetails;
+use App\Repository\PaymentCardRepositoryInterface;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
 use Parthenon\Billing\PaymentMethod\DeleterInterface;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,7 +97,7 @@ class PaymentMethodsController
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
         try {
@@ -108,7 +108,7 @@ class PaymentMethodsController
         }
 
         try {
-            /** @var PaymentDetails $paymentDetails */
+            /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
@@ -123,7 +123,7 @@ class PaymentMethodsController
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
         try {
@@ -134,7 +134,7 @@ class PaymentMethodsController
         }
 
         try {
-            /** @var PaymentDetails $paymentDetails */
+            /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);

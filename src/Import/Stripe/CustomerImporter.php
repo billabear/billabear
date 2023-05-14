@@ -16,10 +16,10 @@ use App\Entity\StripeImport;
 use App\Factory\CustomerFactory;
 use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
+use App\Repository\PaymentCardRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Customer;
 use Obol\Provider\ProviderInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CustomerImporter
@@ -29,7 +29,7 @@ class CustomerImporter
         private CustomerFactory $factory,
         private CustomerRepositoryInterface $customerRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
-        private PaymentMethodRepositoryInterface $paymentMethodRepository,
+        private PaymentCardRepositoryInterface $paymentCardRepository,
         private PaymentMethodsFactory $paymentMethodsFactory,
     ) {
     }
@@ -55,13 +55,13 @@ class CustomerImporter
 
                 foreach ($cards as $paymentMethodModel) {
                     try {
-                        $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForReference($paymentMethodModel->getId());
+                        $paymentMethod = $this->paymentCardRepository->getPaymentCardForReference($paymentMethodModel->getId());
                     } catch (NoEntityFoundException $exception) {
                         $paymentMethod = null;
                     }
                     $paymentMethod = $this->paymentMethodsFactory->createFromObol($paymentMethodModel, $paymentMethod);
                     $paymentMethod->setDefaultPaymentOption($customerModel->getDefaultSource() === $paymentMethod->getStoredPaymentReference());
-                    $this->paymentMethodRepository->save($paymentMethod);
+                    $this->paymentCardRepository->save($paymentMethod);
                     $lastId = $paymentMethodModel->getId();
                 }
                 $lastId = $customerModel->getId();

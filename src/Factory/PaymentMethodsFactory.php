@@ -15,7 +15,7 @@ namespace App\Factory;
 use App\Dto\Generic\Api\PaymentMethod as ApiDto;
 use App\Dto\Generic\App\PaymentMethod as AppDto;
 use App\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 class PaymentMethodsFactory
 {
@@ -23,7 +23,7 @@ class PaymentMethodsFactory
     {
     }
 
-    public function createApiDto(PaymentMethod $paymentDetails): ApiDto
+    public function createApiDto(PaymentCard $paymentDetails): ApiDto
     {
         $dto = new ApiDto();
         $dto->setId($paymentDetails->getId());
@@ -37,7 +37,7 @@ class PaymentMethodsFactory
         return $dto;
     }
 
-    public function createAppDto(PaymentMethod $paymentDetails): AppDto
+    public function createAppDto(PaymentCard $paymentDetails): AppDto
     {
         $dto = new AppDto();
         $dto->setId($paymentDetails->getId());
@@ -51,10 +51,10 @@ class PaymentMethodsFactory
         return $dto;
     }
 
-    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, ?PaymentMethod $entity = null)
+    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
     {
         if (!$entity) {
-            $entity = new PaymentMethod();
+            $entity = new PaymentCard();
         }
         $customer = $this->customerRepository->getByExternalReference($paymentMethodModel->getCustomerReference());
         $entity->setCustomer($customer);

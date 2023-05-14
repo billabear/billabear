@@ -18,8 +18,8 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\PaymentMethod;
-use Parthenon\Billing\Repository\Orm\PaymentMethodServiceRepository;
+use Parthenon\Billing\Entity\PaymentCard;
+use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 
 class AppContext implements Context
 {
@@ -29,9 +29,36 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private PaymentMethodServiceRepository $paymentDetailsRepository,
+        private PaymentCardServiceRepository $paymentDetailsRepository,
         protected CustomerRepository $customerRepository
     ) {
+    }
+
+    /**
+     * @When the following customers have cards that will expire this month:
+     */
+    public function theFollowingCustomersHaveCardsThatWillExpireThisMonth(TableNode $table)
+    {
+        $rows = $table->getColumnsHash();
+        $now = new \DateTime();
+        foreach ($rows as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer Email']);
+            $paymentDetails = new PaymentCard();
+            $paymentDetails->setName($row['Name'] ?? 'One');
+            $paymentDetails->setBrand($row['Brand'] ?? 'dummy');
+            $paymentDetails->setLastFour($row['Last Four']);
+            $paymentDetails->setExpiryMonth((int) $now->format('m'));
+            $paymentDetails->setExpiryYear((int) $now->format('Y'));
+            $paymentDetails->setStoredPaymentReference(bin2hex(random_bytes(32)));
+            $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
+            $paymentDetails->setCustomer($customer);
+            $paymentDetails->setCreatedAt(new \DateTime());
+            $paymentDetails->setDefaultPaymentOption(true);
+
+            $this->paymentDetailsRepository->getEntityManager()->persist($paymentDetails);
+        }
+
+        $this->paymentDetailsRepository->getEntityManager()->flush();
     }
 
     /**
@@ -43,7 +70,7 @@ class AppContext implements Context
 
         foreach ($rows as $row) {
             $customer = $this->getCustomerByEmail($row['Customer Email']);
-            $paymentDetails = new PaymentMethod();
+            $paymentDetails = new PaymentCard();
             $paymentDetails->setName($row['Name'] ?? 'One');
             $paymentDetails->setBrand($row['Brand'] ?? 'dummy');
             $paymentDetails->setLastFour($row['Last Four']);
@@ -53,7 +80,7 @@ class AppContext implements Context
             $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
             $paymentDetails->setCustomer($customer);
             $paymentDetails->setCreatedAt(new \DateTime());
-            $paymentDetails->setDefaultPaymentOption(true);
+            $paymentDetails->setDefaultPaymentOption(($row['Default'] ?? 'false') !== 'false');
 
             $this->paymentDetailsRepository->getEntityManager()->persist($paymentDetails);
         }

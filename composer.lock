@@ -1647,16 +1647,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.5.1",
+            "version": "7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "b964ca597e86b752cd994f27293e9fa6b6a95ed9"
+                "reference": "4019c94f08689e8b67b44800407d52133291dd4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/b964ca597e86b752cd994f27293e9fa6b6a95ed9",
-                "reference": "b964ca597e86b752cd994f27293e9fa6b6a95ed9",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4019c94f08689e8b67b44800407d52133291dd4c",
+                "reference": "4019c94f08689e8b67b44800407d52133291dd4c",
                 "shasum": ""
             },
             "require": {
@@ -1687,9 +1687,6 @@
                 "bamarni-bin": {
                     "bin-links": true,
                     "forward-command": false
-                },
-                "branch-alias": {
-                    "dev-master": "7.5-dev"
                 }
             },
             "autoload": {
@@ -1755,7 +1752,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.5.1"
+                "source": "https://github.com/guzzle/guzzle/tree/7.5.2"
             },
             "funding": [
                 {
@@ -1771,7 +1768,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-17T16:30:08+00:00"
+            "time": "2023-05-14T09:20:02+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2484,12 +2481,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "05bcdf60ae901a6b99ac4db9973f75bca719ded4"
+                "reference": "f1c9530b6665fa9d183c892b92ecec2f8211c6a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/05bcdf60ae901a6b99ac4db9973f75bca719ded4",
-                "reference": "05bcdf60ae901a6b99ac4db9973f75bca719ded4",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/f1c9530b6665fa9d183c892b92ecec2f8211c6a8",
+                "reference": "f1c9530b6665fa9d183c892b92ecec2f8211c6a8",
                 "shasum": ""
             },
             "require": {
@@ -2573,7 +2570,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-05-13T15:18:25+00:00"
+            "time": "2023-05-14T08:40:54+00:00"
         },
         {
             "name": "php-http/client-common",

@@ -18,7 +18,7 @@ use App\Repository\CustomerRepositoryInterface;
 use Obol\Model\Subscription as ObolModel;
 use Parthenon\Billing\Entity\Subscription as Entity;
 use Parthenon\Billing\Enum\SubscriptionStatus;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -35,7 +35,7 @@ class SubscriptionFactory
         private CustomerRepositoryInterface $customerRepository,
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        private PaymentMethodRepositoryInterface $paymentMethodRepository,
+        private PaymentCardRepositoryInterface $paymentCardRepository,
     ) {
     }
 
@@ -76,7 +76,7 @@ class SubscriptionFactory
 
         if ($model->getStoredPaymentReference()) {
             try {
-                $paymentMethod = $this->paymentMethodRepository->getPaymentMethodForReference($model->getStoredPaymentReference());
+                $paymentMethod = $this->paymentCardRepository->getPaymentCardForReference($model->getStoredPaymentReference());
                 $subscription->setPaymentDetails($paymentMethod);
             } catch (NoEntityFoundException $e) {
                 $this->getLogger()->warning('There is no payment method found', ['payment_method_reference' => $model->getStoredPaymentReference()]);

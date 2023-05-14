@@ -21,10 +21,10 @@ use App\Factory\CancellationRequestFactory;
 use App\Factory\SubscriptionFactory;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use App\Repository\PaymentCardRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -52,7 +52,7 @@ class SubscriptionController
         CustomerRepositoryInterface $customerRepository,
         SubscriptionManagerInterface $subscriptionManager,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
@@ -219,7 +219,7 @@ class SubscriptionController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
         try {

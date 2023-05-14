@@ -26,7 +26,7 @@ use App\Factory\PaymentMethodsFactory;
 use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
 use App\Repository\CustomerRepositoryInterface;
-use Parthenon\Billing\Repository\PaymentMethodRepositoryInterface;
+use App\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -175,7 +175,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         CustomerFactory $customerFactory,
-        PaymentMethodRepositoryInterface $paymentDetailsRepository,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodsFactory $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
         PaymentFactory $paymentFactory,
@@ -197,7 +197,7 @@ class CustomerController
         $refunds = $refundRepository->getForCustomer($customer);
         $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
 
-        $paymentDetails = $paymentDetailsRepository->getPaymentMethodForCustomer($customer);
+        $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
         $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
