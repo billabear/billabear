@@ -30,13 +30,10 @@ import SettingsGroup from "../views/App/Settings/SettingsGroup.vue";
 import SubscriptionGroup from "../views/App/Subscription/SubscriptionGroup.vue";
 import ProductGroup from "../views/App/Product/ProductGroup.vue";
 import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
-import TemplateList from "../views/App/Settings/PdfTemplates/PdfTemplateList.vue";
-import TemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
 import BrandSettingsList from "../views/App/Settings/BrandSettings/BrandSettingsList.vue";
 import BrandSettingsUpdate from "../views/App/Settings/BrandSettings/BrandSettingsUpdate.vue";
 import BrandSettingsCreate from "../views/App/Settings/BrandSettings/BrandSettingsCreate.vue";
 import PdfTemplateList from "../views/App/Settings/PdfTemplates/PdfTemplateList.vue";
-import pdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
 import PdfTemplateUpdate from "../views/App/Settings/PdfTemplates/PdfTemplateUpdate.vue";
 import EmailTemplateList from "../views/App/Settings/EmailTemplates/EmailTemplateList.vue";
 import EmailTemplateCreate from "../views/App/Settings/EmailTemplates/EmailTemplateCreate.vue";
@@ -48,6 +45,8 @@ import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
 import SettingsUserUpdate from "../views/App/Settings/Team/SettingsUserUpdate.vue";
 import StripeImportList from "../views/App/Settings/Import/StripeImportList.vue";
 import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
+import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
+import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -55,6 +54,24 @@ export const APP_ROUTES = [
         name: "app.home",
         path: "home",
         component: Dashboard,
+    },
+    {
+        name: "app.report",
+        path: "reports",
+        redirect: "reports",
+        component: ReportsGroup,
+        children: [
+            {
+                name: 'app.report.dashboard',
+                path: '',
+                component: Dashboard
+            },
+            {
+                name: 'app.expiring_cards.list',
+                path: 'expiring-cards',
+                component: ExpiringCardsList
+            }
+        ]
     },
     {
         name: 'app.customer',

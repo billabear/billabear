@@ -81,6 +81,7 @@ class PriceFactory
     {
         if (!$price) {
             $price = new Price();
+            $price->setCreatedAt(new \DateTime());
         }
 
         $price->setPublic(false);
