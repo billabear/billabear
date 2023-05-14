@@ -1647,16 +1647,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.5.2",
+            "version": "7.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "4019c94f08689e8b67b44800407d52133291dd4c"
+                "reference": "733dd89533dd371a0987172727df15f500dab0ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4019c94f08689e8b67b44800407d52133291dd4c",
-                "reference": "4019c94f08689e8b67b44800407d52133291dd4c",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/733dd89533dd371a0987172727df15f500dab0ef",
+                "reference": "733dd89533dd371a0987172727df15f500dab0ef",
                 "shasum": ""
             },
             "require": {
@@ -1752,7 +1752,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.5.2"
+                "source": "https://github.com/guzzle/guzzle/tree/7.6.0"
             },
             "funding": [
                 {
@@ -1768,7 +1768,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-14T09:20:02+00:00"
+            "time": "2023-05-14T11:23:39+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2481,12 +2481,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "f1c9530b6665fa9d183c892b92ecec2f8211c6a8"
+                "reference": "0944b1bcc9b2be635220ccc137e5634f5c1c27d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/f1c9530b6665fa9d183c892b92ecec2f8211c6a8",
-                "reference": "f1c9530b6665fa9d183c892b92ecec2f8211c6a8",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/0944b1bcc9b2be635220ccc137e5634f5c1c27d2",
+                "reference": "0944b1bcc9b2be635220ccc137e5634f5c1c27d2",
                 "shasum": ""
             },
             "require": {
@@ -2570,7 +2570,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-05-14T08:40:54+00:00"
+            "time": "2023-05-14T14:45:53+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -9900,16 +9900,16 @@
         },
         {
             "name": "laminas/laminas-code",
-            "version": "4.10.0",
+            "version": "4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-code.git",
-                "reference": "ad8b36073f9ac792716478befadca0798cc15635"
+                "reference": "169123b3ede20a9193480c53de2a8194f8c073ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/ad8b36073f9ac792716478befadca0798cc15635",
-                "reference": "ad8b36073f9ac792716478befadca0798cc15635",
+                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/169123b3ede20a9193480c53de2a8194f8c073ec",
+                "reference": "169123b3ede20a9193480c53de2a8194f8c073ec",
                 "shasum": ""
             },
             "require": {
@@ -9959,7 +9959,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-03-08T11:55:01+00:00"
+            "time": "2023-05-14T12:05:38+00:00"
         },
         {
             "name": "masterminds/html5",
