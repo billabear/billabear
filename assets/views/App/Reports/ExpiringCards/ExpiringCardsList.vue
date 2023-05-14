@@ -19,13 +19,13 @@
 
           </tr>
           <tr v-if="expiringCards.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.report.expiring_card.main.list.no_expiring_cards') }}</td>
+            <td colspan="4" class="text-center">{{ $t('app.reports.expiring_cards.main.list.no_expiring_cards') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
             <td colspan="4" class="text-center">
-              <LoadingMessage>{{ $t('app.report.expiring_card.main.list.loading') }}</LoadingMessage>
+              <LoadingMessage>{{ $t('app.report.expiring_cards.main.list.loading') }}</LoadingMessage>
             </td>
           </tr>
           </tbody>

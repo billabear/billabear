@@ -19,7 +19,17 @@ class PaymentCardRepository extends BaseRepository implements PaymentCardReposit
     public function getExpiringDefaultThisMonth(): array
     {
         $now = new \DateTime();
-        $cards = $this->entityRepository->findBy(['expiryYear' => (int) $now->format('Y'), 'expiryMonth' => (int) $now->format('m'), 'defaultPaymentOption' => true]);
+
+        $qb = $this->entityRepository->createQueryBuilder('pc');
+        $qb->innerJoin('pc.customer', 'c')
+            ->innerJoin('c.subscriptions', 's', 'WITH', 's.active = true')
+            ->where('pc.expiryYear = :year')
+            ->andWhere('pc.expiryMonth = :month')
+            ->andWhere('pc.defaultPaymentOption = true')
+            ->setParameter(':year', (int) $now->format('Y'))
+            ->setParameter(':month', (int) $now->format('m'));
+
+        $cards = $qb->getQuery()->getResult();
 
         return $cards;
     }
