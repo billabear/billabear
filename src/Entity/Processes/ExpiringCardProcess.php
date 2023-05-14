@@ -10,15 +10,16 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity;
+namespace App\Entity\Processes;
 
+use App\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\Refund;
+use Parthenon\Billing\Entity\PaymentCard;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'refund_created_process')]
-class RefundCreatedProcess
+#[ORM\Table(name: 'expiring_card_process')]
+class ExpiringCardProcess
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -26,8 +27,11 @@ class RefundCreatedProcess
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Refund::class)]
-    private Refund $refund;
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    private Customer $customer;
+
+    #[ORM\OneToOne(targetEntity: PaymentCard::class)]
+    private PaymentCard $paymentCard;
 
     #[ORM\Column('state', type: 'string')]
     private string $state;
@@ -51,14 +55,24 @@ class RefundCreatedProcess
         $this->id = $id;
     }
 
-    public function getRefund(): Refund
+    public function getCustomer(): Customer
     {
-        return $this->refund;
+        return $this->customer;
     }
 
-    public function setRefund(Refund $refund): void
+    public function setCustomer(Customer $customer): void
     {
-        $this->refund = $refund;
+        $this->customer = $customer;
+    }
+
+    public function getPaymentCard(): PaymentCard
+    {
+        return $this->paymentCard;
+    }
+
+    public function setPaymentCard(PaymentCard $paymentCard): void
+    {
+        $this->paymentCard = $paymentCard;
     }
 
     public function getState(): string

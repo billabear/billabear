@@ -1,5 +1,22 @@
 framework:
     workflows:
+        expiring_card_process:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Processes\ExpiringCardProcess
+            initial_marking: started
+            places:
+                - started
+                - first_email_sent
+                - completed
+            transitions:
+                send_first_email:
+                    from: started
+                    to: first_email_sent
+
         cancellation_request:
             type: 'state_machine'
             marking_store:

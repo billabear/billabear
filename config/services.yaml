@@ -216,6 +216,13 @@ services:
     app.repository.orm.charge_back_creation:
         class: App\Repository\Orm\ChargeBackCreationRepository
 
+
+    App\Repository\Processes\ExpiringCardProcessRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.expiring_cards_process'
+    app.repository.orm.expiring_cards_process:
+        class: App\Repository\Orm\ExpiringCardProcessRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

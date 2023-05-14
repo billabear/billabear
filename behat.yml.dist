@@ -66,6 +66,9 @@ default:
                 # Reports
                 - App\Tests\Behat\Reports\ExpiringCards\AppContext
 
+                # Background Jobs
+                - App\Tests\Behat\Background\ExpiringCards\MainContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

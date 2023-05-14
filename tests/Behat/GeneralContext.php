@@ -13,6 +13,7 @@
 namespace App\Tests\Behat;
 
 use App\Entity\BrandSettings;
+use App\Entity\EmailTemplate;
 use App\Entity\Settings;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
@@ -71,6 +72,16 @@ class GeneralContext implements Context
         $em->persist($settings);
         $em->flush();
 
+        $expiringCardWarning = new EmailTemplate();
+        $expiringCardWarning->setName(EmailTemplate::NAME_PAYMENT_METHOD_EXPIRY_WARNING);
+        $expiringCardWarning->setBrand($brand);
+        $expiringCardWarning->setLocale('en');
+        $expiringCardWarning->setSubject('Payment card Expiring');
+        $expiringCardWarning->setTemplateBody('Body here');
+        $expiringCardWarning->setUseEmspTemplate(false);
+
+        $em->persist($expiringCardWarning);
+        $em->flush();
         $this->authenticate(null);
     }
 
