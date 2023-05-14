@@ -85,7 +85,7 @@ class SubscriptionController
             $schedule = $currentSchedule;
         }
 
-        $paymentDetails = $paymentDetailsRepository->getPaymentMethodForCustomer($customer);
+        $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailDtos = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
         $dto = new CreateView();

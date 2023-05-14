@@ -13,15 +13,15 @@
 namespace App\Tests\Behat\PaymentDetails;
 
 use Parthenon\Billing\Entity\CustomerInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 
 trait PaymentDetailsTrait
 {
-    public function findPaymentMethod(CustomerInterface $customer, string $paymentDetailsName): PaymentMethod
+    public function findPaymentMethod(CustomerInterface $customer, string $paymentDetailsName): PaymentCard
     {
         $paymentDetails = $this->paymentDetailsRepository->findOneBy(['customer' => $customer, 'name' => $paymentDetailsName]);
 
-        if (!$paymentDetails instanceof PaymentMethod) {
+        if (!$paymentDetails instanceof PaymentCard) {
             throw new \Exception('No payment details found');
         }
 

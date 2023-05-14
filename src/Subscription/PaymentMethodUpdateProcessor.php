@@ -14,7 +14,7 @@ namespace App\Subscription;
 
 use Obol\Model\Subscription\UpdatePaymentMethod;
 use Obol\Provider\ProviderInterface;
-use Parthenon\Billing\Entity\PaymentMethod;
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 
@@ -24,7 +24,7 @@ class PaymentMethodUpdateProcessor
     {
     }
 
-    public function process(Subscription $subscription, PaymentMethod $newPaymentDetails): void
+    public function process(Subscription $subscription, PaymentCard $newPaymentDetails): void
     {
         $subscription->setPaymentDetails($newPaymentDetails);
 

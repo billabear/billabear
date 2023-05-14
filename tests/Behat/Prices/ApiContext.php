@@ -59,7 +59,7 @@ class ApiContext implements Context
         $product = $this->getProductByName($productName);
 
         /** @var Price[] $prices */
-        $prices = $this->priceRepository->findBy(['product' => $product, 'deleted' => false]);
+        $prices = $this->priceRepository->findBy(['product' => $product, 'isDeleted' => false]);
 
         if (empty($prices)) {
             throw new \Exception('Price not found');
@@ -82,7 +82,7 @@ class ApiContext implements Context
         $product = $this->getProductByName($productName);
 
         /** @var Price[] $prices */
-        $prices = $this->priceRepository->findBy(['product' => $product, 'deleted' => false]);
+        $prices = $this->priceRepository->findBy(['product' => $product, 'isDeleted' => false]);
 
         foreach ($prices as $price) {
             if ($price->getAmount() == $amount) {
