@@ -13,6 +13,7 @@
 namespace App\Workflow\SubscriptionCancel;
 
 use App\Entity\CancellationRequest;
+use App\Entity\Customer;
 use App\Notification\Email\Data\SubscriptionCancelEmail;
 use App\Notification\Email\EmailBuilder;
 use App\Repository\SettingsRepositoryInterface;
@@ -39,6 +40,14 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
 
         if (!$cancellationRequest instanceof CancellationRequest) {
             $this->getLogger()->error('Cancellation Request transition has something other than a CancellationRequest object');
+
+            return;
+        }
+        /** @var Customer $customer */
+        $customer = $cancellationRequest->getSubscription()->getCustomer();
+
+        if (!$customer->getBrandSettings()->getNotificationSettings()->getSubscriptionCreation()) {
+            $this->getLogger()->info('Brand has subscription cancellation email');
 
             return;
         }

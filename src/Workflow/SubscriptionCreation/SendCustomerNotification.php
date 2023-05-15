@@ -12,6 +12,7 @@
 
 namespace App\Workflow\SubscriptionCreation;
 
+use App\Entity\Customer;
 use App\Entity\SubscriptionCreation;
 use App\Notification\Email\Data\SubscriptionCreatedEmailData;
 use App\Notification\Email\EmailBuilder;
@@ -38,6 +39,14 @@ class SendCustomerNotification implements EventSubscriberInterface
 
         if (!$subscriptionCreation instanceof SubscriptionCreation) {
             $this->getLogger()->error('Subscription creation transition has something other than a SubscriptionCreation object');
+
+            return;
+        }
+        /** @var Customer $customer */
+        $customer = $subscriptionCreation->getSubscription()->getCustomer();
+
+        if (!$customer->getBrandSettings()->getNotificationSettings()->getSubscriptionCreation()) {
+            $this->getLogger()->info('Brand has subscription creation email');
 
             return;
         }

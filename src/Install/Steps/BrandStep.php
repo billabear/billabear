@@ -31,6 +31,11 @@ class BrandStep
         $brand->setIsDefault(true);
         $brand->setEmailAddress($request->getFromEmail());
 
+        $brand->getNotificationSettings()->setSubscriptionCancellation(true);
+        $brand->getNotificationSettings()->setSubscriptionCreation(true);
+        $brand->getNotificationSettings()->setExpiringCardWarning(true);
+        $brand->getNotificationSettings()->setExpiringCardDayBefore(true);
+
         $this->brandSettingsRepository->save($brand);
     }
 }

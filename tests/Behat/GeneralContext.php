@@ -61,6 +61,10 @@ class GeneralContext implements Context
         $brand->getAddress()->setCountry('GB');
         $brand->getAddress()->setPostcode('10367');
         $brand->setIsDefault(true);
+        $brand->getNotificationSettings()->setSubscriptionCancellation(true);
+        $brand->getNotificationSettings()->setSubscriptionCreation(true);
+        $brand->getNotificationSettings()->setExpiringCardWarning(true);
+        $brand->getNotificationSettings()->setExpiringCardDayBefore(true);
 
         $em->persist($brand);
         $em->flush();

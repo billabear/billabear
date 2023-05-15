@@ -37,6 +37,12 @@ class SendFirstEmail implements EventSubscriberInterface
         /** @var ExpiringCardProcess $process */
         $process = $event->getSubject();
 
+        if (!$process->getCustomer()->getBrandSettings()->getNotificationSettings()->getExpiringCardWarning()) {
+            $this->getLogger()->info('Brand has expiring card warning email disable');
+
+            return;
+        }
+
         $emailData = new ExpiringCardEmai($process->getPaymentCard());
         $email = $this->builder->build($process->getCustomer(), $emailData);
         $this->emailSender->send($email);

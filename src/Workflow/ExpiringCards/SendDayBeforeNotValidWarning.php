@@ -38,6 +38,12 @@ class SendDayBeforeNotValidWarning implements EventSubscriberInterface
         /** @var ExpiringCardProcess $process */
         $process = $event->getSubject();
 
+        if (!$process->getCustomer()->getBrandSettings()->getNotificationSettings()->getExpiringCardDayBefore()) {
+            $this->getLogger()->info('Brand has expiring card warning day before email disable');
+
+            return;
+        }
+
         if (!isset($event->getContext()['subscription'])) {
             throw new \Exception('Subscription not set');
         }
