@@ -107,6 +107,10 @@ class BrandSettings
 
     public function getNotificationSettings(): NotificationSettings
     {
+        if (!isset($this->notificationSettings)) {
+            $this->notificationSettings = new NotificationSettings();
+        }
+
         return $this->notificationSettings;
     }
 
