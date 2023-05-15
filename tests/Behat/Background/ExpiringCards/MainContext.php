@@ -12,7 +12,7 @@
 
 namespace App\Tests\Behat\Background\ExpiringCards;
 
-use App\Background\ExpiringCards\BeforeNextCharge;
+use App\Background\ExpiringCards\DayBefore;
 use App\Background\ExpiringCards\StartProcess;
 use App\Entity\Processes\ExpiringCardProcess;
 use App\Repository\Orm\CustomerRepository;
@@ -27,7 +27,7 @@ class MainContext implements Context
 
     public function __construct(
         private StartProcess $startProcess,
-        private BeforeNextCharge $beforeNextCharge,
+        private DayBefore $beforeNextCharge,
         private ExpiringCardProcessRepository $expiringCardProcessRepository,
         private PaymentCardServiceRepository $paymentCardRepository,
         private CustomerRepository $customerRepository,

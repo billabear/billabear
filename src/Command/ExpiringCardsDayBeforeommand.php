@@ -12,7 +12,7 @@
 
 namespace App\Command;
 
-use App\Background\ExpiringCards\StartProcess;
+use App\Background\ExpiringCards\DayBefore;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:expiring-cards:day-before', description: 'Handle the day before next charge check')]
 class ExpiringCardsDayBeforeommand extends Command
 {
-    public function __construct(private StartProcess $startProcess)
+    public function __construct(private DayBefore $dayBefore)
     {
         parent::__construct(null);
     }
@@ -29,7 +29,7 @@ class ExpiringCardsDayBeforeommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start checking the expiring cards if they are to be charge within the next 24 hours');
-        $this->startProcess->execute();
+        $this->dayBefore->execute();
 
         return Command::SUCCESS;
     }

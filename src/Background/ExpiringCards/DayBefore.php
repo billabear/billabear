@@ -17,7 +17,7 @@ use App\Repository\Processes\ExpiringCardProcessRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class BeforeNextCharge
+class DayBefore
 {
     use LoggerAwareTrait;
 
