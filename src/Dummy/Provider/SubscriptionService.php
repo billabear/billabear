@@ -12,6 +12,7 @@
 
 namespace App\Dummy\Provider;
 
+use Obol\Model\Subscription;
 use Obol\Model\Subscription\UpdatePaymentMethod;
 use Obol\SubscriptionServiceInterface;
 
@@ -25,5 +26,13 @@ class SubscriptionService implements SubscriptionServiceInterface
     public function list(int $limit = 10, ?string $lastId = null): array
     {
         // TODO: Implement list() method.
+    }
+
+    public function get(string $id, string $subId): Subscription
+    {
+        $subscription = new Subscription();
+        $subscription->setValidUntil(new \DateTime('+30 days'));
+
+        return $subscription;
     }
 }
