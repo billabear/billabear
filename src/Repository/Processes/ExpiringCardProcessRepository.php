@@ -16,4 +16,14 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class ExpiringCardProcessRepository extends DoctrineRepository implements ExpiringCardProcessRepositoryInterface
 {
+    public function getActiveProccesses(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('ec');
+        $qb->where('ec.state != :completedState')
+            ->setParameter('completedState', 'completed');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

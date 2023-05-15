@@ -11,11 +11,19 @@ framework:
             places:
                 - started
                 - first_email_sent
+                - day_before_valid_email_sent
+                - day_before_not_valid_email_sent
                 - completed
             transitions:
                 send_first_email:
                     from: started
                     to: first_email_sent
+                send_day_before_valid_email:
+                    from: first_email_sent
+                    to: day_before_valid_email_sent
+                send_day_before_not_valid_email:
+                    from: [first_email_sent, day_before_valid_email_sent]
+                    to: day_before_not_valid_email_sent
 
         cancellation_request:
             type: 'state_machine'

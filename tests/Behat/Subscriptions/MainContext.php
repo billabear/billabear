@@ -82,7 +82,7 @@ class MainContext implements Context
             $subscription->setCreatedAt(new \DateTime('now'));
             $subscription->setUpdatedAt(new \DateTime('now'));
             $subscription->setPaymentDetails($paymentDetails);
-            $subscription->setValidUntil(new \DateTime('+1 '.$row['Price Schedule']));
+            $subscription->setValidUntil(new \DateTime($row['Next Charge'] ?? '+1 '.$row['Price Schedule']));
 
             $this->subscriptionRepository->getEntityManager()->persist($subscription);
             $this->subscriptionRepository->getEntityManager()->flush();

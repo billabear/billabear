@@ -237,6 +237,9 @@ class Customer implements CustomerInterface
         $this->brandSettings = $brandSettings;
     }
 
+    /**
+     * @return Collection|Subscription[]
+     */
     public function getSubscriptions(): Collection
     {
         return $this->subscriptions;

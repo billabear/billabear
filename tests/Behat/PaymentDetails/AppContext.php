@@ -62,6 +62,33 @@ class AppContext implements Context
     }
 
     /**
+     * @Given the following customers have cards that will expired last month:
+     */
+    public function theFollowingCustomersHaveCardsThatWillExpiredLastMonth(TableNode $table)
+    {
+        $rows = $table->getColumnsHash();
+        $lastMonth = new \DateTime('-1 month');
+        foreach ($rows as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer Email']);
+            $paymentDetails = new PaymentCard();
+            $paymentDetails->setName($row['Name'] ?? 'One');
+            $paymentDetails->setBrand($row['Brand'] ?? 'dummy');
+            $paymentDetails->setLastFour($row['Last Four']);
+            $paymentDetails->setExpiryMonth((int) $lastMonth->format('m'));
+            $paymentDetails->setExpiryYear((int) $lastMonth->format('Y'));
+            $paymentDetails->setStoredPaymentReference(bin2hex(random_bytes(32)));
+            $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
+            $paymentDetails->setCustomer($customer);
+            $paymentDetails->setCreatedAt(new \DateTime());
+            $paymentDetails->setDefaultPaymentOption(true);
+
+            $this->paymentDetailsRepository->getEntityManager()->persist($paymentDetails);
+        }
+
+        $this->paymentDetailsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @When the following payment details:
      */
     public function theFollowingPaymentDetails(TableNode $table)
