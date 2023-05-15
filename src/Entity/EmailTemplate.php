@@ -29,6 +29,9 @@ class EmailTemplate
     public const NAME_PAYMENT_FAILURE_WARNING = 'payment_failure_warning';
 
     public const NAME_PAYMENT_METHOD_EXPIRY_WARNING = 'payment_method_expiry_warning';
+    public const NAME_PAYMENT_METHOD_DAY_BEFORE_WARNING = 'payment_method_expiry_warning_day_before_still_valid';
+    public const NAME_PAYMENT_METHOD_DAY_BEFORE_NOT_VALID_WARNING = 'payment_method_expiry_warning_day_before_no_longer_valid';
+
     public const NAME_PAYMENT_METHOD_NO_VALID_METHODS = 'payment_method_no_valid_methods';
 
     public const TEMPLATE_NAMES = [

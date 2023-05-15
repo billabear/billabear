@@ -40,9 +40,9 @@ class BeforeNextCharge
                 if ($subscription->getValidUntil() <= $tomorrow) {
                     $this->getLogger()->info("Handling customer's expiring card 24 hours before", ['customer_id' => (string) $process->getCustomer()->getId()]);
                     if ($this->expiryChecker->hasExpiredForSubscriptionCharge($process->getPaymentCard(), $subscription)) {
-                        $this->expiringCardProcessStateMachine->apply($process, 'send_day_before_valid_email');
+                        $this->expiringCardProcessStateMachine->apply($process, 'send_day_before_valid_email', ['subscription' => $subscription]);
                     } else {
-                        $this->expiringCardProcessStateMachine->apply($process, 'send_day_before_not_valid_email');
+                        $this->expiringCardProcessStateMachine->apply($process, 'send_day_before_not_valid_email', ['subscription' => $subscription]);
                     }
                     $process->setUpdatedAt(new \DateTime('now'));
                     $this->expiringCardProcessRepository->save($process);
