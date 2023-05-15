@@ -26,7 +26,7 @@ class ExpiringCardBeforeCharge extends AbstractEmailData
 
     public function getTemplateName(): string
     {
-        return EmailTemplate::NAME_PAYMENT_METHOD_EXPIRY_WARNING;
+        return EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_WARNING;
     }
 
     public function getData(Customer $customer, BrandSettings $brandSettings): array

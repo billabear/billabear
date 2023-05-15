@@ -81,6 +81,26 @@ class GeneralContext implements Context
         $expiringCardWarning->setUseEmspTemplate(false);
 
         $em->persist($expiringCardWarning);
+
+        $validWarning = new EmailTemplate();
+        $validWarning->setName(EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_WARNING);
+        $validWarning->setBrand($brand);
+        $validWarning->setLocale('en');
+        $validWarning->setSubject('Payment card Expiring');
+        $validWarning->setTemplateBody('Body here');
+        $validWarning->setUseEmspTemplate(false);
+
+        $em->persist($validWarning);
+
+        $notValidWarning = new EmailTemplate();
+        $notValidWarning->setName(EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_NOT_VALID_WARNING);
+        $notValidWarning->setBrand($brand);
+        $notValidWarning->setLocale('en');
+        $notValidWarning->setSubject('Payment card Expiring');
+        $notValidWarning->setTemplateBody('Body here');
+        $notValidWarning->setUseEmspTemplate(false);
+
+        $em->persist($notValidWarning);
         $em->flush();
         $this->authenticate(null);
     }

@@ -315,6 +315,24 @@ SOFTWARE. #}
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
         $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_WARNING);
+        $emailTemplate->setSubject('Payment Method Expiring Soon');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your payment method is expiring soon. Please add one before it expires.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_NOT_VALID_WARNING);
+        $emailTemplate->setSubject('Payment Method Expiring Soon');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your payment method is expiring soon. Please add one before it expires.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
     }
 
     private function getEmailTemplate(string $content): string
