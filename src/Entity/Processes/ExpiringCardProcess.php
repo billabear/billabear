@@ -42,6 +42,9 @@ class ExpiringCardProcess
     #[ORM\Column('updated_at', type: 'datetimetz')]
     private \DateTimeInterface $updatedAt;
 
+    #[ORM\Column('subscription_charged_at', type: 'datetimetz')]
+    private \DateTimeInterface $subscriptionChargedAt;
+
     #[ORM\Column('error', type: 'string', nullable: true)]
     private ?string $error = null;
 
@@ -113,5 +116,15 @@ class ExpiringCardProcess
     public function setError(?string $error): void
     {
         $this->error = $error;
+    }
+
+    public function getSubscriptionChargedAt(): \DateTimeInterface
+    {
+        return $this->subscriptionChargedAt;
+    }
+
+    public function setSubscriptionChargedAt(\DateTimeInterface $subscriptionChargedAt): void
+    {
+        $this->subscriptionChargedAt = $subscriptionChargedAt;
     }
 }

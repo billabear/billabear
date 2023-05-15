@@ -12,9 +12,11 @@
 
 namespace App\Background\ExpiringCards;
 
+use App\Entity\Customer;
 use App\Entity\Processes\ExpiringCardProcess;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Repository\Processes\ExpiringCardProcessRepositoryInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class StartProcess
@@ -37,6 +39,21 @@ class StartProcess
             $expiringCardProcess->setPaymentCard($paymentCard);
             $expiringCardProcess->setCreatedAt(new \DateTime('now'));
             $expiringCardProcess->setUpdatedAt(new \DateTime('now'));
+
+            /** @var Customer $customer */
+            $customer = $paymentCard->getCustomer();
+            $nextChargeAt = null;
+            /** @var Subscription $subscription */
+            foreach ($customer->getSubscriptions() as $subscription) {
+                $subscription->getValidUntil();
+                if (!$nextChargeAt) {
+                    $nextChargeAt = $subscription->getValidUntil();
+                }
+                if ($subscription->getValidUntil() < $nextChargeAt) {
+                    $nextChargeAt = $subscription->getValidUntil();
+                }
+            }
+            $expiringCardProcess->setSubscriptionChargedAt($nextChargeAt);
 
             $this->expiringCardProcessRepository->save($expiringCardProcess);
 
