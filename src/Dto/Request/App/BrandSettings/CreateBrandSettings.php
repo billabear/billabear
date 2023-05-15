@@ -37,6 +37,8 @@ class CreateBrandSettings
     #[Assert\Valid]
     private Address $address;
 
+    private Notifications $notifications;
+
     public function getName()
     {
         return $this->name;
@@ -75,5 +77,15 @@ class CreateBrandSettings
     public function setCode($code): void
     {
         $this->code = $code;
+    }
+
+    public function getNotifications(): Notifications
+    {
+        return $this->notifications;
+    }
+
+    public function setNotifications(Notifications $notifications): void
+    {
+        $this->notifications = $notifications;
     }
 }

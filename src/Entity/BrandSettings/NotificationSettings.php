@@ -21,6 +21,9 @@ class NotificationSettings
     private ?bool $subscriptionCreation = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $subscriptionCancellation = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $expiringCardWarning = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
@@ -34,6 +37,16 @@ class NotificationSettings
     public function setSubscriptionCreation(?bool $subscriptionCreation): void
     {
         $this->subscriptionCreation = $subscriptionCreation;
+    }
+
+    public function getSubscriptionCancellation(): bool
+    {
+        return true === $this->subscriptionCancellation;
+    }
+
+    public function setSubscriptionCancellation(?bool $subscriptionCancellation): void
+    {
+        $this->subscriptionCancellation = $subscriptionCancellation;
     }
 
     public function getExpiringCardWarning(): bool

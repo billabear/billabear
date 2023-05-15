@@ -13,9 +13,9 @@
 namespace App\Factory\Settings;
 
 use App\Dto\Generic\Address as AddressDto;
-use App\Dto\Generic\App\BrandSettings as AppDto;
 use App\Dto\Request\App\BrandSettings\CreateBrandSettings;
 use App\Dto\Request\App\BrandSettings\EditBrandSettings as EditDto;
+use App\Dto\Response\App\BrandSettings\BrandSettings as AppDto;
 use App\Entity\BrandSettings;
 use Parthenon\Common\Address;
 
@@ -41,6 +41,11 @@ class BrandSettingsFactory
         $brandSettings->setAddress($address);
         $brandSettings->setEmailAddress($dto->getEmailAddress());
 
+        $brandSettings->getNotificationSettings()->setSubscriptionCreation($dto->getNotifications()->getSubscriptionCreation());
+        $brandSettings->getNotificationSettings()->setSubscriptionCancellation($dto->getNotifications()->getSubscriptionCancellation());
+        $brandSettings->getNotificationSettings()->setExpiringCardWarning($dto->getNotifications()->getExpiringCardWarning());
+        $brandSettings->getNotificationSettings()->setExpiringCardDayBefore($dto->getNotifications()->getExpiringCardDayBeforeWarning());
+
         return $brandSettings;
     }
 
@@ -62,6 +67,11 @@ class BrandSettingsFactory
         $dto->setEmailAddress($brandSettings->getEmailAddress());
         $dto->setAddress($address);
         $dto->setIsDefault($brandSettings->getIsDefault());
+
+        $dto->getNotifications()->setSubscriptionCreation($brandSettings->getNotificationSettings()->getSubscriptionCreation());
+        $dto->getNotifications()->setSubscriptionCancellation($brandSettings->getNotificationSettings()->getSubscriptionCancellation());
+        $dto->getNotifications()->setExpiringCardWarning($brandSettings->getNotificationSettings()->getExpiringCardWarning());
+        $dto->getNotifications()->setExpiringCardDayBeforeWarning($brandSettings->getNotificationSettings()->getExpiringCardDayBefore());
 
         return $dto;
     }

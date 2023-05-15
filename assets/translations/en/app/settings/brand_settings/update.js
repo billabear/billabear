@@ -9,7 +9,7 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         city: "City",
         region: "Region",
         country: "Country",
-        post_code: "Post Code",
+        postcode: "Post Code",
         code: "Code"
     },
     help_info: {
@@ -24,7 +24,15 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         country: "The customer's billing country - ISO 3166-1 alpha-2 country code.",
         postcode: "The post code for the billing address",
     },
+    general: "General Settings",
+    notifications: "Notifications",
     address_title: "Billing Address",
     success_message: "Updated",
     submit_btn: "Update",
+    notification: {
+        subscription_creation: "Subscription Creation",
+        subscription_cancellation: "Subscription Cancellation",
+        expiring_card_warning: "Expiring Card Warning",
+        expiring_card_warning_day_before: "Expiring Card Warning - Day Before",
+    }
 };

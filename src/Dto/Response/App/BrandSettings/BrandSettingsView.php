@@ -12,7 +12,6 @@
 
 namespace App\Dto\Response\App\BrandSettings;
 
-use App\Dto\Generic\App\BrandSettings;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class BrandSettingsView

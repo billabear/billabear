@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Generic\App;
+namespace App\Dto\Response\App\BrandSettings;
 
 use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -30,6 +30,13 @@ class BrandSettings
 
     #[SerializedName('is_default')]
     private bool $isDefault;
+
+    private Notifications $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new Notifications();
+    }
 
     public function getId(): string
     {
@@ -89,5 +96,15 @@ class BrandSettings
     public function setIsDefault(bool $isDefault): void
     {
         $this->isDefault = $isDefault;
+    }
+
+    public function getNotifications(): Notifications
+    {
+        return $this->notifications;
+    }
+
+    public function setNotifications(Notifications $notifications): void
+    {
+        $this->notifications = $notifications;
     }
 }

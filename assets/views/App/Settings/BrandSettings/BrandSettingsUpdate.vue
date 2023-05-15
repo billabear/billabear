@@ -5,99 +5,124 @@
 
     <LoadingScreen :ready="ready">
       <form @submit.prevent="save">
-        <div class="mt-3 card-body">
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="reference">
-              {{ $t('app.settings.brand_settings.update.fields.name') }}
-            </label>
-            <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
-            <input type="text" class="form-field-input" id="reference" v-model="brand.name"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.name') }}</p>
-          </div>
-
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="reference">
-              {{ $t('app.settings.brand_settings.update.fields.code') }}
-            </label>
-            <input type="text" class="form-field-input" id="reference" v-model="brand.code" disabled />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.code') }}</p>
-          </div>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="email">
-              {{ $t('app.settings.brand_settings.update.fields.email') }}
-            </label>
-            <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
-            <input type="email" class="form-field-input" id="email" v-model="brand.email_address" />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.email') }}</p>
-          </div>
-
+        <div class="border-b pb-2 my-3 border-black">
+          <a @click="view = 'general'" class="viewLink" :class="{activeView: view === 'general'}">{{ $t('app.settings.brand_settings.update.general') }}</a> |
+          <a @click="view = 'notifications'" class="viewLink" :class="{activeView: view === 'notifications'}">{{ $t('app.settings.brand_settings.update.notifications') }}</a>
         </div>
+        <div v-if="view === 'general'">
+          <div class="mt-3">
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="reference">
+                {{ $t('app.settings.brand_settings.update.fields.name') }}
+              </label>
+              <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
+              <input type="text" class="form-field-input" id="reference" v-model="brand.name"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.name') }}</p>
+            </div>
 
-        <div class="card-body mt-5">
-          <h2 class="mb-3">{{ $t('app.settings.brand_settings.update.address_title') }}</h2>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="company_name">
-              {{ $t('app.settings.brand_settings.update.fields.company_name') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.companyName'] != undefined">{{ errors['address.companyName'] }}</p>
-            <input type="text" class="form-field-input" id="company_name"  v-model="brand.address.company_name"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.street_line_one') }}</p>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="reference">
+                {{ $t('app.settings.brand_settings.update.fields.code') }}
+              </label>
+              <input type="text" class="form-field-input" id="reference" v-model="brand.code" disabled />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.code') }}</p>
+            </div>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="email">
+                {{ $t('app.settings.brand_settings.update.fields.email') }}
+              </label>
+              <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
+              <input type="email" class="form-field-input" id="email" v-model="brand.email_address" />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.email') }}</p>
+            </div>
+
           </div>
 
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="street_line_one">
-              {{ $t('app.settings.brand_settings.update.fields.street_line_one') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.streetLineOne'] != undefined">{{ errors['address.streetLineOne'] }}</p>
-            <input type="text" class="form-field-input" id="street_line_one"  v-model="brand.address.street_line_one"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.street_line_one') }}</p>
-          </div>
+          <div class="card-body mt-5">
+            <h2 class="mb-3">{{ $t('app.settings.brand_settings.update.address_title') }}</h2>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="company_name">
+                {{ $t('app.settings.brand_settings.update.fields.company_name') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.companyName'] != undefined">{{ errors['address.companyName'] }}</p>
+              <input type="text" class="form-field-input" id="company_name"  v-model="brand.address.company_name"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.street_line_one') }}</p>
+            </div>
 
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="street_line_two">
-              {{ $t('app.settings.brand_settings.update.fields.street_line_two') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.streetLineTwo'] != undefined">{{ errors['address.streetLineTwo'] }}</p>
-            <input type="text" class="form-field-input" id="street_line_two"  v-model="brand.address.street_line_two"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.street_line_two') }}</p>
-          </div>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="street_line_one">
+                {{ $t('app.settings.brand_settings.update.fields.street_line_one') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.streetLineOne'] != undefined">{{ errors['address.streetLineOne'] }}</p>
+              <input type="text" class="form-field-input" id="street_line_one"  v-model="brand.address.street_line_one"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.street_line_one') }}</p>
+            </div>
 
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="city">
-              {{ $t('app.settings.brand_settings.update.fields.city') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.city'] != undefined">{{ errors['address.city']  }}</p>
-            <input type="text" class="form-field-input" id="city"  v-model="brand.address.city"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.city') }}</p>
-          </div>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="street_line_two">
+                {{ $t('app.settings.brand_settings.update.fields.street_line_two') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.streetLineTwo'] != undefined">{{ errors['address.streetLineTwo'] }}</p>
+              <input type="text" class="form-field-input" id="street_line_two"  v-model="brand.address.street_line_two"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.street_line_two') }}</p>
+            </div>
 
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="region">
-              {{ $t('app.settings.brand_settings.update.fields.region') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.region'] != undefined">{{ errors['address.region'] }}</p>
-            <input type="text" class="form-field-input" id="region"  v-model="brand.address.region"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.region') }}</p>
-          </div>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="city">
+                {{ $t('app.settings.brand_settings.update.fields.city') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.city'] != undefined">{{ errors['address.city']  }}</p>
+              <input type="text" class="form-field-input" id="city"  v-model="brand.address.city"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.city') }}</p>
+            </div>
 
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="country">
-              {{ $t('app.settings.brand_settings.update.fields.country') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
-            <input type="text" class="form-field-input" id="country"  v-model="brand.address.country"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.country') }}</p>
-          </div>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="post_code">
-              {{ $t('app.settings.brand_settings.update.fields.postcode') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.postcode'] != undefined">{{ errors['address.postcode'] }}</p>
-            <input type="text" class="form-field-input" id="post_code"  v-model="brand.address.postcode"  />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.postcode') }}</p>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="region">
+                {{ $t('app.settings.brand_settings.update.fields.region') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.region'] != undefined">{{ errors['address.region'] }}</p>
+              <input type="text" class="form-field-input" id="region"  v-model="brand.address.region"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.region') }}</p>
+            </div>
+
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="country">
+                {{ $t('app.settings.brand_settings.update.fields.country') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
+              <input type="text" class="form-field-input" id="country"  v-model="brand.address.country"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.country') }}</p>
+            </div>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="post_code">
+                {{ $t('app.settings.brand_settings.update.fields.postcode') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.postcode'] != undefined">{{ errors['address.postcode'] }}</p>
+              <input type="text" class="form-field-input" id="post_code"  v-model="brand.address.postcode"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.postcode') }}</p>
+            </div>
           </div>
         </div>
-
+        <div v-if="view === 'notifications'">
+          <div class="grid grid-cols-3">
+            <div class="ds">
+              <input type="checkbox" id="subscription_creation" v-model="brand.notifications.subscription_creation" />
+              <label for="subscription_creation" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.subscription_creation') }}</label>
+            </div>
+            <div class="ds">
+              <input type="checkbox" id="subscription_cancellation" v-model="brand.notifications.subscription_cancellation" />
+              <label for="subscription_cancellation" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.subscription_cancellation') }}</label>
+            </div>
+            <div class="ds">
+              <input type="checkbox" id="expiring_card_warning" v-model="brand.notifications.expiring_card_warning" />
+              <label for="expiring_card_warning" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.expiring_card_warning') }}</label>
+            </div>
+            <div class="ds">
+              <input type="checkbox" id="expiring_card_warning_day_before" v-model="brand.notifications.expiring_card_warning_day_before" />
+              <label for="expiring_card_warning_day_before" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.expiring_card_warning_day_before') }}</label>
+            </div>
+          </div>
+        </div>
         <div class="form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.brand_settings.update.submit_btn') }}</SubmitButton>
         </div>
@@ -118,6 +143,7 @@ export default {
       brand: {},
       errors: {},
       sending: false,
+      view: "general",
     }
   },
   mounted() {
@@ -140,6 +166,7 @@ export default {
     save: function () {
         var brandId = this.$route.params.id;
         this.sending = true;
+        this.errors = {};
         const payload = {
           name: this.brand.name,
           email_address: this.brand.email_address,
@@ -151,7 +178,8 @@ export default {
             city: this.brand.address.city,
             country: this.brand.address.country,
             postcode: this.brand.address.postcode,
-          }
+          },
+          notifications: this.brand.notifications,
         };
 
         axios.post('/app/settings/brand/'+brandId, payload).then(response => {
@@ -171,5 +199,15 @@ export default {
 </script>
 
 <style scoped>
-
+.viewLink {
+  @apply font-bold no-underline;
+}
+.viewLink:hover {
+  @apply text-blue-300;
+  cursor: pointer;
+}
+.activeView {
+  cursor:  not-allowed;
+  color: black !important;
+}
 </style>

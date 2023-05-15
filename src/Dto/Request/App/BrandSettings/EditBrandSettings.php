@@ -30,6 +30,8 @@ class EditBrandSettings
     #[Assert\Valid]
     private Address $address;
 
+    private Notifications $notifications;
+
     public function getName()
     {
         return $this->name;
@@ -58,5 +60,15 @@ class EditBrandSettings
     public function setAddress(Address $address): void
     {
         $this->address = $address;
+    }
+
+    public function getNotifications(): Notifications
+    {
+        return $this->notifications;
+    }
+
+    public function setNotifications(Notifications $notifications): void
+    {
+        $this->notifications = $notifications;
     }
 }
