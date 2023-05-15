@@ -15,6 +15,7 @@ namespace App\Controller\Api;
 use App\Dto\Request\Api\PaymentDetails\FrontendTokenComplete;
 use App\Dto\Response\Api\PaymentDetails\FrontendToken;
 use App\Entity\Customer;
+use App\Event\PaymentCardAdded;
 use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
@@ -23,6 +24,7 @@ use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
 use Parthenon\Billing\PaymentMethod\DeleterInterface;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,6 +64,7 @@ class PaymentMethodsController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         PaymentMethodsFactory $paymentDetailsFactory,
+        EventDispatcherInterface $eventDispatcher,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -86,6 +89,8 @@ class PaymentMethodsController
         }
 
         $paymentDetails = $addCardByTokenDriver->createPaymentDetailsFromToken($customer, $dto->getToken());
+
+        $eventDispatcher->dispatch(new PaymentCardAdded($customer, $paymentCard), PaymentCardAdded::NAME);
 
         $output = $paymentDetailsFactory->createApiDto($paymentDetails);
         $json = $serializer->serialize($output, 'json');
