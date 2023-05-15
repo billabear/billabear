@@ -12,6 +12,7 @@
 
 namespace App\Entity;
 
+use App\Entity\BrandSettings\NotificationSettings;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -40,6 +41,9 @@ class BrandSettings
 
     #[ORM\Column(type: 'boolean')]
     private bool $isDefault = false;
+
+    #[ORM\Embedded(class: NotificationSettings::class)]
+    private NotificationSettings $notificationSettings;
 
     public function getId()
     {
@@ -99,5 +103,15 @@ class BrandSettings
     public function setIsDefault(bool $isDefault): void
     {
         $this->isDefault = $isDefault;
+    }
+
+    public function getNotificationSettings(): NotificationSettings
+    {
+        return $this->notificationSettings;
+    }
+
+    public function setNotificationSettings(NotificationSettings $notificationSettings): void
+    {
+        $this->notificationSettings = $notificationSettings;
     }
 }
