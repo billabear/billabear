@@ -39,6 +39,11 @@ class CreateBrandSettings
 
     private Notifications $notifications;
 
+    public function __construct()
+    {
+        $this->notifications = new Notifications();
+    }
+
     public function getName()
     {
         return $this->name;
