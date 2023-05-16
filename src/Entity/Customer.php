@@ -135,7 +135,7 @@ class Customer implements CustomerInterface
     public function getBillingAddress(): Address
     {
         if (!isset($this->billingAddress)) {
-            throw new \Exception('No billing address');
+            return new Address();
         }
 
         return $this->billingAddress;
