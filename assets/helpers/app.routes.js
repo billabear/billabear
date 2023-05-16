@@ -201,6 +201,7 @@ export const APP_ROUTES = [
     {
         name: 'app.product',
         path: 'product',
+        redirect: "product",
         component: ProductGroup,
         children: [
             {
@@ -235,7 +236,7 @@ export const APP_ROUTES = [
             },
             {
                 name: 'app.product.list',
-                path: 'product/list',
+                path: '',
                 component: ProductList
             },
             {
@@ -257,6 +258,7 @@ export const APP_ROUTES = [
     {
         name: 'app.subscription',
         path: 'subscriptions',
+        redirect: "subscriptions",
         component: SubscriptionGroup,
         children: [
             {
@@ -266,7 +268,7 @@ export const APP_ROUTES = [
             },
             {
                 name: 'app.subscription.list',
-                path: 'subscription',
+                path: '',
                 component: SubscriptionList
             },
         ]
@@ -274,16 +276,12 @@ export const APP_ROUTES = [
     {
         name: 'app.transactions',
         path: 'transactions',
+        redirect: "transactions",
         component: TransactionView,
         children: [
             {
-                name: 'app.payment.dummy',
-                path: '',
-                component: PaymentList
-            },
-            {
                 name: 'app.payment.list',
-                path: 'payments/list',
+                path: '',
                 component: PaymentList
             },
             {
