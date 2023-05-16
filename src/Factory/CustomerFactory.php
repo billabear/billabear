@@ -75,6 +75,7 @@ class CustomerFactory
         $customer->setName($createCustomerDto->getName());
         $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_BRAND);
         $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
+        $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
@@ -109,6 +110,7 @@ class CustomerFactory
         $dto->setStatus($customer->getStatus()->value);
         $dto->setBrand($customer->getBrand());
         $dto->setLocale($customer->getLocale());
+        $dto->setBillingType($customer->getBillingType());
 
         return $dto;
     }
@@ -134,6 +136,7 @@ class CustomerFactory
         $dto->setStatus($customer->getStatus()->value);
         $dto->setBrand($customer->getBrand());
         $dto->setLocale($customer->getLocale());
+        $dto->setBillingType($customer->getBillingType());
 
         return $dto;
     }

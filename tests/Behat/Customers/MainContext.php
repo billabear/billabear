@@ -99,7 +99,23 @@ class MainContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
+        if (isset($data['Billing Type'])) {
+            $payload['billing_type'] = $data['Billing Type'];
+        }
+
         $this->sendJsonRequest('POST', '/api/v1/customer', $payload);
+    }
+
+    /**
+     * @Then the customer :arg1 should have the billing type :arg2
+     */
+    public function theCustomerShouldHaveTheBillingType($email, $billingType)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        if ($customer->getBillingType() !== $billingType) {
+            throw new \Exception(sprintf("Found '%s' instead of '%s'", $customer->getBillingType(), $billingType));
+        }
     }
 
     /**

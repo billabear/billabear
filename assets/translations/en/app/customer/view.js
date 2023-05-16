@@ -14,7 +14,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         external_reference: "External Reference",
         status: "Status",
         locale: "Locale",
-        brand: "Brand"
+        brand: "Brand",
+        billing_type: "Billing Type"
     },
     address: {
         title: "Address",

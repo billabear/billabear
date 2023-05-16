@@ -22,6 +22,10 @@
                 <dd>{{ customer.locale }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.customer.view.main.billing_type') }}</dt>
+                <dd>{{ customer.billing_type }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.customer.view.main.brand') }}</dt>
                 <dd>{{ customer.brand }}</dd>
               </div>

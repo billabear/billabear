@@ -42,6 +42,12 @@ class CreateCustomerDto
     #[SerializedName('external_reference')]
     private $externalReference = null;
 
+    #[SerializedName('billing_type')]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('string')]
+    #[Assert\Choice(choices: ['invoice', 'card'])]
+    private $billingType = null;
+
     #[Assert\Valid]
     #[SerializedName('address')]
     private Address $address;
@@ -114,5 +120,15 @@ class CreateCustomerDto
     public function setLocale($locale): void
     {
         $this->locale = $locale;
+    }
+
+    public function getBillingType()
+    {
+        return $this->billingType;
+    }
+
+    public function setBillingType($billingType): void
+    {
+        $this->billingType = $billingType;
     }
 }

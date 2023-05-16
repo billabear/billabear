@@ -15,6 +15,9 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     success_message: "Successfully created customer",
     address_title: "Address",
     locale: "Locale",
+    billing_type: "Billing Type",
+    billing_type_card: "Card",
+    billing_type_invoice: "Invoice",
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",
@@ -25,6 +28,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
         country: "The customer's billing country - ISO 3166-1 alpha-2 country code.",
         post_code: "The post code for the billing address",
         reference: "Your internal reference for the customer",
+        billing_type: "How the customer should be billed. Card means payments will be automatic via a card that is registered. Invoice means they receive an invoice and pay manually",
         external_reference: "The reference for the customer that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference."
     }
 }

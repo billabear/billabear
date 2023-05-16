@@ -44,6 +44,9 @@ class Customer
     #[SerializedName('locale')]
     protected string $locale;
 
+    #[SerializedName('billing_type')]
+    protected string $billingType;
+
     public function getId(): string
     {
         return $this->id;
@@ -132,5 +135,15 @@ class Customer
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
+    }
+
+    public function getBillingType(): string
+    {
+        return $this->billingType;
+    }
+
+    public function setBillingType(string $billingType): void
+    {
+        $this->billingType = $billingType;
     }
 }

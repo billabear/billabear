@@ -18,3 +18,4 @@ Feature: Customer Read APP
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
     When I view the customer info via the site for "customer.one@example.org"
     Then I will see the "customer" data with the "email" value "customer.one@example.org"
+    Then I will see the "customer" data with the "billing_type" value "card"

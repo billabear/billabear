@@ -26,6 +26,7 @@ class Customer implements CustomerInterface
 {
     public const DEFAULT_BRAND = 'default';
     public const DEFAULT_LOCALE = 'en';
+    public const DEFAULT_BILLING_TYPE = 'card';
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -44,6 +45,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $billingEmail;
+
+    #[ORM\Column(type: 'string', nullable: false)]
+    private string $billingType = self::DEFAULT_BILLING_TYPE;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $name = null;
@@ -248,5 +252,15 @@ class Customer implements CustomerInterface
     public function setSubscriptions(Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
+    }
+
+    public function getBillingType(): string
+    {
+        return $this->billingType;
+    }
+
+    public function setBillingType(string $billingType): void
+    {
+        $this->billingType = $billingType;
     }
 }

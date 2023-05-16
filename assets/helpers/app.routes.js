@@ -76,6 +76,7 @@ export const APP_ROUTES = [
     {
         name: 'app.customer',
         path: 'customers',
+        redirect: "customers",
         component: CustomerGroup,
         children: [
             {

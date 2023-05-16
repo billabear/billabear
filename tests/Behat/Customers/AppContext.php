@@ -160,6 +160,10 @@ class AppContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
+        if (isset($data['Billing Type'])) {
+            $payload['billing_type'] = $data['Billing Type'];
+        }
+
         $this->sendJsonRequest('POST', '/app/customer', $payload);
     }
 
