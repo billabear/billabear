@@ -29,7 +29,7 @@ export const router = createRouter({
             path: '/install', component: StartingPoint
         },
         // otherwise redirect to home
-       // { path: '/:pathMatch(.*)/', redirect: '/login' }
+        { path: '/:pathMatch(.*)/', redirect: '/login' }
     ]
 });
 

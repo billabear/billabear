@@ -81,7 +81,7 @@ export const APP_ROUTES = [
         children: [
             {
                 name: 'app.customer.list',
-                path: 'customer/list',
+                path: '',
                 component: CustomerList
             },
             {
