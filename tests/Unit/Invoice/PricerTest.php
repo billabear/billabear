@@ -41,6 +41,27 @@ class PricerTest extends TestCase
         $this->assertEquals(1008, $priceInfo->subTotal->getMinorAmount()->toInt());
     }
 
+    public function testGermanTax1199Exclusive()
+    {
+        $price = new Price();
+        $price->setAmount(1199);
+        $price->setCurrency('EUR');
+        $price->setIncludingTax(false);
+
+        $customer = new Customer();
+
+        $taxProvider = $this->createMock(TaxRateProviderInterface::class);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(19.0);
+
+        $subject = new Pricer($taxProvider);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer);
+
+        $this->assertEquals(228, $priceInfo->vat->getMinorAmount()->toInt());
+        $this->assertEquals(1427, $priceInfo->total->getMinorAmount()->toInt());
+        $this->assertEquals(19, $priceInfo->taxRate);
+        $this->assertEquals(1199, $priceInfo->subTotal->getMinorAmount()->toInt());
+    }
+
     public function testUkTax12000Inclusive()
     {
         $price = new Price();
@@ -60,6 +81,27 @@ class PricerTest extends TestCase
         $this->assertEquals(12000, $priceInfo->total->getMinorAmount()->toInt());
         $this->assertEquals(20, $priceInfo->taxRate);
         $this->assertEquals(10000, $priceInfo->subTotal->getMinorAmount()->toInt());
+    }
+
+    public function testUkTax12000Exclusive()
+    {
+        $price = new Price();
+        $price->setAmount(12000);
+        $price->setCurrency('EUR');
+        $price->setIncludingTax(false);
+
+        $customer = new Customer();
+
+        $taxProvider = $this->createMock(TaxRateProviderInterface::class);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(20.0);
+
+        $subject = new Pricer($taxProvider);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer);
+
+        $this->assertEquals(2400, $priceInfo->vat->getMinorAmount()->toInt());
+        $this->assertEquals(14400.00, $priceInfo->total->getMinorAmount()->toInt());
+        $this->assertEquals(20, $priceInfo->taxRate);
+        $this->assertEquals(12000, $priceInfo->subTotal->getMinorAmount()->toInt());
     }
 
     public function testUkTax122345Inclusive()
@@ -83,6 +125,27 @@ class PricerTest extends TestCase
         $this->assertEquals(18621, $priceInfo->subTotal->getMinorAmount()->toInt());
     }
 
+    public function testUkTax122345Exclusive()
+    {
+        $price = new Price();
+        $price->setAmount(22345);
+        $price->setCurrency('EUR');
+        $price->setIncludingTax(false);
+
+        $customer = new Customer();
+
+        $taxProvider = $this->createMock(TaxRateProviderInterface::class);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(20.0);
+
+        $subject = new Pricer($taxProvider);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer);
+
+        $this->assertEquals(4469, $priceInfo->vat->getMinorAmount()->toInt());
+        $this->assertEquals(26814, $priceInfo->total->getMinorAmount()->toInt());
+        $this->assertEquals(20, $priceInfo->taxRate);
+        $this->assertEquals(22345, $priceInfo->subTotal->getMinorAmount()->toInt());
+    }
+
     public function testChTax1234500Inclusive()
     {
         $price = new Price();
@@ -102,5 +165,26 @@ class PricerTest extends TestCase
         $this->assertEquals(1234500, $priceInfo->total->getMinorAmount()->toInt());
         $this->assertEquals(7.5, $priceInfo->taxRate);
         $this->assertEquals(1148372, $priceInfo->subTotal->getMinorAmount()->toInt());
+    }
+
+    public function testChTax1234500Exclusive()
+    {
+        $price = new Price();
+        $price->setAmount(1234500);
+        $price->setCurrency('EUR');
+        $price->setIncludingTax(false);
+
+        $customer = new Customer();
+
+        $taxProvider = $this->createMock(TaxRateProviderInterface::class);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(7.5);
+
+        $subject = new Pricer($taxProvider);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer);
+
+        $this->assertEquals(92588, $priceInfo->vat->getMinorAmount()->toInt());
+        $this->assertEquals(1327088, $priceInfo->total->getMinorAmount()->toInt());
+        $this->assertEquals(7.5, $priceInfo->taxRate);
+        $this->assertEquals(1234500, $priceInfo->subTotal->getMinorAmount()->toInt());
     }
 }
