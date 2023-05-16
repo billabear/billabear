@@ -15,6 +15,7 @@ namespace App\Invoice;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Repository\InvoiceRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 
@@ -23,6 +24,7 @@ class InvoiceGenerator
     public function __construct(
         private PricerInterface $pricer,
         private InvoiceNumberGeneratorInterface $invoiceNumberGenerator,
+        private InvoiceRepositoryInterface $invoiceRepository,
     ) {
     }
 
@@ -77,6 +79,8 @@ class InvoiceGenerator
         $invoice->setCustomer($customer);
         $invoice->setPayeeAddress($customer->getBillingAddress());
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
+
+        $this->invoiceRepository->save($invoice);
 
         return $invoice;
     }

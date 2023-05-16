@@ -13,10 +13,12 @@
 namespace App\Tests\Unit\Invoice;
 
 use App\Entity\Customer;
+use App\Entity\Invoice;
 use App\Invoice\InvoiceGenerator;
 use App\Invoice\InvoiceNumberGeneratorInterface;
 use App\Invoice\PriceInfo;
 use App\Invoice\Pricer;
+use App\Repository\InvoiceRepositoryInterface;
 use Brick\Money\Money;
 use Monolog\Test\TestCase;
 use Parthenon\Billing\Entity\Price;
@@ -41,14 +43,16 @@ class InvoiceGeneratorTest extends TestCase
         $invoiceNumberGenerator = $this->createMock(InvoiceNumberGeneratorInterface::class);
         $invoiceNumberGenerator->method('generate')->willReturn('D7-848484');
 
-        $pricer = $this->createMock(Pricer::class);
-
         $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), 20.0);
         $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), 20.0);
 
+        $pricer = $this->createMock(Pricer::class);
         $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls($priceInfoOne, $priceInfoTwo);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator);
+        $repository = $this->createMock(InvoiceRepositoryInterface::class);
+        $repository->expects($this->once())->method('save')->with($this->isInstanceOf(Invoice::class));
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
