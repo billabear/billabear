@@ -14,6 +14,7 @@ import StartingPoint from "../views/Install/StartingPoint.vue";
 export const router = createRouter({
     history: createWebHistory(),
     routes: [
+        { path: '/', name: 'public.index', component: Login },
         { path: '/login', name: 'public.login', component: Login },
         { path: '/signup', name: 'public.signup', component: Signup },
         { path: '/forgot-password', name: 'public.forgot_password', component: ForgotPassword },
@@ -28,7 +29,7 @@ export const router = createRouter({
             path: '/install', component: StartingPoint
         },
         // otherwise redirect to home
-        { path: '/:pathMatch(.*)/', redirect: '/login' }
+       // { path: '/:pathMatch(.*)/', redirect: '/login' }
     ]
 });
 
