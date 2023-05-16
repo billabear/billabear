@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Tests\Unit\Stats\Graph;
+namespace App\Tests\Unit\Stats\Graphs;
 
 use App\Entity\Customer;
 use App\Entity\Stats\SubscriptionCreationDailyStats;

@@ -18,6 +18,7 @@ use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -49,6 +50,9 @@ class Invoice
 
     #[ORM\ManyToMany(targetEntity: Subscription::class)]
     private array|Collection $subscriptions;
+
+    #[ORM\ManyToMany(targetEntity: Payment::class)]
+    private array|Collection $payments;
 
     #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice')]
     private array|Collection $lines;
@@ -140,12 +144,12 @@ class Invoice
         $this->payeeAddress = $payeeAddress;
     }
 
-    public function getCustomer(): CustomerInterface
+    public function getCustomer(): Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(CustomerInterface $customer): void
+    public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
     }
