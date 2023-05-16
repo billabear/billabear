@@ -223,6 +223,12 @@ services:
     app.repository.orm.expiring_cards_process:
         class: App\Repository\Orm\ExpiringCardProcessRepository
 
+    App\Repository\InvoiceRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.invoice'
+    app.repository.orm.invoice:
+        class: App\Repository\Orm\InvoiceRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
