@@ -37,7 +37,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
      */
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
-        if ('invoice' === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
             return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
         }
 
@@ -46,7 +46,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        if ('invoice' === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
             return $this->invoiceSubscriptionManager->startSubscriptionWithDto($customer, $startSubscriptionDto);
         }
 
@@ -55,16 +55,31 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
     {
-        // TODO: Implement cancelSubscriptionAtEndOfCurrentPeriod() method.
+        $customer = $subscription->getCustomer();
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+            return $this->invoiceSubscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
+        }
+
+        return $this->stripeBillingManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
     }
 
     public function cancelSubscriptionInstantly(Subscription $subscription): Subscription
     {
-        // TODO: Implement cancelSubscriptionInstantly() method.
+        $customer = $subscription->getCustomer();
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+            return $this->invoiceSubscriptionManager->cancelSubscriptionInstantly($subscription);
+        }
+
+        return $this->stripeBillingManager->cancelSubscriptionInstantly($subscription);
     }
 
     public function cancelSubscriptionOnDate(Subscription $subscription, \DateTimeInterface $dateTime): Subscription
     {
-        // TODO: Implement cancelSubscriptionOnDate() method.
+        $customer = $subscription->getCustomer();
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+            return $this->invoiceSubscriptionManager->cancelSubscriptionOnDate($subscription);
+        }
+
+        return $this->stripeBillingManager->cancelSubscriptionOnDate($subscription);
     }
 }

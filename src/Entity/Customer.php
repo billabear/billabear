@@ -24,9 +24,12 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'customers')]
 class Customer implements CustomerInterface
 {
+    public const BILLING_TYPE_CARD = 'card';
+    public const BILLING_TYPE_INVOICE = 'invoice';
+
     public const DEFAULT_BRAND = 'default';
     public const DEFAULT_LOCALE = 'en';
-    public const DEFAULT_BILLING_TYPE = 'card';
+    public const DEFAULT_BILLING_TYPE = self::BILLING_TYPE_CARD;
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
