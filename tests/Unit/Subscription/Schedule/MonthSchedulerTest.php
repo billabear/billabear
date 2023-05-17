@@ -133,5 +133,9 @@ class MonthSchedulerTest extends TestCase
         $this->assertEquals('2023-11-30', $subscription->getValidUntil()->format('Y-m-d'));
         $subject->scheduleNextDueDate($subscription);
         $this->assertEquals('2023-12-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2024-01-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2024-02-29', $subscription->getValidUntil()->format('Y-m-d'));
     }
 }

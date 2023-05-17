@@ -23,6 +23,8 @@ class MonthScheduler implements SchedulerInterface
         $monthDate = clone $subscription->getValidUntil();
         $monthDate->modify('first day of this month');
         $monthDate->modify('+1 month');
+        $secondMonth = clone $monthDate;
+        $secondMonth->modify('+1 month');
 
         $expectedMonth = $monthDate->format('m');
         $expectedDay = $createdAt->format('d');
@@ -34,7 +36,7 @@ class MonthScheduler implements SchedulerInterface
 
             return;
         }
-        if ($nextBill->format('m') > $expectedMonth) {
+        if ($nextBill->format('m') === $secondMonth->format('m')) {
             while ($nextBill->format('m') != $expectedMonth) {
                 $nextBill->modify('-1 day');
             }
