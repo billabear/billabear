@@ -12,6 +12,7 @@
 
 namespace App\Subscription;
 
+use App\Invoice\InvoiceGenerator;
 use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -35,6 +36,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         private EntityFactoryInterface $entityFactory,
         private EventDispatcherInterface $dispatcher,
         private SchedulerProvider $schedulerProvider,
+        private InvoiceGenerator $invoiceGenerator,
     ) {
     }
 
@@ -44,6 +46,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPlanName($plan->getName());
         $subscription->setSubscriptionPlan($plan);
         $subscription->setPaymentSchedule($planPrice->getSchedule());
+        $subscription->setPrice($planPrice);
         $subscription->setMoneyAmount($planPrice->getAsMoney());
         $subscription->setActive(true);
         $subscription->setStatus(SubscriptionStatus::ACTIVE);
@@ -58,6 +61,8 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $this->schedulerProvider->getScheduler($planPrice)->scheduleNextDueDate($subscription);
 
         $this->subscriptionRepository->save($subscription);
+
+        $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
 

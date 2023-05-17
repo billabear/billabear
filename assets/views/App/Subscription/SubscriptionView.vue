@@ -71,7 +71,7 @@
         </div>
           <div class="mt-5">
             <h2 class="mb-3">{{ $t('app.subscription.view.payment_method.title') }}</h2>
-            <dl class="detail-list">
+            <dl class="detail-list" v-if="paymentDetails !== null && paymentDetails !== undefined">
               <div>
                 <dt>{{ $t('app.subscription.view.payment_method.last_four') }}</dt>
                 <dd>**** **** **** {{ paymentDetails.last_four }}</dd>
@@ -89,6 +89,9 @@
                 <dd>{{ paymentDetails.expiry_year }}</dd>
               </div>
             </dl>
+            <div v-else class="text-center">
+              {{ $t('app.subscription.view.payment_method.invoiced') }}
+            </div>
           </div>
           <div class="mt-5">
             <h2 class="mb-3">{{ $t('app.subscription.view.payments.title') }}</h2>
@@ -112,7 +115,7 @@
         </div>
         <div class="mt-5 text-end">
 
-          <button class="btn--secondary mr-2" @click="showChangePaymentMethods">
+          <button class="btn--secondary mr-2" @click="showChangePaymentMethods" v-if="paymentDetails !== null && paymentDetails !== undefined">
             {{ $t('app.subscription.view.buttons.payment_method') }}
           </button>
 

@@ -26,7 +26,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         last_four: "Last Four",
         expiry_month: "Expiry Month",
         expiry_year: "Expiry Year",
-        brand: 'Card Type'
+        brand: 'Card Type',
+        invoiced: 'Invoiced'
     },
     buttons: {
         cancel: "Cancel",

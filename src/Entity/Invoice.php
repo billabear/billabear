@@ -54,7 +54,7 @@ class Invoice
     #[ORM\ManyToMany(targetEntity: Payment::class)]
     private array|Collection $payments;
 
-    #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice')]
+    #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice', cascade: ['persist'])]
     private array|Collection $lines;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -72,17 +72,14 @@ class Invoice
     #[ORM\Column(type: 'integer')]
     private int $vatTotal;
 
-    #[ORM\Column(type: 'float')]
-    private float $vatPercentage;
-
     #[ORM\Column(type: 'boolean')]
     private bool $paid = false;
 
     #[ORM\Column(type: 'datetimetz')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'datetimetz')]
-    private \DateTimeInterface $paidAt;
+    #[ORM\Column(type: 'datetimetz', nullable: true)]
+    private ?\DateTimeInterface $paidAt;
 
     #[ORM\Column(type: 'datetimetz')]
     private \DateTimeInterface $updatedAt;

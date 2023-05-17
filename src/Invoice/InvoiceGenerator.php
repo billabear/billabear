@@ -42,6 +42,7 @@ class InvoiceGenerator
         $subTotal = null;
         $vat = null;
         $invoice = new Invoice();
+        $invoice->setValid(true);
         $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generate());
 
         foreach ($subscriptions as $subscription) {
@@ -75,6 +76,7 @@ class InvoiceGenerator
         $invoice->setSubTotal($subTotal->getMinorAmount()->toInt());
         $invoice->setPaid(false);
         $invoice->setCreatedAt(new \DateTime('now'));
+        $invoice->setUpdatedAt(new \DateTime('now'));
         $invoice->setSubscriptions($subscriptions);
         $invoice->setCustomer($customer);
         $invoice->setPayeeAddress($customer->getBillingAddress());

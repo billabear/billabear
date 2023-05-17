@@ -148,7 +148,6 @@ export default {
     send: function () {
 
       if (
-          this.payment_detail === null ||
           this.price === null ||
           this.subscription_plan === null
       ) {

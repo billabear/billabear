@@ -32,7 +32,7 @@ class CreateSubscription
     #[SerializedName('price')]
     private $price;
 
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
     #[PaymentMethodExists]
     #[SerializedName('payment_details')]
