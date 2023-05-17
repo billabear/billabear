@@ -12,61 +12,45 @@
 
 namespace App\Subscription;
 
-use App\Subscription\Schedule\SchedulerProvider;
+use App\Entity\Customer;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
-use Parthenon\Billing\Enum\SubscriptionStatus;
-use Parthenon\Billing\Event\SubscriptionCreated;
-use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanPrice;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Subscription\SubscriptionManager;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class InvoiceSubscriptionManager implements SubscriptionManagerInterface
+class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 {
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
-        private EntityFactoryInterface $entityFactory,
-        private EventDispatcherInterface $dispatcher,
-        private SchedulerProvider $schedulerProvider,
+        private SubscriptionManager $stripeBillingManager,
+        private InvoiceSubscriptionManager $invoiceSubscriptionManager,
     ) {
     }
 
+    /**
+     * @param Customer $customer
+     */
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
-        $subscription = $this->entityFactory->getSubscriptionEntity();
-        $subscription->setPlanName($plan->getName());
-        $subscription->setSubscriptionPlan($plan);
-        $subscription->setPaymentSchedule($planPrice->getSchedule());
-        $subscription->setMoneyAmount($planPrice->getAsMoney());
-        $subscription->setActive(true);
-        $subscription->setStatus(SubscriptionStatus::ACTIVE);
-        $subscription->setSeats($seatNumbers);
-        $subscription->setCreatedAt(new \DateTime());
-        $subscription->setUpdatedAt(new \DateTime());
-        $subscription->setStartOfCurrentPeriod(new \DateTime());
-        $subscription->setCustomer($customer);
-        $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
-        $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
+        if ('invoice' === $customer->getBillingType()) {
+            return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
+        }
 
-        $this->schedulerProvider->getScheduler($planPrice)->scheduleNextDueDate($subscription);
-
-        $this->subscriptionRepository->save($subscription);
-
-        $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
-
-        return $subscription;
+        return $this->stripeBillingManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
     }
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        // TODO: Implement startSubscriptionWithDto() method.
+        if ('invoice' === $customer->getBillingType()) {
+            return $this->invoiceSubscriptionManager->startSubscriptionWithDto($customer, $startSubscriptionDto);
+        }
+
+        return $this->stripeBillingManager->startSubscriptionWithDto($customer, $startSubscriptionDto);
     }
 
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription

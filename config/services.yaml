@@ -37,6 +37,7 @@ services:
     Parthenon\User\Notification\MessageFactory: '@App\User\Notification\MessageFactory'
     Parthenon\Billing\Repository\CustomerRepositoryInterface: '@App\Repository\CustomerRepository'
     Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@App\Repository\PaymentCardRepository'
+    Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@App\Subscription\SubscriptionManagerInterchange'
 
     App\Repository\UserRepository:
         arguments:
