@@ -23,6 +23,9 @@ class SystemSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $timezone = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $useStripeBilling = true;
+
     public function getWebhookUrl(): ?string
     {
         return $this->webhookUrl;
@@ -41,5 +44,15 @@ class SystemSettings
     public function setTimezone(string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function isUseStripeBilling(): bool
+    {
+        return $this->useStripeBilling;
+    }
+
+    public function setUseStripeBilling(bool $useStripeBilling): void
+    {
+        $this->useStripeBilling = $useStripeBilling;
     }
 }

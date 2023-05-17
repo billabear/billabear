@@ -12,7 +12,10 @@
 
 namespace App\Subscription;
 
+use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
+use App\Payment\InvoiceCharger;
+use App\Repository\SettingsRepositoryInterface;
 use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -37,6 +40,8 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         private EventDispatcherInterface $dispatcher,
         private SchedulerProvider $schedulerProvider,
         private InvoiceGenerator $invoiceGenerator,
+        private SettingsRepositoryInterface $settingsRepository,
+        private InvoiceCharger $invoiceCharger,
     ) {
     }
 
@@ -57,12 +62,17 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setCustomer($customer);
         $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
         $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
+        $subscription->setPaymentDetails($paymentDetails);
 
         $this->schedulerProvider->getScheduler($planPrice)->scheduleNextDueDate($subscription);
 
         $this->subscriptionRepository->save($subscription);
 
-        $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
+        $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
+
+        if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
+            $this->invoiceCharger->chargeInvoice($invoice);
+        }
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
 

@@ -13,6 +13,7 @@
 namespace App\Subscription;
 
 use App\Entity\Customer;
+use App\Repository\SettingsRepositoryInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -29,6 +30,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     public function __construct(
         private SubscriptionManager $stripeBillingManager,
         private InvoiceSubscriptionManager $invoiceSubscriptionManager,
+        private SettingsRepositoryInterface $settingsRepository,
     ) {
     }
 
@@ -37,7 +39,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
      */
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()) {
             return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
         }
 

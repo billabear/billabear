@@ -72,6 +72,8 @@ class GeneralContext implements Context
         $settings = new Settings();
         $settings->setTag(Settings::DEFAULT_TAG);
         $settings->setNotificationSettings(new Settings\NotificationSettings());
+        $settings->setSystemSettings(new Settings\SystemSettings());
+        $settings->getSystemSettings()->setUseStripeBilling(true);
 
         $em->persist($settings);
         $em->flush();
