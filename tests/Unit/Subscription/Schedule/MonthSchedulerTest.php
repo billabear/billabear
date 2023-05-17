@@ -1,0 +1,104 @@
+<?php
+
+/*
+ * Copyright Iain Cambridge 2023.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ *
+ * Change Date: TBD ( 3 years after 1.0.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
+namespace App\Tests\Unit\Subscription\Schedule;
+
+use App\Subscription\Schedule\MonthScheduler;
+use Parthenon\Billing\Entity\Subscription;
+use PHPUnit\Framework\TestCase;
+
+class MonthSchedulerTest extends TestCase
+{
+    public function testFirstOfMonth()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2023-01-01'));
+        $subscription->setValidUntil(new \DateTime('2023-02-01'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-03-01', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testLastOfMonthFeburary()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2022-05-31'));
+        $subscription->setValidUntil(new \DateTime('2023-01-31'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-02-28', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testLastOfMonthFeburaryLeapYearDay()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2020-02-29'));
+        $subscription->setValidUntil(new \DateTime('2023-01-29'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-02-28', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testLastOfMonthJanuary()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2020-01-31'));
+        $subscription->setValidUntil(new \DateTime('2023-02-28'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-03-31', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testLastOfMonthJanuaryIntoApril()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2020-01-31'));
+        $subscription->setValidUntil(new \DateTime('2023-03-31'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-04-30', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testLastOfMonthJanuaryApril()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2020-01-31'));
+        $subscription->setValidUntil(new \DateTime('2023-03-30'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-05-31', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testMidMonth()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2020-01-12'));
+        $subscription->setValidUntil(new \DateTime('2023-02-12'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2023-03-12', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+}
