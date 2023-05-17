@@ -51,6 +51,17 @@ class SystemSettingsContext implements Context
     }
 
     /**
+     * @Given stripe billing is disabled
+     */
+    public function stripeBillingIsDisabled()
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setUseStripeBilling(false);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @When I update the system settings to:
      */
     public function iUpdateTheSystemSettingsTo(TableNode $table)

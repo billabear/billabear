@@ -75,9 +75,9 @@ class PaymentService implements PaymentServiceInterface
     public function chargeCardOnFile(Charge $cardFile): ChargeCardResponse
     {
         $paymentDetails = new PaymentDetails();
-        $paymentDetails->setAmount($subscription->getTotalCost());
-        $paymentDetails->setCustomerReference($subscription->getBillingDetails()->getCustomerReference());
-        $paymentDetails->setStoredPaymentReference($subscription->getBillingDetails()->getStoredPaymentReference());
+        $paymentDetails->setAmount($cardFile->getAmount());
+        $paymentDetails->setCustomerReference($cardFile->getBillingDetails()->getCustomerReference());
+        $paymentDetails->setStoredPaymentReference($cardFile->getBillingDetails()->getStoredPaymentReference());
         $paymentDetails->setPaymentReference(bin2hex(random_bytes(32)));
 
         $chargeCardResponse = new ChargeCardResponse();

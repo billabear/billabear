@@ -60,3 +60,20 @@ Feature: Customer Subscription Create APP
     And the subscriber monthly stat for the day should be 1
     And the subscriber yearly stat for the day should be 1
     And the external references for the subscription for the user "customer.one@example.org" should be blank
+
+  Scenario: Get subscription - Invoice and stripe billing is disabled
+    Given stripe billing is disabled
+    And I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    | Billing Type |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One | invoice      |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two | card         |
+    When I create a subscription via the site for "customer.two@example.org" with the follow:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule |
+      | Test Plan         | 3000         | USD            | month          |
+    Then there should be a subscription for the user "customer.two@example.org"
+    And the subscriber daily stat for the day should be 1
+    And the subscriber monthly stat for the day should be 1
+    And the subscriber yearly stat for the day should be 1
+    And the external references for the subscription for the user "customer.two@example.org" should be blank
+    And the payment amount stats for the day should be 3000 in the currency "USD"
