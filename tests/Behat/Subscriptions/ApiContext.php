@@ -136,18 +136,4 @@ class ApiContext implements Context
             'price' => (string) $price->getId(),
         ]);
     }
-
-    /**
-     * @Then there should be a subscription for the user :arg1
-     */
-    public function thereShouldBeASubscriptionForTheUser($customerEmail)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
-
-        if (!$subscription instanceof Subscription) {
-            throw new \Exception('No subscription found');
-        }
-    }
 }

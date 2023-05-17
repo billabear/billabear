@@ -47,6 +47,61 @@ class MainContext implements Context
     }
 
     /**
+     * @When I create a subscription via the site for :arg1 with the follow:
+     */
+    public function iCreateASubscriptionViaTheSiteForWithTheFollow($customerEmail, TableNode $table)
+    {
+        $row = current($table->getColumnsHash());
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+        $payload = [
+            'subscription_plan' => (string) $subscriptionPlan->getId(),
+            'price' => (string) $price->getId(),
+        ];
+        if ('card' === $customer->getBillingType()) {
+            $paymentCard = $this->paymentDetailsRepository->findOneBy(['customer' => $customer]);
+            $payload['payment_details'] = (string) $paymentCard->getId();
+        }
+
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/subscription', $payload);
+    }
+
+    /**
+     * @Then the external references for the subscription for the user :arg1 should be blank
+     */
+    public function theExternalReferencesForTheSubscriptionForTheUserShouldBeBlank($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception('No subscription found');
+        }
+
+        if ($subscription->getMainExternalReference() || $subscription->getChildExternalReference()) {
+            throw new \Exception('Expected no references');
+        }
+    }
+
+    /**
+     * @Then there should be a subscription for the user :arg1
+     */
+    public function thereShouldBeASubscriptionForTheUser($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception('No subscription found');
+        }
+    }
+
+    /**
      * @When the following subscriptions exist:
      */
     public function theFollowingSubscriptionsExist(TableNode $table)
