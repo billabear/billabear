@@ -19,8 +19,8 @@ class MonthScheduler implements SchedulerInterface
     public function scheduleNextDueDate(Subscription $subscription): void
     {
         $createdAt = clone $subscription->getCreatedAt();
-        $nextBill = clone $subscription->getValidUntil() ?? $subscription->getCreatedAt();
-        $monthDate = clone $subscription->getValidUntil();
+        $nextBill = clone ($subscription->getValidUntil() ?? $subscription->getCreatedAt());
+        $monthDate = clone $nextBill;
         $monthDate->modify('first day of this month');
         $monthDate->modify('+1 month');
         $secondMonth = clone $monthDate;

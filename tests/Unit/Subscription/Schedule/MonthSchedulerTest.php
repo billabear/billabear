@@ -138,4 +138,36 @@ class MonthSchedulerTest extends TestCase
         $subject->scheduleNextDueDate($subscription);
         $this->assertEquals('2024-02-29', $subscription->getValidUntil()->format('Y-m-d'));
     }
+
+    public function testEndOfMonthFullYearNoValidUntil()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2022-12-31'));
+
+        $subject = new MonthScheduler();
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-01-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-02-28', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-03-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-04-30', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-05-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-06-30', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-07-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-08-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-09-30', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-10-31', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-11-30', $subscription->getValidUntil()->format('Y-m-d'));
+        $subject->scheduleNextDueDate($subscription);
+        $this->assertEquals('2023-12-31', $subscription->getValidUntil()->format('Y-m-d'));
+    }
 }

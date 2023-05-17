@@ -12,8 +12,33 @@
 
 namespace App\Tests\Unit\Subscription\Schedule;
 
+use App\Subscription\Schedule\YearScheduler;
+use Parthenon\Billing\Entity\Subscription;
 use PHPUnit\Framework\TestCase;
 
 class YearlySchedulerTest extends TestCase
 {
+    public function testFirstOfMonth()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2023-02-01'));
+        $subscription->setValidUntil(new \DateTime('2023-02-01'));
+
+        $subject = new YearScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2024-02-01', $subscription->getValidUntil()->format('Y-m-d'));
+    }
+
+    public function testLeapYear()
+    {
+        $subscription = new Subscription();
+        $subscription->setCreatedAt(new \DateTime('2020-02-29'));
+        $subscription->setCreatedAt(new \DateTime('2020-02-29'));
+
+        $subject = new YearScheduler();
+        $subject->scheduleNextDueDate($subscription);
+
+        $this->assertEquals('2021-02-28', $subscription->getValidUntil()->format('Y-m-d'));
+    }
 }
