@@ -29,4 +29,14 @@ class PdfTemplate
     {
         $this->content = $content;
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
 }

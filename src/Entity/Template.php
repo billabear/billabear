@@ -19,7 +19,13 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'templates')]
 class Template
 {
+    public const NAMES = [
+        self::NAME_RECEIPT,
+        self::NAME_INVOICE,
+    ];
+
     public const NAME_RECEIPT = 'receipt';
+    public const NAME_INVOICE = 'invoice';
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
