@@ -13,6 +13,8 @@
 namespace App\Payment;
 
 use App\Entity\Invoice;
+use App\Event\InvoicePaid;
+use App\Repository\InvoiceRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Obol\Model\Charge;
 use Obol\Provider\ProviderInterface;
@@ -33,6 +35,7 @@ class InvoiceCharger
         private PaymentFactoryInterface $paymentFactory,
         private PaymentRepositoryInterface $paymentRepository,
         private EventDispatcherInterface $eventDispatcher,
+        private InvoiceRepositoryInterface $invoiceRepository,
     ) {
     }
 
@@ -57,6 +60,11 @@ class InvoiceCharger
         $this->paymentRepository->save($payment);
         $invoice->setPayments(new ArrayCollection([$payment]));
 
+        $invoice->setPaid(true);
+        $invoice->setPaidAt(new \DateTime('now'));
+        $this->invoiceRepository->save($invoice);
+
+        $this->eventDispatcher->dispatch(new InvoicePaid($invoice), InvoicePaid::NAME);
         $this->eventDispatcher->dispatch(new PaymentCreated($payment, true), PaymentCreated::NAME);
     }
 }
