@@ -233,6 +233,12 @@ services:
     app.repository.orm.invoice:
         class: App\Repository\Orm\InvoiceRepository
 
+    App\Repository\CreditNoteRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.credit_note'
+    app.repository.orm.credit_note:
+        class: App\Repository\Orm\CreditNoteRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
