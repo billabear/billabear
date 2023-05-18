@@ -52,6 +52,9 @@ services:
 
     parthenon.user.repository.orm.invite_code_repository_doctrine: '@App\Repository\Orm\InviteCodeRepository'
 
+    App\Repository\SubscriptionRepository:
+        arguments:
+            $entityRepository: '@Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository'
 
     App\Repository\PaymentCardRepository:
         arguments:

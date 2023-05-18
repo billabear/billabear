@@ -92,12 +92,69 @@ class MainContext implements Context
      */
     public function thereShouldBeASubscriptionForTheUser($customerEmail)
     {
-        $customer = $this->getCustomerByEmail($customerEmail);
+        $this->getSubscription($customerEmail);
+    }
 
-        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+    /**
+     * @Then the subscription for :arg1 will expire in a week
+     */
+    public function theSubscriptionForWillExpireInAWeek($customerEmail)
+    {
+        $now = new \DateTime();
+        $subscription = $this->getSubscription($customerEmail);
 
-        if (!$subscription instanceof Subscription) {
-            throw new \Exception('No subscription found');
+        $diff = $subscription->getValidUntil()->diff($now);
+
+        if ($diff->d < 6) {
+            throw new \Exception('Expires in less than a week');
+        }
+        if ($diff->d > 7) {
+            throw new \Exception('Expires in more than a week');
+        }
+    }
+
+    /**
+     * @Then the subscription for :arg1 will expire in a month
+     */
+    public function theSubscriptionForWillExpireInAMonth($customerEmail)
+    {
+        $now = new \DateTime();
+        $subscription = $this->getSubscription($customerEmail);
+
+        $diff = $subscription->getValidUntil()->diff($now);
+
+        if (0 == $diff->m) {
+            throw new \Exception('Expires in less than a month');
+        }
+    }
+
+    /**
+     * @Then the subscription for :arg1 will expire in a year
+     */
+    public function theSubscriptionForWillExpireInAYear($customerEmail)
+    {
+        $now = new \DateTime();
+        $subscription = $this->getSubscription($customerEmail);
+
+        $diff = $subscription->getValidUntil()->diff($now);
+        if (1 != $diff->y) {
+            var_dump($diff);
+            throw new \Exception('Expires another time');
+        }
+    }
+
+    /**
+     * @Then the subscription for :arg1 will expire today
+     */
+    public function theSubscriptionForWillExpireToday($customerEmail)
+    {
+        $now = new \DateTime();
+        $subscription = $this->getSubscription($customerEmail);
+
+        $diff = $subscription->getValidUntil()->diff($now);
+
+        if (0 !== $diff->d && 0 !== $diff->m && 0 !== $diff->y) {
+            throw new \Exception('Expires a different day');
         }
     }
 
@@ -128,7 +185,7 @@ class MainContext implements Context
             $subscription->setPrice($price);
             $subscription->setSubscriptionPlan($subscriptionPlan);
             $subscription->setPlanName($subscriptionPlan->getName());
-            $subscription->setStatus(SubscriptionStatus::ACTIVE);
+            $subscription->setStatus('Active' === $row['Status'] ? SubscriptionStatus::ACTIVE : SubscriptionStatus::CANCELLED);
             $subscription->setCurrency($price->getCurrency());
             $subscription->setAmount($price->getAmount());
             $subscription->setMainExternalReference('sdasd');
@@ -300,5 +357,23 @@ class MainContext implements Context
         if ($data['subscription']['schedule'] !== $schedule) {
             throw new \Exception("Schedule doesn't match");
         }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getSubscription($customerEmail): Subscription
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception('No subscription found');
+        }
+
+        $this->subscriptionRepository->getEntityManager()->refresh($subscription);
+
+        return $subscription;
     }
 }
