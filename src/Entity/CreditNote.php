@@ -32,7 +32,7 @@ class CreditNote
     private Customer $customer;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    private ?User $issuer = null;
+    private ?User $billingAdmin = null;
 
     #[ORM\Column]
     private string $creationType;
@@ -78,14 +78,14 @@ class CreditNote
         $this->customer = $customer;
     }
 
-    public function getIssuer(): ?User
+    public function getBillingAdmin(): ?User
     {
-        return $this->issuer;
+        return $this->billingAdmin;
     }
 
-    public function setIssuer(?User $issuer): void
+    public function setBillingAdmin(?User $billingAdmin): void
     {
-        $this->issuer = $issuer;
+        $this->billingAdmin = $billingAdmin;
     }
 
     public function getAmount(): int
@@ -156,5 +156,15 @@ class CreditNote
     public function setValidUntil(?\DateTime $validUntil): void
     {
         $this->validUntil = $validUntil;
+    }
+
+    public function getCreationType(): string
+    {
+        return $this->creationType;
+    }
+
+    public function setCreationType(string $creationType): void
+    {
+        $this->creationType = $creationType;
     }
 }

@@ -51,6 +51,9 @@ default:
                 # Receipt
                 - App\Tests\Behat\Receipt\AppContext
 
+                # Credit Notes
+                - App\Tests\Behat\CreditNote\AppContext
+
                 # Settings
                 - App\Tests\Behat\Settings\PdfTemplatesContext
                 - App\Tests\Behat\Settings\BrandsContext
@@ -65,6 +68,7 @@ default:
 
                 # Reports
                 - App\Tests\Behat\Reports\ExpiringCards\AppContext
+
 
                 # Background Jobs
                 - App\Tests\Behat\Background\ExpiringCards\MainContext
