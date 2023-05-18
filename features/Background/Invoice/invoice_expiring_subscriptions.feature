@@ -31,13 +31,13 @@ Feature: Generate new invoices
       | Per Seat   | False    |
       | User Count | 10       |
     And the follow customers exist:
-      | Email                      | Country | External Reference | Reference      |
-      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   |
-      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   |
-      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three |
-      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  |
-      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  |
-      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   |
+      | Email                      | Country | External Reference | Reference      | Billing Type |
+      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      |
+      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         |
+      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         |
+      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         |
+      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         |
+      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
 
 
   Scenario:
@@ -56,4 +56,4 @@ Feature: Generate new invoices
     But the subscription for "customer.four@example.org" will expire today
     And the subscription for "customer.five@example.org" will expire today
     And the subscription for "customer.six@example.org" will expire today
-    And the payment amount stats for the day should be 34000 in the currency "USD"
+    And the payment amount stats for the day should be 33000 in the currency "USD"
