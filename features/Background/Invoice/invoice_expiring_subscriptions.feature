@@ -56,3 +56,4 @@ Feature: Generate new invoices
     But the subscription for "customer.four@example.org" will expire today
     And the subscription for "customer.five@example.org" will expire today
     And the subscription for "customer.six@example.org" will expire today
+    And the payment amount stats for the day should be 34000 in the currency "USD"

@@ -14,6 +14,7 @@ namespace App\Background\Invoice;
 
 use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
+use App\Payment\InvoiceCharger;
 use App\Repository\SubscriptionRepositoryInterface;
 use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Billing\Entity\Subscription;
@@ -26,7 +27,8 @@ class GenerateNewInvoices
     public function __construct(
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private InvoiceGenerator $invoiceGenerator,
-        private SchedulerProvider $schedulerProvider
+        private SchedulerProvider $schedulerProvider,
+        private InvoiceCharger $invoiceCharger,
     ) {
     }
 
@@ -67,6 +69,10 @@ class GenerateNewInvoices
             $this->subscriptionRepository->save($activeSubscription);
         }
 
-        $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+        $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+
+        if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
+            $this->invoiceCharger->chargeInvoice($invoice);
+        }
     }
 }
