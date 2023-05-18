@@ -1,0 +1,5 @@
+import {CREDIT_NOTES_CREATE_TRANSLATION} from "./create";
+
+export const CREDIT_NOTES_TRANSLATIONS = {
+    create: CREDIT_NOTES_CREATE_TRANSLATION
+}

@@ -242,6 +242,40 @@
               </tbody>
             </table>
           </div>
+          <div class="mt-3">
+            <div class="grid grid-cols-2">
+              <div>
+              </div>
+              <div class="text-end">
+                <router-link :to="{name: 'app.customer.credit_note.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit_notes.add_button') }}</router-link>
+              </div>
+            </div>
+            <h2 class="mb-5">{{ $t('app.customer.view.credit_notes.title') }}</h2>
+
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.customer.view.credit_notes.list.amount') }}</th>
+                <th>{{ $t('app.customer.view.credit_notes.list.currency') }}</th>
+                <th>{{ $t('app.customer.view.credit_notes.list.created_by') }}</th>
+                <th>{{ $t('app.customer.view.credit_notes.list.created_at') }}</th>
+                <td></td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="createdNote in creditNotes">
+                <td>{{ currency(createdNote.amount) }}</td>
+                <td>{{ createdNote.currency }}</td>
+                <td v-if="createdNote.billing_admin != null">{{ createdNote.billing_admin.display_name }}</td>
+                <td v-else>n/a</td>
+                <td>{{ $filters.moment(refund.createdNote, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+              </tr>
+              <tr v-if="creditNotes.length == 0">
+                <td colspan="4" class="text-center">{{ $t('app.customer.view.credit_notes.no_credit_notes') }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
       </div>
       </div>
 
@@ -269,7 +303,8 @@ export default {
       payments: [],
       refunds: [],
       subscriptions: [],
-      limits: {}
+      limits: {},
+      creditNotes: [],
     }
   },
   methods: {

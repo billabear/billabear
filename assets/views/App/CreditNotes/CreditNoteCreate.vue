@@ -1,0 +1,118 @@
+<template>
+  <div>
+    <h1 class="page-title">{{ $t('app.credit_notes.create.title') }}</h1>
+
+    <form @submit.prevent="send">
+
+        <div class="mt-3 card-body">
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="amount">
+              {{ $t('app.credit_notes.create.amount') }}
+            </label>
+            <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
+            <input type="number" class="form-field-input" id="amount" v-model="creditNote.amount" />
+            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.amount') }}</p>
+            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.display_amount', {amount: currency(creditNote.amount)}) }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="currency">
+              {{ $t('app.credit_notes.create.currency') }}
+            </label>
+            <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
+            <select class="form-field-input" id="name" v-model="creditNote.currency">
+              <option>USD</option>
+              <option>EUR</option>
+              <option>GBP</option>
+              <option>CAD</option>
+              <option>AUD</option>
+              <option>NOK</option>
+              <option>SEK</option>
+            </select>
+            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.currency') }}</p>
+          </div>
+          <div class="form-field-ctn">
+
+            <label class="form-field-lbl" for="currency">
+              {{ $t('app.credit_notes.create.reason') }}
+            </label>
+            <input type="text" class="form-field" v-model="creditNote.reason" />
+            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.reason') }}</p>
+          </div>
+        </div>
+    <div class="form-field-submit-ctn">
+      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.credit_notes.create.submit_btn') }}</SubmitButton>
+    </div>
+    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.credit_notes.create.success_message') }}</p>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import currency from "currency.js";
+
+export default {
+  name: "CustomerCreate",
+  data() {
+    return {
+      creditNote: {
+        amount: 0,
+        currency: null,
+        reason: null,
+      },
+      sendingInProgress: false,
+      showAdvance: false,
+      success: false,
+      errors: {
+      }
+    }
+  },
+  methods: {
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
+    send: function () {
+      this.sendingInProgress = true;
+      this.success = false;
+      this.errors = {};
+      const customerId = this.$route.params.customerId;
+      axios.post('/app/customer/'+customerId+'/credit-note', this.creditNote).then(
+          response => {
+            this.sendingInProgress = false;
+            this.success = true;
+          }
+      ).catch(error => {
+        this.errors = error.response.data.errors;
+        this.sendingInProgress = false;
+        this.success = false;
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+.form-field-error {
+  @apply text-red-500 text-xs italic mb-2;
+}
+
+.form-field-ctn {
+  @apply w-full md:w-1/2 px-3 mb-6 md:mb-0 pt-2;
+}
+
+.form-field-lbl {
+  @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
+}
+
+.form-field-input {
+  @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
+}
+
+.form-field-help {
+  @apply text-gray-600 text-xs italic;
+}
+
+.form-field-submit-ctn {
+  @apply mt-3;
+}
+</style>

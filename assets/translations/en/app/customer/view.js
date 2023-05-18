@@ -26,6 +26,17 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         post_code: "Post Code",
         country: "Country",
     },
+    credit_notes: {
+        title: "Credit Notes",
+        list: {
+            amount: "Amount",
+            currency: "Currency",
+            created_by: "Created By",
+            created_at: "Created At"
+        },
+        no_credit_notes: "No credit notes for this customer",
+        add_button: "Add"
+    },
     subscriptions: {
         title: "Subscriptions",
         list: {
