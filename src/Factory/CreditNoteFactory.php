@@ -33,6 +33,7 @@ class CreditNoteFactory
         $entity->setCreatedAt(new \DateTime());
         $entity->setUpdatedAt(new \DateTime());
         $entity->setUsedAmount(0);
+        $entity->setCompletelyUsed(false);
 
         return $entity;
     }

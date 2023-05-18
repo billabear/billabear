@@ -46,6 +46,9 @@ class CreditNote
     #[ORM\Column(type: 'integer')]
     private int $usedAmount;
 
+    #[ORM\Column(type: 'bool')]
+    private bool $completelyUsed = false;
+
     #[ORM\Column(nullable: true)]
     private ?string $reason = null;
 
@@ -166,5 +169,15 @@ class CreditNote
     public function setCreationType(string $creationType): void
     {
         $this->creationType = $creationType;
+    }
+
+    public function isCompletelyUsed(): bool
+    {
+        return $this->completelyUsed;
+    }
+
+    public function setCompletelyUsed(bool $completelyUsed): void
+    {
+        $this->completelyUsed = $completelyUsed;
     }
 }
