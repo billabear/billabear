@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'api_key')]
+#[ORM\Table(name: 'credit_note')]
 class CreditNote
 {
     public const CREATION_TYPE_AUTOMATED = 'automated';
@@ -37,13 +37,13 @@ class CreditNote
     #[ORM\Column]
     private string $creationType;
 
-    #[ORM\Column(type: 'int')]
+    #[ORM\Column(type: 'integer')]
     private int $amount;
 
     #[ORM\Column(type: 'string')]
     private string $currency;
 
-    #[ORM\Column(type: int)]
+    #[ORM\Column(type: 'integer')]
     private int $usedAmount;
 
     #[ORM\Column(nullable: true)]
