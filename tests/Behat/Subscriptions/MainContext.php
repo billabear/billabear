@@ -185,7 +185,7 @@ class MainContext implements Context
             $subscription->setPrice($price);
             $subscription->setSubscriptionPlan($subscriptionPlan);
             $subscription->setPlanName($subscriptionPlan->getName());
-            $subscription->setStatus('Active' === $row['Status'] ? SubscriptionStatus::ACTIVE : SubscriptionStatus::CANCELLED);
+            $subscription->setStatus('Active' === ($row['Status'] ?? 'Active') ? SubscriptionStatus::ACTIVE : SubscriptionStatus::CANCELLED);
             $subscription->setCurrency($price->getCurrency());
             $subscription->setAmount($price->getAmount());
             $subscription->setMainExternalReference('sdasd');
