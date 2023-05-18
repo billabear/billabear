@@ -46,7 +46,7 @@ class CreditNote
     #[ORM\Column(type: 'integer')]
     private int $usedAmount;
 
-    #[ORM\Column(type: 'bool')]
+    #[ORM\Column(type: 'boolean')]
     private bool $completelyUsed = false;
 
     #[ORM\Column(nullable: true)]
