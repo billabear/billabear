@@ -91,7 +91,6 @@
               <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
               <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
               <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
-              <th>{{ $t('app.customer.view.subscriptions.list.created_at') }}</th>
               <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
               <th></th>
             </tr>
@@ -102,7 +101,6 @@
               <td v-else>N/A</td>
               <td>{{ subscription.status }}</td>
               <td>{{ subscription.schedule }}</td>
-              <td>{{ subscription.created_at }}</td>
               <td>{{ subscription.valid_until }}</td>
               <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="list-btn">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
             </tr>
