@@ -19,6 +19,7 @@ use App\Repository\Orm\UserRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 
 class AppContext implements Context
@@ -79,5 +80,48 @@ class AppContext implements Context
         if (!$creditNote instanceof CreditNote) {
             throw new \Exception('No credit note found');
         }
+    }
+
+    /**
+     * @When the following credit notes exist:
+     */
+    public function theFollowingCreditNotesExist(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer']);
+            $creditNote = new CreditNote();
+            $creditNote->setCustomer($customer);
+            $creditNote->setAmount(intval($row['Amount']));
+            $creditNote->setCurrency($row['Currency']);
+            $creditNote->setUsedAmount(intval($row['Used Amount'] ?? 0));
+            $creditNote->setCompletelyUsed($creditNote->getUsedAmount() === $creditNote->getAmount());
+            $creditNote->setCreatedAt(new \DateTime());
+            $creditNote->setUpdatedAt(new \DateTime());
+            $creditNote->setCreationType(CreditNote::CREATION_TYPE_AUTOMATED);
+
+            $this->creditNoteRepository->getEntityManager()->persist($creditNote);
+        }
+
+        $this->creditNoteRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Then I will see a credit note for :arg2 in the currency :arg1
+     */
+    public function iWillSeeACreditNoteForInTheCurrency($amount, $currency)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['credit_notes'])) {
+            throw new \Exception('No credit notes');
+        }
+
+        foreach ($data['credit_notes'] as $creditNote) {
+            if ($amount == $creditNote['amount'] && $creditNote['currency'] == $currency) {
+                return;
+            }
+        }
+
+        throw new \Exception('Not found');
     }
 }

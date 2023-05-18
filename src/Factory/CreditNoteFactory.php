@@ -47,6 +47,7 @@ class CreditNoteFactory
         $dto->setAmount($creditNote->getAmount());
         $dto->setCurrency($creditNote->getCurrency());
         $dto->setUsedAmount($creditNote->getUsedAmount());
+        $dto->setCreatedAt($creditNote->getCreatedAt());
 
         return $dto;
     }

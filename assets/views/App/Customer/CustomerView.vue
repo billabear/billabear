@@ -263,12 +263,12 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="createdNote in creditNotes">
-                <td>{{ currency(createdNote.amount) }}</td>
-                <td>{{ createdNote.currency }}</td>
-                <td v-if="createdNote.billing_admin != null">{{ createdNote.billing_admin.display_name }}</td>
+              <tr v-for="creditNote in creditNotes">
+                <td>{{ currency(creditNote.amount) }}</td>
+                <td>{{ creditNote.currency }}</td>
+                <td v-if="creditNote.billing_admin != null">{{ creditNote.billing_admin.display_name }}</td>
                 <td v-else>n/a</td>
-                <td>{{ $filters.moment(refund.createdNote, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td>{{ $filters.moment(creditNote.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
               </tr>
               <tr v-if="creditNotes.length == 0">
                 <td colspan="4" class="text-center">{{ $t('app.customer.view.credit_notes.no_credit_notes') }}</td>
@@ -355,6 +355,7 @@ export default {
       this.payments = response.data.payments;
       this.refunds = response.data.refunds;
       this.limits = response.data.limits;
+      this.creditNotes = response.data.credit_notes;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

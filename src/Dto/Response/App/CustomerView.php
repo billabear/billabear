@@ -34,6 +34,9 @@ class CustomerView
 
     protected Limits $limits;
 
+    #[SerializedName('credit_notes')]
+    protected array $creditNotes = [];
+
     public function getCustomer(): Customer
     {
         return $this->customer;
@@ -102,5 +105,15 @@ class CustomerView
     public function setLimits(Limits $limits): void
     {
         $this->limits = $limits;
+    }
+
+    public function getCreditNotes(): array
+    {
+        return $this->creditNotes;
+    }
+
+    public function setCreditNotes(array $creditNotes): void
+    {
+        $this->creditNotes = $creditNotes;
     }
 }

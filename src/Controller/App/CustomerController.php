@@ -20,11 +20,13 @@ use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Factory\CreditNoteFactory;
 use App\Factory\CustomerFactory;
 use App\Factory\PaymentFactory;
 use App\Factory\PaymentMethodsFactory;
 use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
+use App\Repository\CreditNoteRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -184,6 +186,8 @@ class CustomerController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
         LimitsFactory $limitsFactory,
+        CreditNoteRepositoryInterface $creditNoteRepository,
+        CreditNoteFactory $creditNoteFactory,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));
@@ -205,6 +209,9 @@ class CustomerController
 
         $limits = $limitsFactory->createAppDto($customer, $subscriptions);
 
+        $creditNotes = $creditNoteRepository->getForCustomer($customer);
+        $creditNotesDto = array_map([$creditNoteFactory, 'createAppDto'], $creditNotes);
+
         $customerDto = $customerFactory->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
@@ -213,6 +220,7 @@ class CustomerController
         $dto->setPayments($paymentDtos);
         $dto->setRefunds($refundDtos);
         $dto->setLimits($limits);
+        $dto->setCreditNotes($creditNotesDto);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

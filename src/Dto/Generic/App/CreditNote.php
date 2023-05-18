@@ -30,6 +30,9 @@ class CreditNote
 
     private ?string $reason = null;
 
+    #[SerializedName('created_at')]
+    private \DateTime $createdAt;
+
     public function getCustomer(): Customer
     {
         return $this->customer;
@@ -88,5 +91,15 @@ class CreditNote
     public function setReason(?string $reason): void
     {
         $this->reason = $reason;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }
