@@ -1,22 +1,22 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.credit_notes.create.title') }}</h1>
+    <h1 class="page-title">{{ $t('app.credit.create.title') }}</h1>
 
     <form @submit.prevent="send">
 
         <div class="mt-3 card-body">
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="amount">
-              {{ $t('app.credit_notes.create.amount') }}
+              {{ $t('app.credit.create.amount') }}
             </label>
             <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
             <input type="number" class="form-field-input" id="amount" v-model="creditNote.amount" />
-            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.amount') }}</p>
-            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.display_amount', {amount: currency(creditNote.amount)}) }}</p>
+            <p class="form-field-help">{{ $t('app.credit.create.help_info.amount') }}</p>
+            <p class="form-field-help">{{ $t('app.credit.create.help_info.display_amount', {amount: currency(creditNote.amount)}) }}</p>
           </div>
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="currency">
-              {{ $t('app.credit_notes.create.currency') }}
+              {{ $t('app.credit.create.currency') }}
             </label>
             <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
             <select class="form-field-input" id="name" v-model="creditNote.currency">
@@ -28,21 +28,21 @@
               <option>NOK</option>
               <option>SEK</option>
             </select>
-            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.currency') }}</p>
+            <p class="form-field-help">{{ $t('app.credit.create.help_info.currency') }}</p>
           </div>
           <div class="form-field-ctn">
 
             <label class="form-field-lbl" for="currency">
-              {{ $t('app.credit_notes.create.reason') }}
+              {{ $t('app.credit.create.reason') }}
             </label>
             <input type="text" class="form-field" v-model="creditNote.reason" />
-            <p class="form-field-help">{{ $t('app.credit_notes.create.help_info.reason') }}</p>
+            <p class="form-field-help">{{ $t('app.credit.create.help_info.reason') }}</p>
           </div>
         </div>
     <div class="form-field-submit-ctn">
-      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.credit_notes.create.submit_btn') }}</SubmitButton>
+      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.credit.create.submit_btn') }}</SubmitButton>
     </div>
-    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.credit_notes.create.success_message') }}</p>
+    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.credit.create.success_message') }}</p>
     </form>
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
       this.success = false;
       this.errors = {};
       const customerId = this.$route.params.customerId;
-      axios.post('/app/customer/'+customerId+'/credit-note', this.creditNote).then(
+      axios.post('/app/customer/'+customerId+'/credit', this.creditNote).then(
           response => {
             this.sendingInProgress = false;
             this.success = true;

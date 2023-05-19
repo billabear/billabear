@@ -13,12 +13,9 @@
 namespace App\Repository;
 
 use App\Entity\Customer;
-use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-class CreditNoteRepository extends DoctrineCrudRepository implements CreditNoteRepositoryInterface
+interface CreditRepositoryInterface extends CrudRepositoryInterface
 {
-    public function getForCustomer(Customer $customer): array
-    {
-        return $this->entityRepository->findBy(['customer' => $customer]);
-    }
+    public function getForCustomer(Customer $customer): array;
 }

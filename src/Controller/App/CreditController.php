@@ -13,9 +13,9 @@
 namespace App\Controller\App;
 
 use App\Dto\Request\App\CreditNote\CreateCreditNote;
-use App\Entity\CreditNote;
-use App\Factory\CreditNoteFactory;
-use App\Repository\CreditNoteRepositoryInterface;
+use App\Entity\Credit;
+use App\Factory\CreditFactory;
+use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -26,17 +26,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreditNoteController
+class CreditController
 {
-    #[Route('/app/customer/{id}/credit-note', name: 'app_customer_credit_note_create', methods: ['POST'])]
-    public function createCreditNote(
-        Request $request,
+    #[Route('/app/customer/{id}/credit', name: 'app_customer_credit_create', methods: ['POST'])]
+    public function createCredit(
+        Request                     $request,
         CustomerRepositoryInterface $customerRepository,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
-        CreditNoteFactory $factory,
-        CreditNoteRepositoryInterface $repository,
-        Security $security,
+        SerializerInterface         $serializer,
+        ValidatorInterface          $validator,
+        CreditFactory               $factory,
+        CreditRepositoryInterface   $repository,
+        Security                    $security,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));
@@ -59,14 +59,14 @@ class CreditNoteController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $creditNote = $factory->createEntity($dto, $customer);
+        $credit = $factory->createEntity($dto, $customer);
         $billingAdmin = $security->getUser();
-        $creditNote->setBillingAdmin($billingAdmin);
-        $creditNote->setCreationType(CreditNote::CREATION_TYPE_MANUALLY);
+        $credit->setBillingAdmin($billingAdmin);
+        $credit->setCreationType(Credit::CREATION_TYPE_MANUALLY);
 
-        $repository->save($creditNote);
-        $creditNoteDto = $factory->createAppDto($creditNote);
-        $jsonResponse = $serializer->serialize($creditNoteDto, 'json');
+        $repository->save($credit);
+        $creditDto = $factory->createAppDto($credit);
+        $jsonResponse = $serializer->serialize($creditDto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }

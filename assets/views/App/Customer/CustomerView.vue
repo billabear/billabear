@@ -247,7 +247,7 @@
               <div>
               </div>
               <div class="text-end">
-                <router-link :to="{name: 'app.customer.credit_note.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit_notes.add_button') }}</router-link>
+                <router-link :to="{name: 'app.customer.credit.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit_notes.add_button') }}</router-link>
               </div>
             </div>
             <h2 class="mb-5">{{ $t('app.customer.view.credit_notes.title') }}</h2>
@@ -263,14 +263,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="creditNote in creditNotes">
+              <tr v-for="creditNote in credit">
                 <td>{{ currency(creditNote.amount) }}</td>
                 <td>{{ creditNote.currency }}</td>
                 <td v-if="creditNote.billing_admin != null">{{ creditNote.billing_admin.display_name }}</td>
                 <td v-else>n/a</td>
                 <td>{{ $filters.moment(creditNote.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
               </tr>
-              <tr v-if="creditNotes.length == 0">
+              <tr v-if="credit.length == 0">
                 <td colspan="4" class="text-center">{{ $t('app.customer.view.credit_notes.no_credit_notes') }}</td>
               </tr>
               </tbody>
@@ -304,7 +304,7 @@ export default {
       refunds: [],
       subscriptions: [],
       limits: {},
-      creditNotes: [],
+      credit: [],
     }
   },
   methods: {
@@ -355,7 +355,7 @@ export default {
       this.payments = response.data.payments;
       this.refunds = response.data.refunds;
       this.limits = response.data.limits;
-      this.creditNotes = response.data.credit_notes;
+      this.credit = response.data.credit;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

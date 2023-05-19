@@ -12,14 +12,14 @@
 
 namespace App\Repository\Orm;
 
-use App\Entity\CreditNote;
+use App\Entity\Credit;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class CreditNoteRepository extends CustomServiceRepository
+class CreditRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CreditNote::class);
+        parent::__construct($registry, Credit::class);
     }
 }

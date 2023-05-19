@@ -16,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'credit_note')]
-class CreditNote
+#[ORM\Table(name: 'credit')]
+class Credit
 {
     public const CREATION_TYPE_AUTOMATED = 'automated';
     public const CREATION_TYPE_MANUALLY = 'manually';
@@ -52,13 +52,13 @@ class CreditNote
     #[ORM\Column(nullable: true)]
     private ?string $reason = null;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $updatedAt;
 
-    #[ORM\Column(type: 'datetimetz', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $validUntil = null;
 
     public function getId()

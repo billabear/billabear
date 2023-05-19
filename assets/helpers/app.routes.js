@@ -47,7 +47,8 @@ import StripeImportList from "../views/App/Settings/Import/StripeImportList.vue"
 import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
 import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
 import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsList.vue";
-import CreditNoteCreate from "../views/App/CreditNotes/CreditNoteCreate.vue";
+import CreditNoteCreate from "../views/App/Credit/CreditCreate.vue";
+import CreditCreate from "../views/App/Credit/CreditCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -111,9 +112,9 @@ export const APP_ROUTES = [
                 component: SubscriptionCreate
             },
             {
-                name: 'app.customer.credit_note.add',
-                path: 'customer/:customerId/credit-note/add',
-                component: CreditNoteCreate
+                name: 'app.customer.credit.add',
+                path: 'customer/:customerId/credit/add',
+                component: CreditCreate
             }
         ]
     },

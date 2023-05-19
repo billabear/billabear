@@ -41,8 +41,8 @@ Feature: Payment List Read APP
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
-    And the following credit notes exist:
-      | Customer | Amount | Currency |
-      | customer.one@example.org | 1000 | USD |
+    And the following credit exist:
+      | Customer                 | Amount | Currency |
+      | customer.one@example.org | 1000   | USD      |
     When I view the customer info via the site for "customer.one@example.org"
-    Then I will see a credit note for 1000 in the currency "USD"
+    Then I will see a credit for 1000 in the currency "USD"

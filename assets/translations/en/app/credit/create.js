@@ -1,5 +1,5 @@
-export const CREDIT_NOTES_CREATE_TRANSLATION = {
-    title: "Create Credit Note",
+export const CREDIT_CREATE_TRANSLATION = {
+    title: "Create Credit",
     amount: "Amount",
     currency: "Currency",
     reason: "Reason",
@@ -9,6 +9,6 @@ export const CREDIT_NOTES_CREATE_TRANSLATION = {
         currency: "The currency that the customer should be charged in",
         reason: "An optional reason that may be helpful later."
     },
-    success_message: "Successfully created credit note",
+    success_message: "Successfully created credit",
     submit_btn: "Create"
 }

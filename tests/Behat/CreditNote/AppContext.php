@@ -12,8 +12,8 @@
 
 namespace App\Tests\Behat\CreditNote;
 
-use App\Entity\CreditNote;
-use App\Repository\Orm\CreditNoteRepository;
+use App\Entity\Credit;
+use App\Repository\Orm\CreditRepository;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\UserRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
@@ -29,14 +29,14 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private CreditNoteRepository $creditNoteRepository,
+        private CreditRepository $creditNoteRepository,
         private CustomerRepository $customerRepository,
         private UserRepository $userRepository,
     ) {
     }
 
     /**
-     * @When I create a credit note for :arg1 for :arg3 in the currency :arg2
+     * @When I create a credit for :arg1 for :arg3 in the currency :arg2
      */
     public function iCreateACreditNoteForForInTheCurrency($customerEmail, $amount, $currency)
     {
@@ -47,11 +47,11 @@ class AppContext implements Context
             'currency' => $currency,
         ];
 
-        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/credit-note', $payload);
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/credit', $payload);
     }
 
     /**
-     * @Then there should be a credit note for :arg1 for :arg3 in the currency :arg2
+     * @Then there should be a credit for :arg1 for :arg3 in the currency :arg2
      */
     public function thereShouldBeACreditNoteForForInTheCurrency($customerEmail, $amount, $currency)
     {
@@ -59,7 +59,7 @@ class AppContext implements Context
 
         $creditNote = $this->creditNoteRepository->findOneBy(['customer' => $customer]);
 
-        if (!$creditNote instanceof CreditNote) {
+        if (!$creditNote instanceof Credit) {
             throw new \Exception('No credit note found');
         }
 
@@ -69,7 +69,7 @@ class AppContext implements Context
     }
 
     /**
-     * @Then there should be a credit note created by :arg1
+     * @Then there should be a credit created by :arg1
      */
     public function thereShouldBeACreditNoteCreatedBy($email)
     {
@@ -77,19 +77,19 @@ class AppContext implements Context
 
         $creditNote = $this->creditNoteRepository->findOneBy(['billingAdmin' => $billingAdmin]);
 
-        if (!$creditNote instanceof CreditNote) {
+        if (!$creditNote instanceof Credit) {
             throw new \Exception('No credit note found');
         }
     }
 
     /**
-     * @When the following credit notes exist:
+     * @When the following credit exist:
      */
     public function theFollowingCreditNotesExist(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $row) {
             $customer = $this->getCustomerByEmail($row['Customer']);
-            $creditNote = new CreditNote();
+            $creditNote = new Credit();
             $creditNote->setCustomer($customer);
             $creditNote->setAmount(intval($row['Amount']));
             $creditNote->setCurrency($row['Currency']);
@@ -97,7 +97,7 @@ class AppContext implements Context
             $creditNote->setCompletelyUsed($creditNote->getUsedAmount() === $creditNote->getAmount());
             $creditNote->setCreatedAt(new \DateTime());
             $creditNote->setUpdatedAt(new \DateTime());
-            $creditNote->setCreationType(CreditNote::CREATION_TYPE_AUTOMATED);
+            $creditNote->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
 
             $this->creditNoteRepository->getEntityManager()->persist($creditNote);
         }
@@ -106,17 +106,17 @@ class AppContext implements Context
     }
 
     /**
-     * @Then I will see a credit note for :arg2 in the currency :arg1
+     * @Then I will see a credit for :arg2 in the currency :arg1
      */
     public function iWillSeeACreditNoteForInTheCurrency($amount, $currency)
     {
         $data = $this->getJsonContent();
 
-        if (!isset($data['credit_notes'])) {
+        if (!isset($data['credit'])) {
             throw new \Exception('No credit notes');
         }
 
-        foreach ($data['credit_notes'] as $creditNote) {
+        foreach ($data['credit'] as $creditNote) {
             if ($amount == $creditNote['amount'] && $creditNote['currency'] == $currency) {
                 return;
             }

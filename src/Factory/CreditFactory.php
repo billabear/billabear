@@ -12,12 +12,12 @@
 
 namespace App\Factory;
 
-use App\Dto\Generic\App\CreditNote as AppDto;
+use App\Dto\Generic\App\Credit as AppDto;
 use App\Dto\Request\App\CreditNote\CreateCreditNote;
-use App\Entity\CreditNote as Entity;
+use App\Entity\Credit as Entity;
 use App\Entity\Customer;
 
-class CreditNoteFactory
+class CreditFactory
 {
     public function __construct(private CustomerFactory $customerFactory, private BillingAdminFactory $billingAdminFactory)
     {
