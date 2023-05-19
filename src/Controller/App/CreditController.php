@@ -30,13 +30,13 @@ class CreditController
 {
     #[Route('/app/customer/{id}/credit', name: 'app_customer_credit_create', methods: ['POST'])]
     public function createCredit(
-        Request                     $request,
+        Request $request,
         CustomerRepositoryInterface $customerRepository,
-        SerializerInterface         $serializer,
-        ValidatorInterface          $validator,
-        CreditFactory               $factory,
-        CreditRepositoryInterface   $repository,
-        Security                    $security,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        CreditFactory $factory,
+        CreditRepositoryInterface $repository,
+        Security $security,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));
