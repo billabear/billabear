@@ -73,6 +73,7 @@ class InvoiceGenerator
         $invoice->setLines($lines);
         $invoice->setVatTotal($vat->getMinorAmount()->toInt());
         $invoice->setTotal($total->getMinorAmount()->toInt());
+        $invoice->setAmountDue($total->getMinorAmount()->toInt());
         $invoice->setSubTotal($subTotal->getMinorAmount()->toInt());
         $invoice->setPaid(false);
         $invoice->setCreatedAt(new \DateTime('now'));

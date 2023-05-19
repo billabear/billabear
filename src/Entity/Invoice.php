@@ -64,6 +64,9 @@ class Invoice
     private string $currency;
 
     #[ORM\Column(type: 'integer')]
+    private int $amountDue;
+
+    #[ORM\Column(type: 'integer')]
     private int $total;
 
     #[ORM\Column(type: 'integer')]
@@ -308,5 +311,15 @@ class Invoice
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getAmountDue(): int
+    {
+        return $this->amountDue;
+    }
+
+    public function setAmountDue(int $amountDue): void
+    {
+        $this->amountDue = $amountDue;
     }
 }
