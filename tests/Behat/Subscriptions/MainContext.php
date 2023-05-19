@@ -153,7 +153,7 @@ class MainContext implements Context
 
         $diff = $subscription->getValidUntil()->diff($now);
 
-        if (0 !== $diff->d && 0 !== $diff->m && 0 !== $diff->y) {
+        if (0 !== $diff->d || 0 !== $diff->m || 0 !== $diff->y) {
             throw new \Exception('Expires a different day');
         }
     }

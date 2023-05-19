@@ -12,6 +12,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\SubscriptionRepository implements SubscriptionRepositoryInterface
@@ -29,6 +30,27 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
             ->setParameter('thirtySecondsAgo', $thirtySecondsAgo)
             ->setParameter('fiveMinutes', $fiveMinutes)
             ->setParameter('status', SubscriptionStatus::ACTIVE)
+            ->orderBy('s.customer');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getInvoiceSubscriptionsExpiringInNextFiveMinutes(): array
+    {
+        // Incase it takes a while to start the process.
+        $thirtySecondsAgo = new \DateTime('-30 seconds');
+        $fiveMinutes = new \DateTime('+5 minutes');
+
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->join('s.customer', 'c')
+            ->where('s.validUntil >= :thirtySecondsAgo')
+            ->andWhere('s.validUntil <= :fiveMinutes')
+            ->andWhere('s.status = :status')
+            ->andWhere('c.billingType = :invoiceType')
+            ->setParameter('thirtySecondsAgo', $thirtySecondsAgo)
+            ->setParameter('fiveMinutes', $fiveMinutes)
+            ->setParameter('status', SubscriptionStatus::ACTIVE)
+            ->setParameter('invoiceType', Customer::BILLING_TYPE_INVOICE)
             ->orderBy('s.customer');
 
         return $qb->getQuery()->getResult();

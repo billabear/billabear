@@ -20,4 +20,9 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
      * @return Subscription[]
      */
     public function getSubscriptionsExpiringInNextFiveMinutes(): array;
+
+    /**
+     * @return Subscription[]
+     */
+    public function getInvoiceSubscriptionsExpiringInNextFiveMinutes(): array;
 }

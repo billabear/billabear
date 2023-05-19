@@ -15,6 +15,7 @@ namespace App\Background\Invoice;
 use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
+use App\Repository\SettingsRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Billing\Entity\Subscription;
@@ -29,12 +30,19 @@ class GenerateNewInvoices
         private InvoiceGenerator $invoiceGenerator,
         private SchedulerProvider $schedulerProvider,
         private InvoiceCharger $invoiceCharger,
+        private SettingsRepositoryInterface $settingsRepository,
     ) {
     }
 
     public function execute(): void
     {
-        $subscriptions = $this->subscriptionRepository->getSubscriptionsExpiringInNextFiveMinutes();
+        $defaultSettings = $this->settingsRepository->getDefaultSettings();
+
+        if (!$defaultSettings->getSystemSettings()->isUseStripeBilling()) {
+            $subscriptions = $this->subscriptionRepository->getSubscriptionsExpiringInNextFiveMinutes();
+        } else {
+            $subscriptions = $this->subscriptionRepository->getInvoiceSubscriptionsExpiringInNextFiveMinutes();
+        }
 
         $customer = null;
         /** @var Subscription $activeSubscriptions */

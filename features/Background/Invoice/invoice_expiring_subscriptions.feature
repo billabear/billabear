@@ -49,6 +49,7 @@ Feature: Generate new invoices
       | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
       | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
       | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
+    And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the subscription for "customer.two@example.org" will expire in a month
@@ -57,3 +58,21 @@ Feature: Generate new invoices
     And the subscription for "customer.five@example.org" will expire today
     And the subscription for "customer.six@example.org" will expire today
     And the payment amount stats for the day should be 33000 in the currency "USD"
+
+  Scenario:
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org   | +3 Minutes  | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.three@example.org | +3 Minutes  | Active    |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
+      | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
+    And stripe billing is enabled
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    And the subscription for "customer.two@example.org" will expire today
+    And the subscription for "customer.three@example.org" will expire today
+    But the subscription for "customer.four@example.org" will expire today
+    And the subscription for "customer.five@example.org" will expire today
+    And the subscription for "customer.six@example.org" will expire today
