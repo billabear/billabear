@@ -245,20 +245,20 @@
           <div class="mt-3">
             <div class="grid grid-cols-2">
               <div>
+                <h2 class="mb-5">{{ $t('app.customer.view.credit.title') }}</h2>
               </div>
               <div class="text-end">
-                <router-link :to="{name: 'app.customer.credit.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit_notes.add_button') }}</router-link>
+                <router-link :to="{name: 'app.customer.credit.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit.add_button') }}</router-link>
               </div>
             </div>
-            <h2 class="mb-5">{{ $t('app.customer.view.credit_notes.title') }}</h2>
 
             <table class="list-table">
               <thead>
               <tr>
-                <th>{{ $t('app.customer.view.credit_notes.list.amount') }}</th>
-                <th>{{ $t('app.customer.view.credit_notes.list.currency') }}</th>
-                <th>{{ $t('app.customer.view.credit_notes.list.created_by') }}</th>
-                <th>{{ $t('app.customer.view.credit_notes.list.created_at') }}</th>
+                <th>{{ $t('app.customer.view.credit.list.amount') }}</th>
+                <th>{{ $t('app.customer.view.credit.list.currency') }}</th>
+                <th>{{ $t('app.customer.view.credit.list.created_by') }}</th>
+                <th>{{ $t('app.customer.view.credit.list.created_at') }}</th>
                 <td></td>
               </tr>
               </thead>
@@ -271,7 +271,7 @@
                 <td>{{ $filters.moment(creditNote.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
               </tr>
               <tr v-if="credit.length == 0">
-                <td colspan="4" class="text-center">{{ $t('app.customer.view.credit_notes.no_credit_notes') }}</td>
+                <td colspan="4" class="text-center">{{ $t('app.customer.view.credit.no_credit') }}</td>
               </tr>
               </tbody>
             </table>
