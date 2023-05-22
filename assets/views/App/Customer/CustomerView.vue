@@ -101,7 +101,7 @@
               <td v-else>N/A</td>
               <td>{{ subscription.status }}</td>
               <td>{{ subscription.schedule }}</td>
-              <td>{{ subscription.valid_until }}</td>
+              <td>{{ $filters.moment(subscription.valid_until, "LLL") }}</td>
               <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="list-btn">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
             </tr>
             <tr v-if="subscriptions.length == 0">
@@ -206,7 +206,7 @@
                 <td>{{ currency(payment.amount) }}</td>
                 <td>{{ payment.currency }}</td>
                 <td>{{ payment.status }}</td>
-                <td>{{ $filters.moment(payment.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td>{{ $filters.moment(payment.created_at, "LLL") || "unknown" }}</td>
                 <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
               </tr>
               <tr v-if="payments.length == 0">
@@ -234,7 +234,7 @@
                 <td>{{ refund.currency }}</td>
                 <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
                 <td v-else>API</td>
-                <td>{{ $filters.moment(refund.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td>{{ $filters.moment(refund.created_at, "LLL") || "unknown" }}</td>
               </tr>
               <tr v-if="refunds.length == 0">
                 <td colspan="4" class="text-center">{{ $t('app.customer.view.refunds.no_refunds') }}</td>
@@ -263,12 +263,12 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="creditNote in credit">
-                <td>{{ currency(creditNote.amount) }}</td>
-                <td>{{ creditNote.currency }}</td>
-                <td v-if="creditNote.billing_admin != null">{{ creditNote.billing_admin.display_name }}</td>
+              <tr v-for="creditAdjustment in credit">
+                <td>{{ currency(creditAdjustment.amount) }}</td>
+                <td>{{ creditAdjustment.currency }}</td>
+                <td v-if="creditAdjustment.billing_admin != null">{{ creditAdjustment.billing_admin.display_name }}</td>
                 <td v-else>n/a</td>
-                <td>{{ $filters.moment(creditNote.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td>{{ $filters.moment(creditAdjustment.created_at, "LLL") || "unknown" }}</td>
               </tr>
               <tr v-if="credit.length == 0">
                 <td colspan="4" class="text-center">{{ $t('app.customer.view.credit.no_credit') }}</td>
