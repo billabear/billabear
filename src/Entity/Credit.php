@@ -12,6 +12,7 @@
 
 namespace App\Entity;
 
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -194,5 +195,13 @@ class Credit
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function asMoney(): Money
+    {
+        $multipler = (Credit::TYPE_DEBIT === $this->type) ? -1 : 1;
+        $amount = $this->amount * $multipler;
+
+        return Money::ofMinor($amount, $this->currency);
     }
 }

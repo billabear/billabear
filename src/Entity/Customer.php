@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Enum\CustomerStatus;
+use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -75,6 +76,12 @@ class Customer implements CustomerInterface
 
     #[Orm\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
     protected Collection $subscriptions;
+
+    #[ORM\Column(name: 'credit_amount', type: 'integer', nullable: true)]
+    protected ?int $creditAmount = null;
+
+    #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
+    protected ?string $creditCurrency = null;
 
     /**
      * @return mixed
@@ -265,5 +272,53 @@ class Customer implements CustomerInterface
     public function setBillingType(string $billingType): void
     {
         $this->billingType = $billingType;
+    }
+
+    public function getCreditAmount(): ?int
+    {
+        return $this->creditAmount;
+    }
+
+    public function setCreditAmount(?int $creditAmount): void
+    {
+        $this->creditAmount = $creditAmount;
+    }
+
+    public function getCreditCurrency(): ?string
+    {
+        return $this->creditCurrency;
+    }
+
+    public function setCreditCurrency(?string $creditCurrency): void
+    {
+        $this->creditCurrency = $creditCurrency;
+    }
+
+    public function hasCredit(): bool
+    {
+        return isset($this->creditCurrency) && isset($this->creditAmount);
+    }
+
+    public function getCreditAsMoney(): Money
+    {
+        if (null === $this->creditCurrency) {
+            throw new \Exception('No currency');
+        }
+
+        if (null === $this->creditAmount) {
+            return Money::zero($this->creditCurrency);
+        }
+
+        return Money::ofMinor($this->creditAmount, $this->creditCurrency);
+    }
+
+    public function addCreditAsMoney(Money $money): void
+    {
+        if (null === $this->creditCurrency) {
+            $this->creditCurrency = $money->getCurrency()->getCurrencyCode();
+        }
+
+        $newAmount = $this->getCreditAsMoney()->plus($money);
+        $this->creditAmount = $newAmount->getMinorAmount()->toInt();
     }
 }

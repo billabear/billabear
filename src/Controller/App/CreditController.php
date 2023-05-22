@@ -14,6 +14,7 @@ namespace App\Controller\App;
 
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Credit;
+use App\Entity\Customer;
 use App\Factory\CreditFactory;
 use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
@@ -39,6 +40,7 @@ class CreditController
         Security $security,
     ): Response {
         try {
+            /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
@@ -65,6 +67,10 @@ class CreditController
         $credit->setCreationType(Credit::CREATION_TYPE_MANUALLY);
 
         $repository->save($credit);
+
+        $customer->addCreditAsMoney($credit->asMoney());
+        $customerRepository->save($customer);
+
         $creditDto = $factory->createAppDto($credit);
         $jsonResponse = $serializer->serialize($creditDto, 'json');
 

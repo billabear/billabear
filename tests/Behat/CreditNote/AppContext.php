@@ -29,10 +29,99 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private CreditRepository $creditNoteRepository,
+        private CreditRepository $creditRepository,
         private CustomerRepository $customerRepository,
         private UserRepository $userRepository,
     ) {
+    }
+
+    /**
+     * @Given the following credit transactions exist:
+     */
+    public function theFollowingCreditTransactionsExist(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer']);
+            $credit = new Credit();
+            $credit->setCustomer($customer);
+            $credit->setType(strtolower($row['Type']));
+            $credit->setAmount(intval($row['Amount']));
+            $credit->setCurrency(strtoupper($row['Currency']));
+            $credit->setUsedAmount(0);
+            $credit->setCreatedAt(new \DateTime('now'));
+            $credit->setUpdatedAt(new \DateTime('now'));
+            $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
+
+            $customer->addCreditAsMoney($credit->asMoney());
+
+            $this->creditRepository->getEntityManager()->persist($credit);
+        }
+
+        $this->creditRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I create a debit for :arg1 for :arg3 in the currency :arg2
+     */
+    public function iCreateADebitForForInTheCurrency($customerEmail, $amount, $currency)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $payload = [
+            'type' => Credit::TYPE_DEBIT,
+            'amount' => $amount,
+            'currency' => $currency,
+        ];
+
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/credit', $payload);
+    }
+
+    /**
+     * @Then the credit amount for :arg1 should be :arg2
+     */
+    public function theCreditAmountForShouldBe($customerEmail, $amount)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        if ($amount != $customer->getCreditAmount()) {
+            throw new \Exception('Not the correct amount');
+        }
+    }
+
+    /**
+     * @Then there should be a completely used credit for :arg1 for :arg3 in the currency :arg2
+     */
+    public function thereShouldBeACompletelyUsedCreditForForInTheCurrency($customerEmail, $amount, $currency)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $creditNote = $this->creditRepository->findOneBy(['customer' => $customer, 'type' => 'credit', 'completelyUsed' => true]);
+
+        if (!$creditNote instanceof Credit) {
+            throw new \Exception('No credit note found');
+        }
+
+        if ($creditNote->getCurrency() != $currency || $creditNote->getAmount() != $amount) {
+            throw new \Exception('Wrong currency or amount');
+        }
+    }
+
+    /**
+     * @Then there should be a completely used debit for :arg1 for :arg3 in the currency :arg2
+     */
+    public function thereShouldBeACompletelyUsedDebitForForInTheCurrency($customerEmail, $amount, $currency)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $creditNote = $this->creditRepository->findOneBy(['customer' => $customer, 'type' => 'debit', 'completelyUsed' => true]);
+
+        if (!$creditNote instanceof Credit) {
+            throw new \Exception('No credit note found');
+        }
+
+        if ($creditNote->getCurrency() != $currency || $creditNote->getAmount() != $amount) {
+            throw new \Exception('Wrong currency or amount');
+        }
     }
 
     /**
@@ -58,7 +147,7 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
-        $creditNote = $this->creditNoteRepository->findOneBy(['customer' => $customer]);
+        $creditNote = $this->creditRepository->findOneBy(['customer' => $customer]);
 
         if (!$creditNote instanceof Credit) {
             throw new \Exception('No credit note found');
@@ -76,7 +165,7 @@ class AppContext implements Context
     {
         $billingAdmin = $this->userRepository->findOneBy(['email' => $email]);
 
-        $creditNote = $this->creditNoteRepository->findOneBy(['billingAdmin' => $billingAdmin]);
+        $creditNote = $this->creditRepository->findOneBy(['billingAdmin' => $billingAdmin]);
 
         if (!$creditNote instanceof Credit) {
             throw new \Exception('No credit note found');
@@ -100,10 +189,10 @@ class AppContext implements Context
             $creditNote->setUpdatedAt(new \DateTime());
             $creditNote->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
 
-            $this->creditNoteRepository->getEntityManager()->persist($creditNote);
+            $this->creditRepository->getEntityManager()->persist($creditNote);
         }
 
-        $this->creditNoteRepository->getEntityManager()->flush();
+        $this->creditRepository->getEntityManager()->flush();
     }
 
     /**
