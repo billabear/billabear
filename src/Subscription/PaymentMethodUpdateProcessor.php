@@ -12,25 +12,28 @@
 
 namespace App\Subscription;
 
+use App\Repository\SettingsRepositoryInterface;
 use Obol\Model\Subscription\UpdatePaymentMethod;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
 class PaymentMethodUpdateProcessor
 {
-    public function __construct(private ProviderInterface $provider, private SubscriptionRepositoryInterface $subscriptionRepository)
-    {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private ProviderInterface $provider,
+        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private SettingsRepositoryInterface $settingsRepository,
+    ) {
     }
 
     public function process(Subscription $subscription, PaymentCard $newPaymentDetails): void
     {
         $subscription->setPaymentDetails($newPaymentDetails);
-
-        $update = new UpdatePaymentMethod();
-        $update->setSubscriptionId($subscription->getMainExternalReference());
-        $update->setPaymentMethodReference($newPaymentDetails->getStoredPaymentReference());
 
         foreach ($this->subscriptionRepository->getAllActiveForCustomer($subscription->getCustomer()) as $otherSubscription) {
             if ($subscription->getMainExternalReference() === $otherSubscription->getMainExternalReference()) {
@@ -40,6 +43,14 @@ class PaymentMethodUpdateProcessor
         }
         $this->subscriptionRepository->save($subscription);
 
-        $this->provider->subscriptions()->updatePaymentMethod($update);
+        if ($this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()) {
+            $this->getLogger()->info('Sync with stripe billing');
+
+            $update = new UpdatePaymentMethod();
+            $update->setSubscriptionId($subscription->getMainExternalReference());
+            $update->setPaymentMethodReference($newPaymentDetails->getStoredPaymentReference());
+
+            $this->provider->subscriptions()->updatePaymentMethod($update);
+        }
     }
 }

@@ -232,7 +232,7 @@ class SubscriptionController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/subscription/{subscriptionId}/payment-method', name: 'app_subscription_payment_method_update', methods: ['POST'])]
+    #[Route('/app/subscription/{subscriptionId}/payment-card', name: 'app_subscription_payment_method_update', methods: ['POST'])]
     public function updatePaymentMethod(
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,

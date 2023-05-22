@@ -299,7 +299,7 @@ export default {
     },
     showChangePaymentMethods: function () {
         this.paymentMethodOptions.modelValue = true;
-        axios.get('/app/customer/'+this.customer.id+'/payment-details').then(response => {
+        axios.get('/app/customer/'+this.customer.id+'/payment-card').then(response => {
             this.newPaymentMethod = this.paymentDetails;
             this.paymentMethods = response.data.data;
             this.paymentMethodReady = true;
@@ -312,7 +312,7 @@ export default {
         const payload = {
           payment_details: this.newPaymentMethod.id,
         };
-        axios.post('/app/subscription/' + subscriptionId+'/payment-method', payload).then(response => {
+        axios.post('/app/subscription/' + subscriptionId+'/payment-card', payload).then(response => {
           this.paymentMethodsSending = false;
           this.paymentDetails = this.newPaymentMethod;
         })
