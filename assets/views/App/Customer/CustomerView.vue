@@ -325,7 +325,7 @@ export default {
     },
     deletePayment: function (id) {
       var customerId = this.$route.params.id
-      axios.delete('/app/customer/'+customerId+'/payment-methods/'+id).then(response => {
+      axios.delete('/app/customer/'+customerId+'/payment-card/'+id).then(response => {
         for (var i = 0; i < this.paymentDetails.length; i++) {
           if (this.paymentDetails[i].id == id) {
             this.paymentDetails.splice(i, 1);
@@ -335,7 +335,7 @@ export default {
     },
     defaultPayment: function (id) {
       var customerId = this.$route.params.id
-      axios.post('/app/customer/'+customerId+'/payment-methods/'+id+'/default').then(response => {
+      axios.post('/app/customer/'+customerId+'/payment-card/'+id+'/default').then(response => {
         for (var i = 0; i < this.paymentDetails.length; i++) {
           if (this.paymentDetails[i].id == id) {
             this.paymentDetails[i].default = true;
