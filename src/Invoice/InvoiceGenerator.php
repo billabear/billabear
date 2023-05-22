@@ -12,6 +12,7 @@
 
 namespace App\Invoice;
 
+use App\Credit\CreditAdjustmentRecorder;
 use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Entity\Invoice;
@@ -28,6 +29,7 @@ class InvoiceGenerator
         private InvoiceNumberGeneratorInterface $invoiceNumberGenerator,
         private InvoiceRepositoryInterface $invoiceRepository,
         private CreditRepositoryInterface $creditRepository,
+        private CreditAdjustmentRecorder $creditAdjustmentRecorder,
     ) {
     }
 
@@ -78,16 +80,7 @@ class InvoiceGenerator
             if ($customer->getCreditAsMoney()->isPositive()) {
                 $amount = $customer->getCreditAsMoney()->negated();
                 if ($total->plus($amount)->isPositive()) {
-                    $credit = new Credit();
-                    $credit->setType(Credit::TYPE_DEBIT);
-                    $credit->setAmount($amount->abs()->getMinorAmount()->toInt());
-                    $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
-                    $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
-                    $credit->setCreatedAt(new \DateTime());
-                    $credit->setUsedAmount(0);
-                    $credit->setUpdatedAt(new \DateTime());
-
-                    $this->creditRepository->save($credit);
+                    $this->creditAdjustmentRecorder->createRecord(Credit::TYPE_DEBIT, $customer, $amount->abs());
 
                     $customer->setCreditAmount(null);
                     $customer->setCreditCurrency(null);
@@ -95,34 +88,14 @@ class InvoiceGenerator
                     $minus = $customer->getCreditAsMoney()->minus($total);
                     $amount = $amount->plus($minus);
 
-                    $credit = new Credit();
-                    $credit->setType(Credit::TYPE_DEBIT);
-                    $credit->setAmount($amount->abs()->getMinorAmount()->toInt());
-                    $credit->setUsedAmount(0);
-                    $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
-                    $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
-                    $credit->setCreatedAt(new \DateTime());
-                    $credit->setUpdatedAt(new \DateTime());
-
+                    $this->creditAdjustmentRecorder->createRecord(Credit::TYPE_DEBIT, $customer, $amount->abs());
                     $customer->addCreditAsMoney($amount);
-
-                    $this->creditRepository->save($credit);
                 }
             } else {
                 $amount = $customer->getCreditAsMoney()->abs();
                 $customer->setCreditAmount(null);
                 $customer->setCreditCurrency(null);
-
-                $credit = new Credit();
-                $credit->setType(Credit::TYPE_CREDIT);
-                $credit->setAmount($amount->getMinorAmount()->toInt());
-                $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
-                $credit->setUsedAmount(0);
-                $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
-                $credit->setCreatedAt(new \DateTime());
-                $credit->setUpdatedAt(new \DateTime());
-
-                $this->creditRepository->save($credit);
+                $this->creditAdjustmentRecorder->createRecord(Credit::TYPE_CREDIT, $customer, $amount);
             }
 
             $line->setTotal($amount->getMinorAmount()->toInt());
