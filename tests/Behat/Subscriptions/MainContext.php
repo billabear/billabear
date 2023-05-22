@@ -298,7 +298,7 @@ class MainContext implements Context
         /** @var PaymentDetails $paymentDetails */
         $paymentDetails = $this->paymentDetailsRepository->findOneBy(['lastFour' => $lastFour]);
 
-        $this->sendJsonRequest('POST', '/app/subscription/'.(string) $subscription->getId().'/payment-method', ['payment_details' => (string) $paymentDetails->getId()]);
+        $this->sendJsonRequest('POST', '/app/subscription/'.(string) $subscription->getId().'/payment-card', ['payment_details' => (string) $paymentDetails->getId()]);
     }
 
     /**

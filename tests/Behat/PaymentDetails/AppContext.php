@@ -158,7 +158,7 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
 
-        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-methods');
+        $this->sendJsonRequest('GET', '/app/customer/'.$customer->getId().'/payment-card');
     }
 
     /**
@@ -169,7 +169,7 @@ class AppContext implements Context
         $customer = $this->getCustomerByEmail($email);
         $paymentDetails = $this->findPaymentMethod($customer, $name);
 
-        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId().'/default');
+        $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/payment-card/'.$paymentDetails->getId().'/default');
     }
 
     /**
@@ -180,6 +180,6 @@ class AppContext implements Context
         $customer = $this->getCustomerByEmail($email);
         $paymentDetails = $this->findPaymentMethod($customer, $name);
 
-        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId());
+        $this->sendJsonRequest('DELETE', '/app/customer/'.$customer->getId().'/payment-card/'.$paymentDetails->getId());
     }
 }
