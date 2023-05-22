@@ -99,7 +99,7 @@ class InvoiceGenerator
             }
 
             $line->setTotal($amount->getMinorAmount()->toInt());
-            $line->setDescription('Credit deduction');
+            $line->setDescription('Credit adjustment');
             $total = $total?->plus($amount) ?? $amount;
             $subTotal = $subTotal?->plus($amount) ?? $amount;
         }
