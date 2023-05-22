@@ -12,7 +12,7 @@
 
 namespace App\Repository\Orm;
 
-use App\Entity\Settings;
+use App\Entity\Invoice;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
@@ -20,6 +20,6 @@ class InvoiceRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Settings::class);
+        parent::__construct($registry, Invoice::class);
     }
 }

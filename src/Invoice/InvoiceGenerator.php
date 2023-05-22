@@ -12,9 +12,11 @@
 
 namespace App\Invoice;
 
+use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Repository\CreditRepositoryInterface;
 use App\Repository\InvoiceRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
@@ -25,6 +27,7 @@ class InvoiceGenerator
         private PricerInterface $pricer,
         private InvoiceNumberGeneratorInterface $invoiceNumberGenerator,
         private InvoiceRepositoryInterface $invoiceRepository,
+        private CreditRepositoryInterface $creditRepository,
     ) {
     }
 
@@ -67,6 +70,65 @@ class InvoiceGenerator
             $line->setDescription($subscription->getPlanName());
             $line->setVatPercentage($priceInfo->taxRate);
             $lines[] = $line;
+        }
+        if ($customer->hasCredit() && !$customer->getCreditAsMoney()->isZero()) {
+            $line = new InvoiceLine();
+            $line->setCurrency($customer->getCreditCurrency());
+            $line->setInvoice($invoice);
+            if ($customer->getCreditAsMoney()->isPositive()) {
+                $amount = $customer->getCreditAsMoney()->negated();
+                if ($total->plus($amount)->isPositive()) {
+                    $credit = new Credit();
+                    $credit->setType(Credit::TYPE_DEBIT);
+                    $credit->setAmount($amount->abs()->getMinorAmount()->toInt());
+                    $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
+                    $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
+                    $credit->setCreatedAt(new \DateTime());
+                    $credit->setUsedAmount(0);
+                    $credit->setUpdatedAt(new \DateTime());
+
+                    $this->creditRepository->save($credit);
+
+                    $customer->setCreditAmount(null);
+                    $customer->setCreditCurrency(null);
+                } else {
+                    $minus = $customer->getCreditAsMoney()->minus($total);
+                    $amount = $amount->plus($minus);
+
+                    $credit = new Credit();
+                    $credit->setType(Credit::TYPE_DEBIT);
+                    $credit->setAmount($amount->abs()->getMinorAmount()->toInt());
+                    $credit->setUsedAmount(0);
+                    $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
+                    $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
+                    $credit->setCreatedAt(new \DateTime());
+                    $credit->setUpdatedAt(new \DateTime());
+
+                    $customer->addCreditAsMoney($amount);
+
+                    $this->creditRepository->save($credit);
+                }
+            } else {
+                $amount = $customer->getCreditAsMoney()->abs();
+                $customer->setCreditAmount(null);
+                $customer->setCreditCurrency(null);
+
+                $credit = new Credit();
+                $credit->setType(Credit::TYPE_CREDIT);
+                $credit->setAmount($amount->getMinorAmount()->toInt());
+                $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
+                $credit->setUsedAmount(0);
+                $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
+                $credit->setCreatedAt(new \DateTime());
+                $credit->setUpdatedAt(new \DateTime());
+
+                $this->creditRepository->save($credit);
+            }
+
+            $line->setTotal($amount->getMinorAmount()->toInt());
+            $line->setDescription('Credit deduction');
+            $total = $total?->plus($amount) ?? $amount;
+            $subTotal = $subTotal?->plus($amount) ?? $amount;
         }
 
         $invoice->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());

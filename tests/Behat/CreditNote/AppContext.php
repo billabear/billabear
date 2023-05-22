@@ -84,7 +84,7 @@ class AppContext implements Context
         $customer = $this->getCustomerByEmail($customerEmail);
 
         if ($amount != $customer->getCreditAmount()) {
-            throw new \Exception('Not the correct amount');
+            throw new \Exception('Not the correct amount'.$customer->getCreditAmount());
         }
     }
 

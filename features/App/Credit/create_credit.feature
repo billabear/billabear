@@ -21,7 +21,7 @@ Feature: Create Credit
   Scenario: Create debit
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the following credit transactions exist:
-      | Customer | Type | Amount | Currency |
-      | customer.one@example.org | credit | 1000 | USD |
+      | Customer                 | Type   | Amount | Currency |
+      | customer.one@example.org | credit | 1000   | USD      |
     When I create a debit for "customer.one@example.org" for 1000 in the currency "USD"
     Then the credit amount for "customer.one@example.org" should be 0
