@@ -33,6 +33,18 @@ class Credit
     #[SerializedName('created_at')]
     private \DateTime $createdAt;
 
+    private string $type;
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
     public function getCustomer(): Customer
     {
         return $this->customer;

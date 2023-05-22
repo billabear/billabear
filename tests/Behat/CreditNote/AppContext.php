@@ -43,6 +43,7 @@ class AppContext implements Context
         $customer = $this->getCustomerByEmail($customerEmail);
 
         $payload = [
+            'type' => Credit::TYPE_CREDIT,
             'amount' => $amount,
             'currency' => $currency,
         ];

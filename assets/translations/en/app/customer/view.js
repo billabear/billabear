@@ -37,14 +37,14 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         no_credit_notes: "No credit notes for this customer",
     },
     credit: {
-        title: "Credit",
+        title: "Credit Adjustments",
         list: {
             amount: "Amount",
             currency: "Currency",
             created_by: "Created By",
             created_at: "Created At"
         },
-        no_credit_notes: "No credit for this customer",
+        no_credit: "No credit for this customer",
         add_button: "Add"
     },
     subscriptions: {

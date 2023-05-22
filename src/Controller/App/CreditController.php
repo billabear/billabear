@@ -12,7 +12,7 @@
 
 namespace App\Controller\App;
 
-use App\Dto\Request\App\CreditNote\CreateCreditNote;
+use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Credit;
 use App\Factory\CreditFactory;
 use App\Repository\CreditRepositoryInterface;
@@ -44,7 +44,7 @@ class CreditController
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $dto = $serializer->deserialize($request->getContent(), CreateCreditNote::class, 'json');
+        $dto = $serializer->deserialize($request->getContent(), CreateCreditAdjustment::class, 'json');
         $errors = $validator->validate($dto);
 
         if (count($errors) > 0) {

@@ -21,6 +21,8 @@ class Credit
 {
     public const CREATION_TYPE_AUTOMATED = 'automated';
     public const CREATION_TYPE_MANUALLY = 'manually';
+    public const TYPE_CREDIT = 'credit';
+    public const TYPE_DEBIT = 'debit';
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -33,6 +35,9 @@ class Credit
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $billingAdmin = null;
+
+    #[ORM\Column]
+    private string $type = self::TYPE_CREDIT;
 
     #[ORM\Column]
     private string $creationType;
@@ -179,5 +184,15 @@ class Credit
     public function setCompletelyUsed(bool $completelyUsed): void
     {
         $this->completelyUsed = $completelyUsed;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

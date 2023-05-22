@@ -10,12 +10,17 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Request\App\CreditNote;
+namespace App\Dto\Request\App\CreditAdjustment;
 
+use App\Entity\Credit;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateCreditNote
+class CreateCreditAdjustment
 {
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: [Credit::TYPE_CREDIT, Credit::TYPE_DEBIT])]
+    private $type;
+
     #[Assert\NotBlank()]
     #[Assert\Positive]
     private $amount;
@@ -26,6 +31,16 @@ class CreateCreditNote
 
     #[Assert\NotBlank(allowNull: true)]
     private $reason;
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
 
     public function getAmount()
     {

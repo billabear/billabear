@@ -13,7 +13,7 @@
 namespace App\Factory;
 
 use App\Dto\Generic\App\Credit as AppDto;
-use App\Dto\Request\App\CreditNote\CreateCreditNote;
+use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Credit as Entity;
 use App\Entity\Customer;
 
@@ -23,7 +23,7 @@ class CreditFactory
     {
     }
 
-    public function createEntity(CreateCreditNote $createCreditNote, Customer $customer): Entity
+    public function createEntity(CreateCreditAdjustment $createCreditNote, Customer $customer): Entity
     {
         $entity = new Entity();
         $entity->setAmount((int) $createCreditNote->getAmount());
@@ -34,6 +34,7 @@ class CreditFactory
         $entity->setUpdatedAt(new \DateTime());
         $entity->setUsedAmount(0);
         $entity->setCompletelyUsed(false);
+        $entity->setType($createCreditNote->getType());
 
         return $entity;
     }
@@ -48,6 +49,7 @@ class CreditFactory
         $dto->setCurrency($creditNote->getCurrency());
         $dto->setUsedAmount($creditNote->getUsedAmount());
         $dto->setCreatedAt($creditNote->getCreatedAt());
+        $dto->setType($creditNote->getType());
 
         return $dto;
     }

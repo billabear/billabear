@@ -15,6 +15,17 @@
             <p class="form-field-help">{{ $t('app.credit.create.help_info.display_amount', {amount: currency(creditNote.amount)}) }}</p>
           </div>
           <div class="form-field-ctn">
+            <label class="form-field-lbl" for="type">
+              {{ $t('app.credit.create.type') }}
+            </label>
+            <p class="form-field-error" v-if="errors.type != undefined">{{ errors.type }}</p>
+            <select class="form-field" id="type" v-model="creditNote.type">
+              <option value="credit">{{ $t('app.credit.create.credit') }}</option>
+              <option value="debit">{{ $t('app.credit.create.debit') }}</option>
+            </select>
+            <p class="form-field-help">{{ $t('app.credit.create.help_info.type') }}</p>
+          </div>
+          <div class="form-field-ctn">
             <label class="form-field-lbl" for="currency">
               {{ $t('app.credit.create.currency') }}
             </label>
@@ -50,9 +61,11 @@
 <script>
 import axios from "axios";
 import currency from "currency.js";
+import SettingsGroup from "../Settings/SettingsGroup.vue";
 
 export default {
   name: "CustomerCreate",
+  components: {SettingsGroup},
   data() {
     return {
       creditNote: {
