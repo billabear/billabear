@@ -27,7 +27,9 @@ use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Plan\Plan;
+use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Plan\PlanPrice;
+use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,12 +37,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 {
     public function __construct(
+        private PaymentCardRepositoryInterface $paymentDetailsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private EntityFactoryInterface $entityFactory,
         private EventDispatcherInterface $dispatcher,
         private SchedulerProvider $schedulerProvider,
         private InvoiceGenerator $invoiceGenerator,
         private SettingsRepositoryInterface $settingsRepository,
+        private PlanManagerInterface $planManager,
         private InvoiceCharger $invoiceCharger,
     ) {
     }
@@ -81,21 +85,41 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        // TODO: Implement startSubscriptionWithDto() method.
+        if (!$startSubscriptionDto->getPaymentDetailsId()) {
+            $paymentDetails = $this->paymentDetailsRepository->getDefaultPaymentCardForCustomer($customer);
+        } else {
+            $paymentDetails = $this->paymentDetailsRepository->findById($startSubscriptionDto->getPaymentDetailsId());
+        }
+
+        $plan = $this->planManager->getPlanByName($startSubscriptionDto->getPlanName());
+        $planPrice = $plan->getPriceForPaymentSchedule($startSubscriptionDto->getSchedule(), $startSubscriptionDto->getCurrency());
+
+        return $this->startSubscription($customer, $plan, $planPrice, $paymentDetails, $startSubscriptionDto->getSeatNumbers());
     }
 
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
     {
-        // TODO: Implement cancelSubscriptionAtEndOfCurrentPeriod() method.
+        $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
+        $subscription->endAtEndOfPeriod();
+
+        return $subscription;
     }
 
     public function cancelSubscriptionInstantly(Subscription $subscription): Subscription
     {
-        // TODO: Implement cancelSubscriptionInstantly() method.
+        $subscription->setStatus(SubscriptionStatus::CANCELLED);
+        $subscription->setActive(false);
+        $subscription->endNow();
+
+        return $subscription;
     }
 
     public function cancelSubscriptionOnDate(Subscription $subscription, \DateTimeInterface $dateTime): Subscription
     {
-        // TODO: Implement cancelSubscriptionOnDate() method.
+        $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
+        $subscription->setEndedAt($dateTime);
+        $subscription->setValidUntil($dateTime);
+
+        return $subscription;
     }
 }

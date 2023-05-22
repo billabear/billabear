@@ -14,6 +14,7 @@ namespace App\Workflow\SubscriptionCancel;
 
 use App\Dto\Request\App\CancelSubscription;
 use App\Entity\CancellationRequest;
+use App\Entity\Customer;
 use Parthenon\Billing\Refund\RefundManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -30,6 +31,11 @@ class IssueRefundTransition implements EventSubscriberInterface
         $cancellationRequest = $event->getSubject();
         $subscription = $cancellationRequest->getSubscription();
         $user = $cancellationRequest->getBillingAdmin();
+        /** @var Customer $customer */
+        $customer = $subscription->getCustomer();
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+            return;
+        }
 
         if (CancelSubscription::REFUND_PRORATE === $cancellationRequest->getRefundType()) {
             $newValidUntil = $subscription->getValidUntil();
