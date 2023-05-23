@@ -12,6 +12,21 @@
 
 namespace App\EventSubscriber;
 
-class PaymentCardSubscriber
+use Parthenon\Billing\Event\PaymentCreated;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class PaymentCardSubscriber implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return [
+            \Parthenon\Billing\Event\PaymentCardAdded::NAME => [
+                'handleNewPayment',
+            ],
+        ];
+    }
+
+    public function handleNewPayment(PaymentCreated $paymentCreated)
+    {
+    }
 }
