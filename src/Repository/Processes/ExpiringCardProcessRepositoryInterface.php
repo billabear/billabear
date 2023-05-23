@@ -12,6 +12,7 @@
 
 namespace App\Repository\Processes;
 
+use App\Entity\Customer;
 use App\Entity\Processes\ExpiringCardProcess;
 use Parthenon\Common\Repository\RepositoryInterface;
 
@@ -21,4 +22,6 @@ interface ExpiringCardProcessRepositoryInterface extends RepositoryInterface
      * @return ExpiringCardProcess[]
      */
     public function getActiveProccesses(): array;
+
+    public function getActiveProcessForCustomer(Customer $customer): ExpiringCardProcess;
 }

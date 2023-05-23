@@ -12,6 +12,9 @@
 
 namespace App\Repository\Processes;
 
+use App\Entity\Customer;
+use App\Entity\Processes\ExpiringCardProcess;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class ExpiringCardProcessRepository extends DoctrineRepository implements ExpiringCardProcessRepositoryInterface
@@ -20,10 +23,31 @@ class ExpiringCardProcessRepository extends DoctrineRepository implements Expiri
     {
         $qb = $this->entityRepository->createQueryBuilder('ec');
         $qb->where('ec.state != :completedState')
+            ->andWhere('ec.state != :cardAdded')
+            ->setParameter('cardAdded', 'card_added')
             ->setParameter('completedState', 'completed');
 
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    public function getActiveProcessForCustomer(Customer $customer): ExpiringCardProcess
+    {
+        $qb = $this->entityRepository->createQueryBuilder('ec');
+        $qb->where('ec.state != :completedState')
+            ->andWhere('ec.state != :cardAdded')
+            ->andWhere('ec.customer = :customer')
+            ->setParameter('customer', $customer)
+            ->setParameter('cardAdded', 'card_added')
+            ->setParameter('completedState', 'completed');
+
+        $active = $qb->getQuery()->getSingleResult();
+
+        if (!$active instanceof ExpiringCardProcess) {
+            throw new NoEntityFoundException();
+        }
+
+        return $active;
     }
 }

@@ -19,7 +19,10 @@ use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\ExpiringCardProcessRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use Behat\Behat\Context\Context;
+use Parthenon\Billing\Entity\PaymentCard;
+use Parthenon\Billing\Event\PaymentCardAdded;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MainContext implements Context
 {
@@ -31,6 +34,7 @@ class MainContext implements Context
         private ExpiringCardProcessRepository $expiringCardProcessRepository,
         private PaymentCardServiceRepository $paymentCardRepository,
         private CustomerRepository $customerRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -86,6 +90,41 @@ class MainContext implements Context
     }
 
     /**
+     * @When a new payment card is added for :arg1
+     */
+    public function aNewPaymentCardIsAddedFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $paymentCard = new PaymentCard();
+        $paymentCard->setCustomer($customer);
+        $paymentCard->setLastFour(random_int(1000, 9999));
+        $paymentCard->setExpiryMonth(12);
+        $paymentCard->setExpiryYear(34);
+        $paymentCard->setBrand('dummy');
+        $paymentCard->setProvider('stripe');
+        $paymentCard->setDefaultPaymentOption(true);
+        $paymentCard->setCreatedAt(new \DateTime());
+
+        $this->paymentCardRepository->getEntityManager()->persist($paymentCard);
+        $this->paymentCardRepository->getEntityManager()->flush();
+
+        $this->eventDispatcher->dispatch(new PaymentCardAdded($customer, $paymentCard), PaymentCardAdded::NAME);
+    }
+
+    /**
+     * @Then the expiring card process for :arg1 will be terminated at the card_added
+     */
+    public function theExpiringCardProcessForWillBeTerminatedAtTheCardAdded($customerEmail)
+    {
+        $process = $this->getProcess($customerEmail);
+
+        if ('card_added' !== $process->getState()) {
+            throw new \Exception('State is not card_added');
+        }
+    }
+
+    /**
      * @Given there are expiring card process for :arg1 for card :arg2 has sent the first email
      */
     public function thereAreExpiringCardProcessForForCardHasSentTheFirstEmail($customerEmail, $lastFour)
@@ -118,9 +157,7 @@ class MainContext implements Context
      */
     public function theProcessForExpiredCardForWillBeThatADayBeforeValidEmailWasSent($email)
     {
-        $customer = $this->getCustomerByEmail($email);
-        $process = $this->expiringCardProcessRepository->findOneBy(['customer' => $customer]);
-        $this->expiringCardProcessRepository->getEntityManager()->refresh($process);
+        $process = $this->getProcess($email);
 
         if (!$process instanceof ExpiringCardProcess) {
             throw new \Exception("Can't find process");
@@ -136,9 +173,7 @@ class MainContext implements Context
      */
     public function theProcessForExpiredCardForWillBeThatADayBeforeValidEmailWasNotSent($email)
     {
-        $customer = $this->getCustomerByEmail($email);
-        $process = $this->expiringCardProcessRepository->findOneBy(['customer' => $customer]);
-        $this->expiringCardProcessRepository->getEntityManager()->refresh($process);
+        $process = $this->getProcess($email);
 
         if (!$process instanceof ExpiringCardProcess) {
             throw new \Exception("Can't find process");
@@ -154,9 +189,7 @@ class MainContext implements Context
      */
     public function theProcessForExpiredCardForWillBeThatADayBeforeNoLongerValidEmailWasSent($email)
     {
-        $customer = $this->getCustomerByEmail($email);
-        $process = $this->expiringCardProcessRepository->findOneBy(['customer' => $customer]);
-        $this->expiringCardProcessRepository->getEntityManager()->refresh($process);
+        $process = $this->getProcess($email);
 
         if (!$process instanceof ExpiringCardProcess) {
             throw new \Exception("Can't find process");
@@ -165,5 +198,19 @@ class MainContext implements Context
         if ('day_before_not_valid_email_sent' !== $process->getState()) {
             throw new \Exception('Process is at '.$process->getState());
         }
+    }
+
+    /**
+     * @return object|null
+     *
+     * @throws \Exception
+     */
+    public function getProcess($email): ?ExpiringCardProcess
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $process = $this->expiringCardProcessRepository->findOneBy(['customer' => $customer]);
+        $this->expiringCardProcessRepository->getEntityManager()->refresh($process);
+
+        return $process;
     }
 }

@@ -13,6 +13,7 @@ framework:
                 - first_email_sent
                 - day_before_valid_email_sent
                 - day_before_not_valid_email_sent
+                - card_added
                 - completed
             transitions:
                 send_first_email:
@@ -24,6 +25,9 @@ framework:
                 send_day_before_not_valid_email:
                     from: [first_email_sent, day_before_valid_email_sent]
                     to: day_before_not_valid_email_sent
+                handle_card_added:
+                    from: [first_email_sent, day_before_valid_email_sent, day_before_not_valid_email_sent]
+                    to: card_added
 
         cancellation_request:
             type: 'state_machine'
