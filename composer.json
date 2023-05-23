@@ -34,7 +34,6 @@
         "symfony/workflow": "6.3.*",
         "symfony/yaml": "6.3.*",
         "symfony/scheduler": "6.3.*",
-        "symfony/console": "6.3.*",
         "wildbit/postmark-php": "^4.0"
     },
     "require-dev": {
