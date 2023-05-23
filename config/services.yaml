@@ -239,6 +239,12 @@ services:
     app.repository.orm.credit:
         class: App\Repository\Orm\CreditRepository
 
+    App\Repository\GenericBackgroundTaskRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.generic_background_task'
+    app.repository.orm.generic_background_task:
+        class: App\Repository\Orm\GenericBackgroundTaskRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

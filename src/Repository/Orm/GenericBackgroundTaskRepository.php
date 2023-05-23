@@ -10,14 +10,16 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App;
+namespace App\Repository\Orm;
 
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use App\Entity\GenericBackgroundTask;
+use Doctrine\Persistence\ManagerRegistry;
+use Parthenon\Common\Repository\CustomServiceRepository;
 
-class Kernel extends BaseKernel
+class GenericBackgroundTaskRepository extends CustomServiceRepository
 {
-    use MicroKernelTrait;
-    public const VERSION = '1.0-DEV';
-    public const VERSION_ID = '100000';
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, GenericBackgroundTask::class);
+    }
 }
