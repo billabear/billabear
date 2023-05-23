@@ -16,6 +16,7 @@ use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Repository\CreditRepositoryInterface;
 use Brick\Money\Money;
+use Parthenon\Billing\Entity\BillingAdminInterface;
 
 class CreditAdjustmentRecorder
 {
@@ -25,7 +26,7 @@ class CreditAdjustmentRecorder
     ) {
     }
 
-    public function createRecord(string $type, Customer $customer, Money $amount)
+    public function createRecord(string $type, Customer $customer, Money $amount, ?string $reason = null, ?BillingAdminInterface $billingAdmin = null): Credit
     {
         $credit = new Credit();
         $credit->setCustomer($customer);
@@ -33,12 +34,16 @@ class CreditAdjustmentRecorder
         $credit->setAmount($amount->getMinorAmount()->toInt());
         $credit->setCurrency($amount->getCurrency()->getCurrencyCode());
         $credit->setUsedAmount(0);
-        $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
+        $credit->setBillingAdmin($billingAdmin);
+        $credit->setReason($reason);
+        $credit->setCreationType(null === $billingAdmin ? Credit::CREATION_TYPE_AUTOMATED : Credit::CREATION_TYPE_MANUALLY);
         $credit->setCreatedAt(new \DateTime());
         $credit->setUpdatedAt(new \DateTime());
 
         $this->stripeBillingRegister->register($credit);
 
         $this->creditRepository->save($credit);
+
+        return $credit;
     }
 }

@@ -12,13 +12,13 @@
 
 namespace App\Controller\App;
 
-use App\Credit\StripeBillingRegister;
+use App\Credit\CreditAdjustmentRecorder;
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
-use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Factory\CreditFactory;
 use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use Brick\Money\Money;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,7 +39,7 @@ class CreditController
         CreditFactory $factory,
         CreditRepositoryInterface $repository,
         Security $security,
-        StripeBillingRegister $stripeBillingRegister,
+        CreditAdjustmentRecorder $creditAdjustmentRecorder
     ): Response {
         try {
             /** @var Customer $customer */
@@ -48,6 +48,7 @@ class CreditController
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
 
+        /** @var CreateCreditAdjustment $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateCreditAdjustment::class, 'json');
         $errors = $validator->validate($dto);
 
@@ -63,12 +64,8 @@ class CreditController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $credit = $factory->createEntity($dto, $customer);
         $billingAdmin = $security->getUser();
-        $credit->setBillingAdmin($billingAdmin);
-        $credit->setCreationType(Credit::CREATION_TYPE_MANUALLY);
-        $stripeBillingRegister->register($credit);
-        $repository->save($credit);
+        $credit = $creditAdjustmentRecorder->createRecord($dto->getType(), $customer, Money::ofMinor($dto->getAmount(), strtoupper($dto->getCurrency())), $dto->getReason(), $billingAdmin);
 
         $customer->addCreditAsMoney($credit->asMoney());
         $customerRepository->save($customer);
