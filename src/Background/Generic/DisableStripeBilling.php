@@ -12,6 +12,39 @@
 
 namespace App\Background\Generic;
 
-class DisableStripeBilling
+use App\Entity\GenericBackgroundTask;
+use App\Enum\GenericTask;
+use App\Repository\SubscriptionRepositoryInterface;
+use Obol\Model\CancelSubscription;
+use Obol\Provider\ProviderInterface;
+use Parthenon\Billing\Obol\SubscriptionFactory;
+
+class DisableStripeBilling implements ExecutorInterface
 {
+    public function __construct(
+        private ProviderInterface $provider,
+        private SubscriptionFactory $subscriptionFactory,
+        private SubscriptionRepositoryInterface $subscriptionRepository,
+    ) {
+    }
+
+    public function supports(GenericBackgroundTask $backgroundTask): bool
+    {
+        return GenericTask::CANCEL_STRIPE_BILLING === $backgroundTask->getTask();
+    }
+
+    public function execute(GenericBackgroundTask $genericBackgroundTask): void
+    {
+        $subscriptions = $this->subscriptionRepository->getAll();
+
+        foreach ($subscriptions as $subscription) {
+            $obolSubscription = $this->subscriptionFactory->createSubscriptionFromEntity($subscription);
+
+            $cancelRequest = new CancelSubscription();
+            $cancelRequest->setSubscription($obolSubscription);
+            $cancelRequest->setInstantCancel(true);
+
+            $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
+        }
+    }
 }

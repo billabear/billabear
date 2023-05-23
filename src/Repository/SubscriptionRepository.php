@@ -55,4 +55,9 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getAll()
+    {
+        return $this->entityRepository->findAll();
+    }
 }

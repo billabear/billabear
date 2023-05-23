@@ -10,15 +10,15 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\BacKground\Generic;
 
-use App\Enum\GenericTaskStatus;
-use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use App\Entity\GenericBackgroundTask;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-class GenericBackgroundTaskRepository extends DoctrineCrudRepository implements GenericBackgroundTaskRepositoryInterface
+#[AutoconfigureTag('app.background_task.executor')]
+interface ExecutorInterface
 {
-    public function getNonCompleted(): array
-    {
-        return $this->entityRepository->findBy(['status' => GenericTaskStatus::CREATED]);
-    }
+    public function supports(GenericBackgroundTask $backgroundTask): bool;
+
+    public function execute(GenericBackgroundTask $genericBackgroundTask): void;
 }

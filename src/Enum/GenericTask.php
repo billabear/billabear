@@ -10,15 +10,9 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Enum;
 
-use App\Enum\GenericTaskStatus;
-use Parthenon\Athena\Repository\DoctrineCrudRepository;
-
-class GenericBackgroundTaskRepository extends DoctrineCrudRepository implements GenericBackgroundTaskRepositoryInterface
+enum GenericTask: string
 {
-    public function getNonCompleted(): array
-    {
-        return $this->entityRepository->findBy(['status' => GenericTaskStatus::CREATED]);
-    }
+    case CANCEL_STRIPE_BILLING = 'cancel_stripe_billing';
 }

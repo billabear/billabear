@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Entity\GenericBackgroundTask;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface GenericBackgroundTaskRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return GenericBackgroundTask[]
+     */
+    public function getNonCompleted(): array;
 }

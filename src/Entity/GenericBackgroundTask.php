@@ -12,6 +12,8 @@
 
 namespace App\Entity;
 
+use App\Enum\GenericTask;
+use App\Enum\GenericTaskStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -19,17 +21,19 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'generic_background_task')]
 class GenericBackgroundTask
 {
+    public
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     protected $id;
 
-    #[ORM\Column]
-    private string $status;
+    #[ORM\Column(enumType: GenericTaskStatus::class)]
+    private GenericTaskStatus $status;
 
-    #[ORM\Column()]
-    private string $task;
+    #[ORM\Column(enumType: GenericTask::class)]
+    private GenericTask $task;
 
     #[ORM\Column(type: 'json')]
     private array $meta = [];
@@ -50,22 +54,22 @@ class GenericBackgroundTask
         $this->id = $id;
     }
 
-    public function getStatus(): string
+    public function getStatus(): GenericTaskStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(GenericTaskStatus $status): void
     {
         $this->status = $status;
     }
 
-    public function getTask(): string
+    public function getTask(): GenericTask
     {
         return $this->task;
     }
 
-    public function setTask(string $task): void
+    public function setTask(GenericTask $task): void
     {
         $this->task = $task;
     }
