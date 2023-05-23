@@ -753,7 +753,7 @@ class UserContext implements Context
     public function theFollowingAccountsExist(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $row) {
-            $user = $this->createUser($row['Email'], $row['Password'], 'fake', ($row['Confirmed'] ?? null) !== 'False', $row['Name']);
+            $user = $this->createUser($row['Email'], $row['Password'], 'fake', ($row['Confirmed'] ?? null) !== 'False', $row['Name'], 'true' === strtolower($row['Admin'] ?? 'true'));
         }
     }
 
