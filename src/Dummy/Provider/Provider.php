@@ -90,6 +90,6 @@ class Provider implements ProviderInterface
 
     public function credit(): CreditServiceInterface
     {
-        // TODO: Implement credit() method.
+        return new CreditService();
     }
 }

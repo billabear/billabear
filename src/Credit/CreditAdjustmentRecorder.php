@@ -21,6 +21,7 @@ class CreditAdjustmentRecorder
 {
     public function __construct(
         private CreditRepositoryInterface $creditRepository,
+        private StripeBillingRegister $stripeBillingRegister,
     ) {
     }
 
@@ -35,6 +36,8 @@ class CreditAdjustmentRecorder
         $credit->setCreationType(Credit::CREATION_TYPE_AUTOMATED);
         $credit->setCreatedAt(new \DateTime());
         $credit->setUpdatedAt(new \DateTime());
+
+        $this->stripeBillingRegister->register($credit);
 
         $this->creditRepository->save($credit);
     }

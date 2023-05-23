@@ -12,6 +12,7 @@
 
 namespace App\Controller\App;
 
+use App\Credit\StripeBillingRegister;
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Credit;
 use App\Entity\Customer;
@@ -38,6 +39,7 @@ class CreditController
         CreditFactory $factory,
         CreditRepositoryInterface $repository,
         Security $security,
+        StripeBillingRegister $stripeBillingRegister,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -65,7 +67,7 @@ class CreditController
         $billingAdmin = $security->getUser();
         $credit->setBillingAdmin($billingAdmin);
         $credit->setCreationType(Credit::CREATION_TYPE_MANUALLY);
-
+        $stripeBillingRegister->register($credit);
         $repository->save($credit);
 
         $customer->addCreditAsMoney($credit->asMoney());
