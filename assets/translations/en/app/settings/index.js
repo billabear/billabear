@@ -5,7 +5,7 @@ import {EMAIL_TEMPLATES_TRANSLATIONS} from "./email_template";
 import {NOTIFICATION_SETTINGS_TRANSLATIONS} from "./notification_settings";
 import {SYSTEM_SETTINGS_TRANSLATIONS} from "./system_settings";
 import {SETTINGS_USER_TRANSLATIONS} from "./user";
-import {SETTINGS_STRIPE_IMPORT_TRANSLATIONS} from "./stripe_import";
+import {SETTINGS_STRIPE_TRANSLATIONS} from "./stripe";
 import {SETTINGS_API_KEYS_TRANSLATIONS} from "./api_keys";
 
 export const SETTINGS_TRANSLATIONS = {
@@ -16,6 +16,6 @@ export const SETTINGS_TRANSLATIONS = {
     notification_settings: NOTIFICATION_SETTINGS_TRANSLATIONS,
     system_settings: SYSTEM_SETTINGS_TRANSLATIONS,
     user: SETTINGS_USER_TRANSLATIONS,
-    stripe_import: SETTINGS_STRIPE_IMPORT_TRANSLATIONS,
+    stripe: SETTINGS_STRIPE_TRANSLATIONS,
     api_keys: SETTINGS_API_KEYS_TRANSLATIONS,
 };
