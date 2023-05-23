@@ -12,6 +12,9 @@
 
 namespace App\Tests\Behat\Settings;
 
+use App\Entity\GenericBackgroundTask;
+use App\Enum\GenericTask;
+use App\Repository\Orm\GenericBackgroundTaskRepository;
 use App\Repository\Orm\SettingsRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -26,6 +29,7 @@ class SystemSettingsContext implements Context
     public function __construct(
         private Session $session,
         private SettingsRepository $settingsRepository,
+        private GenericBackgroundTaskRepository $genericBackgroundTaskRepository,
     ) {
     }
 
@@ -59,6 +63,58 @@ class SystemSettingsContext implements Context
         $settings->getSystemSettings()->setUseStripeBilling(false);
         $this->settingsRepository->getEntityManager()->persist($settings);
         $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I disable stripe billing
+     */
+    public function iDisableStripeBilling()
+    {
+        $this->sendJsonRequest('POST', '/app/settings/stripe/disable-billing');
+    }
+
+    /**
+     * @Then there should be a stripe billing cancel task scheduled
+     */
+    public function thereShouldBeAStripeBillingCancelTaskScheduled()
+    {
+        $task = $this->genericBackgroundTaskRepository->findOneBy(['task' => GenericTask::CANCEL_STRIPE_BILLING]);
+
+        if (!$task instanceof GenericBackgroundTask) {
+            throw new \Exception('No background task found');
+        }
+    }
+
+    /**
+     * @Then stripe billing should be disabled
+     */
+    public function stripeBillingShouldBeDisabled()
+    {
+        $settings = $this->getSettings();
+
+        if ($settings->getSystemSettings()->isUseStripeBilling()) {
+            throw new \Exception('Stripe billing should be disabled');
+        }
+    }
+
+    /**
+     * @When I enable stripe billing
+     */
+    public function iEnableStripeBilling()
+    {
+        $this->sendJsonRequest('POST', '/app/settings/stripe/enable-billing');
+    }
+
+    /**
+     * @Then stripe billing should be enabled
+     */
+    public function stripeBillingShouldBeEnabled()
+    {
+        $settings = $this->getSettings();
+
+        if (!$settings->getSystemSettings()->isUseStripeBilling()) {
+            throw new \Exception('Stripe billing should be enabled');
+        }
     }
 
     /**

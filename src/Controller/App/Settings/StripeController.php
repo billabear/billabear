@@ -13,8 +13,13 @@
 namespace App\Controller\App\Settings;
 
 use App\Dto\Response\App\Settings\StripeImportView;
+use App\Entity\GenericBackgroundTask;
 use App\Entity\StripeImport;
+use App\Enum\GenericTask;
+use App\Enum\GenericTaskStatus;
 use App\Factory\Settings\StripeImportFactory;
+use App\Repository\GenericBackgroundTaskRepositoryInterface;
+use App\Repository\SettingsRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +27,40 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class StripeImportController
+class StripeController
 {
+    #[Route('/app/settings/stripe/disable-billing', name: 'app_app_settings_stripe_disablestripebilling', methods: ['POST'])]
+    public function disableStripeBilling(
+        Request $request,
+        GenericBackgroundTaskRepositoryInterface $genericBackgroundTaskRepository,
+        SettingsRepositoryInterface $settingsRepository,
+    ) {
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getSystemSettings()->setUseStripeBilling(false);
+        $settingsRepository->save($settings);
+
+        $task = new GenericBackgroundTask();
+        $task->setTask(GenericTask::CANCEL_STRIPE_BILLING);
+        $task->setStatus(GenericTaskStatus::CREATED);
+        $task->setCreatedAt(new \DateTime());
+        $task->setUpdatedAt(new \DateTime());
+
+        $genericBackgroundTaskRepository->save($task);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+    #[Route('/app/settings/stripe/enable-billing', name: 'app_app_settings_stripe_enablestripebilling', methods: ['POST'])]
+    public function enableStripeBilling(
+        Request $request,
+        SettingsRepositoryInterface $settingsRepository,
+    ) {
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getSystemSettings()->setUseStripeBilling(true);
+        $settingsRepository->save($settings);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
     #[Route('/app/settings/stripe-import', name: 'app_app_settings_stripeimport_mainview', methods: ['GET'])]
     public function mainView(
         Request $request,
