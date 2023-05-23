@@ -19,6 +19,9 @@ class StripeImportView
     #[SerializedName('stripe_imports')]
     private array $stripeImports = [];
 
+    #[SerializedName('use_stripe_billing')]
+    private bool $useStripeBilling;
+
     public function getStripeImports(): array
     {
         return $this->stripeImports;
@@ -27,5 +30,15 @@ class StripeImportView
     public function setStripeImports(array $stripeImports): void
     {
         $this->stripeImports = $stripeImports;
+    }
+
+    public function isUseStripeBilling(): bool
+    {
+        return $this->useStripeBilling;
+    }
+
+    public function setUseStripeBilling(bool $useStripeBilling): void
+    {
+        $this->useStripeBilling = $useStripeBilling;
     }
 }

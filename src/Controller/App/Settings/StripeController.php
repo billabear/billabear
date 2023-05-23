@@ -70,11 +70,13 @@ class StripeController
         StripeImportRepositoryInterface $stripeImportRepository,
         StripeImportFactory $importFactory,
         SerializerInterface $serializer,
+        SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $imports = $stripeImportRepository->getAll();
         $importDtos = array_map([$importFactory, 'createAppDto'], $imports);
         $viewDto = new StripeImportView();
         $viewDto->setStripeImports($importDtos);
+        $viewDto->setUseStripeBilling($settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling());
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);

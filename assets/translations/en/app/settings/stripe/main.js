@@ -8,5 +8,18 @@ export const SETTINGS_STRIPE_IMPORT_MAIN_TRANSLATIONS = {
         created_at: "Created At",
         updated_at: "Update At",
         no_results: "There have been no stripe imports so far."
+    },
+    danger_zone: {
+        title: "Danger Zone",
+        use_stripe_billing: "Use Stripe Billing to charge customers.",
+        disable_billing: "Disable Stripe Billing",
+        enable_billing: "Enable Stripe Billing",
+    },
+    disable_billing_modal: {
+        title: "Disable Stripe Billing",
+        disable_all_subscriptions: "By disabling Stripe Billing, you are saying you no longer want Stripe to manage charge customers but for BillaBear to manage this. This will save you money.",
+        warning: "Once disabled, if you wish to go back to using Stripe Billing you will need to manually resubscribe everyone.",
+        cancel: "Cancel",
+        confirm: "Confirm"
     }
 }
