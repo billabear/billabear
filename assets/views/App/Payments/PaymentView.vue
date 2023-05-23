@@ -64,7 +64,7 @@
                   <td>{{ refund.reason }}</td>
                   <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
                   <td v-else>API</td>
-                  <td>{{ $filters.moment(refund.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                  <td>{{ $filters.moment(refund.created_at, "lll") || "unknown" }}</td>
                 </tr>
                 <tr v-if="refunds.length == 0">
                   <td colspan="4" class="text-center">{{ $t('app.payment.view.refunds.none') }}</td>
@@ -105,7 +105,7 @@
               </thead>
               <tbody>
               <tr v-for="receipt in receipts">
-                <td>{{ $filters.moment(receipt.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}</td>
+                <td>{{ $filters.moment(receipt.created_at, "lll") || "unknown" }}</td>
                 <td><a :href="'/app/receipt/'+receipt.id+'/download'" class="btn--main">{{ $t('app.payment.view.receipts.download') }}</a></td>
               </tr>
               <tr v-if="receipts.length == 0">
