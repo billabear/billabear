@@ -12,6 +12,7 @@
 
 namespace App\Tests\Unit\Invoice;
 
+use App\Credit\CreditAdjustmentRecorder;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Invoice\InvoiceGenerator;
@@ -52,7 +53,9 @@ class InvoiceGeneratorTest extends TestCase
         $repository = $this->createMock(InvoiceRepositoryInterface::class);
         $repository->expects($this->once())->method('save')->with($this->isInstanceOf(Invoice::class));
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository);
+        $creditAdjustmentRecorder = $this->createMock(CreditAdjustmentRecorder::class);
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository, $creditAdjustmentRecorder);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());

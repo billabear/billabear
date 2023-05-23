@@ -17,7 +17,6 @@ use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
-use App\Repository\CreditRepositoryInterface;
 use App\Repository\InvoiceRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
@@ -28,7 +27,6 @@ class InvoiceGenerator
         private PricerInterface $pricer,
         private InvoiceNumberGeneratorInterface $invoiceNumberGenerator,
         private InvoiceRepositoryInterface $invoiceRepository,
-        private CreditRepositoryInterface $creditRepository,
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
     ) {
     }
