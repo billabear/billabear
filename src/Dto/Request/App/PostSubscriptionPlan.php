@@ -60,81 +60,51 @@ class PostSubscriptionPlan
     #[SerializedName('prices')]
     protected array $prices = [];
 
-    /**
-     * @return mixed
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
     public function setName($name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPublic()
     {
         return true === $this->public;
     }
 
-    /**
-     * @param mixed $public
-     */
     public function setPublic($public): void
     {
         $this->public = $public;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFree()
     {
         return true === $this->free;
     }
 
-    /**
-     * @param mixed $free
-     */
     public function setFree($free): void
     {
         $this->free = $free;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUserCount()
     {
         return $this->userCount;
     }
 
-    /**
-     * @param mixed $userCount
-     */
     public function setUserCount($userCount): void
     {
         $this->userCount = $userCount;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPerSeat()
     {
         return true === $this->perSeat;
     }
 
-    /**
-     * @param mixed $perSeat
-     */
     public function setPerSeat($perSeat): void
     {
         $this->perSeat = $perSeat;
@@ -185,33 +155,21 @@ class PostSubscriptionPlan
         $this->limits[] = $limit;
     }
 
-    /**
-     * @return mixed
-     */
     public function getHasTrial()
     {
         return $this->hasTrial;
     }
 
-    /**
-     * @param mixed $hasTrial
-     */
     public function setHasTrial($hasTrial): void
     {
         $this->hasTrial = $hasTrial;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTrialLengthDays()
     {
         return $this->trialLengthDays;
     }
 
-    /**
-     * @param mixed $trialLengthDays
-     */
     public function setTrialLengthDays($trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;

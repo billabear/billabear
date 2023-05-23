@@ -28,17 +28,11 @@ class Limit
         $this->feature = $feature;
     }
 
-    /**
-     * @return mixed
-     */
     public function getLimit()
     {
         return $this->limit;
     }
 
-    /**
-     * @param mixed $limit
-     */
     public function setLimit($limit): void
     {
         $this->limit = $limit;

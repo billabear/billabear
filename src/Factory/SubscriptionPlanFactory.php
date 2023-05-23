@@ -35,7 +35,7 @@ class SubscriptionPlanFactory
     ) {
     }
 
-    public function createFromPostSubscriptionPlan(PostSubscriptionPlan $dto, ?SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
+    public function createFromPostSubscriptionPlan(PostSubscriptionPlan $dto, SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
     {
         if (!$subscriptionPlan) {
             $subscriptionPlan = new SubscriptionPlan();

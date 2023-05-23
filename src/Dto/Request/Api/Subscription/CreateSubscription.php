@@ -34,56 +34,38 @@ class CreateSubscription
 
     #[PaymentMethodExists]
     #[SerializedName('payment_details')]
-    private $paymentDetails = null;
+    private $paymentDetails;
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
     #[SerializedName('seat_numbrers')]
     private $seatNumbers = 1;
 
-    /**
-     * @return mixed
-     */
     public function getSubscriptionPlan()
     {
         return $this->subscriptionPlan;
     }
 
-    /**
-     * @param mixed $subscriptionPlan
-     */
     public function setSubscriptionPlan($subscriptionPlan): void
     {
         $this->subscriptionPlan = $subscriptionPlan;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPrice()
     {
         return $this->price;
     }
 
-    /**
-     * @param mixed $price
-     */
     public function setPrice($price): void
     {
         $this->price = $price;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPaymentDetails()
     {
         return $this->paymentDetails;
     }
 
-    /**
-     * @param mixed $paymentDetails
-     */
     public function setPaymentDetails($paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;

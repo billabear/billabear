@@ -32,12 +32,12 @@ class CustomerService implements CustomerServiceInterface
         // TODO: Implement fetch() method.
     }
 
-    public function list(int $limit = 10, ?string $lastId = null): array
+    public function list(int $limit = 10, string $lastId = null): array
     {
         // TODO: Implement list() method.
     }
 
-    public function getCards(string $customerId, int $limit = 10, ?string $lastId = null): array
+    public function getCards(string $customerId, int $limit = 10, string $lastId = null): array
     {
         // TODO: Implement getCards() method.
     }

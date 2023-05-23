@@ -39,7 +39,7 @@ class InvoiceCharger
     ) {
     }
 
-    public function chargeInvoice(Invoice $invoice, ?PaymentCard $paymentCard = null)
+    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null)
     {
         if (!$paymentCard) {
             $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());

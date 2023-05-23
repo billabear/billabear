@@ -20,11 +20,11 @@ class CreateCustomerDto
 {
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('name')]
-    private $name = null;
+    private $name;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('brand')]
-    private $brand = null;
+    private $brand;
 
     #[Assert\NotBlank]
     #[Assert\Email]
@@ -37,16 +37,16 @@ class CreateCustomerDto
     private $locale;
 
     #[SerializedName('reference')]
-    private $reference = null;
+    private $reference;
 
     #[SerializedName('external_reference')]
-    private $externalReference = null;
+    private $externalReference;
 
     #[SerializedName('billing_type')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
     #[Assert\Choice(choices: ['invoice', 'card'])]
-    private $billingType = null;
+    private $billingType;
 
     #[Assert\Valid]
     #[SerializedName('address')]

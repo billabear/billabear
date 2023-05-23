@@ -24,17 +24,11 @@ class UpdatePaymentMethod
     #[SerializedName('payment_details')]
     private $paymentDetails;
 
-    /**
-     * @return mixed
-     */
     public function getPaymentDetails()
     {
         return $this->paymentDetails;
     }
 
-    /**
-     * @param mixed $paymentDetails
-     */
     public function setPaymentDetails($paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;

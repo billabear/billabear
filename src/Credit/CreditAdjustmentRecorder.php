@@ -26,7 +26,7 @@ class CreditAdjustmentRecorder
     ) {
     }
 
-    public function createRecord(string $type, Customer $customer, Money $amount, ?string $reason = null, ?BillingAdminInterface $billingAdmin = null): Credit
+    public function createRecord(string $type, Customer $customer, Money $amount, string $reason = null, BillingAdminInterface $billingAdmin = null): Credit
     {
         $credit = new Credit();
         $credit->setCustomer($customer);

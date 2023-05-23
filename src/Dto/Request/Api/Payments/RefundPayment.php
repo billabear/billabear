@@ -26,38 +26,26 @@ class RefundPayment
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Currency]
     #[SerializedName('currency')]
-    private $currency = null;
+    private $currency;
 
     #[Assert\NotBlank(allowNull: true)]
-    private $reason = null;
+    private $reason;
 
-    /**
-     * @return mixed
-     */
     public function getAmount()
     {
         return $this->amount;
     }
 
-    /**
-     * @param mixed $amount
-     */
     public function setAmount($amount): void
     {
         $this->amount = $amount;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * @param mixed $currency
-     */
     public function setCurrency($currency): void
     {
         $this->currency = $currency;

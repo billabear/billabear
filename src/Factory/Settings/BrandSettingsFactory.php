@@ -21,7 +21,7 @@ use Parthenon\Common\Address;
 
 class BrandSettingsFactory
 {
-    public function createEntityFromEditDto(EditDto|CreateBrandSettings $dto, ?BrandSettings $brandSettings = null): BrandSettings
+    public function createEntityFromEditDto(EditDto|CreateBrandSettings $dto, BrandSettings $brandSettings = null): BrandSettings
     {
         if ($dto instanceof CreateBrandSettings) {
             $brandSettings = new BrandSettings();

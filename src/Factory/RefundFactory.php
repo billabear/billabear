@@ -61,7 +61,7 @@ class RefundFactory
         return $dto;
     }
 
-    public function createEntity(\Obol\Model\Refund $model, ?Refund $refund = null): Refund
+    public function createEntity(\Obol\Model\Refund $model, Refund $refund = null): Refund
     {
         if (!$refund) {
             $refund = new Refund();

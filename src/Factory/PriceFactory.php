@@ -24,7 +24,7 @@ class PriceFactory
     {
     }
 
-    public function createPriceFromDto(CreatePrice $createPrice, ?Price $price = null): Price
+    public function createPriceFromDto(CreatePrice $createPrice, Price $price = null): Price
     {
         if (!$price) {
             $price = new Price();
@@ -77,7 +77,7 @@ class PriceFactory
         return $dto;
     }
 
-    public function createFromObol(\Obol\Model\Price $priceModel, ?Price $price = null)
+    public function createFromObol(\Obol\Model\Price $priceModel, Price $price = null)
     {
         if (!$price) {
             $price = new Price();

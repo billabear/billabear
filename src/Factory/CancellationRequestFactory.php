@@ -20,7 +20,7 @@ use Parthenon\Billing\Entity\Subscription;
 
 class CancellationRequestFactory
 {
-    public function getCancellationRequestEntity(Subscription $subscription, AppDto|ApiDto $dto, ?BillingAdminInterface $user = null): CancellationRequest
+    public function getCancellationRequestEntity(Subscription $subscription, AppDto|ApiDto $dto, BillingAdminInterface $user = null): CancellationRequest
     {
         $cancellationRequest = new CancellationRequest();
         $cancellationRequest->setSubscription($subscription);

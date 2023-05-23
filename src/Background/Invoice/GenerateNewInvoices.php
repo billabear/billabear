@@ -65,8 +65,6 @@ class GenerateNewInvoices
     }
 
     /**
-     * @param Subscription $subscription
-     *
      * @throws \Exception
      */
     public function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void

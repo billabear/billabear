@@ -51,49 +51,31 @@ class CreateSubscription
     #[Assert\Type('integer')]
     private $trialLengthDays;
 
-    /**
-     * @return mixed
-     */
     public function getSubscriptionPlan()
     {
         return $this->subscriptionPlan;
     }
 
-    /**
-     * @param mixed $subscriptionPlan
-     */
     public function setSubscriptionPlan($subscriptionPlan): void
     {
         $this->subscriptionPlan = $subscriptionPlan;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPrice()
     {
         return $this->price;
     }
 
-    /**
-     * @param mixed $price
-     */
     public function setPrice($price): void
     {
         $this->price = $price;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPaymentDetails()
     {
         return $this->paymentDetails;
     }
 
-    /**
-     * @param mixed $paymentDetails
-     */
     public function setPaymentDetails($paymentDetails): void
     {
         $this->paymentDetails = $paymentDetails;
@@ -109,33 +91,21 @@ class CreateSubscription
         $this->seatNumbers = $seatNumbers;
     }
 
-    /**
-     * @return mixed
-     */
     public function getHasTrial()
     {
         return $this->hasTrial;
     }
 
-    /**
-     * @param mixed $hasTrial
-     */
     public function setHasTrial($hasTrial): void
     {
         $this->hasTrial = $hasTrial;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTrialLengthDays()
     {
         return $this->trialLengthDays;
     }
 
-    /**
-     * @param mixed $trialLengthDays
-     */
     public function setTrialLengthDays($trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;

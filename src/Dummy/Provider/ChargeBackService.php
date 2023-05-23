@@ -21,7 +21,7 @@ class ChargeBackService implements ChargeBackServiceInterface
         return [];
     }
 
-    public function list(int $limit, ?string $lastId = null): array
+    public function list(int $limit, string $lastId = null): array
     {
         // TODO: Implement list() method.
     }

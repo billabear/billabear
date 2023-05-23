@@ -28,7 +28,7 @@ class CustomerFactory
     {
     }
 
-    public function createCustomerFromObol(ObolCustomer $obolCustomer, ?Customer $customer = null): Customer
+    public function createCustomerFromObol(ObolCustomer $obolCustomer, Customer $customer = null): Customer
     {
         if (!$customer) {
             $customer = new Customer();

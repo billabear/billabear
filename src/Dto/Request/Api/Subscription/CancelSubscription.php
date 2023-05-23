@@ -39,51 +39,33 @@ class CancelSubscription
     #[Assert\Choice([self::REFUND_NONE, self::REFUND_PRORATE, self::REFUND_FULL])]
     private $refundType = 'none';
 
-    private $comment = null;
+    private $comment;
 
-    /**
-     * @return mixed
-     */
     public function getWhen()
     {
         return $this->when;
     }
 
-    /**
-     * @param mixed $when
-     */
     public function setWhen($when): void
     {
         $this->when = $when;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDate()
     {
         return $this->date;
     }
 
-    /**
-     * @param mixed $date
-     */
     public function setDate($date): void
     {
         $this->date = $date;
     }
 
-    /**
-     * @return mixed
-     */
     public function getRefundType()
     {
         return $this->refundType;
     }
 
-    /**
-     * @param mixed $refundType
-     */
     public function setRefundType($refundType): void
     {
         $this->refundType = $refundType;

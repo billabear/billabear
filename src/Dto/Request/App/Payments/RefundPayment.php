@@ -24,19 +24,13 @@ class RefundPayment
     private $amount;
 
     #[Assert\NotBlank(allowNull: true)]
-    private $reason = null;
+    private $reason;
 
-    /**
-     * @return mixed
-     */
     public function getAmount()
     {
         return $this->amount;
     }
 
-    /**
-     * @param mixed $amount
-     */
     public function setAmount($amount): void
     {
         $this->amount = $amount;

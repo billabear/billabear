@@ -83,17 +83,11 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
     protected ?string $creditCurrency = null;
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
     public function setId($id): void
     {
         $this->id = $id;
