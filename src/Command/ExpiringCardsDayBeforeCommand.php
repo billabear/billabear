@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'billabear:expiring-cards:day-before', description: 'Handle the day before next charge check')]
-class ExpiringCardsDayBeforeommand extends Command
+class ExpiringCardsDayBeforeCommand extends Command
 {
     public function __construct(private DayBefore $dayBefore)
     {
