@@ -54,6 +54,9 @@ default:
                 # Credit Notes
                 - App\Tests\Behat\CreditNote\AppContext
 
+                # Invoices
+                - App\Tests\Behat\Invoices\AppContext
+
                 # Settings
                 - App\Tests\Behat\Settings\PdfTemplatesContext
                 - App\Tests\Behat\Settings\BrandsContext
