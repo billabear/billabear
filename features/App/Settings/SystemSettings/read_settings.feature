@@ -13,7 +13,7 @@ Feature: Update system Settings
   Scenario: Create email template
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the system settings are:
-      | Webhook URL    | https://webhook.example.org       |
+      | System URL    | https://webhook.example.org       |
       | Timezone | Europe/Berlin                   |
     When I fetch the system settings
-    Then I will see system settings for webhook url will be "https://webhook.example.org"
+    Then I will see system settings for system url will be "https://webhook.example.org"
