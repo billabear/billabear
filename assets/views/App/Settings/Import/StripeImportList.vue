@@ -39,7 +39,7 @@
             {{ $t('app.settings.stripe.main.danger_zone.use_stripe_billing') }}
           </label>
           <button class="btn--danger" @click="options.modelValue = true" v-if="use_stripe_billing">{{ $t('app.settings.stripe.main.danger_zone.disable_billing') }}</button>
-          <button class="btn--main" v-else @click="enableStripeBilling">{{ $t('app.settings.stripe.main.danger_zone.disable_billing') }}</button>
+          <button class="btn--main" v-else @click="enableStripeBilling">{{ $t('app.settings.stripe.main.danger_zone.enable_billing') }}</button>
 
         </div>
       </div>
