@@ -3,11 +3,11 @@ export const SYSTEM_SETTINGS_UPDATE_TRANSLATIONS = {
     submit_btn: "Update",
     success_message: "Updated system settings",
     fields: {
-        webhook_url: "Webhook URL",
+        system_url: "System URL",
         timezone: "Timezone"
     },
     help_info: {
-        webhook_url: "The base url for the webhook.",
+        system_url: "The base url that billabear can be found at.",
         timezone: "The default timezone for the system",
     }
 };

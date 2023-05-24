@@ -20,7 +20,7 @@ class SystemSettingsFactory
 {
     public function updateEntity(RequestDto $dto, SystemSettings $settings): SystemSettings
     {
-        $settings->setWebhookUrl($dto->getWebhookUrl());
+        $settings->setSystemUrl($dto->getSystemUrl());
         $settings->setTimezone($dto->getTimezone());
 
         return $settings;
@@ -29,7 +29,7 @@ class SystemSettingsFactory
     public function createAppDto(SystemSettings $settings): AppDto
     {
         $dto = new AppDto();
-        $dto->setWebhookUrl($settings->getWebhookUrl());
+        $dto->setSystemUrl($settings->getSystemUrl());
         $dto->setTimezone($settings->getTimezone());
 
         return $dto;

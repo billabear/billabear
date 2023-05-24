@@ -6,17 +6,17 @@
       <form @submit.prevent="save">
         <div class="mt-3 card-body">
           <div class="form-field-ctn">
-            <label class="form-field-lbl" for="webhook_url">
-              {{ $t('app.settings.system_settings.update.fields.webhook_url') }}
+            <label class="form-field-lbl" for="system_url">
+              {{ $t('app.settings.system_settings.update.fields.system_url') }}
             </label>
-            <p class="form-field-error" v-if="errors.webhookUrl != undefined">{{ errors.webhookUrl }}</p>
-            <input type="text" class="form-field" id="webhook_url" v-model="systemSettings.webhook_url"  />
-            <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.webhook_url') }}</p>
+            <p class="form-field-error" v-if="errors.systemUrl != undefined">{{ errors.systemUrl }}</p>
+            <input type="text" class="form-field" id="system_url" v-model="systemSettings.system_url"  />
+            <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.system_url') }}</p>
           </div>
 
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="timezone">
-              {{ $t('app.settings.system_settings.update.fields.default_outgoing_email') }}
+              {{ $t('app.settings.system_settings.update.fields.timezone') }}
             </label>
             <p class="form-field-error" v-if="errors.timezone != undefined">{{ errors.timezone }}</p>
             <select class="form-field" id="timezone" v-model="systemSettings.timezone">

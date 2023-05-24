@@ -26,7 +26,7 @@ class SystemSettingsStep
     {
         $systemSettings = new Settings\SystemSettings();
         $systemSettings->setTimezone($request->getTimezone());
-        $systemSettings->setWebhookUrl($request->getWebhookUrl());
+        $systemSettings->setSystemUrl($request->getWebhookUrl());
 
         $notification = new Settings\NotificationSettings();
         $notification->setEmsp(Settings\NotificationSettings::EMSP_SYSTEM);

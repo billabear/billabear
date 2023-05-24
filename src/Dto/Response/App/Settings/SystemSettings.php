@@ -16,20 +16,20 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class SystemSettings
 {
-    #[SerializedName('webhook_url')]
-    private ?string $webhookUrl = null;
+    #[SerializedName('system_url')]
+    private ?string $systemUrl = null;
 
     #[SerializedName('timezone')]
     private ?string $timezone = null;
 
-    public function getWebhookUrl(): ?string
+    public function getSystemUrl(): ?string
     {
-        return $this->webhookUrl;
+        return $this->systemUrl;
     }
 
-    public function setWebhookUrl(?string $webhookUrl): void
+    public function setSystemUrl(?string $systemUrl): void
     {
-        $this->webhookUrl = $webhookUrl;
+        $this->systemUrl = $systemUrl;
     }
 
     public function getTimezone(): ?string

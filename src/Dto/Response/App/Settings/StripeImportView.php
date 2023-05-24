@@ -22,6 +22,9 @@ class StripeImportView
     #[SerializedName('use_stripe_billing')]
     private bool $useStripeBilling;
 
+    #[SerializedName('webhook_url')]
+    private ?string $webhookUrl;
+
     public function getStripeImports(): array
     {
         return $this->stripeImports;
@@ -40,5 +43,15 @@ class StripeImportView
     public function setUseStripeBilling(bool $useStripeBilling): void
     {
         $this->useStripeBilling = $useStripeBilling;
+    }
+
+    public function getWebhookUrl(): ?string
+    {
+        return $this->webhookUrl;
+    }
+
+    public function setWebhookUrl(?string $webhookUrl): void
+    {
+        $this->webhookUrl = $webhookUrl;
     }
 }

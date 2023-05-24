@@ -21,6 +21,9 @@ class SystemSettings
     private ?string $webhookUrl = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $systemUrl = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $timezone = null;
 
     #[ORM\Column(type: 'boolean')]
@@ -29,14 +32,14 @@ class SystemSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $webhookExternalReference = null;
 
-    public function getWebhookUrl(): ?string
+    public function getSystemUrl(): ?string
     {
-        return $this->webhookUrl;
+        return $this->systemUrl;
     }
 
-    public function setWebhookUrl(?string $webhookUrl): void
+    public function setSystemUrl(?string $systemUrl): void
     {
-        $this->webhookUrl = $webhookUrl;
+        $this->systemUrl = $systemUrl;
     }
 
     public function getTimezone(): ?string
@@ -67,5 +70,15 @@ class SystemSettings
     public function setWebhookExternalReference(?string $webhookExternalReference): void
     {
         $this->webhookExternalReference = $webhookExternalReference;
+    }
+
+    public function getWebhookUrl(): ?string
+    {
+        return $this->webhookUrl;
+    }
+
+    public function setWebhookUrl(?string $webhookUrl): void
+    {
+        $this->webhookUrl = $webhookUrl;
     }
 }

@@ -19,21 +19,21 @@ class SystemSettings
 {
     #[Assert\NotBlank]
     #[Assert\Url]
-    #[SerializedName('webhook_url')]
-    private $webhookUrl;
+    #[SerializedName('system_url')]
+    private $systemUrl;
 
     #[Assert\NotBlank]
     #[Assert\Timezone]
     private $timezone;
 
-    public function getWebhookUrl()
+    public function getSystemUrl()
     {
-        return $this->webhookUrl;
+        return $this->systemUrl;
     }
 
-    public function setWebhookUrl($webhookUrl): void
+    public function setSystemUrl($systemUrl): void
     {
-        $this->webhookUrl = $webhookUrl;
+        $this->systemUrl = $systemUrl;
     }
 
     public function getTimezone()

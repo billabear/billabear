@@ -45,6 +45,9 @@ class SystemSettingsContext implements Context
         if (isset($data['Webhook URL'])) {
             $systemSettings->setWebhookUrl($data['Webhook URL']);
         }
+        if (isset($data['System URL'])) {
+            $systemSettings->setSystemUrl($data['System URL']);
+        }
 
         if (isset($data['Timezone'])) {
             $systemSettings->setTimezone($data['Timezone']);
@@ -86,12 +89,12 @@ class SystemSettingsContext implements Context
     }
 
     /**
-    * @Given the webhook url is set for :arg1
-    */
+     * @Given the webhook url is set for :arg1
+     */
     public function theWebhookUrlIsSetFor($arg1)
     {
         $settings = $this->getSettings();
-        $settings->getSystemSettings()->setWebhookUrl($arg1);
+        $settings->getSystemSettings()->setSystemUrl($arg1);
         $settings->getSystemSettings()->setWebhookExternalReference('dsjdj');
         $this->settingsRepository->getEntityManager()->persist($settings);
         $this->settingsRepository->getEntityManager()->flush();
@@ -187,7 +190,7 @@ class SystemSettingsContext implements Context
     {
         $data = $table->getRowsHash();
         $payload = [
-            'webhook_url' => $data['Webhook URL'] ?? null,
+            'system_url' => $data['System URL'] ?? null,
             'timezone' => $data['Timezone'] ?? null,
         ];
 
@@ -202,6 +205,18 @@ class SystemSettingsContext implements Context
         $settings = $this->getSettings();
 
         if ($settings->getSystemSettings()->getWebhookUrl() !== $webhookUrl) {
+            throw new \Exception("Webhook url doesn't match");
+        }
+    }
+
+    /**
+     * @Then the system settings for system url will be :arg1
+     */
+    public function theSystemSettingsForSystemUrlWillBe($webhookUrl)
+    {
+        $settings = $this->getSettings();
+
+        if ($settings->getSystemSettings()->getSystemUrl() !== $webhookUrl) {
             throw new \Exception("Webhook url doesn't match");
         }
     }

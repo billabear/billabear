@@ -135,7 +135,7 @@ class StripeController
 
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getSystemSettings()->setWebhookExternalReference($response->getId());
-        $settings->getSystemSettings()->setWebhookUrl($dto->getUrl());
+        $settings->getSystemSettings()->setSystemUrl($dto->getUrl());
 
         $settingsRepository->save($settings);
 
@@ -151,7 +151,7 @@ class StripeController
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $settings = $settingsRepository->getDefaultSettings();
-        $response = $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getWebhookUrl());
+        $response = $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getSystemUrl());
 
         $settings->getSystemSettings()->setWebhookExternalReference(null);
         $settings->getSystemSettings()->setWebhookUrl(null);
