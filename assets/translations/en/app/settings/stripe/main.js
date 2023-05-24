@@ -21,5 +21,14 @@ export const SETTINGS_STRIPE_IMPORT_MAIN_TRANSLATIONS = {
         warning: "Once disabled, if you wish to go back to using Stripe Billing you will need to manually resubscribe everyone.",
         cancel: "Cancel",
         confirm: "Confirm"
+    },
+    webhook: {
+        title: "Webhook",
+        url: "Webhook URL",
+        register_webhook: "Register Webhook",
+        deregister_webhook: "Deregister Webhook",
+        help_info: {
+            url: "A https URL that is publically available for webhook calls."
+        }
     }
 }

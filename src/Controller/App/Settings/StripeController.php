@@ -83,6 +83,7 @@ class StripeController
         $viewDto = new StripeImportView();
         $viewDto->setStripeImports($importDtos);
         $viewDto->setUseStripeBilling($settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling());
+        $viewDto->setWebhookUrl($settingsRepository->getDefaultSettings()->getSystemSettings()->getWebhookUrl());
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
@@ -131,11 +132,13 @@ class StripeController
             return $errorResponse;
         }
 
-        $response = $provider->webhook()->registerWebhook($dto->getUrl(), [], "Billabear's webhook");
+        $response = $provider->webhook()->registerWebhook($dto->getUrl(), [
+            'charge.failed',
+            'charge.succeeded'], "Billabear's webhook");
 
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getSystemSettings()->setWebhookExternalReference($response->getId());
-        $settings->getSystemSettings()->setSystemUrl($dto->getUrl());
+        $settings->getSystemSettings()->setWebhookUrl($dto->getUrl());
 
         $settingsRepository->save($settings);
 
@@ -151,7 +154,7 @@ class StripeController
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $settings = $settingsRepository->getDefaultSettings();
-        $response = $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getSystemUrl());
+        $response = $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getWebhookExternalReference());
 
         $settings->getSystemSettings()->setWebhookExternalReference(null);
         $settings->getSystemSettings()->setWebhookUrl(null);

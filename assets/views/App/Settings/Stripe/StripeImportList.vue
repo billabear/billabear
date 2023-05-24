@@ -31,6 +31,25 @@
           </tbody>
         </table>
       </div>
+      <h2>{{ $t('app.settings.stripe.main.webhook.title') }}</h2>
+      <div class="mt-3">
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="country">
+            {{ $t('app.settings.stripe.main.webhook.url') }}
+          </label>
+          <div v-if="!webhook_url_registered">
+            <p class="form-field-error" v-if="errors.url != undefined">{{ errors.url }}</p>
+            <input type="text" v-model="webhook_url" class="form-field" />
+            <SubmitButton :in-progress="sendingWebhookRequest" class="btn--main"  @click="registerWebhook">{{ $t('app.settings.stripe.main.webhook.register_webhook') }}</SubmitButton>
+
+            <p class="form-field-help">{{ $t('app.settings.stripe.main.webhook.help_info.url') }}</p>
+          </div>
+          <SubmitButton :in-progress="sendingWebhookRequest" class="btn--danger" v-else @click="deregisterWebhook">{{ $t('app.settings.stripe.main.webhook.deregister_webhook') }}</SubmitButton>
+
+
+        </div>
+      </div>
       <h2>{{ $t('app.settings.stripe.main.danger_zone.title') }}</h2>
       <div class="mt-3">
 
@@ -38,9 +57,9 @@
           <label class="form-field-lbl" for="country">
             {{ $t('app.settings.stripe.main.danger_zone.use_stripe_billing') }}
           </label>
+
           <button class="btn--danger" @click="options.modelValue = true" v-if="use_stripe_billing">{{ $t('app.settings.stripe.main.danger_zone.disable_billing') }}</button>
           <button class="btn--main" v-else @click="enableStripeBilling">{{ $t('app.settings.stripe.main.danger_zone.enable_billing') }}</button>
-
         </div>
       </div>
     </LoadingScreen>
@@ -65,8 +84,8 @@
       <p>{{ $t('app.settings.stripe.main.disable_billing_modal.disable_all_subscriptions') }}</p>
       <p>{{ $t('app.settings.stripe.main.disable_billing_modal.warning') }}</p>
       <div class="text-center">
-        <button class="btn--secondary" @click="options.modelValue = false">{{ $t('app.settings.stripe.main.disable_billing_modal.cancel') }}</button>
-        <button class="btn--danger ml-3" @click="confirmStripeBillingDisable">{{ $t('app.settings.stripe.main.disable_billing_modal.confirm') }}</button>
+        <SubmitButton :in-progress="sendBillingRequest" class="btn--secondary" @click="options.modelValue = false">{{ $t('app.settings.stripe.main.disable_billing_modal.cancel') }}</SubmitButton>
+        <SubmitButton :in-progress="sendBillingRequest" class="btn--danger ml-3" @click="confirmStripeBillingDisable">{{ $t('app.settings.stripe.main.disable_billing_modal.confirm') }}</SubmitButton>
       </div>
     </VueFinalModal>
   </div>
@@ -83,8 +102,13 @@ export default {
     return {
       ready: false,
       sendingRequest: false,
+      sendingWebhookRequest: false,
+      sendBillingRequest: false,
       importRequests: [],
       use_stripe_billing: false,
+      webhook_url: null,
+      webhook_url_registered: false,
+      errors: {},
       options: {
         teleportTo: 'body',
         modelValue: false,
@@ -101,6 +125,27 @@ export default {
     }
   },
   methods: {
+    registerWebhook: function () {
+      this.sendingWebhookRequest = true;
+      axios.post('/app/settings/stripe/webhook/register', {url: this.webhook_url}).then(response => {
+        this.webhook_url_registered = true;
+        this.sendingWebhookRequest = false;
+      }).catch(error => {
+
+        this.errors = error.response.data.errors;
+        this.sendingWebhookRequest = false;
+      })
+    },
+    deregisterWebhook: function () {
+      this.sendingWebhookRequest = true;
+      axios.post('/app/settings/stripe/webhook/deregister').then(response => {
+        this.webhook_url_registered = false;
+        this.sendingWebhookRequest = false;
+      }).catch(error => {
+
+        this.sendingWebhookRequest = false;
+      })
+    },
     createImportRequest: function () {
       this.sendingRequest = true;
       axios.post('/app/settings/stripe-import/start').then(response => {
@@ -114,13 +159,17 @@ export default {
       })
     },
     confirmStripeBillingDisable: function () {
+      this.sendBillingRequest = true;
       axios.post('/app/settings/stripe/disable-billing').then(response => {
         this.options.modelValue = false;
         this.use_stripe_billing = false;
+        this.sendBillingRequest = false;
       })
     },
     enableStripeBilling: function () {
+      this.sendBillingRequest = true;
       axios.post('/app/settings/stripe/enable-billing').then(response => {
+        this.sendBillingRequest = false;
         this.use_stripe_billing = true;
       })
     }
@@ -130,6 +179,13 @@ export default {
 
       this.importRequests = response.data.stripe_imports;
       this.use_stripe_billing = response.data.use_stripe_billing;
+      if (response.data.webhook_url) {
+        this.webhook_url_registered = true;
+        this.webhook_url = response.data.webhook_url;
+      } else {
+        this.webhook_url_registered = false;
+        this.webhook_url = window.location.origin + "/webhook";
+      }
       this.ready = true;
     }).catch(error => {
 

@@ -43,7 +43,7 @@ import ChargeBacksList from "../views/App/ChargeBacks/ChargeBacksList.vue";
 import SystemSettingsUpdate from "../views/App/Settings/SystemSettings/SystemSettingsUpdate.vue";
 import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
 import SettingsUserUpdate from "../views/App/Settings/Team/SettingsUserUpdate.vue";
-import StripeImportList from "../views/App/Settings/Import/StripeImportList.vue";
+import StripeImportList from "../views/App/Settings/Stripe/StripeImportList.vue";
 import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
 import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
 import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsList.vue";
