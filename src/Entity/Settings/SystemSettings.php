@@ -26,12 +26,15 @@ class SystemSettings
     #[ORM\Column(type: 'boolean')]
     private bool $useStripeBilling = true;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $webhookExternalReference = null;
+
     public function getWebhookUrl(): ?string
     {
         return $this->webhookUrl;
     }
 
-    public function setWebhookUrl(string $webhookUrl): void
+    public function setWebhookUrl(?string $webhookUrl): void
     {
         $this->webhookUrl = $webhookUrl;
     }
@@ -54,5 +57,15 @@ class SystemSettings
     public function setUseStripeBilling(bool $useStripeBilling): void
     {
         $this->useStripeBilling = $useStripeBilling;
+    }
+
+    public function getWebhookExternalReference(): ?string
+    {
+        return $this->webhookExternalReference;
+    }
+
+    public function setWebhookExternalReference(?string $webhookExternalReference): void
+    {
+        $this->webhookExternalReference = $webhookExternalReference;
     }
 }

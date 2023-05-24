@@ -12,6 +12,8 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Controller\ValidationErrorResponseTrait;
+use App\Dto\Request\App\Settings\RegisterWebhook;
 use App\Dto\Response\App\Settings\StripeImportView;
 use App\Entity\GenericBackgroundTask;
 use App\Entity\StripeImport;
@@ -21,16 +23,20 @@ use App\Factory\Settings\StripeImportFactory;
 use App\Repository\GenericBackgroundTaskRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;
+use Obol\Provider\ProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 class StripeController
 {
+    use ValidationErrorResponseTrait;
+
     #[Route('/app/settings/stripe/disable-billing', name: 'app_app_settings_stripe_disablestripebilling', methods: ['POST'])]
     public function disableStripeBilling(
         Request $request,
@@ -106,5 +112,52 @@ class StripeController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    #[Route('/app/settings/stripe/webhook/register', name: 'app_app_settings_stripe_registerwebhook', methods: ['POST'])]
+    public function registerWebhook(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        ProviderInterface $provider,
+        SettingsRepositoryInterface $settingsRepository,
+    ): Response {
+        /** @var RegisterWebhook $dto */
+        $dto = $serializer->deserialize($request->getContent(), RegisterWebhook::class, 'json');
+        $errors = $validator->validate($dto);
+
+        $errorResponse = $this->handleErrors($errors);
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $response = $provider->webhook()->registerWebhook($dto->getUrl(), [], "Billabear's webhook");
+
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getSystemSettings()->setWebhookExternalReference($response->getId());
+        $settings->getSystemSettings()->setWebhookUrl($dto->getUrl());
+
+        $settingsRepository->save($settings);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/app/settings/stripe/webhook/deregister', name: 'app_app_settings_stripe_deregisterwebhook', methods: ['POST'])]
+    public function deregisterWebhook(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        ProviderInterface $provider,
+        SettingsRepositoryInterface $settingsRepository,
+    ): Response {
+        $settings = $settingsRepository->getDefaultSettings();
+        $response = $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getWebhookUrl());
+
+        $settings->getSystemSettings()->setWebhookExternalReference(null);
+        $settings->getSystemSettings()->setWebhookUrl(null);
+
+        $settingsRepository->save($settings);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

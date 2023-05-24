@@ -2431,12 +2431,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "2c43eae5cdeac6202b6949189dfb32eb118d63b0"
+                "reference": "8839c3a04ea8d8202da34e8e4dfb7700309ae285"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/2c43eae5cdeac6202b6949189dfb32eb118d63b0",
-                "reference": "2c43eae5cdeac6202b6949189dfb32eb118d63b0",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/8839c3a04ea8d8202da34e8e4dfb7700309ae285",
+                "reference": "8839c3a04ea8d8202da34e8e4dfb7700309ae285",
                 "shasum": ""
             },
             "require": {
@@ -2473,7 +2473,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-05-24T07:41:38+00:00"
+            "time": "2023-05-24T14:28:24+00:00"
         },
         {
             "name": "parthenon/parthenon",

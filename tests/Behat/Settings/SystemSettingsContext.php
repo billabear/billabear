@@ -66,6 +66,58 @@ class SystemSettingsContext implements Context
     }
 
     /**
+     * @When I register the webhook url :arg1
+     */
+    public function iRegisterTheWebhookUrl($webhookUrl)
+    {
+        $this->sendJsonRequest('POST', '/app/settings/stripe/webhook/register', ['url' => $webhookUrl]);
+    }
+
+    /**
+     * @Then the system settings will have a webhook id
+     */
+    public function theSystemSettingsWillHaveAWebhookId()
+    {
+        $settings = $this->getSettings();
+
+        if (!$settings->getSystemSettings()->getWebhookExternalReference()) {
+            throw new \Exception('No webhook external reference');
+        }
+    }
+
+    /**
+    * @Given the webhook url is set for :arg1
+    */
+    public function theWebhookUrlIsSetFor($arg1)
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setWebhookUrl($arg1);
+        $settings->getSystemSettings()->setWebhookExternalReference('dsjdj');
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I deregister my webhook
+     */
+    public function iDeregisterMyWebhook()
+    {
+        $this->sendJsonRequest('POST', '/app/settings/stripe/webhook/deregister');
+    }
+
+    /**
+     * @Then the system settings will not have a webhook id
+     */
+    public function theSystemSettingsWillNotHaveAWebhookId()
+    {
+        $settings = $this->getSettings();
+
+        if ($settings->getSystemSettings()->getWebhookExternalReference()) {
+            throw new \Exception('webhook external reference');
+        }
+    }
+
+    /**
      * @When I disable stripe billing
      */
     public function iDisableStripeBilling()
@@ -150,7 +202,18 @@ class SystemSettingsContext implements Context
         $settings = $this->getSettings();
 
         if ($settings->getSystemSettings()->getWebhookUrl() !== $webhookUrl) {
-            var_dump($this->getJsonContent());
+            throw new \Exception("Webhook url doesn't match");
+        }
+    }
+
+    /**
+     * @Then the system settings for webhook will be nullified
+     */
+    public function theSystemSettingsForWebhookUrlWillBeNullified()
+    {
+        $settings = $this->getSettings();
+
+        if (null !== $settings->getSystemSettings()->getWebhookUrl()) {
             throw new \Exception("Webhook url doesn't match");
         }
     }
