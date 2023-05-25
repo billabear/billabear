@@ -10,4 +10,10 @@ Billing Made easy... Coming soon.
 
 ## Getting Started
 
-.
+To get started using this repository you can get up and running using Docker and Docker compose.
+
+```
+docker compose up -d
+```
+
+Then go to http://localhost and follow the install instructions.
