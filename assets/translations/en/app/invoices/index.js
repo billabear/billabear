@@ -1,0 +1,5 @@
+import {INVOICES_LIST_TRANSLATIONS} from "./list";
+
+export const INVOICES_TRANSLATIONS = {
+    list: INVOICES_LIST_TRANSLATIONS,
+}

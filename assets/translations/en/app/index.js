@@ -17,6 +17,7 @@ import {SETTINGS_TRANSLATIONS} from "./settings";
 import {CHARGE_BACKS_TRANSLATIONS} from "./charge_backs";
 import {REPORTS_INDEX_TRANSLATION} from "./reports";
 import {CREDIT_TRANSLATIONS} from "./credit";
+import {INVOICES_TRANSLATIONS} from "./invoices";
 
 
 export const APP_TRANSLATIONS = {
@@ -38,5 +39,6 @@ export const APP_TRANSLATIONS = {
     settings: SETTINGS_TRANSLATIONS,
     charge_backs: CHARGE_BACKS_TRANSLATIONS,
     reports: REPORTS_INDEX_TRANSLATION,
-    credit: CREDIT_TRANSLATIONS
+    credit: CREDIT_TRANSLATIONS,
+    invoices: INVOICES_TRANSLATIONS
 };

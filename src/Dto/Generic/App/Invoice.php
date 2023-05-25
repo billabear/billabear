@@ -20,6 +20,8 @@ class Invoice
 
     private string $currency;
 
+    private int $total;
+
     #[SerializedName('amount_due')]
     private int $amountDue;
 
@@ -89,5 +91,15 @@ class Invoice
     public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getTotal(): int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): void
+    {
+        $this->total = $total;
     }
 }

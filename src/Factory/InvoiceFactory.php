@@ -29,6 +29,7 @@ class InvoiceFactory
         $dto->setAmountDue($invoice->getAmountDue());
         $dto->setCurrency($invoice->getCurrency());
         $dto->setIsPaid($invoice->isPaid());
+        $dto->setTotal($invoice->getTotal());
 
         return $dto;
     }

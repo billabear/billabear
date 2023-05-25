@@ -49,6 +49,7 @@ import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
 import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsList.vue";
 import CreditNoteCreate from "../views/App/Credit/CreditCreate.vue";
 import CreditCreate from "../views/App/Credit/CreditCreate.vue";
+import InvoicesList from "../views/App/Invoices/InvoicesList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -311,6 +312,11 @@ export const APP_ROUTES = [
                 path: 'charge-backs/list',
                 component: ChargeBacksList
             },
+            {
+                name: 'app.invoices.list',
+                path: "invoices/list",
+                component: InvoicesList
+            }
         ]
     }
 ]
