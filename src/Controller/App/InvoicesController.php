@@ -12,7 +12,7 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\RefundList;
+use App\Api\Filters\InvoiceList;
 use App\Dto\Response\App\ListResponse;
 use App\Factory\InvoiceFactory;
 use App\Repository\InvoiceRepositoryInterface;
@@ -49,7 +49,7 @@ class InvoicesController
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
-        $filterBuilder = new RefundList();
+        $filterBuilder = new InvoiceList();
         $filters = $filterBuilder->buildFilters($request);
 
         $resultSet = $repository->getList(
