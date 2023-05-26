@@ -94,6 +94,7 @@
 <script>
 import axios from "axios";
 import {VueFinalModal} from "vue-final-modal";
+import {mapActions} from "vuex";
 
 export default {
   name: "StripeImportList",
@@ -125,6 +126,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('onboardingStore', ['stripeImport']),
     registerWebhook: function () {
       this.sendingWebhookRequest = true;
       axios.post('/app/settings/stripe/webhook/register', {url: this.webhook_url}).then(response => {
@@ -151,6 +153,7 @@ export default {
       axios.post('/app/settings/stripe-import/start').then(response => {
         this.importRequests.push(response.data);
         this.sendingRequest = false;
+        this.stripeImport();
       }).catch(error => {
         this.sendingRequest = false;
         if (error.response.status == 409) {

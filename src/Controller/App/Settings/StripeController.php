@@ -94,6 +94,7 @@ class StripeController
         StripeImportRepositoryInterface $stripeImportRepository,
         StripeImportFactory $importFactory,
         SerializerInterface $serializer,
+        SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $stripeImport = $stripeImportRepository->findActive();
 
@@ -111,6 +112,10 @@ class StripeController
         $stripeImportRepository->save($stripeImport);
         $dto = $importFactory->createAppDto($stripeImport);
         $json = $serializer->serialize($dto, 'json');
+
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getOnboardingSettings()->setHasStripeImports(true);
+        $settingsRepository->save($settings);
 
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
     }

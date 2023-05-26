@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Entity\Settings\NotificationSettings;
+use App\Entity\Settings\OnboardingSettings;
 use App\Entity\Settings\SystemSettings;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -37,6 +38,9 @@ class Settings
 
     #[ORM\Embedded(class: SystemSettings::class)]
     private SystemSettings $systemSettings;
+
+    #[ORM\Embedded(class: OnboardingSettings::class)]
+    private OnboardingSettings $onboardingSettings;
 
     public function getId()
     {
@@ -76,5 +80,15 @@ class Settings
     public function setSystemSettings(SystemSettings $systemSettings): void
     {
         $this->systemSettings = $systemSettings;
+    }
+
+    public function getOnboardingSettings(): OnboardingSettings
+    {
+        return $this->onboardingSettings;
+    }
+
+    public function setOnboardingSettings(OnboardingSettings $onboardingSettings): void
+    {
+        $this->onboardingSettings = $onboardingSettings;
     }
 }

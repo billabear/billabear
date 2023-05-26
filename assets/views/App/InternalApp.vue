@@ -14,6 +14,9 @@
       </Menu>
     </div>
     <div class="">
+      <div class="alert-error" v-if="!has_stripe_imports">
+        {{ $t('app.home.stripe_import.text') }} <router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.home.stripe_import.link') }}</router-link>
+      </div>
         <router-view></router-view>
     </div>
   </div>
@@ -22,9 +25,27 @@
 
 <script>
 import AppLogo from "../../components/app/AppLogo";
+import axios from "axios";
+import {mapActions, mapState} from "vuex";
 export default {
   name: "InternalApp",
-  components: {AppLogo}
+  components: {AppLogo},
+  data() {
+    return {
+    }
+  },
+  computed: {
+    ...mapState('onboardingStore', ['has_stripe_imports'])
+  },
+  methods: {
+
+    ...mapActions('onboardingStore', ['setStripeImport']),
+  },
+  mounted() {
+    axios.get("/app/system/data").then(response => {
+      this.setStripeImport({defaultValue: response.data.has_stripe_import});
+    })
+  }
 }
 </script>
 
