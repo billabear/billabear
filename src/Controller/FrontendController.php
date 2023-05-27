@@ -35,7 +35,8 @@ class FrontendController
     {
         try {
             $settings = $settingsRepository->getDefaultSettings();
-            $settings->getOnboardingSettings()->isHasStripeImports();
+            var_dump($settings);
+            exit;
         } catch (TableNotFoundException $exception) {
             return new RedirectResponse('/install');
         }
