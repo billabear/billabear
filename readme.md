@@ -12,6 +12,13 @@ Billing Made easy... Coming soon.
 
 To get started using this repository you can get up and running using Docker and Docker compose.
 
+### Host on DigitalOcean
+
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/billabear/tree/main)
+
+
+### Development
+
 ```
 docker compose up -d
 ```
