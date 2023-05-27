@@ -35,7 +35,7 @@ export const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
-    const publicPages = ['/login', '/signup', '/signup/:code', '/forgot-password', '/forgot-password/:code', '/confirm-email/:code', '/'];
+    const publicPages = ['/login', '/signup', '/signup/:code', '/forgot-password', '/forgot-password/:code', '/confirm-email/:code', '/', '/install'];
     const authRequired = !publicPages.includes(to.matched[0].path);
     const loggedIn = localStorage.getItem('user');
 
