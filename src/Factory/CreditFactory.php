@@ -16,11 +16,28 @@ use App\Dto\Generic\App\Credit as AppDto;
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Credit as Entity;
 use App\Entity\Customer;
+use Obol\Model\Credit\BalanceOutput;
 
 class CreditFactory
 {
     public function __construct(private CustomerFactory $customerFactory, private BillingAdminFactory $billingAdminFactory)
     {
+    }
+
+    public function createFromObol(Customer $customer, BalanceOutput $balanceOutput): Entity
+    {
+        $entity = new Entity();
+        $entity->setCustomer($customer);
+        $entity->setAmount(abs($balanceOutput->getAmount()));
+        $entity->setType($balanceOutput->getAmount() > 0 ? Entity::TYPE_CREDIT : Entity::TYPE_DEBIT);
+        $entity->setCurrency(strtoupper($balanceOutput->getCurrency()));
+        $entity->setCreatedAt($balanceOutput->getCreatedAt());
+        $entity->setReason($balanceOutput->getDescription());
+        $entity->setUpdatedAt(new \DateTime());
+        $entity->setCreationType(Entity::CREATION_TYPE_AUTOMATED);
+        $entity->setUsedAmount(abs($balanceOutput->getAmount()));
+
+        return $entity;
     }
 
     public function createEntity(CreateCreditAdjustment $createCreditNote, Customer $customer): Entity

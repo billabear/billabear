@@ -31,6 +31,7 @@ class CustomerImporter
         private StripeImportRepositoryInterface $stripeImportRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private PaymentMethodsFactory $paymentMethodsFactory,
+        private CustomerCreditImporter $customerCreditImporter,
     ) {
     }
 
@@ -50,6 +51,7 @@ class CustomerImporter
                 }
                 $customer = $this->factory->createCustomerFromObol($customerModel, $customer);
                 $this->customerRepository->save($customer);
+                $this->customerCreditImporter->importForCustomer($customer);
 
                 $cards = $provider->customers()->getCards($customerModel->getId(), 100);
 
@@ -62,7 +64,6 @@ class CustomerImporter
                     $paymentMethod = $this->paymentMethodsFactory->createFromObol($paymentMethodModel, $paymentMethod);
                     $paymentMethod->setDefaultPaymentOption($customerModel->getDefaultSource() === $paymentMethod->getStoredPaymentReference());
                     $this->paymentCardRepository->save($paymentMethod);
-                    $lastId = $paymentMethodModel->getId();
                 }
                 $lastId = $customerModel->getId();
             }

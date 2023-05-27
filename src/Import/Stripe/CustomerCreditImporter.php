@@ -13,21 +13,31 @@
 namespace App\Import\Stripe;
 
 use App\Entity\Customer;
+use App\Factory\CreditFactory;
 use App\Repository\CreditRepositoryInterface;
 use Obol\Provider\ProviderInterface;
 
 class CustomerCreditImporter
 {
-    public function __construct(private ProviderInterface $provider, private CreditRepositoryInterface $repository)
+    public function __construct(
+        private ProviderInterface $provider,
+        private CreditFactory $creditFactory,
+        private CreditRepositoryInterface $repository, )
     {
     }
 
     public function importForCustomer(Customer $customer): void
     {
         $limit = 25;
-        $lastId = $save ? $stripeImport->getLastId() : null;
+        $lastId = null;
         do {
-            $credit = $this->provider->credit()->getAllForCustomer($customer->getExternalCustomerReference(), $limit, $lastId);
-        } while (sizeof($priceList) == $limit);
+            $credits = $this->provider->credit()->getAllForCustomer($customer->getExternalCustomerReference(), $limit, $lastId);
+
+            foreach ($credits as $balanceTransaction) {
+                $credit = $this->creditFactory->createFromObol($customer, $balanceTransaction);
+                $customer->addCreditAsMoney($credit->asMoney());
+                $this->repository->save($credit);
+            }
+        } while (sizeof($credits) == $limit);
     }
 }
