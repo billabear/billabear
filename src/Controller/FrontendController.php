@@ -35,8 +35,7 @@ class FrontendController
     {
         try {
             $settings = $settingsRepository->getDefaultSettings();
-            var_dump($settings);
-            exit;
+            var_export($settings);
         } catch (TableNotFoundException $exception) {
             return new RedirectResponse('/install');
         }
