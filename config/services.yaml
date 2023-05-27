@@ -27,7 +27,8 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
-
+    Psr\Log\LoggerInterface:
+        public: true
 
     #####
     ## Parthenon user services
