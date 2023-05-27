@@ -20,6 +20,7 @@ spec:
       name: billabearweb
       build_command: yarn build
       run_command: heroku-php-apache2 public/
+      instance_count: 1
   workers:
     - environment_slug: php
       git:
@@ -27,5 +28,6 @@ spec:
         repo_clone_url: https://github.com/billabear/billabear.git
       name: scheduler
       run_command: bin/console messenger:consume scheduler_main
+      instance_count: 1
   databases:
     - name: billabeardb
