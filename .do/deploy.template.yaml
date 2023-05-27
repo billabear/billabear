@@ -1,5 +1,5 @@
 spec:
-  name: billabear_app
+  name: billabearapp
   services:
     - environment_slug: php
       git:
@@ -14,7 +14,7 @@ spec:
           scope: RUN_TIME
         - key: STRIPE_WEBHOOK_SECRET
           scope: RUN_TIME
-      name: billabear_web
+      name: billabearweb
       run_command: heroku-php-apache2 public/
   databases:
-    - name: billabear_db
+    - name: billabeardb
