@@ -20,7 +20,7 @@ spec:
       name: billabearweb
       build_command: yarn build
       run_command: heroku-php-apache2 public/
-  worker:
+  workers:
     - environment_slug: php
       git:
         branch: main
