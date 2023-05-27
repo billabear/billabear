@@ -40,7 +40,6 @@ class InstallController
     {
         try {
             $settings = $settingsRepository->getDefaultSettings();
-            var_export($settings);
         } catch (TableNotFoundException $exception) {
             return new Response($twig->render('index.html.twig'));
         }
