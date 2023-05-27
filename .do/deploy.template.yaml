@@ -14,6 +14,9 @@ spec:
           scope: RUN_TIME
         - key: STRIPE_WEBHOOK_SECRET
           scope: RUN_TIME
+        - key: DATABASE_URL
+          scope: RUN_TIME
+          value: ${billabeardb.DATABASE_URL}
       name: billabearweb
       run_command: heroku-php-apache2 public/
   databases:
