@@ -18,6 +18,7 @@ spec:
           scope: RUN_TIME
           value: ${billabeardb.DATABASE_URL}
       name: billabearweb
+      build_command: yarn build
       run_command: heroku-php-apache2 public/
   databases:
     - name: billabeardb
