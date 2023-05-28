@@ -12,7 +12,9 @@
 
 namespace App\Schedule;
 
-use App\Messenger\Message\StripeImport;
+use App\Schedule\Messenger\Message\ExpiredCardsDayBefore;
+use App\Schedule\Messenger\Message\ExpiredCardsFirstOfMonth;
+use App\Schedule\Messenger\Message\StripeImport;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;
 use Symfony\Component\Scheduler\Schedule;
@@ -24,7 +26,9 @@ class MainSchedule implements ScheduleProviderInterface
     public function getSchedule(): Schedule
     {
         $schedule = new Schedule();
-        $schedule->add(RecurringMessage::every('1 minute', new StripeImport()));
+        $schedule->add(RecurringMessage::cron('* * * * *', new StripeImport()));
+        $schedule->add(RecurringMessage::cron('5 0 * * *', new ExpiredCardsDayBefore()));
+        $schedule->add(RecurringMessage::cron('1 0 1 * *', new ExpiredCardsFirstOfMonth()));
 
         return $schedule;
     }

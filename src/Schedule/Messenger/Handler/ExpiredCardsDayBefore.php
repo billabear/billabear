@@ -10,26 +10,20 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Messenger\Handler;
+namespace App\Schedule\Messenger\Handler;
 
-use App\Import\Stripe\StripeImportProcessor;
-use App\Messenger\Message\StripeImport;
-use Parthenon\Common\LoggerAwareTrait;
+use App\Background\ExpiringCards\DayBefore;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class StripeImportHandler
+class ExpiredCardsDayBefore
 {
-    use LoggerAwareTrait;
-
-    public function __construct(
-        private StripeImportProcessor $importProcessor,
-    ) {
+    public function __construct(private DayBefore $dayBefore)
+    {
     }
 
-    public function __invoke(StripeImport $stripeImport)
+    public function __invoke(\App\Schedule\Messenger\Message\ExpiredCardsDayBefore $before)
     {
-        $this->getLogger()->info('Stripe Import scheduler task');
-        $this->importProcessor->process();
+        $this->dayBefore->execute();
     }
 }
