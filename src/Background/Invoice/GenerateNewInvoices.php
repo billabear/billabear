@@ -67,7 +67,7 @@ class GenerateNewInvoices
     /**
      * @throws \Exception
      */
-    public function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
+    protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
     {
         foreach ($activeSubscriptions as $activeSubscription) {
             $this->schedulerProvider->getScheduler($activeSubscription->getPrice())->scheduleNextDueDate($activeSubscription);

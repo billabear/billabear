@@ -11,7 +11,7 @@ framework:
 
         routing:
             # Route your messages to the transports
-            'App\Messenger\Message\StripeImport': main
+            #'App\Messenger\Message\StripeImport': main
 
 # when@test:
 #    framework:
