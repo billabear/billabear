@@ -71,14 +71,17 @@ export default {
     },
     loadData: function () {
       var that = this
-      setTimeout( function() {
-        that.loadData();
-      }, 30000);
       var id = this.$route.params.id
       axios.get('/app/settings/stripe-import/' + id + '/view').then(response => {
         this.importData = response.data;
         this.ready = true;
-      });
+        setTimeout( function() {
+          that.loadData();
+        }, 30000);
+      }).catch(error => {
+        
+          }
+      );
     }
   },
   mounted() {
