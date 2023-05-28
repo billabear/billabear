@@ -16,22 +16,55 @@
         <SubmitButton :in-progress="downloadInProgress" @click="download" button-class="btn--secondary mr-4">{{ $t('app.settings.pdf_template.update.download') }}</SubmitButton>
         <SubmitButton :in-progress="sendingUpdate" @click="save">{{ $t('app.settings.pdf_template.update.save') }}</SubmitButton>
       </div>
+      <VueFinalModal
+          v-model="options.modelValue"
+          :teleport-to="options.teleportTo"
+          :display-directive="options.displayDirective"
+          :hide-overlay="options.hideOverlay"
+          :overlay-transition="options.overlayTransition"
+          :content-transition="options.contentTransition"
+          :click-to-close="options.clickToClose"
+          :esc-to-close="options.escToClose"
+          :background="options.background"
+          :lock-scroll="options.lockScroll"
+          :swipe-to-close="options.swipeToClose"
+          class="flex justify-center items-center"
+          content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+      >
+        {{ templateError }}
+      </VueFinalModal>
     </LoadingScreen>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import {VueFinalModal} from "vue-final-modal";
 
 export default {
   name: "PdfTemplateUpdate",
+  components: {VueFinalModal},
   data() {
     return {
       ready: false,
       sendingUpdate: false,
       downloadInProgress: false,
       template: {template: {}},
-      errors: {}
+      errors: {},
+      templateError: null,
+      options: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
     }
   },
   mounted() {
@@ -46,10 +79,23 @@ export default {
   methods: {
     download: function () {
       const templateId = this.$route.params.id;
+
       this.downloadInProgress = true;
-      axios.get('/app/settings/template/'+templateId+'/receipt-download', {  responseType: 'blob'}).then(response => {
+      axios.get('/app/settings/template/'+templateId+'/'+this.template.template.name+'-download', {  responseType: 'blob'}).then(response => {
         var fileDownload = require('js-file-download');
-        fileDownload(response.data, 'report.pdf');
+        fileDownload(response.data, 'example.pdf');
+        this.downloadInProgress = false;
+      }).catch(error => {
+        var that = this;
+         let errorString = async function getString() {
+           const str = await error.response.data.text();
+           const errorString = JSON.parse(str);
+           that.templateError = errorString.raw_message;
+           that.options.modelValue = true;
+           return str;
+         }
+        errorString();
+
         this.downloadInProgress = false;
       })
     },

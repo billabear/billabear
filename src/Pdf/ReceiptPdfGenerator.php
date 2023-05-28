@@ -43,7 +43,7 @@ class ReceiptPdfGenerator
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());
-        $content = $this->twig->render($twigTemplate, ['receipt' => $receipt, 'customer' => $receipt->getCustomer()]);
+        $content = $this->twig->render($twigTemplate, ['receipt' => $receipt, 'customer' => $receipt->getCustomer(), 'brand' => $customer->getBrandSettings()]);
 
         return $this->pdfGenerator->generate($content);
     }

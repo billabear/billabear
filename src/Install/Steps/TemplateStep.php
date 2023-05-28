@@ -143,7 +143,7 @@ class TemplateStep
             <table cellpadding="0" cellspacing="0">
                 <tr class="top">
                     <td colspan="2">
-                        <strong>RECEIPT</strong>
+                        <strong>INVOICE</strong>
                     </td>
                 </tr>
                 <tr class="top">
@@ -151,12 +151,12 @@ class TemplateStep
                         <table>
                             <tr>
                                 <td class="title">
-                                    {{ brand.name }}
+                                    {{ brand.brandName }}
                                 </td>
 
                                 <td>
-                                    Receipt #: {{ receipt.id }}<br />
-                                    Created: {{ receipt.createdAt.format(\'Y-m-d\') }} <br />
+                                    Invoice #: {{ invoice.id }}<br />
+                                    Created: {{ invoice.createdAt.format(\'Y-m-d\') }} <br />
                                 </td>
                             </tr>
                         </table>
@@ -168,23 +168,23 @@ class TemplateStep
                         <table>
                             <tr>
                                 <td>
-                                    {{ receipt.billerAddress.companyName }}<br />
-                                    {{ receipt.billerAddress.streetLineOne }}<br />
-                                    {{ receipt.billerAddress.streetLineTwo }}<br />
-                                    {{ receipt.billerAddress.region }}<br />
-                                    {{ receipt.billerAddress.city }}<br />
-                                    {{ receipt.billerAddress.country }}<br />
-                                    {{ receipt.billerAddress.postcode }}
+                                    {{ invoice.billerAddress.companyName }}<br />
+                                    {{ invoice.billerAddress.streetLineOne }}<br />
+                                    {{ invoice.billerAddress.streetLineTwo }}<br />
+                                    {{ invoice.billerAddress.region }}<br />
+                                    {{ invoice.billerAddress.city }}<br />
+                                    {{ invoice.billerAddress.country }}<br />
+                                    {{ invoice.billerAddress.postcode }}
                                 </td>
 
                                 <td>
-                                    {{ receipt.payeeAddress.companyName }}<br />
-                                    {{ receipt.payeeAddress.streetLineOne }}<br />
-                                    {{ receipt.payeeAddress.streetLineTwo }}<br />
-                                    {{ receipt.payeeAddress.region }}<br />
-                                    {{ receipt.payeeAddress.city }}<br />
-                                    {{ receipt.payeeAddress.country }}<br />
-                                    {{ receipt.payeeAddress.postcode }}
+                                    {{ invoice.payeeAddress.companyName }}<br />
+                                    {{ invoice.payeeAddress.streetLineOne }}<br />
+                                    {{ invoice.payeeAddress.streetLineTwo }}<br />
+                                    {{ invoice.payeeAddress.region }}<br />
+                                    {{ invoice.payeeAddress.city }}<br />
+                                    {{ invoice.payeeAddress.country }}<br />
+                                    {{ invoice.payeeAddress.postcode }}
                                 </td>
                             </tr>
                         </table>
@@ -197,7 +197,7 @@ class TemplateStep
                     <td>Price</td>
                 </tr>
 
-                {% for line in receipt.lines %}
+                {% for line in invoice.lines %}
                 <tr class="item">
                     <td>{{ line.description }}</td>
 
@@ -208,7 +208,7 @@ class TemplateStep
                 <tr class="total">
                     <td></td>
 
-                    <td>Total: {{ receipt.totalMoney }}</td>
+                    <td>Total: {{ invoice.totalMoney }}</td>
                 </tr>
             </table>
         </div>

@@ -43,7 +43,7 @@ class InvoicePdfGenerator
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());
-        $content = $this->twig->render($twigTemplate, ['invoice' => $invoice, 'customer' => $invoice->getCustomer()]);
+        $content = $this->twig->render($twigTemplate, ['invoice' => $invoice, 'customer' => $invoice->getCustomer(), 'brand' => $customer->getBrandSettings()]);
 
         return $this->pdfGenerator->generate($content);
     }

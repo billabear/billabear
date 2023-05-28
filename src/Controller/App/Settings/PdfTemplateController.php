@@ -18,6 +18,7 @@ use App\Dto\Response\App\Template\TemplateView;
 use App\Dummy\Data\ReceiptProvider;
 use App\Entity\Template;
 use App\Factory\Settings\TemplateFactory;
+use App\Pdf\InvoicePdfGenerator;
 use App\Pdf\ReceiptPdfGenerator;
 use App\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Twig\Error\Error;
 
 class PdfTemplateController
 {
@@ -134,7 +136,50 @@ class PdfTemplateController
         }
 
         $receipt = $provider->getDummyReceipt();
-        $pdf = $generator->generate($receipt);
+        try {
+            $pdf = $generator->generate($receipt);
+        } catch (Error $e) {
+            $data = ['raw_message' => $e->getRawMessage()];
+
+            return new JsonResponse($data, JsonResponse::HTTP_BAD_REQUEST);
+        }
+        $tmpFile = tempnam('/tmp', 'pdf');
+        file_put_contents($tmpFile, $pdf);
+
+        $response = new BinaryFileResponse($tmpFile);
+        $filename = 'dummy.pdf';
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
+    }
+
+    #[Route('/app/settings/template/{id}/invoice-download', name: 'app_settings_template_invocie_download', methods: ['GET'])]
+    public function downloadInvoice(
+        Request $request,
+        TemplateRepositoryInterface $templateRepository,
+        InvoicePdfGenerator $generator,
+        ReceiptProvider $provider,
+    ): Response {
+        try {
+            /** @var Template $template */
+            $template = $templateRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $invoice = $provider->getInvoice();
+        try {
+            $pdf = $generator->generate($invoice);
+        } catch (Error $e) {
+            $data = ['raw_message' => $e->getRawMessage()];
+
+            return new JsonResponse($data, JsonResponse::HTTP_BAD_REQUEST);
+        }
         $tmpFile = tempnam('/tmp', 'pdf');
         file_put_contents($tmpFile, $pdf);
 

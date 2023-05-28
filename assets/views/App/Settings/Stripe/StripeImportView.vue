@@ -79,7 +79,7 @@ export default {
           that.loadData();
         }, 30000);
       }).catch(error => {
-        
+
           }
       );
     }
