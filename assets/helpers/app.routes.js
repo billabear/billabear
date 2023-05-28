@@ -50,6 +50,7 @@ import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsL
 import CreditNoteCreate from "../views/App/Credit/CreditCreate.vue";
 import CreditCreate from "../views/App/Credit/CreditCreate.vue";
 import InvoicesList from "../views/App/Invoices/InvoicesList.vue";
+import StripeImportView from "../views/App/Settings/Stripe/StripeImportView.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -198,6 +199,11 @@ export const APP_ROUTES = [
                 name: "app.settings.import.stripe",
                 path: "import/stripe",
                 component: StripeImportList,
+            },
+            {
+                name: "app.settings.import.stripe.view",
+                path: "import/stripe/:id/view",
+                component: StripeImportView,
             },
             {
                 name: "app.settings.api_keys.main",

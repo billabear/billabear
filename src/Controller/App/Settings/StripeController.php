@@ -24,6 +24,7 @@ use App\Repository\GenericBackgroundTaskRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Provider\ProviderInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -118,6 +119,25 @@ class StripeController
         $settingsRepository->save($settings);
 
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    #[Route('/app/settings/stripe-import/{id}/view', name: 'app_app_settings_stripeimport_viewimport', methods: ['GET'])]
+    public function viewImport(
+        Request $request,
+        StripeImportRepositoryInterface $stripeImportRepository,
+        StripeImportFactory $importFactory,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            $stripeImport = $stripeImportRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $dto = $importFactory->createAppDto($stripeImport);
+        $jsonData = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($jsonData, json: true);
     }
 
     #[Route('/app/settings/stripe/webhook/register', name: 'app_app_settings_stripe_registerwebhook', methods: ['POST'])]

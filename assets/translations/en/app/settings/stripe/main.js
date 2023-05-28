@@ -7,7 +7,8 @@ export const SETTINGS_STRIPE_IMPORT_MAIN_TRANSLATIONS = {
         last_id: "Last Id Processed",
         created_at: "Created At",
         updated_at: "Update At",
-        no_results: "There have been no stripe imports so far."
+        no_results: "There have been no stripe imports so far.",
+        view: "View"
     },
     danger_zone: {
         title: "Danger Zone",

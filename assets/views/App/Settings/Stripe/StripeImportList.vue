@@ -24,6 +24,7 @@
               <td>{{ request.last_id }}</td>
               <td>{{ request.created_at }}</td>
               <td>{{ request.updated_at }}</td>
+              <td><router-link :to="{name: 'app.settings.import.stripe.view', params: {id: request.id}}">{{ $t('app.settings.stripe.main.list.view') }}</router-link></td>
             </tr>
             <tr v-if="importRequests.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.settings.stripe.main.list.no_results') }}</td>

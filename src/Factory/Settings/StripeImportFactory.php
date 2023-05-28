@@ -25,6 +25,7 @@ class StripeImportFactory
         $dto->setLastId($entity->getLastId());
         $dto->setCreatedAt($entity->getCreatedAt());
         $dto->setUpdateAt($entity->getUpdatedAt());
+        $dto->setError($entity->getError());
 
         return $dto;
     }

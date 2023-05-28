@@ -29,6 +29,9 @@ class StripeImport
     #[SerializedName('updated_at')]
     private \DateTimeInterface $updateAt;
 
+    #[SerializedName('error')]
+    private ?string $error;
+
     public function getId(): string
     {
         return $this->id;
@@ -77,5 +80,15 @@ class StripeImport
     public function setUpdateAt(\DateTimeInterface $updateAt): void
     {
         $this->updateAt = $updateAt;
+    }
+
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
+
+    public function setError(?string $error): void
+    {
+        $this->error = $error;
     }
 }
