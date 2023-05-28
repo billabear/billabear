@@ -14,11 +14,16 @@ namespace App\Controller\App;
 
 use App\Api\Filters\InvoiceList;
 use App\Dto\Response\App\ListResponse;
+use App\Entity\Invoice;
 use App\Factory\InvoiceFactory;
+use App\Pdf\InvoicePdfGenerator;
 use App\Repository\InvoiceRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -69,5 +74,33 @@ class InvoicesController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/invoice/{id}/download', name: 'app_invoice_download', methods: ['GET'])]
+    public function downloadInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoicePdfGenerator $generator,
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $pdf = $generator->generate($invoice);
+        $tmpFile = tempnam('/tmp', 'pdf');
+        file_put_contents($tmpFile, $pdf);
+
+        $response = new BinaryFileResponse($tmpFile);
+        $filename = 'invoice.pdf';
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
     }
 }

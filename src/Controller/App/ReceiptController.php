@@ -75,7 +75,7 @@ class ReceiptController
         file_put_contents($tmpFile, $pdf);
 
         $response = new BinaryFileResponse($tmpFile);
-        $filename = 'dummy.pdf';
+        $filename = 'receipt.pdf';
 
         $response->headers->set('Content-Type', 'application/pdf');
         $response->setContentDisposition(

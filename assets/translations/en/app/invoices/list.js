@@ -4,6 +4,7 @@ export const INVOICES_LIST_TRANSLATIONS = {
     total: "Total",
     currency: "Currency",
     created_at: "Created At",
+    download: "Download",
     filter: {
         title: "Filters",
         button: "Filters",

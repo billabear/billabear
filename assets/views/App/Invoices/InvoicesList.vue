@@ -49,6 +49,7 @@
               <td>{{ currency(invoice.total) }}</td>
               <td>{{ invoice.currency }}</td>
               <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
+              <td><a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a></td>
             </tr>
             <tr v-if="invoices.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.invoices.list.no_invoices') }}</td>

@@ -18,9 +18,9 @@ class WeekScheduler implements SchedulerInterface
 {
     public function scheduleNextDueDate(Subscription $subscription): void
     {
-        $nextDueDay = clone $subscription->getValidUntil();
-        $nextDueDay->modify('+7 days');
+        $date = clone ($subscription->getValidUntil() ?? $subscription->getCreatedAt());
+        $date->modify('+7 days');
 
-        $subscription->setValidUntil($nextDueDay);
+        $subscription->setValidUntil($date);
     }
 }

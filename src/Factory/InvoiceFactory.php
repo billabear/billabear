@@ -24,6 +24,7 @@ class InvoiceFactory
     public function createAppDto(Entity $invoice): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $invoice->getId());
         $dto->setCustomer($this->customerFactory->createAppDto($invoice->getCustomer()));
         $dto->setCreatedAt($invoice->getCreatedAt());
         $dto->setAmountDue($invoice->getAmountDue());

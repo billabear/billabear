@@ -14,32 +14,25 @@ namespace App\Dto\Generic;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Address
 {
     #[SerializedName('company_name')]
-    #[Assert\NotBlank(allowNull: true)]
     private ?string $companyName = null;
 
     #[SerializedName('street_line_one')]
-    #[Assert\NotBlank(allowNull: true)]
     private ?string $streetLineOne = null;
 
     #[SerializedName('street_line_two')]
-    #[Assert\NotBlank(allowNull: true)]
     private ?string $streetLineTwo = null;
 
     #[SerializedName('city')]
-    #[Assert\NotBlank(allowNull: true)]
     private ?string $city = null;
 
     #[SerializedName('region')]
-    #[Assert\NotBlank(allowNull: true)]
     private ?string $region = null;
 
     #[SerializedName('country')]
-    #[Assert\NotBlank]
     #[Assert\Country]
     private ?string $country = null;
 
