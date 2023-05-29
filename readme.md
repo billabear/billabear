@@ -8,6 +8,42 @@
 
 Billing Made easy... Coming soon.
 
+## Features:
+
+### White Label Billing
+
+You'll be able to bill customers in a white label fashion, enabling you to white label your applications a lot easier.
+
+You'll be able to define which brand a customer belongs to and all emails will be sent using the correct brand template. Removing tedious work when selling a white label version for resell.
+
+### Support Enterprise Customers 
+
+You'll be able to handle enterprise customers a lot easier. With the ability to define a customer as having an payment type of invoice will allow you to onboard and conform with enterprise billing requirements.
+
+You'll be able to create custom plans with custom limits for Enterprise customers to meet their specific requirements.
+
+### Dunning/Payment Reminders
+
+The ability to define how payment reminds and payment attempts are done after a payment has failed.
+
+### Expiring Card Notifications
+
+You'll be able to reduce your customer churn related to expired cards by sending notifications.
+
+Notifications:
+
+* Start of the month to tell them that it's expired
+* The day before the payment while the card is still meant to be valid.
+* The day before the next payment after the card has expired.
+
+You'll be able to decrease churn further by offering credit for customers who update their card after receiving a notification that their payment method will expire.
+
+### Stripe Billing Integration
+
+You'll be able to continue using the Stripe Billing functionality that you love. While being able to take advantage of all other features.
+
+Or if you're looking to save costs, you can easily migrate away from Stripe Billing with the simple click of a button and let BillaBear handle it.
+
 ## Getting Started
 
 To get started using this repository you can get up and running using Docker and Docker compose.
