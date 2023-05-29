@@ -26,7 +26,7 @@ You'll be able to create custom plans with custom limits for Enterprise customer
 
 The ability to define how payment reminds and payment attempts are done after a payment has failed.
 
-### Expiring Card Notifications
+### Expiring Card Handling
 
 You'll be able to reduce your customer churn related to expired cards by sending notifications.
 
