@@ -16,6 +16,9 @@ To get started using this repository you can get up and running using Docker and
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/billabear/billabear/tree/main)
 
+### Docker Compose
+
+Billabear is deployable using docker-compose using the docker-compose.yaml found in https://github.com/billabear/hosting-docker-compose.
 
 ### Development
 
