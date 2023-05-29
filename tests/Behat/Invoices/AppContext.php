@@ -59,7 +59,7 @@ class AppContext implements Context
             $invoice->setCreatedAt(new \DateTime('now'));
             $invoice->setUpdatedAt(new \DateTime('now'));
             $invoice->setCurrency('USD');
-            $invoice->setPaid(false);
+            $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
             $invoice->setValid(true);
             $invoice->setLines($lines);
             $invoice->setTotal(10000);
@@ -73,6 +73,14 @@ class AppContext implements Context
         }
 
         $this->invoiceRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the unpaid invoice list
+     */
+    public function iViewTheUnpaidInvoiceList()
+    {
+        $this->sendJsonRequest('GET', '/app/invoices/unpaid');
     }
 
     /**
@@ -97,6 +105,21 @@ class AppContext implements Context
         }
 
         throw new \Exception('No invoice found');
+    }
+
+    /**
+     * @Then I will not see an invoice for :arg1
+     */
+    public function iWillNotSeeAnInvoiceFor($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $invoice) {
+            if ($invoice['customer']['email'] === $arg1) {
+                var_dump($data);
+                throw new \Exception('Invoice found');
+            }
+        }
     }
 
     /**

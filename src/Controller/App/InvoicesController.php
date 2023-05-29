@@ -18,6 +18,7 @@ use App\Entity\Invoice;
 use App\Factory\InvoiceFactory;
 use App\Pdf\InvoicePdfGenerator;
 use App\Repository\InvoiceRepositoryInterface;
+use Parthenon\Athena\Filters\BoolFilter;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -56,6 +57,59 @@ class InvoicesController
 
         $filterBuilder = new InvoiceList();
         $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $repository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+            firstId: $firstKey,
+        );
+
+        $dtos = array_map([$factory, 'createAppDto'], $resultSet->getResults());
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+        $listResponse->setFirstKey($resultSet->getFirstKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/invoices/unpaid', name: 'app_invoices_unpaid_list', methods: ['GET'])]
+    public function listUnpaidInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        InvoiceFactory $factory,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $firstKey = $request->get('first_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new InvoiceList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        // Default filter since it's list unpaid
+        $filter = new BoolFilter();
+        $filter->setFieldName('paid');
+        $filter->setData('false');
+        $filters[] = $filter;
 
         $resultSet = $repository->getList(
             filters: $filters,

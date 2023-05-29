@@ -2,5 +2,6 @@ export const TRANSACTIONS_MENU_TRANSACTIONS = {
     payments: "Payments",
     refunds: "Refunds",
     charge_backs: "Charge Backs",
-    invoices: "Invoices"
+    invoices: "Invoices",
+    unpaid_invoices: "Unpaid Invoices"
 };
