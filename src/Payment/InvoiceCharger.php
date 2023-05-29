@@ -55,6 +55,8 @@ class InvoiceCharger
         $response = $this->provider->payments()->chargeCardOnFile($charge);
 
         if (!$response->isSuccessful()) {
+            $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $response);
+
             return;
         }
 

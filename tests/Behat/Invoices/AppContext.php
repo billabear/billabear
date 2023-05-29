@@ -98,4 +98,22 @@ class AppContext implements Context
 
         throw new \Exception('No invoice found');
     }
+
+    /**
+     * @Then there the latest invoice for :arg1 will not be marked as paid
+     */
+    public function thereTheLatestInvoiceForWillNotBeMarkedAsPaid($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        if ($invoice->isPaid()) {
+            throw new \Exception('Invoice is marked as paid');
+        }
+    }
 }

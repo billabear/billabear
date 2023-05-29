@@ -18,6 +18,8 @@ use Obol\Model\CardFile;
 use Obol\Model\CardOnFileResponse;
 use Obol\Model\Charge;
 use Obol\Model\ChargeCardResponse;
+use Obol\Model\ChargeFailure;
+use Obol\Model\Enum\ChargeFailureReasons;
 use Obol\Model\FrontendCardProcess;
 use Obol\Model\PaymentDetails;
 use Obol\Model\Subscription;
@@ -74,6 +76,15 @@ class PaymentService implements PaymentServiceInterface
 
     public function chargeCardOnFile(Charge $cardFile): ChargeCardResponse
     {
+        if ('ref_fails' === $cardFile->getBillingDetails()->getStoredPaymentReference()) {
+            $chargeCardResponse = new ChargeCardResponse();
+            $chargeCardResponse->setSuccessful(false);
+            $chargeCardResponse->setChargeFailure(new ChargeFailure());
+            $chargeCardResponse->getChargeFailure()->setReason(ChargeFailureReasons::LACK_OF_FUNDS);
+
+            return $chargeCardResponse;
+        }
+
         $paymentDetails = new PaymentDetails();
         $paymentDetails->setAmount($cardFile->getAmount());
         $paymentDetails->setCustomerReference($cardFile->getBillingDetails()->getCustomerReference());

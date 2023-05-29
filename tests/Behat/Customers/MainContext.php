@@ -281,7 +281,7 @@ class MainContext implements Context
             $paymentDetails->setBrand('brand');
             $paymentDetails->setDefaultPaymentOption(true);
             $paymentDetails->setDeleted(false);
-            $paymentDetails->setStoredPaymentReference(bin2hex(random_bytes(32)));
+            $paymentDetails->setStoredPaymentReference($row['Payment Reference'] ?? bin2hex(random_bytes(32)));
             $this->customerRepository->getEntityManager()->persist($paymentDetails);
             $this->customerRepository->getEntityManager()->flush();
         }

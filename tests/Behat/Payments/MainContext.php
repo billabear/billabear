@@ -12,7 +12,9 @@
 
 namespace App\Tests\Behat\Payments;
 
+use App\Entity\PaymentAttempt;
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PaymentAttemptRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\Subscriptions\SubscriptionTrait;
@@ -41,6 +43,7 @@ class MainContext implements Context
         private CustomerRepository $customerRepository,
         private PaymentCardServiceRepository $paymentDetailsRepository,
         private PaymentServiceRepository $paymentRepository,
+        private PaymentAttemptRepository $paymentAttemptRepository,
     ) {
     }
 
@@ -119,6 +122,20 @@ class MainContext implements Context
 
         if (!isset($data['payment'])) {
             throw new \Exception("Can't see any payment info");
+        }
+    }
+
+    /**
+     * @Then there is a payment attempt for :arg1 will exist
+     */
+    public function thereIsAPaymentAttemptForWillExist($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $paymentAttempt = $this->paymentAttemptRepository->findOneBy(['customer' => $customer]);
+
+        if (!$paymentAttempt instanceof PaymentAttempt) {
+            throw new \Exception('No payment attempt found');
         }
     }
 }
