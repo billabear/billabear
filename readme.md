@@ -50,6 +50,8 @@ To get started using this repository you can get up and running using Docker and
 
 ### Host on DigitalOcean
 
+You can deploy to DigitalOcean with just a click of the button below and it'll deploy using the DigitalOcean App Platform.
+
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/billabear/billabear/tree/main)
 
 ### Docker Compose
