@@ -53,6 +53,10 @@ class InvoiceCharger
 
         $response = $this->provider->payments()->chargeCardOnFile($charge);
 
+        if (!$response->isSuccessful()) {
+            return;
+        }
+
         $payment = $this->paymentFactory->fromSubscriptionCreation($response->getPaymentDetails(), $invoice->getCustomer());
         foreach ($invoice->getSubscriptions() as $subscription) {
             $payment->addSubscription($subscription);
