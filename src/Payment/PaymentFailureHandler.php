@@ -51,16 +51,23 @@ class PaymentFailureHandler
 
     protected function process(\App\Entity\PaymentAttempt $paymentAttempt): void
     {
-        $paymentFailureProcess = new PaymentFailureProcess();
-        $paymentFailureProcess->setState('started');
-        $paymentFailureProcess->setResolved(false);
-        $paymentFailureProcess->setRetryCount(0);
-        $paymentFailureProcess->setCustomer($paymentAttempt->getCustomer());
-        $paymentFailureProcess->setPaymentAttempt($paymentAttempt);
-        $paymentFailureProcess->setCreatedAt(new \DateTime('now'));
-        $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
-        $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));
+        $paymentFailureProcess = $this->paymentFailureProcessRepository->findActiveForCustomer($paymentAttempt->getCustomer());
 
+        if (!$paymentFailureProcess) {
+            $paymentFailureProcess = new PaymentFailureProcess();
+            $paymentFailureProcess->setState('started');
+            $paymentFailureProcess->setResolved(false);
+            $paymentFailureProcess->setRetryCount(0);
+            $paymentFailureProcess->setCustomer($paymentAttempt->getCustomer());
+            $paymentFailureProcess->setPaymentAttempt($paymentAttempt);
+            $paymentFailureProcess->setCreatedAt(new \DateTime('now'));
+            $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
+            $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));
+        } else {
+            $paymentFailureProcess->increaseRetryCount();
+        }
+
+        $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));
         $this->paymentFailureProcessRepository->save($paymentFailureProcess);
 
         $this->dispatcher->dispatch(new PaymentFailed($paymentAttempt, $paymentFailureProcess), PaymentFailed::NAME);

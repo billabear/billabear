@@ -49,7 +49,10 @@
               <td>{{ currency(invoice.total) }}</td>
               <td>{{ invoice.currency }}</td>
               <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
-              <td><a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a></td>
+              <td>
+                <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a>
+                <SubmitButton class="ml-3 btn--secondary" :in-progress="charging_invoice" @click="attemptPayment(invoice)" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.list.charge') }}</SubmitButton>
+              </td>
             </tr>
             <tr v-if="invoices.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.invoices.list.no_invoices') }}</td>
@@ -108,6 +111,7 @@ export default {
       show_back: false,
       show_filter_menu: false,
       active_filters: [],
+      charging_invoice: false,
       per_page: "10",
       filters: {
         email: {
@@ -133,6 +137,13 @@ export default {
     }
   },
   methods: {
+    attemptPayment: function (invoice ) {
+      this.charging_invoice = true;
+      axios.post('/app/invoice/'+invoice.id+'/charge').then(response => {
+        invoice.paid = response.data.paid;
+        this.charging_invoice = false;
+      })
+    },
     currency: function (value) {
       return currency(value, { fromCents: true });
     },

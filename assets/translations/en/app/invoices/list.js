@@ -6,6 +6,7 @@ export const INVOICES_LIST_TRANSLATIONS = {
     currency: "Currency",
     created_at: "Created At",
     download: "Download",
+    charge: "Attempt Payment",
     filter: {
         title: "Filters",
         button: "Filters",

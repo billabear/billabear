@@ -16,6 +16,7 @@ use App\Api\Filters\InvoiceList;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Invoice;
 use App\Factory\InvoiceFactory;
+use App\Payment\InvoiceCharger;
 use App\Pdf\InvoicePdfGenerator;
 use App\Repository\InvoiceRepositoryInterface;
 use Parthenon\Athena\Filters\BoolFilter;
@@ -156,5 +157,23 @@ class InvoicesController
         );
 
         return $response;
+    }
+
+    #[Route('/app/invoice/{id}/charge', name: 'app_invoice_charge', methods: ['POST'])]
+    public function chargeInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoiceCharger $invoiceCharger
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $invoiceCharger->chargeInvoice($invoice);
+
+        return new JsonResponse(['paid' => $invoice->isPaid()]);
     }
 }

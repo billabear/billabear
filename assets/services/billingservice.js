@@ -5,7 +5,7 @@ function sendAddress(address) {
     return axios.post("/app/billing/details", address).then(handleResponse);
 }
 function saveToken(customerId, token) {
-    return axios.post("/app/customer/"+customerId+"/payment-details/frontend-payment-token", {token}).then(handleResponse);
+    return axios.post("/app/customer/"+customerId+"/payment-card/frontend-payment-token", {token}).then(handleResponse);
 }
 
 function getAddress() {
@@ -13,7 +13,7 @@ function getAddress() {
 }
 
 function getAddCardToken(customerId) {
-    return axios.get("/app/customer/"+customerId+"/payment-details/frontend-payment-token").then(handleResponse);
+    return axios.get("/app/customer/"+customerId+"/payment-card/frontend-payment-token").then(handleResponse);
 }
 
 function getPaymentDetails() {

@@ -139,4 +139,9 @@ class PaymentFailureProcess
     {
         $this->updatedAt = $updatedAt;
     }
+
+    public function increaseRetryCount()
+    {
+        ++$this->retryCount;
+    }
 }

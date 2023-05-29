@@ -78,13 +78,13 @@ class Invoice
     #[ORM\Column(type: 'boolean')]
     private bool $paid = false;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'datetimetz', nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $paidAt;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
     public function __construct()

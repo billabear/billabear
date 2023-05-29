@@ -14,13 +14,17 @@ namespace App\Tests\Behat\Invoices;
 
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Entity\PaymentFailureProcess;
+use App\Factory\PaymentAttemptFactory;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
+use App\Repository\Orm\PaymentAttemptRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Obol\Model\Enum\ChargeFailureReasons;
 
 class AppContext implements Context
 {
@@ -31,6 +35,8 @@ class AppContext implements Context
         private Session $session,
         private InvoiceRepository $invoiceRepository,
         private CustomerRepository $customerRepository,
+        private PaymentAttemptFactory $paymentAttemptFactory,
+        private PaymentAttemptRepository $paymentAttemptRepository,
     ) {
     }
 
@@ -40,39 +46,64 @@ class AppContext implements Context
     public function theFollowingInvoicesExist(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $row) {
-            $customer = $this->getCustomerByEmail($row['Customer']);
-
-            $invoice = new Invoice();
-
-            $line = new InvoiceLine();
-            $line->setInvoice($invoice);
-            $line->setTotal(10000);
-            $line->setVatPercentage(20.0);
-            $line->setSubTotal(8000);
-            $line->setVatTotal(2000);
-            $line->setDescription('A test line');
-            $line->setCurrency('USD');
-            $lines = [$line];
-
-            $invoice->setCustomer($customer);
-            $invoice->setInvoiceNumber(bin2hex(random_bytes(16)));
-            $invoice->setCreatedAt(new \DateTime('now'));
-            $invoice->setUpdatedAt(new \DateTime('now'));
-            $invoice->setCurrency('USD');
-            $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
-            $invoice->setValid(true);
-            $invoice->setLines($lines);
-            $invoice->setTotal(10000);
-            $invoice->setSubTotal(8000);
-            $invoice->setVatTotal(2000);
-            $invoice->setAmountDue(10000);
-            $invoice->setBillerAddress($customer->getBillingAddress());
-            $invoice->setPayeeAddress($customer->getBillingAddress());
-
-            $this->invoiceRepository->getEntityManager()->persist($invoice);
+            $this->createInvoice($row);
         }
 
         $this->invoiceRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the following invoices with a payment attempt exist:
+     */
+    public function theFollowingInvoicesWithAPaymentAttemptExist(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $invoice = $this->createInvoice($row);
+            $paymentAttempt = $this->paymentAttemptFactory->createFromInvoice($invoice, ChargeFailureReasons::CONTACT_PROVIDER);
+
+            $this->paymentAttemptRepository->getEntityManager()->persist($paymentAttempt);
+            $this->paymentAttemptRepository->getEntityManager()->flush();
+
+            $paymentFailureProcess = new PaymentFailureProcess();
+            $paymentFailureProcess->setPaymentAttempt($paymentAttempt);
+            $paymentFailureProcess->setCustomer($paymentAttempt->getCustomer());
+            $paymentFailureProcess->setRetryCount(0);
+            $paymentFailureProcess->setNextAttemptAt(new \DateTime('+2 days'));
+            $paymentFailureProcess->setState('payment_retries');
+            $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
+            $paymentFailureProcess->setCreatedAt(new \DateTime('now'));
+            $paymentFailureProcess->setResolved(false);
+
+            $this->paymentAttemptRepository->getEntityManager()->persist($paymentFailureProcess);
+            $this->paymentAttemptRepository->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @When charge the invoice for :arg1
+     */
+    public function chargeTheInvoiceFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        $this->sendJsonRequest('POST', '/app/invoice/'.$invoice->getId().'/charge');
+    }
+
+    /**
+     * @Then then the invoice for :arg1 will be marked as paid
+     */
+    public function thenTheInvoiceForWillBeMarkedAsPaid($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+        $this->invoiceRepository->getEntityManager()->refresh($invoice);
+
+        if (!$invoice->isPaid()) {
+            throw new \Exception('Invoice not paid');
+        }
     }
 
     /**
@@ -138,5 +169,48 @@ class AppContext implements Context
         if ($invoice->isPaid()) {
             throw new \Exception('Invoice is marked as paid');
         }
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
+    protected function createInvoice(mixed $row): Invoice
+    {
+        $customer = $this->getCustomerByEmail($row['Customer']);
+
+        $invoice = new Invoice();
+
+        $line = new InvoiceLine();
+        $line->setInvoice($invoice);
+        $line->setTotal(10000);
+        $line->setVatPercentage(20.0);
+        $line->setSubTotal(8000);
+        $line->setVatTotal(2000);
+        $line->setDescription('A test line');
+        $line->setCurrency('USD');
+        $lines = [$line];
+
+        $invoice->setCustomer($customer);
+        $invoice->setInvoiceNumber(bin2hex(random_bytes(16)));
+        $invoice->setCreatedAt(new \DateTime('now'));
+        $invoice->setUpdatedAt(new \DateTime('now'));
+        $invoice->setCurrency('USD');
+        $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
+        $invoice->setValid(true);
+        $invoice->setLines($lines);
+        $invoice->setTotal(10000);
+        $invoice->setSubTotal(8000);
+        $invoice->setVatTotal(2000);
+        $invoice->setAmountDue(10000);
+        $invoice->setBillerAddress($customer->getBillingAddress());
+        $invoice->setPayeeAddress($customer->getBillingAddress());
+
+        $this->invoiceRepository->getEntityManager()->persist($invoice);
+
+        $this->invoiceRepository->getEntityManager()->flush();
+
+        return $invoice;
     }
 }
