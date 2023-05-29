@@ -36,10 +36,11 @@ class InvoiceCharger
         private PaymentRepositoryInterface $paymentRepository,
         private EventDispatcherInterface $eventDispatcher,
         private InvoiceRepositoryInterface $invoiceRepository,
+        private PaymentFailureHandler $paymentFailureHandler,
     ) {
     }
 
-    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null)
+    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null): void
     {
         if (!$paymentCard) {
             $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());

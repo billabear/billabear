@@ -13,7 +13,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\Payment;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
@@ -27,11 +26,11 @@ class PaymentFailureProcess
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Payment::class)]
-    private Payment $payment;
+    #[ORM\ManyToOne(targetEntity: PaymentAttempt::class)]
+    private PaymentAttempt $paymentAttempt;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
-    private Customer $customer;
+    private ?Customer $customer = null;
 
     #[ORM\Column('state', type: 'string')]
     private string $state;
@@ -61,14 +60,14 @@ class PaymentFailureProcess
         $this->id = $id;
     }
 
-    public function getPayment(): Payment
+    public function getPaymentAttempt(): PaymentAttempt
     {
-        return $this->payment;
+        return $this->paymentAttempt;
     }
 
-    public function setPayment(Payment $payment): void
+    public function setPaymentAttempt(PaymentAttempt $paymentAttempt): void
     {
-        $this->payment = $payment;
+        $this->paymentAttempt = $paymentAttempt;
     }
 
     public function getCustomer(): Customer
@@ -76,7 +75,7 @@ class PaymentFailureProcess
         return $this->customer;
     }
 
-    public function setCustomer(Customer $customer): void
+    public function setCustomer(?Customer $customer): void
     {
         $this->customer = $customer;
     }

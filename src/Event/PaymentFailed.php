@@ -12,6 +12,7 @@
 
 namespace App\Event;
 
+use App\Entity\PaymentAttempt;
 use App\Entity\PaymentFailureProcess;
 use Parthenon\Billing\Entity\Payment;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -20,13 +21,13 @@ class PaymentFailed extends Event
 {
     public const NAME = 'billabear.payment.failed';
 
-    public function __construct(private Payment $payment, private PaymentFailureProcess $paymentFailureProcess)
+    public function __construct(private PaymentAttempt $paymentAttempt, private PaymentFailureProcess $paymentFailureProcess)
     {
     }
 
-    public function getPayment(): Payment
+    public function getPaymentAttempt(): Payment
     {
-        return $this->payment;
+        return $this->paymentAttempt;
     }
 
     public function getPaymentFailureProcess(): PaymentFailureProcess

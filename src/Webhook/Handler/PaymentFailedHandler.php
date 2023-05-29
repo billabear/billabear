@@ -14,11 +14,8 @@ declare(strict_types=1);
 
 namespace App\Webhook\Handler;
 
-use App\Entity\PaymentFailureProcess;
-use App\Event\PaymentFailed;
-use App\Repository\PaymentFailureProcessRepositoryInterface;
+use App\Payment\PaymentFailureHandler;
 use Obol\Model\Events\ChargeFailed;
-use Obol\Model\Events\ChargeSucceeded;
 use Obol\Model\Events\EventInterface;
 use Parthenon\Billing\Customer\CustomerManagerInterface;
 use Parthenon\Billing\Entity\Subscription;
@@ -30,17 +27,18 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Subscription\PaymentLinkerInterface;
 use Parthenon\Billing\Webhook\HandlerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
 class PaymentFailedHandler implements HandlerInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private PaymentRepositoryInterface $paymentRepository,
         private CustomerManagerInterface $customerManager,
         private PaymentFactoryInterface $paymentFactory,
         private PaymentLinkerInterface $eventLinker,
-        private PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
-        private EventDispatcherInterface $dispatcher,
+        private PaymentFailureHandler $paymentFailureHandler,
     ) {
     }
 
@@ -50,7 +48,7 @@ class PaymentFailedHandler implements HandlerInterface
     }
 
     /**
-     * @param ChargeSucceeded $event
+     * @param ChargeFailed $event
      */
     public function handle(EventInterface $event): void
     {
@@ -67,7 +65,7 @@ class PaymentFailedHandler implements HandlerInterface
                 $customer = $this->customerManager->getCustomerForReference($event->getExternalCustomerId());
                 $payment->setCustomer($customer);
             } catch (NoCustomerException $e) {
-                // Handle error some how.
+                $this->getLogger()->emergency('No customer found for payment while customer reference given. Possibly an import is neeeded.');
             }
         }
 
@@ -77,23 +75,7 @@ class PaymentFailedHandler implements HandlerInterface
         foreach ($payment->getSubscriptions() as $subscription) {
             $subscription->setStatus(SubscriptionStatus::OVERDUE_PAYMENT_OPEN);
         }
-
-        $this->paymentRepository->save($payment);
-
-        $paymentFailureProcess = new PaymentFailureProcess();
-        $paymentFailureProcess->setState('started');
-        $paymentFailureProcess->setResolved(false);
-        $paymentFailureProcess->setRetryCount(0);
-        if (isset($customer)) {
-            $paymentFailureProcess->setCustomer($customer);
-        }
-        $paymentFailureProcess->setPayment($payment);
-        $paymentFailureProcess->setCreatedAt(new \DateTime('now'));
-        $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
-        $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));
-
-        $this->paymentFailureProcessRepository->save($paymentFailureProcess);
-
-        $this->dispatcher->dispatch(new PaymentFailed($payment, $paymentFailureProcess), PaymentFailed::NAME);
+        // Todo remove the above.
+        $this->paymentFailureHandler->handlePayment($payment, $event);
     }
 }

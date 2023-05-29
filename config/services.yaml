@@ -246,6 +246,12 @@ services:
     app.repository.orm.generic_background_task:
         class: App\Repository\Orm\GenericBackgroundTaskRepository
 
+    App\Repository\PaymentAttemptRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.payment_attempt'
+    app.repository.orm.payment_attempt:
+        class: App\Repository\Orm\PaymentAttemptRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
