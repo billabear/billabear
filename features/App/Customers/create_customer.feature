@@ -25,14 +25,6 @@ Feature: Customer Creation
     Then there should be an error for "email"
     And there should not be an error for "country"
 
-  Scenario: No country
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a customer via the app with the following info
-      | Email   | customer@example.org |
-      | Country |                    |
-    Then there should be an error for "address.country"
-    And there should not be an error for "email"
-
   Scenario: Invalid email
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info

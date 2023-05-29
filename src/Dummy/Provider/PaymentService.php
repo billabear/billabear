@@ -82,6 +82,7 @@ class PaymentService implements PaymentServiceInterface
 
         $chargeCardResponse = new ChargeCardResponse();
         $chargeCardResponse->setPaymentDetails($paymentDetails);
+        $chargeCardResponse->setSuccessful(true);
 
         return $chargeCardResponse;
     }
