@@ -44,6 +44,13 @@ You'll be able to continue using the Stripe Billing functionality that you love.
 
 Or if you're looking to save costs, you can easily migrate away from Stripe Billing with the simple click of a button and let BillaBear handle it.
 
+### Subscription Management
+
+You'll be able to quickly and easy manage subscriptions.
+
+* Easily change prices for subscriptions including moving existing Stripe Billing subscriptions to a new price.
+* Move all existing subscriptions to a new plan.
+
 ## Getting Started
 
 To get started using this repository you can get up and running using Docker and Docker compose.
