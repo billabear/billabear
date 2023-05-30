@@ -15,7 +15,7 @@ namespace App\Entity\Stats;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
-#[ORM\Table('charge_back_amount_monthly_stats')]
+#[ORM\Table('stats_charge_back_amount_monthly')]
 class ChargeBackAmountMonthlyStats extends AbstractMoneyStat
 {
 }

@@ -10,12 +10,16 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity\Stats;
+namespace App\Repository\Orm;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Stats\MonthlyRevenueStat;
+use Doctrine\Persistence\ManagerRegistry;
+use Parthenon\Common\Repository\CustomServiceRepository;
 
-#[ORM\Entity()]
-#[ORM\Table('stats_refund_amount_monthly')]
-class RefundAmountMonthlyStats extends AbstractMoneyStat
+class MonthlyRevenueStatsRepository extends CustomServiceRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, MonthlyRevenueStat::class);
+    }
 }

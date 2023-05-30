@@ -10,12 +10,8 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity\Stats;
+namespace App\Repository\Stats;
 
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity()]
-#[ORM\Table('stats_refund_amount_monthly')]
-class RefundAmountMonthlyStats extends AbstractMoneyStat
+class MonthlyRevenueStatsRepository extends AbstractAmountRepository implements MonthlyRevenueStatsRepositoryInterface
 {
 }

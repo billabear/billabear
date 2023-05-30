@@ -15,7 +15,7 @@ namespace App\Entity\Stats;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
-#[ORM\Table('stats_refund_amount_monthly')]
-class RefundAmountMonthlyStats extends AbstractMoneyStat
+#[ORM\Table('stats_mrr')]
+class MonthlyRevenueStat extends AbstractMoneyStat
 {
 }
