@@ -52,6 +52,7 @@ import CreditCreate from "../views/App/Credit/CreditCreate.vue";
 import InvoicesList from "../views/App/Invoices/InvoicesList.vue";
 import StripeImportView from "../views/App/Settings/Stripe/StripeImportView.vue";
 import UnpaidInvoicesList from "../views/App/Invoices/UnpaidInvoicesList.vue";
+import ExchangeRatesList from "../views/App/Settings/ExchangeRates/ExchangeRatesList.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -210,6 +211,11 @@ export const APP_ROUTES = [
                 name: "app.settings.api_keys.main",
                 path: "api-keys",
                 component: ApiKeysMain,
+            },
+            {
+                name: "app.settings.exchange_rates.list",
+                path: "exchange-rates",
+                component: ExchangeRatesList
             }
         ]
     },

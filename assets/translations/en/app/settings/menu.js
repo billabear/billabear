@@ -9,4 +9,5 @@ export const SETTINGS_MENU_TRANSACTIONS = {
     users: "Users",
     stripe: "Stripe",
     api_keys: "API Keys",
+    exchange_rates: "Exchange Rates",
 };

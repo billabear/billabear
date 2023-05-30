@@ -7,6 +7,7 @@ import {SYSTEM_SETTINGS_TRANSLATIONS} from "./system_settings";
 import {SETTINGS_USER_TRANSLATIONS} from "./user";
 import {SETTINGS_STRIPE_TRANSLATIONS} from "./stripe";
 import {SETTINGS_API_KEYS_TRANSLATIONS} from "./api_keys";
+import {EXCHANGE_RATES_TRANSLATIONS} from "./exchange_rates";
 
 export const SETTINGS_TRANSLATIONS = {
     menu: SETTINGS_MENU_TRANSACTIONS,
@@ -18,4 +19,5 @@ export const SETTINGS_TRANSLATIONS = {
     user: SETTINGS_USER_TRANSLATIONS,
     stripe: SETTINGS_STRIPE_TRANSLATIONS,
     api_keys: SETTINGS_API_KEYS_TRANSLATIONS,
+    exchange_rates: EXCHANGE_RATES_TRANSLATIONS,
 };

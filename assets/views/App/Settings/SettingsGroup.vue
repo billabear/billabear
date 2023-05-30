@@ -12,6 +12,7 @@
           <li class="my-3"><router-link :to="{name: 'app.settings.users.list'}">{{ $t('app.settings.menu.users') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.settings.menu.stripe') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.settings.api_keys.main'}">{{ $t('app.settings.menu.api_keys') }}</router-link></li>
+          <li class="my-3"><router-link :to="{name: 'app.settings.exchange_rates.list'}">{{ $t('app.settings.menu.exchange_rates') }}</router-link></li>
 
 
 

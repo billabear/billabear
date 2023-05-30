@@ -30,4 +30,9 @@ class ExchangeRatesRepository extends DoctrineRepository implements ExchangeRate
 
         return $exchangeRate;
     }
+
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }
