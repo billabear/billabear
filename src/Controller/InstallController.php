@@ -16,6 +16,7 @@ use App\Entity\User;
 use App\Install\DatabaseCreator;
 use App\Install\Dto\InstallRequest;
 use App\Install\Steps\BrandStep;
+use App\Install\Steps\DataStep;
 use App\Install\Steps\SystemSettingsStep;
 use App\Install\Steps\TemplateStep;
 use App\Repository\SettingsRepositoryInterface;
@@ -56,6 +57,7 @@ class InstallController
         SystemSettingsStep $systemSettingsStep,
         BrandStep $brandStep,
         TemplateStep $templateStep,
+        DataStep $dataStep,
         UserCreatorInterface $userCreator,
         UserRepositoryInterface $userRepository,
     ): Response {
@@ -73,6 +75,7 @@ class InstallController
         $systemSettingsStep->install($dto);
         $brandStep->install($dto);
         $templateStep->install();
+        $dataStep->install();
 
         $user = new User();
         $user->setEmail($dto->getEmail());
