@@ -12,6 +12,10 @@
 
 namespace App\Repository\Stats;
 
+use App\Entity\Stats\MonthlyRevenueStat;
+use Brick\Money\Currency;
+
 interface MonthlyRevenueStatsRepositoryInterface extends AmountRepositoryInterface
 {
+    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): MonthlyRevenueStat;
 }

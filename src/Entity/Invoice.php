@@ -322,4 +322,9 @@ class Invoice
     {
         $this->amountDue = $amountDue;
     }
+
+    public function getAmountDueAsMoney(): Money
+    {
+        return Money::ofMinor($this->amountDue, strtolower($this->currency));
+    }
 }

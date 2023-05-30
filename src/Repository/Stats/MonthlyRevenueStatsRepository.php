@@ -12,6 +12,33 @@
 
 namespace App\Repository\Stats;
 
+use App\Entity\Stats\MonthlyRevenueStat;
+use Brick\Money\Currency;
+
 class MonthlyRevenueStatsRepository extends AbstractAmountRepository implements MonthlyRevenueStatsRepositoryInterface
 {
+    public function getStatForDateTimeAndCurrency(\DateTimeInterface $dateTime, Currency $currency, string $brandCode): MonthlyRevenueStat
+    {
+        $year = $dateTime->format('Y');
+        $month = $dateTime->format('m');
+        $day = 1;
+        $stat = $this->entityRepository->findOneBy([
+            'year' => $year,
+            'month' => $month,
+            'day' => $day,
+            'currency' => $currency->getCurrencyCode(),
+            'brandCode' => $brandCode,
+        ]);
+
+        if (!$stat instanceof MonthlyRevenueStat) {
+            $stat = new MonthlyRevenueStat();
+            $stat->setYear($year);
+            $stat->setMonth($month);
+            $stat->setDay($day);
+            $stat->setCurrency($currency->getCurrencyCode());
+            $stat->setBrandCode($brandCode);
+        }
+
+        return $stat;
+    }
 }
