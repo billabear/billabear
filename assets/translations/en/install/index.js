@@ -14,5 +14,6 @@ export const INSTALL_TRANSLATIONS = {
         webhook_url: "Base Url"
     },
     complete_text: "BillaBear has been installed! You can now login using the details you provided.",
-    login_link: "Click here to login"
+    login_link: "Click here to login",
+    unknown_error: "Unknown error."
 }

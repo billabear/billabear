@@ -6,8 +6,8 @@
           <PublicLogo />
         </div>
         <h1 class="h1 text-center">{{ $t('install.title') }}</h1>
-        <div class="px-5 mt-2 mb-3" v-if="error_info.has_error">
-          <div class="alert-error text-center">{{ error_info.message }}</div>
+        <div class="px-5 mt-2 mb-3" v-if="errorMessage">
+          <div class="alert-error text-center">{{ errorMessage }}</div>
         </div>
 
         <div class="text-center mt-5 mb-3">
@@ -175,6 +175,7 @@ export default {
       timezone: 'Europe/Amsterdam',
       webhook_url: null,
       complete: false,
+      errorMessage: null,
     }
   },
   mounted() {
@@ -198,7 +199,12 @@ export default {
             this.complete = true;
           }
       ).catch(error => {
-        this.errors = error.response.data.errors;
+        if (error.response.data.errors !== undefined && error.respones.data.errors !== null) {
+          this.errors = error.response.data.errors;
+        } else {
+          this.errorMessage = this.$t('install.unknown_error')
+        }
+
         this.sendingInProgress = false;
         this.success = false;
       })
