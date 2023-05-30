@@ -16,6 +16,7 @@ use App\Schedule\Messenger\Message\ExpiredCardsDayBefore;
 use App\Schedule\Messenger\Message\ExpiredCardsFirstOfMonth;
 use App\Schedule\Messenger\Message\GenerateNewInvoices;
 use App\Schedule\Messenger\Message\GenericTasks;
+use App\Schedule\Messenger\Message\RefreshExchangeRates;
 use App\Schedule\Messenger\Message\RetryPayments;
 use App\Schedule\Messenger\Message\StripeImport;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
@@ -32,6 +33,7 @@ class MainSchedule implements ScheduleProviderInterface
         $schedule->add(RecurringMessage::cron('* * * * *', new StripeImport()));
         $schedule->add(RecurringMessage::cron('* * * * *', new GenericTasks()));
         $schedule->add(RecurringMessage::cron('* * * * *', new RetryPayments()));
+        $schedule->add(RecurringMessage::cron('1 3 * * *', new RefreshExchangeRates())); // Every day at 03:01 - this avoids the standard midnight process rush.
         $schedule->add(RecurringMessage::cron('*/5 * * * *', new GenerateNewInvoices()));
         $schedule->add(RecurringMessage::cron('5 0 * * *', new ExpiredCardsDayBefore()));
         $schedule->add(RecurringMessage::cron('1 0 1 * *', new ExpiredCardsFirstOfMonth()));

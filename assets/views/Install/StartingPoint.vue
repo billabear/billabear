@@ -19,6 +19,11 @@
           <input type="text" class="input-field" v-model="default_brand" />
         </div>
         <div class="px-5 mb-3">
+          <label class="block mb-1">{{ $t('install.settings.currency') }}</label>
+          <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
+          <CurrencyRate v-model="currency" />
+        </div>
+        <div class="px-5 mb-3">
           <label class="block mb-1">{{ $t('install.settings.from_email') }}</label>
           <p class="form-field-error" v-if="errors.fromEmail != undefined">{{ errors.fromEmail }}</p>
           <input type="text" class="input-field" v-model="from_email" />
@@ -157,10 +162,11 @@
 <script>
 import PublicLogo from "../../components/public/PublicLogo.vue";
 import axios from "axios";
+import CurrencyRate from "../../components/app/Forms/CurrencySelect.vue";
 
 export default {
   name: "StartingPoint",
-  components: {PublicLogo},
+  components: {CurrencyRate, PublicLogo},
   data() {
     return {
       error_info: {
@@ -176,6 +182,7 @@ export default {
       webhook_url: null,
       complete: false,
       errorMessage: null,
+      currency: null,
     }
   },
   mounted() {
@@ -191,6 +198,7 @@ export default {
          webhook_url: this.webhook_url,
          email: this.email,
          password: this.password,
+         currency: this.currency,
       };
       axios.post('/install/process', payload).then(
           response => {
@@ -199,7 +207,7 @@ export default {
             this.complete = true;
           }
       ).catch(error => {
-        if (error.response.data.errors !== undefined && error.respones.data.errors !== null) {
+        if (error.response.data.errors !== undefined && error.response.data.errors !== null) {
           this.errors = error.response.data.errors;
         } else {
           this.errorMessage = this.$t('install.unknown_error')

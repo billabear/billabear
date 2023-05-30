@@ -32,6 +32,9 @@ class SystemSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $webhookExternalReference = null;
 
+    #[ORM\Column(type: 'string', nullable: false)]
+    private string $mainCurrency;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -80,5 +83,15 @@ class SystemSettings
     public function setWebhookUrl(?string $webhookUrl): void
     {
         $this->webhookUrl = $webhookUrl;
+    }
+
+    public function getMainCurrency(): string
+    {
+        return $this->mainCurrency;
+    }
+
+    public function setMainCurrency(string $mainCurrency): void
+    {
+        $this->mainCurrency = $mainCurrency;
     }
 }

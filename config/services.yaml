@@ -259,6 +259,12 @@ services:
     app.repository.orm.payment_attempt:
         class: App\Repository\Orm\PaymentAttemptRepository
 
+    App\Repository\ExchangeRatesRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.exchange_rates'
+    app.repository.orm.exchange_rates:
+        class: App\Repository\Orm\ExchangeRatesRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

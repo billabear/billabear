@@ -42,6 +42,10 @@ class InstallRequest
     #[Assert\NotBlank]
     private $password;
 
+    #[Assert\NotBlank]
+    #[Assert\Currency]
+    private $currency;
+
     public function getDefaultBrand()
     {
         return $this->defaultBrand;
@@ -100,5 +104,15 @@ class InstallRequest
     public function setPassword($password): void
     {
         $this->password = $password;
+    }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
     }
 }

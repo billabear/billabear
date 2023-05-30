@@ -11,7 +11,8 @@ export const INSTALL_TRANSLATIONS = {
         default_brand: "Default Brand Name",
         from_email: "Default From Email Address",
         timezone: "Timezone",
-        webhook_url: "Base Url"
+        webhook_url: "Base Url",
+        currency: "Currency"
     },
     complete_text: "BillaBear has been installed! You can now login using the details you provided.",
     login_link: "Click here to login",

@@ -27,6 +27,7 @@ class SystemSettingsStep
         $systemSettings = new Settings\SystemSettings();
         $systemSettings->setTimezone($request->getTimezone());
         $systemSettings->setSystemUrl($request->getWebhookUrl());
+        $systemSettings->setMainCurrency(strtoupper($request->getCurrency()));
 
         $notification = new Settings\NotificationSettings();
         $notification->setEmsp(Settings\NotificationSettings::EMSP_SYSTEM);

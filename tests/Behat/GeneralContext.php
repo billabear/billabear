@@ -74,6 +74,7 @@ class GeneralContext implements Context
         $settings->setNotificationSettings(new Settings\NotificationSettings());
         $settings->setSystemSettings(new Settings\SystemSettings());
         $settings->getSystemSettings()->setUseStripeBilling(true);
+        $settings->getSystemSettings()->setMainCurrency('EUR');
 
         $em->persist($settings);
         $em->flush();
