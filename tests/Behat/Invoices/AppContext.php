@@ -19,6 +19,7 @@ use App\Factory\PaymentAttemptFactory;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Repository\Orm\PaymentAttemptRepository;
+use App\Repository\Orm\PaymentFailureProcessRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -37,6 +38,7 @@ class AppContext implements Context
         private CustomerRepository $customerRepository,
         private PaymentAttemptFactory $paymentAttemptFactory,
         private PaymentAttemptRepository $paymentAttemptRepository,
+        private PaymentFailureProcessRepository $paymentFailureProcessRepository,
     ) {
     }
 
@@ -67,7 +69,7 @@ class AppContext implements Context
             $paymentFailureProcess = new PaymentFailureProcess();
             $paymentFailureProcess->setPaymentAttempt($paymentAttempt);
             $paymentFailureProcess->setCustomer($paymentAttempt->getCustomer());
-            $paymentFailureProcess->setRetryCount(0);
+            $paymentFailureProcess->setRetryCount(intval($row['Retry Count'] ?? 0));
             $paymentFailureProcess->setNextAttemptAt(new \DateTime($row['Next Attempt'] ?? '+2 days'));
             $paymentFailureProcess->setState('payment_retries');
             $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
@@ -76,6 +78,25 @@ class AppContext implements Context
 
             $this->paymentAttemptRepository->getEntityManager()->persist($paymentFailureProcess);
             $this->paymentAttemptRepository->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @Then the retry count for payment failure process for :arg1 will be :arg2
+     */
+    public function theRetryCountForPaymentFailureProcessForWillBe($customerEmail, $count)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $paymentFailureProcess = $this->paymentFailureProcessRepository->findOneBy(['customer' => $customer]);
+
+        if (!$paymentFailureProcess instanceof PaymentFailureProcess) {
+            throw new \Exception('No payment failure found');
+        }
+        $this->paymentAttemptRepository->getEntityManager()->refresh($paymentFailureProcess);
+
+        if ($paymentFailureProcess->getRetryCount() !== intval($count)) {
+            throw new \Exception('Found retry count '.$paymentFailureProcess->getRetryCount());
         }
     }
 
@@ -103,6 +124,21 @@ class AppContext implements Context
 
         if (!$invoice->isPaid()) {
             throw new \Exception('Invoice not paid');
+        }
+    }
+
+    /**
+     * @Then then the invoice for :arg1 will not be marked as paid
+     */
+    public function thenTheInvoiceForWillNotBeMarkedAsPaid($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+        $this->invoiceRepository->getEntityManager()->refresh($invoice);
+
+        if ($invoice->isPaid()) {
+            throw new \Exception('Invoice paid');
         }
     }
 
