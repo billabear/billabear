@@ -29,5 +29,10 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     /**
      * @return Subscription[]
      */
-    public function getAll();
+    public function getAll(): array;
+
+    /**
+     * @return Subscription[]
+     */
+    public function getAllActive(): array;
 }

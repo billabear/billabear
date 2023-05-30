@@ -56,8 +56,13 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return $qb->getQuery()->getResult();
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->entityRepository->findAll();
+    }
+
+    public function getAllActive(): array
+    {
+        return $this->entityRepository->findBy(['status' => SubscriptionStatus::ACTIVE]);
     }
 }
