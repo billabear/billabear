@@ -76,6 +76,7 @@ default:
                 # Background Jobs
                 - App\Tests\Behat\Background\ExpiringCards\MainContext
                 - App\Tests\Behat\Background\Invoice\MainContext
+                - App\Tests\Behat\Background\Payments\MainContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

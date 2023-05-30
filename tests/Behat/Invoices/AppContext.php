@@ -68,7 +68,7 @@ class AppContext implements Context
             $paymentFailureProcess->setPaymentAttempt($paymentAttempt);
             $paymentFailureProcess->setCustomer($paymentAttempt->getCustomer());
             $paymentFailureProcess->setRetryCount(0);
-            $paymentFailureProcess->setNextAttemptAt(new \DateTime('+2 days'));
+            $paymentFailureProcess->setNextAttemptAt(new \DateTime($row['Next Attempt'] ?? '+2 days'));
             $paymentFailureProcess->setState('payment_retries');
             $paymentFailureProcess->setUpdatedAt(new \DateTime('now'));
             $paymentFailureProcess->setCreatedAt(new \DateTime('now'));

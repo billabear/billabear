@@ -10,17 +10,23 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Tests\Behat\Background\Payments;
 
-use App\Entity\PaymentFailureProcess;
-use Parthenon\Common\Repository\RepositoryInterface;
+use App\Background\Payments\RetryPaymentsProcess;
+use Behat\Behat\Context\Context;
 
-interface PaymentFailureProcessRepositoryInterface extends RepositoryInterface
+class MainContext implements Context
 {
-    public function findActiveForCustomer(\App\Entity\Customer $customer): ?PaymentFailureProcess;
+    public function __construct(
+        private RetryPaymentsProcess $paymentsProcess
+    ) {
+    }
 
     /**
-     * @return PaymentFailureProcess[]
+     * @When I retry failed payments
      */
-    public function findRetriesForNextMinute(): array;
+    public function iRetryFailedPayments()
+    {
+        $this->paymentsProcess->execute();
+    }
 }

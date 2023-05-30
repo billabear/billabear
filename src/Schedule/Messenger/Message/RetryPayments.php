@@ -10,17 +10,8 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Schedule\Messenger\Message;
 
-use App\Entity\PaymentFailureProcess;
-use Parthenon\Common\Repository\RepositoryInterface;
-
-interface PaymentFailureProcessRepositoryInterface extends RepositoryInterface
+class RetryPayments
 {
-    public function findActiveForCustomer(\App\Entity\Customer $customer): ?PaymentFailureProcess;
-
-    /**
-     * @return PaymentFailureProcess[]
-     */
-    public function findRetriesForNextMinute(): array;
 }

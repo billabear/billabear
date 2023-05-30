@@ -33,4 +33,21 @@ class PaymentFailureProcessRepository extends DoctrineRepository implements Paym
 
         return $result;
     }
+
+    public function findRetriesForNextMinute(): array
+    {
+        $tenSecondsAgo = new \DateTime('-10 seconds');
+        $aMinute = new \DateTime('+1 minute');
+        $qb = $this->entityRepository->createQueryBuilder('pfp');
+        $qb->where('pfp.nextAttemptAt > :tenSecondsAgo')
+            ->andWhere('pfp.nextAttemptAt < :aMinute')
+            ->andWhere('pfp.state = :retryPayments')
+            ->setParameter('tenSecondsAgo', $tenSecondsAgo)
+            ->setParameter('aMinute', $aMinute)
+            ->setParameter('retryPayments', 'payment_retries');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }
