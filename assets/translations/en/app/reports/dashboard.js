@@ -14,5 +14,7 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
     },
     charge_back_amount: {
         title: "Amount Disputed"
-    }
+    },
+    estimated_mrr: "Estimated MRR",
+    estimated_arr: "Estimated ARR"
 };

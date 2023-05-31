@@ -9,6 +9,16 @@
 
         <apexchart ref="analyticsChart" :series="subscriptionCreatedChartSeries" :options="subscriptionCreatedChartOptions"  height="400"   />
       </div>
+        <div class="grid">
+          <div class="text-center">
+            <h3>{{ $t('app.reports.dashboard.estimated_mrr') }}</h3>
+            <span class="text-8xl">{{ estimated_mrr }} </span> {{ currency }}
+          </div>
+          <div class="text-center">
+            <h3>{{ $t('app.reports.dashboard.estimated_arr') }}</h3>
+            <span class="text-8xl">{{ estimated_arr }} </span> {{ currency }}
+          </div>
+        </div>
         <div>
           <h2>{{ $t('app.reports.dashboard.subscription_cancellation.title') }}</h2>
           <apexchart ref="analyticsChart" :series="subscriptionCancellationChartSeries" :options="subscriptionCancellationChartOptions"  height="400"   />
@@ -39,6 +49,9 @@ export default {
   data() {
     return {
       ready: false,
+      estimated_mrr: 0,
+      estimated_arr: 0,
+      currency: null,
       subscriptionCreatedChartSeries: [],
       subscriptionCreatedChartOptions: {
         title: {
@@ -260,6 +273,10 @@ export default {
       const chargeBackAmountStats = this.convertMoneyToChartData(this.responseData.charge_back_amount[viewName]);
       this.chargeBackAmountChartSeries = chargeBackAmountStats.values;
       this.chargeBackAmountChartOptions.xaxis.categories = chargeBackAmountStats.categories;
+
+      this.currency = this.responseData.currency;
+      this.estimated_mrr = this.responseData.estimated_mrr;
+      this.estimated_arr = this.responseData.estimated_arr;
     },
     convertStatToChartData: function (input) {
       var categories = []
