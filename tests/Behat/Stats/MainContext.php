@@ -370,6 +370,7 @@ class MainContext implements Context
     {
         $data = $this->getJsonContent();
         if (count($data['subscription_creation']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
+            var_dump($data['subscription_creation']['monthly']);
             throw new \Exception('wrong count');
         }
     }

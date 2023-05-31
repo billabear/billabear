@@ -48,12 +48,12 @@ class CachedStats
         $this->id = $id;
     }
 
-    public function getType(): string
+    public function getType(): CachedStatsType
     {
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(CachedStatsType $type): void
     {
         $this->type = $type;
     }

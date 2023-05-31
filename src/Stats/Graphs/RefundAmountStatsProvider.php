@@ -31,10 +31,10 @@ class RefundAmountStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
-        $oneYear = new \DateTime('-11 months');
-        $oneYear = $oneYear->modify('first day of this month');
-        $tenYears = new \DateTime('-9 years');
-        $tenYears = $tenYears->modify('first day of january');
+        $oneYear = new \DateTime('first day of this month');
+        $oneYear = $oneYear->modify('-11 months');
+        $tenYears = new \DateTime('first day of january');
+        $tenYears = $tenYears->modify('-9 years');
 
         $daily = $this->refundAmountDailyStatsRepository->getFromToStats($thirtyDaysAgo, $now);
         $monthly = $this->refundAmountMonthlyStatsRepository->getFromToStats($oneYear, $now);

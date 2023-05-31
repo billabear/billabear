@@ -165,7 +165,6 @@ services:
     app.repository.orm.subscription_cancellation_yearly_stats:
         class: App\Repository\Orm\SubscriptionCancellationYearlyStatsRepository
 
-
     App\Repository\Stats\CachedStatsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.cached_stats'

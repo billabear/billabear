@@ -12,9 +12,38 @@
 
 namespace App\Repository\Stats;
 
+use App\Entity\Stats\CachedStats;
+use App\Enum\CachedStatsType;
 use Parthenon\Common\Repository\DoctrineRepository;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 class CachedStatsRepository extends DoctrineRepository implements RepositoryInterface
 {
+    public function getNumberStat(string $name): CachedStats
+    {
+        $stat = $this->entityRepository->findOneBy(['name' => $name]);
+
+        if (!$stat instanceof CachedStats) {
+            $stat = new CachedStats();
+            $stat->setName($name);
+            $stat->setType(CachedStatsType::NUMBER);
+            $stat->setValue(0);
+        }
+
+        return $stat;
+    }
+
+    public function getMoneyStat(string $name): CachedStats
+    {
+        $stat = $this->entityRepository->findOneBy(['name' => $name]);
+
+        if (!$stat instanceof CachedStats) {
+            $stat = new CachedStats();
+            $stat->setName($name);
+            $stat->setType(CachedStatsType::MONEY);
+            $stat->setValue(0);
+        }
+
+        return $stat;
+    }
 }
