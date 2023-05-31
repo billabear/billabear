@@ -35,12 +35,12 @@ class AppContext implements Context
     }
 
     /**
-     * @When the following customers have cards that will expire this month:
+     * @When the following customers have cards that will expire in 30 days:
      */
     public function theFollowingCustomersHaveCardsThatWillExpireThisMonth(TableNode $table)
     {
         $rows = $table->getColumnsHash();
-        $now = new \DateTime();
+        $now = new \DateTime('+30 days');
         foreach ($rows as $row) {
             $customer = $this->getCustomerByEmail($row['Customer Email']);
             $paymentDetails = new PaymentCard();
