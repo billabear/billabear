@@ -16,7 +16,7 @@ You'll be able to bill customers in a white label fashion, enabling you to white
 
 You'll be able to define which brand a customer belongs to and all emails will be sent using the correct brand template. Removing tedious work when selling a white label version for resell.
 
-### Support Enterprise Customers 
+### Support Enterprise Customers with Custom Plans and Invoice Billing
 
 You'll be able to handle enterprise customers a lot easier. With the ability to define a customer as having an payment type of invoice will allow you to onboard and conform with enterprise billing requirements.
 
@@ -26,7 +26,7 @@ You'll be able to create custom plans with custom limits for Enterprise customer
 
 The ability to define how payment reminds and payment attempts are done after a payment has failed.
 
-### Expiring Card Handling
+### Expiring Card Notifications
 
 You'll be able to reduce your customer churn related to expired cards by sending notifications.
 

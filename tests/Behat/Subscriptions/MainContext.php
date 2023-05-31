@@ -122,8 +122,8 @@ class MainContext implements Context
         $subscription = $this->getSubscription($customerEmail);
 
         $diff = $subscription->getValidUntil()->diff($now);
-
-        if (0 == $diff->m) {
+        // To handle it's the 31 and next month is billed on the 30th.
+        if (0 == $diff->m && $diff->d < 30) {
             throw new \Exception('Expires in less than a month');
         }
     }
