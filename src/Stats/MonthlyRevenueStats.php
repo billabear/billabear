@@ -14,7 +14,6 @@ namespace App\Stats;
 
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\SettingsRepositoryInterface;
-use App\Repository\Stats\MonthlyRevenueStatsRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
@@ -25,7 +24,6 @@ class MonthlyRevenueStats
     public function __construct(
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
-        private MonthlyRevenueStatsRepositoryInterface $monthlyRevenueStatsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
     ) {
     }
