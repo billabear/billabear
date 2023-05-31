@@ -38,7 +38,7 @@ Notifications:
 
 You'll be able to decrease churn further by offering credit for customers who update their card after receiving a notification that their payment method will expire.
 
-### Stripe Billing Integration
+### Stripe Billing Integration - Extent or replace
 
 You'll be able to continue using the Stripe Billing functionality that you love. While being able to take advantage of all other features.
 
@@ -50,6 +50,12 @@ You'll be able to quickly and easy manage subscriptions.
 
 * Easily change prices for subscriptions including moving existing Stripe Billing subscriptions to a new price.
 * Move all existing subscriptions to a new plan.
+
+### Fully customisable templates for PDFs and Emails
+
+You'll be in complete control of your templates for invoice and receipt PDFs. With the ability to edit templates using the Twig templating language.
+
+With Emails, you'll be able to use the Twig templating language or select an Email Service Provider such as **SendGrid**, **MailGun**, or **PostFix** and use their templates.
 
 ## Getting Started
 
