@@ -20,6 +20,9 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table('stats_cached_stats')]
 class CachedStats
 {
+    public const STAT_NAME_ESTIMATED_MRR = 'estimated_mrr';
+    public const STAT_NAME_ESTIMATED_ARR = 'estimated_arr';
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

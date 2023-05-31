@@ -31,6 +31,14 @@ class MainDashboardStats
     #[SerializedName('charge_back_amount')]
     private DashboardStats $chargeBackAmount;
 
+    #[SerializedName('estimated_mrr')]
+    private int $estimatedMrr;
+
+    #[SerializedName('estimated_arr')]
+    private int $estimatedAtt;
+
+    private string $currency;
+
     public function getSubscriptionCreation(): DashboardStats
     {
         return $this->subscriptionCreation;
@@ -79,5 +87,35 @@ class MainDashboardStats
     public function setChargeBackAmount(DashboardStats $chargeBackAmount): void
     {
         $this->chargeBackAmount = $chargeBackAmount;
+    }
+
+    public function getEstimatedMrr(): int
+    {
+        return $this->estimatedMrr;
+    }
+
+    public function setEstimatedMrr(int $estimatedMrr): void
+    {
+        $this->estimatedMrr = $estimatedMrr;
+    }
+
+    public function getEstimatedAtt(): int
+    {
+        return $this->estimatedAtt;
+    }
+
+    public function setEstimatedAtt(int $estimatedAtt): void
+    {
+        $this->estimatedAtt = $estimatedAtt;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
     }
 }

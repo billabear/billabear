@@ -12,6 +12,7 @@
 
 namespace App\Stats;
 
+use App\Entity\Stats\CachedStats;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\Stats\CachedStatsRepositoryInterface;
@@ -49,7 +50,7 @@ class YearlyEstimatedRevenueStats
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
         }
 
-        $stat = $this->cachedStatsRepository->getMoneyStat('estimated_arr');
+        $stat = $this->cachedStatsRepository->getMoneyStat(CachedStats::STAT_NAME_ESTIMATED_ARR);
         $stat->setValue($money->getMinorAmount()->toInt());
         $this->cachedStatsRepository->save($stat);
     }

@@ -13,6 +13,9 @@
 namespace App\Controller\App;
 
 use App\Dto\Response\App\Stats\MainDashboardStats;
+use App\Entity\Stats\CachedStats;
+use App\Repository\SettingsRepositoryInterface;
+use App\Repository\Stats\CachedStatsRepositoryInterface;
 use App\Stats\Graphs\ChargeBackAmountStatsProvider;
 use App\Stats\Graphs\PaymentAmountStatsProvider;
 use App\Stats\Graphs\RefundAmountStatsProvider;
@@ -33,6 +36,8 @@ class StatsController
         SubscriptionCreationStatsProvider $subscriptionCreationStatsProvider,
         SubscriptionCancellationStatsProvider $subscriptionCancellationStatsProvider,
         SerializerInterface $serializer,
+        CachedStatsRepositoryInterface $cachedStatsRepository,
+        SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $mainDashboardStat = new MainDashboardStats();
         $mainDashboardStat->setPaymentAmount($paymentAmountStatsProvider->getMainDashboard());
@@ -40,6 +45,13 @@ class StatsController
         $mainDashboardStat->setChargeBackAmount($chargeBackAmountStatsProvider->getMainDashboard());
         $mainDashboardStat->setSubscriptionCreation($subscriptionCreationStatsProvider->getMainDashboard());
         $mainDashboardStat->setSubscriptionCancellation($subscriptionCancellationStatsProvider->getMainDashboard());
+        $mainDashboardStat->setCurrency($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
+
+        $mrrCache = $cachedStatsRepository->getMoneyStat(CachedStats::STAT_NAME_ESTIMATED_MRR);
+        $arrCache = $cachedStatsRepository->getMoneyStat(CachedStats::STAT_NAME_ESTIMATED_ARR);
+
+        $mainDashboardStat->setEstimatedAtt($arrCache->getValue());
+        $mainDashboardStat->setEstimatedMrr($mrrCache->getValue());
 
         $json = $serializer->serialize($mainDashboardStat, 'json');
 

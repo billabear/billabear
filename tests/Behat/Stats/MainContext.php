@@ -395,7 +395,7 @@ class MainContext implements Context
     public function theMonthlyRecurringRevenueEstimateShouldBe($arg1)
     {
         /** @var CachedStats $cached */
-        $cached = $this->cachedStatsRepository->findOneBy(['name' => 'estimated_mrr']);
+        $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_MRR]);
 
         if (!$cached instanceof CachedStats) {
             throw new \Exception("Can't find stat");
@@ -412,7 +412,7 @@ class MainContext implements Context
     public function theAnnualRecurringRevenueEstimateShouldBe($arg1)
     {
         /** @var CachedStats $cached */
-        $cached = $this->cachedStatsRepository->findOneBy(['name' => 'estimated_arr']);
+        $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_ARR]);
 
         if (!$cached instanceof CachedStats) {
             throw new \Exception("Can't find stat");
