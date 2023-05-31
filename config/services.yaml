@@ -166,6 +166,12 @@ services:
         class: App\Repository\Orm\SubscriptionCancellationYearlyStatsRepository
 
 
+    App\Repository\Stats\CachedStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.cached_stats'
+    app.repository.orm.cached_stats:
+        class: App\Repository\Orm\CachedStatsRepository
+
     App\Repository\Stats\PaymentAmountDailyStatsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.payment_amount_daily_stats'
