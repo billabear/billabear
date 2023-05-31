@@ -402,7 +402,7 @@ class MainContext implements Context
         }
 
         if ($cached->getValue() != $arg1) {
-            throw new \Exception('Incorrect value');
+            throw new \Exception('Incorrect value - '.$cached->getValue());
         }
     }
 }

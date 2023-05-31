@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4ee9f302017e07ce69f0104e449a954",
+    "content-hash": "b2f66154d8275a58f5f9f377986731b4",
     "packages": [
         {
             "name": "brick/math",
@@ -2542,12 +2542,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "3982f8edd261e1effebe3eb87bb84def2b512081"
+                "reference": "fb10b08e94304688eeefe1ac71e17a2c15546089"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/3982f8edd261e1effebe3eb87bb84def2b512081",
-                "reference": "3982f8edd261e1effebe3eb87bb84def2b512081",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/fb10b08e94304688eeefe1ac71e17a2c15546089",
+                "reference": "fb10b08e94304688eeefe1ac71e17a2c15546089",
                 "shasum": ""
             },
             "require": {
@@ -2631,7 +2631,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-05-29T06:53:44+00:00"
+            "time": "2023-05-31T15:53:00+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -12123,7 +12123,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "beta",
+    "minimum-stability": "stable",
     "stability-flags": {
         "parthenon/obol": 20,
         "parthenon/parthenon": 20

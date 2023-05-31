@@ -33,11 +33,15 @@ Feature: Customer Subscription Read APP
   Scenario: Get subscription
     Given I have authenticated to the API
     And the follow customers exist:
-      | Email                    | Country | External Reference | Reference    |
-      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
-      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+      | Email                      | Country | External Reference | Reference      |
+      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   |
+      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   |
+      | customer.three@example.org | UK      | cust_dfsdfdsdu     | Customer three |
     And the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
-      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org   |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org   |
+      | Test Plan         | 3000         | USD            | month          | customer.three@example.org |
     When I cancel via the API the subscription "Test Plan" for "customer.one@example.org"
     Then the subscription "Test Plan" for "customer.one@example.org" will be cancelled
+    And the monthly recurring revenue estimate should be 6000

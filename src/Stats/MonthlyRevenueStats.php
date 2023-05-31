@@ -32,7 +32,7 @@ class MonthlyRevenueStats
 
     public function adjustStats(): void
     {
-        $subscriptions = $this->subscriptionRepository->getAll();
+        $subscriptions = $this->subscriptionRepository->getAllActive();
 
         $defaultCurrency = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency();
         $currencyConverter = new CurrencyConverter($this->exchangeRateProvider);

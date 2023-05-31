@@ -24,6 +24,7 @@ use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Plan\Plan;
@@ -102,6 +103,9 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
         $subscription->endAtEndOfPeriod();
 
+        $this->subscriptionRepository->save($subscription);
+        $this->dispatcher->dispatch(new SubscriptionCancelled($subscription), SubscriptionCancelled::NAME);
+
         return $subscription;
     }
 
@@ -111,6 +115,9 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setActive(false);
         $subscription->endNow();
 
+        $this->subscriptionRepository->save($subscription);
+        $this->dispatcher->dispatch(new SubscriptionCancelled($subscription), SubscriptionCancelled::NAME);
+
         return $subscription;
     }
 
@@ -119,6 +126,9 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setStatus(SubscriptionStatus::PENDING_CANCEL);
         $subscription->setEndedAt($dateTime);
         $subscription->setValidUntil($dateTime);
+
+        $this->subscriptionRepository->save($subscription);
+        $this->dispatcher->dispatch(new SubscriptionCancelled($subscription), SubscriptionCancelled::NAME);
 
         return $subscription;
     }

@@ -16,6 +16,7 @@ use App\Entity\SubscriptionCreation;
 use App\Repository\SubscriptionCreationRepositoryInterface;
 use App\Stats\MonthlyRevenueStats;
 use App\Subscription\SubscriptionCreationProcessor;
+use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -33,6 +34,9 @@ class SubscriptionSubscriber implements EventSubscriberInterface
         return [
             SubscriptionCreated::NAME => [
                 'handleNewSubscription',
+            ],
+            SubscriptionCancelled::NAME => [
+                'adjustStats',
             ],
         ];
     }
@@ -52,5 +56,6 @@ class SubscriptionSubscriber implements EventSubscriberInterface
 
     public function adjustStats(): void
     {
+        $this->monthlyRevenueStats->adjustStats();
     }
 }
