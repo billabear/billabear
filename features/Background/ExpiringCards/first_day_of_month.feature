@@ -41,7 +41,7 @@ Feature: List Expiring Cards
       | Customer Email           | Last Four | Expiry Month | Expiry Year |
       | customer.one@example.org | 0444      | 03           | 25          |
       | customer.two@example.org | 0444      | 03           | 25          |
-    And the following customers have cards that will expire in 30 days:
+    And the following customers have cards that will expire this month:
       | Customer Email             | Last Four |
       | customer.one@example.org   | 0653      |
       | customer.three@example.org | 9434      |

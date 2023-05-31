@@ -37,10 +37,37 @@ class AppContext implements Context
     /**
      * @When the following customers have cards that will expire in 30 days:
      */
-    public function theFollowingCustomersHaveCardsThatWillExpireThisMonth(TableNode $table)
+    public function theFollowingCustomersHaveCardsThatWillExpireIn30days(TableNode $table)
     {
         $rows = $table->getColumnsHash();
         $now = new \DateTime('+30 days');
+        foreach ($rows as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer Email']);
+            $paymentDetails = new PaymentCard();
+            $paymentDetails->setName($row['Name'] ?? 'One');
+            $paymentDetails->setBrand($row['Brand'] ?? 'dummy');
+            $paymentDetails->setLastFour($row['Last Four']);
+            $paymentDetails->setExpiryMonth((int) $now->format('m'));
+            $paymentDetails->setExpiryYear((int) $now->format('Y'));
+            $paymentDetails->setStoredPaymentReference(bin2hex(random_bytes(32)));
+            $paymentDetails->setStoredCustomerReference($customer->getExternalCustomerReference());
+            $paymentDetails->setCustomer($customer);
+            $paymentDetails->setCreatedAt(new \DateTime());
+            $paymentDetails->setDefaultPaymentOption(true);
+
+            $this->paymentDetailsRepository->getEntityManager()->persist($paymentDetails);
+        }
+
+        $this->paymentDetailsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When the following customers have cards that will expire this month:
+     */
+    public function theFollowingCustomersHaveCardsThatWillExpireThisMonth(TableNode $table)
+    {
+        $rows = $table->getColumnsHash();
+        $now = new \DateTime('now');
         foreach ($rows as $row) {
             $customer = $this->getCustomerByEmail($row['Customer Email']);
             $paymentDetails = new PaymentCard();
