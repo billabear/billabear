@@ -14,6 +14,7 @@ namespace App\Stats;
 
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\SettingsRepositoryInterface;
+use App\Repository\Stats\CachedStatsRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
@@ -25,10 +26,11 @@ class MonthlyRevenueStats
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
+        private CachedStatsRepositoryInterface $cachedStatsRepository
     ) {
     }
 
-    public function addSubscription(): void
+    public function adjustStats(): void
     {
         $subscriptions = $this->subscriptionRepository->getAll();
 
@@ -48,5 +50,9 @@ class MonthlyRevenueStats
             $amountToAdd = $currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
         }
+
+        $stat = $this->cachedStatsRepository->getMoneyStat('estimated_mrr');
+        $stat->setValue($money->getMinorAmount()->toInt());
+        $this->cachedStatsRepository->save($stat);
     }
 }

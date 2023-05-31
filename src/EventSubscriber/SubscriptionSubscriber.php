@@ -14,6 +14,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\SubscriptionCreation;
 use App\Repository\SubscriptionCreationRepositoryInterface;
+use App\Stats\MonthlyRevenueStats;
 use App\Subscription\SubscriptionCreationProcessor;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,6 +24,7 @@ class SubscriptionSubscriber implements EventSubscriberInterface
     public function __construct(
         private SubscriptionCreationRepositoryInterface $subscriptionCreationRepository,
         private SubscriptionCreationProcessor $subscriptionCreationProcessor,
+        private MonthlyRevenueStats $monthlyRevenueStats,
     ) {
     }
 
@@ -44,5 +46,11 @@ class SubscriptionSubscriber implements EventSubscriberInterface
 
         $this->subscriptionCreationRepository->save($subscriptionCreation);
         $this->subscriptionCreationProcessor->process($subscriptionCreation);
+
+        $this->monthlyRevenueStats->adjustStats();
+    }
+
+    public function adjustStats(): void
+    {
     }
 }

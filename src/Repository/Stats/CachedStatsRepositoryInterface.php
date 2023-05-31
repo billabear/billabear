@@ -12,8 +12,12 @@
 
 namespace App\Repository\Stats;
 
+use App\Entity\Stats\CachedStats;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface CachedStatsRepositoryInterface extends RepositoryInterface
 {
+    public function getNumberStat(string $name): CachedStats;
+
+    public function getMoneyStat(string $name): CachedStats;
 }

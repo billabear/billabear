@@ -30,7 +30,7 @@ Feature: Customer Subscription Create APP
       | User Count | 10        |
 
 
-  Scenario: Get subscription
+  Scenario: Create subscription
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
@@ -44,9 +44,10 @@ Feature: Customer Subscription Create APP
     And the subscriber monthly stat for the day should be 1
     And the subscriber yearly stat for the day should be 1
     And the payment amount stats for the day should be 3000 in the currency "USD"
+    And the monthly recurring revenue estimate should be 3000
 
 
-  Scenario: Get subscription - Invoice
+  Scenario: Create subscription - Invoice
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    | Billing Type |

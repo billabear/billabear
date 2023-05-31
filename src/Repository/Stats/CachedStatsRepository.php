@@ -15,9 +15,8 @@ namespace App\Repository\Stats;
 use App\Entity\Stats\CachedStats;
 use App\Enum\CachedStatsType;
 use Parthenon\Common\Repository\DoctrineRepository;
-use Parthenon\Common\Repository\RepositoryInterface;
 
-class CachedStatsRepository extends DoctrineRepository implements RepositoryInterface
+class CachedStatsRepository extends DoctrineRepository implements CachedStatsRepositoryInterface
 {
     public function getNumberStat(string $name): CachedStats
     {

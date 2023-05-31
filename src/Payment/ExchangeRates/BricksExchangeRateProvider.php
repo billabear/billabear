@@ -24,8 +24,8 @@ class BricksExchangeRateProvider implements ExchangeRateProvider
 
     public function getExchangeRate(string $sourceCurrencyCode, string $targetCurrencyCode)
     {
-        if ($this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency() === $targetCurrencyCode) {
-            throw new \Exception('Invalid target currency');
+        if ($this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency() !== $targetCurrencyCode) {
+            throw new \Exception($targetCurrencyCode.' is an invalid target currency. Expected '.$this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
         }
         $exchangeRate = $this->exchangeRatesRepository->getByCode($sourceCurrencyCode);
 

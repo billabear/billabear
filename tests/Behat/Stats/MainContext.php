@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\Stats;
 
 use App\Entity\Customer;
+use App\Entity\Stats\CachedStats;
 use App\Entity\Stats\ChargeBackAmountDailyStats;
 use App\Entity\Stats\ChargeBackAmountMonthlyStats;
 use App\Entity\Stats\ChargeBackAmountYearlyStats;
@@ -28,6 +29,7 @@ use App\Entity\Stats\SubscriptionCancellationYearlyStats;
 use App\Entity\Stats\SubscriptionCreationDailyStats;
 use App\Entity\Stats\SubscriptionCreationMonthlyStats;
 use App\Entity\Stats\SubscriptionCreationYearlyStats;
+use App\Repository\Orm\CachedStatsRepository;
 use App\Repository\Orm\PaymentAmountDailyStatsRepository;
 use App\Repository\Orm\RefundAmountDailyStatsRepository;
 use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
@@ -48,6 +50,7 @@ class MainContext implements Context
         private SubscriptionCreationYearlyStatsRepository $subscriptionCreationYearlyStatsRepository,
         private PaymentAmountDailyStatsRepository $paymentAmountDailyStatsRepository,
         private RefundAmountDailyStatsRepository $refundAmountDailyStatsRepository,
+        private CachedStatsRepository $cachedStatsRepository,
     ) {
     }
 
@@ -383,6 +386,23 @@ class MainContext implements Context
         $data = $this->getJsonContent();
         if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
             throw new \Exception('wrong count');
+        }
+    }
+
+    /**
+     * @Then the monthly recurring revenue estimate should be :arg1
+     */
+    public function theMonthlyRecurringRevenueEstimateShouldBe($arg1)
+    {
+        /** @var CachedStats $cached */
+        $cached = $this->cachedStatsRepository->findOneBy(['name' => 'estimated_mrr']);
+
+        if (!$cached instanceof CachedStats) {
+            throw new \Exception("Can't find stat");
+        }
+
+        if ($cached->getValue() != $arg1) {
+            throw new \Exception('Incorrect value');
         }
     }
 }
