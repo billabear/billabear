@@ -45,3 +45,4 @@ Feature: Customer Subscription Read APP
     When I cancel via the API the subscription "Test Plan" for "customer.one@example.org"
     Then the subscription "Test Plan" for "customer.one@example.org" will be cancelled
     And the monthly recurring revenue estimate should be 6000
+    And the annual recurring revenue estimate should be 72000

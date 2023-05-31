@@ -14,7 +14,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\SubscriptionCreation;
 use App\Repository\SubscriptionCreationRepositoryInterface;
-use App\Stats\MonthlyRevenueStats;
+use App\Stats\RevenueEstimatesGeneration;
 use App\Subscription\SubscriptionCreationProcessor;
 use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
@@ -25,7 +25,7 @@ class SubscriptionSubscriber implements EventSubscriberInterface
     public function __construct(
         private SubscriptionCreationRepositoryInterface $subscriptionCreationRepository,
         private SubscriptionCreationProcessor $subscriptionCreationProcessor,
-        private MonthlyRevenueStats $monthlyRevenueStats,
+        private RevenueEstimatesGeneration $revenueEstimatesGeneration,
     ) {
     }
 
@@ -51,11 +51,11 @@ class SubscriptionSubscriber implements EventSubscriberInterface
         $this->subscriptionCreationRepository->save($subscriptionCreation);
         $this->subscriptionCreationProcessor->process($subscriptionCreation);
 
-        $this->monthlyRevenueStats->adjustStats();
+        $this->revenueEstimatesGeneration->generate();
     }
 
     public function adjustStats(): void
     {
-        $this->monthlyRevenueStats->adjustStats();
+        $this->revenueEstimatesGeneration->generate();
     }
 }

@@ -405,4 +405,21 @@ class MainContext implements Context
             throw new \Exception('Incorrect value - '.$cached->getValue());
         }
     }
+
+    /**
+     * @Then the annual recurring revenue estimate should be :arg1
+     */
+    public function theAnnualRecurringRevenueEstimateShouldBe($arg1)
+    {
+        /** @var CachedStats $cached */
+        $cached = $this->cachedStatsRepository->findOneBy(['name' => 'estimated_arr']);
+
+        if (!$cached instanceof CachedStats) {
+            throw new \Exception("Can't find stat");
+        }
+
+        if ($cached->getValue() != $arg1) {
+            throw new \Exception('Incorrect value - '.$cached->getValue());
+        }
+    }
 }
