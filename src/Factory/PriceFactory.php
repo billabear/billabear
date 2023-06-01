@@ -20,8 +20,9 @@ use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
 class PriceFactory
 {
-    public function __construct(private ProductRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        private ProductRepositoryInterface $productRepository,
+    ) {
     }
 
     public function createPriceFromDto(CreatePrice $createPrice, Price $price = null): Price

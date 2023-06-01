@@ -18,6 +18,7 @@ use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Price;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class PriceImporter
@@ -27,6 +28,7 @@ class PriceImporter
         private PriceRepositoryInterface $priceRepository,
         private PriceFactory $priceFactory,
         private StripeImportRepositoryInterface $stripeImportRepository,
+        private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {
     }
 
@@ -40,12 +42,19 @@ class PriceImporter
             /** @var Price $priceModel */
             foreach ($priceList as $priceModel) {
                 try {
-                    $product = $this->priceRepository->getByExternalReference($priceModel->getId());
+                    $price = $this->priceRepository->getByExternalReference($priceModel->getId());
                 } catch (NoEntityFoundException $exception) {
-                    $product = null;
+                    $price = null;
                 }
-                $product = $this->priceFactory->createFromObol($priceModel, $product);
-                $this->priceRepository->save($product);
+                $price = $this->priceFactory->createFromObol($priceModel, $price);
+                $this->priceRepository->save($price);
+
+                $plans = $this->subscriptionPlanRepository->getAllForProduct($price->getProduct());
+                foreach ($plans as $plan) {
+                    $plan->addPrice($price);
+                    $this->subscriptionPlanRepository->save($plan);
+                }
+
                 $lastId = $priceModel->getId();
             }
             $stripeImport->setLastId($lastId);
