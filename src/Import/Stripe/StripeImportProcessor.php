@@ -36,10 +36,10 @@ class StripeImportProcessor
             return;
         }
 
-        $fiveMinutesAgo = new \DateTime('-1 minutes');
+        $fiveMinutesAgo = new \DateTime('-2 minutes');
 
         if ($request->getUpdatedAt() > $fiveMinutesAgo && 'started' !== $request->getState()) {
-            $this->getLogger()->info('Waiting 5 minutes incase last process is still running');
+            $this->getLogger()->info('Waiting 2 minutes incase last process is still running');
             // Wait 5 minutes to restart a failed import process
             return;
         }
