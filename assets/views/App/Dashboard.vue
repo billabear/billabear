@@ -12,11 +12,11 @@
         <div class="grid">
           <div class="text-center">
             <h3>{{ $t('app.reports.dashboard.estimated_mrr') }}</h3>
-            <span class="text-8xl">{{ estimated_mrr }} </span> {{ currency }}
+            <span class="text-8xl">{{ displayCurrency(estimated_mrr) }} </span> {{ currency }}
           </div>
           <div class="text-center">
             <h3>{{ $t('app.reports.dashboard.estimated_arr') }}</h3>
-            <span class="text-8xl">{{ estimated_arr }} </span> {{ currency }}
+            <span class="text-8xl">{{ displayCurrency(estimated_arr) }} </span> {{ currency }}
           </div>
         </div>
         <div>
@@ -43,6 +43,7 @@
 
 <script>
 import axios from "axios";
+import currency from "currency.js";
 
 export default {
   name: "Dashboard",
@@ -321,7 +322,10 @@ export default {
         }
       }
       return {categories, values};
-    }
+    },
+    displayCurrency: function (value) {
+      return currency(value, { fromCents: true });
+    },
   }
 }
 </script>

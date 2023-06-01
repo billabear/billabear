@@ -77,7 +77,7 @@ export default {
         this.ready = true;
         setTimeout( function() {
           that.loadData();
-        }, 30000);
+        }, 5000);
       }).catch(error => {
 
           }
