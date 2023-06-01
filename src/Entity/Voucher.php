@@ -15,6 +15,8 @@ namespace App\Entity;
 use App\Enum\VoucherEntryType;
 use App\Enum\VoucherEvent;
 use App\Enum\VoucherType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -46,6 +48,17 @@ class Voucher
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?BillingAdminInterface $billingAdmin = null;
+
+    #[ORM\OneToMany(targetEntity: VoucherAmount::class, mappedBy: 'voucher', cascade: ['persist', 'remove'])]
+    private Collection $amounts;
+
+    #[Orm\Column(type: 'datetime')]
+    private \DateTimeInterface $createdAt;
+
+    public function __construct()
+    {
+        $this->amounts = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -115,5 +128,33 @@ class Voucher
     public function setBillingAdmin(?BillingAdminInterface $billingAdmin): void
     {
         $this->billingAdmin = $billingAdmin;
+    }
+
+    /**
+     * @return Collection|VoucherAmount[]
+     */
+    public function getAmounts(): Collection
+    {
+        return $this->amounts;
+    }
+
+    public function setAmounts(Collection $amounts): void
+    {
+        $this->amounts = $amounts;
+    }
+
+    public function addAmountVoucher(VoucherAmount $amount): void
+    {
+        $this->amounts->add($amount);
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }

@@ -36,6 +36,9 @@ class CreateVoucher
     #[Assert\Positive()]
     private $value;
 
+    #[Assert\Valid]
+    private array $amounts = [];
+
     public function getType()
     {
         return $this->type;
@@ -84,5 +87,23 @@ class CreateVoucher
     public function setValue($value): void
     {
         $this->value = $value;
+    }
+
+    public function addAmount(CreateVoucherAmount $amount): void
+    {
+        $this->amounts[] = $amount;
+    }
+
+    /**
+     * @return CreateVoucherAmount[]
+     */
+    public function getAmounts(): array
+    {
+        return $this->amounts;
+    }
+
+    public function setAmounts(array $amounts): void
+    {
+        $this->amounts = $amounts;
     }
 }

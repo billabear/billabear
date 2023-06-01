@@ -15,9 +15,11 @@ namespace App\Factory;
 use App\Dto\Generic\App\Voucher as AppDto;
 use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Entity\Voucher as Entity;
+use App\Entity\VoucherAmount;
 use App\Enum\VoucherEntryType;
 use App\Enum\VoucherEvent;
 use App\Enum\VoucherType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class VoucherFactory
 {
@@ -35,7 +37,19 @@ class VoucherFactory
 
         if (VoucherType::PERCENTAGE === $entity->getType()) {
             $entity->setValue($createVoucher->getValue());
+        } else {
+            $collection = new ArrayCollection();
+            foreach ($createVoucher->getAmounts() as $amount) {
+                $amountEntity = new VoucherAmount();
+                $amountEntity->setCurrency($amount->getCurrency());
+                $amountEntity->setAmount((int) $amount->getAmount());
+                $amountEntity->setVoucher($entity);
+                $collection->add($amountEntity);
+            }
+            $entity->setAmounts($collection);
         }
+
+        $entity->setCreatedAt(new \DateTime('now'));
 
         return $entity;
     }

@@ -44,12 +44,28 @@ class AppContext implements Context
             default => null,
         };
 
+        $prices = [];
+
+        if (isset($data['USD'])) {
+            $prices[] = [
+                'currency' => 'USD',
+                'amount' => (int) $data['USD'],
+            ];
+        }
+        if (isset($data['GBP'])) {
+            $prices[] = [
+                'currency' => 'GBP',
+                'amount' => (int) $data['GBP'],
+            ];
+        }
+
         $payload = [
             'type' => ('percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE->value : VoucherType::FIXED_CREDIT->value,
             'entry_type' => ('manual' === strtolower($data['Entry Type'])) ? VoucherEntryType::MANUAL->value : VoucherEntryType::AUTOMATIC->value,
             'entry_event' => $automaticEvent,
-            'value' => $data['Value'],
+            'value' => $data['Value'] ?? null,
             'name' => $data['Name'],
+            'amounts' => $prices,
         ];
 
         $this->sendJsonRequest('POST', '/app/voucher', $payload);
@@ -60,6 +76,44 @@ class AppContext implements Context
      */
     public function thereShouldBeAVoucherCalledWith($voucherName, TableNode $table)
     {
+        $voucher = $this->getVoucher($voucherName);
+
+        $data = $table->getRowsHash();
+
+        if (isset($data['Value'])) {
+            if ($data['Value'] != $voucher->getValue()) {
+                throw new \Exception('Different value found');
+            }
+        }
+
+        $type = ('percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE : VoucherType::FIXED_CREDIT;
+
+        if ($type !== $voucher->getType()) {
+            throw new \Exception('Different type');
+        }
+    }
+
+    /**
+     * @Then the voucher :arg1 has an amount for the currency :arg2 and value :arg3
+     */
+    public function theVoucherHasAnAmountForTheCurrencyAndValue($voucherName, $currency, $value)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        foreach ($voucher->getAmounts() as $amount) {
+            if ($amount->getCurrency() == $currency && $amount->getAmount() == $value) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find amount");
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getVoucher($voucherName): Voucher
+    {
         $voucher = $this->voucherRepository->findOneBy(['name' => $voucherName]);
 
         if (!$voucher instanceof Voucher) {
@@ -68,16 +122,6 @@ class AppContext implements Context
 
         $this->voucherRepository->getEntityManager()->refresh($voucher);
 
-        $data = $table->getRowsHash();
-
-        if ($data['Value'] != $voucher->getValue()) {
-            throw new \Exception('Different value found');
-        }
-
-        $type = ('percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE : VoucherType::FIXED_CREDIT;
-
-        if ($type !== $voucher->getType()) {
-            throw new \Exception('Different type');
-        }
+        return $voucher;
     }
 }
