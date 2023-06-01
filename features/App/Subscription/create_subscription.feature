@@ -31,7 +31,7 @@ Feature: Customer Subscription Create APP
 
 
   Scenario: Create subscription
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |

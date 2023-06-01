@@ -78,6 +78,9 @@ default:
                 - App\Tests\Behat\Background\Invoice\MainContext
                 - App\Tests\Behat\Background\Payments\MainContext
 
+                #Vouchers
+                - App\Tests\Behat\Vouchers\AppContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

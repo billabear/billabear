@@ -264,6 +264,12 @@ services:
     app.repository.orm.exchange_rates:
         class: App\Repository\Orm\ExchangeRatesRepository
 
+    App\Repository\VoucherRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.voucher'
+    app.repository.orm.voucher:
+        class: App\Repository\Orm\VoucherRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
