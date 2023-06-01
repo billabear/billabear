@@ -15,4 +15,6 @@ Feature: Create Voucher
        | Value | 20 |
        | Entry Event | Expired Card Warning |
        | Name | Expired Card Bonus          |
-    Then there should be a voucher called "Expired Card Bonus"
+    Then there should be a voucher called "Expired Card Bonus" with:
+      | Value | 20 |
+      | Type  | Percentage |

@@ -42,7 +42,7 @@ class Voucher
     private ?int $value = null;
 
     #[ORM\Column(type: 'string', enumType: VoucherEvent::class, nullable: true)]
-    private ?VoucherEvent $automaticEvent = null;
+    private ?VoucherEvent $entryEvent = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?BillingAdminInterface $billingAdmin = null;
@@ -97,14 +97,14 @@ class Voucher
         $this->value = $value;
     }
 
-    public function getAutomaticEvent(): ?VoucherEvent
+    public function getEntryEvent(): ?VoucherEvent
     {
-        return $this->automaticEvent;
+        return $this->entryEvent;
     }
 
-    public function setAutomaticEvent(?VoucherEvent $automaticEvent): void
+    public function setEntryEvent(?VoucherEvent $entryEvent): void
     {
-        $this->automaticEvent = $automaticEvent;
+        $this->entryEvent = $entryEvent;
     }
 
     public function getBillingAdmin(): ?BillingAdminInterface

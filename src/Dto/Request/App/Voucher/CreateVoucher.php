@@ -27,8 +27,8 @@ class CreateVoucher
     private $entryType;
 
     #[Assert\Choice(choices: ['expired_card_added'])]
-    #[SerializedName('automatic_event')]
-    private $automaticEvent;
+    #[SerializedName('entry_event')]
+    private $entryEvent;
 
     #[Assert\Type(type: 'string')]
     private $name;
@@ -56,14 +56,14 @@ class CreateVoucher
         $this->entryType = $entryType;
     }
 
-    public function getAutomaticEvent()
+    public function getEntryEvent()
     {
-        return $this->automaticEvent;
+        return $this->entryEvent;
     }
 
-    public function setAutomaticEvent($automaticEvent): void
+    public function setEntryEvent($entryEvent): void
     {
-        $this->automaticEvent = $automaticEvent;
+        $this->entryEvent = $entryEvent;
     }
 
     public function getName()

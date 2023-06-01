@@ -39,31 +39,45 @@ class AppContext implements Context
     {
         $data = $table->getRowsHash();
 
-        $automaticEvent = match ($data['Automatic Event'] ?? null) {
+        $automaticEvent = match ($data['Entry Event'] ?? null) {
             'Expired Card Warning' => VoucherEvent::EXPIRED_CARD_ADDED->value,
             default => null,
         };
 
         $payload = [
-            'type' => ('Percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE->value : VoucherType::FIXED_CREDIT->value,
+            'type' => ('percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE->value : VoucherType::FIXED_CREDIT->value,
             'entry_type' => ('manual' === strtolower($data['Entry Type'])) ? VoucherEntryType::MANUAL->value : VoucherEntryType::AUTOMATIC->value,
-            'automatic_event' => $automaticEvent,
+            'entry_event' => $automaticEvent,
             'value' => $data['Value'],
             'name' => $data['Name'],
-            ];
+        ];
 
         $this->sendJsonRequest('POST', '/app/voucher', $payload);
     }
 
     /**
-     * @Then there should be a voucher called :arg1
+     * @Then there should be a voucher called :arg1 with:
      */
-    public function thereShouldBeAVoucherCalled($voucherName)
+    public function thereShouldBeAVoucherCalledWith($voucherName, TableNode $table)
     {
         $voucher = $this->voucherRepository->findOneBy(['name' => $voucherName]);
 
         if (!$voucher instanceof Voucher) {
             throw new \Exception('No voucher found');
+        }
+
+        $this->voucherRepository->getEntityManager()->refresh($voucher);
+
+        $data = $table->getRowsHash();
+
+        if ($data['Value'] != $voucher->getValue()) {
+            throw new \Exception('Different value found');
+        }
+
+        $type = ('percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE : VoucherType::FIXED_CREDIT;
+
+        if ($type !== $voucher->getType()) {
+            throw new \Exception('Different type');
         }
     }
 }
