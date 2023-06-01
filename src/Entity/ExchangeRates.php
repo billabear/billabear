@@ -31,7 +31,7 @@ class ExchangeRates
     #[ORM\Column(type: 'string')]
     private string $exchangeRate;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
     public function getId()

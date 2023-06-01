@@ -19,6 +19,7 @@ use App\Import\Stripe\PaymentImporter;
 use App\Import\Stripe\PriceImporter;
 use App\Import\Stripe\ProductImporter;
 use App\Import\Stripe\RefundImporter;
+use App\Import\Stripe\StatsCruncher;
 use App\Import\Stripe\SubscriptionImporter;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +37,7 @@ class Import implements EventSubscriberInterface
         private PaymentImporter $paymentImporter,
         private RefundImporter $refundImporter,
         private ChargeBackImporter $chargeBackImporter,
+        private StatsCruncher $statsCruncher,
     ) {
     }
 
@@ -90,6 +92,11 @@ class Import implements EventSubscriberInterface
         $this->chargeBackImporter->import($stripeImport);
     }
 
+    public function crunchStats(Event $event)
+    {
+        $this->statsCruncher->execute();
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -100,6 +107,7 @@ class Import implements EventSubscriberInterface
             'workflow.stripe_import.transition.start_payments' => ['importPayments'],
             'workflow.stripe_import.transition.start_refunds' => ['importRefunds'],
             'workflow.stripe_import.transition.start_charge_backs' => ['importChargeBacks'],
+            'workflow.stripe_import.transition.crunch_stats' => ['crunchStats'],
         ];
     }
 }

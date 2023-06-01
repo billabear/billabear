@@ -20,7 +20,7 @@ class StripeImportProcessor
 {
     use LoggerAwareTrait;
 
-    public const TRANSITIONS = ['start', 'start_customers', 'start_products', 'start_prices', 'start_subscriptions', 'start_payments', 'start_refunds', 'start_charge_backs'];
+    public const TRANSITIONS = ['start', 'start_customers', 'start_products', 'start_prices', 'start_subscriptions', 'start_payments', 'start_refunds', 'start_charge_backs', 'crunch_stats'];
 
     public function __construct(
         private WorkflowInterface $stripeImportStateMachine,

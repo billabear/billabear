@@ -182,6 +182,7 @@ framework:
                 - payments
                 - refunds
                 - charge_backs
+                - crunch_stats
                 - completed
             transitions:
                 start:
@@ -207,6 +208,9 @@ framework:
                     to: charge_backs
                 start_charge_backs:
                     from: charge_backs
+                    to: crunch_stats
+                crunch_stats:
+                    from: crunch_stats
                     to: completed
 
         payment_failure_process:
