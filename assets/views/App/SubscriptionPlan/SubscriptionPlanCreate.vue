@@ -35,7 +35,7 @@
         <label class="form-field-lbl" for="per_seat_plan">
           {{ $t('app.subscription_plan.create.fields.per_seat_plan') }}
         </label>
-        <p class="form-field-error" v-if="errors.per_seat != undefined">{{ errors.per_seat }}</p>
+        <p class="form-field-error" v-if="errors.perSeat != undefined">{{ errors.perSeat }}</p>
         <input type="checkbox" id="per_seat_plan" v-model="subscription_plan.per_seat" />
         <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.per_seat_plan') }}</p>
       </div>
@@ -44,7 +44,7 @@
         <label class="form-field-lbl" for="has_trial">
           {{ $t('app.subscription_plan.create.fields.has_trial') }}
         </label>
-        <p class="form-field-error" v-if="errors.has_trial != undefined">{{ errors.has_trial }}</p>
+        <p class="form-field-error" v-if="errors.hasTrial != undefined">{{ errors.hasTrial }}</p>
         <input type="checkbox" id="has_trial" v-model="subscription_plan.has_trial" />
         <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.has_trial') }}</p>
       </div>
@@ -53,7 +53,7 @@
         <label class="form-field-lbl" for="trial_length_days">
           {{ $t('app.subscription_plan.create.fields.trial_length_days') }}
         </label>
-        <p class="form-field-error" v-if="errors.trial_length_days != undefined">{{ errors.trial_length_days }}</p>
+        <p class="form-field-error" v-if="errors.trialLengthDays != undefined">{{ errors.trialLengthDays }}</p>
         <input type="number" class="form-field-input" id="trial_length_days" v-model="subscription_plan.trial_length_days" />
         <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.trial_length_days') }}</p>
       </div>
@@ -62,7 +62,7 @@
         <label class="form-field-lbl" for="user_count">
           {{ $t('app.subscription_plan.create.fields.user_count') }}
         </label>
-        <p class="form-field-error" v-if="errors.user_count != undefined">{{ errors.user_count }}</p>
+        <p class="form-field-error" v-if="errors.userCount != undefined">{{ errors.userCount }}</p>
         <input type="number" class="form-field-input" id="user_count" v-model="subscription_plan.user_count" :class="{disabled: subscription_plan.per_seat_plan}" :disabled="subscription_plan.per_seat_plan" />
         <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.user_count') }}</p>
       </div>
@@ -100,6 +100,7 @@
       <div class="mt-3 card-body">
         <h2>{{ $t('app.subscription_plan.create.prices.title') }}</h2>
 
+        <p class="form-field-error" v-if="errors.prices != undefined">{{ errors.prices }}</p>
         <div v-for="(price, key) in subscription_plan.prices">
           <select  class="form-field" v-model="subscription_plan.prices[key]">
             <option></option>

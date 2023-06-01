@@ -43,6 +43,7 @@ class PostSubscriptionPlan
 
     #[Assert\Type('integer')]
     #[SerializedName('user_count')]
+    #[Assert\NotBlank()]
     #[Assert\PositiveOrZero]
     protected $userCount;
 
@@ -58,6 +59,7 @@ class PostSubscriptionPlan
     protected $features = [];
 
     #[SerializedName('prices')]
+    #[Assert\Count(min: 1)]
     protected array $prices = [];
 
     public function getName()
