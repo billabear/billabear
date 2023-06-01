@@ -25,7 +25,7 @@ Feature: Plan Creation
       | Feature Three | feature_three | A dummy feature |
 
   Scenario: Create a Subscription Plan
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a Subscription Plan for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
       | Name       | Test Plan |
       | Public     | True      |

@@ -21,6 +21,7 @@ use Behat\Mink\Session;
 use Parthenon\Billing\Entity\SubscriptionFeature;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
+use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionFeatureServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
@@ -37,6 +38,7 @@ class AppContext implements Context
         private ProductServiceRepository $productRepository,
         private SubscriptionFeatureServiceRepository $subscriptionFeatureRepository,
         private SubscriptionPlanServiceRepository $planServiceRepository,
+        private PriceServiceRepository $priceRepository,
     ) {
     }
 
@@ -50,6 +52,7 @@ class AppContext implements Context
         $product = $this->getProductByName($productName);
         $feature = $this->getFeatureByName($featureName);
         $limitFeature = $this->getFeatureByName($limitFeatureName);
+        $price = $this->priceRepository->findOneBy(['product' => $product]);
 
         $payload = [
             'name' => $data['Name'],
@@ -57,6 +60,7 @@ class AppContext implements Context
             'per_seat' => 'true' === strtolower($data['Per Seat']),
             'user_count' => intval($data['User Count']),
             'prices' => [
+                ['id' => $price->getId()],
             ],
             'features' => [
                 ['id' => (string) $feature->getId()],
@@ -106,6 +110,7 @@ class AppContext implements Context
         $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
 
         if (!$subscriptionPlan instanceof SubscriptionPlan) {
+            var_dump($this->session->getPage()->getContent());
             throw new \Exception("Can't find plan");
         }
 
