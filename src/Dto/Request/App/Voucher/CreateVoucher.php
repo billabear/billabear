@@ -14,6 +14,7 @@ namespace App\Dto\Request\App\Voucher;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreateVoucher
 {
@@ -105,5 +106,15 @@ class CreateVoucher
     public function setAmounts(array $amounts): void
     {
         $this->amounts = $amounts;
+    }
+
+    #[Assert\Callback()]
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if ('fixed_credit' === $this->type) {
+            if (empty($this->amounts)) {
+                $context->buildViolation('Need amounts when type is fixed credit')->atPath('amounts')->addViolation();
+            }
+        }
     }
 }

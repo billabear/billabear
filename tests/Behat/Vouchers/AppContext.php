@@ -94,6 +94,33 @@ class AppContext implements Context
     }
 
     /**
+     * @Then there should not be a voucher called :arg1
+     */
+    public function thereShouldNotBeAVoucherCalled($voucherName)
+    {
+        try {
+            $voucher = $this->getVoucher($voucherName);
+        } catch (\Exception $E) {
+            return;
+        }
+
+        throw new \Exception('Voucher found');
+    }
+
+    /**
+     * @Then there will be a validation error for the amounts
+     */
+    public function thereWillBeAValidationErrorForTheAmounts()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['errors']['amounts'])) {
+            var_dump($data);
+            throw new \Exception("Can't see validation error");
+        }
+    }
+
+    /**
      * @Then the voucher :arg1 has an amount for the currency :arg2 and value :arg3
      */
     public function theVoucherHasAnAmountForTheCurrencyAndValue($voucherName, $currency, $value)

@@ -32,3 +32,13 @@ Feature: Create Voucher
       | Type  | Fixed Amount  |
     And the voucher "Expired Card Bonus" has an amount for the currency "USD" and value 3000
     And the voucher "Expired Card Bonus" has an amount for the currency "GBP" and value 2000
+
+  Scenario: Create Voucher - fixed amount
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a voucher:
+      | Type        | Fixed Amount         |
+      | Entry Type  | Automatic            |
+      | Entry Event | Expired Card Warning |
+      | Name        | Expired Card Bonus   |
+    Then there should not be a voucher called "Expired Card Bonus"
+    And there will be a validation error for the amounts
