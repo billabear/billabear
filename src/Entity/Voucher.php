@@ -43,6 +43,9 @@ class Voucher
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $value = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $code;
+
     #[ORM\Column(type: 'string', enumType: VoucherEvent::class, nullable: true)]
     private ?VoucherEvent $entryEvent = null;
 
@@ -156,5 +159,15 @@ class Voucher
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 }

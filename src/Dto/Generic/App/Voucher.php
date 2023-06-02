@@ -36,6 +36,8 @@ class Voucher
     #[SerializedName('value')]
     private ?int $value;
 
+    private ?string $code;
+
     public function getId()
     {
         return $this->id;
@@ -94,5 +96,15 @@ class Voucher
     public function setValue(?int $value): void
     {
         $this->value = $value;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 }

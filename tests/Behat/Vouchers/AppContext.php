@@ -66,6 +66,7 @@ class AppContext implements Context
             'value' => $data['Value'] ?? null,
             'name' => $data['Name'],
             'amounts' => $prices,
+            'code' => $data['Code'] ?? null,
         ];
 
         $this->sendJsonRequest('POST', '/app/voucher', $payload);
@@ -115,7 +116,6 @@ class AppContext implements Context
         $data = $this->getJsonContent();
 
         if (!isset($data['errors']['amounts'])) {
-            var_dump($data);
             throw new \Exception("Can't see validation error");
         }
     }
@@ -150,5 +150,37 @@ class AppContext implements Context
         $this->voucherRepository->getEntityManager()->refresh($voucher);
 
         return $voucher;
+    }
+
+    /**
+     * @Then there should be a voucher called :arg1
+     */
+    public function thereShouldBeAVoucherCalled($voucherName)
+    {
+        $this->getVoucher($voucherName);
+    }
+
+    /**
+     * @Then the voucher :arg1 has the code :arg2
+     */
+    public function theVoucherHasTheCode($voucherName, $code)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        if ($voucher->getCode() !== $code) {
+            throw new \Exception('The Code is '.$voucher->getCode());
+        }
+    }
+
+    /**
+     * @Then there should be a validation error for code
+     */
+    public function thereShouldBeAValidationErrorForCode()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['errors']['code'])) {
+            throw new \Exception("Can't see validation error");
+        }
     }
 }

@@ -33,7 +33,7 @@ Feature: Create Voucher
     And the voucher "Expired Card Bonus" has an amount for the currency "USD" and value 3000
     And the voucher "Expired Card Bonus" has an amount for the currency "GBP" and value 2000
 
-  Scenario: Create Voucher - fixed amount
+  Scenario: Create Voucher - fixed amount no amounts
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a voucher:
       | Type        | Fixed Amount         |
@@ -42,3 +42,26 @@ Feature: Create Voucher
       | Name        | Expired Card Bonus   |
     Then there should not be a voucher called "Expired Card Bonus"
     And there will be a validation error for the amounts
+
+
+  Scenario: Create Voucher - Manual Entry
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a voucher:
+      | Type        | Percentage           |
+      | Value       | 20                   |
+      | Entry Type  | Manual            |
+      | Name        | Mailing List Welcome   |
+      | Code        | welcome50              |
+    Then there should be a voucher called "Mailing List Welcome"
+    And the voucher "Mailing List Welcome" has the code "welcome50"
+
+  Scenario: Create Voucher - Manual Entry no code
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a voucher:
+      | Type        | Percentage           |
+      | Value       | 20                   |
+      | Entry Type  | Manual            |
+      | Name        | Mailing List Welcome   |
+    Then there should not be a voucher called "Mailing List Welcome"
+    And there should be a validation error for code
+

@@ -30,6 +30,7 @@ class VoucherFactory
         $entity->setType(VoucherType::fromName($createVoucher->getType()));
         $entity->setEntryType(VoucherEntryType::fromName($createVoucher->getEntryType()));
         $entity->setName($createVoucher->getName() ?? bin2hex(random_bytes(16)));
+        $entity->setCode($createVoucher->getCode());
 
         if ($createVoucher->getEntryEvent()) {
             $entity->setEntryEvent(VoucherEvent::fromName($createVoucher->getEntryEvent()));
@@ -62,6 +63,7 @@ class VoucherFactory
         $appDto->setEntryType($entity->getEntryType());
         $appDto->setAutomaticEvent($entity->getEntryEvent());
         $appDto->setValue($entity->getValue());
+        $appDto->setCode($entity->getCode());
 
         return $appDto;
     }

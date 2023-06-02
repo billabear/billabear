@@ -40,6 +40,9 @@ class CreateVoucher
     #[Assert\Valid]
     private array $amounts = [];
 
+    #[ASsert\Type('string')]
+    private $code;
+
     public function getType()
     {
         return $this->type;
@@ -108,12 +111,28 @@ class CreateVoucher
         $this->amounts = $amounts;
     }
 
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    public function setCode($code): void
+    {
+        $this->code = $code;
+    }
+
     #[Assert\Callback()]
     public function validate(ExecutionContextInterface $context, $payload)
     {
         if ('fixed_credit' === $this->type) {
             if (empty($this->amounts)) {
                 $context->buildViolation('Need amounts when type is fixed credit')->atPath('amounts')->addViolation();
+            }
+        }
+
+        if ('manual' === $this->entryType) {
+            if (empty($this->code)) {
+                $context->buildViolation('Need code when entry type is manual')->atPath('code')->addViolation();
             }
         }
     }
