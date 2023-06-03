@@ -64,7 +64,7 @@ class AppContext implements Context
             'type' => ('percentage' == strtolower($data['Type'])) ? VoucherType::PERCENTAGE->value : VoucherType::FIXED_CREDIT->value,
             'entry_type' => ('manual' === strtolower($data['Entry Type'])) ? VoucherEntryType::MANUAL->value : VoucherEntryType::AUTOMATIC->value,
             'entry_event' => $automaticEvent,
-            'value' => $data['Value'] ?? null,
+            'percentage' => $data['Value'] ?? null,
             'name' => $data['Name'],
             'amounts' => $prices,
             'code' => $data['Code'] ?? null,
