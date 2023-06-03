@@ -12,12 +12,17 @@
             <dt>{{ $t('app.vouchers.view.main.type') }}</dt>
             <dd>{{ voucher.type }}</dd>
           </div>
-          <div v-if="voucher.type === 'fixed_credit'">
-
+          <div v-if="voucher.type === 'fixed_credit'" v-for="amount in amounts">
+            <dt>{{ $t('app.vouchers.view.main.amount', {currency: amount.currency}) }}</dt>
+            <dd>{{ amount.amount }}</dd>
           </div>
           <div>
             <dt>{{ $t('app.vouchers.view.main.entry_type') }}</dt>
             <dd>{{ voucher.entry_type }}</dd>
+          </div>
+          <div>
+            <dt>{{ $t('app.vouchers.view.main.code') }}</dt>
+            <dd>{{ voucher.code }}</dd>
           </div>
         </dl>
 
@@ -34,13 +39,15 @@ export default {
   data() {
     return {
       ready: false,
-      voucher: {}
+      voucher: {},
+      amounts: []
     }
   },
   mounted() {
     const id = this.$route.params.id;
     axios.get('/app/voucher/'+id).then(response => {
       this.voucher = response.data.voucher;
+      this.amounts = response.data.amounts;
       this.ready = true;
     })
   }

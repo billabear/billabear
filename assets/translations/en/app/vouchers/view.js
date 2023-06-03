@@ -5,6 +5,7 @@ export const VOUCHER_VIEW_TRANSLATIONS = {
         type: "Type",
         entry_type: "Entry Type",
         percentage: "Percentage",
-        amount: "Amount"
+        amount: "Amount for {currency}",
+        code: "Code"
     }
 }
