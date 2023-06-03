@@ -242,4 +242,24 @@ class AppContext implements Context
 
         throw new \Exception("Can't find voucher");
     }
+
+    /**
+     * @When I go to the create voucher page
+     */
+    public function iGoToTheCreateVoucherPage()
+    {
+        $this->sendJsonRequest('GET', '/app/voucher/create');
+    }
+
+    /**
+     * @Then I will see the currency :arg1 is available under the voucher currencies
+     */
+    public function iWillSeeTheCurrencyIsAvailableUnderTheVoucherCurrencies($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!in_array($arg1, $data['currencies'])) {
+            throw new \Exception("Can't see currency");
+        }
+    }
 }

@@ -17,6 +17,7 @@ use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\VoucherFactory;
 use App\Repository\VoucherRepositoryInterface;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,25 @@ class VoucherController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('//app/voucher/create')]
+    public function createVoucherData(
+        PriceRepositoryInterface $priceRepository,
+    ): Response {
+        $prices = $priceRepository->getAll();
+
+        $currencies = [];
+        foreach ($prices as $price) {
+            if ($price->isDeleted()) {
+                continue;
+            }
+
+            $currencies[] = $price->getCurrency();
+        }
+        $currencies = array_unique($currencies);
+
+        return new JsonResponse(['currencies' => $currencies]);
     }
 
     #[Route('/app/voucher', name: 'app_app_voucher_createvoucher', methods: ['POST'])]

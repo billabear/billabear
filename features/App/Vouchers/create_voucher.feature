@@ -7,6 +7,21 @@ Feature: Create Voucher
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
 
+  Scenario: Create Voucher - view
+    Given the follow products exist:
+      | Name        |
+      | Product One |
+      | Product Two |
+    And the follow prices exist:
+      | Product     | Amount | Currency | Recurring | Schedule | Public |
+      | Product One | 1000   | USD      | true      | week     | true   |
+      | Product One | 3000   | GBP      | true      | month    | true   |
+      | Product One | 30000  | USD      | true      | year     | false  |
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I go to the create voucher page
+    Then I will see the currency "USD" is available under the voucher currencies
+    And I will see the currency "GBP" is available under the voucher currencies
+
   Scenario: Create Voucher - percentage
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a voucher:
