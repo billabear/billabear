@@ -118,7 +118,7 @@ class PriceController
             lastId: $lastKey,
         );
 
-        $dtos = array_map([$priceFactory, 'createApiDto'], $resultSet->getResults());
+        $dtos = array_map([$priceFactory, 'createAppDto'], $resultSet->getResults());
 
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
