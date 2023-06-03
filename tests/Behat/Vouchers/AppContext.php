@@ -197,6 +197,7 @@ class AppContext implements Context
             $voucher->setEntryType('automatic' === strtolower($row['Entry Type']) ? VoucherEntryType::AUTOMATIC : VoucherEntryType::MANUAL);
             $voucher->setPercentage('n/a' !== strtolower($row['Percentage Value']) ? intval($row['Percentage Value']) : null);
             $voucher->setCode('n/a' !== strtolower($row['Code']) ? $row['Code'] : null);
+            $voucher->setDisabled('true' === strtolower($row['Disabled'] ?? 'false'));
             $voucher->setCreatedAt(new \DateTime());
 
             if ('n/a' !== strtolower($row['USD'])) {
@@ -295,5 +296,15 @@ class AppContext implements Context
         if ($voucher->isDisabled()) {
             throw new \Exception('Is disabled');
         }
+    }
+
+    /**
+     * @When I enable the voucher :arg1
+     */
+    public function iEnableTheVoucher($voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        $this->sendJsonRequest('POST', '/app/voucher/'.$voucher->getId().'/enable');
     }
 }

@@ -135,4 +135,21 @@ class VoucherController
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
+
+    #[Route('/app/voucher/{id}/enable', name: 'app_app_voucher_enablevoucher', methods: ['POST'])]
+    public function enableVoucher(
+        Request $request,
+        VoucherRepositoryInterface $voucherRepository,
+    ): Response {
+        try {
+            /** @var Voucher $voucher */
+            $voucher = $voucherRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $voucher->setDisabled(false);
+        $voucherRepository->save($voucher);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
 }
