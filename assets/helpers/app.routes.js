@@ -55,6 +55,7 @@ import UnpaidInvoicesList from "../views/App/Invoices/UnpaidInvoicesList.vue";
 import ExchangeRatesList from "../views/App/Settings/ExchangeRates/ExchangeRatesList.vue";
 import VouchersList from "../views/App/Vouchers/VouchersList.vue";
 import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
+import VouchersView from "../views/App/Vouchers/VouchersView.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -286,6 +287,11 @@ export const APP_ROUTES = [
                 name: 'app.vouchers.create',
                 path: 'vouchers/create',
                 component: VouchersCreate
+            },
+            {
+                name: 'app.vouchers.view',
+                path: 'vouchers/view/:id',
+                component: VouchersView
             },
         ]
     },

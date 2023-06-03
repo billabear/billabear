@@ -44,11 +44,11 @@
             </tr>
           </thead>
           <tbody v-if="loaded">
-            <tr v-for="customer in vouchers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.customer.view', params: {id: customer.id}})">
-              <td>{{ customer.name }}</td>
-              <td>{{ customer.type }}</td>
-              <td>{{ customer.entry_type }}</td>
-              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.vouchers.list.view_btn') }}</router-link></td>
+            <tr v-for="voucher in vouchers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.voucher.view', params: {id: voucher.id}})">
+              <td>{{ voucher.name }}</td>
+              <td>{{ voucher.type }}</td>
+              <td>{{ voucher.entry_type }}</td>
+              <td><router-link :to="{name: 'app.vouchers.view', params: {id: voucher.id}}" class="list-btn">{{ $t('app.vouchers.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="vouchers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.vouchers.list.no_vouchers') }}</td>

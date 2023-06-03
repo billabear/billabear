@@ -21,7 +21,6 @@ class CreateVoucherAmount
     private $currency;
 
     #[Assert\NotBlank]
-    #[Assert\Type('integer')]
     #[Assert\Positive()]
     private $amount;
 
