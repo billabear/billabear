@@ -32,10 +32,12 @@ class CreateVoucher
     private $entryEvent;
 
     #[Assert\Type(type: 'string')]
+    #[Assert\NotBlank]
     private $name;
 
     #[Assert\Positive()]
-    private $value;
+    #[Assert\LessThanOrEqual(100)]
+    private $percentage;
 
     #[Assert\Valid]
     private array $amounts = [];
@@ -83,14 +85,14 @@ class CreateVoucher
         $this->name = $name;
     }
 
-    public function getValue()
+    public function getPercentage()
     {
-        return $this->value;
+        return $this->percentage;
     }
 
-    public function setValue($value): void
+    public function setPercentage($percentage): void
     {
-        $this->value = $value;
+        $this->percentage = $percentage;
     }
 
     public function addAmount(CreateVoucherAmount $amount): void
@@ -127,6 +129,10 @@ class CreateVoucher
         if ('fixed_credit' === $this->type) {
             if (empty($this->amounts)) {
                 $context->buildViolation('Need amounts when type is fixed credit')->atPath('amounts')->addViolation();
+            }
+        } else {
+            if (empty($this->percentage)) {
+                $context->buildViolation('Percentage required when type is percentage')->atPath('percentage')->addViolation();
             }
         }
 

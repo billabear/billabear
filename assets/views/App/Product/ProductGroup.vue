@@ -5,6 +5,7 @@
         <ul>
           <li class="my-3"><router-link :to="{name: 'app.product.list'}">{{ $t('app.product.menu.products') }}</router-link></li>
           <li class="my-3"><router-link :to="{name: 'app.feature.list'}">{{ $t('app.product.menu.features') }}</router-link></li>
+          <li class="my-3"><router-link :to="{name: 'app.vouchers.list'}">{{ $t('app.product.menu.vouchers') }}</router-link></li>
         </ul>
       </div>
     </div>

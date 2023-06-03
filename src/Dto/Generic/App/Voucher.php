@@ -27,14 +27,14 @@ class Voucher
     #[SerializedName('type')]
     private VoucherType $type;
 
-    #[SerializedName('entry_name')]
+    #[SerializedName('entry_type')]
     private VoucherEntryType $entryType;
 
     #[SerializedName('automatic_event')]
     private ?VoucherEvent $automaticEvent;
 
-    #[SerializedName('value')]
-    private ?int $value;
+    #[SerializedName('percentage')]
+    private ?int $percentage;
 
     private ?string $code;
 
@@ -88,14 +88,14 @@ class Voucher
         $this->automaticEvent = $automaticEvent;
     }
 
-    public function getValue(): ?int
+    public function getPercentage(): ?int
     {
-        return $this->value;
+        return $this->percentage;
     }
 
-    public function setValue(?int $value): void
+    public function setPercentage(?int $percentage): void
     {
-        $this->value = $value;
+        $this->percentage = $percentage;
     }
 
     public function getCode(): ?string

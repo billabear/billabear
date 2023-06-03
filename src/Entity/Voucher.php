@@ -41,7 +41,7 @@ class Voucher
     private VoucherEntryType $entryType;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $value = null;
+    private ?int $percentage = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $code;
@@ -103,14 +103,14 @@ class Voucher
         $this->entryType = $entryType;
     }
 
-    public function getValue(): ?int
+    public function getPercentage(): ?int
     {
-        return $this->value;
+        return $this->percentage;
     }
 
-    public function setValue(?int $value): void
+    public function setPercentage(?int $percentage): void
     {
-        $this->value = $value;
+        $this->percentage = $percentage;
     }
 
     public function getEntryEvent(): ?VoucherEvent

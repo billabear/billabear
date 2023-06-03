@@ -37,7 +37,7 @@ class VoucherFactory
         }
 
         if (VoucherType::PERCENTAGE === $entity->getType()) {
-            $entity->setValue($createVoucher->getValue());
+            $entity->setPercentage($createVoucher->getPercentage());
         } else {
             $collection = new ArrayCollection();
             foreach ($createVoucher->getAmounts() as $amount) {
@@ -58,11 +58,12 @@ class VoucherFactory
     public function createAppDto(Entity $entity): AppDto
     {
         $appDto = new AppDto();
+        $appDto->setId((string) $entity->getId());
         $appDto->setName($entity->getName());
         $appDto->setType($entity->getType());
         $appDto->setEntryType($entity->getEntryType());
         $appDto->setAutomaticEvent($entity->getEntryEvent());
-        $appDto->setValue($entity->getValue());
+        $appDto->setPercentage($entity->getPercentage());
         $appDto->setCode($entity->getCode());
 
         return $appDto;

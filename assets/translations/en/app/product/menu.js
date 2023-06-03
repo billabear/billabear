@@ -1,4 +1,5 @@
 export const PRODUCT_MENU_TRANSLATIONS = {
     products: "Products",
-    features: "Features"
+    features: "Features",
+    vouchers: "Vouchers"
 }

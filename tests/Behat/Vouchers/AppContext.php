@@ -83,7 +83,7 @@ class AppContext implements Context
         $data = $table->getRowsHash();
 
         if (isset($data['Value'])) {
-            if ($data['Value'] != $voucher->getValue()) {
+            if ($data['Value'] != $voucher->getPercentage()) {
                 throw new \Exception('Different value found');
             }
         }
@@ -195,7 +195,7 @@ class AppContext implements Context
             $voucher->setName($row['Name']);
             $voucher->setType('percentage' === strtolower($row['Type']) ? VoucherType::PERCENTAGE : VoucherType::FIXED_CREDIT);
             $voucher->setEntryType('automatic' === strtolower($row['Entry Type']) ? VoucherEntryType::AUTOMATIC : VoucherEntryType::MANUAL);
-            $voucher->setValue('n/a' !== strtolower($row['Percentage Value']) ? intval($row['Percentage Value']) : null);
+            $voucher->setPercentage('n/a' !== strtolower($row['Percentage Value']) ? intval($row['Percentage Value']) : null);
             $voucher->setCode('n/a' !== strtolower($row['Code']) ? $row['Code'] : null);
             $voucher->setCreatedAt(new \DateTime());
 

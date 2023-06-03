@@ -19,6 +19,7 @@ import {REPORTS_INDEX_TRANSLATION} from "./reports";
 import {CREDIT_TRANSLATIONS} from "./credit";
 import {INVOICES_TRANSLATIONS} from "./invoices";
 import {HOME_TRANSLATIONS} from "./home";
+import {VOUCHER_TRANSLATIONS} from "./vouchers";
 
 
 export const APP_TRANSLATIONS = {
@@ -43,4 +44,5 @@ export const APP_TRANSLATIONS = {
     credit: CREDIT_TRANSLATIONS,
     invoices: INVOICES_TRANSLATIONS,
     home: HOME_TRANSLATIONS,
+    vouchers: VOUCHER_TRANSLATIONS,
 };

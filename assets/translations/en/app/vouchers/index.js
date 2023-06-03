@@ -1,0 +1,7 @@
+import {VOUCHER_CREATE_TRANSLATIONS} from "./create";
+import {VOUCHER_LIST_TRANSLATIONS} from "./list";
+
+export const VOUCHER_TRANSLATIONS = {
+    create: VOUCHER_CREATE_TRANSLATIONS,
+    list: VOUCHER_LIST_TRANSLATIONS
+};
