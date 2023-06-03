@@ -18,6 +18,8 @@ class VoucherView
 {
     private Voucher $voucher;
 
+    private array $amounts;
+
     public function getVoucher(): Voucher
     {
         return $this->voucher;
@@ -26,5 +28,15 @@ class VoucherView
     public function setVoucher(Voucher $voucher): void
     {
         $this->voucher = $voucher;
+    }
+
+    public function getAmounts(): array
+    {
+        return $this->amounts;
+    }
+
+    public function setAmounts(array $amounts): void
+    {
+        $this->amounts = $amounts;
     }
 }

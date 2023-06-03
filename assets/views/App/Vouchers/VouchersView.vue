@@ -13,7 +13,7 @@
             <dd>{{ voucher.type }}</dd>
           </div>
           <div v-if="voucher.type === 'fixed_credit'">
-          
+
           </div>
           <div>
             <dt>{{ $t('app.vouchers.view.main.entry_type') }}</dt>

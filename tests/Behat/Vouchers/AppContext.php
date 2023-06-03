@@ -329,4 +329,20 @@ class AppContext implements Context
             throw new \Exception("Can't see name");
         }
     }
+
+    /**
+     * @Then I will see the voucher amount :amount in :currency
+     */
+    public function iWillSeeTheVoucherAmountIn($amount, $currency)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['amounts'] as $amountData) {
+            if ($amountData['currency'] === $currency && $amountData['amount'] == $amount) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find amount");
+    }
 }
