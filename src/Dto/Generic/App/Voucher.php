@@ -38,6 +38,8 @@ class Voucher
 
     private ?string $code;
 
+    private bool $disabled;
+
     public function getId()
     {
         return $this->id;
@@ -106,5 +108,15 @@ class Voucher
     public function setCode(?string $code): void
     {
         $this->code = $code;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): void
+    {
+        $this->disabled = $disabled;
     }
 }

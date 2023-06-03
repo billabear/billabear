@@ -65,6 +65,7 @@ class VoucherFactory
         $appDto->setAutomaticEvent($entity->getEntryEvent());
         $appDto->setPercentage($entity->getPercentage());
         $appDto->setCode($entity->getCode());
+        $appDto->setDisabled($entity->isDisabled());
 
         return $appDto;
     }

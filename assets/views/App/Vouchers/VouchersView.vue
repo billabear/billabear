@@ -9,6 +9,10 @@
             <dd>{{ voucher.name }}</dd>
           </div>
           <div>
+            <dt>{{ $t('app.vouchers.view.main.disabled') }}</dt>
+            <dd>{{ voucher.disabled }}</dd>
+          </div>
+          <div>
             <dt>{{ $t('app.vouchers.view.main.type') }}</dt>
             <dd>{{ voucher.type }}</dd>
           </div>
@@ -34,7 +38,10 @@
             <dd>{{ voucher.automatic_event }}</dd>
           </div>
         </dl>
-
+      </div>
+      <div class="text-end">
+        <SubmitButton :in-progress="disableProgess" class="btn--danger" v-if="!voucher.disabled" @click="disable">{{ $t('app.vouchers.view.disable') }}</SubmitButton>
+        <SubmitButton :in-progress="enableProgress" class="btn--main" v-else @click="enable">{{ $t('app.vouchers.view.enable') }}</SubmitButton>
       </div>
     </LoadingScreen>
   </div>
@@ -49,7 +56,9 @@ export default {
     return {
       ready: false,
       voucher: {},
-      amounts: []
+      amounts: [],
+      disableProgress: false,
+      enableProgress: false,
     }
   },
   mounted() {
@@ -59,6 +68,24 @@ export default {
       this.amounts = response.data.amounts;
       this.ready = true;
     })
+  },
+  methods: {
+    disable: function () {
+      this.disableProgess = true;
+      const id = this.$route.params.id;
+      axios.post('/app/voucher/'+id+'/disable').then(response => {
+        this.voucher.disabled = true;
+        this.disableProgess = false;
+      })
+    },
+    enable: function () {
+      this.enableProgress = true;
+      const id = this.$route.params.id;
+      axios.post('/app/voucher/'+id+'/enable').then(response => {
+        this.voucher.disabled = false;
+        this.enableProgress = false;
+      })
+    }
   }
 }
 </script>
