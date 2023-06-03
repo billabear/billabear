@@ -262,4 +262,38 @@ class AppContext implements Context
             throw new \Exception("Can't see currency");
         }
     }
+
+    /**
+     * @When I disable the voucher :arg1
+     */
+    public function iDisableTheVoucher($voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        $this->sendJsonRequest('POST', '/app/voucher/'.$voucher->getId().'/disable');
+    }
+
+    /**
+     * @Then the voucher :arg1 will be disabled
+     */
+    public function theVoucherWillBeDisabled($voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        if (!$voucher->isDisabled()) {
+            throw new \Exception('Is not disabled');
+        }
+    }
+
+    /**
+     * @Then the voucher :arg1 will be enabled
+     */
+    public function theVoucherWillBeEnabled($voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        if ($voucher->isDisabled()) {
+            throw new \Exception('Is disabled');
+        }
+    }
 }

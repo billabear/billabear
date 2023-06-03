@@ -15,9 +15,11 @@ namespace App\Controller\App;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Dto\Response\Api\ListResponse;
+use App\Entity\Voucher;
 use App\Factory\VoucherFactory;
 use App\Repository\VoucherRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,5 +117,22 @@ class VoucherController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/voucher/{id}/disable', name: 'app_app_voucher_disablevoucher', methods: ['POST'])]
+    public function disableVoucher(
+        Request $request,
+        VoucherRepositoryInterface $voucherRepository,
+    ): Response {
+        try {
+            /** @var Voucher $voucher */
+            $voucher = $voucherRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $voucher->setDisabled(true);
+        $voucherRepository->save($voucher);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

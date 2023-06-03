@@ -58,6 +58,9 @@ class Voucher
     #[Orm\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $disabled = false;
+
     public function __construct()
     {
         $this->amounts = new ArrayCollection();
@@ -170,5 +173,15 @@ class Voucher
     public function setCode(?string $code): void
     {
         $this->code = $code;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): void
+    {
+        $this->disabled = $disabled;
     }
 }
