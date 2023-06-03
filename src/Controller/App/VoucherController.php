@@ -15,6 +15,7 @@ namespace App\Controller\App;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Dto\Response\Api\ListResponse;
+use App\Dto\Response\App\Vouchers\VoucherView;
 use App\Entity\Voucher;
 use App\Factory\VoucherFactory;
 use App\Repository\VoucherRepositoryInterface;
@@ -151,5 +152,28 @@ class VoucherController
         $voucherRepository->save($voucher);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/app/voucher/{id}', name: 'app_app_voucher_viewvoucher', methods: ['GET'])]
+    public function viewVoucher(
+        Request $request,
+        VoucherRepositoryInterface $voucherRepository,
+        VoucherFactory $voucherFactory,
+        SerializerInterface $serializer
+    ): Response {
+        try {
+            /** @var Voucher $voucher */
+            $voucher = $voucherRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $dto = $voucherFactory->createAppDto($voucher);
+        $view = new VoucherView();
+        $view->setVoucher($dto);
+
+        $json = $serializer->serialize($view, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }

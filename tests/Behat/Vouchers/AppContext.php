@@ -307,4 +307,26 @@ class AppContext implements Context
 
         $this->sendJsonRequest('POST', '/app/voucher/'.$voucher->getId().'/enable');
     }
+
+    /**
+     * @When I view the voucher :arg1
+     */
+    public function iViewTheVoucher($voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+
+        $this->sendJsonRequest('GET', '/app/voucher/'.$voucher->getId());
+    }
+
+    /**
+     * @Then I will see the voucher details for :arg1
+     */
+    public function iWillSeeTheVoucherDetailsFor($voucherName)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['voucher']['name']) || $data['voucher']['name'] != $voucherName) {
+            throw new \Exception("Can't see name");
+        }
+    }
 }
