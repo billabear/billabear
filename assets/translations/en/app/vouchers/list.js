@@ -7,5 +7,6 @@ export const VOUCHER_LIST_TRANSLATIONS = {
         type: "Type",
         entry_type: "Entry Type",
     },
-    view_btn: "View"
+    view_btn: "View",
+    loading: "Loading vouchers"
 };
