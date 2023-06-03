@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\Vouchers;
 
 use App\Entity\Voucher;
+use App\Entity\VoucherAmount;
 use App\Enum\VoucherEntryType;
 use App\Enum\VoucherEvent;
 use App\Enum\VoucherType;
@@ -182,5 +183,63 @@ class AppContext implements Context
         if (!isset($data['errors']['code'])) {
             throw new \Exception("Can't see validation error");
         }
+    }
+
+    /**
+     * @Given the following vouchers exist:
+     */
+    public function theFollowingVouchersExist(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $voucher = new Voucher();
+            $voucher->setName($row['Name']);
+            $voucher->setType('percentage' === strtolower($row['Type']) ? VoucherType::PERCENTAGE : VoucherType::FIXED_CREDIT);
+            $voucher->setEntryType('automatic' === strtolower($row['Entry Type']) ? VoucherEntryType::AUTOMATIC : VoucherEntryType::MANUAL);
+            $voucher->setValue('n/a' !== strtolower($row['Percentage Value']) ? intval($row['Percentage Value']) : null);
+            $voucher->setCode('n/a' !== strtolower($row['Code']) ? $row['Code'] : null);
+            $voucher->setCreatedAt(new \DateTime());
+
+            if ('n/a' !== strtolower($row['USD'])) {
+                $voucherAmount = new VoucherAmount();
+                $voucherAmount->setVoucher($voucher);
+                $voucherAmount->setCurrency('USD');
+                $voucherAmount->setAmount(intval($row['USD']));
+                $voucher->addAmountVoucher($voucherAmount);
+            }
+            if ('n/a' !== strtolower($row['GBP'])) {
+                $voucherAmount = new VoucherAmount();
+                $voucherAmount->setVoucher($voucher);
+                $voucherAmount->setCurrency('GBP');
+                $voucherAmount->setAmount(intval($row['GBP']));
+                $voucher->addAmountVoucher($voucherAmount);
+            }
+            $this->voucherRepository->getEntityManager()->persist($voucher);
+        }
+
+        $this->voucherRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I go the voucher list
+     */
+    public function iGoTheVoucherList()
+    {
+        $this->sendJsonRequest('GET', '/app/voucher');
+    }
+
+    /**
+     * @Then I will see the voucher :arg1 in the list of vouchers
+     */
+    public function iWillSeeTheVoucherInTheListOfVouchers($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $voucher) {
+            if ($voucher['name'] === $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find voucher");
     }
 }

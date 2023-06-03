@@ -148,6 +148,7 @@ class Voucher
 
     public function addAmountVoucher(VoucherAmount $amount): void
     {
+        $amount->setVoucher($this);
         $this->amounts->add($amount);
     }
 

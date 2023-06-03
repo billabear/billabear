@@ -14,8 +14,10 @@ namespace App\Controller\App;
 
 use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\Voucher\CreateVoucher;
+use App\Dto\Response\Api\ListResponse;
 use App\Factory\VoucherFactory;
 use App\Repository\VoucherRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,48 @@ class VoucherController
 {
     use ValidationErrorResponseTrait;
 
+    #[Route('/app/voucher', name: 'app_app_voucher_listvoucher', methods: ['GET'])]
+    public function listVoucher(
+        Request $request,
+        SerializerInterface $serializer,
+        VoucherFactory $voucherFactory,
+        VoucherRepositoryInterface $voucherRepository
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $resultsPerPage = (int) $request->get('limit', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'reason' => 'limit is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'reason' => 'limit is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+        // TODO add filters
+        $filters = [];
+
+        $resultSet = $voucherRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+        );
+
+        $dtos = array_map([$voucherFactory, 'createAppDto'], $resultSet->getResults());
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[Route('/app/voucher', name: 'app_app_voucher_createvoucher', methods: ['POST'])]
     public function createVoucher(
         Request $request,
@@ -34,6 +78,7 @@ class VoucherController
         ValidatorInterface $validator,
         VoucherRepositoryInterface $voucherRepository,
         VoucherFactory $voucherFactory,
+        Security $security,
     ) {
         $createVoucher = $serializer->deserialize($request->getContent(), CreateVoucher::class, 'json');
         $errors = $validator->validate($createVoucher);
@@ -44,6 +89,7 @@ class VoucherController
         }
 
         $entity = $voucherFactory->createEntity($createVoucher);
+        $entity->setBillingAdmin($security->getUser());
         $voucherRepository->save($entity);
         $dto = $voucherFactory->createAppDto($entity);
         $json = $serializer->serialize($dto, 'json');
