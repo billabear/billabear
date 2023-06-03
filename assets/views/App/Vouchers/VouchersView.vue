@@ -16,13 +16,22 @@
             <dt>{{ $t('app.vouchers.view.main.amount', {currency: amount.currency}) }}</dt>
             <dd>{{ amount.amount }}</dd>
           </div>
+          <div v-if="voucher.type === 'percentage'">
+            <dt>{{ $t('app.vouchers.view.main.percentage') }}</dt>
+            <dd>{{ voucher.percentage }}</dd>
+          </div>
           <div>
             <dt>{{ $t('app.vouchers.view.main.entry_type') }}</dt>
             <dd>{{ voucher.entry_type }}</dd>
           </div>
-          <div>
+          <div v-if="voucher.entry_type === 'manual'">
             <dt>{{ $t('app.vouchers.view.main.code') }}</dt>
             <dd>{{ voucher.code }}</dd>
+          </div>
+          <div v-if="voucher.entry_type === 'automatic'">
+
+            <dt>{{ $t('app.vouchers.view.main.automatic_event') }}</dt>
+            <dd>{{ voucher.automatic_event }}</dd>
           </div>
         </dl>
 

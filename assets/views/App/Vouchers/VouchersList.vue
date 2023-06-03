@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody v-if="loaded">
-            <tr v-for="voucher in vouchers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.voucher.view', params: {id: voucher.id}})">
+            <tr v-for="voucher in vouchers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.vouchers.view', params: {id: voucher.id}})">
               <td>{{ voucher.name }}</td>
               <td>{{ voucher.type }}</td>
               <td>{{ voucher.entry_type }}</td>
