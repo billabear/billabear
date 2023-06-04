@@ -117,14 +117,18 @@ class InvoiceGenerator
             $percentage = $voucherApplication->getVoucher()->getPercentage();
             $percentage = $percentage / 100;
             $amount = $total->multipliedBy($percentage)->negated();
+
+            $vatAmount = $vat->multipliedBy($percentage)->negated();
+
             $line->setDescription($voucherApplication->getVoucher()->getName());
-            $line->setVatPercentage(0);
+            $line->setVatPercentage($vatAmount->getMinorAmount()->toInt());
             $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setVatTotal(0);
 
-            $total = $total?->plus($amount) ?? $amount;
-            $subTotal = $subTotal?->plus($amount) ?? $amount;
+            $vat = $vat?->plus($vatAmount);
+            $total = $total->plus($amount);
+            $subTotal = $subTotal->plus($amount);
 
             $lines[] = $line;
             $voucherApplication->setUsed(true);
