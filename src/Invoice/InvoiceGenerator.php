@@ -79,6 +79,7 @@ class InvoiceGenerator
             $line->setCurrency($customer->getCreditCurrency());
             $line->setInvoice($invoice);
             $line->setVatTotal(0);
+            $line->setVatPercentage(0);
             if ($customer->getCreditAsMoney()->isPositive()) {
                 $amount = $customer->getCreditAsMoney()->negated();
                 if ($total->plus($amount)->isPositive()) {
@@ -101,6 +102,7 @@ class InvoiceGenerator
             }
 
             $line->setTotal($amount->getMinorAmount()->toInt());
+            $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setDescription('Credit adjustment');
             $lines[] = $line;
             $total = $total?->plus($amount) ?? $amount;
