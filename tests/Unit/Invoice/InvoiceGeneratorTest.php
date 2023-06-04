@@ -20,10 +20,12 @@ use App\Invoice\InvoiceNumberGeneratorInterface;
 use App\Invoice\PriceInfo;
 use App\Invoice\Pricer;
 use App\Repository\InvoiceRepositoryInterface;
+use App\Repository\VoucherApplicationRepositoryInterface;
 use Brick\Money\Money;
 use Monolog\Test\TestCase;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceGeneratorTest extends TestCase
 {
@@ -55,7 +57,10 @@ class InvoiceGeneratorTest extends TestCase
 
         $creditAdjustmentRecorder = $this->createMock(CreditAdjustmentRecorder::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository, $creditAdjustmentRecorder);
+        $voucherApplication = $this->createMock(VoucherApplicationRepositoryInterface::class);
+        $voucherApplication->method('findUnUsedForCustomer')->willThrowException(new NoEntityFoundException());
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository, $creditAdjustmentRecorder, $voucherApplication);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
