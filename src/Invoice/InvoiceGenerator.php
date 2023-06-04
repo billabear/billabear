@@ -18,8 +18,10 @@ use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Repository\InvoiceRepositoryInterface;
+use App\Repository\VoucherApplicationRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceGenerator
 {
@@ -28,6 +30,7 @@ class InvoiceGenerator
         private InvoiceNumberGeneratorInterface $invoiceNumberGenerator,
         private InvoiceRepositoryInterface $invoiceRepository,
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
+        private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
     ) {
     }
 
@@ -75,6 +78,7 @@ class InvoiceGenerator
             $line = new InvoiceLine();
             $line->setCurrency($customer->getCreditCurrency());
             $line->setInvoice($invoice);
+            $line->setVatTotal(0);
             if ($customer->getCreditAsMoney()->isPositive()) {
                 $amount = $customer->getCreditAsMoney()->negated();
                 if ($total->plus($amount)->isPositive()) {
@@ -98,8 +102,34 @@ class InvoiceGenerator
 
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setDescription('Credit adjustment');
+            $lines[] = $line;
             $total = $total?->plus($amount) ?? $amount;
             $subTotal = $subTotal?->plus($amount) ?? $amount;
+        }
+
+        try {
+            $voucherApplication = $this->voucherApplicationRepository->findUnUsedForCustomer($customer);
+
+            $line = new InvoiceLine();
+            $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+            $line->setInvoice($invoice);
+
+            $percentage = $voucherApplication->getVoucher()->getPercentage();
+            $percentage = $percentage / 100;
+            $amount = $total->multipliedBy($percentage)->negated();
+            $line->setDescription($voucherApplication->getVoucher()->getName());
+            $line->setVatPercentage(0);
+            $line->setSubTotal($amount->getMinorAmount()->toInt());
+            $line->setTotal($amount->getMinorAmount()->toInt());
+            $line->setVatTotal(0);
+
+            $total = $total?->plus($amount) ?? $amount;
+            $subTotal = $subTotal?->plus($amount) ?? $amount;
+
+            $lines[] = $line;
+            $voucherApplication->setUsed(true);
+            $this->voucherApplicationRepository->save($voucherApplication);
+        } catch (NoEntityFoundException $e) {
         }
 
         $invoice->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());

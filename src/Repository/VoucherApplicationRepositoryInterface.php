@@ -12,8 +12,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
+use App\Entity\VoucherApplication;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface VoucherApplicationRepositoryInterface extends RepositoryInterface
 {
+    public function findUnUsedForCustomer(Customer $customer): VoucherApplication;
 }

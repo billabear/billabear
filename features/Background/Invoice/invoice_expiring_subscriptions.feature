@@ -138,3 +138,39 @@ Feature: Generate new invoices
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 1100
+
+  Scenario: Has voucher
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org   | +3 Minutes  | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.three@example.org | +3 Minutes  | Active    |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
+      | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
+    And stripe billing is enabled
+    And the following vouchers exist:
+      | Name        | Type         | Entry Type | Code | Percentage Value | USD  | GBP | Disabled |
+      | Voucher One | Percentage   | Automatic  | n/a  | 50               | n/a  | n/a | false    |
+    And the customer "customer.one@example.org" has the voucher "Voucher One" applied
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    And the latest invoice for "customer.one@example.org" will have amount due as 500
+
+  Scenario: Has voucher that was used
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org   | +3 Minutes  | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.three@example.org | +3 Minutes  | Active    |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
+      | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
+    And stripe billing is enabled
+    And the following vouchers exist:
+      | Name        | Type         | Entry Type | Code | Percentage Value | USD  | GBP | Disabled |
+      | Voucher One | Percentage   | Automatic  | n/a  | 50               | n/a  | n/a | false    |
+    And the customer "customer.one@example.org" has the voucher "Voucher One" applied that has been used
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    And the latest invoice for "customer.one@example.org" will have amount due as 1000

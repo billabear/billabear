@@ -88,4 +88,39 @@ class ApiContext implements Context
             throw new \Exception('Application of voucher found');
         }
     }
+
+    /**
+     * @Given the customer :arg1 has the voucher :arg2 applied
+     */
+    public function theCustomerHasTheVoucherApplied($customerEmail, $voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $voucherApplication = new VoucherApplication();
+        $voucherApplication->setVoucher($voucher);
+        $voucherApplication->setCustomer($customer);
+        $voucherApplication->setCreatedAt(new \DateTime());
+
+        $this->voucherApplicationRepository->getEntityManager()->persist($voucherApplication);
+        $this->voucherApplicationRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the customer :arg1 has the voucher :arg2 applied that has been used
+     */
+    public function theCustomerHasTheVoucherAppliedThatHasBeenUsed($customerEmail, $voucherName)
+    {
+        $voucher = $this->getVoucher($voucherName);
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $voucherApplication = new VoucherApplication();
+        $voucherApplication->setVoucher($voucher);
+        $voucherApplication->setCustomer($customer);
+        $voucherApplication->setCreatedAt(new \DateTime());
+        $voucherApplication->setUsed(true);
+
+        $this->voucherApplicationRepository->getEntityManager()->persist($voucherApplication);
+        $this->voucherApplicationRepository->getEntityManager()->flush();
+    }
 }
