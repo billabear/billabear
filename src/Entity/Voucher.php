@@ -61,6 +61,9 @@ class Voucher
     #[ORM\Column(type: 'boolean')]
     private bool $disabled = false;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $externalReference = null;
+
     public function __construct()
     {
         $this->amounts = new ArrayCollection();
@@ -183,5 +186,15 @@ class Voucher
     public function setDisabled(bool $disabled): void
     {
         $this->disabled = $disabled;
+    }
+
+    public function getExternalReference(): ?string
+    {
+        return $this->externalReference;
+    }
+
+    public function setExternalReference(?string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
     }
 }

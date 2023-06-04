@@ -24,6 +24,7 @@ use Obol\ProductServiceInterface;
 use Obol\Provider\ProviderInterface;
 use Obol\RefundServiceInterface;
 use Obol\SubscriptionServiceInterface;
+use Obol\VoucherServiceInterface;
 use Obol\WebhookServiceInterface;
 
 class Provider implements ProviderInterface
@@ -91,5 +92,10 @@ class Provider implements ProviderInterface
     public function credit(): CreditServiceInterface
     {
         return new CreditService();
+    }
+
+    public function vouchers(): VoucherServiceInterface
+    {
+        return new VoucherService();
     }
 }
