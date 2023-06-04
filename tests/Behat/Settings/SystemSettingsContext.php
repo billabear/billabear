@@ -89,6 +89,17 @@ class SystemSettingsContext implements Context
     }
 
     /**
+     * @Given the system settings for main currency is :arg1
+     */
+    public function theSystemSettingsForMainCurrencyIs($arg1)
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setMainCurrency($arg1);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @Given the webhook url is set for :arg1
      */
     public function theWebhookUrlIsSetFor($arg1)

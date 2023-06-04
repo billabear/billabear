@@ -10,12 +10,25 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Request\Api\Vouchers;
 
-use App\Entity\Voucher;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use App\Validator\Constraints\VoucherCodeExists;
+use Symfony\Component\Validator\Constraints as Assert;
 
-interface VoucherRepositoryInterface extends CrudRepositoryInterface
+class ApplyVoucher
 {
-    public function getActiveByCode(string $code): Voucher;
+    #[Assert\NotBlank()]
+    #[Assert\Type('string')]
+    #[VoucherCodeExists]
+    private $code;
+
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    public function setCode($code): void
+    {
+        $this->code = $code;
+    }
 }

@@ -80,6 +80,7 @@ default:
 
                 #Vouchers
                 - App\Tests\Behat\Vouchers\AppContext
+                - App\Tests\Behat\Vouchers\ApiContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

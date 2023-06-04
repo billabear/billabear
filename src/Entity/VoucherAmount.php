@@ -12,6 +12,7 @@
 
 namespace App\Entity;
 
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -72,5 +73,10 @@ class VoucherAmount
     public function setVoucher(Voucher $voucher): void
     {
         $this->voucher = $voucher;
+    }
+
+    public function getAsMoney(): Money
+    {
+        return Money::ofMinor($this->amount, $this->currency);
     }
 }

@@ -10,12 +10,18 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Validator\Constraints;
 
-use App\Entity\Voucher;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Symfony\Component\Validator\Constraint;
 
-interface VoucherRepositoryInterface extends CrudRepositoryInterface
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+class VoucherCodeExists extends Constraint
 {
-    public function getActiveByCode(string $code): Voucher;
+    public const DOES_NOT_EXIST = '23bsfd9d543ff-6b9b-41cd-a99e-48dsfasdff';
+
+    protected const ERROR_NAMES = [
+        self::DOES_NOT_EXIST => 'DOES_NOT_EXIST',
+    ];
+
+    public $message = 'Voucher code does not exist';
 }

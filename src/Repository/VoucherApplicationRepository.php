@@ -12,10 +12,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Voucher;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Common\Repository\DoctrineRepository;
 
-interface VoucherRepositoryInterface extends CrudRepositoryInterface
+class VoucherApplicationRepository extends DoctrineRepository implements VoucherApplicationRepositoryInterface
 {
-    public function getActiveByCode(string $code): Voucher;
 }

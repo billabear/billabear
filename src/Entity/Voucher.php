@@ -53,6 +53,9 @@ class Voucher
     private ?BillingAdminInterface $billingAdmin = null;
 
     #[ORM\OneToMany(targetEntity: VoucherAmount::class, mappedBy: 'voucher', cascade: ['persist', 'remove'])]
+    /**
+     * @var VoucherAmount[]
+     */
     private Collection $amounts;
 
     #[Orm\Column(type: 'datetime')]
@@ -196,5 +199,15 @@ class Voucher
     public function setExternalReference(?string $externalReference): void
     {
         $this->externalReference = $externalReference;
+    }
+
+    public function getAmountForCurrency(string $currency)
+    {
+        foreach ($this->amounts as $amount) {
+            if ($amount->getCurrency() === $currency) {
+                return $amount;
+            }
+        }
+        throw new \Exception("Can't find currency");
     }
 }

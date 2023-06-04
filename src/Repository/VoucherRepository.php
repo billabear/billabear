@@ -12,8 +12,20 @@
 
 namespace App\Repository;
 
+use App\Entity\Voucher;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class VoucherRepository extends DoctrineCrudRepository implements VoucherRepositoryInterface
 {
+    public function getActiveByCode(string $code): Voucher
+    {
+        $voucher = $this->entityRepository->findOneBy(['code' => $code, 'disabled' => false]);
+
+        if (!$voucher instanceof Voucher) {
+            throw new NoEntityFoundException(sprintf("No voucher for '%s' found", $code));
+        }
+
+        return $voucher;
+    }
 }

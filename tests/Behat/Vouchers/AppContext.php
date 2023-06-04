@@ -26,6 +26,7 @@ use Behat\Mink\Session;
 class AppContext implements Context
 {
     use SendRequestTrait;
+    use VoucherTrait;
 
     public function __construct(
         private Session $session,
@@ -135,22 +136,6 @@ class AppContext implements Context
         }
 
         throw new \Exception("Can't find amount");
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function getVoucher($voucherName): Voucher
-    {
-        $voucher = $this->voucherRepository->findOneBy(['name' => $voucherName]);
-
-        if (!$voucher instanceof Voucher) {
-            throw new \Exception('No voucher found');
-        }
-
-        $this->voucherRepository->getEntityManager()->refresh($voucher);
-
-        return $voucher;
     }
 
     /**

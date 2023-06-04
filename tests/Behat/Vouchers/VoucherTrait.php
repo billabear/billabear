@@ -10,12 +10,25 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Tests\Behat\Vouchers;
 
 use App\Entity\Voucher;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-interface VoucherRepositoryInterface extends CrudRepositoryInterface
+trait VoucherTrait
 {
-    public function getActiveByCode(string $code): Voucher;
+    /**
+     * @throws \Exception
+     */
+    public function getVoucher($voucherName): Voucher
+    {
+        $voucher = $this->voucherRepository->findOneBy(['name' => $voucherName]);
+
+        if (!$voucher instanceof Voucher) {
+            throw new \Exception('No voucher found');
+        }
+
+        $this->voucherRepository->getEntityManager()->refresh($voucher);
+
+        return $voucher;
+    }
 }
