@@ -13,9 +13,12 @@
 namespace App\Repository;
 
 use App\Entity\Voucher;
+use App\Enum\VoucherEvent;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface VoucherRepositoryInterface extends CrudRepositoryInterface
 {
     public function getActiveByCode(string $code): Voucher;
+
+    public function getActiveByEvent(VoucherEvent $event): Voucher;
 }

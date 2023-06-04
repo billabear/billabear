@@ -180,6 +180,9 @@ class AppContext implements Context
             $voucher->setName($row['Name']);
             $voucher->setType('percentage' === strtolower($row['Type']) ? VoucherType::PERCENTAGE : VoucherType::FIXED_CREDIT);
             $voucher->setEntryType('automatic' === strtolower($row['Entry Type']) ? VoucherEntryType::AUTOMATIC : VoucherEntryType::MANUAL);
+            if ('automatic' === strtolower($row['Entry Type'])) {
+                $voucher->setEntryEvent(VoucherEvent::EXPIRED_CARD_ADDED);
+            }
             $voucher->setPercentage('n/a' !== strtolower($row['Percentage Value']) ? intval($row['Percentage Value']) : null);
             $voucher->setCode('n/a' !== strtolower($row['Code']) ? $row['Code'] : null);
             $voucher->setDisabled('true' === strtolower($row['Disabled'] ?? 'false'));

@@ -13,6 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\Voucher;
+use App\Enum\VoucherEvent;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
@@ -24,6 +25,17 @@ class VoucherRepository extends DoctrineCrudRepository implements VoucherReposit
 
         if (!$voucher instanceof Voucher) {
             throw new NoEntityFoundException(sprintf("No voucher for '%s' found", $code));
+        }
+
+        return $voucher;
+    }
+
+    public function getActiveByEvent(VoucherEvent $event): Voucher
+    {
+        $voucher = $this->entityRepository->findOneBy(['entryEvent' => $event, 'disabled' => false]);
+
+        if (!$voucher instanceof Voucher) {
+            throw new NoEntityFoundException(sprintf("No voucher for '%s' found", $event->value));
         }
 
         return $voucher;
