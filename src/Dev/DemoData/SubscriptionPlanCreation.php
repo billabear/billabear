@@ -129,6 +129,7 @@ class SubscriptionPlanCreation
             $subscriptionPlan->setProduct($product);
             $subscriptionPlan->setFree(false);
             $subscriptionPlan->setUserCount(10);
+            $subscriptionPlan->setPerSeat(false);
             foreach ($prices[$product->getName()] as $price) {
                 $subscriptionPlan->addPrice($price);
             }
