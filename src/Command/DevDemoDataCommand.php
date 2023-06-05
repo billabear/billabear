@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:dev:demo-data', description: 'Generate some demo data')]
 class DevDemoDataCommand extends Command
 {
-    public const NUMBER_OF_CUSTOMERS = 100;
+    public const NUMBER_OF_CUSTOMERS = 10;
 
     public function __construct(
         private CustomerCreation $customerCreation,
@@ -38,8 +38,8 @@ class DevDemoDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start creating demo data');
-        $this->customerCreation->createData($output);
-        $this->subscriptionPlanCreation->createData($output);
+        // $this->customerCreation->createData($output);
+        // $this->subscriptionPlanCreation->createData($output);
         $this->subscriptionCreation->createData($output);
         $this->estimatesGeneration->generate();
 

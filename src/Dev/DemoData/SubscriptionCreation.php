@@ -16,6 +16,7 @@ use App\Command\DevDemoDataCommand;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
+use App\Stats\SubscriptionCreationStats;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
@@ -33,6 +34,7 @@ class SubscriptionCreation
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,
+        private SubscriptionCreationStats $subscriptionCreationStats,
     ) {
     }
 
@@ -44,42 +46,60 @@ class SubscriptionCreation
 
         $limit = 25;
         $count = 0;
+
+        $step = 10;
+        $percentage = 25;
         $lastId = null;
         $progressBar = new ProgressBar($output, DevDemoDataCommand::NUMBER_OF_CUSTOMERS);
 
         $progressBar->start();
         while ($count < DevDemoDataCommand::NUMBER_OF_CUSTOMERS) {
-            $customers = $this->customerRepository->getList(limit: $limit, lastId: $lastId);
-            $count += $limit;
-            $lastId = $customers->getLastKey();
-            /** @var Customer $customer */
-            foreach ($customers->getResults() as $customer) {
-                $progressBar->advance();
-                $cards = $this->paymentCardRepository->getPaymentCardForCustomer($customer);
+            $step += intval($step * ($percentage / 100));
+            $a = 0;
+            $pastMonths = 16;
+            var_dump($step, DevDemoDataCommand::NUMBER_OF_CUSTOMERS);
+            while ($a < $step) {
+                $customers = $this->customerRepository->getList(limit: $limit, lastId: $lastId);
+                $count += $limit;
+                $lastId = $customers->getLastKey();
+                --$pastMonths;
+                /** @var Customer $customer */
+                foreach ($customers->getResults() as $customer) {
+                    ++$a;
+                    $progressBar->advance();
+                    $cards = $this->paymentCardRepository->getPaymentCardForCustomer($customer);
 
-                $card = current($cards);
+                    $card = current($cards);
 
-                /** @var SubscriptionPlan $subscriptionPlan */
-                $subscriptionPlan = $faker->randomElement($subscriptionPlans);
-                /** @var Price $price */
-                $price = $faker->randomElement($subscriptionPlan->getPrices()->toArray());
-                $subscription = new Subscription();
-                $subscription->setStatus(SubscriptionStatus::ACTIVE);
-                $subscription->setSubscriptionPlan($subscriptionPlan);
-                $subscription->setCustomer($customer);
-                $subscription->setPrice($price);
-                $subscription->setPaymentSchedule($price->getSchedule());
-                $subscription->setAmount($price->getAmount());
-                $subscription->setCurrency($price->getCurrency());
-                if ($card instanceof PaymentCard) {
-                    $subscription->setPaymentDetails($card);
+                    /** @var SubscriptionPlan $subscriptionPlan */
+                    $subscriptionPlan = $faker->randomElement($subscriptionPlans);
+                    /** @var Price $price */
+                    $price = $faker->randomElement($subscriptionPlan->getPrices()->toArray());
+                    $subscription = new Subscription();
+                    $subscription->setStatus(SubscriptionStatus::ACTIVE);
+                    $subscription->setSubscriptionPlan($subscriptionPlan);
+                    $subscription->setCustomer($customer);
+                    $subscription->setPrice($price);
+                    $subscription->setPaymentSchedule($price->getSchedule());
+                    $subscription->setAmount($price->getAmount());
+                    $subscription->setCurrency($price->getCurrency());
+                    if ($card instanceof PaymentCard) {
+                        $subscription->setPaymentDetails($card);
+                    }
+                    $startDate = new \DateTime('-'.$pastMonths.' month');
+                    $startDate->modify('first day of this month');
+                    $numberOfDaysInMonth = (int) $startDate->format('t');
+                    $days = $faker->numberBetween(1, $numberOfDaysInMonth) - 1;
+                    $startDate->modify('+'.$days.' days');
+                    $subscription->setCreatedAt($startDate);
+                    $subscription->setStartOfCurrentPeriod($startDate);
+                    $subscription->setUpdatedAt(new \DateTime('now'));
+                    $subscription->setValidUntil(new \DateTime('+1 '.$price->getSchedule()));
+
+                    $this->subscriptionRepository->save($subscription);
+
+                    $this->subscriptionCreationStats->handleStats($subscription);
                 }
-
-                $subscription->setCreatedAt(new \DateTime('-2 years'));
-                $subscription->setUpdatedAt(new \DateTime('now'));
-                $subscription->setValidUntil(new \DateTime('+1 '.$price->getSchedule()));
-
-                $this->subscriptionRepository->save($subscription);
             }
         }
         $progressBar->finish();
