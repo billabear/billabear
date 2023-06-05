@@ -13,7 +13,9 @@
 namespace App\Command;
 
 use App\Dev\DemoData\CustomerCreation;
+use App\Dev\DemoData\SubscriptionCreation;
 use App\Dev\DemoData\SubscriptionPlanCreation;
+use App\Stats\RevenueEstimatesGeneration;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,11 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:dev:demo-data', description: 'Generate some demo data')]
 class DevDemoDataCommand extends Command
 {
-    public const NUMBER_OF_CUSTOMERS = 3000;
+    public const NUMBER_OF_CUSTOMERS = 100;
 
     public function __construct(
         private CustomerCreation $customerCreation,
         private SubscriptionPlanCreation $subscriptionPlanCreation,
+        private SubscriptionCreation $subscriptionCreation,
+        private RevenueEstimatesGeneration $estimatesGeneration,
     ) {
         parent::__construct(null);
     }
@@ -34,8 +38,10 @@ class DevDemoDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start creating demo data');
-        // $this->customerCreation->createData($output);
+        $this->customerCreation->createData($output);
         $this->subscriptionPlanCreation->createData($output);
+        $this->subscriptionCreation->createData($output);
+        $this->estimatesGeneration->generate();
 
         return Command::SUCCESS;
     }
