@@ -46,7 +46,8 @@
         "friends-of-behat/symfony-extension": "^2.3",
         "friendsofphp/php-cs-fixer": "^v3.14.4",
         "phpunit/phpunit": "^10.1",
-        "symfony/web-profiler-bundle": "^6.1"
+        "symfony/web-profiler-bundle": "^6.1",
+        "fakerphp/faker": "*"
     },
     "config": {
         "allow-plugins": {
