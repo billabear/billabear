@@ -33,7 +33,7 @@ class CancellationRequest
     #[ORM\Column('when_to_cancel', type: 'string')]
     private string $when;
 
-    #[ORM\Column('specific_date', type: 'datetimetz', nullable: true)]
+    #[ORM\Column('specific_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $specificDate = null;
 
     #[ORM\Column('refund_type', type: 'string')]
@@ -48,10 +48,10 @@ class CancellationRequest
     #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
     private ?BillingAdminInterface $billingAdmin = null;
 
-    #[ORM\Column('original_valid_until', type: 'datetimetz')]
+    #[ORM\Column('original_valid_until', type: 'datetime')]
     private \DateTimeInterface $originalValidUntil;
 
-    #[ORM\Column('created_at', type: 'datetimetz')]
+    #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column('error', type: 'string', nullable: true)]

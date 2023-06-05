@@ -41,13 +41,13 @@ class PaymentFailureProcess
     #[ORM\Column('resolved', type: 'boolean')]
     private bool $resolved;
 
-    #[ORM\Column('next_attempt_at', type: 'datetimetz', nullable: true)]
+    #[ORM\Column('next_attempt_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $nextAttemptAt;
 
-    #[ORM\Column('created_at', type: 'datetimetz')]
+    #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column('updated_at', type: 'datetimetz')]
+    #[ORM\Column('updated_at', type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
     public function getId()

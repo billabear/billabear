@@ -36,10 +36,10 @@ class GenericBackgroundTask
     #[ORM\Column(type: 'json')]
     private array $meta = [];
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
     public function getId()

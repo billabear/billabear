@@ -32,7 +32,7 @@ class ChargeBackCreation
     #[ORM\ManyToOne(targetEntity: ChargeBack::class)]
     private ChargeBack $chargeBack;
 
-    #[ORM\Column('created_at', type: 'datetimetz')]
+    #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column('error', type: 'string', nullable: true)]

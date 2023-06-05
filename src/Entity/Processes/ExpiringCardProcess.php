@@ -36,13 +36,13 @@ class ExpiringCardProcess
     #[ORM\Column('state', type: 'string')]
     private string $state;
 
-    #[ORM\Column('created_at', type: 'datetimetz')]
+    #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column('updated_at', type: 'datetimetz')]
+    #[ORM\Column('updated_at', type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
-    #[ORM\Column('subscription_charged_at', type: 'datetimetz')]
+    #[ORM\Column('subscription_charged_at', type: 'datetime')]
     private \DateTimeInterface $subscriptionChargedAt;
 
     #[ORM\Column('error', type: 'string', nullable: true)]

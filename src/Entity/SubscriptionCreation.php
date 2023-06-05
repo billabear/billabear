@@ -32,7 +32,7 @@ class SubscriptionCreation
     #[ORM\ManyToOne(targetEntity: Subscription::class)]
     private Subscription $subscription;
 
-    #[ORM\Column('created_at', type: 'datetimetz')]
+    #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column('error', type: 'string', nullable: true)]

@@ -32,7 +32,7 @@ class PaymentCreation
     #[ORM\ManyToOne(targetEntity: Payment::class)]
     private Payment $payment;
 
-    #[ORM\Column('created_at', type: 'datetimetz')]
+    #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column('error', type: 'string', nullable: true)]

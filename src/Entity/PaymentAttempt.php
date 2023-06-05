@@ -46,7 +46,7 @@ class PaymentAttempt
     #[ORM\Column(type: 'string')]
     private string $currency;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
     public function __construct()
