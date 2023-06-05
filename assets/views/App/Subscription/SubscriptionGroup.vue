@@ -4,6 +4,7 @@
       <div class="mt-5 rounded-lg p-5 border shadow-lg">
         <ul>
           <li class="my-3"><router-link :to="{name: 'app.subscription.list'}">{{ $t('app.subscription.menu.subscriptions') }}</router-link></li>
+          <li class="my-3"><router-link :to="{name: 'app.subscription.mass_change'}">{{ $t('app.subscription.menu.mass_change') }}</router-link></li>
         </ul>
       </div>
     </div>

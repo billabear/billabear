@@ -47,7 +47,6 @@ import StripeImportList from "../views/App/Settings/Stripe/StripeImportList.vue"
 import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
 import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
 import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsList.vue";
-import CreditNoteCreate from "../views/App/Credit/CreditCreate.vue";
 import CreditCreate from "../views/App/Credit/CreditCreate.vue";
 import InvoicesList from "../views/App/Invoices/InvoicesList.vue";
 import StripeImportView from "../views/App/Settings/Stripe/StripeImportView.vue";
@@ -56,6 +55,7 @@ import ExchangeRatesList from "../views/App/Settings/ExchangeRates/ExchangeRates
 import VouchersList from "../views/App/Vouchers/VouchersList.vue";
 import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
 import VouchersView from "../views/App/Vouchers/VouchersView.vue";
+import SubscriptionMassChange from "../views/App/Subscription/SubscriptionMassChange.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -311,6 +311,11 @@ export const APP_ROUTES = [
                 path: '',
                 component: SubscriptionList
             },
+            {
+                name: 'app.subscription.mass_change',
+                path: 'mass-change',
+                component: SubscriptionMassChange,
+            }
         ]
     },
     {

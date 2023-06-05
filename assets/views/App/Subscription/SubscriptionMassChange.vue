@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "SubscriptionMassChange",
   data() {
@@ -21,6 +23,11 @@ export default {
       ready: false,
       sendingRequest: false
     }
+  },
+  mounted() {
+    axios.get("/app/price").then(response => {
+      this.ready = true;
+    })
   }
 }
 </script>

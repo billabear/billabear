@@ -81,7 +81,7 @@ class PriceController
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/app/product/{id}/price', name: 'app_product_price_list', methods: ['GET'])]
+    #[Route('/app/price', name: 'app_price_list', methods: ['GET'])]
     public function listPrices(
         Request $request,
         ProductRepositoryInterface $productRepository,
@@ -92,12 +92,6 @@ class PriceController
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
-        try {
-            /** @var Product $product */
-            $product = $productRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
-        }
         if ($resultsPerPage < 1) {
             return new JsonResponse([
                 'reason' => 'limit is below 1',
