@@ -40,7 +40,7 @@ class InvoiceCharger
     ) {
     }
 
-    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null): void
+    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null, \DateTime $createdAt = null): void
     {
         if (!$paymentCard) {
             $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
@@ -61,14 +61,21 @@ class InvoiceCharger
         }
 
         $payment = $this->paymentFactory->fromSubscriptionCreation($response->getPaymentDetails(), $invoice->getCustomer());
+
+        if ($createdAt) {
+            $payment->setCreatedAt($createdAt);
+            $invoice->setPaidAt($createdAt);
+        } else {
+            $invoice->setPaidAt(new \DateTime('now'));
+        }
+
         foreach ($invoice->getSubscriptions() as $subscription) {
             $payment->addSubscription($subscription);
         }
+
         $this->paymentRepository->save($payment);
         $invoice->setPayments(new ArrayCollection([$payment]));
-
         $invoice->setPaid(true);
-        $invoice->setPaidAt(new \DateTime('now'));
         $this->invoiceRepository->save($invoice);
 
         $this->eventDispatcher->dispatch(new InvoicePaid($invoice), InvoicePaid::NAME);

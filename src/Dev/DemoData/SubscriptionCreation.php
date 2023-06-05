@@ -57,7 +57,6 @@ class SubscriptionCreation
             $step += intval($step * ($percentage / 100));
             $a = 0;
             $pastMonths = 16;
-            var_dump($step, DevDemoDataCommand::NUMBER_OF_CUSTOMERS);
             while ($a < $step) {
                 $customers = $this->customerRepository->getList(limit: $limit, lastId: $lastId);
                 $count += $limit;
@@ -80,6 +79,7 @@ class SubscriptionCreation
                     $subscription->setSubscriptionPlan($subscriptionPlan);
                     $subscription->setCustomer($customer);
                     $subscription->setPrice($price);
+                    $subscription->setPlanName($subscriptionPlan->getName());
                     $subscription->setPaymentSchedule($price->getSchedule());
                     $subscription->setAmount($price->getAmount());
                     $subscription->setCurrency($price->getCurrency());
@@ -94,7 +94,7 @@ class SubscriptionCreation
                     $subscription->setCreatedAt($startDate);
                     $subscription->setStartOfCurrentPeriod($startDate);
                     $subscription->setUpdatedAt(new \DateTime('now'));
-                    $subscription->setValidUntil(new \DateTime('+1 '.$price->getSchedule()));
+                    $subscription->setValidUntil($startDate);
 
                     $this->subscriptionRepository->save($subscription);
 

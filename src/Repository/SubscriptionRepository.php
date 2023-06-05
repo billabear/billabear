@@ -65,4 +65,9 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
     {
         return $this->entityRepository->findBy(['status' => SubscriptionStatus::ACTIVE]);
     }
+
+    public function getCountActive(): int
+    {
+        return $this->entityRepository->count(['status' => SubscriptionStatus::ACTIVE]);
+    }
 }

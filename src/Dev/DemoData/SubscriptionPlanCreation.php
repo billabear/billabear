@@ -40,7 +40,7 @@ class SubscriptionPlanCreation
 
     public function createData(OutputInterface $output): void
     {
-        $output->writeln('Create features');
+        $output->writeln("\nCreate features");
         $faker = \Faker\Factory::create();
         $progressBar = new ProgressBar($output, 24);
 

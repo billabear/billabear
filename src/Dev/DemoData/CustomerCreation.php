@@ -16,6 +16,7 @@ use App\Command\DevDemoDataCommand;
 use App\Customer\ExternalRegisterInterface;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -33,6 +34,7 @@ class CustomerCreation
         #[Autowire('%parthenon_billing_payments_obol_config%')]
         private $stripeConfig,
         private PaymentCardRepositoryInterface $paymentCardRepository,
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
     ) {
     }
 
@@ -44,6 +46,8 @@ class CustomerCreation
 
         $output->writeln('Starting to create customers');
         $progressBar = new ProgressBar($output, DevDemoDataCommand::NUMBER_OF_CUSTOMERS);
+
+        $brandSettings = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
 
         $progressBar->start();
         for ($i = 0; $i < DevDemoDataCommand::NUMBER_OF_CUSTOMERS; ++$i) {
@@ -62,6 +66,7 @@ class CustomerCreation
             $customer->setDisabled(false);
             $customer->setReference($faker->domainWord);
             $customer->setLocale($faker->locale);
+            $customer->setBrandSettings($brandSettings);
 
             $this->externalRegister->register($customer);
             $this->customerRepository->save($customer);
