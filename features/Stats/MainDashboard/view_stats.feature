@@ -18,3 +18,5 @@ Feature: Customer Subscription Update Payment Method APP
     And I will see there is 30 days of daily stats
     And I will see there is 12 months of monthly stats
     And I will see there is 5 years of yearly stats
+    And I will see there is 12 months of monthly revenue stats for "USD"
+    And I will see there is 12 months of monthly revenue stats for "EUR"

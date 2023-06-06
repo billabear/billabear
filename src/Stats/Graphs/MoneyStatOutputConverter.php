@@ -41,7 +41,7 @@ class MoneyStatOutputConverter
             }
 
             $date = $stat->getDate()->format('Y-m-d');
-            if (isset($output[$brand][$date])) {
+            if (!isset($output[$brand][$date])) {
                 $output[$brand][$date] = [];
             }
             $output[$brand][$date][$stat->getCurrency()] = $stat->getAmount();
@@ -49,7 +49,7 @@ class MoneyStatOutputConverter
 
         if (empty($output)) {
             $output = [Customer::DEFAULT_BRAND => []];
-            $foundCurrencies = ['USD'];
+            $foundCurrencies = ['EUR'];
         }
         foreach ($output as $brand => $data) {
             $newStart = clone $start;
@@ -99,7 +99,7 @@ class MoneyStatOutputConverter
                 throw new \Exception('Invalid date');
             }
             $date = $monthDate->format('Y-m-d');
-            if (isset($output[$brand][$date])) {
+            if (!isset($output[$brand][$date])) {
                 $output[$brand][$date] = [];
             }
             $output[$brand][$date][$stat->getCurrency()] = $stat->getAmount();
@@ -161,7 +161,7 @@ class MoneyStatOutputConverter
                 throw new \Exception('Invalid date');
             }
             $date = $monthDate->format('Y-m-d');
-            if (isset($output[$brand][$date])) {
+            if (!isset($output[$brand][$date])) {
                 $output[$brand][$date] = [];
             }
             $output[$brand][$date][$stat->getCurrency()] = $stat->getAmount();

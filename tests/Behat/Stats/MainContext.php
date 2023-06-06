@@ -236,6 +236,35 @@ class MainContext implements Context
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
+
+        $paymentAmountStat = new PaymentAmountYearlyStats();
+        $paymentAmountStat->setYear((int) $dateTime->format('Y'));
+        $paymentAmountStat->setMonth(1);
+        $paymentAmountStat->setDay(1);
+        $paymentAmountStat->setAmount(random_int(100, 300000));
+        $paymentAmountStat->setCurrency('EUR');
+        $paymentAmountStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $refundAmount = new RefundAmountYearlyStats();
+        $refundAmount->setYear((int) $dateTime->format('Y'));
+        $refundAmount->setMonth(1);
+        $refundAmount->setDay(1);
+        $refundAmount->setAmount(random_int(100, 300000));
+        $refundAmount->setCurrency('EUR');
+        $refundAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $chargeBackAmount = new ChargeBackAmountYearlyStats();
+        $chargeBackAmount->setYear((int) $dateTime->format('Y'));
+        $chargeBackAmount->setMonth(1);
+        $chargeBackAmount->setDay(1);
+        $chargeBackAmount->setAmount(random_int(100, 300000));
+        $chargeBackAmount->setCurrency('EUR');
+        $chargeBackAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
     }
 
     private function generateMonthlyStats(\DateTime $dateTime)
@@ -284,6 +313,34 @@ class MainContext implements Context
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
+
+        $paymentAmountStat = new PaymentAmountMonthlyStats();
+        $paymentAmountStat->setYear((int) $dateTime->format('Y'));
+        $paymentAmountStat->setMonth((int) $dateTime->format('m'));
+        $paymentAmountStat->setDay(1);
+        $paymentAmountStat->setAmount(random_int(100, 300000));
+        $paymentAmountStat->setCurrency('EUR');
+        $paymentAmountStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $refundAmount = new RefundAmountMonthlyStats();
+        $refundAmount->setYear((int) $dateTime->format('Y'));
+        $refundAmount->setMonth((int) $dateTime->format('m'));
+        $refundAmount->setDay(1);
+        $refundAmount->setAmount(random_int(100, 300000));
+        $refundAmount->setCurrency('EUR');
+        $refundAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $chargeBackAmount = new ChargeBackAmountMonthlyStats();
+        $chargeBackAmount->setYear((int) $dateTime->format('Y'));
+        $chargeBackAmount->setMonth((int) $dateTime->format('m'));
+        $chargeBackAmount->setDay(1);
+        $chargeBackAmount->setAmount(random_int(100, 300000));
+        $chargeBackAmount->setCurrency('EUR');
+        $chargeBackAmount->setBrandCode(Customer::DEFAULT_BRAND);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
     }
 
     private function generateDailyStats(\DateTime $dateTime)
@@ -328,6 +385,35 @@ class MainContext implements Context
 
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCreationStat);
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($subscriptionCancellation);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
+        $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
+
+        $paymentAmountStat = new PaymentAmountDailyStats();
+        $paymentAmountStat->setYear((int) $dateTime->format('Y'));
+        $paymentAmountStat->setMonth((int) $dateTime->format('m'));
+        $paymentAmountStat->setDay((int) $dateTime->format('d'));
+        $paymentAmountStat->setAmount(random_int(100, 300000));
+        $paymentAmountStat->setCurrency('EUR');
+        $paymentAmountStat->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $refundAmount = new RefundAmountDailyStats();
+        $refundAmount->setYear((int) $dateTime->format('Y'));
+        $refundAmount->setMonth((int) $dateTime->format('m'));
+        $refundAmount->setDay((int) $dateTime->format('d'));
+        $refundAmount->setAmount(random_int(100, 300000));
+        $refundAmount->setCurrency('EUR');
+        $refundAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
+        $chargeBackAmount = new ChargeBackAmountDailyStats();
+        $chargeBackAmount->setYear((int) $dateTime->format('Y'));
+        $chargeBackAmount->setMonth((int) $dateTime->format('m'));
+        $chargeBackAmount->setDay((int) $dateTime->format('d'));
+        $chargeBackAmount->setAmount(random_int(100, 300000));
+        $chargeBackAmount->setCurrency('EUR');
+        $chargeBackAmount->setBrandCode(Customer::DEFAULT_BRAND);
+
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($paymentAmountStat);
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
@@ -386,6 +472,19 @@ class MainContext implements Context
         $data = $this->getJsonContent();
         if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
             throw new \Exception('wrong count');
+        }
+    }
+
+    /**
+     * @Then I will see there is 12 months of monthly revenue stats for :currency
+     */
+    public function iWillSeeThereIsMonthsOfMonthlyRevenueStatsFor($currency)
+    {
+        $data = $this->getJsonContent();
+        foreach ($data['payment_amount']['monthly'][Customer::DEFAULT_BRAND] as $month) {
+            if (0 == $month[$currency]) {
+                throw new \Exception('There is a month with a zero. There should be no months with a zero');
+            }
         }
     }
 

@@ -48,13 +48,22 @@ class MoneyStatsOutputConverterTest extends TestCase
         $endStat->setAmount(16);
         $endStat->setCurrency('USD');
 
+        $endStatEur = new PaymentAmountDailyStats();
+        $endStatEur->setYear(2023);
+        $endStatEur->setMonth(01);
+        $endStatEur->setDay(31);
+        $endStatEur->setBrandCode(Customer::DEFAULT_BRAND);
+        $endStatEur->setAmount(1632);
+        $endStatEur->setCurrency('EUR');
+
         $subject = new MoneyStatOutputConverter();
-        $output = $subject->convertToDailyOutput($startDate, $endDate, [$startStat, $middleStat, $endStat]);
+        $output = $subject->convertToDailyOutput($startDate, $endDate, [$startStat, $middleStat, $endStat, $endStatEur]);
 
         $this->assertCount(31, $output[Customer::DEFAULT_BRAND]);
         $this->assertEquals(11, $output[Customer::DEFAULT_BRAND]['2023-01-01']['USD']);
         $this->assertEquals(12, $output[Customer::DEFAULT_BRAND]['2023-01-12']['USD']);
         $this->assertEquals(16, $output[Customer::DEFAULT_BRAND]['2023-01-31']['USD']);
+        $this->assertEquals(1632, $output[Customer::DEFAULT_BRAND]['2023-01-31']['EUR']);
         $this->assertEquals(0, $output[Customer::DEFAULT_BRAND]['2023-01-02']['USD']);
     }
 
@@ -126,8 +135,16 @@ class MoneyStatsOutputConverterTest extends TestCase
         $endStat->setAmount(16);
         $endStat->setCurrency('USD');
 
+        $endStatEuro = new PaymentAmountDailyStats();
+        $endStatEuro->setYear(2023);
+        $endStatEuro->setMonth(01);
+        $endStatEuro->setDay(31);
+        $endStatEuro->setBrandCode(Customer::DEFAULT_BRAND);
+        $endStatEuro->setAmount(1632);
+        $endStatEuro->setCurrency('EUR');
+
         $subject = new MoneyStatOutputConverter();
-        $output = $subject->convertToDailyOutput($startDate, $endDate, [$startStat, $middleStat, $endStat]);
+        $output = $subject->convertToDailyOutput($startDate, $endDate, [$startStat, $middleStat, $endStat, $endStatEuro]);
 
         $this->assertCount(2, $output);
         $this->assertCount(31, $output[Customer::DEFAULT_BRAND]);
@@ -136,6 +153,7 @@ class MoneyStatsOutputConverterTest extends TestCase
         $this->assertEquals(0, $output[Customer::DEFAULT_BRAND]['2023-01-12']['USD']);
         $this->assertEquals(12, $output['Brand Two']['2023-01-12']['USD']);
         $this->assertEquals(16, $output[Customer::DEFAULT_BRAND]['2023-01-31']['USD']);
+        $this->assertEquals(1632, $output[Customer::DEFAULT_BRAND]['2023-01-31']['EUR']);
         $this->assertEquals(0, $output[Customer::DEFAULT_BRAND]['2023-01-02']['USD']);
     }
 
@@ -168,8 +186,16 @@ class MoneyStatsOutputConverterTest extends TestCase
         $endStat->setAmount(16);
         $endStat->setCurrency('USD');
 
+        $endStatEuro = new PaymentAmountDailyStats();
+        $endStatEuro->setYear(2023);
+        $endStatEuro->setMonth(12);
+        $endStatEuro->setDay(31);
+        $endStatEuro->setBrandCode(Customer::DEFAULT_BRAND);
+        $endStatEuro->setAmount(1634);
+        $endStatEuro->setCurrency('EUR');
+
         $subject = new MoneyStatOutputConverter();
-        $output = $subject->convertToMonthOutput($startDate, $endDate, [$startStat, $middleStat, $endStat]);
+        $output = $subject->convertToMonthOutput($startDate, $endDate, [$startStat, $middleStat, $endStat, $endStatEuro]);
 
         $this->assertCount(2, $output);
         $this->assertCount(12, $output[Customer::DEFAULT_BRAND]);
@@ -178,6 +204,7 @@ class MoneyStatsOutputConverterTest extends TestCase
         $this->assertEquals(0, $output[Customer::DEFAULT_BRAND]['2023-02-01']['USD']);
         $this->assertEquals(12, $output['Brand Two']['2023-03-01']['USD']);
         $this->assertEquals(16, $output[Customer::DEFAULT_BRAND]['2023-12-01']['USD']);
+        $this->assertEquals(1634, $output[Customer::DEFAULT_BRAND]['2023-12-01']['EUR']);
     }
 
     public function testSingleDecadeTwoBrands()
