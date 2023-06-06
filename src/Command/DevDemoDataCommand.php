@@ -40,9 +40,9 @@ class DevDemoDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start creating demo data');
-        // $this->customerCreation->createData($output);
-        // $this->subscriptionPlanCreation->createData($output);
-        // $this->subscriptionCreation->createData($output);
+        $this->customerCreation->createData($output);
+        $this->subscriptionPlanCreation->createData($output);
+        $this->subscriptionCreation->createData($output);
         $this->invoiceCreation->createData($output);
         $this->estimatesGeneration->generate();
 

@@ -47,7 +47,8 @@ class InvoiceCreation
 
             /** @var Subscription $subscription */
             foreach ($data as $subscription) {
-                if ($subscription->getStartOfCurrentPeriod() > $now) {
+                $progressBar->advance();
+                if ($subscription->getValidUntil() > $now) {
                     continue;
                 }
                 do {
@@ -59,7 +60,6 @@ class InvoiceCreation
                     $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($subscription->getCustomer(), [$subscription]);
                     $this->invoiceCharger->chargeInvoice($invoice, createdAt: $subscription->getStartOfCurrentPeriod());
                 } while ($subscription->getValidUntil() < $now);
-                $progressBar->advance();
             }
         } while (!empty($data));
         $progressBar->finish();
