@@ -121,6 +121,17 @@ class StripeController
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 
+    #[Route('/app/settings/stripe-import/dismiss', name: 'app_app_settings_stripeimport_dismiss', methods: ['POST'])]
+    public function dismissStripeImports(
+        SettingsRepositoryInterface $settingsRepository,
+    ): Response {
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getOnboardingSettings()->setHasStripeImports(true);
+        $settingsRepository->save($settings);
+
+        return new JsonResponse([]);
+    }
+
     #[Route('/app/settings/stripe-import/{id}/view', name: 'app_app_settings_stripeimport_viewimport', methods: ['GET'])]
     public function viewImport(
         Request $request,

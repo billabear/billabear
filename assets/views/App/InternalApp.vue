@@ -15,7 +15,7 @@
     </div>
     <div class="">
       <div class="alert-error" v-if="!has_stripe_imports">
-        {{ $t('app.home.stripe_import.text') }} <router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.home.stripe_import.link') }}</router-link>
+        {{ $t('app.home.stripe_import.text') }} <router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.home.stripe_import.link') }}</router-link> - <a @click="dimissStripeImport">{{ $t('app.home.stripe_import.dismiss') }}</a>
       </div>
         <router-view></router-view>
     </div>
@@ -38,8 +38,12 @@ export default {
     ...mapState('onboardingStore', ['has_stripe_imports'])
   },
   methods: {
-
-    ...mapActions('onboardingStore', ['setStripeImport']),
+    dimissStripeImport: function() {
+        axios.post('/app/settings/stripe-import/dismiss').then(response => {
+            this.stripeImport();
+        })
+    },
+    ...mapActions('onboardingStore', ['setStripeImport', 'stripeImport']),
   },
   mounted() {
     axios.get("/app/system/data").then(response => {
