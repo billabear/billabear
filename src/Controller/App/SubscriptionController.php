@@ -24,6 +24,7 @@ use App\Dto\Response\App\Subscription\ViewSubscription;
 use App\Factory\CustomerFactory;
 use App\Factory\PaymentFactory;
 use App\Factory\PaymentMethodsFactory;
+use App\Factory\PriceFactory;
 use App\Factory\ProductFactory;
 use App\Factory\SubscriptionFactory;
 use App\Factory\SubscriptionPlanFactory;
@@ -333,6 +334,35 @@ class SubscriptionController
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 
+    #[Route('/app/subscription/{subscriptionId}/price', name: 'app_app_subscription_readsubscriptionprice', methods: ['GET'])]
+    public function readSubscriptionPrice(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        PriceRepositoryInterface $priceRepository,
+        PriceFactory $priceFactory,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $prices = $priceRepository->getAllForProduct($subscription->getSubscriptionPlan()->getProduct());
+        $dtos = array_map([$priceFactory, 'createAppDto'], $prices);
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore(false);
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey(null);
+        $listResponse->setFirstKey(null);
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[Route('/app/subscription/{subscriptionId}/price', name: 'app_subscription_update_price', methods: ['POST'])]
     public function changeSubscriptionPrice(
         Request $request,
@@ -341,12 +371,12 @@ class SubscriptionController
         ValidatorInterface $validator,
         PriceRepositoryInterface $priceRepository,
         SubscriptionManagerInterface $subscriptionManager
-    ) {
+    ): Response {
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
         } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         /** @var UpdatePrice $dto */

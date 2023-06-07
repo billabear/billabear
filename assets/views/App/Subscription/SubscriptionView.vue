@@ -68,6 +68,9 @@
               <dd>{{ subscription.price.schedule }}</dd>
             </div>
           </dl>
+          <div class="mt-2">
+            <button class="btn--main" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
+          </div>
         </div>
           <div class="mt-5">
             <h2 class="mb-3">{{ $t('app.subscription.view.payment_method.title') }}</h2>
@@ -128,6 +131,39 @@
       <div v-else>{{ errorMessage }}</div>
     </LoadingScreen>
 
+    <VueFinalModal
+        v-model="priceOptions.modelValue"
+        :teleport-to="priceOptions.teleportTo"
+        :display-directive="priceOptions.displayDirective"
+        :hide-overlay="priceOptions.hideOverlay"
+        :overlay-transition="priceOptions.overlayTransition"
+        :content-transition="priceOptions.contentTransition"
+        :click-to-close="priceOptions.clickToClose"
+        :esc-to-close="priceOptions.escToClose"
+        :background="priceOptions.background"
+        :lock-scroll="priceOptions.lockScroll"
+        :swipe-to-close="priceOptions.swipeToClose"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      <LoadingMessage v-if="!priceReady" />
+      <div v-else>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="price">
+            {{ $t('app.subscription.view.modal.price.price') }}
+          </label>
+          <select class="form-field" v-model="newPrice">
+            <option v-for="price in prices" :value="price">{{ price.display_value }} {{ price.schedule }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.subscription.view.modal.price.price_help') }}</p>
+        </div>
+        <div class="mt-4">
+          <SubmitButton :in-progress="priceSending" @click="sendPrice">{{ $t('app.subscription.view.modal.price.submit') }}</SubmitButton>
+        </div>
+      </div>
+
+    </VueFinalModal>
     <VueFinalModal
         v-model="paymentMethodOptions.modelValue"
         :teleport-to="paymentMethodOptions.teleportTo"
@@ -241,6 +277,22 @@ export default {
           cancelled: false
       },
       cancelSending: false,
+      newPrice: {},
+      priceSending: false,
+      priceReady: false,
+      priceOptions: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
       paymentMethodOptions: {
         teleportTo: 'body',
         modelValue: false,
@@ -296,6 +348,24 @@ export default {
   methods: {
     currency: function (value) {
       return currency(value, { fromCents: true });
+    },
+    showPrice: function () {
+      this.priceOptions.modelValue = true;
+      var subscriptionId = this.$route.params.subscriptionId
+
+      axios.get('/app/subscription/' + subscriptionId+'/price').then(response => {
+          this.newPrice = this.subscription.price;
+          this.prices = response.data.data;
+          this.priceReady = true;
+      })
+    },
+    sendPrice: function () {
+
+      var subscriptionId = this.$route.params.subscriptionId
+      this.priceSending = true;
+      axios.post('/app/subscription/' + subscriptionId+'/price', {price: this.newPrice.id}).then(response => {
+        this.priceSending = false;
+      })
     },
     showChangePaymentMethods: function () {
         this.paymentMethodOptions.modelValue = true;

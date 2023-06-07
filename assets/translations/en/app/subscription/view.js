@@ -14,6 +14,7 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         price: "Price",
         recurring: "Recurring",
         schedule: "Schedule",
+        change: "Change"
     },
     payments: {
         title: "Payments",
@@ -34,6 +35,11 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         payment_method: "Update Payment Details"
     },
     modal: {
+        price: {
+            price: "New Price",
+            price_help: "The new price to be charged at next invoice",
+            submit: "Update"
+        },
         payment_method: {
             payment_method: "Use Payment Details",
             payment_method_help: "These details will be used for the next time we charge the customer.",
