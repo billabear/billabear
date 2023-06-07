@@ -174,19 +174,21 @@ class MainContext implements Context
             $startDate = new \DateTime(sprintf('-%d years', $i));
             $startDate->modify('first day of january');
             $this->generateYearStats($startDate);
-            $this->generateMonthlyStats($startDate);
-            for ($y = 0; $y < 11; ++$y) {
-                $startDate->modify('+1 month');
-                $this->generateMonthlyStats($startDate);
-            }
+        }
 
-            $startDate->modify('first day of january');
-            $endDate = clone $startDate;
-            $endDate->modify('last day of december');
-            while ($startDate <= $endDate) {
-                $this->generateDailyStats($startDate);
-                $startDate->modify('+1 day');
-            }
+        $startDate = new \DateTime('-13 months');
+        $this->generateMonthlyStats($startDate);
+        $endDate = new \DateTime('+1 day');
+        while ($startDate <= $endDate) {
+            $startDate->modify('+1 month');
+            $this->generateMonthlyStats($startDate);
+        }
+
+        $startDate = new \DateTime('-13 months');
+        $endDate = new \DateTime('+1 day');
+        while ($startDate <= $endDate) {
+            $this->generateDailyStats($startDate);
+            $startDate->modify('+1 day');
         }
     }
 
