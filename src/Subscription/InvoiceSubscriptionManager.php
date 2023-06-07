@@ -132,4 +132,14 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
         return $subscription;
     }
+
+    public function changeSubscriptionPrice(Subscription $subscription, Price $price): void
+    {
+        // TODO: Implement changeSubscriptionPrice() method.
+    }
+
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void
+    {
+        // TODO: Implement changeSubscriptionPlan() method.
+    }
 }

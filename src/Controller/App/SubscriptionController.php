@@ -328,4 +328,10 @@ class SubscriptionController
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
+
+    public function changeSubscription(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+    ) {
+    }
 }

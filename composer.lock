@@ -700,16 +700,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.9.1",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "7539b3c8bd620f7df6c2c6d510204bd2ce0064e3"
+                "reference": "b2ec6c2668f6dc514e8bf51257d19c7c19398afe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/7539b3c8bd620f7df6c2c6d510204bd2ce0064e3",
-                "reference": "7539b3c8bd620f7df6c2c6d510204bd2ce0064e3",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/b2ec6c2668f6dc514e8bf51257d19c7c19398afe",
+                "reference": "b2ec6c2668f6dc514e8bf51257d19c7c19398afe",
                 "shasum": ""
             },
             "require": {
@@ -796,7 +796,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.9.1"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.10.0"
             },
             "funding": [
                 {
@@ -812,7 +812,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-14T05:39:34+00:00"
+            "time": "2023-06-05T14:43:41+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -2496,12 +2496,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "6c949f7eab7686164fe0798252485a2f3a78db1a"
+                "reference": "6424fd5d293c6cdf699151b1975669f2de2f7b90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/6c949f7eab7686164fe0798252485a2f3a78db1a",
-                "reference": "6c949f7eab7686164fe0798252485a2f3a78db1a",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/6424fd5d293c6cdf699151b1975669f2de2f7b90",
+                "reference": "6424fd5d293c6cdf699151b1975669f2de2f7b90",
                 "shasum": ""
             },
             "require": {
@@ -2538,7 +2538,7 @@
                 "issues": "https://github.com/getparthenon/obol/issues",
                 "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-06-04T12:05:37+00:00"
+            "time": "2023-06-07T09:28:06+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -2546,12 +2546,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "fb10b08e94304688eeefe1ac71e17a2c15546089"
+                "reference": "e7121107340d26f97879d6e55d161b4d54d27e4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/fb10b08e94304688eeefe1ac71e17a2c15546089",
-                "reference": "fb10b08e94304688eeefe1ac71e17a2c15546089",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/e7121107340d26f97879d6e55d161b4d54d27e4d",
+                "reference": "e7121107340d26f97879d6e55d161b4d54d27e4d",
                 "shasum": ""
             },
             "require": {
@@ -2635,7 +2635,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-05-31T15:53:00+00:00"
+            "time": "2023-06-07T09:27:59+00:00"
         },
         {
             "name": "php-http/client-common",

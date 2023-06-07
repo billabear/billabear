@@ -35,4 +35,9 @@ class SubscriptionService implements SubscriptionServiceInterface
 
         return $subscription;
     }
+
+    public function updatePrice(Subscription $subscription): void
+    {
+        // TODO: Implement updatePrice() method.
+    }
 }

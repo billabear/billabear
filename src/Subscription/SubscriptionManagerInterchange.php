@@ -79,9 +79,27 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     {
         $customer = $subscription->getCustomer();
         if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
-            return $this->invoiceSubscriptionManager->cancelSubscriptionOnDate($subscription);
+            return $this->invoiceSubscriptionManager->cancelSubscriptionOnDate($subscription, $dateTime);
         }
 
-        return $this->stripeBillingManager->cancelSubscriptionOnDate($subscription);
+        return $this->stripeBillingManager->cancelSubscriptionOnDate($subscription, $dateTime);
+    }
+
+    public function changeSubscriptionPrice(Subscription $subscription, Price $price): void
+    {
+        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()) {
+            $this->invoiceSubscriptionManager->changeSubscriptionPrice($subscription, $price);
+        }
+
+        $this->stripeBillingManager->changeSubscriptionPrice($subscription, $price);
+    }
+
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void
+    {
+        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()) {
+            $this->invoiceSubscriptionManager->changeSubscriptionPlan($subscription, $plan, $price);
+        }
+
+        $this->stripeBillingManager->changeSubscriptionPlan($subscription, $plan, $price);
     }
 }
