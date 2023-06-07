@@ -34,6 +34,7 @@ use App\Repository\PaymentCardRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\BillingAdminInterface;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -350,8 +351,14 @@ class SubscriptionController
         }
 
         $prices = $priceRepository->getAllForProduct($subscription->getSubscriptionPlan()->getProduct());
-        $dtos = array_map([$priceFactory, 'createAppDto'], $prices);
+        $active = $subscriptionRepository->getAllActiveForCustomer($subscription->getCustomer());
 
+        if (1 !== count($active)) {
+            $prices = array_filter($prices, function (Price $price) use ($subscription) {
+                return $price->getSchedule() === $subscription->getPaymentSchedule() && $price->getCurrency() === $subscription->getCurrency();
+            });
+        }
+        $dtos = array_map([$priceFactory, 'createAppDto'], $prices);
         $listResponse = new ListResponse();
         $listResponse->setHasMore(false);
         $listResponse->setData($dtos);
