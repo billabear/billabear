@@ -4,8 +4,8 @@
       <div v-if="!error">
         <div class="grid grid-cols-2 gap-3">
         <div class="mt-5">
-          <h2 class="bg-amber-500 font-bold p-2 rounded-t-xl">{{ $t('app.subscription.view.title') }}</h2>
-          <dl class="detail-list p-2 border border-amber-500 rounded-b-xl">
+          <h2 class="section-header">{{ $t('app.subscription.view.title') }}</h2>
+          <dl class="detail-list section-body ">
             <div>
               <dt>{{ $t('app.subscription.view.main.status') }}</dt>
               <dd>{{ subscription.status }}</dd>
@@ -53,8 +53,8 @@
           </dl>
         </div>
         <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription.view.pricing.title') }}</h2>
-          <dl class="detail-list">
+          <h2 class="section-header">{{ $t('app.subscription.view.pricing.title') }}</h2>
+          <dl class="detail-list section-body">
             <div>
               <dt>{{ $t('app.subscription.view.pricing.price') }}</dt>
               <dd>{{ subscription.price.display_value }}</dd>
@@ -67,14 +67,14 @@
               <dt>{{ $t('app.subscription.view.pricing.schedule') }}</dt>
               <dd>{{ subscription.price.schedule }}</dd>
             </div>
+            <div class="mt-2">
+              <button class="btn--main" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
+            </div>
           </dl>
-          <div class="mt-2">
-            <button class="btn--main" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
-          </div>
         </div>
           <div class="mt-5">
-            <h2 class="mb-3">{{ $t('app.subscription.view.payment_method.title') }}</h2>
-            <dl class="detail-list" v-if="paymentDetails !== null && paymentDetails !== undefined">
+            <h2 class="section-header">{{ $t('app.subscription.view.payment_method.title') }}</h2>
+            <dl class="detail-list section-body" v-if="paymentDetails !== null && paymentDetails !== undefined">
               <div>
                 <dt>{{ $t('app.subscription.view.payment_method.last_four') }}</dt>
                 <dd>**** **** **** {{ paymentDetails.last_four }}</dd>
@@ -92,28 +92,31 @@
                 <dd>{{ paymentDetails.expiry_year }}</dd>
               </div>
             </dl>
-            <div v-else class="text-center">
+            <div v-else class="text-center section-body">
               {{ $t('app.subscription.view.payment_method.invoiced') }}
             </div>
           </div>
           <div class="mt-5">
-            <h2 class="mb-3">{{ $t('app.subscription.view.payments.title') }}</h2>
-            <table class="table-list">
-              <thead>
+            <h2 class="section-header">{{ $t('app.subscription.view.payments.title') }}</h2>
+            <div class="section-body">
+
+              <table class="table-list">
+                <thead>
                 <tr>
                   <th>{{ $t('app.subscription.view.payments.amount') }}</th>
                   <th>{{ $t('app.subscription.view.payments.created_at') }}</th>
                   <th></th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 <tr v-for="payment in payments">
                   <td>{{ currency(payment.amount) }}</td>
                   <td>{{ payment.created_at }}</td>
                   <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="btn--main">{{ $t('app.subscription.view.payments.view') }}</router-link></td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="mt-5 text-end">
@@ -408,5 +411,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

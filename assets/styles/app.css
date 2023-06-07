@@ -316,3 +316,12 @@
     align-items: center;
     justify-content: center;
 }
+
+
+.section-header {
+    @apply bg-amber-500 font-bold p-2 rounded-t-xl;
+}
+
+.section-body {
+    @apply p-2 border border-amber-500 rounded-b-xl;
+}
