@@ -4,8 +4,8 @@
       <div v-if="!error">
         <div class="grid grid-cols-2 gap-3">
         <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription.view.title') }}</h2>
-          <dl class="detail-list">
+          <h2 class="bg-amber-500 font-bold p-2 rounded-t-xl">{{ $t('app.subscription.view.title') }}</h2>
+          <dl class="detail-list p-2 border border-amber-500 rounded-b-xl">
             <div>
               <dt>{{ $t('app.subscription.view.main.status') }}</dt>
               <dd>{{ subscription.status }}</dd>
