@@ -13,9 +13,11 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\SubscriptionList;
+use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
+use App\Dto\Request\App\Subscription\UpdatePrice;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
@@ -48,6 +50,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionController
 {
+    use ValidationErrorResponseTrait;
+
     #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_view', methods: ['GET'])]
     public function createSubscriptionDetails(
         Request $request,
@@ -329,9 +333,36 @@ class SubscriptionController
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 
-    public function changeSubscription(
+    #[Route('/app/subscription/{subscriptionId}/price', name: 'app_subscription_update_price', methods: ['POST'])]
+    public function changeSubscriptionPrice(
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        PriceRepositoryInterface $priceRepository,
+        SubscriptionManagerInterface $subscriptionManager
     ) {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            throw new NoEntityFoundException();
+        }
+
+        /** @var UpdatePrice $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdatePrice::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $price = $priceRepository->findById($dto->getPrice());
+        $subscriptionManager->changeSubscriptionPrice($subscription, $price);
+
+        $subscriptionRepository->save($subscription);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

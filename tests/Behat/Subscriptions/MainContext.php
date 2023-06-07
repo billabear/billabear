@@ -30,6 +30,8 @@ use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
 
+use function Symfony\Component\String\s;
+
 class MainContext implements Context
 {
     use CustomerTrait;
@@ -310,6 +312,34 @@ class MainContext implements Context
 
         if ($subscription->getPaymentDetails()?->getLastFour() != $lastFour) {
             throw new \Exception('Got different payment details');
+        }
+    }
+
+    /**
+     * @When I update the subscription :planName for :customerEmail to use the :priceAmount in :currency per :schedule price
+     */
+    public function iUpdateTheSubscriptionForToUseTheInPerPrice($planName, $customerEmail, $priceAmount, $currency, $schedule)
+    {
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['amount' => $priceAmount, 'currency' => $currency, 'schedule' => $schedule]);
+
+        $subscription = $this->getSubscription($customerEmail, $planName);
+        $this->sendJsonRequest('POST', '/app/subscription/'.$subscription->getId().'/price', ['price' => (string) $price->getId()]);
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will be for :arg5 in :arg3 per :arg4
+     */
+    public function theSubscriptionForWillBeForInPer($planName, $customerEmail, $priceAmount, $currency, $schedule)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['amount' => $priceAmount, 'currency' => $currency, 'schedule' => $schedule]);
+
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        if ($subscription->getPrice()->getId() != $price->getId()) {
+            throw new \Exception('Price not the same');
         }
     }
 
