@@ -30,6 +30,7 @@ class WebhookService implements WebhookServiceInterface
         $creation->setId('wb_'.bin2hex(random_bytes(4)));
         $creation->setEvents($events);
         $creation->setDescription($description);
+        $creation->setSecret('wb_'.bin2hex(random_bytes(34)));
 
         return $creation;
     }
