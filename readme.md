@@ -8,6 +8,12 @@
 
 Billing Made easy... Coming soon.
 
+## Documentation
+
+* [User Documentation](https://docs.billabear.com/docs/user/)
+* [Technical Documentation](https://docs.billabear.com/docs/technical/)
+* [Swagger](https://swagger.billabear.com)
+
 ## Features:
 
 ### White Label Billing
