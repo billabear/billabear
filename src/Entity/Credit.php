@@ -18,7 +18,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'credit')]
-#[ORM\Index(name: 'customer_idx', columns: ['customer'])]
+#[ORM\Index(name: 'customer_idx', fields: ['customer'])]
 class Credit
 {
     public const CREATION_TYPE_AUTOMATED = 'automated';

@@ -23,7 +23,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'customers')]
-#[ORM\Index(name: 'email_idx', fields: ['email'])]
+#[ORM\Index(name: 'email_idx', fields: ['billingEmail'])]
 #[ORM\Index(name: 'external_ref_idx', fields: ['externalCustomerReference'])]
 class Customer implements CustomerInterface
 {

@@ -17,7 +17,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'exchange_rates')]
-#[ORM\Index(name: 'code_idx', fields: ['currencyCode'])]
+#[ORM\Index(name: 'ex_rates_currency_code_idx', fields: ['currencyCode'])]
 class ExchangeRates
 {
     #[ORM\Id]
