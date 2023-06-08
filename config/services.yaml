@@ -283,3 +283,6 @@ services:
         factory: [ '@App\Notification\Email\EmailSenderFactory', 'create' ]
 
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
+
+    Parthenon\Billing\Config\WebhookConfig:
+        factory: [ '@App\Webhook\ConfigFactory', 'createConfig' ]

@@ -175,6 +175,7 @@ class StripeController
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getSystemSettings()->setWebhookExternalReference($response->getId());
         $settings->getSystemSettings()->setWebhookUrl($dto->getUrl());
+        $settings->getSystemSettings()->setWebhookSecret($response->getSecret());
 
         $settingsRepository->save($settings);
 

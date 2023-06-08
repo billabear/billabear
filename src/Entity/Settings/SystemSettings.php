@@ -32,6 +32,9 @@ class SystemSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $webhookExternalReference = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $webhookSecret = null;
+
     #[ORM\Column(type: 'string', nullable: false)]
     private string $mainCurrency;
 
@@ -93,5 +96,15 @@ class SystemSettings
     public function setMainCurrency(string $mainCurrency): void
     {
         $this->mainCurrency = $mainCurrency;
+    }
+
+    public function getWebhookSecret(): ?string
+    {
+        return $this->webhookSecret;
+    }
+
+    public function setWebhookSecret(?string $webhookSecret): void
+    {
+        $this->webhookSecret = $webhookSecret;
     }
 }
