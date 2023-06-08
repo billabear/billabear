@@ -17,6 +17,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'stripe_import')]
+#[ORM\Index(fields: ['complete'])]
 class StripeImport
 {
     #[ORM\Id]
