@@ -19,6 +19,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'generic_background_task')]
+#[ORM\Index(fields: ['status'])]
 class GenericBackgroundTask
 {
     #[ORM\Id]
