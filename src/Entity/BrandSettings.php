@@ -19,6 +19,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'brand_settings')]
+#[ORM\Index(name: 'code_idx', columns: ['code'])]
 class BrandSettings
 {
     #[ORM\Id]

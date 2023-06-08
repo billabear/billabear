@@ -17,6 +17,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'api_key')]
+#[ORM\Index(name: 'api_key_idx', columns: ['key'])]
 class ApiKey
 {
     #[ORM\Id]

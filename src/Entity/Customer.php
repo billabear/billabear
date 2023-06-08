@@ -23,6 +23,8 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'customers')]
+#[ORM\Index(name: 'email_idx', fields: ['email'])]
+#[ORM\Index(name: 'external_ref_idx', fields: ['externalCustomerReference'])]
 class Customer implements CustomerInterface
 {
     public const BILLING_TYPE_CARD = 'card';
