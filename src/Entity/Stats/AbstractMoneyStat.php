@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\MappedSuperclass()]
+#[ORM\Index(fields: ['year', 'month', 'day'])]
 class AbstractMoneyStat
 {
     #[ORM\Id]
