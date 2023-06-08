@@ -17,7 +17,8 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'email_templates')]
-#[ORM\UniqueConstraint(name: 'name_locale', columns: ['name', 'locale'])]
+#[ORM\Index(name: 'name_locale', fields: ['name', 'locale'])]
+#[ORM\UniqueConstraint(name: 'name_locale_brand', fields: ['name', 'locale', 'brand'])]
 class EmailTemplate
 {
     public const NAME_SUBSCRIPTION_CREATED = 'subscription_created';
