@@ -7,8 +7,6 @@ spec:
       scope: RUN_TIME
     - key: STRIPE_PRIVATE_API_KEY
       scope: RUN_TIME
-    - key: STRIPE_WEBHOOK_SECRET
-      scope: RUN_TIME
     - key: DATABASE_URL
       scope: RUN_TIME
       value: ${billabeardb.DATABASE_URL}
