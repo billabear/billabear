@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright Iain Cambridge 2023.
+ * Copyright Humbly Arrogant Software Limited 2023.
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  *
@@ -18,7 +18,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
-        'header_comment' => ['header' => 'Copyright Iain Cambridge 2023.
+        'header_comment' => ['header' => 'Copyright Humbly Arrogant Software Limited 2023.
                 
 Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
 
