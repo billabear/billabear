@@ -10,9 +10,9 @@ Billing Made easy... Coming soon.
 
 ## Documentation
 
-* [User Documentation](https://docs.billabear.com/docs/user/)
-* [Technical Documentation](https://docs.billabear.com/docs/technical/)
-* [Swagger](https://swagger.billabear.com)
+* [User Documentation](https://docs.billabear.com/docs/user/) - How to use BillaBear as a user
+* [Technical Documentation](https://docs.billabear.com/docs/technical/) - Technical information for hosting and integration
+* [Swagger](https://swagger.billabear.com) - The REST API docs for integration
 
 ## Features:
 
