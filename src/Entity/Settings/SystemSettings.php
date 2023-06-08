@@ -38,6 +38,9 @@ class SystemSettings
     #[ORM\Column(type: 'string', nullable: false)]
     private string $mainCurrency;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $updateAvailable = false;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -106,5 +109,15 @@ class SystemSettings
     public function setWebhookSecret(?string $webhookSecret): void
     {
         $this->webhookSecret = $webhookSecret;
+    }
+
+    public function isUpdateAvailable(): bool
+    {
+        return $this->updateAvailable;
+    }
+
+    public function setUpdateAvailable(bool $updateAvailable): void
+    {
+        $this->updateAvailable = $updateAvailable;
     }
 }

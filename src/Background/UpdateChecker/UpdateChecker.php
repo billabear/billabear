@@ -75,13 +75,16 @@ class UpdateChecker
         $payload['id'] = $settings->getId();
         $payload['version'] = Kernel::VERSION;
 
-        $request = new Request('POST', 'https://announce.billabear.com/update', json_encode($payload));
+        $request = new Request('POST', 'https://announce.billabear.com/update', headers: ['Content-Type' => 'application/json'], body: json_encode($payload));
 
         $client = Psr18ClientDiscovery::find();
         $response = $client->sendRequest($request);
-        $data = json_decode($response->getBody()->getContents());
+        $data = json_decode($response->getBody()->getContents(), true);
 
         if (Kernel::VERSION != $data['version']) {
+            $settings->getSystemSettings()->setUpdateAvailable(true);
         }
+
+        $this->settingsRepository->save($settings);
     }
 }

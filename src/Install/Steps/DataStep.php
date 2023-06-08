@@ -84,7 +84,7 @@ class DataStep
         $payload['id'] = $settings->getId();
         $payload['version'] = Kernel::VERSION;
 
-        $request = new Request('POST', 'https://announce.billabear.com/install', json_encode($payload));
+        $request = new Request('POST', 'https://announce.billabear.com/install', headers: ['Content-Type' => 'application/json'], body: json_encode($payload));
 
         $client = Psr18ClientDiscovery::find();
         $client->sendRequest($request);
