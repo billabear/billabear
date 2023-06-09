@@ -94,6 +94,14 @@ body {
     @apply pl-2 p-2 w-full inline-block hover:bg-amber-300;
 }
 
+.submenu-container {
+    @apply mt-5 rounded-lg border border-amber-500 bg-white;
+}
+
+.submenu-title {
+    @apply text-xl font-bold p-5;
+}
+
 .submenu-link {
     @apply text-black font-bold hover:bg-slate-50 px-5 py-2 w-full inline-block;
 }

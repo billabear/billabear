@@ -337,7 +337,7 @@ export default {
       return {categories, values};
     },
     displayCurrency: function (value) {
-      return currency(value, { fromCents: true });
+      return currency(value, { fromCents: true }).format({symbol: ''});
     },
   }
 }

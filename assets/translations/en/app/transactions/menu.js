@@ -1,4 +1,5 @@
 export const TRANSACTIONS_MENU_TRANSACTIONS = {
+    title: "Transactions",
     payments: "Payments",
     refunds: "Refunds",
     charge_backs: "Charge Backs",

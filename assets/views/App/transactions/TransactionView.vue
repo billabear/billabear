@@ -3,13 +3,14 @@
   <div class="flex">
 
     <div class="w-1/5">
-      <div class="mt-5 rounded-lg p-5 border shadow-lg">
+      <div class="submenu-container">
+        <div class="submenu-title">{{ $t('app.transactions.menu.title') }}</div>
         <ul>
-          <li class="my-3"><router-link :to="{name: 'app.payment.list'}">{{ $t('app.transactions.menu.payments') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.refund.list'}">{{ $t('app.transactions.menu.refunds') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.charge_backs.list'}">{{ $t('app.transactions.menu.charge_backs') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.invoices.list'}">{{ $t('app.transactions.menu.invoices') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.invoices.unpaid_list'}">{{ $t('app.transactions.menu.unpaid_invoices') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.payment.list'}" class="submenu-link">{{ $t('app.transactions.menu.payments') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.refund.list'}" class="submenu-link">{{ $t('app.transactions.menu.refunds') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.charge_backs.list'}" class="submenu-link">{{ $t('app.transactions.menu.charge_backs') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.invoices.list'}" class="submenu-link">{{ $t('app.transactions.menu.invoices') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.invoices.unpaid_list'}" class="submenu-link">{{ $t('app.transactions.menu.unpaid_invoices') }}</router-link></li>
         </ul>
       </div>
     </div>

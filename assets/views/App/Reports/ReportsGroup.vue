@@ -3,7 +3,7 @@
   <div class="flex">
 
     <div class="w-1/5">
-      <div class="mt-5 rounded-lg border border-amber-500 bg-white">
+      <div class="submenu-container">
         <div class="text-xl font-bold p-5">{{ $t('app.reports.menu.title') }}</div>
         <ul class="mb-5">
           <li class="submenu-list-item"><router-link :to="{name: 'app.report.dashboard'}" class="submenu-link"><i class="fa-solid fa-gauge"></i> {{ $t('app.reports.menu.dashboard') }}</router-link></li>
