@@ -6,59 +6,63 @@
       <div v-if="!error">
         <div class="grid grid-cols-2 gap-3">
           <div class="mt-5">
-            <h2 class="mb-3">{{ $t('app.payment.view.main.title') }}</h2>
-            <dl class="detail-list">
-              <div>
-                <dt>{{ $t('app.payment.view.main.amount') }}</dt>
-                <dd>{{ currency(payment.amount) }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.payment.view.main.currency') }}</dt>
-                <dd>{{ payment.currency }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.payment.view.main.external_reference') }}</dt>
-                <dd>
-                  <a v-if="payment.payment_provider_details_url" target="_blank" :href="payment.payment_provider_details_url">{{ payment.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                  <span v-else>{{ payment.external_reference }}</span>
-                </dd>
-              </div>
-            </dl>
+            <h2 class="section-header">{{ $t('app.payment.view.main.title') }}</h2>
+            <div class="section-body">
 
+              <dl class="detail-list">
+                <div>
+                  <dt>{{ $t('app.payment.view.main.amount') }}</dt>
+                  <dd>{{ currency(payment.amount) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.payment.view.main.currency') }}</dt>
+                  <dd>{{ payment.currency }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.payment.view.main.external_reference') }}</dt>
+                  <dd>
+                    <a v-if="payment.payment_provider_details_url" target="_blank" :href="payment.payment_provider_details_url">{{ payment.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <span v-else>{{ payment.external_reference }}</span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
           <div class="mt-5">
-
-            <h2 class="mb-3">{{ $t('app.payment.view.customer.title') }}</h2>
-            <dl class="detail-list">
-              <div>
-                <dt>{{ $t('app.payment.view.customer.email') }}</dt>
-                <dd v-if="payment.customer == null || payment.customer == undefined">N/A</dd>
-                <dd v-else>{{ payment.customer.email }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.payment.view.customer.country') }}</dt>
-                <dd v-if="payment.customer == null || payment.customer == undefined">N/A</dd>
-                <dd v-else>{{ payment.customer.address.country }}</dd>
-              </div>
-              <div v-if="payment.customer != null && payment.customer != undefined">
-                <router-link :to="{name: 'app.customer.view', params: {id: payment.customer.id}}">{{ $t('app.payment.view.customer.more_info') }}</router-link>
-              </div>
-            </dl>
+            <h2 class="section-header">{{ $t('app.payment.view.customer.title') }}</h2>
+            <div class="section-body">
+              <dl class="detail-list">
+                <div>
+                  <dt>{{ $t('app.payment.view.customer.email') }}</dt>
+                  <dd v-if="payment.customer == null || payment.customer == undefined">N/A</dd>
+                  <dd v-else>{{ payment.customer.email }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.payment.view.customer.country') }}</dt>
+                  <dd v-if="payment.customer == null || payment.customer == undefined">N/A</dd>
+                  <dd v-else>{{ payment.customer.address.country }}</dd>
+                </div>
+                <div v-if="payment.customer != null && payment.customer != undefined">
+                  <router-link :to="{name: 'app.customer.view', params: {id: payment.customer.id}}" class="btn--main">{{ $t('app.payment.view.customer.more_info') }}</router-link>
+                </div>
+              </dl>
+            </div>
           </div>
 
           <div class="mt-5">
-            <h2 class="mb-5">{{ $t('app.payment.view.refunds.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.payment.view.refunds.title') }}</h2>
+            <div class="section-body">
 
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.payment.view.refunds.amount') }}</th>
-                <th>{{ $t('app.payment.view.refunds.reason') }}</th>
-                <th>{{ $t('app.payment.view.refunds.created_by') }}</th>
-                <th>{{ $t('app.payment.view.refunds.created_at') }}</th>
-              </tr>
-              </thead>
-              <tbody>
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.payment.view.refunds.amount') }}</th>
+                  <th>{{ $t('app.payment.view.refunds.reason') }}</th>
+                  <th>{{ $t('app.payment.view.refunds.created_by') }}</th>
+                  <th>{{ $t('app.payment.view.refunds.created_at') }}</th>
+                </tr>
+                </thead>
+                <tbody>
                 <tr v-for="refund in refunds">
                   <td>{{ currency(refund.amount) }}</td>
                   <td>{{ refund.reason }}</td>
@@ -69,12 +73,14 @@
                 <tr v-if="refunds.length == 0">
                   <td colspan="4" class="text-center">{{ $t('app.payment.view.refunds.none') }}</td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="mt-5">
-            <h2 class="mb-5">{{ $t('app.payment.view.subscriptions.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.payment.view.subscriptions.title') }}</h2>
 
+            <div class="section-body">
             <table class="list-table">
               <thead>
               <tr>
@@ -92,27 +98,30 @@
               </tr>
               </tbody>
             </table>
+            </div>
           </div>
           <div class="mt-5">
-            <h2 class="mb-5">{{ $t('app.payment.view.receipts.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.payment.view.receipts.title') }}</h2>
+            <div class="section-body">
 
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.payment.view.receipts.created_at') }}</th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="receipt in receipts">
-                <td>{{ $filters.moment(receipt.created_at, "lll") || "unknown" }}</td>
-                <td><a :href="'/app/receipt/'+receipt.id+'/download'" class="btn--main">{{ $t('app.payment.view.receipts.download') }}</a></td>
-              </tr>
-              <tr v-if="receipts.length == 0">
-                <td colspan="2" class="text-center">{{ $t('app.payment.view.receipts.none') }}</td>
-              </tr>
-              </tbody>
-            </table>
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.payment.view.receipts.created_at') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="receipt in receipts">
+                  <td>{{ $filters.moment(receipt.created_at, "lll") || "unknown" }}</td>
+                  <td><a :href="'/app/receipt/'+receipt.id+'/download'" class="btn--main">{{ $t('app.payment.view.receipts.download') }}</a></td>
+                </tr>
+                <tr v-if="receipts.length == 0">
+                  <td colspan="2" class="text-center">{{ $t('app.payment.view.receipts.none') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
