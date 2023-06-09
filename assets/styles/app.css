@@ -242,7 +242,7 @@ body {
 }
 
 .form-field-input {
-    @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
+    @apply appearance-none block w-full text-black bg-amber-50 border border-amber-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
 }
 
 .form-field-help {
