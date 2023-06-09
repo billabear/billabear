@@ -187,27 +187,4 @@ export default {
 </script>
 
 <style scoped>
-.form-field-error {
-  @apply text-red-500 text-xs italic mb-2;
-}
-
-.form-field-ctn {
-  @apply w-full md:w-1/2 px-3 mb-6 md:mb-0 pt-2;
-}
-
-.form-field-lbl {
-  @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
-}
-
-.form-field-input {
-  @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
-}
-
-.form-field-help {
-  @apply text-gray-600 text-xs italic;
-}
-
-.form-field-submit-ctn {
-  @apply mt-3;
-}
 </style>
