@@ -34,6 +34,7 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
+      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -62,6 +63,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
