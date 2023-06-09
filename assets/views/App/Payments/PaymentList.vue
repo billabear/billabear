@@ -53,12 +53,12 @@
               <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.payment.list.no_payments') }}</td>
+              <td colspan="5" class="text-center">{{ $t('app.payment.list.no_payments') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr>
-              <td colspan="4" class="text-center">
+              <td colspan="5" class="text-center">
                 <LoadingMessage>{{ $t('app.payment.list.loading') }}</LoadingMessage>
               </td>
             </tr>

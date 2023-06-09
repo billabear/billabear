@@ -265,7 +265,7 @@ body {
 }
 
 .list-table thead th {
-    @apply py-2 px-2 bg-amber-500 font-extrabold text-sm font-bold text-left rtl:text-right text-black dark:text-gray-400;
+    @apply py-2 px-2 bg-blue-500 font-extrabold text-sm font-bold text-left rtl:text-right text-white dark:text-gray-400;
 }
 
 .list-table tfoot th {
