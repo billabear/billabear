@@ -3,10 +3,11 @@
   <div class="flex">
 
     <div class="w-1/5">
-      <div class="mt-5 rounded-lg p-5 border shadow-lg">
-        <ul>
-          <li class="my-3"><router-link :to="{name: 'app.report.dashboard'}">{{ $t('app.reports.menu.dashboard') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.expiring_cards.list'}">{{ $t('app.reports.menu.expiring_cards') }}</router-link></li>
+      <div class="mt-5 rounded-lg border border-amber-500 bg-white">
+        <div class="text-xl font-bold p-5">{{ $t('app.reports.menu.title') }}</div>
+        <ul class="mb-5">
+          <li class="submenu-list-item"><router-link :to="{name: 'app.report.dashboard'}" class="submenu-link"><i class="fa-solid fa-gauge"></i> {{ $t('app.reports.menu.dashboard') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.expiring_cards.list'}" class="submenu-link"><i class="fa-solid fa-credit-card"></i> {{ $t('app.reports.menu.expiring_cards') }}</router-link></li>
         </ul>
       </div>
     </div>

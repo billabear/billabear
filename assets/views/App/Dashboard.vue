@@ -3,37 +3,50 @@
     <h1 class="page-title mb-5">{{ $t('app.reports.dashboard.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-2 gap-5">
       <div>
-        <h2>{{ $t('app.reports.dashboard.subscription_creation.title') }}</h2>
-
-        <apexchart ref="analyticsChart" :series="subscriptionCreatedChartSeries" :options="subscriptionCreatedChartOptions"  height="400"   />
+        <h2 class="section-header">{{ $t('app.reports.dashboard.subscription_creation.title') }}</h2>
+        <div class="section-body">
+          <apexchart ref="analyticsChart" :series="subscriptionCreatedChartSeries" :options="subscriptionCreatedChartOptions"  height="400"   />
+        </div>
       </div>
         <div class="grid">
           <div class="text-center">
-            <h3>{{ $t('app.reports.dashboard.estimated_mrr') }}</h3>
-            <span class="text-8xl">{{ displayCurrency(estimated_mrr) }} </span> {{ currency }}
+            <h3 class="section-header">{{ $t('app.reports.dashboard.estimated_mrr') }}</h3>
+            <div class="section-body">
+              <span class="text-8xl">{{ displayCurrency(estimated_mrr) }} </span> {{ currency }}
+            </div>
           </div>
           <div class="text-center">
-            <h3>{{ $t('app.reports.dashboard.estimated_arr') }}</h3>
-            <span class="text-8xl">{{ displayCurrency(estimated_arr) }} </span> {{ currency }}
+            <h3 class="section-header">{{ $t('app.reports.dashboard.estimated_arr') }}</h3>
+            <div class="section-body">
+              <span class="text-8xl">{{ displayCurrency(estimated_arr) }} </span> {{ currency }}
+            </div>
           </div>
         </div>
         <div>
-          <h2>{{ $t('app.reports.dashboard.subscription_cancellation.title') }}</h2>
-          <apexchart ref="analyticsChart" :series="subscriptionCancellationChartSeries" :options="subscriptionCancellationChartOptions"  height="400"   />
+          <h2 class="section-header">{{ $t('app.reports.dashboard.subscription_cancellation.title') }}</h2>
+          <div class="section-body">
+            <apexchart ref="analyticsChart" :series="subscriptionCancellationChartSeries" :options="subscriptionCancellationChartOptions"  height="400" />
+          </div>
         </div>
         <div>
-          <h2>{{ $t('app.reports.dashboard.payment_amount.title') }}</h2>
-          <apexchart ref="analyticsChart" :series="paymentAmountChartSeries" :options="paymentAmountChartOptions"  height="400"   />
+          <h2 class="section-header">{{ $t('app.reports.dashboard.payment_amount.title') }}</h2>
+          <div class="section-body">
+            <apexchart ref="analyticsChart" :series="paymentAmountChartSeries" :options="paymentAmountChartOptions"  height="400" />
+          </div>
         </div>
         <div>
-          <h2>{{ $t('app.reports.dashboard.refund_amount.title') }}</h2>
-          <apexchart ref="analyticsChart" :series="refundAmountChartSeries" :options="refundAmountChartOptions"  height="400"   />
+          <h2 class="section-header">{{ $t('app.reports.dashboard.refund_amount.title') }}</h2>
+          <div class="section-body">
+            <apexchart ref="analyticsChart" :series="refundAmountChartSeries" :options="refundAmountChartOptions"  height="400"   />
+          </div>
         </div>
         <div>
-          <h2>{{ $t('app.reports.dashboard.charge_back_amount.title') }}</h2>
-          <apexchart ref="analyticsChart" :series="chargeBackAmountChartSeries" :options="chargeBackAmountChartOptions"  height="400"   />
+          <h2 class="section-header">{{ $t('app.reports.dashboard.charge_back_amount.title') }}</h2>
+          <div class="section-body">
+            <apexchart ref="analyticsChart" :series="chargeBackAmountChartSeries" :options="chargeBackAmountChartOptions"  height="400"   />
+          </div>
         </div>
     </div>
 

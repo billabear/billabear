@@ -19,6 +19,10 @@
     }
 }
 
+body {
+    @apply bg-cyan-50;
+}
+
 .rounded-sm { border-radius: 0.125rem; }
 .rounded { border-radius: 0.25rem; }
 .rounded-md { border-radius: 0.375rem; }
@@ -56,13 +60,23 @@
 
 #app {
 
+}
+
+.header{
+}
+
+.page {
+}
+.page-container {
     @apply flex justify-center;
 }
-.page {
+.page-content {
     width: 90%;
 }
 
 .page-header {
+    @apply bg-amber-500;-webkit-box-shadow: 0px 5px 6px 3px rgba(0,0,0,0.34);
+    box-shadow: 0px 5px 6px 3px rgba(0,0,0,0.34);
 }
 
 .menu-group-title {
@@ -70,7 +84,6 @@
 }
 
 .menu-list {
-    @apply border-b mb-5;
 }
 
 .menu-item {
@@ -78,11 +91,20 @@
 }
 
 .menu-link {
-    @apply pl-2 p-2 w-full inline-block hover:bg-slate-50;
+    @apply pl-2 p-2 w-full inline-block hover:bg-amber-300;
 }
 
-.router-link-active {
-    @apply bg-slate-100;
+.submenu-link {
+    @apply text-black font-bold hover:bg-slate-50 px-5 py-2 w-full inline-block;
+}
+.submenu-link.router-link-exact-active {
+    @apply bg-slate-50;
+}
+.submenu-list-item {
+}
+
+.menu-link.router-link-active {
+    @apply bg-amber-600;
 }
 
 .main-background {
@@ -323,5 +345,5 @@
 }
 
 .section-body {
-    @apply p-2 border border-amber-500 rounded-b-xl;
+    @apply p-2 border border-amber-500 rounded-b-xl bg-white;
 }
