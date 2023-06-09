@@ -39,6 +39,7 @@
               <th>{{ $t('app.payment.list.list.amount') }}</th>
               <th>{{ $t('app.payment.list.list.currency')}}</th>
               <th>{{ $t('app.payment.list.list.customer') }}</th>
+              <th>{{ $t('app.payment.list.list.created_at') }}</th>
               <th></th>
             </tr>
           </thead>
@@ -48,6 +49,7 @@
               <td>{{ payment.currency }}</td>
               <td v-if="payment.customer == null || payment.customer == undefined">N/A</td>
               <td v-else>{{ payment.customer.email }}</td>
+              <td>{{  $filters.moment(payment.created_at, 'lll') }}</td>
               <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
