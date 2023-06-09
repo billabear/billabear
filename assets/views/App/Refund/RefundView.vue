@@ -6,17 +6,19 @@
       <div v-if="!error">
         <div class="grid grid-cols-2 gap-3">
           <div class="mt-5">
-            <h2 class="mb-3">{{ $t('app.refund.view.main.title') }}</h2>
-            <dl class="detail-list">
-              <div>
-                <dt>{{ $t('app.refund.view.main.amount') }}</dt>
-                <dd>{{ currency(refund.amount) }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.refund.view.main.currency') }}</dt>
-                <dd>{{ refund.currency }}</dd>
-              </div>
-            </dl>
+            <h2 class="section-header">{{ $t('app.refund.view.main.title') }}</h2>
+            <div class="section-body">
+              <dl class="detail-list">
+                <div>
+                  <dt>{{ $t('app.refund.view.main.amount') }}</dt>
+                  <dd>{{ currency(refund.amount) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.refund.view.main.currency') }}</dt>
+                  <dd>{{ refund.currency }}</dd>
+                </div>
+              </dl>
+            </div>
           </div>
         </div>
       </div>
