@@ -9,25 +9,29 @@
         </div>
 
         <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.product.view.main.title') }}</h2>
-          <dl class="detail-list">
-            <div>
-              <dt>{{ $t('app.product.view.main.name') }}</dt>
-              <dd>{{ product.name }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
-              <dd>
-                <a v-if="product.payment_provider_details_url" target="_blank" :href="product.payment_provider_details_url">{{ product.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ product.external_reference }}</span>
-              </dd>
-            </div>
-          </dl>
+          <h2 class="section-header">{{ $t('app.product.view.main.title') }}</h2>
+          <div class="section-body">
+
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.product.view.main.name') }}</dt>
+                <dd>{{ product.name }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
+                <dd>
+                  <a v-if="product.payment_provider_details_url" target="_blank" :href="product.payment_provider_details_url">{{ product.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                  <span v-else>{{ product.external_reference }}</span>
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
 
         <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.product.view.price.title') }}</h2>
+          <h2 class="section-header">{{ $t('app.product.view.price.title') }}</h2>
 
+          <div class="section-body">
           <table class="list-table">
             <thead>
             <tr>
@@ -61,23 +65,14 @@
               <td colspan="8" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.product.view.price.list.amount') }}</th>
-              <th>{{ $t('app.product.view.price.list.currency') }}</th>
-              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
-              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
-              <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
-              <th>{{ $t('app.product.view.price.list.public') }}</th>
-              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
-            </tr>
-            </tfoot>
           </table>
 
           <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
+          </div>
         </div>
         <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.product.view.subscription_plan.title') }}</h2>
+          <h2 class="section-header">{{ $t('app.product.view.subscription_plan.title') }}</h2>
+          <div class="section-body">
 
           <table class="list-table mb-5">
             <thead>
@@ -102,17 +97,12 @@
               <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
-              <th></th>
-            </tr>
-            </tfoot>
           </table>
 
           <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
-        </div>
+
+          </div>
+          </div>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
