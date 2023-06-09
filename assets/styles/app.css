@@ -127,7 +127,7 @@ body {
 }
 
 .card-body {
-    @apply rounded-xl bg-white p-5 w-full shadow;
+    @apply rounded-xl bg-white p-5 w-full border border-amber-500;
 }
 
 .body-panel {

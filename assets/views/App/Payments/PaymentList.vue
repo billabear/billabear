@@ -32,7 +32,7 @@
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
+    <div class="mt-3 card-body">
         <table class="list-table">
           <thead>
             <tr>
