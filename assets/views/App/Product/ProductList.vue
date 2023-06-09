@@ -35,6 +35,7 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
+      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -58,13 +59,7 @@
             </td>
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.product.list.name') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
-        </table>
+        </table></div>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
