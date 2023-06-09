@@ -33,6 +33,7 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
+      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -40,6 +41,7 @@
               <th>{{ $t('app.refund.list.list.currency')}}</th>
               <th>{{ $t('app.refund.list.list.customer') }}</th>
               <th>{{ $t('app.refund.list.list.created_by') }}</th>
+              <th>{{ $t('app.refund.list.list.created_at') }}</th>
               <th></th>
             </tr>
           </thead>
@@ -51,21 +53,22 @@
               <td v-else>{{ refund.customer.email }}</td>
               <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
               <td v-else>API</td>
+              <td>{{ $filters.moment(refund.created_at, 'lll') }}</td>
               <td><router-link :to="{name: 'app.refund.view', params: {id: refund.id}}" class="list-btn">View</router-link></td>
 
             </tr>
             <tr v-if="refunds.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.refund.list.no_refunds') }}</td>
+              <td colspan="6" class="text-center">{{ $t('app.refund.list.no_refunds') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="6" class="text-center">
               <LoadingMessage>{{ $t('app.feature.list.loading') }}</LoadingMessage>
             </td>
           </tr>
           </tbody>
-        </table>
+        </table></div>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
