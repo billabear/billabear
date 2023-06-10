@@ -32,11 +32,11 @@ class SubscriptionCountDailyStatsRepository extends AbstractAmountRepository imp
             $stat->setCount(0);
 
             $lastStatQb = $this->entityRepository->createQueryBuilder('ls');
-            $lastStatQb->orderBy('day', 'DESC')
-                ->addOrderBy('month', 'DESC')
-                ->addOrderBy('year', 'DESC')
+            $lastStatQb->orderBy('ls.day', 'DESC')
+                ->addOrderBy('ls.month', 'DESC')
+                ->addOrderBy('ls.year', 'DESC')
                 ->setMaxResults(1)
-                ->andWhere('brandCode = :brandCode')
+                ->andWhere('ls.brandCode = :brandCode')
                 ->setParameter('brandCode', $brandCode);
             $lastStat = $lastStatQb->getQuery()->getResult();
 

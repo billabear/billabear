@@ -37,4 +37,8 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getAllActive(): array;
 
     public function getCountActive(): int;
+
+    public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate): int;
+
+    public function getOldestSubscription(): Subscription;
 }

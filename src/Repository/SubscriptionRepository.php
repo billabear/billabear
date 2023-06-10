@@ -13,7 +13,9 @@
 namespace App\Repository;
 
 use App\Entity\Customer;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\SubscriptionRepository implements SubscriptionRepositoryInterface
 {
@@ -69,5 +71,34 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
     public function getCountActive(): int
     {
         return $this->entityRepository->count(['status' => SubscriptionStatus::ACTIVE]);
+    }
+
+    public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate): int
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s)')
+            ->where($queryBuilder->expr()->lte('s.createdAt', ':startDate'))
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->isNull('s.endedAt'),
+                    $queryBuilder->expr()->gt('s.endedAt', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate);
+        $count = $queryBuilder->getQuery()->getSingleScalarResult();
+
+        return intval($count);
+    }
+
+    public function getOldestSubscription(): Subscription
+    {
+        $subscription = $this->entityRepository->findOneBy([], ['createdAt' => 'ASC']);
+
+        if (!$subscription instanceof Subscription) {
+            throw new NoEntityFoundException("Can't any any subscription");
+        }
+
+        return $subscription;
     }
 }
