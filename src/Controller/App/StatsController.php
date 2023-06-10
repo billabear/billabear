@@ -20,6 +20,7 @@ use App\Stats\Graphs\ChargeBackAmountStatsProvider;
 use App\Stats\Graphs\PaymentAmountStatsProvider;
 use App\Stats\Graphs\RefundAmountStatsProvider;
 use App\Stats\Graphs\SubscriptionCancellationStatsProvider;
+use App\Stats\Graphs\SubscriptionCountStatsProvider;
 use App\Stats\Graphs\SubscriptionCreationStatsProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,7 @@ class StatsController
         PaymentAmountStatsProvider $paymentAmountStatsProvider,
         ChargeBackAmountStatsProvider $chargeBackAmountStatsProvider,
         RefundAmountStatsProvider $refundAmountStatsProvider,
+        SubscriptionCountStatsProvider $subscriptionCountStatsProvider,
         SubscriptionCreationStatsProvider $subscriptionCreationStatsProvider,
         SubscriptionCancellationStatsProvider $subscriptionCancellationStatsProvider,
         SerializerInterface $serializer,
@@ -43,6 +45,7 @@ class StatsController
         $mainDashboardStat->setPaymentAmount($paymentAmountStatsProvider->getMainDashboard());
         $mainDashboardStat->setRefundAmount($refundAmountStatsProvider->getMainDashboard());
         $mainDashboardStat->setChargeBackAmount($chargeBackAmountStatsProvider->getMainDashboard());
+        $mainDashboardStat->setSubscriptionCount($subscriptionCountStatsProvider->getMainDashboard());
         $mainDashboardStat->setSubscriptionCreation($subscriptionCreationStatsProvider->getMainDashboard());
         $mainDashboardStat->setSubscriptionCancellation($subscriptionCancellationStatsProvider->getMainDashboard());
         $mainDashboardStat->setCurrency($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());

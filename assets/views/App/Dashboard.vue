@@ -4,12 +4,12 @@
 
     <LoadingScreen :ready="ready">
       <div class="grid grid-cols-2 gap-5">
-      <div>
-        <h2 class="section-header">{{ $t('app.reports.dashboard.subscription_creation.title') }}</h2>
-        <div class="section-body">
-          <apexchart ref="analyticsChart" :series="subscriptionCreatedChartSeries" :options="subscriptionCreatedChartOptions"  height="400"   />
+        <div>
+          <h2 class="section-header">{{ $t('app.reports.dashboard.subscription_count.title') }}</h2>
+          <div class="section-body">
+            <apexchart ref="analyticsChart" :series="subscriptionCountChartSeries" :options="subscriptionCountChartOptions"  height="400"   />
+          </div>
         </div>
-      </div>
         <div class="grid">
           <div class="text-center">
             <h3 class="section-header">{{ $t('app.reports.dashboard.estimated_mrr') }}</h3>
@@ -22,6 +22,12 @@
             <div class="section-body">
               <span class="text-8xl">{{ displayCurrency(estimated_arr) }} </span> {{ currency }}
             </div>
+          </div>
+        </div>
+        <div>
+          <h2 class="section-header">{{ $t('app.reports.dashboard.subscription_creation.title') }}</h2>
+          <div class="section-body">
+            <apexchart ref="analyticsChart" :series="subscriptionCreatedChartSeries" :options="subscriptionCreatedChartOptions"  height="400"   />
           </div>
         </div>
         <div>
@@ -66,6 +72,44 @@ export default {
       estimated_mrr: 0,
       estimated_arr: 0,
       currency: null,
+      subscriptionCountChartSeries: [],
+      subscriptionCountChartOptions: {
+        title: {
+          text: '',
+          align: 'left'
+        },
+        chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [],
+        },
+        yaxis: [
+          {
+            labels: {
+              formatter: function(val) {
+                return val.toFixed(0);
+              }
+            }
+          }
+        ]
+      },
       subscriptionCreatedChartSeries: [],
       subscriptionCreatedChartOptions: {
         title: {
@@ -269,6 +313,10 @@ export default {
   },
   methods: {
     setChartData: function (viewName) {
+
+      const subscriptionCountStats = this.convertStatToChartData(this.responseData.subscription_count[viewName]);
+      this.subscriptionCountChartSeries = subscriptionCountStats.values;
+      this.subscriptionCountChartOptions.xaxis.categories = subscriptionCountStats.categories;
 
       const subscriptionCreationStats = this.convertStatToChartData(this.responseData.subscription_creation[viewName]);
       this.subscriptionCreatedChartSeries = subscriptionCreationStats.values;

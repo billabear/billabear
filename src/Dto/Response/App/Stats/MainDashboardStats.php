@@ -16,6 +16,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class MainDashboardStats
 {
+    #[SerializedName('subscription_count')]
+    private DashboardStats $subscriptionCount;
+
     #[SerializedName('subscription_creation')]
     private DashboardStats $subscriptionCreation;
 
@@ -38,6 +41,16 @@ class MainDashboardStats
     private int $estimatedAtt;
 
     private string $currency;
+
+    public function getSubscriptionCount(): DashboardStats
+    {
+        return $this->subscriptionCount;
+    }
+
+    public function setSubscriptionCount(DashboardStats $subscriptionCount): void
+    {
+        $this->subscriptionCount = $subscriptionCount;
+    }
 
     public function getSubscriptionCreation(): DashboardStats
     {

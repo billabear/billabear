@@ -1,5 +1,8 @@
 export const REPORT_DASHBOARD_TRANSLATIONS = {
     title: "Dashboard",
+    subscription_count: {
+        title: "Active Subscriptions"
+    },
     subscription_creation: {
         title: "New Subscriptions"
     },
