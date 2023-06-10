@@ -29,6 +29,20 @@ class SubscriptionCountYearlyStatsRepository extends AbstractAmountRepository im
             $stat->setMonth($month);
             $stat->setDay($day);
             $stat->setBrandCode($brandCode);
+            $stat->setCount(0);
+
+            $lastStatQb = $this->entityRepository->createQueryBuilder('ls');
+            $lastStatQb->orderBy('day', 'DESC')
+                ->addOrderBy('month', 'DESC')
+                ->addOrderBy('year', 'DESC')
+                ->setMaxResults(1)
+                ->andWhere('brandCode = :brandCode')
+                ->setParameter('brandCode', $brandCode);
+            $lastStat = $lastStatQb->getQuery()->getResult();
+
+            if ($lastStat instanceof SubscriptionCountYearlyStats) {
+                $stat->setCount($lastStat->getCount());
+            }
         }
 
         return $stat;
