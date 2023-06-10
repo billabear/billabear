@@ -1,4 +1,5 @@
 export const SETTINGS_MENU_TRANSACTIONS = {
+    title: "Settings",
     user_settings: "User Settings",
     invite: "Invite",
     pdf_templates: "PDF Templates",
