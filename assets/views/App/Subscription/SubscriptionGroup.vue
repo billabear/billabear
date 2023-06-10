@@ -1,10 +1,11 @@
 <template>
   <div class="flex">
     <div class="w-1/5">
-      <div class="mt-5 rounded-lg p-5 border shadow-lg">
+      <div class="submenu-container">
+        <div class="submenu-title">{{ $t('app.subscription.menu.title') }}</div>
         <ul>
-          <li class="my-3"><router-link :to="{name: 'app.subscription.list'}">{{ $t('app.subscription.menu.subscriptions') }}</router-link></li>
-          <li class="my-3"><router-link :to="{name: 'app.subscription.mass_change'}">{{ $t('app.subscription.menu.mass_change') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.list'}" class="submenu-link"><i class="fa-solid fa-arrows-rotate"></i> {{ $t('app.subscription.menu.subscriptions') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.mass_change'}" class="submenu-link"><i class="fa-solid fa-arrow-up-right-dots"></i> {{ $t('app.subscription.menu.mass_change') }}</router-link></li>
         </ul>
       </div>
     </div>
