@@ -12,9 +12,9 @@
 
 namespace App\Repository\Stats;
 
-use App\Entity\Stats\SubscriptionCountYearlyStats;
+use App\Entity\Stats\SubscriptionCountDailyStats;
 
-interface SubscriptionCreationYearlyStatsRepositoryInterface extends AmountRepositoryInterface
+interface SubscriptionCountDailyStatsRepositoryInterface extends AmountRepositoryInterface
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCountYearlyStats;
+    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCountDailyStats;
 }

@@ -14,7 +14,7 @@ namespace App\Repository\Stats;
 
 use App\Entity\Stats\SubscriptionCountYearlyStats;
 
-interface SubscriptionCreationYearlyStatsRepositoryInterface extends AmountRepositoryInterface
+interface SubscriptionCountYearlyStatsRepositoryInterface extends AmountRepositoryInterface
 {
     public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCountYearlyStats;
 }

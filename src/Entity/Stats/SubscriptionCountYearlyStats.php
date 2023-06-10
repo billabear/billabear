@@ -10,11 +10,12 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository\Stats;
+namespace App\Entity\Stats;
 
-use App\Entity\Stats\SubscriptionCountYearlyStats;
+use Doctrine\ORM\Mapping as ORM;
 
-interface SubscriptionCreationYearlyStatsRepositoryInterface extends AmountRepositoryInterface
+#[ORM\Entity()]
+#[ORM\Table('stats_subscription_count_yearly')]
+class SubscriptionCountYearlyStats extends AbstractStats
 {
-    public function getStatForDateTime(\DateTimeInterface $dateTime, string $brandCode): SubscriptionCountYearlyStats;
 }

@@ -32,25 +32,30 @@
           </tbody>
         </table>
       </div>
-      <h2>{{ $t('app.settings.stripe.main.webhook.title') }}</h2>
-      <div class="mt-3">
 
-        <div class="form-field-ctn">
-          <label class="form-field-lbl" for="country">
-            {{ $t('app.settings.stripe.main.webhook.url') }}
-          </label>
-          <div v-if="!webhook_url_registered">
-            <p class="form-field-error" v-if="errors.url != undefined">{{ errors.url }}</p>
-            <input type="text" v-model="webhook_url" class="form-field" />
-            <SubmitButton :in-progress="sendingWebhookRequest" class="btn--main"  @click="registerWebhook">{{ $t('app.settings.stripe.main.webhook.register_webhook') }}</SubmitButton>
+      <div class="card-body mt-5">
 
-            <p class="form-field-help">{{ $t('app.settings.stripe.main.webhook.help_info.url') }}</p>
+        <h2>{{ $t('app.settings.stripe.main.webhook.title') }}</h2>
+        <div class="">
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="country">
+              {{ $t('app.settings.stripe.main.webhook.url') }}
+            </label>
+            <div v-if="!webhook_url_registered">
+              <p class="form-field-error" v-if="errors.url != undefined">{{ errors.url }}</p>
+              <input type="text" v-model="webhook_url" class="form-field" />
+              <SubmitButton :in-progress="sendingWebhookRequest" class="btn--main"  @click="registerWebhook">{{ $t('app.settings.stripe.main.webhook.register_webhook') }}</SubmitButton>
+
+              <p class="form-field-help">{{ $t('app.settings.stripe.main.webhook.help_info.url') }}</p>
+            </div>
+            <SubmitButton :in-progress="sendingWebhookRequest" class="btn--danger" v-else @click="deregisterWebhook">{{ $t('app.settings.stripe.main.webhook.deregister_webhook') }}</SubmitButton>
+
+
           </div>
-          <SubmitButton :in-progress="sendingWebhookRequest" class="btn--danger" v-else @click="deregisterWebhook">{{ $t('app.settings.stripe.main.webhook.deregister_webhook') }}</SubmitButton>
-
-
         </div>
       </div>
+      <div class="card-body mt-5">
       <h2>{{ $t('app.settings.stripe.main.danger_zone.title') }}</h2>
       <div class="mt-3">
 
@@ -62,6 +67,7 @@
           <button class="btn--danger" @click="options.modelValue = true" v-if="use_stripe_billing">{{ $t('app.settings.stripe.main.danger_zone.disable_billing') }}</button>
           <button class="btn--main" v-else @click="enableStripeBilling">{{ $t('app.settings.stripe.main.danger_zone.enable_billing') }}</button>
         </div>
+      </div>
       </div>
     </LoadingScreen>
     <VueFinalModal
