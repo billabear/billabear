@@ -10,11 +10,11 @@
 
         <div class="mt-5 card-body">
           <label class="label">{{ $t('app.user.settings.name') }}</label>
-          <input type="text" class="form-field" :class="{'form-error': errors.name !== undefined}" v-model="user.name" />
+          <input type="text" class="form-field-input" :class="{'form-error': errors.name !== undefined}" v-model="user.name" />
           <span class="error-message" v-if="errors.name" v-for="error in errors.name">{{ error }}</span>
 
           <label class="label">{{ $t('app.user.settings.email') }}</label>
-          <input type="text" class="form-field"  :class="{'form-error': errors.email !== undefined}"  v-model="user.email" />
+          <input type="text" class="form-field-input"  :class="{'form-error': errors.email !== undefined}"  v-model="user.email" />
           <span class="error-message" v-if="errors.email" v-for="error in errors.email">{{ error }}</span>
         </div>
 
@@ -29,16 +29,16 @@
         <div class="card-body" >
 
           <label class="label">{{ $t('app.user.settings.current_password') }}</label>
-          <input type="password" class="form-field" v-model="current_password" />
+          <input type="password" class="form-field-input" v-model="current_password" />
           <span class="error-message" v-if="need_current_password">{{ $t('app.user.settings.need_current_password') }}</span>
 
           <label class="label">{{ $t('app.user.settings.new_password') }}</label>
-          <input type="password" name="password" class="form-field" v-model="new_password" />
+          <input type="password" name="password" class="form-field-input" v-model="new_password" />
           <span class="error-message" v-if="need_new_password">{{ $t('app.user.settings.need_new_password') }}</span>
           <span class="error-message" v-if="need_valid_password">{{ $t('app.user.settings.need_valid_password') }}</span>
 
           <label class="label">{{ $t('app.user.settings.new_password_again') }}</label>
-          <input type="password" class="form-field" v-model="new_password_again" />
+          <input type="password" class="form-field-input" v-model="new_password_again" />
           <span class="error-message" v-if="need_passwords_to_match">{{ $t('app.user.settings.need_password_to_match') }}</span>
         </div>
         <div class="mt-3">
