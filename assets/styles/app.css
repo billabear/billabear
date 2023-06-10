@@ -265,11 +265,11 @@ body {
 }
 
 .list-table thead th {
-    @apply py-2 px-2 bg-blue-500 font-extrabold text-sm font-bold text-left rtl:text-right text-white dark:text-gray-400;
+    @apply py-2 px-2 bg-amber-500 font-extrabold text-sm font-bold text-left rtl:text-right text-white dark:text-gray-400;
 }
 
 .list-table tfoot th {
-    @apply py-2 px-1 font-extrabold text-sm font-semibold text-left rtl:text-right text-gray-500 dark:text-gray-400;
+    @apply py-2 px-2 bg-amber-500 font-extrabold text-sm font-bold text-left rtl:text-right text-white dark:text-gray-400;
 }
 
 
@@ -281,10 +281,23 @@ body {
     @apply px-2 py-1 text-sm whitespace-nowrap;
 }
 .list-table tbody tr:nth-child(even) {
-     @apply bg-amber-100  hover:bg-sky-50;
+     @apply bg-amber-50  hover:bg-sky-50;
  }
 .list-table tbody tr:nth-child(odd) {
-    @apply bg-amber-50 hover:bg-sky-50;
+    @apply bg-white hover:bg-sky-50;
+}
+
+.list-table thead th:first-child {
+    @apply rounded-tl-xl;
+}
+.list-table tfoot th:first-child {
+    @apply rounded-bl-xl;
+}
+.list-table thead th:last-child {
+    @apply rounded-tr-xl;
+}
+.list-table tfoot th:last-child {
+    @apply rounded-br-xl;
 }
 
 .detail-list {

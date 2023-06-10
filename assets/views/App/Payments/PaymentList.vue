@@ -32,7 +32,7 @@
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3 card-body">
+    <div class="mt-3">
         <table class="list-table">
           <thead>
             <tr>
@@ -63,6 +63,15 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.payment.list.list.amount') }}</th>
+            <th>{{ $t('app.payment.list.list.currency')}}</th>
+            <th>{{ $t('app.payment.list.list.customer') }}</th>
+            <th>{{ $t('app.payment.list.list.created_at') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
