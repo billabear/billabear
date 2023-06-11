@@ -16,6 +16,9 @@ use App\Entity\Customer;
 use App\Repository\Stats\SubscriptionCancellationDailyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCancellationMonthlyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCancellationYearlyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCountDailyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class SubscriptionCancellationStats
@@ -24,6 +27,9 @@ class SubscriptionCancellationStats
         private SubscriptionCancellationDailyStatsRepositoryInterface $dailyStatusRepository,
         private SubscriptionCancellationMonthlyStatsRepositoryInterface $weeklyStatusRepository,
         private SubscriptionCancellationYearlyStatsRepositoryInterface $yearlyStatsRepository,
+        private SubscriptionCountDailyStatsRepositoryInterface $countDailyStatsRepository,
+        private SubscriptionCountMonthlyStatsRepositoryInterface $countWeeklyStatusRepository,
+        private SubscriptionCountYearlyStatsRepositoryInterface $countYearlyStatsRepository,
     ) {
     }
 
@@ -44,5 +50,17 @@ class SubscriptionCancellationStats
         $yearStat = $this->yearlyStatsRepository->getStatForDateTime($subscription->getEndedAt(), $brandCode);
         $yearStat->increaseCount();
         $this->yearlyStatsRepository->save($yearStat);
+
+        $dailyStat = $this->countDailyStatsRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
+        $dailyStat->decreaseCount();
+        $this->dailyStatusRepository->save($dailyStat);
+
+        $weeklyStat = $this->countWeeklyStatusRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
+        $weeklyStat->decreaseCount();
+        $this->countWeeklyStatusRepository->save($weeklyStat);
+
+        $yearStat = $this->countYearlyStatsRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
+        $yearStat->decreaseCount();
+        $this->countYearlyStatsRepository->save($yearStat);
     }
 }

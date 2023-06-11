@@ -106,6 +106,16 @@ class AbstractStats
         ++$this->count;
     }
 
+    public function decreaseCount()
+    {
+        if (!isset($this->count)) {
+            $this->count = 0;
+
+            return;
+        }
+        --$this->count;
+    }
+
     public function getBrandCode(): string
     {
         return $this->brandCode;

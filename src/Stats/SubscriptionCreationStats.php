@@ -13,6 +13,9 @@
 namespace App\Stats;
 
 use App\Entity\Customer;
+use App\Repository\Stats\SubscriptionCountDailyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
+use App\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCreationDailyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCreationMonthlyStatsRepositoryInterface;
 use App\Repository\Stats\SubscriptionCreationYearlyStatsRepositoryInterface;
@@ -24,6 +27,9 @@ class SubscriptionCreationStats
         private SubscriptionCreationDailyStatsRepositoryInterface $dailyStatusRepository,
         private SubscriptionCreationMonthlyStatsRepositoryInterface $weeklyStatusRepository,
         private SubscriptionCreationYearlyStatsRepositoryInterface $yearlyStatsRepository,
+        private SubscriptionCountDailyStatsRepositoryInterface $countDailyStatsRepository,
+        private SubscriptionCountMonthlyStatsRepositoryInterface $countWeeklyStatusRepository,
+        private SubscriptionCountYearlyStatsRepositoryInterface $countYearlyStatsRepository,
     ) {
     }
 
@@ -44,5 +50,17 @@ class SubscriptionCreationStats
         $yearStat = $this->yearlyStatsRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
         $yearStat->increaseCount();
         $this->yearlyStatsRepository->save($yearStat);
+
+        $dailyStat = $this->countDailyStatsRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
+        $dailyStat->increaseCount();
+        $this->dailyStatusRepository->save($dailyStat);
+
+        $weeklyStat = $this->countWeeklyStatusRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
+        $weeklyStat->increaseCount();
+        $this->countWeeklyStatusRepository->save($weeklyStat);
+
+        $yearStat = $this->countYearlyStatsRepository->getStatForDateTime($subscription->getCreatedAt(), $brandCode);
+        $yearStat->increaseCount();
+        $this->countYearlyStatsRepository->save($yearStat);
     }
 }
