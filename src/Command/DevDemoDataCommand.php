@@ -16,6 +16,7 @@ use App\Dev\DemoData\CustomerCreation;
 use App\Dev\DemoData\InvoiceCreation;
 use App\Dev\DemoData\SubscriptionCreation;
 use App\Dev\DemoData\SubscriptionPlanCreation;
+use App\Stats\CreateSubscriptionCountStats;
 use App\Stats\RevenueEstimatesGeneration;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -38,7 +39,7 @@ class DevDemoDataCommand extends Command
 
     public static function getStartDate(): \DateTime
     {
-        return static::$date;
+        return clone static::$date;
     }
 
     public function __construct(
@@ -47,6 +48,7 @@ class DevDemoDataCommand extends Command
         private SubscriptionCreation $subscriptionCreation,
         private InvoiceCreation $invoiceCreation,
         private RevenueEstimatesGeneration $estimatesGeneration,
+        private CreateSubscriptionCountStats $createSubscriptionCountStats,
     ) {
         parent::__construct(null);
     }
@@ -65,13 +67,14 @@ class DevDemoDataCommand extends Command
         $products = $input->getOption('products');
 
         $output->writeln('Start creating demo data');
-        $this->customerCreation->createData($output);
+        // $this->customerCreation->createData($output);
         if ('true' === strtolower($products)) {
             $this->subscriptionPlanCreation->createData($output);
         }
         $this->subscriptionCreation->createData($output);
         $this->invoiceCreation->createData($output);
         $this->estimatesGeneration->generate();
+        $this->createSubscriptionCountStats->generate();
 
         return Command::SUCCESS;
     }

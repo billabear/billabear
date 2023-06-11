@@ -91,6 +91,24 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return intval($count);
     }
 
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s)')
+            ->where($queryBuilder->expr()->gte('s.createdAt', ':startDate'))
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->isNull('s.endedAt'),
+                    $queryBuilder->expr()->gt('s.endedAt', ':endDate')
+                )
+            )
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate);
+        $count = $queryBuilder->getQuery()->getSingleScalarResult();
+
+        return intval($count);
+    }
+
     public function getOldestSubscription(): Subscription
     {
         $subscription = $this->entityRepository->findOneBy([], ['createdAt' => 'ASC']);

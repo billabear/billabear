@@ -17,6 +17,7 @@ use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use App\Stats\SubscriptionCreationStats;
+use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
@@ -40,7 +41,7 @@ class SubscriptionCreation
 
     public function createData(OutputInterface $output): void
     {
-        $output->writeln('Create Subscriptions');
+        $output->writeln("\nCreate Subscriptions");
         $faker = \Faker\Factory::create();
         $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
 
@@ -54,13 +55,20 @@ class SubscriptionCreation
         $numberOfMonths = abs($interval->m);
 
         $elements = [];
-        $currentValue = intval($totalCount / (pow(1.25, $numberOfMonths) - 1));
+        $currentValue = intval($totalCount / $numberOfMonths);
 
         for ($i = 0; $i < $numberOfMonths; ++$i) {
             $elements[] = $currentValue;
-            $currentValue = intval($currentValue * 1.25);
+            $currentValue = $currentValue - intval($currentValue * 0.25);
         }
 
+        for ($i = 0; $i < $numberOfMonths; ++$i) {
+            $elements[$i] = intval($elements[$i] + (($totalCount - array_sum($elements)) * 0.50));
+            if (array_sum($elements) >= $totalCount) {
+                break;
+            }
+        }
+        ++$elements[0];
         $limit = 25;
         $lastId = null;
         $progressBar = new ProgressBar($output, $totalCount);
@@ -68,9 +76,13 @@ class SubscriptionCreation
         $progressBar->start();
         foreach ($elements as $step) {
             $a = 0;
-            $pastMonths = 16;
             while ($a < $step) {
-                $customers = $this->customerRepository->getList(limit: $limit, lastId: $lastId);
+                $filter = new GreaterThanFilter();
+                $filter->setFieldName('createdAt');
+                $filter->setData($origStartDate);
+
+                $filters = []; // [$filter];
+                $customers = $this->customerRepository->getList(filters: $filters, limit: $limit, lastId: $lastId);
                 $lastId = $customers->getLastKey();
 
                 /** @var Customer $customer */

@@ -17,6 +17,7 @@ use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
 use App\Repository\SubscriptionRepositoryInterface;
 use App\Subscription\Schedule\SchedulerProvider;
+use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\Subscription;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,10 +41,15 @@ class InvoiceCreation
         $now = new \DateTime('now');
         $startDate = DevDemoDataCommand::getStartDate();
 
-        $progressBar = new ProgressBar($output, $this->subscriptionRepository->getActiveCountForPeriod($startDate, $now));
+        $progressBar = new ProgressBar($output, $this->subscriptionRepository->getCreatedCountForPeriod($startDate, $now));
         $progressBar->start();
         do {
-            $result = $this->subscriptionRepository->getList(limit: $limit, lastId: $lastId);
+            $filter = new GreaterThanFilter();
+            $filter->setFieldName('createdAt');
+            $filter->setData($startDate);
+
+            $filters = [$filter];
+            $result = $this->subscriptionRepository->getList(filters: $filters, limit: $limit, lastId: $lastId);
             $data = $result->getResults();
             $lastId = $result->getLastKey();
 
@@ -54,7 +60,7 @@ class InvoiceCreation
                     continue;
                 }
                 do {
-                    $lastStart = $subscription->getValidUntil();
+                    $lastStart = clone $subscription->getValidUntil();
                     $lastStart->modify('+1 minute');
                     $subscription->setStartOfCurrentPeriod($lastStart);
                     $this->schedulerProvider->getScheduler($subscription->getPrice())->scheduleNextDueDate($subscription);
