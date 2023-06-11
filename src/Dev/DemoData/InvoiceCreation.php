@@ -12,6 +12,7 @@
 
 namespace App\Dev\DemoData;
 
+use App\Command\DevDemoDataCommand;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
 use App\Repository\SubscriptionRepositoryInterface;
@@ -37,8 +38,9 @@ class InvoiceCreation
         $lastId = null;
         $limit = 25;
         $now = new \DateTime('now');
+        $startDate = DevDemoDataCommand::getStartDate();
 
-        $progressBar = new ProgressBar($output, $this->subscriptionRepository->getCountActive());
+        $progressBar = new ProgressBar($output, $this->subscriptionRepository->getActiveCountForPeriod($startDate, $now));
         $progressBar->start();
         do {
             $result = $this->subscriptionRepository->getList(limit: $limit, lastId: $lastId);

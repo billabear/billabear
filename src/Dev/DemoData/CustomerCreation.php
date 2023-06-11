@@ -44,13 +44,14 @@ class CustomerCreation
         /** @var StripeClient $stripe */
         $stripe = new StripeClient($this->stripeConfig['api_key']);
 
+        $numberOfCustomers = DevDemoDataCommand::getNumberOfCustomers();
         $output->writeln('Starting to create customers');
-        $progressBar = new ProgressBar($output, DevDemoDataCommand::NUMBER_OF_CUSTOMERS);
+        $progressBar = new ProgressBar($output, $numberOfCustomers);
 
         $brandSettings = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
 
         $progressBar->start();
-        for ($i = 0; $i < DevDemoDataCommand::NUMBER_OF_CUSTOMERS; ++$i) {
+        for ($i = 0; $i < $numberOfCustomers; ++$i) {
             $customer = new Customer();
             $customer->setBillingEmail($faker->email);
             $customer->setName($faker->name);

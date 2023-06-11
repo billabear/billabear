@@ -44,24 +44,35 @@ class SubscriptionCreation
         $faker = \Faker\Factory::create();
         $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
 
-        $limit = 25;
-        $count = 0;
+        $totalCount = DevDemoDataCommand::getNumberOfCustomers();
 
-        $step = 10;
-        $percentage = 25;
+        $origStartDate = clone DevDemoDataCommand::getStartDate();
+        $origStartDate->modify('first day of this month');
+        $now = new \DateTime('now');
+        $interval = $origStartDate->diff($now);
+
+        $numberOfMonths = abs($interval->m);
+
+        $elements = [];
+        $currentValue = intval($totalCount / (pow(1.25, $numberOfMonths) - 1));
+
+        for ($i = 0; $i < $numberOfMonths; ++$i) {
+            $elements[] = $currentValue;
+            $currentValue = intval($currentValue * 1.25);
+        }
+
+        $limit = 25;
         $lastId = null;
-        $progressBar = new ProgressBar($output, DevDemoDataCommand::NUMBER_OF_CUSTOMERS);
+        $progressBar = new ProgressBar($output, $totalCount);
 
         $progressBar->start();
-        while ($count < DevDemoDataCommand::NUMBER_OF_CUSTOMERS) {
-            $step += intval($step * ($percentage / 100));
+        foreach ($elements as $step) {
             $a = 0;
             $pastMonths = 16;
             while ($a < $step) {
                 $customers = $this->customerRepository->getList(limit: $limit, lastId: $lastId);
-                $count += $limit;
                 $lastId = $customers->getLastKey();
-                --$pastMonths;
+
                 /** @var Customer $customer */
                 foreach ($customers->getResults() as $customer) {
                     ++$a;
@@ -86,7 +97,7 @@ class SubscriptionCreation
                     if ($card instanceof PaymentCard) {
                         $subscription->setPaymentDetails($card);
                     }
-                    $startDate = new \DateTime('-'.$pastMonths.' month');
+                    $startDate = clone $origStartDate;
                     $startDate->modify('first day of this month');
                     $numberOfDaysInMonth = (int) $startDate->format('t');
                     $days = $faker->numberBetween(1, $numberOfDaysInMonth) - 1;
@@ -101,6 +112,7 @@ class SubscriptionCreation
                     $this->subscriptionCreationStats->handleStats($subscription);
                 }
             }
+            $origStartDate->modify('+1 month');
         }
         $progressBar->finish();
     }
