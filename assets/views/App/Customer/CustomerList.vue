@@ -34,7 +34,6 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
-      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -62,8 +61,15 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.customer.list.email') }}</th>
+            <th>{{ $t('app.customer.list.country')}}</th>
+            <th>{{ $t('app.customer.list.reference') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
         </table>
-      </div>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
