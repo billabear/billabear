@@ -35,6 +35,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -127,6 +128,7 @@ class PaymentController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/payment/{id}/refund', name: 'app_payment_refund', methods: ['POST'])]
     public function createRefundForPayment(
         Request $request,

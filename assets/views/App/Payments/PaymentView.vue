@@ -125,10 +125,12 @@
           </div>
         </div>
 
-        <div class="text-end mt-4">
-          <SubmitButton :in-progress="generatingReceipt" button-class="btn--secondary mr-3" @click="generateReceipt">{{ $t('app.payment.view.buttons.generate_receipt') }}</SubmitButton>
-          <button class="btn--main" @click="options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
-        </div>
+        <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+          <div class="text-end mt-4">
+            <SubmitButton :in-progress="generatingReceipt" button-class="btn--secondary mr-3" @click="generateReceipt">{{ $t('app.payment.view.buttons.generate_receipt') }}</SubmitButton>
+            <button class="btn--main" @click="options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
+          </div>
+        </RoleOnlyView>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
@@ -174,10 +176,11 @@
 import axios from "axios";
 import {VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "PaymentView",
-  components: {VueFinalModal},
+  components: {RoleOnlyView, VueFinalModal},
   data() {
     return {
       ready: false,
