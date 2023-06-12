@@ -29,11 +29,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentDetailsController
 {
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/customer/{customerId}/payment-card/frontend-payment-token', name: 'app_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
         Request $request,
@@ -58,6 +60,7 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/customer/{customerId}/payment-card/frontend-payment-token', name: 'app_payment_details_frontend_payment_token_complete', methods: ['POST'])]
     public function finishFrontendAdd(
         Request $request,
@@ -122,6 +125,7 @@ class PaymentDetailsController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/customer/{customerId}/payment-card/{paymentDetailsId}/default', name: 'app_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,

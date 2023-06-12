@@ -55,6 +55,7 @@ class SubscriptionController
 {
     use ValidationErrorResponseTrait;
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_view', methods: ['GET'])]
     public function createSubscriptionDetails(
         Request $request,
@@ -106,6 +107,7 @@ class SubscriptionController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_write', methods: ['POST'])]
     public function createSubscription(
         Request $request,

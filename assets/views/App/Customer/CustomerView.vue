@@ -84,12 +84,15 @@
           </div>
 
         <div class="mt-3">
-          <div class="section-header grid grid-cols-2">
+          <div class="grid grid-cols-2">
             <div><h2 class="">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
-            <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
+            <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+              <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
+
+            </RoleOnlyView>
           </div>
 
-          <div class="section-body">
+          <div class="mt-2">
 
             <table class="list-table">
               <thead>
@@ -114,18 +117,29 @@
                 <td colspan="6" class="text-center">{{ $t('app.customer.view.subscriptions.no_subscriptions') }}</td>
               </tr>
               </tbody>
+              <tfoot>
+              <tr>
+                <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
+                <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
+                <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
+                <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
+                <th></th>
+              </tr>
+              </tfoot>
             </table>
           </div>
         </div>
 
 
           <div class="mt-3">
-            <div class="section-header grid grid-cols-2">
+            <div class="grid grid-cols-2">
               <div><h2 class="">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
-              <div><router-link class="btn--main" :to="{name: 'app.customer.payment_details.add', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_new') }}</router-link></div>
+              <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+                <div><router-link class="btn--main" :to="{name: 'app.customer.payment_details.add', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_new') }}</router-link></div>
+              </RoleOnlyView>
             </div>
 
-            <div class="section-body">
+            <div class="mt-2">
 
               <table class="list-table">
                 <thead>
@@ -144,17 +158,28 @@
                   <td>{{ paymentDetail.expiry_year }}</td>
                   <td>{{ paymentDetail.default }}</td>
                   <td>
-                    <button @click="defaultPayment(paymentDetail.id)" class="list-btn mr-2" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
-                    <button @click="deletePayment(paymentDetail.id)" class="list-btn" v-if="!paymentDetail.default">
-                      <i class="fa-solid fa-trash"></i>
-                      {{$t('app.customer.view.payment_details.delete') }}
-                    </button>
+                    <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+                      <button @click="defaultPayment(paymentDetail.id)" class="list-btn mr-2" v-if="!paymentDetail.default">{{$t('app.customer.view.payment_details.make_default') }}</button>
+                      <button @click="deletePayment(paymentDetail.id)" class="list-btn" v-if="!paymentDetail.default">
+                        <i class="fa-solid fa-trash"></i>
+                        {{$t('app.customer.view.payment_details.delete') }}
+                      </button>
+                    </RoleOnlyView>
                   </td>
                 </tr>
                 <tr v-if="paymentDetails.length == 0">
                   <td colspan="5" class="text-center">{{$t('app.customer.view.payment_details.no_payment_details') }}</td>
                 </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                  <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
+                  <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
+                  <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
+                  <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
+                  <th></th>
+                </tr>
+                </tfoot>
               </table>
             </div>
           </div>
