@@ -12,7 +12,9 @@
               <MenuItem route-name="app.product">{{ $t('app.menu.main.products') }}</MenuItem>
               <MenuItem route-name="app.customer.list">{{ $t('app.menu.main.customers') }}</MenuItem>
               <MenuItem route-name="app.subscription.list">{{ $t('app.menu.main.subscriptions') }}</MenuItem>
-              <MenuItem route-name="app.user.settings">{{ $t('app.menu.main.settings') }}</MenuItem>
+              <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+                <MenuItem route-name="app.user.settings">{{ $t('app.menu.main.settings') }}</MenuItem>
+              </RoleOnlyView>
             </MenuGroup>
           </Menu>
         </div>
@@ -36,9 +38,10 @@
 import AppLogo from "../../components/app/AppLogo";
 import axios from "axios";
 import {mapActions, mapState} from "vuex";
+import RoleOnlyView from "../../components/app/RoleOnlyView.vue";
 export default {
   name: "InternalApp",
-  components: {AppLogo},
+  components: {RoleOnlyView, AppLogo},
   data() {
     return {
     }

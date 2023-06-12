@@ -26,6 +26,7 @@ import ParthenonUI from "@parthenon/ui";
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import RoleOnlyView from "./components/app/RoleOnlyView.vue";
 
 
 const TRANSLATIONS = {
@@ -51,7 +52,7 @@ app.use(ParthenonUI);
 app.use(VueApexCharts)
 app.use(require('vue-moment-v3'))
 app.use(vfm)
-
+app.component('RoleOnlyView', RoleOnlyView);
 app.component('VueDatePicker', VueDatePicker);
 
 app.mount('#app');
