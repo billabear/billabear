@@ -47,6 +47,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -238,6 +239,7 @@ class SubscriptionController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/subscription/{subscriptionId}/payment-card', name: 'app_subscription_payment_method_update', methods: ['POST'])]
     public function updatePaymentMethod(
         Request $request,
@@ -277,6 +279,7 @@ class SubscriptionController
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/subscription/{subscriptionId}/cancel', name: 'app_subscription_cancel', methods: ['POST'])]
     public function cancelSubscription(
         Request $request,
@@ -335,6 +338,7 @@ class SubscriptionController
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/subscription/{subscriptionId}/price', name: 'app_app_subscription_readsubscriptionprice', methods: ['GET'])]
     public function readSubscriptionPrice(
         Request $request,
@@ -370,6 +374,7 @@ class SubscriptionController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/subscription/{subscriptionId}/price', name: 'app_subscription_update_price', methods: ['POST'])]
     public function changeSubscriptionPrice(
         Request $request,

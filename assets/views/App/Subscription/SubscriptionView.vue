@@ -67,9 +67,11 @@
               <dt>{{ $t('app.subscription.view.pricing.schedule') }}</dt>
               <dd>{{ subscription.price.schedule }}</dd>
             </div>
-            <div class="mt-2">
-              <button class="btn--main" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
-            </div>
+            <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+              <div class="mt-2">
+                <button class="btn--main" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
+              </div>
+            </RoleOnlyView>
           </dl>
         </div>
           <div class="mt-5">
@@ -121,13 +123,15 @@
         </div>
         <div class="mt-5 text-end">
 
-          <button class="btn--secondary mr-2" @click="showChangePaymentMethods" v-if="paymentDetails !== null && paymentDetails !== undefined">
-            {{ $t('app.subscription.view.buttons.payment_method') }}
-          </button>
+          <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+            <button class="btn--secondary mr-2" @click="showChangePaymentMethods" v-if="paymentDetails !== null && paymentDetails !== undefined">
+              {{ $t('app.subscription.view.buttons.payment_method') }}
+            </button>
 
-          <button class="btn--danger" @click="options.modelValue = true" :class="{'btn--danager--disabled': subscription.status == 'cancelled'}" :disabled="subscription.status == 'cancelled'">
-            {{ $t('app.subscription.view.buttons.cancel') }}
-          </button>
+            <button class="btn--danger" @click="options.modelValue = true" :class="{'btn--danager--disabled': subscription.status == 'cancelled'}" :disabled="subscription.status == 'cancelled'">
+              {{ $t('app.subscription.view.buttons.cancel') }}
+            </button>
+          </RoleOnlyView>
         </div>
       </div>
 
@@ -240,7 +244,6 @@
           </select>
         </div>
 
-
         <div class="mt-5 text-center" v-if="cancelValues.cancelled == false">
           <button class="btn--secondary mr-3" @click="options.modelValue = false">{{ $t('app.subscription.view.modal.cancel.close_btn') }}</button>
           <SubmitButton @click="sendCancel" :in-progress="cancelSending">{{ $t('app.subscription.view.modal.cancel.cancel_btn') }}</SubmitButton>
@@ -257,10 +260,11 @@
 import axios from "axios";
 import {useModal, VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "SubscriptionView",
-  components: {VueFinalModal},
+  components: {RoleOnlyView, VueFinalModal},
   data() {
     return {
       subscription: {},
