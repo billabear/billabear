@@ -85,6 +85,9 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
     protected ?string $creditCurrency = null;
 
+    #[ORM\Column('created_at', type: 'datetime')]
+    private \DateTimeInterface $createdAt;
+
     public function getId()
     {
         return $this->id;
@@ -316,5 +319,15 @@ class Customer implements CustomerInterface
 
         $newAmount = $this->getCreditAsMoney()->plus($money);
         $this->creditAmount = $newAmount->getMinorAmount()->toInt();
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }

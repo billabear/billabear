@@ -265,6 +265,7 @@ class MainContext implements Context
             $brandSettings = $this->brandSettingRepository->findOneBy(['code' => $brand]);
             $customer->setBrandSettings($brandSettings);
             $customer->setBrand($brand);
+            $customer->setCreatedAt(new \DateTime('now'));
 
             $this->customerRepository->getEntityManager()->persist($customer);
             $this->customerRepository->getEntityManager()->flush();

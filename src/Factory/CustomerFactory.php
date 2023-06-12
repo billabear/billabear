@@ -33,6 +33,7 @@ class CustomerFactory
         if (!$customer) {
             $customer = new Customer();
             $customer->setStatus(CustomerStatus::NEW);
+            $customer->setCreatedAt(new \DateTime('now'));
         }
 
         $customer->setBillingEmail($obolCustomer->getEmail());
@@ -68,6 +69,7 @@ class CustomerFactory
         if (!$customer) {
             $customer = new Customer();
             $customer->setStatus(CustomerStatus::NEW);
+            $customer->setCreatedAt(new \DateTime('now'));
         }
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
