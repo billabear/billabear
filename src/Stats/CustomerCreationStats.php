@@ -12,6 +12,7 @@
 
 namespace App\Stats;
 
+use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\Stats\CustomerCreationDailyStatsRepositoryInterface;
 use App\Repository\Stats\CustomerCreationMonthlyStatsRepositoryInterface;
@@ -78,5 +79,22 @@ class CustomerCreationStats
             $this->customerCreationYearlyStatsRepository->save($dayStat);
             $startDate = $endDate;
         }
+    }
+
+    public function handleStats(Customer $customer)
+    {
+        $brandCode = $customer->getBrand();
+
+        $dailyStat = $this->customerCreationDailyStatsRepository->getStatForDateTime($customer->getCreatedAt(), $brandCode);
+        $dailyStat->increaseCount();
+        $this->customerCreationDailyStatsRepository->save($dailyStat);
+
+        $monthlyStat = $this->customerCreationMonthlyStatsRepository->getStatForDateTime($customer->getCreatedAt(), $brandCode);
+        $monthlyStat->increaseCount();
+        $this->customerCreationMonthlyStatsRepository->save($monthlyStat);
+
+        $yearStat = $this->customerCreationYearlyStatsRepository->getStatForDateTime($customer->getCreatedAt(), $brandCode);
+        $yearStat->increaseCount();
+        $this->customerCreationYearlyStatsRepository->save($yearStat);
     }
 }

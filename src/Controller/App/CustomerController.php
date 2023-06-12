@@ -29,6 +29,7 @@ use App\Factory\SubscriptionFactory;
 use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
+use App\Stats\CustomerCreationStats;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -99,7 +100,8 @@ class CustomerController
         ValidatorInterface $validator,
         CustomerFactory $customerFactory,
         ExternalRegisterInterface $externalRegister,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        CustomerCreationStats $customerCreationStats,
     ): Response {
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
@@ -127,6 +129,7 @@ class CustomerController
             $externalRegister->register($customer);
         }
         $customerRepository->save($customer);
+        $customerCreationStats->handleStats($customer);
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
     }
