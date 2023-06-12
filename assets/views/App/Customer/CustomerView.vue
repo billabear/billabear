@@ -4,11 +4,13 @@
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="mt-3 text-end">
-          <button class="btn--danger mr-3" v-if="customer.status == 'disabled'" @click="enableCustomer">{{ $t('app.customer.view.enable') }}</button>
-          <button class="btn--danger mr-3" v-else @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
-          <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
-        </div>
+        <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+          <div class="mt-3 text-end">
+            <button class="btn--danger mr-3" v-if="customer.status == 'disabled'" @click="enableCustomer">{{ $t('app.customer.view.enable') }}</button>
+            <button class="btn--danger mr-3" v-else @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
+            <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
+          </div>
+        </RoleOnlyView>
         <div class="grid grid-cols-2 gap-3">
           <div class="mt-5">
             <h2 class="section-header">{{ $t('app.customer.view.main.title') }}</h2>
@@ -304,9 +306,11 @@
 <script>
 import axios from "axios";
 import currency from "currency.js";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "CustomerView",
+  components: {RoleOnlyView},
   data() {
     return {
       ready: false,
