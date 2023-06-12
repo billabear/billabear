@@ -94,6 +94,7 @@ class CustomerController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/customer', name: 'app_customer_create', methods: ['POST'])]
     public function createCustomer(
         Request $request,
