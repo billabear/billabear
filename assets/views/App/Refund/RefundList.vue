@@ -33,7 +33,6 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
-      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -68,7 +67,17 @@
             </td>
           </tr>
           </tbody>
-        </table></div>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.refund.list.list.amount') }}</th>
+            <th>{{ $t('app.refund.list.list.currency')}}</th>
+            <th>{{ $t('app.refund.list.list.customer') }}</th>
+            <th>{{ $t('app.refund.list.list.created_by') }}</th>
+            <th>{{ $t('app.refund.list.list.created_at') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
+        </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
