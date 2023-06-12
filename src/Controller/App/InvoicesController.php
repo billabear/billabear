@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class InvoicesController
@@ -159,6 +160,7 @@ class InvoicesController
         return $response;
     }
 
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/invoice/{id}/charge', name: 'app_invoice_charge', methods: ['POST'])]
     public function chargeInvoice(
         Request $request,

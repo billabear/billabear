@@ -52,7 +52,9 @@
               <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
               <td>
                 <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a>
-                <SubmitButton class="ml-3 btn--secondary" :in-progress="charging_invoice" @click="attemptPayment(invoice)" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.list.charge') }}</SubmitButton>
+                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+                  <SubmitButton class="ml-3 btn--secondary" :in-progress="charging_invoice" @click="attemptPayment(invoice)" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.list.charge') }}</SubmitButton>
+                </RoleOnlyView>
               </td>
             </tr>
             <tr v-if="invoices.length === 0">
@@ -95,10 +97,11 @@
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
 import currency from "currency.js";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "InvoiceList.vue",
-  components: {InternalApp},
+  components: {RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,
