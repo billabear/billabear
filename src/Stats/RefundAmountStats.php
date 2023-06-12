@@ -34,16 +34,16 @@ class RefundAmountStats
         $customer = $payment->getCustomer();
         $brand = $customer?->getBrand() ?? Customer::DEFAULT_BRAND;
 
-        $dailyStat = $this->dailyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
-        $dailyStat->increaseAmount($payment->getMoneyAmount());
+        $dailyStat = $this->dailyStatsRepository->getStatForDateTimeAndCurrency($refund->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
+        $dailyStat->increaseAmount($refund->getMoneyAmount());
         $this->dailyStatsRepository->save($dailyStat);
 
-        $monthlyStat = $this->monthlyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
-        $monthlyStat->increaseAmount($payment->getMoneyAmount());
+        $monthlyStat = $this->monthlyStatsRepository->getStatForDateTimeAndCurrency($refund->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
+        $monthlyStat->increaseAmount($refund->getMoneyAmount());
         $this->dailyStatsRepository->save($monthlyStat);
 
-        $yearlyStat = $this->yearlyStatsRepository->getStatForDateTimeAndCurrency($payment->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
-        $yearlyStat->increaseAmount($payment->getMoneyAmount());
+        $yearlyStat = $this->yearlyStatsRepository->getStatForDateTimeAndCurrency($refund->getCreatedAt(), $payment->getMoneyAmount()->getCurrency(), $brand);
+        $yearlyStat->increaseAmount($refund->getMoneyAmount());
         $this->yearlyStatsRepository->save($yearlyStat);
     }
 }
