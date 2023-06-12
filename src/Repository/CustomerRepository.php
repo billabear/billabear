@@ -60,4 +60,28 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
 
         return $customer;
     }
+
+    public function getOldestCustomer(): Customer
+    {
+        $customer = $this->entityRepository->findOneBy([], ['createdAt' => 'ASC']);
+
+        if (!$customer instanceof Customer) {
+            throw new NoEntityFoundException("Can't any any customer");
+        }
+
+        return $customer;
+    }
+
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s)')
+            ->where($queryBuilder->expr()->gte('s.createdAt', ':startDate'))
+            ->andWhere($queryBuilder->expr()->lte('s.createdAt', ':endDate'))
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate);
+        $count = $queryBuilder->getQuery()->getSingleScalarResult();
+
+        return intval($count);
+    }
 }

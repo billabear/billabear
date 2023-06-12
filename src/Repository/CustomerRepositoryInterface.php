@@ -23,4 +23,8 @@ interface CustomerRepositoryInterface extends \Parthenon\Billing\Repository\Cust
     public function findByEmail(string $email): Customer;
 
     public function hasCustomerByEmail(string $email): bool;
+
+    public function getOldestCustomer(): Customer;
+
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int;
 }

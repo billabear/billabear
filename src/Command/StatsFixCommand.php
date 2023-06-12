@@ -13,6 +13,7 @@
 namespace App\Command;
 
 use App\Stats\CreateSubscriptionCountStats;
+use App\Stats\CustomerCreationStats;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,8 +22,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('billabear:stats:fix', description: 'A command to fix stats by regenerating them.')]
 class StatsFixCommand extends Command
 {
-    public function __construct(private CreateSubscriptionCountStats $createSubscriptionCountStats)
-    {
+    public function __construct(
+        private CreateSubscriptionCountStats $createSubscriptionCountStats,
+        private CustomerCreationStats $customerCreationStats,
+    ) {
         parent::__construct(null);
     }
 
@@ -30,6 +33,7 @@ class StatsFixCommand extends Command
     {
         $output->writeln('Starting stats fix command');
         $this->createSubscriptionCountStats->generate();
+        $this->customerCreationStats->generate();
 
         return Command::SUCCESS;
     }
