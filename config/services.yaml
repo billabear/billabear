@@ -148,6 +148,22 @@ services:
     app.repository.orm.subscription_yearly_stats:
         class: App\Repository\Orm\SubscriptionCreationYearlyStatsRepository
 
+    App\Repository\Stats\CustomerCreationDailyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.customer_daily_stats'
+    app.repository.orm.customer_daily_stats:
+        class: App\Repository\Orm\CustomerCreationDailyStatsRepository
+    App\Repository\Stats\CustomerCreationMonthlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.customer_weekly_stats'
+    app.repository.orm.customer_weekly_stats:
+        class: App\Repository\Orm\CustomerCreationMonthlyStatsRepository
+    App\Repository\Stats\CustomerCreationYearlyStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.customer_yearly_stats'
+    app.repository.orm.customer_yearly_stats:
+        class: App\Repository\Orm\CustomerCreationYearlyStatsRepository
+
     App\Repository\Stats\SubscriptionCountDailyStatsRepository:
         arguments:
             $entityRepository: '@app.repository.orm.subscription_count_daily_stats'
