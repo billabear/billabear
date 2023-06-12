@@ -33,7 +33,6 @@ class CustomerFactory
         if (!$customer) {
             $customer = new Customer();
             $customer->setStatus(CustomerStatus::NEW);
-            $customer->setCreatedAt(new \DateTime('now'));
         }
 
         $customer->setBillingEmail($obolCustomer->getEmail());
@@ -42,6 +41,7 @@ class CustomerFactory
         $customer->setExternalCustomerReference($obolCustomer->getId());
         $customer->setPaymentProviderDetailsUrl($obolCustomer->getUrl());
         $customer->setReference($obolCustomer->getDescription());
+        $customer->setCreatedAt($obolCustomer->getCreatedAt());
 
         $address = new Address();
         $address->setStreetLineTwo($obolCustomer->getAddress()->getStreetLineOne());
