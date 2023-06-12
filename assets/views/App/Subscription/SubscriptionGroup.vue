@@ -5,7 +5,9 @@
         <div class="submenu-title">{{ $t('app.subscription.menu.title') }}</div>
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.list'}" class="submenu-link"><i class="fa-solid fa-arrows-rotate"></i> {{ $t('app.subscription.menu.subscriptions') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.mass_change'}" class="submenu-link"><i class="fa-solid fa-arrow-up-right-dots"></i> {{ $t('app.subscription.menu.mass_change') }}</router-link></li>
+          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+            <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.mass_change'}" class="submenu-link"><i class="fa-solid fa-arrow-up-right-dots"></i> {{ $t('app.subscription.menu.mass_change') }}</router-link></li>
+          </RoleOnlyView>
         </ul>
       </div>
     </div>
@@ -17,8 +19,11 @@
 </template>
 
 <script>
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+
 export default {
-  name: "SubscriptionGroup"
+  name: "SubscriptionGroup",
+  components: {RoleOnlyView}
 }
 </script>
 
