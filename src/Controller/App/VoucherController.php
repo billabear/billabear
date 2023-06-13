@@ -127,6 +127,7 @@ class VoucherController
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/voucher/{id}/disable', name: 'app_app_voucher_disablevoucher', methods: ['POST'])]
     public function disableVoucher(
         Request $request,
@@ -144,6 +145,7 @@ class VoucherController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/voucher/{id}/enable', name: 'app_app_voucher_enablevoucher', methods: ['POST'])]
     public function enableVoucher(
         Request $request,

@@ -39,19 +39,24 @@
           </div>
         </dl>
       </div>
-      <div class="text-end">
-        <SubmitButton :in-progress="disableProgess" class="btn--danger" v-if="!voucher.disabled" @click="disable">{{ $t('app.vouchers.view.disable') }}</SubmitButton>
-        <SubmitButton :in-progress="enableProgress" class="btn--main" v-else @click="enable">{{ $t('app.vouchers.view.enable') }}</SubmitButton>
-      </div>
+      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+
+        <div class="text-end">
+          <SubmitButton :in-progress="disableProgess" class="btn--danger" v-if="!voucher.disabled" @click="disable">{{ $t('app.vouchers.view.disable') }}</SubmitButton>
+          <SubmitButton :in-progress="enableProgress" class="btn--main" v-else @click="enable">{{ $t('app.vouchers.view.enable') }}</SubmitButton>
+        </div>
+      </RoleOnlyView>
     </LoadingScreen>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "VouchersView",
+  components: {RoleOnlyView},
   data() {
     return {
       ready: false,
