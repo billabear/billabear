@@ -18,7 +18,9 @@
           </span>
         </div>
       </div>
-      <router-link :to="{name: 'app.product.create'}" class="ml-3 btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.product.list.create_new') }}</router-link>
+      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+        <router-link :to="{name: 'app.product.create'}" class="ml-3 btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.product.list.create_new') }}</router-link>
+      </RoleOnlyView>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
@@ -91,10 +93,11 @@
 <script>
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "ProductList.vue",
-  components: {InternalApp},
+  components: {RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,

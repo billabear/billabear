@@ -30,11 +30,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product', name: 'app_product_create', methods: ['POST'])]
     public function createProduct(
         Request $request,
@@ -153,6 +155,7 @@ class ProductController
         return new JsonResponse($output, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}', name: 'app_product_update', methods: ['POST'])]
     public function updateProduct(
         Request $request,
