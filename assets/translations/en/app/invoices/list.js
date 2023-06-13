@@ -8,6 +8,7 @@ export const INVOICES_LIST_TRANSLATIONS = {
     download: "Download",
     charge: "Attempt Payment",
     next: "Next",
+    prev: "Previous",
     filter: {
         title: "Filters",
         button: "Filters",
