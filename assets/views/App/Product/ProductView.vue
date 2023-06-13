@@ -4,9 +4,12 @@
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="mt-3 text-end">
-          <router-link :to="{name: 'app.product.update'}" class="btn--main">{{ $t('app.product.view.update') }}</router-link>
-        </div>
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+
+          <div class="mt-3 text-end">
+            <router-link :to="{name: 'app.product.update'}" class="btn--main">{{ $t('app.product.view.update') }}</router-link>
+          </div>
+        </RoleOnlyView>
 
         <div class="mt-5">
           <h2 class="section-header">{{ $t('app.product.view.main.title') }}</h2>
@@ -29,9 +32,8 @@
         </div>
 
         <div class="mt-5">
-          <h2 class="section-header">{{ $t('app.product.view.price.title') }}</h2>
+          <h2 class="mb-5">{{ $t('app.product.view.price.title') }}</h2>
 
-          <div class="section-body">
           <table class="list-table">
             <thead>
             <tr>
@@ -58,21 +60,34 @@
                 <span v-else>{{ price.external_reference }}</span>
               </td>
               <td>
-                <button class="btn--danger" @click="deletePrice(price, key)"><i class="fa-solid fa-trash"></i></button>
+                <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+                  <button class="btn--danger" @click="deletePrice(price, key)"><i class="fa-solid fa-trash"></i></button>
+                </RoleOnlyView>
               </td>
             </tr>
             <tr v-if="prices.length === 0">
               <td colspan="8" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+              <th>{{ $t('app.product.view.price.list.amount') }}</th>
+              <th>{{ $t('app.product.view.price.list.currency') }}</th>
+              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
+              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
+              <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
+              <th>{{ $t('app.product.view.price.list.public') }}</th>
+              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
+              <th></th>
+            </tr>
+            </tfoot>
           </table>
-
-          <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
-          </div>
+          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+            <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
+          </RoleOnlyView>
         </div>
         <div class="mt-5">
-          <h2 class="section-header">{{ $t('app.product.view.subscription_plan.title') }}</h2>
-          <div class="section-body">
+          <h2 class="mb-2">{{ $t('app.product.view.subscription_plan.title') }}</h2>
 
           <table class="list-table mb-5">
             <thead>
@@ -97,11 +112,19 @@
               <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+              <th></th>
+            </tr>
+            </tfoot>
           </table>
+          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
 
-          <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
+            <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
 
-          </div>
+          </RoleOnlyView>
           </div>
       </div>
 
@@ -114,9 +137,11 @@
 <script>
 import axios from "axios";
 import currency from "currency.js";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "productView",
+  components: {RoleOnlyView},
   data() {
     return {
       ready: false,

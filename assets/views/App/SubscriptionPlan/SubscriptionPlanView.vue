@@ -4,9 +4,12 @@
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="mt-3 text-end">
-          <router-link :to="{name: 'app.subscription_plan.update', params: {productId: product_id, subscriptionPlanId: subscription_plan.id}}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
-        </div>
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <div class="mt-3 text-end">
+            <router-link :to="{name: 'app.subscription_plan.update', params: {productId: product_id, subscriptionPlanId: subscription_plan.id}}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
+          </div>
+        </RoleOnlyView>
+
         <div class="mt-5">
           <h2 class="mb-3">{{ $t('app.subscription_plan.view.main.title') }}</h2>
           <dl class="detail-list">
@@ -125,9 +128,11 @@
 
 <script>
 import axios from "axios";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "SubscriptionPlanView",
+  components: {RoleOnlyView},
   data() {
     return {
       ready: false,

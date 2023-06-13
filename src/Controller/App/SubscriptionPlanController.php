@@ -29,11 +29,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionPlanController
 {
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/plan-creation', name: 'app_product_plan_create_info', methods: ['get'])]
     public function planCreationInfo(
         Request $request,
@@ -66,6 +68,7 @@ class SubscriptionPlanController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/plan', name: 'app_product_plan_create', methods: ['POST'])]
     public function createPlan(
         Request $request,
@@ -128,6 +131,7 @@ class SubscriptionPlanController
         return new JsonResponse($output, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{productId}/plan/{id}/update', name: 'app_product_plan_update_view', methods: ['GET'])]
     public function updateViewPlan(
         Request $request,
@@ -168,6 +172,7 @@ class SubscriptionPlanController
         return new JsonResponse($output, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{productId}/plan/{id}/update', name: 'app_product_plan_update', methods: ['POST'])]
     public function updatePlan(
         Request $request,

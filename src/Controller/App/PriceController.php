@@ -26,11 +26,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceController
 {
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/price', name: 'app_product_price_create', methods: ['POST'])]
     public function createPrice(
         Request $request,
@@ -124,6 +126,7 @@ class PriceController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/price/{priceId}/delete', name: 'app_product_price_delete', methods: ['POST'])]
     public function deletePrice(
         Request $request,
