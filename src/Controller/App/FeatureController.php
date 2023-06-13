@@ -20,11 +20,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FeatureController
 {
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/feature', name: 'app_feature_create', methods: ['POST'])]
     public function createFeature(
         Request $request,

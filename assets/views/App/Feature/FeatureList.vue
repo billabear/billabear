@@ -3,7 +3,9 @@
     <h1 class="page-title">{{ $t('app.feature.list.title') }}</h1>
 
     <div class="top-button-container">
-      <router-link :to="{name: 'app.feature.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.feature.list.create_new') }}</router-link>
+      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+        <router-link :to="{name: 'app.feature.create'}" class="btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.feature.list.create_new') }}</router-link>
+      </RoleOnlyView>
       <div class="list">
 
         <div class="list_button" v-if="Object.keys(features.length) > 0">
@@ -35,7 +37,6 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3 ">
-      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -59,8 +60,13 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.feature.list.name') }}</th>
+            <th>{{ $t('app.feature.list.code')}}</th>
+          </tr>
+          </tfoot>
         </table>
-      </div>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
@@ -87,10 +93,11 @@
 <script>
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "FeatureList.vue",
-  components: {InternalApp},
+  components: {RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,
