@@ -20,9 +20,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[IsGranted('ROLE_DEVELOPER')]
 class SystemSettingsController
 {
     #[Route('/app/settings/system', name: 'app_app_settings_systemsettings_readsettings', methods: ['GET'])]
