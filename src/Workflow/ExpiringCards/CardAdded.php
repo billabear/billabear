@@ -13,6 +13,7 @@
 namespace App\Workflow\ExpiringCards;
 
 use App\Entity\Processes\ExpiringCardProcess;
+use App\Entity\Voucher;
 use App\Enum\VoucherEvent;
 use App\Repository\VoucherRepositoryInterface;
 use App\Voucher\VoucherApplier;
@@ -38,7 +39,9 @@ class CardAdded implements EventSubscriberInterface
 
         try {
             $voucher = $this->voucherRepository->getActiveByEvent(VoucherEvent::EXPIRED_CARD_ADDED);
-            $this->voucherApplier->applyVoucherToCustomer($process->getCustomer(), $voucher);
+            if ($voucher instanceof Voucher) {
+                $this->voucherApplier->applyVoucherToCustomer($process->getCustomer(), $voucher);
+            }
         } catch (NoEntityFoundException $e) {
         }
     }

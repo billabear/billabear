@@ -15,12 +15,15 @@ namespace App\Notification\Email\Data;
 use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use App\Entity\EmailTemplate;
+use App\Entity\Voucher;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Subscription;
 
 class ExpiringCardBeforeChargeNotValid extends AbstractEmailData
 {
-    public function __construct(private PaymentCard $paymentCard, private Subscription $subscription)
+    use VoucherTrait;
+
+    public function __construct(private PaymentCard $paymentCard, private Subscription $subscription, private ?Voucher $voucher = null)
     {
     }
 
@@ -36,6 +39,7 @@ class ExpiringCardBeforeChargeNotValid extends AbstractEmailData
             'customer' => $this->getCustomerData($customer),
             'payment_card' => $this->getPaymentCardData($this->paymentCard),
             'subscription' => $this->getSubscriptionData($this->subscription),
+            'voucher' => $this->getVoucherData($this->voucher, $this->subscription),
         ];
     }
 

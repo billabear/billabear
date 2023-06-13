@@ -30,12 +30,12 @@ class VoucherRepository extends DoctrineCrudRepository implements VoucherReposit
         return $voucher;
     }
 
-    public function getActiveByEvent(VoucherEvent $event): Voucher
+    public function getActiveByEvent(VoucherEvent $event): ?Voucher
     {
         $voucher = $this->entityRepository->findOneBy(['entryEvent' => $event, 'disabled' => false]);
 
         if (!$voucher instanceof Voucher) {
-            throw new NoEntityFoundException(sprintf("No voucher for '%s' found", $event->value));
+            return null;
         }
 
         return $voucher;

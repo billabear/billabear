@@ -13,9 +13,11 @@
 namespace App\Workflow\ExpiringCards;
 
 use App\Entity\Processes\ExpiringCardProcess;
+use App\Enum\VoucherEvent;
 use App\Notification\Email\Data\ExpiringCardBeforeChargeNotValid;
 use App\Notification\Email\EmailBuilder;
 use App\Repository\SettingsRepositoryInterface;
+use App\Repository\VoucherRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
@@ -30,6 +32,7 @@ class SendDayBeforeNotValidWarning implements EventSubscriberInterface
         private SettingsRepositoryInterface $settingsRepository,
         private EmailSenderInterface $emailSender,
         private EmailBuilder $builder,
+        private VoucherRepositoryInterface $voucherRepository,
     ) {
     }
 
@@ -54,7 +57,8 @@ class SendDayBeforeNotValidWarning implements EventSubscriberInterface
             throw new \Exception('Subscription is not a subscription');
         }
 
-        $emailData = new ExpiringCardBeforeChargeNotValid($process->getPaymentCard(), $subscription);
+        $voucher = $this->voucherRepository->getActiveByEvent(VoucherEvent::EXPIRED_CARD_ADDED);
+        $emailData = new ExpiringCardBeforeChargeNotValid($process->getPaymentCard(), $subscription, $voucher);
         $email = $this->builder->build($process->getCustomer(), $emailData);
         $this->emailSender->send($email);
         $this->getLogger()->info('Sent customer notice', ['sender' => get_class($this->emailSender)]);

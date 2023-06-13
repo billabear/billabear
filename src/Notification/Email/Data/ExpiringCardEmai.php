@@ -15,11 +15,15 @@ namespace App\Notification\Email\Data;
 use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use App\Entity\EmailTemplate;
+use App\Entity\Voucher;
 use Parthenon\Billing\Entity\PaymentCard;
+use Parthenon\Billing\Entity\Subscription;
 
 class ExpiringCardEmai extends AbstractEmailData
 {
-    public function __construct(private PaymentCard $paymentCard)
+    use VoucherTrait;
+
+    public function __construct(private PaymentCard $paymentCard, private Subscription $subscription, private ?Voucher $voucher = null)
     {
     }
 
@@ -34,6 +38,7 @@ class ExpiringCardEmai extends AbstractEmailData
             'brand' => $this->getBrandData($brandSettings),
             'customer' => $this->getCustomerData($customer),
             'payment_card' => $this->getPaymentCardData($this->paymentCard),
+            'voucher' => $this->getVoucherData($this->voucher, $this->subscription),
         ];
     }
 

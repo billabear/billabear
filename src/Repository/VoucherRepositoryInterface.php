@@ -20,5 +20,5 @@ interface VoucherRepositoryInterface extends CrudRepositoryInterface
 {
     public function getActiveByCode(string $code): Voucher;
 
-    public function getActiveByEvent(VoucherEvent $event): Voucher;
+    public function getActiveByEvent(VoucherEvent $event): ?Voucher;
 }
