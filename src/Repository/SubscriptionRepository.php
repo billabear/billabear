@@ -12,6 +12,7 @@
 
 namespace App\Repository;
 
+use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
@@ -73,10 +74,11 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return $this->entityRepository->count(['status' => SubscriptionStatus::ACTIVE]);
     }
 
-    public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate): int
+    public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int
     {
         $queryBuilder = $this->entityRepository->createQueryBuilder('s');
         $queryBuilder->select('COUNT(s)')
+            ->innerJoin('s.customer', 'c')
             ->where($queryBuilder->expr()->lte('s.createdAt', ':startDate'))
             ->andWhere(
                 $queryBuilder->expr()->orX(
@@ -84,17 +86,20 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
                     $queryBuilder->expr()->gt('s.endedAt', ':endDate')
                 )
             )
+            ->andWhere('c.brandSettings = :brandSetting')
             ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate);
+            ->setParameter('endDate', $endDate)
+            ->setParameter('brandSetting', $brandSettings);
         $count = $queryBuilder->getQuery()->getSingleScalarResult();
 
         return intval($count);
     }
 
-    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int
     {
         $queryBuilder = $this->entityRepository->createQueryBuilder('s');
         $queryBuilder->select('COUNT(s)')
+            ->innerJoin('s.customer', 'c')
             ->where($queryBuilder->expr()->gte('s.createdAt', ':startDate'))
             ->andWhere(
                 $queryBuilder->expr()->orX(
@@ -102,8 +107,10 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
                     $queryBuilder->expr()->gt('s.endedAt', ':endDate')
                 )
             )
+            ->andWhere('c.brandSettings = :brandSetting')
             ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate);
+            ->setParameter('endDate', $endDate)
+            ->setParameter('brandSetting', $brandSettings);
         $count = $queryBuilder->getQuery()->getSingleScalarResult();
 
         return intval($count);

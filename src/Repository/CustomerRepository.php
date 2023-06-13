@@ -12,6 +12,7 @@
 
 namespace App\Repository;
 
+use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Entity\Subscription;
@@ -72,14 +73,16 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
         return $customer;
     }
 
-    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int
     {
         $queryBuilder = $this->entityRepository->createQueryBuilder('s');
         $queryBuilder->select('COUNT(s)')
             ->where($queryBuilder->expr()->gte('s.createdAt', ':startDate'))
             ->andWhere($queryBuilder->expr()->lte('s.createdAt', ':endDate'))
+            ->andWhere('s.brandSettings = :brandSettings')
             ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate);
+            ->setParameter('endDate', $endDate)
+            ->setParameter(':brandSettings', $brandSettings);
         $count = $queryBuilder->getQuery()->getSingleScalarResult();
 
         return intval($count);

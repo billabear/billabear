@@ -12,6 +12,7 @@
 
 namespace App\Repository;
 
+use App\Entity\BrandSettings;
 use Parthenon\Billing\Entity\Subscription;
 
 interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\SubscriptionRepositoryInterface
@@ -38,9 +39,9 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
 
     public function getCountActive(): int;
 
-    public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate): int;
+    public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int;
 
-    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int;
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int;
 
     public function getOldestSubscription(): Subscription;
 }

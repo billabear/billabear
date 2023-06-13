@@ -13,8 +13,10 @@
 namespace App\Dev\DemoData;
 
 use App\Command\DevDemoDataCommand;
+use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Athena\Filters\GreaterThanFilter;
@@ -28,7 +30,8 @@ class InvoiceCreation
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private InvoiceGenerator $invoiceGenerator,
         private InvoiceCharger $invoiceCharger,
-        private SchedulerProvider $schedulerProvider
+        private SchedulerProvider $schedulerProvider,
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
     ) {
     }
 
@@ -40,8 +43,9 @@ class InvoiceCreation
         $limit = 25;
         $now = new \DateTime('now');
         $startDate = DevDemoDataCommand::getStartDate();
+        $brand = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
 
-        $progressBar = new ProgressBar($output, $this->subscriptionRepository->getCreatedCountForPeriod($startDate, $now));
+        $progressBar = new ProgressBar($output, $this->subscriptionRepository->getCreatedCountForPeriod($startDate, $now, $brand));
         $progressBar->start();
         do {
             $filter = new GreaterThanFilter();

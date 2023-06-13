@@ -13,6 +13,7 @@
 namespace App\Stats;
 
 use App\Entity\Customer;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\Stats\CustomerCreationDailyStatsRepositoryInterface;
 use App\Repository\Stats\CustomerCreationMonthlyStatsRepositoryInterface;
@@ -21,6 +22,7 @@ use App\Repository\Stats\CustomerCreationYearlyStatsRepositoryInterface;
 class CustomerCreationStats
 {
     public function __construct(
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private CustomerRepositoryInterface $customerRepository,
         private CustomerCreationDailyStatsRepositoryInterface $customerCreationDailyStatsRepository,
         private CustomerCreationMonthlyStatsRepositoryInterface $customerCreationMonthlyStatsRepository,
@@ -37,47 +39,51 @@ class CustomerCreationStats
         if ($startDate instanceof \DateTimeImmutable) {
             $startDate = \DateTime::createFromImmutable($startDate);
         }
-        while ($startDate < $now) {
-            $endDate = clone $startDate;
-            $endDate->modify('+1 day');
+        $brandSettings = $this->brandSettingsRepository->getAll();
 
-            $dayStatCount = $this->customerRepository->getCreatedCountForPeriod($startDate, $endDate);
-            $dayStat = $this->customerCreationDailyStatsRepository->getStatForDateTime($startDate, 'default');
-            $dayStat->setCount($dayStatCount);
-            $this->customerCreationDailyStatsRepository->save($dayStat);
-            $startDate = $endDate;
-        }
-        $startDate = clone $oldestCustomer->getCreatedAt();
-        if ($startDate instanceof \DateTimeImmutable) {
-            $startDate = \DateTime::createFromImmutable($startDate);
-        }
+        foreach ($brandSettings as $brand) {
+            while ($startDate < $now) {
+                $endDate = clone $startDate;
+                $endDate->modify('+1 day');
 
-        while ($startDate < $now) {
-            $startDate->modify('first day of this month');
-            $endDate = clone $startDate;
-            $endDate->modify('+1 month');
+                $dayStatCount = $this->customerRepository->getCreatedCountForPeriod($startDate, $endDate, $brand);
+                $dayStat = $this->customerCreationDailyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                $dayStat->setCount($dayStatCount);
+                $this->customerCreationDailyStatsRepository->save($dayStat);
+                $startDate = $endDate;
+            }
+            $startDate = clone $oldestCustomer->getCreatedAt();
+            if ($startDate instanceof \DateTimeImmutable) {
+                $startDate = \DateTime::createFromImmutable($startDate);
+            }
 
-            $dayStatCount = $this->customerRepository->getCreatedCountForPeriod($startDate, $endDate);
-            $dayStat = $this->customerCreationMonthlyStatsRepository->getStatForDateTime($startDate, 'default');
-            $dayStat->setCount($dayStatCount);
-            $this->customerCreationMonthlyStatsRepository->save($dayStat);
-            $startDate = $endDate;
-        }
+            while ($startDate < $now) {
+                $startDate->modify('first day of this month');
+                $endDate = clone $startDate;
+                $endDate->modify('+1 month');
 
-        $startDate = clone $oldestCustomer->getCreatedAt();
-        if ($startDate instanceof \DateTimeImmutable) {
-            $startDate = \DateTime::createFromImmutable($startDate);
-        }
-        while ($startDate < $now) {
-            $startDate->modify('first day of this year');
-            $endDate = clone $startDate;
-            $endDate->modify('+1 year');
+                $dayStatCount = $this->customerRepository->getCreatedCountForPeriod($startDate, $endDate, $brand);
+                $dayStat = $this->customerCreationMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                $dayStat->setCount($dayStatCount);
+                $this->customerCreationMonthlyStatsRepository->save($dayStat);
+                $startDate = $endDate;
+            }
 
-            $dayStatCount = $this->customerRepository->getCreatedCountForPeriod($startDate, $endDate);
-            $dayStat = $this->customerCreationYearlyStatsRepository->getStatForDateTime($startDate, 'default');
-            $dayStat->setCount($dayStatCount);
-            $this->customerCreationYearlyStatsRepository->save($dayStat);
-            $startDate = $endDate;
+            $startDate = clone $oldestCustomer->getCreatedAt();
+            if ($startDate instanceof \DateTimeImmutable) {
+                $startDate = \DateTime::createFromImmutable($startDate);
+            }
+            while ($startDate < $now) {
+                $startDate->modify('first day of this year');
+                $endDate = clone $startDate;
+                $endDate->modify('+1 year');
+
+                $dayStatCount = $this->customerRepository->getCreatedCountForPeriod($startDate, $endDate, $brand);
+                $dayStat = $this->customerCreationYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                $dayStat->setCount($dayStatCount);
+                $this->customerCreationYearlyStatsRepository->save($dayStat);
+                $startDate = $endDate;
+            }
         }
     }
 

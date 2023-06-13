@@ -12,6 +12,7 @@
 
 namespace App\Repository;
 
+use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
@@ -26,5 +27,5 @@ interface CustomerRepositoryInterface extends \Parthenon\Billing\Repository\Cust
 
     public function getOldestCustomer(): Customer;
 
-    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate): int;
+    public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int;
 }
