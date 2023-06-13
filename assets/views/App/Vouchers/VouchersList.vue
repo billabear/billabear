@@ -17,7 +17,9 @@
           </span>
         </div>
       </div>
-      <router-link :to="{name: 'app.vouchers.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.vouchers.list.create_new') }}</router-link>
+      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+        <router-link :to="{name: 'app.vouchers.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.vouchers.list.create_new') }}</router-link>
+      </RoleOnlyView>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
@@ -34,7 +36,6 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
-      <div class="card-body">
         <table class="list-table">
           <thead>
             <tr>
@@ -62,8 +63,15 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.vouchers.list.list.name') }}</th>
+            <th>{{ $t('app.vouchers.list.list.type')}}</th>
+            <th>{{ $t('app.vouchers.list.list.entry_type') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
         </table>
-      </div>
     </div>
       <div class="sm:grid sm:grid-cols-2">
 
@@ -90,10 +98,11 @@
 <script>
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "VouchersList.vue",
-  components: {InternalApp},
+  components: {RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,

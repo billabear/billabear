@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -77,6 +78,7 @@ class VoucherController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('//app/voucher/create')]
     public function createVoucherData(
         PriceRepositoryInterface $priceRepository,
@@ -96,6 +98,7 @@ class VoucherController
         return new JsonResponse(['currencies' => $currencies]);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/voucher', name: 'app_app_voucher_createvoucher', methods: ['POST'])]
     public function createVoucher(
         Request $request,
