@@ -41,6 +41,9 @@ class SystemSettings
     #[ORM\Column(type: 'boolean')]
     private bool $updateAvailable = false;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $updateAvailableDismissed = false;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -119,5 +122,15 @@ class SystemSettings
     public function setUpdateAvailable(bool $updateAvailable): void
     {
         $this->updateAvailable = $updateAvailable;
+    }
+
+    public function getUpdateAvailableDismissed(): bool
+    {
+        return true === $this->updateAvailableDismissed;
+    }
+
+    public function setUpdateAvailableDismissed(?bool $updateAvailableDismissed): void
+    {
+        $this->updateAvailableDismissed = $updateAvailableDismissed;
     }
 }

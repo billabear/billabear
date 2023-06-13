@@ -23,9 +23,16 @@
     <div class="mt-5">
       <div class="page-container">
         <div class="page-content">
-      <div class="alert-error" v-if="!has_stripe_imports">
-        {{ $t('app.home.stripe_import.text') }} <router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.home.stripe_import.link') }}</router-link> - <a @click="dimissStripeImport">{{ $t('app.home.stripe_import.dismiss') }}</a>
-      </div>
+          <RoleOnlyView role="ROLE_ADMIN">
+            <div class="alert-error" v-if="!has_stripe_imports">
+              {{ $t('app.home.stripe_import.text') }} <router-link :to="{name: 'app.settings.import.stripe'}">{{ $t('app.home.stripe_import.link') }}</router-link> - <a href="#" @click="dimissStripeImport">{{ $t('app.home.stripe_import.dismiss') }}</a>
+            </div>
+          </RoleOnlyView>
+          <RoleOnlyView role="ROLE_DEVELOPER">
+            <div class="alert-success" v-if="is_update_available">
+              {{ $t('app.home.update_available.text') }} <a target="_blank" :href="'https://docs.billabear.com/docs/technical/update?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('app.home.update_available.link') }}</a> - <a  href="#"  @click="dimissUpdateNotification">{{ $t('app.home.update_available.dismiss') }}</a>
+            </div>
+          </RoleOnlyView>
         <router-view></router-view>
         </div>
       </div>
@@ -44,6 +51,8 @@ export default {
   components: {RoleOnlyView, AppLogo},
   data() {
     return {
+      is_update_available: false,
+      origin: '',
     }
   },
   computed: {
@@ -51,15 +60,22 @@ export default {
   },
   methods: {
     dimissStripeImport: function() {
-        axios.post('/app/settings/stripe-import/dismiss').then(response => {
-            this.stripeImport();
-        })
+      axios.post('/app/settings/stripe-import/dismiss').then(response => {
+        this.stripeImport();
+      })
+    },
+    dimissUpdateNotification: function() {
+      axios.post('/app/settings/update/dismiss').then(response => {
+        this.is_update_available = false;
+      })
     },
     ...mapActions('onboardingStore', ['setStripeImport', 'stripeImport']),
   },
   mounted() {
+    this.origin = window.location.hostname;
     axios.get("/app/system/data").then(response => {
       this.setStripeImport({defaultValue: response.data.has_stripe_import});
+      this.is_update_available = response.data.is_update_available;
     })
   }
 }

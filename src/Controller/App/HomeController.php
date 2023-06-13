@@ -25,6 +25,7 @@ class HomeController
     ): Response {
         $json = [
             'has_stripe_import' => $repository->getDefaultSettings()->getOnboardingSettings()->isHasStripeImports(),
+            'is_update_available' => $repository->getDefaultSettings()->getSystemSettings()->isUpdateAvailable() && !$repository->getDefaultSettings()->getSystemSettings()->getUpdateAvailableDismissed(),
         ];
 
         return new JsonResponse($json);

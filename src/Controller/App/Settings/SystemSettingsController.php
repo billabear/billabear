@@ -77,4 +77,15 @@ class SystemSettingsController
 
         return new JsonResponse($json, json: true);
     }
+
+    #[Route('/app/settings/update/dismiss', methods: ['POST'])]
+    public function dismissUpdate(
+        SettingsRepositoryInterface $repository,
+    ) {
+        $settings = $repository->getDefaultSettings();
+        $settings->getSystemSettings()->setUpdateAvailableDismissed(true);
+        $repository->save($settings);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
 }
