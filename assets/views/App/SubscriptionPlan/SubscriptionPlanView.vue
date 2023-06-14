@@ -11,38 +11,35 @@
         </RoleOnlyView>
 
         <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription_plan.view.main.title') }}</h2>
-          <dl class="detail-list">
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.name') }}</dt>
-              <dd>{{ subscription_plan.name }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.user_count') }}</dt>
-              <dd>{{ subscription_plan.user_count }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.public') }}</dt>
-              <dd>{{ subscription_plan.public }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.per_seat') }}</dt>
-              <dd>{{ subscription_plan.per_seat }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.free') }}</dt>
-              <dd>{{ subscription_plan.free }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.has_trial') }}</dt>
-              <dd>{{ subscription_plan.has_trial }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription_plan.view.main.trial_length_days') }}</dt>
-              <dd>{{ subscription_plan.trial_length_days }}</dd>
-            </div>
-          </dl>
-
+          <h2 class="section-header">{{ $t('app.subscription_plan.view.main.title') }}</h2>
+          <div class="section-body">
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.name') }}</dt>
+                <dd>{{ subscription_plan.name }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.user_count') }}</dt>
+                <dd>{{ subscription_plan.user_count }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.public') }}</dt>
+                <dd>{{ subscription_plan.public }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.free') }}</dt>
+                <dd>{{ subscription_plan.free }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.has_trial') }}</dt>
+                <dd>{{ subscription_plan.has_trial }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.trial_length_days') }}</dt>
+                <dd>{{ subscription_plan.trial_length_days }}</dd>
+              </div>
+            </dl>
+          </div>
         </div>
 
         <div class="mt-5">
