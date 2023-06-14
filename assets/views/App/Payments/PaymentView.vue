@@ -128,7 +128,7 @@
         <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
           <div class="text-end mt-4">
             <SubmitButton :in-progress="generatingReceipt" button-class="btn--secondary mr-3" @click="generateReceipt">{{ $t('app.payment.view.buttons.generate_receipt') }}</SubmitButton>
-            <button class="btn--main" @click="options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
+            <button class="btn--main" @click="refundSent = false;options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
           </div>
         </RoleOnlyView>
       </div>
@@ -151,22 +151,34 @@
         class="flex justify-center items-center"
         content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
     >
-      <div>
+      <div v-if="!refundSent">
         <h3 class="mb-4 text-2xl font-semibold">{{ $t('app.payment.view.modal.refund.title') }}</h3>
         <div>
           <span class="block text-lg font-medium">{{ $t('app.payment.view.modal.refund.amount.title') }}</span>
-          <span class="font-red" v-if="refundValues.errors.amount != undefined">{{ refundValues.errors.amount }}</span>
+          <p class="text-red-500" v-if="refundValues.errors.amount != undefined">{{ refundValues.errors.amount }}</p>
           <input type="number" v-model="refundValues.refundValue" class="form-field" />
         </div>
         <div class="mt-4">
           <span class="block text-lg font-medium">{{ $t('app.payment.view.modal.refund.reason.title') }}</span>
-          <span class="font-red" v-if="refundValues.errors.reason != undefined">{{ refundValues.errors.reason }}</span>
+          <p class="text-red-500" v-if="refundValues.errors.reason != undefined">{{ refundValues.errors.reason }}</p>
           <input type="text" v-model="refundValues.reason" class="form-field" />
         </div>
 
         <div class="mt-4">
           <SubmitButton :in-progress="refundValues.inProgress" @click="sendRefund">{{ $t('app.payment.view.modal.refund.submit') }}</SubmitButton>
         </div>
+      </div>
+      <div v-else-if="refundSuccess">
+        <div class="text-center text-green-500 text-6xl mb-5">
+          <i class="fa-solid fa-circle-check "></i>
+        </div>
+        <p class="text-center">{{ $t('app.payment.view.modal.refund.success_message') }}</p>
+      </div>
+      <div v-else>
+        <div class="text-center text-red-500 text-6xl mb-5">
+          <i class="fa-solid fa-circle-xmark"></i>
+        </div>
+        <p class="text-center">{{ $t('app.payment.view.modal.refund.error_message') }}</p>
       </div>
     </VueFinalModal>
   </div>
@@ -190,6 +202,8 @@ export default {
       refunds: [],
       receipts: [],
       subscriptions: [],
+      refundSent: false,
+      refundSuccess: false,
       refundValues: {
         errors: {},
         refundValue: 0,
@@ -234,9 +248,17 @@ export default {
       }
       this.refundValues.inProgress = true;
       axios.post('/app/payment/'+paymentId+'/refund', payload).then(response => {
-        //this.refunds.push(response.data);
+        this.refunds.push(response.data);
         this.refundValues.inProgress = false;
+        this.refundSent = true;
+        this.refundSuccess = true;
       }).catch(error => {
+        if (error.response.data.errors === undefined) {
+          this.refundSent = true;
+          this.refundSuccess = false;
+          return;
+        }
+
         this.refundValues.errors = error.response.data.errors;
         this.refundValues.inProgress = false;
       })

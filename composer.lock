@@ -2546,12 +2546,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "b3749643111ee384e7d62edac52ed234c81f3e66"
+                "reference": "8257b358772dcf5e424071ecd106a75fcdc49c64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/b3749643111ee384e7d62edac52ed234c81f3e66",
-                "reference": "b3749643111ee384e7d62edac52ed234c81f3e66",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/8257b358772dcf5e424071ecd106a75fcdc49c64",
+                "reference": "8257b358772dcf5e424071ecd106a75fcdc49c64",
                 "shasum": ""
             },
             "require": {
@@ -2635,7 +2635,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2023-06-12T15:45:27+00:00"
+            "time": "2023-06-13T19:10:19+00:00"
         },
         {
             "name": "php-http/client-common",

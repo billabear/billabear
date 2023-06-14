@@ -48,7 +48,9 @@ export const PAYMENT_VIEW_TRANSLATION = {
             reason: {
                 title: "Reason"
             },
-            submit: "Issue Refund"
+            submit: "Issue Refund",
+            success_message: "Refund successfully created",
+            error_message: "Something went wrong",
         }
     }
 }

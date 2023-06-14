@@ -7,6 +7,7 @@ export const INVOICES_LIST_TRANSLATIONS = {
     created_at: "Created At",
     download: "Download",
     charge: "Attempt Payment",
+    no_invoices: "There are no invoices here",
     next: "Next",
     prev: "Previous",
     filter: {
