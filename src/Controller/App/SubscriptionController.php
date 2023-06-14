@@ -14,6 +14,7 @@ namespace App\Controller\App;
 
 use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
+use App\Dto\Generic\App\SubscriptionPlan;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
@@ -21,6 +22,7 @@ use App\Dto\Request\App\Subscription\UpdatePlan;
 use App\Dto\Request\App\Subscription\UpdatePrice;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
+use App\Dto\Response\App\Subscription\UpdatePlanView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
 use App\Factory\CustomerFactory;
 use App\Factory\PaymentFactory;
@@ -409,6 +411,40 @@ class SubscriptionController
         $subscriptionRepository->save($subscription);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
+    #[Route('/app/subscription/{subscriptionId}/change-plan', name: 'app_subscription_update_plan_read', methods: ['GET'])]
+    public function readSubscriptionPlanAvailable(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        SubscriptionPlanFactory $subscriptionPlanFactory,
+        PriceRepositoryInterface $priceRepository,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $subscriptionPlans = $subscriptionPlanRepository->getAll();
+        $dtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
+
+        /** @var SubscriptionPlan $dto */
+        foreach ($dtos as $dto) {
+            $prices = array_filter($dto->getPrices(), function (\App\Dto\Generic\App\Price $price) use ($subscription) {
+                return $price->getSchedule() === $subscription->getPaymentSchedule() && $price->getCurrency() === $subscription->getCurrency();
+            });
+            $dto->setPrices($prices);
+        }
+        $viewDto = new UpdatePlanView();
+        $viewDto->setPlans($dtos);
+        $json = $serializer->serialize($viewDto, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 
     #[IsGranted('ROLE_CUSTOMER_SUPPORT')]

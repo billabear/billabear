@@ -360,6 +360,53 @@ class MainContext implements Context
     }
 
     /**
+     * @When I go to update the subscription plan for :arg1 for :arg2
+     */
+    public function iGoToUpdateTheSubscriptionPlanForFor($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $this->sendJsonRequest('GET', '/app/subscription/'.$subscription->getId().'/change-plan');
+    }
+
+    /**
+     * @Then I will see the plan :arg1 with the price :arg3 in :arg2
+     */
+    public function iWillSeeThePlanWithThePriceIn($planName, $amount, $currency)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['plans'] as $plan) {
+            if ($plan['name'] === $planName) {
+                foreach ($plan['prices'] as $price) {
+                    if ($price['amount'] == $amount && $currency === $price['currency']) {
+                        return;
+                    }
+                }
+            }
+        }
+        throw new \Exception('Unable to see plan and price');
+    }
+
+    /**
+     * @Then I will not see the plan :arg1 with the price :arg3 in :arg2
+     */
+    public function iWillNotSeeThePlanWithThePriceIn($planName, $amount, $currency)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['plans'] as $plan) {
+            if ($plan['name'] === $planName) {
+                foreach ($plan['prices'] as $price) {
+                    if ($price['amount'] == $amount && $currency === $price['currency']) {
+                        throw new \Exception('Can to see plan and price');
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * @When I update the subscription :planName for :customerEmail to use the :priceAmount in :currency per :schedule price
      */
     public function iUpdateTheSubscriptionForToUseTheInPerPrice($planName, $customerEmail, $priceAmount, $currency, $schedule)
