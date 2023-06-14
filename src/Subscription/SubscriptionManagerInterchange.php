@@ -48,7 +48,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
             return $this->invoiceSubscriptionManager->startSubscriptionWithDto($customer, $startSubscriptionDto);
         }
 
@@ -58,7 +58,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
     {
         $customer = $subscription->getCustomer();
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
             return $this->invoiceSubscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
         }
 
@@ -68,7 +68,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     public function cancelSubscriptionInstantly(Subscription $subscription): Subscription
     {
         $customer = $subscription->getCustomer();
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
             return $this->invoiceSubscriptionManager->cancelSubscriptionInstantly($subscription);
         }
 
@@ -78,7 +78,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     public function cancelSubscriptionOnDate(Subscription $subscription, \DateTimeInterface $dateTime): Subscription
     {
         $customer = $subscription->getCustomer();
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
             return $this->invoiceSubscriptionManager->cancelSubscriptionOnDate($subscription, $dateTime);
         }
 
@@ -87,7 +87,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function changeSubscriptionPrice(Subscription $subscription, Price $price): void
     {
-        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
             $this->invoiceSubscriptionManager->changeSubscriptionPrice($subscription, $price);
         }
 
@@ -96,7 +96,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void
     {
-        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()) {
+        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
             $this->invoiceSubscriptionManager->changeSubscriptionPlan($subscription, $plan, $price);
         }
 
