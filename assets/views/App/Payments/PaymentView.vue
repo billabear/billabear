@@ -247,6 +247,7 @@ export default {
         reason: this.refundValues.reason,
       }
       this.refundValues.inProgress = true;
+      this.refundValues.errors = {};
       axios.post('/app/payment/'+paymentId+'/refund', payload).then(response => {
         this.refunds.push(response.data);
         this.refundValues.inProgress = false;

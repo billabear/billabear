@@ -166,11 +166,13 @@ class PaymentController
 
         $amount = Money::ofMinor($dto->getAmount(), Currency::of($payment->getCurrency()));
         try {
-            $refundManager->issueRefundForPayment($payment, $amount, $security->getUser(), $dto->getReason());
+            $refund = $refundManager->issueRefundForPayment($payment, $amount, $security->getUser(), $dto->getReason());
         } catch (RefundLimitExceededException $e) {
             return new JsonResponse(['message' => $e->getMessage()], status: JsonResponse::HTTP_NOT_ACCEPTABLE);
         }
+        $dto = $refundFactory->createAppDto($refund);
+        $json = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse($json, status: JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }
