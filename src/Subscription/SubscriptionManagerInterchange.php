@@ -48,7 +48,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
+        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
             return $this->invoiceSubscriptionManager->startSubscriptionWithDto($customer, $startSubscriptionDto);
         }
 
