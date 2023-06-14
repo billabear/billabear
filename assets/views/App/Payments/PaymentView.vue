@@ -50,8 +50,7 @@
           </div>
 
           <div class="mt-5">
-            <h2 class="section-header">{{ $t('app.payment.view.refunds.title') }}</h2>
-            <div class="section-body">
+            <h2 class="mb-2">{{ $t('app.payment.view.refunds.title') }}</h2>
 
               <table class="list-table">
                 <thead>
@@ -75,12 +74,10 @@
                 </tr>
                 </tbody>
               </table>
-            </div>
           </div>
           <div class="mt-5">
-            <h2 class="section-header">{{ $t('app.payment.view.subscriptions.title') }}</h2>
+            <h2 class="mb-2">{{ $t('app.payment.view.subscriptions.title') }}</h2>
 
-            <div class="section-body">
             <table class="list-table">
               <thead>
               <tr>
@@ -98,11 +95,9 @@
               </tr>
               </tbody>
             </table>
-            </div>
           </div>
           <div class="mt-5">
-            <h2 class="section-header">{{ $t('app.payment.view.receipts.title') }}</h2>
-            <div class="section-body">
+            <h2 class="mb-2">{{ $t('app.payment.view.receipts.title') }}</h2>
 
               <table class="list-table">
                 <thead>
@@ -121,7 +116,6 @@
                 </tr>
                 </tbody>
               </table>
-            </div>
           </div>
         </div>
 
