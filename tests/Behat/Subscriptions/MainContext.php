@@ -44,7 +44,7 @@ class MainContext implements Context
         private PriceServiceRepository $priceRepository,
         private SubscriptionPlanServiceRepository $planRepository,
         private CustomerRepository $customerRepository,
-        private PaymentCardServiceRepository $paymentDetailsRepository
+        private PaymentCardServiceRepository $paymentDetailsRepository,
     ) {
     }
 
@@ -312,6 +312,50 @@ class MainContext implements Context
 
         if ($subscription->getPaymentDetails()?->getLastFour() != $lastFour) {
             throw new \Exception('Got different payment details');
+        }
+    }
+
+    /**
+     * @When I update the subscription :arg1 for :arg2 to plan:
+     */
+    public function iUpdateTheSubscriptionForToPlan($planName, $customerEmail, TableNode $table)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $data = $table->getRowsHash();
+
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+
+        $this->sendJsonRequest('POST', '/app/subscription/'.$subscription->getId().'/change-plan', [
+            'plan' => (string) $subscriptionPlan->getId(),
+            'price' => (string) $price->getId(),
+        ]);
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will not exist
+     */
+    public function theSubscriptionForWillNotExist($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+        if ($subscription->getPlanName() === $planName) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('Plan is '.$subscription->getPlanName());
+        }
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will exist
+     */
+    public function theSubscriptionForWillExist($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        if ($subscription->getPlanName() !== $planName) {
+            throw new \Exception('Plan is '.$subscription->getPlanName());
         }
     }
 

@@ -17,6 +17,7 @@ use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
 use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
+use App\Dto\Request\App\Subscription\UpdatePlan;
 use App\Dto\Request\App\Subscription\UpdatePrice;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
@@ -404,6 +405,42 @@ class SubscriptionController
 
         $price = $priceRepository->findById($dto->getPrice());
         $subscriptionManager->changeSubscriptionPrice($subscription, $price);
+
+        $subscriptionRepository->save($subscription);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
+    #[Route('/app/subscription/{subscriptionId}/change-plan', name: 'app_subscription_update_plan', methods: ['POST'])]
+    public function changeSubscriptionPlan(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        PriceRepositoryInterface $priceRepository,
+        SubscriptionManagerInterface $subscriptionManager,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var UpdatePlan $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdatePlan::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $price = $priceRepository->findById($dto->getPriceId());
+        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getPlanId());
+        $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price);
 
         $subscriptionRepository->save($subscription);
 
