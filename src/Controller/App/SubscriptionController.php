@@ -39,6 +39,7 @@ use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -406,7 +407,7 @@ class SubscriptionController
         }
 
         $price = $priceRepository->findById($dto->getPrice());
-        $subscriptionManager->changeSubscriptionPrice($subscription, $price);
+        $subscriptionManager->changeSubscriptionPrice($subscription, $price, BillingChangeTiming::NEXT_CYCLE);
 
         $subscriptionRepository->save($subscription);
 
@@ -475,10 +476,14 @@ class SubscriptionController
         if ($errorResponse instanceof Response) {
             return $errorResponse;
         }
+        $change = match ($dto->getWhen()) {
+            UpdatePlan::WHEN_INSTANTLY => BillingChangeTiming::INSTANTLY,
+            default => BillingChangeTiming::NEXT_CYCLE,
+        };
 
         $price = $priceRepository->findById($dto->getPriceId());
         $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getPlanId());
-        $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price);
+        $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price, $change);
 
         $subscriptionRepository->save($subscription);
 
