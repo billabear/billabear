@@ -20,6 +20,7 @@ use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
+use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Subscription\SubscriptionManager;
@@ -85,21 +86,21 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
         return $this->stripeBillingManager->cancelSubscriptionOnDate($subscription, $dateTime);
     }
 
-    public function changeSubscriptionPrice(Subscription $subscription, Price $price): void
+    public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
-            $this->invoiceSubscriptionManager->changeSubscriptionPrice($subscription, $price);
+            $this->invoiceSubscriptionManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
         }
 
-        $this->stripeBillingManager->changeSubscriptionPrice($subscription, $price);
+        $this->stripeBillingManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price): void
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
-            $this->invoiceSubscriptionManager->changeSubscriptionPlan($subscription, $plan, $price);
+            $this->invoiceSubscriptionManager->changeSubscriptionPlan($subscription, $plan, $price, $billingChangeTiming);
         }
 
-        $this->stripeBillingManager->changeSubscriptionPlan($subscription, $plan, $price);
+        $this->stripeBillingManager->changeSubscriptionPlan($subscription, $plan, $price, $billingChangeTiming);
     }
 }

@@ -12,6 +12,7 @@
 
 namespace App\Dummy\Provider;
 
+use Obol\Model\Enum\ProrataType;
 use Obol\Model\Subscription;
 use Obol\Model\Subscription\UpdatePaymentMethod;
 use Obol\SubscriptionServiceInterface;
@@ -36,7 +37,7 @@ class SubscriptionService implements SubscriptionServiceInterface
         return $subscription;
     }
 
-    public function updatePrice(Subscription $subscription): void
+    public function updatePrice(Subscription $subscription, ProrataType $prorataType = ProrataType::NONE): void
     {
         // TODO: Implement updatePrice() method.
     }
