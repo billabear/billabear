@@ -21,6 +21,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[PriceIsValidForPlan]
 class UpdatePlan
 {
+    public const NEXT_CYCLE = 'next-cycle';
+    public const WHEN_INSTANTLY = 'instantly';
+    public const WHEN_DATE = 'specific-date';
+
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Choice([self::NEXT_CYCLE, self::WHEN_INSTANTLY, self::WHEN_DATE])]
+    private $when;
+
+    #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
+    private $date;
+
     #[Assert\NotBlank]
     #[PriceExists]
     #[SerializedName('price')]
@@ -49,5 +61,25 @@ class UpdatePlan
     public function setPlanId($planId): void
     {
         $this->planId = $planId;
+    }
+
+    public function getWhen()
+    {
+        return $this->when;
+    }
+
+    public function setWhen($when): void
+    {
+        $this->when = $when;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function setDate($date): void
+    {
+        $this->date = $date;
     }
 }

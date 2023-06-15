@@ -80,3 +80,4 @@ Feature: Customer Subscription Update Plan
     Then I will see the plan "Better Test Plan" with the price 4500 in "USD"
     Then I will see the plan "Even Better Test Plan" with the price 55000 in "USD"
     Then I will not see the plan "Better Test Plan" with the price 4000 in "EUR"
+

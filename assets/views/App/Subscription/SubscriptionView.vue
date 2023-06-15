@@ -156,7 +156,7 @@
       <LoadingMessage v-if="!priceReady" />
       <div v-else>
 
-        <div class="form-field-ctn">
+        <div class="">
           <label class="form-field-lbl" for="price">
             {{ $t('app.subscription.view.modal.price.price') }}
           </label>
@@ -189,7 +189,7 @@
       <LoadingMessage v-if="!paymentMethodReady" />
       <div v-else>
 
-        <div class="form-field-ctn">
+        <div class="">
           <label class="form-field-lbl" for="street_line_two">
             {{ $t('app.subscription.view.modal.payment_method.payment_method') }}
           </label>
@@ -199,7 +199,7 @@
           <p class="form-field-help">{{ $t('app.subscription.view.modal.payment_method.payment_method_help') }}</p>
         </div>
         <div class="mt-4">
-          <SubmitButton :in-progress="paymentMethodsSending" @click="sendChangePaymentMethods">{{ $t('app.subscription.view.modal.payment_method.payment_method_help') }}</SubmitButton>
+          <SubmitButton :in-progress="paymentMethodsSending" @click="sendChangePaymentMethods">{{ $t('app.subscription.view.modal.payment_method.submit') }}</SubmitButton>
         </div>
       </div>
 

@@ -43,7 +43,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         payment_method: {
             payment_method: "Use Payment Details",
             payment_method_help: "These details will be used for the next time we charge the customer.",
-            update_button: "Update Payment Details"
+            update_button: "Update Payment Details",
+            submit: "Update",
         },
         cancel: {
             title: "Cancel Subscription",

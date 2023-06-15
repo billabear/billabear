@@ -12,6 +12,7 @@
 
 namespace App\Tests\Behat\Subscriptions;
 
+use App\Dto\Request\App\Subscription\UpdatePlan;
 use App\Repository\Orm\CustomerRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -330,6 +331,7 @@ class MainContext implements Context
         $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
 
         $this->sendJsonRequest('POST', '/app/subscription/'.$subscription->getId().'/change-plan', [
+            'when' => UpdatePlan::NEXT_CYCLE,
             'plan' => (string) $subscriptionPlan->getId(),
             'price' => (string) $price->getId(),
         ]);
