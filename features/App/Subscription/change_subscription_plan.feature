@@ -18,6 +18,7 @@ Feature: Customer Subscription Update Plan
       | Product One | 3500   | USD      | true      | month    | true   |
       | Product One | 30000  | USD      | true      | year     | false  |
       | Product Two | 4500   | USD      | true      | month    | true   |
+      | Product Two | 4000   | EUR      | true      | month    | true   |
       | Product Three | 5500   | USD      | true      | month    | true   |
       | Product Three | 55000   | USD      | true      | year    | true   |
     And the following features exist:
@@ -35,7 +36,7 @@ Feature: Customer Subscription Update Plan
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
-    Given a Subscription Plan exists for product "Product Three" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price 5500 in "USD" with:
+    Given a Subscription Plan exists for product "Product Three" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price 5500 in "USD" monthly and 55000 yearly with:
       | Name       | Even Better Test Plan |
       | Public     | True      |
       | Per Seat   | False     |
@@ -77,4 +78,5 @@ Feature: Customer Subscription Update Plan
     When I go to update the subscription plan for "Test Plan" for "customer.one@example.org"
     Then I will see the plan "Even Better Test Plan" with the price 5500 in "USD"
     Then I will see the plan "Better Test Plan" with the price 4500 in "USD"
-    Then I will not see the plan "Even Better Test Plan" with the price 55000 in "USD"
+    Then I will see the plan "Even Better Test Plan" with the price 55000 in "USD"
+    Then I will not see the plan "Better Test Plan" with the price 4000 in "EUR"

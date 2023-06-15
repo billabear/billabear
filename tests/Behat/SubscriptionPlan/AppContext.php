@@ -136,6 +136,39 @@ class AppContext implements Context
         $this->subscriptionFeatureRepository->getEntityManager()->flush();
     }
 
+    /**
+     * @Given a Subscription Plan exists for product :arg1 with a feature :arg2 and a limit for :arg3 with a limit of :arg5 and price :arg6 in :arg4 monthly and :arg7 yearly with:
+     */
+    public function aSubscriptionPlanExistsForProductWithAFeatureAndALimitForWithALimitOfAndPriceInMonthlyAndYearlyWith($productName, $featureName, $limitFeatureName, $limit, $price, $currency, $yearlyPrice, TableNode $table)
+    {
+        $data = $table->getRowsHash();
+
+        $product = $this->getProductByName($productName);
+        $feature = $this->getFeatureByName($featureName);
+        $limitFeature = $this->getFeatureByName($limitFeatureName);
+        $price = $this->priceRepository->findOneBy(['amount' => $price, 'currency' => $currency]);
+        $yearlyPrice = $this->priceRepository->findOneBy(['amount' => $yearlyPrice, 'currency' => $currency]);
+
+        $subscriptionLimit = new SubscriptionPlanLimit();
+        $subscriptionLimit->setSubscriptionFeature($limitFeature);
+        $subscriptionLimit->setLimit(intval($limit));
+
+        $subscriptionPlan = new SubscriptionPlan();
+        $subscriptionPlan->setName($data['Name']);
+        $subscriptionPlan->setPublic('true' === strtolower($data['Public']));
+        $subscriptionPlan->setPerSeat('true' === strtolower($data['Per Seat']));
+        $subscriptionPlan->setFree('true' === strtolower($data['Free'] ?? 'false'));
+        $subscriptionPlan->setUserCount(intval($data['User Count']));
+        $subscriptionPlan->setProduct($product);
+        $subscriptionPlan->addFeature($feature);
+        $subscriptionPlan->addLimit($subscriptionLimit);
+        $subscriptionPlan->addPrice($price);
+        $subscriptionPlan->addPrice($yearlyPrice);
+
+        $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
+        $this->subscriptionFeatureRepository->getEntityManager()->flush();
+    }
+
     protected function findSubscriptionPlanByName(string $planName): SubscriptionPlan
     {
         $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);

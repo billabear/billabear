@@ -430,13 +430,15 @@ class SubscriptionController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $subscriptionCount = count($subscriptionRepository->getAllActiveForCustomer($subscription->getCustomer()));
+
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $dtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
 
         /** @var SubscriptionPlan $dto */
         foreach ($dtos as $dto) {
-            $prices = array_filter($dto->getPrices(), function (\App\Dto\Generic\App\Price $price) use ($subscription) {
-                return $price->getSchedule() === $subscription->getPaymentSchedule() && $price->getCurrency() === $subscription->getCurrency();
+            $prices = array_filter($dto->getPrices(), function (\App\Dto\Generic\App\Price $price) use ($subscription, $subscriptionCount) {
+                return (1 === $subscriptionCount || $subscription->getPaymentSchedule() === $price->getSchedule()) && $price->getCurrency() === $subscription->getCurrency();
             });
             $dto->setPrices($prices);
         }
