@@ -13,9 +13,12 @@
 namespace App\Invoice;
 
 use App\Entity\Customer;
+use Brick\Money\Money;
 use Parthenon\Billing\Entity\Price;
 
 interface PricerInterface
 {
     public function getCustomerPriceInfo(Price $price, Customer $customer): PriceInfo;
+
+    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax): PriceInfo;
 }

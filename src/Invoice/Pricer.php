@@ -15,6 +15,7 @@ namespace App\Invoice;
 use App\Entity\Customer;
 use App\Tax\TaxRateProviderInterface;
 use Brick\Math\RoundingMode;
+use Brick\Money\Money;
 use Parthenon\Billing\Entity\Price;
 
 class Pricer implements PricerInterface
@@ -29,6 +30,30 @@ class Pricer implements PricerInterface
         $rawRate = $this->taxRateProvider->getRateForCustomer($customer);
 
         if ($price->isIncludingTax()) {
+            $rate = ($rawRate / 100) + 1;
+            $total = $money;
+            $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);
+            $vat = $money->minus($subTotal, RoundingMode::HALF_DOWN);
+        } else {
+            $rate = ($rawRate / 100);
+            $subTotal = $money;
+            $vat = $money->multipliedBy($rate, RoundingMode::HALF_UP);
+            $total = $subTotal->plus($vat, RoundingMode::HALF_DOWN);
+        }
+
+        return new PriceInfo(
+            $total,
+            $subTotal,
+            $vat,
+            $rawRate,
+        );
+    }
+
+    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax): PriceInfo
+    {
+        $rawRate = $this->taxRateProvider->getRateForCustomer($customer);
+
+        if ($includeTax) {
             $rate = ($rawRate / 100) + 1;
             $total = $money;
             $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);

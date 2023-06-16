@@ -12,6 +12,7 @@
 
 namespace App\Subscription;
 
+use App\Credit\CreditAdjustmentRecorder;
 use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
@@ -34,6 +35,7 @@ use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceSubscriptionManager implements SubscriptionManagerInterface
@@ -48,6 +50,8 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         private SettingsRepositoryInterface $settingsRepository,
         private PlanManagerInterface $planManager,
         private InvoiceCharger $invoiceCharger,
+        private Security $security,
+        private CreditAdjustmentRecorder $creditAdjustmentRecorder,
     ) {
     }
 
@@ -141,6 +145,28 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
-        // TODO: Implement changeSubscriptionPlan() method.
+        $oldPrice = $subscription->getPrice();
+        $oldPlan = $subscription->getSubscriptionPlan();
+
+        $diff = $price->getAsMoney()->minus($oldPrice->getAsMoney());
+        $customer = $subscription->getCustomer();
+        if (BillingChangeTiming::INSTANTLY === $billingChangeTiming) {
+            if ($diff->isPositive()) {
+                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price);
+
+                if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
+                    $this->invoiceCharger->chargeInvoice($invoice);
+                }
+
+                $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
+            } else {
+                $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'plan change', $this->security->getUser());
+            }
+        }
+
+        $subscription->setPrice($price);
+        $subscription->setMoneyAmount($price->getAsMoney());
+        $subscription->setSubscriptionPlan($plan);
+        $subscription->setPlanName($plan->getName());
     }
 }

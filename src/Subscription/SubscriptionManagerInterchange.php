@@ -90,6 +90,8 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     {
         if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
             $this->invoiceSubscriptionManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
+
+            return;
         }
 
         $this->stripeBillingManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
@@ -97,8 +99,12 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
-        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
+        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()
+            || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()
+            || null === $subscription->getMainExternalReference()) {
             $this->invoiceSubscriptionManager->changeSubscriptionPlan($subscription, $plan, $price, $billingChangeTiming);
+
+            return;
         }
 
         $this->stripeBillingManager->changeSubscriptionPlan($subscription, $plan, $price, $billingChangeTiming);

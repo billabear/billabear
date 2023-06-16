@@ -81,3 +81,48 @@ Feature: Customer Subscription Update Plan
     Then I will see the plan "Even Better Test Plan" with the price 55000 in "USD"
     Then I will not see the plan "Better Test Plan" with the price 4000 in "EUR"
 
+
+
+  Scenario: Update Plan - Stripe Billing Disable
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And stripe billing is disabled
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+    And the following payment details:
+      | Customer Email           | Last Four | Expiry Month | Expiry Year |
+      | customer.one@example.org | 0444      | 03           | 25          |
+    When I update the subscription "Test Plan" for "customer.one@example.org" to plan to be changed instantly:
+      | Product | Product Two      |
+      | Plan    | Better Test Plan |
+      | Price   | 4500             |
+      | Currency| USD              |
+    Then the subscription "Test Plan" for "customer.one@example.org" will not exist
+    And the subscription "Better Test Plan" for "customer.one@example.org" will exist
+    And the latest invoice for "customer.one@example.org" will have amount due as 1500
+
+  Scenario: Update Plan - Stripe Billing Disable
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And stripe billing is disabled
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Better Test Plan  | 4500         | USD            | month          | customer.one@example.org |
+    And the following payment details:
+      | Customer Email           | Last Four | Expiry Month | Expiry Year |
+      | customer.one@example.org | 0444      | 03           | 25          |
+    When I update the subscription "Better Test Plan" for "customer.one@example.org" to plan to be changed instantly:
+      | Product | Product One |
+      | Plan    | Test Plan   |
+      | Price   | 3000        |
+      | Currency| USD         |
+    Then the subscription "Better Test Plan" for "customer.one@example.org" will not exist
+    And the subscription "Test Plan" for "customer.one@example.org" will exist
+    Then there should be a credit for "customer.one@example.org" for 1500 in the currency "USD"

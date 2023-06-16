@@ -338,6 +338,27 @@ class MainContext implements Context
     }
 
     /**
+     * @When I update the subscription :arg1 for :arg2 to plan to be changed instantly:
+     */
+    public function iUpdateTheSubscriptionForToPlanToBeChangedInstantly($planName, $customerEmail, TableNode $table)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $data = $table->getRowsHash();
+
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+
+        $this->sendJsonRequest('POST', '/app/subscription/'.$subscription->getId().'/change-plan', [
+            'when' => UpdatePlan::WHEN_INSTANTLY,
+            'plan' => (string) $subscriptionPlan->getId(),
+            'price' => (string) $price->getId(),
+        ]);
+    }
+
+    /**
      * @Then the subscription :arg1 for :arg2 will not exist
      */
     public function theSubscriptionForWillNotExist($planName, $customerEmail)

@@ -21,6 +21,7 @@ use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceGenerator
@@ -32,6 +33,41 @@ class InvoiceGenerator
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
         private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
     ) {
+    }
+
+    public function generateForCustomerAndUpgrade(
+        Customer $customer,
+        SubscriptionPlan $oldPlan,
+        SubscriptionPlan $newPlan,
+        Price $oldPrice,
+        Price $newPrice,
+    ): Invoice {
+        $lines = [];
+        $total = null;
+        $subTotal = null;
+        $vat = null;
+        $invoice = new Invoice();
+        $invoice->setValid(true);
+        $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generate());
+
+        $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney())->abs();
+        $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax());
+
+        $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
+        $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
+        $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
+
+        $line = new InvoiceLine();
+        $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+        $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
+        $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+        $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+        $line->setInvoice($invoice);
+        $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
+        $line->setVatPercentage($priceInfo->taxRate);
+        $lines[] = $line;
+
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo, $vat);
     }
 
     /**
@@ -74,6 +110,16 @@ class InvoiceGenerator
             $line->setVatPercentage($priceInfo->taxRate);
             $lines[] = $line;
         }
+        $invoice->setSubscriptions($subscriptions);
+
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo, $vat);
+    }
+
+    /**
+     * @throws \Brick\Money\Exception\MoneyMismatchException
+     */
+    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?\Brick\Money\Money $total, array $lines, ?\Brick\Money\Money $subTotal, PriceInfo $priceInfo, ?\Brick\Money\Money $vat): Invoice
+    {
         if ($customer->hasCredit() && !$customer->getCreditAsMoney()->isZero()) {
             $line = new InvoiceLine();
             $line->setCurrency($customer->getCreditCurrency());
@@ -147,7 +193,6 @@ class InvoiceGenerator
         $invoice->setPaid(false);
         $invoice->setCreatedAt(new \DateTime('now'));
         $invoice->setUpdatedAt(new \DateTime('now'));
-        $invoice->setSubscriptions($subscriptions);
         $invoice->setCustomer($customer);
         $invoice->setPayeeAddress($customer->getBillingAddress());
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
