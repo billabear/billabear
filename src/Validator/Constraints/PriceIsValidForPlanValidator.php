@@ -37,6 +37,10 @@ class PriceIsValidForPlanValidator extends ConstraintValidator
             return;
         }
 
+        if (!$value->getPlanId() || !$value->getPriceId()) {
+            return;
+        }
+
         try {
             $planId = (string) $this->subscriptionPlanRepository->findById($value->getPlanId())->getProduct()->getId();
             $priceId = (string) $this->priceRepository->findById($value->getPriceId())->getProduct()->getId();

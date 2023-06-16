@@ -3,6 +3,7 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
     main: {
         status: "Status",
         plan: "Plan",
+        plan_change: "Change Plan",
         customer: "Customer",
         main_external_reference: "Main External Reference",
         created_at: "Created At",
@@ -39,6 +40,20 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
             price: "New Price",
             price_help: "The new price to be charged at next invoice",
             submit: "Update"
+        },
+        plan: {
+            plan: "New Plan",
+            plan_help: "The plan which you want to change this subscription to",
+            price: "New Price",
+            price_help: "The new price to be charged at next invoice",
+            submit: "Update",
+
+            when: {
+                title: "When",
+                next_cycle: "Use for next Billing Cycle",
+                instantly: "Instantly",
+                specific_date: "Specific Date",
+            },
         },
         payment_method: {
             payment_method: "Use Payment Details",

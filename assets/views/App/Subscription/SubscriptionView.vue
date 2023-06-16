@@ -17,6 +17,9 @@
                 <router-link :to="{name: 'app.subscription_plan.view', params: {productId: product.id, subscriptionPlanId: subscription.plan.id}}">
                   {{ subscription.plan.name }}
                 </router-link>
+                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+                  <button class="btn--main ml-3" @click="showPlan">{{ $t('app.subscription.view.main.plan_change') }}</button>
+                </RoleOnlyView>
               </dd>
             </div>
             <div v-else></div>
@@ -138,6 +141,58 @@
       <div v-else>{{ errorMessage }}</div>
     </LoadingScreen>
 
+    <VueFinalModal
+        v-model="planOptions.modelValue"
+        :teleport-to="planOptions.teleportTo"
+        :display-directive="planOptions.displayDirective"
+        :hide-overlay="planOptions.hideOverlay"
+        :overlay-transition="planOptions.overlayTransition"
+        :content-transition="planOptions.contentTransition"
+        :click-to-close="planOptions.clickToClose"
+        :esc-to-close="planOptions.escToClose"
+        :background="planOptions.background"
+        :lock-scroll="planOptions.lockScroll"
+        :swipe-to-close="planOptions.swipeToClose"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      <LoadingMessage v-if="!planReady" />
+      <div v-else>
+
+        <div>
+          <span class="block text-lg font-medium">{{ $t('app.subscription.view.modal.plan.when.title') }}</span>
+          <p class="text-red-500" v-if="planErrors.when != undefined">{{ planErrors.when }}</p>
+          <select v-model="planWhen" class="form-field">
+            <option value="next-cycle">{{ $t('app.subscription.view.modal.plan.when.next_cycle') }}</option>
+            <option value="instantly">{{ $t('app.subscription.view.modal.plan.when.instantly') }}</option>
+          </select>
+        </div>
+        <div class="">
+          <label class="form-field-lbl" for="price">
+            {{ $t('app.subscription.view.modal.plan.plan') }}
+          </label>
+          <p class="text-red-500" v-if="planErrors.planId != undefined">{{ planErrors.planId }}</p>
+          <select class="form-field" v-model="newPlan">
+            <option v-for="plan in plans" :value="plan">{{ plan.name }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.subscription.view.modal.plan.plan_help') }}</p>
+        </div>
+        <div v-if="newPlan.id !== undefined && newPlan.id !== null">
+          <label class="form-field-lbl" for="price">
+            {{ $t('app.subscription.view.modal.plan.price') }}
+          </label>
+          <p class="text-red-500" v-if="planErrors.priceId != undefined">{{ planErrors.priceId }}</p>
+          <select class="form-field" v-model="newPrice">
+            <option v-for="price in newPlan.prices" :value="price">{{ price.display_value }} - {{ price.schedule }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.subscription.view.modal.plan.price_help') }}</p>
+        </div>
+        <div class="mt-4">
+          <SubmitButton :in-progress="planSending" @click="sendPlan">{{ $t('app.subscription.view.modal.plan.submit') }}</SubmitButton>
+        </div>
+      </div>
+
+    </VueFinalModal>
     <VueFinalModal
         v-model="priceOptions.modelValue"
         :teleport-to="priceOptions.teleportTo"
@@ -284,7 +339,25 @@ export default {
           cancelled: false
       },
       cancelSending: false,
-      newPrice: {},
+      planErrors: {},
+      planWhen: null,
+      planSending: false,
+      planReady: false,
+      planOptions: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
+      newPlan: {},
+      newPrice: {id: null},
       priceSending: false,
       priceReady: false,
       priceOptions: {
@@ -355,6 +428,32 @@ export default {
   methods: {
     currency: function (value) {
       return currency(value, { fromCents: true });
+    },
+    showPlan: function () {
+      this.planOptions.modelValue = true;
+      var subscriptionId = this.$route.params.subscriptionId
+
+      axios.get('/app/subscription/' + subscriptionId+'/change-plan').then(response => {
+        this.plans = response.data.plans;
+        this.planReady = true;
+      })
+    },
+    sendPlan: function () {
+        this.planSending = true;
+        const subscriptionId = this.$route.params.subscriptionId;
+        const payload = {
+          when: this.planWhen,
+          price: this.newPrice.id,
+          plan: this.newPlan.id,
+        };
+        axios.post('/app/subscription/'+subscriptionId+'/change-plan', payload).then(response => {
+          this.planOptions.modelValue = false;
+          this.subscription.plan = this.newPlan;
+          this.subscription.price = this.newPrice;
+        }).catch(error => {
+          this.planErrors = error.response.data.errors;
+          this.planSending = true;
+        })
     },
     showPrice: function () {
       this.priceOptions.modelValue = true;
