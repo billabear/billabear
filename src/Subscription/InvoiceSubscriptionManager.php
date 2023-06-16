@@ -140,7 +140,26 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
     public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
-        // TODO: Implement changeSubscriptionPrice() method.
+        $oldPrice = $subscription->getPrice();
+
+        $diff = $price->getAsMoney()->minus($oldPrice->getAsMoney());
+        $customer = $subscription->getCustomer();
+        if (BillingChangeTiming::INSTANTLY === $billingChangeTiming) {
+            if ($diff->isPositive()) {
+                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $subscription->getSubscriptionPlan(), $subscription->getSubscriptionPlan(), $oldPrice, $price);
+
+                if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
+                    $this->invoiceCharger->chargeInvoice($invoice);
+                }
+
+                $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
+            } else {
+                $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'price change', $this->security->getUser());
+            }
+        }
+
+        $subscription->setPrice($price);
+        $subscription->setMoneyAmount($price->getAsMoney());
     }
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void

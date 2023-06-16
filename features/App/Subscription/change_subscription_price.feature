@@ -45,3 +45,19 @@ Feature: Customer Subscription Update Price
       | customer.one@example.org | 0444      | 03           | 25          |
     When I update the subscription "Test Plan" for "customer.one@example.org" to use the 3500 in "USD" per "month" price
     Then the subscription "Test Plan" for "customer.one@example.org" will be for 3500 in "USD" per "month"
+
+  Scenario: Update price - Stripe Billing
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And stripe billing is disabled
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+    And the following payment details:
+      | Customer Email           | Last Four | Expiry Month | Expiry Year |
+      | customer.one@example.org | 0444      | 03           | 25          |
+    When I update the subscription "Test Plan" for "customer.one@example.org" to use the 3500 in "USD" per "month" price
+    Then the subscription "Test Plan" for "customer.one@example.org" will be for 3500 in "USD" per "month"
