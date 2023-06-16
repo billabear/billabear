@@ -12,7 +12,6 @@
 
 namespace App\Security;
 
-use App\Entity\User;
 use App\Repository\ApiKeyRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,7 +60,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
         }
 
         return new SelfValidatingPassport(new UserBadge($apiKey, function ($key) {
-            $user = new User();
+            $user = new ApiUser();
             $user->setEmail('api@example.org');
 
             return $user;

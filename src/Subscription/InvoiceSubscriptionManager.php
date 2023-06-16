@@ -17,6 +17,7 @@ use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
 use App\Repository\SettingsRepositoryInterface;
+use App\Security\ApiUser;
 use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -179,7 +180,11 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
                 $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
             } else {
-                $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'plan change', $this->security->getUser());
+                $user = $this->security->getUser();
+                if ($user instanceof ApiUser) {
+                    $user = null;
+                }
+                $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'plan change', $user);
             }
         }
 

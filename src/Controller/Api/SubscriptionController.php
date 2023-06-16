@@ -13,8 +13,10 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\SubscriptionList;
+use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
+use App\Dto\Request\Api\Subscription\UpdatePlan;
 use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\CancellationRequestFactory;
@@ -25,6 +27,7 @@ use App\Repository\PaymentCardRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use App\Subscription\PaymentMethodUpdateProcessor;
 use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -39,6 +42,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionController
 {
+    use ValidationErrorResponseTrait;
+
     private CancellationRequestFactory $cancellationRequestFactory;
 
     public function __construct()
@@ -250,5 +255,44 @@ class SubscriptionController
         $methodUpdateProcessor->process($subscription, $paymentDetails);
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/api/v1/subscription/{subscriptionId}/plan', name: 'api_v1_subscription_update_plan', methods: ['POST'])]
+    public function changeSubscriptionPlan(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        PriceRepositoryInterface $priceRepository,
+        SubscriptionManagerInterface $subscriptionManager,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var UpdatePlan $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdatePlan::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+        $change = match ($dto->getWhen()) {
+            UpdatePlan::WHEN_INSTANTLY => BillingChangeTiming::INSTANTLY,
+            default => BillingChangeTiming::NEXT_CYCLE,
+        };
+
+        $price = $priceRepository->findById($dto->getPriceId());
+        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getPlanId());
+        $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price, $change);
+
+        $subscriptionRepository->save($subscription);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 }

@@ -317,6 +317,48 @@ class MainContext implements Context
     }
 
     /**
+     * @When I make a API Request to update the subscription :arg1 for :arg2 to plan:
+     */
+    public function iMakeAApiRequestToUpdateTheSubscriptionForToPlan($planName, $customerEmail, TableNode $table)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $data = $table->getRowsHash();
+
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/plan', [
+            'when' => UpdatePlan::NEXT_CYCLE,
+            'plan' => (string) $subscriptionPlan->getId(),
+            'price' => (string) $price->getId(),
+        ]);
+    }
+
+    /**
+     * @When I make a API Request to update the subscription :arg1 for :arg2 to plan to be changed instantly:
+     */
+    public function iMakeAApiRequestToUpdateTheSubscriptionForToPlanToBeChangedInstantly($planName, $customerEmail, TableNode $table)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $data = $table->getRowsHash();
+
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/plan', [
+            'when' => UpdatePlan::WHEN_INSTANTLY,
+            'plan' => (string) $subscriptionPlan->getId(),
+            'price' => (string) $price->getId(),
+        ]);
+    }
+
+    /**
      * @When I update the subscription :arg1 for :arg2 to plan:
      */
     public function iUpdateTheSubscriptionForToPlan($planName, $customerEmail, TableNode $table)
