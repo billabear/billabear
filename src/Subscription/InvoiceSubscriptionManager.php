@@ -155,7 +155,11 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
                 $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
             } else {
-                $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'price change', $this->security->getUser());
+                $user = $this->security->getUser();
+                if ($user instanceof ApiUser) {
+                    $user = null;
+                }
+                $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'price change', $user);
             }
         }
 
