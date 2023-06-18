@@ -8,8 +8,8 @@
           <Menu>
             <MenuGroup>
               <MenuItem route-name="app.report.dashboard">{{ $t('app.menu.main.reports') }}</MenuItem>
-              <MenuItem route-name="app.transactions">{{ $t('app.menu.main.transactions') }}</MenuItem>
-              <MenuItem route-name="app.product">{{ $t('app.menu.main.products') }}</MenuItem>
+              <MenuItem route-name="app.payment.list">{{ $t('app.menu.main.transactions') }}</MenuItem>
+              <MenuItem route-name="app.product.list">{{ $t('app.menu.main.products') }}</MenuItem>
               <MenuItem route-name="app.customer.list">{{ $t('app.menu.main.customers') }}</MenuItem>
               <MenuItem route-name="app.subscription.list">{{ $t('app.menu.main.subscriptions') }}</MenuItem>
               <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
