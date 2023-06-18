@@ -22,6 +22,16 @@
         <p class="form-field-help">{{ $t('app.customer.create.help_info.reference') }}</p>
       </div>
       <div class="form-field-ctn">
+        <label class="form-field-lbl" for="brand">
+          {{ $t('app.customer.create.brand') }}
+        </label>
+        <p class="form-field-error" v-if="errors.brand != undefined">{{ errors.brand }}</p>
+        <select class="form-field" id="brand" v-model="customer.brand">
+          <option v-for="brand in brands" :value="brand.code">{{ brand.name }}</option>
+        </select>
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.brand') }}</p>
+      </div>
+      <div class="form-field-ctn">
         <label class="form-field-lbl" for="locale">
           {{ $t('app.customer.create.locale') }}
         </label>
@@ -132,8 +142,11 @@ export default {
   name: "CustomerCreate",
   data() {
     return {
+      ready: false,
+      brands: [],
       customer: {
         email: null,
+        brand: 'default',
         address: {
           country: null,
         },
@@ -146,6 +159,11 @@ export default {
       errors: {
       }
     }
+  },
+  mounted() {
+    axios.get('/app/customer/create').then(response => {
+      this.brands = response.data.brands;
+    })
   },
   methods: {
     send: function () {

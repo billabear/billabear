@@ -16,6 +16,7 @@ use App\Api\Filters\CustomerList;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\Dto\CreateCustomerDto;
+use App\Dto\Response\App\Customer\CreateCustomerView;
 use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
@@ -25,7 +26,9 @@ use App\Factory\CustomerFactory;
 use App\Factory\PaymentFactory;
 use App\Factory\PaymentMethodsFactory;
 use App\Factory\RefundFactory;
+use App\Factory\Settings\BrandSettingsFactory;
 use App\Factory\SubscriptionFactory;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
@@ -92,6 +95,25 @@ class CustomerController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/customer/create', name: 'app_customer_create_view', methods: ['GET'])]
+    public function createCustomerView(
+        Request $request,
+        BrandSettingsRepositoryInterface $settingsRepository,
+        BrandSettingsFactory $brandSettingsFactory,
+        SerializerInterface $serializer,
+    ) {
+        $brandSettings = $settingsRepository->getAll();
+        $brandDtos = array_map([$brandSettingsFactory, 'createAppDto'], $brandSettings);
+
+        $viewDto = new CreateCustomerView();
+        $viewDto->setBrands($brandDtos);
+
+        $json = $serializer->serialize($viewDto, 'json');
+
+        return JsonResponse::fromJsonString($json);
     }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]

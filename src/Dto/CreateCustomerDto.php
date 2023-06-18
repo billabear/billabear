@@ -33,7 +33,7 @@ class CreateCustomerDto
 
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Locale()]
-    #[SerializedName('brand')]
+    #[SerializedName('locale')]
     private $locale;
 
     #[SerializedName('reference')]

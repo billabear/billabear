@@ -150,7 +150,12 @@ class MainContext implements Context
      */
     public function thereShouldBeACustomerFor($email)
     {
-        $this->getCustomerByEmail($email);
+        try {
+            $this->getCustomerByEmail($email);
+        } catch (\Throwable $e) {
+            var_dump($this->getJsonContent());
+            throw $e;
+        }
     }
 
     /**
@@ -174,6 +179,28 @@ class MainContext implements Context
 
         if ($customer->getReference() !== $arg2) {
             throw new \Exception(sprintf("Expected '%s' but got '%s'", $arg2, $customer->getReference()));
+        }
+    }
+
+    /**
+     * @Then the customer :arg1 should have the brand :arg2
+     */
+    public function theCustomerShouldHaveTheBrand($email, $brand)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        if ($customer->getBrand() !== $brand) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $brand, $customer->getBrand()));
+        }
+    }
+
+    /**
+     * @Then the customer :arg1 should have the locale :arg2
+     */
+    public function theCustomerShouldHaveTheLocale($email, $locale)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        if ($customer->getLocale() !== $locale) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $locale, $customer->getLocale()));
         }
     }
 

@@ -18,7 +18,7 @@ Feature: Customer Creation
     Then there should be a customer for "customer@example.org"
 
   Scenario: No email
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info
       | Email   |    |
       | Country | DE |
@@ -26,7 +26,7 @@ Feature: Customer Creation
     And there should not be an error for "country"
 
   Scenario: Invalid email
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info
       | Email   | a-word   |
       | Country | DE |
@@ -34,7 +34,7 @@ Feature: Customer Creation
     And there should not be an error for "country"
 
   Scenario: Successfully create customer with references
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info
       | Email              | customer@example.org |
       | Country            | DE                   |
@@ -46,7 +46,7 @@ Feature: Customer Creation
 
 
   Scenario: Customer already exists
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer@example.org | DE      | cust_jf9j545       | Customer One |
@@ -56,7 +56,7 @@ Feature: Customer Creation
     Then I should be told there is a conflict
 
   Scenario: Successfully create customer with references and billing type
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info
       | Email              | customer@example.org |
       | Country            | DE                   |
@@ -67,3 +67,20 @@ Feature: Customer Creation
     And the customer "customer@example.org" should have the external reference "cust_4945959"
     And the customer "customer@example.org" should have the reference "Test Customer"
     And the customer "customer@example.org" should have the billing type "invoice"
+
+  Scenario: Successfully create customer with Brand
+    Given the follow brands exist:
+      | Name    | Code    | Email               |
+      | Example | example | example@example.org |
+    And I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a customer via the app with the following info
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+      | External Reference | cust_4945959         |
+      | Reference          | Test Customer        |
+      | Billing Type       | invoice              |
+      | Brand              | example              |
+      | Locale             | en                   |
+    Then there should be a customer for "customer@example.org"
+    And the customer "customer@example.org" should have the brand "example"
+    And the customer "customer@example.org" should have the locale "en"

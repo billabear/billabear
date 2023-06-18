@@ -164,6 +164,14 @@ class AppContext implements Context
             $payload['billing_type'] = $data['Billing Type'];
         }
 
+        if (isset($data['Locale'])) {
+            $payload['locale'] = $data['Locale'];
+        }
+
+        if (isset($data['Brand'])) {
+            $payload['brand'] = $data['Brand'];
+        }
+
         $this->sendJsonRequest('POST', '/app/customer', $payload);
     }
 
