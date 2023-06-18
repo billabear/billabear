@@ -16,7 +16,8 @@ export const EMAIL_TEMPLATES_CREATE_TRANSLATIONS = {
         subject: "The message to be put in the subject",
         template_body: "The TWIG template that is to be used to generate the html for the email.",
         template_id: "The template ID given to you by your email service provider where you created the template. If unsure uncheck use emsp template.",
-        brand: "The brand that the email template is for."
+        brand: "The brand that the email template is for.",
+        variable_docs: "Check the documentation to see what variables are available",
     },
     submit_btn: "Create",
     success_message: "Successfully created email template"

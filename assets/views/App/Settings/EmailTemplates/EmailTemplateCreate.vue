@@ -66,6 +66,7 @@
         <input type="text" class="form-field" id="template_id" v-model="emailTemplate.template_id"  />
         <p class="form-field-help">{{ $t('app.settings.email_template.create.help_info.template_id') }}</p>
       </div>
+      <p class="mt-4 form-field-help"><a :href="'https://docs.billabear.com/docs/user/templates/email_variables?utm=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=email_variables'">{{ $t('app.settings.email_template.update.help_info.variable_docs') }}</a> </p>
     </div>
 
       <div class="form-field-submit-ctn">

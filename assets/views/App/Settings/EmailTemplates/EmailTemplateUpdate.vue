@@ -51,6 +51,7 @@
         <p class="form-field-error" v-if="errors.template_body != undefined">{{ errors.template_body }}</p>
         <textarea class="form-field" id="template_body" rows="9" cols="60" v-model="emailTemplate.template_body"></textarea>
         <p class="form-field-help">{{ $t('app.settings.email_template.update.help_info.template_body') }}</p>
+
       </div>
       <div class="form-field-ctn" v-if="emailTemplate.use_emsp_template === true">
         <label class="form-field-lbl" for="template_id">
@@ -60,6 +61,8 @@
         <input type="text" class="form-field" id="template_id" v-model="emailTemplate.template_id"  />
         <p class="form-field-help">{{ $t('app.settings.email_template.update.help_info.template_id') }}</p>
       </div>
+      <p class="mt-4 form-field-help"><a :href="'https://docs.billabear.com/docs/user/templates/email_variables?utm=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=email_variables'">{{ $t('app.settings.email_template.update.help_info.variable_docs') }}</a> </p>
+
     </div>
 
       <div class="form-field-submit-ctn">
@@ -78,6 +81,7 @@ export default {
   data() {
     return {
       allowedNames: [],
+      origin: '',
       emailTemplate: {
         name: null,
         locale: null,
@@ -95,6 +99,7 @@ export default {
   },
   mounted() {
     var id = this.$route.params.id
+    this.origin = window.location.hostname;
     axios.get('/app/settings/email-template/'+id).then(response => {
       this.emailTemplate = response.data.email_template;
     })
