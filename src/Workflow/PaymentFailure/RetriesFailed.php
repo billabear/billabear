@@ -35,7 +35,7 @@ class RetriesFailed implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.payment_creation.transition.retries_failed' => ['transition'],
+            'workflow.payment_failure_process.transition.retries_failed' => ['transition'],
         ];
     }
 }

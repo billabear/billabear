@@ -69,8 +69,10 @@ class PaymentFailureHandler
             $paymentFailureProcess->increaseRetryCount();
         }
 
-        if (6 === $paymentFailureProcess->getRetryCount()) {
-            $this->paymentFailureProcessStateMachine->apply($paymentFailureProcess, 'retries_failed');
+        if (5 === $paymentFailureProcess->getRetryCount()) {
+            if ($this->paymentFailureProcessStateMachine->can($paymentFailureProcess, 'retries_failed')) {
+                $this->paymentFailureProcessStateMachine->apply($paymentFailureProcess, 'retries_failed');
+            }
             $paymentFailureProcess->setState('payment_failure_no_more_retries');
         } else {
             $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));

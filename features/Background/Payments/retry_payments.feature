@@ -43,7 +43,7 @@ Feature: Retry failed payments
       | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
       | Test Plan         | 3000         | USD            | month          | customer.two@example.org   | +3 Minutes  | Active    |
       | Test Two          | 30000        | USD            | year           | customer.three@example.org | +3 Minutes  | Active    |
-      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Active    |
       | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
       | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
 
@@ -61,3 +61,13 @@ Feature: Retry failed payments
     When I retry failed payments
     Then then the invoice for "customer.four@example.org" will not be marked as paid
     And the retry count for payment failure process for "customer.four@example.org" will be 2
+    Then the subscription "Test Plan" for "customer.four@example.org" will not be cancelled
+
+  Scenario:
+    Given the following invoices with a payment attempt exist:
+      | Customer                  | Paid  | Next Attempt | Retry Count |
+      | customer.four@example.org | false | +30 seconds  | 4           |
+    When I retry failed payments
+    Then then the invoice for "customer.four@example.org" will not be marked as paid
+    And the retry count for payment failure process for "customer.four@example.org" will be 5
+    Then the subscription "Test Plan" for "customer.four@example.org" will be cancelled
