@@ -94,6 +94,7 @@ class VoucherController
             $currencies[] = $price->getCurrency();
         }
         $currencies = array_unique($currencies);
+        sort($currencies);
 
         return new JsonResponse(['currencies' => $currencies]);
     }
