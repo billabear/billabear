@@ -21,8 +21,8 @@ use App\Repository\PaymentFailureProcessRepositoryInterface;
 use Obol\Model\ChargeCardResponse;
 use Obol\Model\Events\ChargeFailed;
 use Parthenon\Billing\Entity\Payment;
-use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class PaymentFailureHandler
 {
@@ -31,7 +31,7 @@ class PaymentFailureHandler
         private PaymentAttemptRepositoryInterface $paymentAttemptRepository,
         private PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
         private EventDispatcherInterface $dispatcher,
-        private SubscriptionManagerInterface $subscriptionManager,
+        private WorkflowInterface $paymentFailureProcessStateMachine,
     ) {
     }
 
@@ -70,9 +70,7 @@ class PaymentFailureHandler
         }
 
         if (6 === $paymentFailureProcess->getRetryCount()) {
-            foreach ($paymentFailureProcess->getPaymentAttempt()->getSubscriptions() as $subscription) {
-                $this->subscriptionManager->cancelSubscriptionInstantly($subscription);
-            }
+            $this->paymentFailureProcessStateMachine->apply($paymentFailureProcess, 'retries_failed');
             $paymentFailureProcess->setState('payment_failure_no_more_retries');
         } else {
             $paymentFailureProcess->setNextAttemptAt(new \DateTime(PaymentFailureProcess::DEFAULT_NEXT_ATTEMPT));
