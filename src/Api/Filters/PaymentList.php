@@ -12,10 +12,17 @@
 
 namespace App\Api\Filters;
 
+use Parthenon\Athena\Filters\ContainsFilter;
+
 class PaymentList extends AbstractFilterList
 {
     protected function getFilters(): array
     {
-        return [];
+        return [
+            'email' => [
+                'field' => 'customer.billingEmail',
+                'filter' => ContainsFilter::class,
+            ],
+        ];
     }
 }

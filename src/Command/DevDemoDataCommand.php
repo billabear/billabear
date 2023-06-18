@@ -67,7 +67,7 @@ class DevDemoDataCommand extends Command
         $products = $input->getOption('products');
 
         $output->writeln('Start creating demo data');
-        // $this->customerCreation->createData($output);
+        $this->customerCreation->createData($output);
         if ('true' === strtolower($products)) {
             $this->subscriptionPlanCreation->createData($output);
         }

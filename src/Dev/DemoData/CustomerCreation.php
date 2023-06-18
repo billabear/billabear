@@ -68,6 +68,7 @@ class CustomerCreation
             $customer->setReference($faker->domainWord);
             $customer->setLocale($faker->locale);
             $customer->setBrandSettings($brandSettings);
+            $customer->setCreatedAt(new \DateTime('now'));
 
             $this->externalRegister->register($customer);
             $this->customerRepository->save($customer);
