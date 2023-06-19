@@ -16,52 +16,23 @@ Billing Made easy... Coming soon.
 
 ## Features:
 
-### White Label Billing
+* Fully customisable Invoice, Receipt, and Email templates
+* White Label Billing - Handle multiple brands
+* Voucher Management
+* REST API for integration
+* Multiple Email Integrations - SendGrid, MailGun, and Postmark
+* Expired Card Notifications - including ability to offer incentives to add a card.
+* Multiple Subscriptions per customer
+* Ability to have Custom Plans and Custom pricing
+* Stripe Billing Integration
+* Ability to Migrate away from Stripe Billing
+* Invoice payment type for Enterprise customers
 
-You'll be able to bill customers in a white label fashion, enabling you to white label your applications a lot easier.
+## RoadMap
 
-You'll be able to define which brand a customer belongs to and all emails will be sent using the correct brand template. Removing tedious work when selling a white label version for resell.
-
-### Support Enterprise Customers with Custom Plans and Invoice Billing
-
-You'll be able to handle enterprise customers a lot easier. With the ability to define a customer as having an payment type of invoice will allow you to onboard and conform with enterprise billing requirements.
-
-You'll be able to create custom plans with custom limits for Enterprise customers to meet their specific requirements.
-
-### Dunning/Payment Reminders
-
-The ability to define how payment reminds and payment attempts are done after a payment has failed.
-
-### Expiring Card Notifications
-
-You'll be able to reduce your customer churn related to expired cards by sending notifications.
-
-Notifications:
-
-* Start of the month to tell them that it's expired
-* The day before the payment while the card is still meant to be valid.
-* The day before the next payment after the card has expired.
-
-You'll be able to decrease churn further by offering credit for customers who update their card after receiving a notification that their payment method will expire.
-
-### Stripe Billing Integration - Extent or replace
-
-You'll be able to continue using the Stripe Billing functionality that you love. While being able to take advantage of all other features.
-
-Or if you're looking to save costs, you can easily migrate away from Stripe Billing with the simple click of a button and let BillaBear handle it.
-
-### Subscription Management
-
-You'll be able to quickly and easy manage subscriptions.
-
-* Easily change prices for subscriptions including moving existing Stripe Billing subscriptions to a new price.
-* Move all existing subscriptions to a new plan.
-
-### Fully customisable templates for PDFs and Emails
-
-You'll be in complete control of your templates for invoice and receipt PDFs. With the ability to edit templates using the Twig templating language.
-
-With Emails, you'll be able to use the Twig templating language or select an Email Service Provider such as **SendGrid**, **MailGun**, or **PostFix** and use their templates.
+* Webhooks to listen for billing events
+* Tax Software Integrations
+* Better Reports
 
 ## Getting Started
 
@@ -84,3 +55,5 @@ docker compose up -d
 ```
 
 Then go to http://localhost and follow the install instructions.
+
+## FAQ
