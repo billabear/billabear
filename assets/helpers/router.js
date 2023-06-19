@@ -9,6 +9,7 @@ import ConfirmEmail from "../views/Public/ConfirmEmail";
 import {APP_ROUTES} from "./app.routes";
 import InternalApp from "../views/App/InternalApp";
 import StartingPoint from "../views/Install/StartingPoint.vue";
+import StripeNoKey from "../views/Install/StripeNoKey.vue";
 
 
 export const router = createRouter({
@@ -27,6 +28,9 @@ export const router = createRouter({
         },
         {
             path: '/install', component: StartingPoint
+        },
+        {
+            path: '/error/stripe', component: StripeNoKey
         },
         // otherwise redirect to home
         { path: '/:pathMatch(.*)/', redirect: '/login' }

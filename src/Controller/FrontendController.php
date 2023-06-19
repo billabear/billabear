@@ -14,6 +14,7 @@ namespace App\Controller;
 
 use App\Repository\SettingsRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,14 +32,26 @@ class FrontendController
     #[Route('/app/plan', name: 'app_plan', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function home(
         Environment $twig,
-        SettingsRepositoryInterface $settingsRepository)
-    {
+        SettingsRepositoryInterface $settingsRepository,
+        #[Autowire(env: 'STRIPE_PRIVATE_API_KEY')] $privateApiKey,
+    ) {
+        if (empty($privateApiKey)) {
+            return new RedirectResponse('/error/stripe');
+        }
+
         try {
             $settings = $settingsRepository->getDefaultSettings();
         } catch (TableNotFoundException $exception) {
             return new RedirectResponse('/install');
         }
 
+        return new Response($twig->render('index.html.twig'));
+    }
+
+    #[Route('/error/stripe', name: 'app_site_error', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    public function stripeError(
+        Environment $twig, )
+    {
         return new Response($twig->render('index.html.twig'));
     }
 }
