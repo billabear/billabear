@@ -56,6 +56,7 @@ import VouchersList from "../views/App/Vouchers/VouchersList.vue";
 import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
 import VouchersView from "../views/App/Vouchers/VouchersView.vue";
 import SubscriptionMassChange from "../views/App/Subscription/SubscriptionMassChange.vue";
+import SubscriptionsOverview from "../views/App/Reports/Subscriptions/SubscriptionsOverview.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -79,6 +80,11 @@ export const APP_ROUTES = [
                 name: 'app.expiring_cards.list',
                 path: 'expiring-cards',
                 component: ExpiringCardsList
+            },
+            {
+                name: 'app.report.subscriptions',
+                path: 'subscriptions',
+                component: SubscriptionsOverview,
             }
         ]
     },

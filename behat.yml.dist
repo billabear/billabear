@@ -68,6 +68,7 @@ default:
 
                 # Stats
                 - App\Tests\Behat\Stats\MainContext
+                - App\Tests\Behat\Stats\SubscriptionsContext
 
                 # Reports
                 - App\Tests\Behat\Reports\ExpiringCards\AppContext

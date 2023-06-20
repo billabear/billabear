@@ -44,4 +44,8 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int;
 
     public function getOldestSubscription(): Subscription;
+
+    public function getPlanCounts(): array;
+
+    public function getScheduleCounts(): array;
 }

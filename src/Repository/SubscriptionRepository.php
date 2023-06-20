@@ -126,4 +126,29 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
         return $subscription;
     }
+
+    public function getPlanCounts(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->select('COUNT(s) as count, p.name')
+            ->innerJoin('s.subscriptionPlan', 'p')
+            ->groupBy('p.name')
+            ->where('s.status = :status')
+            ->setParameter('status', SubscriptionStatus::ACTIVE);
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function getScheduleCounts(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->select('COUNT(s) as count, s.paymentSchedule as name')
+            ->groupBy('s.paymentSchedule')
+            ->where('s.status = :status')
+            ->setParameter('status', SubscriptionStatus::ACTIVE);
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }
