@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.reports.subscriptions.overview.title') }}</h1>
+    <h1 class="page-title mb-5">{{ $t('app.reports.subscriptions.overview.title') }}</h1>
     <LoadingScreen :ready="ready">
 
       <div class="grid grid-cols-2 gap-5">
