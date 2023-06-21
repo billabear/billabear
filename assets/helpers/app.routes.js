@@ -57,6 +57,7 @@ import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
 import VouchersView from "../views/App/Vouchers/VouchersView.vue";
 import SubscriptionMassChange from "../views/App/Subscription/SubscriptionMassChange.vue";
 import SubscriptionsOverview from "../views/App/Reports/Subscriptions/SubscriptionsOverview.vue";
+import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -85,6 +86,12 @@ export const APP_ROUTES = [
                 name: 'app.report.subscriptions',
                 path: 'subscriptions',
                 component: SubscriptionsOverview,
+            },
+            {
+                name: 'app.report.vat',
+                path: 'vat',
+                component: VatOverview,
+
             }
         ]
     },

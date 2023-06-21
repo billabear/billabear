@@ -271,6 +271,10 @@ services:
     app.repository.orm.invoice:
         class: App\Repository\Orm\InvoiceRepository
 
+    App\Repository\VatReportInvoiceRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.invoice'
+
     App\Repository\CreditRepository:
         arguments:
             $entityRepository: '@app.repository.orm.credit'
