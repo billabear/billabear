@@ -12,6 +12,7 @@
 
 namespace App\Controller\App;
 
+use App\Database\TransactionManager;
 use App\Dto\Generic\App\Receipt;
 use App\Dummy\Data\ReceiptProvider;
 use App\Factory\ReceiptFactory;
@@ -40,7 +41,8 @@ class ReceiptController
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptGeneratorInterface $receiptGenerator,
         ReceiptFactory $receiptFactory,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        TransactionManager $transactionManager
     ): Response {
         try {
             /** @var Payment $payment */
@@ -49,9 +51,15 @@ class ReceiptController
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $receipt = $receiptGenerator->generateReceiptForPayment($payment);
-        $receiptRepository->save($receipt);
-
+        $transactionManager->start();
+        try {
+            $receipt = $receiptGenerator->generateReceiptForPayment($payment);
+            $receiptRepository->save($receipt);
+        } catch (\Throwable $exception) {
+            $transactionManager->abort();
+            throw $exception;
+        }
+        $transactionManager->finish();
         $dto = $receiptFactory->createAppDto($receipt);
         $json = $serializer->serialize($dto, 'json');
 
