@@ -12,6 +12,7 @@
 
 namespace App\Controller;
 
+use App\Database\TransactionManager;
 use App\Entity\User;
 use App\Install\DatabaseCreator;
 use App\Install\Dto\InstallRequest;
@@ -75,6 +76,7 @@ class InstallController
         DataStep $dataStep,
         UserCreatorInterface $userCreator,
         UserRepositoryInterface $userRepository,
+        TransactionManager $transactionManager
     ): Response {
         /** @var InstallRequest $dto */
         $dto = $serializer->deserialize($request->getContent(), InstallRequest::class, 'json');
@@ -85,21 +87,28 @@ class InstallController
         if ($errorResponse) {
             return $errorResponse;
         }
+        $transactionManager->start();
+        try {
+            $creator->createDbSchema();
+            $systemSettingsStep->install($dto);
+            $brandStep->install($dto);
+            $templateStep->install();
+            $dataStep->install();
 
-        $creator->createDbSchema();
-        $systemSettingsStep->install($dto);
-        $brandStep->install($dto);
-        $templateStep->install();
-        $dataStep->install();
+            $user = new User();
+            $user->setEmail($dto->getEmail());
+            $user->setPassword($dto->getPassword());
+            $userCreator->create($user);
 
-        $user = new User();
-        $user->setEmail($dto->getEmail());
-        $user->setPassword($dto->getPassword());
-        $userCreator->create($user);
+            $user->setIsConfirmed(true);
+            $user->setRoles([User::ROLE_ADMIN]);
+            $userRepository->save($user);
+            $transactionManager->finish();
+        } catch (\Throwable $e) {
+            $transactionManager->abort();
 
-        $user->setIsConfirmed(true);
-        $user->setRoles([User::ROLE_ADMIN]);
-        $userRepository->save($user);
+            return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return new JsonResponse([]);
     }
