@@ -14,6 +14,7 @@ namespace App\Controller\App;
 
 use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
+use App\Database\TransactionManager;
 use App\Dto\Generic\App\SubscriptionPlan;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
@@ -123,6 +124,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         SubscriptionFactory $subscriptionFactory,
+        TransactionManager $transactionManager,
     ): Response {
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
@@ -152,8 +154,14 @@ class SubscriptionController
             $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         }
         $price = $priceRepository->findById($dto->getPrice());
-
-        $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers(), $dto->getHasTrial(), $dto->getTrialLengthDays());
+        $transactionManager->start();
+        try {
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers(), $dto->getHasTrial(), $dto->getTrialLengthDays());
+        } catch (\Throwable $e) {
+            $transactionManager->abort();
+            throw $e;
+        }
+        $transactionManager->finish();
         $subscriptionDto = $subscriptionFactory->createAppDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
