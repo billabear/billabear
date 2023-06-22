@@ -14,6 +14,7 @@ namespace App\Controller\Api;
 
 use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
+use App\Database\TransactionManager;
 use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
 use App\Dto\Request\Api\Subscription\UpdatePlan;
@@ -62,6 +63,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         SubscriptionFactory $subscriptionFactory,
+        TransactionManager $transactionManager
     ): Response {
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
@@ -97,7 +99,13 @@ class SubscriptionController
         }
         $price = $priceRepository->findById($dto->getPrice());
 
-        $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
+        $transactionManager->start();
+        try {
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
+        } catch (\Throwable $e) {
+            $transactionManager->abort();
+        }
+        $transactionManager->finish();
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
