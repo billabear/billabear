@@ -60,7 +60,9 @@ class InvoiceGeneratorTest extends TestCase
         $voucherApplication = $this->createMock(VoucherApplicationRepositoryInterface::class);
         $voucherApplication->method('findUnUsedForCustomer')->willThrowException(new NoEntityFoundException());
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository, $creditAdjustmentRecorder, $voucherApplication);
+        $eventDispatcher = $this->createMock(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
