@@ -10,6 +10,7 @@ import {APP_ROUTES} from "./app.routes";
 import InternalApp from "../views/App/InternalApp";
 import StartingPoint from "../views/Install/StartingPoint.vue";
 import StripeNoKey from "../views/Install/StripeNoKey.vue";
+import StripeInvalid from "../views/Install/StripeInvalid.vue";
 
 
 export const router = createRouter({
@@ -31,6 +32,9 @@ export const router = createRouter({
         },
         {
             path: '/error/stripe', component: StripeNoKey
+        },
+        {
+            path: '/error/stripe-invalid', component: StripeInvalid
         },
         // otherwise redirect to home
         { path: '/:pathMatch(.*)/', redirect: '/login' }

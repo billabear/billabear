@@ -23,6 +23,10 @@ use App\Repository\SettingsRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Parthenon\User\Creator\UserCreatorInterface;
+use Stripe\Account;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Stripe;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +41,19 @@ class InstallController
     use ValidationErrorResponseTrait;
 
     #[Route('/install', name: 'app_install', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    public function installDefault(Environment $twig, SettingsRepositoryInterface $settingsRepository): Response
+    public function installDefault(
+        Environment $twig,
+        SettingsRepositoryInterface $settingsRepository,
+        #[Autowire('%parthenon_billing_payments_obol_config%')]
+        $stripeConfig, ): Response
     {
+        try {
+            Stripe::setApiKey($stripeConfig['api_key']);
+            Account::retrieve();
+        } catch (ApiErrorException $e) {
+            return new RedirectResponse('/error/stripe-invalid');
+        }
+
         try {
             $settings = $settingsRepository->getDefaultSettings();
         } catch (TableNotFoundException $exception) {

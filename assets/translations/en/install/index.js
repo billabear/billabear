@@ -20,6 +20,7 @@ export const INSTALL_TRANSLATIONS = {
     stripe: {
         no_api_key: 'You need to provide a Stripe API key in the ENV variable STRIPE_PRIVATE_API_KEY.',
         doc_link: 'More information on how to set up BillaBear.',
+        invalid_api_key: "The Stripe API key is invalid",
         support_link: "You can ask for help here."
     }
 }

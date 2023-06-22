@@ -49,6 +49,7 @@ class FrontendController
     }
 
     #[Route('/error/stripe', name: 'app_site_error', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/error/stripe-invalid', name: 'app_site_error_invalid', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function stripeError(
         Environment $twig, )
     {
