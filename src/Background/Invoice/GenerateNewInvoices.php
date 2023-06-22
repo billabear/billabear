@@ -12,6 +12,7 @@
 
 namespace App\Background\Invoice;
 
+use App\Database\TransactionManager;
 use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
@@ -31,6 +32,7 @@ class GenerateNewInvoices
         private SchedulerProvider $schedulerProvider,
         private InvoiceCharger $invoiceCharger,
         private SettingsRepositoryInterface $settingsRepository,
+        private TransactionManager $transactionManager,
     ) {
     }
 
@@ -69,14 +71,20 @@ class GenerateNewInvoices
      */
     protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
     {
-        foreach ($activeSubscriptions as $activeSubscription) {
-            $this->schedulerProvider->getScheduler($activeSubscription->getPrice())->scheduleNextDueDate($activeSubscription);
-            $activeSubscription->setUpdatedAt(new \DateTime('now'));
-            $this->subscriptionRepository->save($activeSubscription);
+        try {
+            $this->transactionManager->start();
+            foreach ($activeSubscriptions as $activeSubscription) {
+                $this->schedulerProvider->getScheduler($activeSubscription->getPrice())->scheduleNextDueDate($activeSubscription);
+                $activeSubscription->setUpdatedAt(new \DateTime('now'));
+                $this->subscriptionRepository->save($activeSubscription);
+            }
+            $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+        } catch (\Throwable $exception) {
+            $this->transactionManager->abort();
+            throw $exception;
         }
 
-        $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
-
+        $this->transactionManager->finish();
         if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
             $this->invoiceCharger->chargeInvoice($invoice);
         }

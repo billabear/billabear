@@ -10,7 +10,7 @@
           <a @click="view = 'notifications'" class="viewLink" :class="{activeView: view === 'notifications'}">{{ $t('app.settings.brand_settings.update.notifications') }}</a>
         </div>
         <div v-if="view === 'general'">
-          <div class="mt-3">
+          <div class="card-body mt-3">
             <div class="form-field-ctn">
               <label class="form-field-lbl" for="reference">
                 {{ $t('app.settings.brand_settings.update.fields.name') }}
@@ -104,6 +104,7 @@
           </div>
         </div>
         <div v-if="view === 'notifications'">
+          <div class="card-body">
           <div class="grid grid-cols-3">
             <div class="ds">
               <input type="checkbox" id="subscription_creation" v-model="brand.notifications.subscription_creation" />
@@ -121,7 +122,11 @@
               <input type="checkbox" id="expiring_card_warning_day_before" v-model="brand.notifications.expiring_card_warning_day_before" />
               <label for="expiring_card_warning_day_before" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.expiring_card_warning_day_before') }}</label>
             </div>
-          </div>
+            <div class="ds">
+              <input type="checkbox" id="invoice_created" v-model="brand.notifications.invoice_created" />
+              <label for="invoice_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.invoice_created') }}</label>
+            </div>
+          </div></div>
         </div>
         <div class="form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.brand_settings.update.submit_btn') }}</SubmitButton>

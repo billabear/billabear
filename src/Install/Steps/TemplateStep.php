@@ -474,7 +474,16 @@ SOFTWARE. #}
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILED);
         $emailTemplate->setSubject('Payment Failed');
-        $emailTemplate->setTemplateBody($this->getEmailTemplate('Thanks for your payment. Here is the receipt.'));
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('We\'ve tried to charge you and the payment failed! We\'ll try and charge you later.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_INVOICE_CREATED);
+        $emailTemplate->setSubject('New Invoice');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your new invoice is ready.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
@@ -483,7 +492,7 @@ SOFTWARE. #}
         $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILURE_WARNING);
         $emailTemplate->setSubject('Payment Failed');
-        $emailTemplate->setTemplateBody($this->getEmailTemplate('Thanks for your payment. Here is the receipt. We\'ll try and charge you later.'));
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('We\'ve tried to charge you and the payment failed! We\'ll try and charge you later.'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);

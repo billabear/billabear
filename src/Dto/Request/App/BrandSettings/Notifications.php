@@ -28,6 +28,9 @@ class Notifications
     #[SerializedName('expiring_card_warning_day_before')]
     private $expiringCardDayBeforeWarning;
 
+    #[SerializedName('invoice_created')]
+    private $invoiceCreated;
+
     public function getSubscriptionCreation()
     {
         return true === $this->subscriptionCreation;
@@ -66,5 +69,15 @@ class Notifications
     public function setExpiringCardDayBeforeWarning($expiringCardDayBeforeWarning): void
     {
         $this->expiringCardDayBeforeWarning = $expiringCardDayBeforeWarning;
+    }
+
+    public function getInvoiceCreated()
+    {
+        return $this->invoiceCreated;
+    }
+
+    public function setInvoiceCreated($invoiceCreated): void
+    {
+        $this->invoiceCreated = $invoiceCreated;
     }
 }

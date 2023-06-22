@@ -29,6 +29,9 @@ class NotificationSettings
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $expiringCardDayBefore = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $invoiceCreated = null;
+
     public function getSubscriptionCreation(): bool
     {
         return true === $this->subscriptionCreation;
@@ -67,5 +70,15 @@ class NotificationSettings
     public function setExpiringCardDayBefore(?bool $expiringCardDayBefore): void
     {
         $this->expiringCardDayBefore = $expiringCardDayBefore;
+    }
+
+    public function getInvoiceCreated(): bool
+    {
+        return true === $this->invoiceCreated;
+    }
+
+    public function setInvoiceCreated(?bool $invoiceCreated): void
+    {
+        $this->invoiceCreated = $invoiceCreated;
     }
 }

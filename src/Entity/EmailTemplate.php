@@ -35,6 +35,8 @@ class EmailTemplate
 
     public const NAME_PAYMENT_METHOD_NO_VALID_METHODS = 'payment_method_no_valid_methods';
 
+    public const NAME_INVOICE_CREATED = 'invoice_created';
+
     public const TEMPLATE_NAMES = [
         self::NAME_SUBSCRIPTION_CREATED,
         self::NAME_SUBSCRIPTION_PAUSED,
@@ -44,6 +46,7 @@ class EmailTemplate
         self::NAME_PAYMENT_FAILURE_WARNING,
         self::NAME_PAYMENT_METHOD_EXPIRY_WARNING,
         self::NAME_PAYMENT_METHOD_NO_VALID_METHODS,
+        self::NAME_INVOICE_CREATED,
     ];
 
     #[ORM\Id]

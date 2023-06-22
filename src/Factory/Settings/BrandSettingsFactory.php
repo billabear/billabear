@@ -45,6 +45,7 @@ class BrandSettingsFactory
         $brandSettings->getNotificationSettings()->setSubscriptionCancellation($dto->getNotifications()->getSubscriptionCancellation());
         $brandSettings->getNotificationSettings()->setExpiringCardWarning($dto->getNotifications()->getExpiringCardWarning());
         $brandSettings->getNotificationSettings()->setExpiringCardDayBefore($dto->getNotifications()->getExpiringCardDayBeforeWarning());
+        $brandSettings->getNotificationSettings()->setInvoiceCreated($dto->getNotifications()->getInvoiceCreated());
 
         return $brandSettings;
     }
@@ -72,6 +73,7 @@ class BrandSettingsFactory
         $dto->getNotifications()->setSubscriptionCancellation($brandSettings->getNotificationSettings()->getSubscriptionCancellation());
         $dto->getNotifications()->setExpiringCardWarning($brandSettings->getNotificationSettings()->getExpiringCardWarning());
         $dto->getNotifications()->setExpiringCardDayBeforeWarning($brandSettings->getNotificationSettings()->getExpiringCardDayBefore());
+        $dto->getNotifications()->setInvoiceCreated($brandSettings->getNotificationSettings()->getInvoiceCreated());
 
         return $dto;
     }

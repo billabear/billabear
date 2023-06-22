@@ -17,12 +17,14 @@ use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Event\InvoiceCreated;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceGenerator
 {
@@ -32,6 +34,7 @@ class InvoiceGenerator
         private InvoiceRepositoryInterface $invoiceRepository,
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
         private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -198,6 +201,8 @@ class InvoiceGenerator
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
 
         $this->invoiceRepository->save($invoice);
+
+        $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
 
         return $invoice;
     }
