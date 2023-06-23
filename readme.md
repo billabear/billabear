@@ -7,10 +7,11 @@
 </p>
 
 BillaBear is a standalone Subscription Management and Billing System that integrates with Stripe. It provides a REST API allowing you to integrate it easily.
+
 ## Documentation
 
-* [User Documentation](https://docs.billabear.com/docs/user/) - How to use BillaBear as a user
-* [Technical Documentation](https://docs.billabear.com/docs/technical/) - Technical information for hosting and integration
+* [User Documentation](https://docs.billabear.com/user/) - How to use BillaBear as a user
+* [Technical Documentation](https://docs.billabear.com/technical/) - Technical information for hosting and integration
 * [Swagger](https://swagger.billabear.com) - The REST API docs for integration
 
 ## Features:
@@ -28,6 +29,16 @@ BillaBear is a standalone Subscription Management and Billing System that integr
 * Ability to Migrate away from Stripe Billing
 * Invoice payment type for Enterprise customers
 
+## Lifetime Deal
+
+Until the 1st of July we're offering a lifetime upgrade license for a one-off fee of  250 GBP. [Buy a lifetime upgrade license here](https://buy.stripe.com/4gweY33GnaNP8daeUU).
+
+This offer must end on the 1st of July as we'll start approaching companies asking for thousands per year so this offer must end.
+
+What do you get? A license to use BillaBear in production and priority customer support forever.
+
+[Buy now](https://buy.stripe.com/4gweY33GnaNP8daeUU).
+
 ## RoadMap
 
 * Webhooks to listen for billing events
@@ -38,15 +49,7 @@ BillaBear is a standalone Subscription Management and Billing System that integr
 * Metric and Usage Based Billing
 * [And you can add more here](https://github.com/billabear/billabear/discussions/categories/ideas)
 
-## Lifetime Deal
 
-Until the 1st of July we're offering a lifetime upgrade license for a one-off fee of  250 GBP. [Buy a lifetime upgrade license here](https://buy.stripe.com/4gweY33GnaNP8daeUU).
-
-This offer must end on the 1st of July as we'll start approaching companies asking for thousands per year so this offer must end.
-
-What do you get? A license to use BillaBear in production and priority customer support forever.
-
-[Buy now](https://buy.stripe.com/4gweY33GnaNP8daeUU).
 
 ## How to Integrate
 
@@ -96,3 +99,11 @@ We sell perpetual licenses for the version that was released on the date of purc
 ### How much does BillaBear cost?
 
 To get pricing email sales@billabear.com.
+
+Until the 1st of July we're offering a lifetime upgrade license for a one-off fee of  250 GBP. [Buy a lifetime upgrade license here](https://buy.stripe.com/4gweY33GnaNP8daeUU).
+
+This offer must end on the 1st of July as we'll start approaching companies asking for thousands per year so this offer must end.
+
+What do you get? A license to use BillaBear in production and priority customer support forever.
+
+[Buy now](https://buy.stripe.com/4gweY33GnaNP8daeUU).
