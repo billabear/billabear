@@ -56,7 +56,7 @@ What do you get? A license to use BillaBear in production and priority customer 
 To start integrating with BillaBear you can use the REST API.
 
 * [Swagger Docs](https://swagger.billabear.com)
-* [Technical Documentation For APIpp;](https://docs.billabear.com/docs/technical/api/)
+* [Technical Documentation For API](https://docs.billabear.com/technical/api/)
 
 ## Getting Started
 

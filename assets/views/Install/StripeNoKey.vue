@@ -7,7 +7,7 @@
       </div>
       <p class="my-4 text-center">{{ $t('install.stripe.no_api_key') }}</p>
 
-      <p class="my-4 text-center"><a target="_blank" :href="'https://docs.billabear.com/docs/technical/install/?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('install.stripe.doc_link') }}</a></p>
+      <p class="my-4 text-center"><a target="_blank" :href="'https://docs.billabear.com/technical/install/?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('install.stripe.doc_link') }}</a></p>
 
       <p class="my-4 text-center"><a target="_blank" href="https://github.com/billabear/billabear/discussions/categories/q-a">{{ $t('install.stripe.support_link') }}</a></p>
     </div>
