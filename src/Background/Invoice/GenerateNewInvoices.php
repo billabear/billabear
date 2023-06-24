@@ -73,6 +73,9 @@ class GenerateNewInvoices
     {
         try {
             $this->transactionManager->start();
+            $this->getLogger()->info('Generating invoice for customer and subscriptions', ['customer_id' => (string) $customer->getId(), 'subscriptions' => array_map(function ($item) {
+                return (string) $item->getId();
+            }, $activeSubscriptions)]);
             foreach ($activeSubscriptions as $activeSubscription) {
                 $this->schedulerProvider->getScheduler($activeSubscription->getPrice())->scheduleNextDueDate($activeSubscription);
                 $activeSubscription->setUpdatedAt(new \DateTime('now'));
@@ -81,7 +84,13 @@ class GenerateNewInvoices
             $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
         } catch (\Throwable $exception) {
             $this->transactionManager->abort();
-            throw $exception;
+
+            $this->getLogger()->info('An error happened while generating exception', [
+                'exception_message' => $exception->getMessage(),
+                'customer_id' => (string) $customer->getId(),
+                'subscriptions' => array_map(function ($item) {
+                    return (string) $item->getId();
+                }, $activeSubscriptions)]);
         }
 
         $this->transactionManager->finish();

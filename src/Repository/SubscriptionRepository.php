@@ -27,10 +27,8 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         $fiveMinutes = new \DateTime('+5 minutes');
 
         $qb = $this->entityRepository->createQueryBuilder('s');
-        $qb->where('s.validUntil >= :thirtySecondsAgo')
-            ->andWhere('s.validUntil <= :fiveMinutes')
+        $qb->where('s.validUntil <= :fiveMinutes')
             ->andWhere('s.status = :status')
-            ->setParameter('thirtySecondsAgo', $thirtySecondsAgo)
             ->setParameter('fiveMinutes', $fiveMinutes)
             ->setParameter('status', SubscriptionStatus::ACTIVE)
             ->orderBy('s.customer');
