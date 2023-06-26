@@ -8,6 +8,9 @@
 
 BillaBear is a standalone Subscription Management and Billing System that integrates with Stripe. It provides a REST API allowing you to integrate it easily.
 
+[![Watch the video](https://img.youtube.com/vi/cbInyGtqLCs/default.jpg)](https://youtu.be/cbInyGtqLCs)
+
+
 ## Documentation
 
 * [User Documentation](https://docs.billabear.com/user/) - How to use BillaBear as a user
