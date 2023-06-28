@@ -13,8 +13,8 @@
 namespace App\Controller\App;
 
 use App\Database\TransactionManager;
-use App\Dto\Generic\App\Receipt;
 use App\Dummy\Data\ReceiptProvider;
+use App\Entity\Receipt;
 use App\Factory\ReceiptFactory;
 use App\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Payment;
