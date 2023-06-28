@@ -14,6 +14,7 @@ namespace App\Factory;
 
 use App\Dto\Generic\Api\Payment as ApiDto;
 use App\Dto\Generic\App\Payment as AppDto;
+use App\Entity\Customer;
 use Parthenon\Billing\Entity\Payment;
 
 class PaymentFactory
@@ -35,7 +36,7 @@ class PaymentFactory
         $dto->setPaymentProviderDetailsUrl($payment->getPaymentProviderDetailsUrl());
 
         $customer = $payment->getCustomer();
-        if (isset($customer)) {
+        if ($customer instanceof Customer) {
             $dto->setCustomer($this->customerFactory->createAppDto($customer));
         }
 
@@ -53,8 +54,8 @@ class PaymentFactory
         $dto->setCreatedAt($payment->getCreatedAt());
 
         $customer = $payment->getCustomer();
-        if (isset($customer)) {
-            $dto->setCustomer($this->customerFactory->createAppDto($customer));
+        if ($customer instanceof Customer) {
+            $dto->setCustomer($this->customerFactory->createApiDto($customer));
         }
 
         return $dto;
