@@ -16,6 +16,7 @@ use App\Dto\Request\Api\CreatePrice;
 use App\Dto\Response\Api\ListResponse;
 use App\Factory\PriceFactory;
 use Obol\Exception\ProviderFailureException;
+use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -110,6 +111,10 @@ class PriceController
         }
         // TODO add filters
         $filters = [];
+        $productFilter = new ExactChoiceFilter();
+        $productFilter->setFieldName('product');
+        $productFilter->setData($product);
+        $filters[] = $filters;
 
         $resultSet = $priceRepository->getList(
             filters: $filters,
