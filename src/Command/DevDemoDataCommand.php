@@ -34,12 +34,12 @@ class DevDemoDataCommand extends Command
 
     public static function getNumberOfCustomers(): int
     {
-        return static::$count;
+        return self::$count;
     }
 
     public static function getStartDate(): \DateTime
     {
-        return clone static::$date;
+        return clone self::$date;
     }
 
     public function __construct(
@@ -62,8 +62,8 @@ class DevDemoDataCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        static::$count = $input->getOption('count');
-        static::$date = new \DateTime($input->getOption('date'));
+        self::$count = $input->getOption('count');
+        self::$date = new \DateTime($input->getOption('date'));
         $products = $input->getOption('products');
 
         $output->writeln('Start creating demo data');
