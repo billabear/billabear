@@ -184,14 +184,15 @@ class StripeController
 
     #[Route('/app/settings/stripe/webhook/deregister', name: 'app_app_settings_stripe_deregisterwebhook', methods: ['POST'])]
     public function deregisterWebhook(
-        Request $request,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
         ProviderInterface $provider,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $settings = $settingsRepository->getDefaultSettings();
-        $response = $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getWebhookExternalReference());
+
+        if (null === $settings->getSystemSettings()->getWebhookExternalReference()) {
+            return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+        }
+        $provider->webhook()->deregisterWebhook($settings->getSystemSettings()->getWebhookExternalReference());
 
         $settings->getSystemSettings()->setWebhookExternalReference(null);
         $settings->getSystemSettings()->setWebhookUrl(null);
