@@ -68,7 +68,7 @@ class CustomerController
         $customer = $customerFactory->createCustomer($dto);
 
         // Todo move to validation
-        if ($customerRepository->hasCustomerByEmail($customer->getBillingEmail())) {
+        if ($customerRepository->hasCustomerByEmail((string) $customer->getBillingEmail())) {
             return new JsonResponse(null, JsonResponse::HTTP_CONFLICT);
         }
 

@@ -16,11 +16,10 @@ use App\Credit\CreditAdjustmentRecorder;
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Customer;
 use App\Factory\CreditFactory;
-use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use App\User\UserProvider;
 use Brick\Money\Money;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,8 +36,7 @@ class CreditController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CreditFactory $factory,
-        CreditRepositoryInterface $repository,
-        Security $security,
+        UserProvider $userProvider,
         CreditAdjustmentRecorder $creditAdjustmentRecorder
     ): Response {
         try {
@@ -64,7 +62,7 @@ class CreditController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $billingAdmin = $security->getUser();
+        $billingAdmin = $userProvider->getUser();
         $credit = $creditAdjustmentRecorder->createRecord($dto->getType(), $customer, Money::ofMinor($dto->getAmount(), strtoupper($dto->getCurrency())), $dto->getReason(), $billingAdmin);
 
         $customer->addCreditAsMoney($credit->asMoney());

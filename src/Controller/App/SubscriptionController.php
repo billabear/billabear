@@ -37,7 +37,7 @@ use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use App\Subscription\PaymentMethodUpdateProcessor;
-use Parthenon\Billing\Entity\BillingAdminInterface;
+use App\User\UserProvider;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
@@ -51,7 +51,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -301,9 +300,9 @@ class SubscriptionController
         CancellationRequestRepositoryInterface $cancellationRequestRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        Security $security,
         CancellationRequestProcessor $cancellationRequestProcessor,
         \App\Factory\CancellationRequestFactory $cancellationRequestFactory,
+        UserProvider $userProvider,
     ): Response {
         try {
             /** @var Subscription $subscription */
@@ -329,11 +328,7 @@ class SubscriptionController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $user = $security->getUser();
-
-        if (!$user instanceof BillingAdminInterface) {
-            throw new \LogicException('User is not a billing admin');
-        }
+        $user = $userProvider->getUser();
 
         $cancellationRequest = $cancellationRequestFactory->getCancellationRequestEntity($subscription, $dto, $user);
 

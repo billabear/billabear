@@ -20,10 +20,10 @@ use App\Entity\Voucher;
 use App\Factory\VoucherAmountFactory;
 use App\Factory\VoucherFactory;
 use App\Repository\VoucherRepositoryInterface;
+use App\User\UserProvider;
 use App\Voucher\VoucherRegister;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,7 +107,7 @@ class VoucherController
         ValidatorInterface $validator,
         VoucherRepositoryInterface $voucherRepository,
         VoucherFactory $voucherFactory,
-        Security $security,
+        UserProvider $userProvider,
         VoucherRegister $voucherRegister
     ) {
         $createVoucher = $serializer->deserialize($request->getContent(), CreateVoucher::class, 'json');
@@ -119,7 +119,7 @@ class VoucherController
         }
 
         $entity = $voucherFactory->createEntity($createVoucher);
-        $entity->setBillingAdmin($security->getUser());
+        $entity->setBillingAdmin($userProvider->getUser());
         $voucherRegister->register($entity);
         $voucherRepository->save($entity);
         $dto = $voucherFactory->createAppDto($entity);

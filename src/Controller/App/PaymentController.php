@@ -20,6 +20,7 @@ use App\Factory\PaymentFactory;
 use App\Factory\ReceiptFactory;
 use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
+use App\User\UserProvider;
 use Brick\Money\Currency;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\Payment;
@@ -34,7 +35,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -136,7 +136,7 @@ class PaymentController
         RefundManagerInterface $refundManager,
         RefundFactory $refundFactory,
         SerializerInterface $serializer,
-        Security $security,
+        UserProvider $userProvider,
         ValidatorInterface $validator,
     ) {
         try {
@@ -166,7 +166,7 @@ class PaymentController
 
         $amount = Money::ofMinor($dto->getAmount(), Currency::of($payment->getCurrency()));
         try {
-            $refund = $refundManager->issueRefundForPayment($payment, $amount, $security->getUser(), $dto->getReason());
+            $refund = $refundManager->issueRefundForPayment($payment, $amount, $userProvider->getUser(), $dto->getReason());
         } catch (RefundLimitExceededException $e) {
             return new JsonResponse(['message' => $e->getMessage()], status: JsonResponse::HTTP_NOT_ACCEPTABLE);
         }
