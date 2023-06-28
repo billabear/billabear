@@ -14,10 +14,10 @@ namespace App\Controller\App;
 
 use App\Database\TransactionManager;
 use App\Dummy\Data\ReceiptProvider;
-use App\Entity\Receipt;
 use App\Factory\ReceiptFactory;
 use App\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Receipt\ReceiptGeneratorInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
