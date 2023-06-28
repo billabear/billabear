@@ -79,9 +79,6 @@ class CancelSubscription
         return $this->comment;
     }
 
-    /**
-     * @param null $comment
-     */
     public function setComment($comment): void
     {
         $this->comment = $comment;

@@ -12,7 +12,6 @@
 
 namespace App\Dto\Generic\Api;
 
-use App\Dto\Generic\App\Customer;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Payment

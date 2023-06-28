@@ -52,7 +52,7 @@ class PaymentMethod
 
     public function getName(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function setName(?string $name): void

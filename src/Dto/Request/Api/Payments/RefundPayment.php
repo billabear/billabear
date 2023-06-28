@@ -56,9 +56,6 @@ class RefundPayment
         return $this->reason;
     }
 
-    /**
-     * @param null $reason
-     */
     public function setReason($reason): void
     {
         $this->reason = $reason;
