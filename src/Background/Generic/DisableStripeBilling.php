@@ -44,7 +44,7 @@ class DisableStripeBilling implements ExecutorInterface
             $cancelRequest->setSubscription($obolSubscription);
             $cancelRequest->setInstantCancel(true);
 
-            $cancellation = $this->provider->payments()->stopSubscription($cancelRequest);
+            $this->provider->payments()->stopSubscription($cancelRequest);
         }
     }
 }
