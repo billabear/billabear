@@ -177,6 +177,7 @@ class MainContext implements Context
         }
 
         $startDate = new \DateTime('-13 months');
+        $startDate->modify('first day of this month');
         $this->generateMonthlyStats($startDate);
         $endDate = new \DateTime('+1 day');
         while ($startDate <= $endDate) {
@@ -461,7 +462,6 @@ class MainContext implements Context
     {
         $data = $this->getJsonContent();
         if (count($data['subscription_creation']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
-            var_dump($data['subscription_creation']['monthly']);
             throw new \Exception('wrong count');
         }
     }
