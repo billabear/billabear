@@ -148,15 +148,15 @@ class TemplateStep
                 </tr>
                 <tr class="top">
                     <td colspan="2">
-                        <table>
+                         <table>
                             <tr>
                                 <td class="title">
-                                    {{ brand.brandName }}
+                                    {{ brand.name }}
                                 </td>
 
                                 <td>
                                     Invoice #: {{ invoice.id }}<br />
-                                    Created: {{ invoice.createdAt.format(\'Y-m-d\') }} <br />
+                                    Created: {{ invoice.created_at }} <br />
                                 </td>
                             </tr>
                         </table>
@@ -168,23 +168,23 @@ class TemplateStep
                         <table>
                             <tr>
                                 <td>
-                                    {{ invoice.billerAddress.companyName }}<br />
-                                    {{ invoice.billerAddress.streetLineOne }}<br />
-                                    {{ invoice.billerAddress.streetLineTwo }}<br />
-                                    {{ invoice.billerAddress.region }}<br />
-                                    {{ invoice.billerAddress.city }}<br />
-                                    {{ invoice.billerAddress.country }}<br />
-                                    {{ invoice.billerAddress.postcode }}
+                                    {{ invoice.biller_address.company_name }}<br />
+                                    {{ invoice.biller_address.street_line_one }}<br />
+                                    {{ invoice.biller_address.street_line_two }}<br />
+                                    {{ invoice.biller_address.region }}<br />
+                                    {{ invoice.biller_address.city }}<br />
+                                    {{ invoice.biller_address.country }}<br />
+                                    {{ invoice.biller_address.postcode }}
                                 </td>
 
                                 <td>
-                                    {{ invoice.payeeAddress.companyName }}<br />
-                                    {{ invoice.payeeAddress.streetLineOne }}<br />
-                                    {{ invoice.payeeAddress.streetLineTwo }}<br />
-                                    {{ invoice.payeeAddress.region }}<br />
-                                    {{ invoice.payeeAddress.city }}<br />
-                                    {{ invoice.payeeAddress.country }}<br />
-                                    {{ invoice.payeeAddress.postcode }}
+                                    {{ invoice.payee_address.company_name }}<br />
+                                    {{ invoice.payee_address.street_line_one }}<br />
+                                    {{ invoice.payee_address.street_line_two }}<br />
+                                    {{ invoice.payee_address.region }}<br />
+                                    {{ invoice.payee_address.city }}<br />
+                                    {{ invoice.payee_address.country }}<br />
+                                    {{ invoice.payee_address.postcode }}
                                 </td>
                             </tr>
                         </table>
@@ -201,14 +201,14 @@ class TemplateStep
                 <tr class="item">
                     <td>{{ line.description }}</td>
 
-                    <td>{{ line.totalMoney }}</td>
+                    <td>{{ line.total_display }}</td>
                 </tr>
                 {% endfor %}
 
                 <tr class="total">
                     <td></td>
 
-                    <td>Total: {{ invoice.totalMoney }}</td>
+                    <td>Total: {{ invoice.total_display }}</td>
                 </tr>
             </table>
         </div>
