@@ -71,13 +71,17 @@ class InvoicePdfGenerator
     private function getInvoiceData(Invoice $invoice): array
     {
         return [
+            'id' => (string) $invoice->getId(),
+            'number' => $invoice->getInvoiceNumber(),
             'total' => $invoice->getTotal(),
+            'total_display' => (string) $invoice->getTotalMoney(),
             'sub_total' => $invoice->getSubTotal(),
             'vat_total' => $invoice->getVatTotal(),
             'currency' => $invoice->getCurrency(),
             'lines' => array_map([$this, 'getInvoiceLineData'], $invoice->getLines()->toArray()),
             'biller_address' => $this->getAddress($invoice->getBillerAddress()),
             'payee_address' => $this->getAddress($invoice->getPayeeAddress()),
+            'created_at' => $invoice->getCreatedAt()->format(\DATE_ATOM),
         ];
     }
 
@@ -85,6 +89,7 @@ class InvoicePdfGenerator
     {
         return [
             'total' => $invoiceLine->getTotal(),
+            'total_display' => (string) $invoiceLine->getTotalMoney(),
             'sub_total' => $invoiceLine->getSubTotal(),
             'vat_total' => $invoiceLine->getVatTotal(),
             'vat_percentage' => $invoiceLine->getVatPercentage(),
