@@ -12,10 +12,13 @@
 
 namespace App\Pdf;
 
+use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use App\Entity\Invoice;
+use App\Entity\InvoiceLine;
 use App\Entity\Template;
 use App\Repository\TemplateRepositoryInterface;
+use Parthenon\Common\Address;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Pdf\GeneratorInterface;
 use Twig\Environment;
@@ -43,8 +46,70 @@ class InvoicePdfGenerator
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());
-        $content = $this->twig->render($twigTemplate, ['invoice' => $invoice, 'customer' => $invoice->getCustomer(), 'brand' => $customer->getBrandSettings()]);
+        $content = $this->twig->render($twigTemplate, $this->getData($invoice));
 
         return $this->pdfGenerator->generate($content);
+    }
+
+    private function getData(Invoice $invoice): array
+    {
+        return [
+            'customer' => $this->getCustomerData($invoice->getCustomer()),
+            'brand' => $this->getBrandData($invoice->getCustomer()->getBrandSettings()),
+            'invoice' => $this->getInvoiceData($invoice),
+        ];
+    }
+
+    protected function getCustomerData(Customer $customer): array
+    {
+        return [
+            'name' => $customer->getName(),
+            'email' => $customer->getBillingEmail(),
+        ];
+    }
+
+    private function getInvoiceData(Invoice $invoice): array
+    {
+        return [
+            'total' => $invoice->getTotal(),
+            'sub_total' => $invoice->getSubTotal(),
+            'vat_total' => $invoice->getVatTotal(),
+            'currency' => $invoice->getCurrency(),
+            'lines' => array_map([$this, 'getInvoiceLineData'], $invoice->getLines()->toArray()),
+            'biller_address' => $this->getAddress($invoice->getBillerAddress()),
+            'payee_address' => $this->getAddress($invoice->getPayeeAddress()),
+        ];
+    }
+
+    private function getInvoiceLineData(InvoiceLine $invoiceLine): array
+    {
+        return [
+            'total' => $invoiceLine->getTotal(),
+            'sub_total' => $invoiceLine->getSubTotal(),
+            'vat_total' => $invoiceLine->getVatTotal(),
+            'vat_percentage' => $invoiceLine->getVatPercentage(),
+            'description' => $invoiceLine->getDescription(),
+        ];
+    }
+
+    protected function getBrandData(BrandSettings $brandSettings): array
+    {
+        return [
+            'name' => $brandSettings->getBrandName(),
+            'address' => $this->getAddress($brandSettings->getAddress()),
+        ];
+    }
+
+    protected function getAddress(Address $address): array
+    {
+        return [
+            'company_name' => $address->getCompanyName(),
+            'street_line_one' => $address->getStreetLineOne(),
+            'street_line_two' => $address->getStreetLineTwo(),
+            'city' => $address->getCity(),
+            'region' => $address->getRegion(),
+            'country' => $address->getCountry(),
+            'postcode' => $address->getPostcode(),
+        ];
     }
 }

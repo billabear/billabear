@@ -56,7 +56,6 @@ What do you get? A license to use BillaBear in production and priority customer 
 * [And you can add more here](https://github.com/billabear/billabear/discussions/categories/ideas)
 
 
-
 ## How to Integrate
 
 To start integrating with BillaBear you can use the REST API.
