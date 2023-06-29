@@ -18,6 +18,7 @@
           <select v-model="role"  class="form-field"  :class="{'form-error': errors.email !== undefined}">
             <option>ROLE_ADMIN</option>
             <option>ROLE_DEVELOPER</option>
+            <option>ROLE_ACCOUNT_MANAGER</option>
             <option>ROLE_CUSTOMER_SUPPORT</option>
             <option>ROLE_USER</option>
           </select>
