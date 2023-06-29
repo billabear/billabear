@@ -10,6 +10,8 @@
         <p class="form-field-error" v-if="errors.content != undefined">{{ errors.content }}</p>
         <textarea class="form-field" rows="10" cols="80" v-model="template.content"></textarea>
         <p class="form-field-help">{{ $t('app.settings.pdf_template.update.help_info.template') }}</p>
+        <p class="mt-4 form-field-help"><a :href="'https://docs.billabear.com/user/templates/pdf_variables?utm=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=email_variables'">{{ $t('app.settings.pdf_template.update.help_info.variable_docs') }}</a> </p>
+
       </div>
 
       <div class="mt-5">
@@ -47,6 +49,7 @@ export default {
   data() {
     return {
       ready: false,
+      origin: '',
       sendingUpdate: false,
       downloadInProgress: false,
       template: {template: {}},
@@ -69,6 +72,7 @@ export default {
   },
   mounted() {
     const templateId = this.$route.params.id;
+    this.origin = window.location.hostname;
     axios.get('/app/settings/template/'+templateId).then(response => {
       this.template = response.data;
       this.ready = true;
