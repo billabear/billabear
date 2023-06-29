@@ -29,6 +29,7 @@ class ReceiptProvider
         $customer->setBillingEmail('max.mustermann@example.org');
         $customer->setBrandSettings(new BrandSettings());
         $customer->getBrandSettings()->setBrandName('Dummy Brand');
+        $customer->getBrandSettings()->setAddress(new Address());
 
         $receipt = new Receipt();
         $receipt->setCreatedAt(new \DateTime('now'));
@@ -40,6 +41,7 @@ class ReceiptProvider
         $lineOne->setTotal(10000);
         $lineOne->setSubTotal(8000);
         $lineOne->setVatTotal(2000);
+        $lineOne->setVatPercentage(20);
         $lineOne->setDescription('Example Line One');
 
         $lineTwo = new ReceiptLine();
@@ -48,6 +50,7 @@ class ReceiptProvider
         $lineTwo->setTotal(20000);
         $lineTwo->setSubTotal(16000);
         $lineTwo->setVatTotal(4000);
+        $lineTwo->setVatPercentage(20);
         $lineTwo->setDescription('Example Line Two');
 
         $receipt->setLines([$lineOne, $lineTwo]);
