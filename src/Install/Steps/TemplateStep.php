@@ -355,7 +355,7 @@ SOFTWARE. #}
                 </tr>
                 <tr class="top">
                     <td colspan="2">
-                        <table>
+                         <table>
                             <tr>
                                 <td class="title">
                                     {{ brand.name }}
@@ -363,7 +363,7 @@ SOFTWARE. #}
 
                                 <td>
                                     Receipt #: {{ receipt.id }}<br />
-                                    Created: {{ receipt.createdAt.format(\'Y-m-d\') }} <br />
+                                    Created: {{ receipt.created_at }} <br />
                                 </td>
                             </tr>
                         </table>
@@ -375,23 +375,23 @@ SOFTWARE. #}
                         <table>
                             <tr>
                                 <td>
-                                    {{ receipt.billerAddress.companyName }}<br />
-                                    {{ receipt.billerAddress.streetLineOne }}<br />
-                                    {{ receipt.billerAddress.streetLineTwo }}<br />
-                                    {{ receipt.billerAddress.region }}<br />
-                                    {{ receipt.billerAddress.city }}<br />
-                                    {{ receipt.billerAddress.country }}<br />
-                                    {{ receipt.billerAddress.postcode }}
+                                    {{ receipt.biller_address.company_name }}<br />
+                                    {{ receipt.biller_address.street_line_one }}<br />
+                                    {{ receipt.biller_address.street_line_two }}<br />
+                                    {{ receipt.biller_address.region }}<br />
+                                    {{ receipt.biller_address.city }}<br />
+                                    {{ receipt.biller_address.country }}<br />
+                                    {{ receipt.biller_address.postcode }}
                                 </td>
 
                                 <td>
-                                    {{ receipt.payeeAddress.companyName }}<br />
-                                    {{ receipt.payeeAddress.streetLineOne }}<br />
-                                    {{ receipt.payeeAddress.streetLineTwo }}<br />
-                                    {{ receipt.payeeAddress.region }}<br />
-                                    {{ receipt.payeeAddress.city }}<br />
-                                    {{ receipt.payeeAddress.country }}<br />
-                                    {{ receipt.payeeAddress.postcode }}
+                                    {{ receipt.payee_address.company_name }}<br />
+                                    {{ receipt.payee_address.street_line_one }}<br />
+                                    {{ receipt.payee_address.street_line_two }}<br />
+                                    {{ receipt.payee_address.region }}<br />
+                                    {{ receipt.payee_address.city }}<br />
+                                    {{ receipt.payee_address.country }}<br />
+                                    {{ receipt.payee_address.postcode }}
                                 </td>
                             </tr>
                         </table>
@@ -408,14 +408,14 @@ SOFTWARE. #}
                 <tr class="item">
                     <td>{{ line.description }}</td>
 
-                    <td>{{ line.totalMoney }}</td>
+                    <td>{{ line.total_display }}</td>
                 </tr>
                 {% endfor %}
 
                 <tr class="total">
                     <td></td>
 
-                    <td>Total: {{ receipt.totalMoney }}</td>
+                    <td>Total: {{ receipt.total_display }}</td>
                 </tr>
             </table>
         </div>
