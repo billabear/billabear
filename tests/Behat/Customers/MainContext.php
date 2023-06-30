@@ -183,6 +183,18 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the customer :arg1 should have the post code :arg2
+     */
+    public function theCustomerShouldHaveThePostCode($email, $arg2)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        if ($customer->getBillingAddress()->getPostcode() !== $arg2) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $arg2, $customer->getBillingAddress()->getPostcode()));
+        }
+    }
+
+    /**
      * @Then the customer :arg1 should have the brand :arg2
      */
     public function theCustomerShouldHaveTheBrand($email, $brand)
