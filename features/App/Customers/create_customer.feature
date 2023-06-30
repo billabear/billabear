@@ -40,9 +40,11 @@ Feature: Customer Creation
       | Country            | DE                   |
       | External Reference | cust_4945959         |
       | Reference          | Test Customer        |
+      | Post Code          | 20043                |
     Then there should be a customer for "customer@example.org"
     And the customer "customer@example.org" should have the external reference "cust_4945959"
     And the customer "customer@example.org" should have the reference "Test Customer"
+    And the customer "customer@example.org" should have the post code "20043"
 
 
   Scenario: Customer already exists

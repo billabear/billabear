@@ -102,9 +102,9 @@
         <label class="form-field-lbl" for="post_code">
           {{ $t('app.customer.create.post_code') }}
         </label>
-        <p class="form-field-error" v-if="errors['address.post_code'] != undefined">{{ errors['address.post_code'] }}</p>
-        <input type="text" class="form-field-input" id="post_code"  v-model="customer.address.post_code"  />
-        <p class="form-field-help">{{ $t('app.customer.create.help_info.post_code') }}</p>
+        <p class="form-field-error" v-if="errors['address.postcode'] != undefined">{{ errors['address.postcode'] }}</p>
+        <input type="text" class="form-field-input" id="post_code"  v-model="customer.address.postcode"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.postcode') }}</p>
       </div>
     </div>
 

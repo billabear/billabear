@@ -149,6 +149,7 @@ class AppContext implements Context
             'email' => $data['Email'],
             'address' => [
                 'country' => $data['Country'],
+                'postcode' => $data['Post Code'] ?? null,
             ],
         ];
 
