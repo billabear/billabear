@@ -104,7 +104,7 @@
         </label>
         <p class="form-field-error" v-if="errors['address.postcode'] != undefined">{{ errors['address.postcode'] }}</p>
         <input type="text" class="form-field-input" id="post_code"  v-model="customer.address.postcode"  />
-        <p class="form-field-help">{{ $t('app.customer.create.help_info.postcode') }}</p>
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.post_code') }}</p>
       </div>
     </div>
 
