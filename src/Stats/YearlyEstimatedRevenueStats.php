@@ -40,6 +40,9 @@ class YearlyEstimatedRevenueStats
         $money = Money::zero($defaultCurrency);
 
         foreach ($subscriptions as $subscription) {
+            if (!$subscription->getPaymentSchedule()) {
+                continue;
+            }
             $originalFee = match ($subscription->getPaymentSchedule()) {
                 'week' => $subscription->getMoneyAmount()->multipliedBy(52, RoundingMode::HALF_DOWN),
                 'month' => $subscription->getMoneyAmount()->multipliedBy(12, RoundingMode::HALF_DOWN),

@@ -128,8 +128,12 @@ class ApiContext implements Context
         /** @var SubscriptionPlan $subscriptionPlan */
         $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
         $customer = $this->getCustomerByEmail($customerEmail);
+        $priceCritera = ['amount' => $row['Price Amount'], 'currency' => $row['Price Currency']];
+        if (isset($row['Price Schedule'])) {
+            $priceCritera['schedule'] = $row['Price Schedule'];
+        }
         /** @var Price $price */
-        $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+        $price = $this->priceRepository->findOneBy($priceCritera);
 
         $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/start', [
             'subscription_plan' => (string) $subscriptionPlan->getId(),

@@ -61,7 +61,11 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription = $this->entityFactory->getSubscriptionEntity();
         $subscription->setPlanName($plan->getName());
         $subscription->setSubscriptionPlan($plan);
-        $subscription->setPaymentSchedule($planPrice->getSchedule());
+        if ($planPrice->isRecurring()) {
+            $subscription->setPaymentSchedule($planPrice->getSchedule());
+        } else {
+            $subscription->setPaymentSchedule('one-off');
+        }
         $subscription->setPrice($planPrice);
         $subscription->setMoneyAmount($planPrice->getAsMoney());
         $subscription->setActive(true);

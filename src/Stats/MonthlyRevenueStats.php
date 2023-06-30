@@ -40,6 +40,9 @@ class MonthlyRevenueStats
         $money = Money::zero($defaultCurrency);
 
         foreach ($subscriptions as $subscription) {
+            if (!$subscription->getPaymentSchedule()) {
+                continue;
+            }
             if ('year' === $subscription->getPaymentSchedule()) {
                 continue;
             }

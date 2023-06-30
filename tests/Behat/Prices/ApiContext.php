@@ -107,8 +107,10 @@ class ApiContext implements Context
             $price->setExternalReference(bin2hex(random_bytes(12)));
             $price->setCurrency($row['Currency']);
             $price->setRecurring('true' === strtolower($row['Recurring']));
-            $price->setSchedule($row['Schedule'] ?? null);
-            $price->setPublic('true' === strtolower($row['Recurring'] ?? 'true'));
+            if (isset($row['Schedule']) && !empty($row['Schedule'])) {
+                $price->setSchedule($row['Schedule']);
+            }
+            $price->setPublic('true' === strtolower($row['Public'] ?? 'true'));
             $price->setCreatedAt(new \DateTime('now'));
             $this->priceRepository->getEntityManager()->persist($price);
         }

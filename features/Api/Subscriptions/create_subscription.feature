@@ -18,6 +18,7 @@ Feature: Customer Subscription Create APP
       | Product One | 1000   | USD      | true      | week     | true   |
       | Product One | 3000   | USD      | true      | month    | true   |
       | Product One | 30000  | USD      | true      | year     | false  |
+      | Product One | 50000  | USD      | false     |          | false  |
     And the following features exist:
       | Name          | Code          | Description     |
       | Feature One   | feature_one   | A dummy feature |
@@ -30,7 +31,7 @@ Feature: Customer Subscription Create APP
       | User Count | 10        |
 
 
-  Scenario: Get subscription
+  Scenario: Create
     Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
@@ -46,3 +47,20 @@ Feature: Customer Subscription Create APP
     And the payment amount stats for the day should be 3000 in the currency "USD"
     And the monthly recurring revenue estimate should be 3000
     And the annual recurring revenue estimate should be 36000
+
+  Scenario: Create one off
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    When I create a subscription via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan | Price Amount | Price Currency |
+      | Test Plan         | 50000        | USD            |
+    Then there should be a subscription for the user "customer.one@example.org"
+    And the subscriber daily stat for the day should be 1
+    And the subscriber monthly stat for the day should be 1
+    And the subscriber yearly stat for the day should be 1
+    And the payment amount stats for the day should be 50000 in the currency "USD"
+    And the monthly recurring revenue estimate should be 0
+    And the annual recurring revenue estimate should be 0
