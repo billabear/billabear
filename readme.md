@@ -35,16 +35,6 @@ Watch the video on youtube.
 * Ability to Migrate away from Stripe Billing
 * Invoice payment type for Enterprise customers
 
-## Lifetime Deal
-
-Until the 1st of July we're offering a lifetime upgrade license for a one-off fee of  250 GBP. [Buy a lifetime upgrade license here](https://buy.stripe.com/4gweY33GnaNP8daeUU).
-
-This offer must end on the 1st of July as we'll start approaching companies asking for thousands per year so this offer must end.
-
-What do you get? A license to use BillaBear in production and priority customer support forever.
-
-[Buy now](https://buy.stripe.com/4gweY33GnaNP8daeUU).
-
 ## RoadMap
 
 * Webhooks to listen for billing events
@@ -104,11 +94,3 @@ We sell perpetual licenses for the version that was released on the date of purc
 ### How much does BillaBear cost?
 
 To get pricing email sales@billabear.com.
-
-Until the 1st of July we're offering a lifetime upgrade license for a one-off fee of  250 GBP. [Buy a lifetime upgrade license here](https://buy.stripe.com/4gweY33GnaNP8daeUU).
-
-This offer must end on the 1st of July as we'll start approaching companies asking for thousands per year so this offer must end.
-
-What do you get? A license to use BillaBear in production and priority customer support forever.
-
-[Buy now](https://buy.stripe.com/4gweY33GnaNP8daeUU).
