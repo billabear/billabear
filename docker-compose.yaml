@@ -1,6 +1,12 @@
 version: '3.2'
 
 services:
+  mail:
+    image: bytemark/smtp
+    restart: always
+    networks:
+      - billabear
+
   database:
     image: postgres:13.3-alpine3.14
     environment:

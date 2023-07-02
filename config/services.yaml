@@ -311,13 +311,19 @@ services:
     app.repository.orm.voucher_application:
         class: App\Repository\Orm\VoucherApplicationRepository
 
+    App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+
+    #######################
+    ### Parthenon Overrides
+    #######################
     Parthenon\Notification\EmailSenderInterface:
         factory: [ '@App\Notification\Email\EmailSenderFactory', 'create' ]
 
-    App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
     Parthenon\Billing\Config\WebhookConfig:
         factory: [ '@App\Webhook\ConfigFactory', 'createConfig' ]
+
+    Parthenon\Common\Config\SiteUrlProviderInterface: '@App\Settings\SiteUrlProvider'
