@@ -75,6 +75,7 @@ class GeneralContext implements Context
         $settings->setSystemSettings(new Settings\SystemSettings());
         $settings->getSystemSettings()->setUseStripeBilling(true);
         $settings->getSystemSettings()->setMainCurrency('USD');
+        $settings->getSystemSettings()->setSystemUrl('http://test.example.org/');
 
         $em->persist($settings);
         $em->flush();
