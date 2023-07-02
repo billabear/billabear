@@ -30,6 +30,6 @@ class SchedulerProvider
             return new YearScheduler();
         }
 
-        throw new \Exception('No valid scheduler found');
+        return new OneOffScheduler();
     }
 }
