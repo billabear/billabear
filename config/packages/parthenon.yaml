@@ -12,6 +12,7 @@ parthenon:
     teams_enabled: false
     login_route: "parthenon_user_login"
     teams_invites_enabled: false
+    self_signup_enabled: false
   notification:
     enabled: true
     email:
