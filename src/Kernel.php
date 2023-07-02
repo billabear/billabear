@@ -19,5 +19,5 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
     public const VERSION = '1.1-dev';
-    public const VERSION_ID = '100000';
+    public const VERSION_ID = '101000-DEV';
 }
