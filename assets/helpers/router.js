@@ -19,6 +19,7 @@ export const router = createRouter({
         { path: '/', name: 'public.index', component: Login },
         { path: '/login', name: 'public.login', component: Login },
         { path: '/signup', name: 'public.signup', component: Signup },
+        { path: '/signup/:code', name: 'public.signup_invite', component: Signup },
         { path: '/forgot-password', name: 'public.forgot_password', component: ForgotPassword },
         { path: '/forgot-password/:code', name: 'public.forgot_password_confirm', component: ForgotPasswordConfirm },
         { path: '/confirm-email/:code', name: 'public.confirm_email', component: ConfirmEmail },
@@ -45,6 +46,7 @@ router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
     const publicPages = ['/login', '/signup', '/signup/:code', '/forgot-password', '/forgot-password/:code', '/confirm-email/:code', '/', '/install', '/error/stripe-invalid', '/error/stripe'];
     const authRequired = !publicPages.includes(to.matched[0].path);
+    console.log(to.matched[0].path)
     const loggedIn = localStorage.getItem('user');
 
 
