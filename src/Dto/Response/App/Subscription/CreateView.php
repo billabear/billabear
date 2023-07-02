@@ -12,6 +12,7 @@
 
 namespace App\Dto\Response\App\Subscription;
 
+use App\Dto\Generic\App\Customer;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class CreateView
@@ -27,6 +28,8 @@ class CreateView
 
     #[SerializedName('eligible_schedule')]
     private ?string $eligibleSchedule = null;
+
+    private Customer $customer;
 
     public function getSubscriptionPlans(): array
     {
@@ -66,5 +69,15 @@ class CreateView
     public function setEligibleSchedule(?string $eligibleSchedule): void
     {
         $this->eligibleSchedule = $eligibleSchedule;
+    }
+
+    public function getCustomer(): Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(Customer $customer): void
+    {
+        $this->customer = $customer;
     }
 }
