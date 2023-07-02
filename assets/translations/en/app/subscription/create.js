@@ -8,6 +8,7 @@ export const SUBSCRIPTION_CREATE_TRANSLATION = {
     submit_btn: "Create",
     trial: "Free Trial",
     trial_length_days: "Number of days",
+    unknown_error: "An unknown error has occured during creation",
     help_info: {
         eligible_prices: "When a customer already has an active subscription any new subscriptions must be for the same billing period and currency.",
         trial: "When a customer already has an active subscription they're not eligible for another free trial.",
