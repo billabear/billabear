@@ -12,24 +12,16 @@
 
 namespace App\Subscription\Schedule;
 
-use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Entity\Subscription;
 
-class SchedulerProvider
+class OneOffScheduler implements SchedulerInterface
 {
-    public function getScheduler(Price $price): SchedulerInterface
+    public function scheduleNextDueDate(Subscription $subscription): void
     {
-        if ('week' === $price->getSchedule()) {
-            return new WeekScheduler();
-        }
+        $date = clone ($subscription->getValidUntil() ?? $subscription->getCreatedAt());
 
-        if ('month' === $price->getSchedule()) {
-            return new MonthScheduler();
-        }
+        $date->modify('+100 years');
 
-        if ('year' === $price->getSchedule()) {
-            return new YearScheduler();
-        }
-
-        return new OneOffScheduler();
+        $subscription->setValidUntil($date);
     }
 }
