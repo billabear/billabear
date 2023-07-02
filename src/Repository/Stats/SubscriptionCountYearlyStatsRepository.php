@@ -38,7 +38,7 @@ class SubscriptionCountYearlyStatsRepository extends AbstractAmountRepository im
                 ->setMaxResults(1)
                 ->andWhere('ls.brandCode = :brandCode')
                 ->setParameter('brandCode', $brandCode);
-            $lastStat = $lastStatQb->getQuery()->getResult();
+            $lastStat = $lastStatQb->getQuery()->getResult()[0] ?? null;
 
             if ($lastStat instanceof SubscriptionCountYearlyStats) {
                 $stat->setCount($lastStat->getCount());
