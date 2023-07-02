@@ -15,7 +15,12 @@ export default {
   },
   computed: {
     hasRole: function () {
-      const data = JSON.parse(localStorage.getItem('user'))
+      var data;
+      try {
+        data = JSON.parse(localStorage.getItem('user'))
+      } catch (e) {
+        return false;
+      }
 
       if (this.$props.role === 'ROLE_USER') {
         return true;
