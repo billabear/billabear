@@ -29,8 +29,8 @@
         "@parthenon/ui": "^1.0",
         "@parthenon/vue-menu": "^1.0",
         "@tailwindcss/forms": "^0.5.2",
-        "@vitejs/plugin-vue": "^3.1.0",
-        "@vitejs/plugin-vue-jsx": "^2.0.1",
+        "@vitejs/plugin-vue": "^4.2.0",
+        "@vitejs/plugin-vue-jsx": "^3.0.1",
         "@vue-stripe/vue-stripe": "^4.4.4",
         "@vue/test-utils": "^2.0.2",
         "@vuepic/vue-datepicker": "^4.3.0",
@@ -49,6 +49,8 @@
         "vue-moment-v3": "^4.1.0",
         "vue-router": "^4.1.5",
         "vue3-apexcharts": "^1.4.1",
-        "vuex": "^4.0.2"
+        "vuex": "^4.0.2",
+        "semver": "^7.5.3",
+        "vite": "^4.3.9"
     }
 }
