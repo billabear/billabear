@@ -12,7 +12,6 @@
 
 namespace App\Tests\Behat\Settings;
 
-use App\Entity\Settings;
 use App\Repository\Orm\SettingsRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
