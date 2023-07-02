@@ -28,7 +28,7 @@
         <p class="form-field-help" v-if="eligible_currency != null">{{ $t('app.subscription.create.help_info.eligible_prices') }}</p>
       </div>
 
-      <div class="mt-3 card-body">
+      <div class="mt-3 card-body" v-if="customer.billing_type != 'invoice'">
         <h2>{{ $t('app.subscription.create.payment_details') }}</h2>
 
         <div>
@@ -85,6 +85,7 @@ export default {
       errors: {
       },
       product: {},
+      customer: {},
       prices: [],
       features: [],
       trial: true,
@@ -121,6 +122,7 @@ export default {
       this.payment_details = response.data.payment_details;
       this.eligible_currency = response.data.eligible_currency;
       this.eligible_schedule = response.data.eligible_schedule;
+      this.customer = response.data.customer;
       if (this.eligible_currency != null) {
         this.trial = false;
       }

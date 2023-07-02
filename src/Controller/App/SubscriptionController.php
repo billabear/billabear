@@ -65,6 +65,7 @@ class SubscriptionController
     public function createSubscriptionDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
+        CustomerFactory $customerFactory,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanFactory $subscriptionPlanFactory,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
@@ -100,12 +101,14 @@ class SubscriptionController
 
         $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailDtos = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
+        $customerDto = $customerFactory->createAppDto($customer);
 
         $dto = new CreateView();
         $dto->setSubscriptionPlans($subscriptionPlanDtos);
         $dto->setPaymentDetails($paymentDetailDtos);
         $dto->setEligibleCurrency($currency);
         $dto->setEligibleSchedule($schedule);
+        $dto->setCustomer($customerDto);
 
         $json = $serializer->serialize($dto, 'json');
 
