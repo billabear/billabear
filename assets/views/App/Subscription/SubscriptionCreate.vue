@@ -2,6 +2,10 @@
   <div>
     <h1 class="page-title">{{ $t('app.subscription.create.title') }}</h1>
 
+    <div class="alert-error" v-if="unknown_error">
+      {{ $t('app.subscription.create.unknown_error') }}
+    </div>
+
     <form @submit.prevent="send">
 
       <div class="mt-3 card-body">
@@ -58,7 +62,8 @@
         </div>
       </div>
       <div class="form-field-submit-ctn">
-        <SubmitButton :in-progress="sendingInProgress">{{ $t('app.subscription.create.submit_btn') }}</SubmitButton>
+        <button type="submit" class="btn--main" disabled v-if="price == null || subscription_plan == null">{{ $t('app.subscription.create.submit_btn') }}</button>
+        <SubmitButton :in-progress="sendingInProgress" v-else>{{ $t('app.subscription.create.submit_btn') }}</SubmitButton>
       </div>
       <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.subscription.create.success_message') }}</p>
     </form>
@@ -89,7 +94,8 @@ export default {
       prices: [],
       features: [],
       trial: true,
-      trial_length_days: 0
+      trial_length_days: 0,
+      unknown_error: false,
     }
   },
   computed: {
@@ -170,14 +176,13 @@ export default {
         this.success = true;
         this.$router.push({'name': 'app.subscription.view', params: {subscriptionId: response.data.id}})
       }).catch(error => {
-        if (error.response.status == 404) {
-          this.errorMessage = this.$t('app.product.view.error.not_found')
+        if (error.response.data.errors) {
+          this.errors = error.response.data.errors;
         } else {
-          this.errorMessage = this.$t('app.product.view.error.unknown')
+          this.unknown_error = true;
         }
-
-        this.error = true;
-        this.ready = true;
+        this.sendingInProgress = false;
+        this.success = false;
       })
     }
   }
