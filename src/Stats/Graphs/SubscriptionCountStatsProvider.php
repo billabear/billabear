@@ -41,9 +41,9 @@ class SubscriptionCountStatsProvider
         $yearly = $this->subscriptionCountYearlyStatsRepository->getFromToStats($tenYears, $now);
 
         $stats = new DashboardStats();
-        $stats->setDaily($this->statOutputConverter->convertToDailyOutput($thirtyDaysAgo, $now, $daily));
-        $stats->setMonthly($this->statOutputConverter->convertToMonthOutput($oneYear, $now, $monthly));
-        $stats->setYearly($this->statOutputConverter->convertToYearOutput($tenYears, $now, $yearly));
+        $stats->setDaily($this->statOutputConverter->convertToDailyOutput($thirtyDaysAgo, $now, $daily, true));
+        $stats->setMonthly($this->statOutputConverter->convertToMonthOutput($oneYear, $now, $monthly, true));
+        $stats->setYearly($this->statOutputConverter->convertToYearOutput($tenYears, $now, $yearly, true));
 
         return $stats;
     }

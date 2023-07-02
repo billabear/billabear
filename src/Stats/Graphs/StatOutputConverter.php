@@ -22,7 +22,7 @@ class StatOutputConverter
      * @param \DateTimeInterface $end
      * @param AbstractStats[]    $stats
      */
-    public function convertToDailyOutput(\DateTime $start, \DateTime $end, array $stats): array
+    public function convertToDailyOutput(\DateTime $start, \DateTime $end, array $stats, bool $useLastCount = false): array
     {
         $output = [];
 
@@ -45,10 +45,17 @@ class StatOutputConverter
 
         foreach ($output as $brand => $data) {
             $newStart = clone $start;
+            $lastCount = null;
             while ($newStart <= $end) {
                 $date = $newStart->format('Y-m-d');
                 if (!isset($output[$brand][$date])) {
-                    $output[$brand][$date] = 0;
+                    if ($useLastCount && isset($lastCount)) {
+                        $output[$brand][$date] = $lastCount;
+                    } else {
+                        $output[$brand][$date] = 0;
+                    }
+                } else {
+                    $lastCount = $output[$brand][$date];
                 }
                 $newStart->modify('+1 day');
             }
@@ -62,7 +69,7 @@ class StatOutputConverter
      * @param \DateTimeInterface $end
      * @param AbstractStats[]    $stats
      */
-    public function convertToMonthOutput(\DateTime $start, \DateTime $end, array $stats): array
+    public function convertToMonthOutput(\DateTime $start, \DateTime $end, array $stats, bool $useLastCount = false): array
     {
         $output = [];
 
@@ -94,10 +101,17 @@ class StatOutputConverter
 
             $newStart->modify('first day of this month');
             $newEnd->modify('first day of this month');
+            $lastCount = null;
             while ($newStart <= $end) {
                 $date = $newStart->format('Y-m-d');
                 if (!isset($output[$brand][$date])) {
-                    $output[$brand][$date] = 0;
+                    if ($useLastCount && isset($lastCount)) {
+                        $output[$brand][$date] = $lastCount;
+                    } else {
+                        $output[$brand][$date] = 0;
+                    }
+                } else {
+                    $lastCount = $output[$brand][$date];
                 }
                 $newStart->modify('+1 month');
             }
@@ -111,7 +125,7 @@ class StatOutputConverter
      * @param \DateTimeInterface $end
      * @param AbstractStats[]    $stats
      */
-    public function convertToYearOutput(\DateTime $start, \DateTime $end, array $stats): array
+    public function convertToYearOutput(\DateTime $start, \DateTime $end, array $stats, bool $useLastCount = false): array
     {
         $output = [];
 
@@ -142,10 +156,17 @@ class StatOutputConverter
 
             $newStart->modify('first day of january');
             $newEnd->modify('first day of january');
+            $lastCount = null;
             while ($newStart <= $end) {
                 $date = $newStart->format('Y-m-d');
                 if (!isset($output[$brand][$date])) {
-                    $output[$brand][$date] = 0;
+                    if ($useLastCount && isset($lastCount)) {
+                        $output[$brand][$date] = $lastCount;
+                    } else {
+                        $output[$brand][$date] = 0;
+                    }
+                } else {
+                    $lastCount = $output[$brand][$date];
                 }
                 $newStart->modify('+1 year');
             }
