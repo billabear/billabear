@@ -15,7 +15,7 @@
         <div class="mt-3">
 
           <label class="label">{{ $t('app.user.invite.role') }}</label>
-          <select v-model="role"  class="form-field"  :class="{'form-error': errors.email !== undefined}">
+          <select v-model="role"  class="form-field"  :class="{'form-error': errors.role !== undefined}">
             <option>ROLE_ADMIN</option>
             <option>ROLE_DEVELOPER</option>
             <option>ROLE_ACCOUNT_MANAGER</option>
@@ -61,7 +61,7 @@ export default {
 
       this.sending_invite = true;
 
-      userservice.invite(this.email).then(
+      userservice.invite(this.email, this.role).then(
           result => {
             this.alert = {
               type: "success",
