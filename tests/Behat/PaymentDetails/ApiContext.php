@@ -53,4 +53,55 @@ class ApiContext implements Context
 
         $this->sendJsonRequest('DELETE', '/api/v1/customer/'.$customer->getId().'/payment-methods/'.$paymentDetails->getId());
     }
+
+    /**
+     * @When I fetch the payment details via API for customer :arg1
+     */
+    public function iFetchThePaymentDetailsViaApiForCustomer($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/payment-methods');
+    }
+
+    /**
+     * @Then the response should have :arg1 items in the data array
+     */
+    public function theResponseShouldHaveItemsInTheDataArray($count)
+    {
+        $data = $this->getJsonContent();
+
+        if (count($data['data']) != $count) {
+            throw new \Exception(sprintf('Expected %d but got %d', $count, count($data['data'])));
+        }
+    }
+
+    /**
+     * @Then the response should contain the payment details for last four :arg1
+     */
+    public function theResponseShouldContainThePaymentDetailsForLastFour($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $paymentDetails) {
+            if ($paymentDetails['last_four'] == $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception("Didn't find last four");
+    }
+
+    /**
+     * @Then the response should not contain the payment details for last four :arg1
+     */
+    public function theResponseShouldNotContainThePaymentDetailsForLastFour($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $paymentDetails) {
+            if ($paymentDetails['last_four'] == $arg1) {
+                throw new \Exception('Found find last four');
+            }
+        }
+    }
 }

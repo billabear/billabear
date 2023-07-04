@@ -309,21 +309,23 @@ class MainContext implements Context
             $this->customerRepository->getEntityManager()->persist($customer);
             $this->customerRepository->getEntityManager()->flush();
 
-            $paymentDetails = new PaymentCard();
-            $paymentDetails->setCustomer($customer);
-            $paymentDetails->setProvider('test_dummy');
-            $paymentDetails->setName('Test');
-            $paymentDetails->setCreatedAt(new \DateTime());
-            $paymentDetails->setStoredCustomerReference($externalCustomerReference);
-            $paymentDetails->setLastFour('4242');
-            $paymentDetails->setExpiryMonth('02');
-            $paymentDetails->setExpiryYear('32');
-            $paymentDetails->setBrand('brand');
-            $paymentDetails->setDefaultPaymentOption(true);
-            $paymentDetails->setDeleted(false);
-            $paymentDetails->setStoredPaymentReference($row['Payment Reference'] ?? bin2hex(random_bytes(32)));
-            $this->customerRepository->getEntityManager()->persist($paymentDetails);
-            $this->customerRepository->getEntityManager()->flush();
+            if (!isset($row['Add Card']) || 'true' == strtolower($row['Add Card'])) {
+                $paymentDetails = new PaymentCard();
+                $paymentDetails->setCustomer($customer);
+                $paymentDetails->setProvider('test_dummy');
+                $paymentDetails->setName('Test');
+                $paymentDetails->setCreatedAt(new \DateTime());
+                $paymentDetails->setStoredCustomerReference($externalCustomerReference);
+                $paymentDetails->setLastFour('4242');
+                $paymentDetails->setExpiryMonth('02');
+                $paymentDetails->setExpiryYear('32');
+                $paymentDetails->setBrand('brand');
+                $paymentDetails->setDefaultPaymentOption(true);
+                $paymentDetails->setDeleted(false);
+                $paymentDetails->setStoredPaymentReference($row['Payment Reference'] ?? bin2hex(random_bytes(32)));
+                $this->customerRepository->getEntityManager()->persist($paymentDetails);
+                $this->customerRepository->getEntityManager()->flush();
+            }
         }
 
         $this->customerRepository->getEntityManager()->flush();
