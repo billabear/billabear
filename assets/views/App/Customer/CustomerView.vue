@@ -185,8 +185,8 @@
           </div>
 
           <div class="mt-3">
-            <h2 class="section-header">{{ $t('app.customer.view.limits.title') }}</h2>
-            <div class="section-body">
+            <h2 class="">{{ $t('app.customer.view.limits.title') }}</h2>
+            <div class="">
 
               <table class="list-table">
                 <thead>
@@ -204,12 +204,18 @@
                   <td colspan="4" class="text-center">{{ $t('app.customer.view.limits.no_limits') }}</td>
                 </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                  <th>{{ $t('app.customer.view.limits.list.feature') }}</th>
+                  <th>{{ $t('app.customer.view.limits.list.limit') }}</th>
+                </tr>
+                </tfoot>
               </table>
             </div>
           </div>
           <div class="mt-3">
-            <h2 class="section-header">{{ $t('app.customer.view.features.title') }}</h2>
-            <div class="section-body">
+            <h2 class="">{{ $t('app.customer.view.features.title') }}</h2>
+            <div class="">
 
             <table class="list-table">
               <thead>
@@ -225,12 +231,17 @@
                 <td colspan="4" class="text-center">{{ $t('app.customer.view.features.no_features') }}</td>
               </tr>
               </tbody>
+              <tfoot>
+              <tr>
+                <th>{{ $t('app.customer.view.features.list.feature') }}</th>
+              </tr>
+              </tfoot>
             </table>
             </div>
           </div>
           <div class="mt-3">
-            <h2 class="section-header">{{ $t('app.customer.view.payments.title') }}</h2>
-            <div class="section-body">
+            <h2 class="">{{ $t('app.customer.view.payments.title') }}</h2>
+            <div class="">
             <table class="list-table">
               <thead>
               <tr>
@@ -253,11 +264,20 @@
                 <td colspan="5" class="text-center">{{$t('app.customer.view.payments.no_payments') }}</td>
               </tr>
               </tbody>
+              <tfoot>
+              <tr>
+                <th>{{ $t('app.customer.view.payments.list.amount') }}</th>
+                <th>{{ $t('app.customer.view.payments.list.currency') }}</th>
+                <th>{{ $t('app.customer.view.payments.list.status') }}</th>
+                <th>{{ $t('app.customer.view.payments.list.created_at') }}</th>
+                <th></th>
+              </tr>
+              </tfoot>
             </table></div>
           </div>
           <div class="mt-3">
-            <h2 class="section-header">{{ $t('app.customer.view.refunds.title') }}</h2>
-            <div class="section-body">
+            <h2 class="">{{ $t('app.customer.view.refunds.title') }}</h2>
+            <div class="">
             <table class="list-table">
               <thead>
               <tr>
@@ -280,10 +300,19 @@
                 <td colspan="5" class="text-center">{{ $t('app.customer.view.refunds.no_refunds') }}</td>
               </tr>
               </tbody>
+              <tfoot>
+              <tr>
+                <th>{{ $t('app.customer.view.refunds.list.amount') }}</th>
+                <th>{{ $t('app.customer.view.refunds.list.currency') }}</th>
+                <th>{{ $t('app.customer.view.refunds.list.created_by') }}</th>
+                <th>{{ $t('app.customer.view.refunds.list.created_at') }}</th>
+                <th></th>
+              </tr>
+              </tfoot>
             </table></div>
           </div>
           <div class="mt-3">
-            <div class="section-header grid grid-cols-2">
+            <div class="grid grid-cols-2">
               <div>
                 <h2 class="">{{ $t('app.customer.view.credit.title') }}</h2>
               </div>
@@ -291,7 +320,7 @@
                 <router-link :to="{name: 'app.customer.credit.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit.add_button') }}</router-link>
               </div>
             </div>
-            <div class="section-body">
+            <div class="">
 
               <table class="list-table">
                 <thead>
@@ -315,6 +344,15 @@
                   <td colspan="5" class="text-center">{{ $t('app.customer.view.credit.no_credit') }}</td>
                 </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                  <th>{{ $t('app.customer.view.credit.list.amount') }}</th>
+                  <th>{{ $t('app.customer.view.credit.list.currency') }}</th>
+                  <th>{{ $t('app.customer.view.credit.list.created_by') }}</th>
+                  <th>{{ $t('app.customer.view.credit.list.created_at') }}</th>
+                  <th></th>
+                </tr>
+                </tfoot>
               </table>
             </div>
           </div>
