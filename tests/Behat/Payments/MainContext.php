@@ -84,6 +84,32 @@ class MainContext implements Context
     }
 
     /**
+     * @When I attach the payment for :arg3 :arg1 to :arg2
+     */
+    public function iAttachThePaymentForTo($amount, $currency, $customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $payment = $this->paymentRepository->findOneBy(['amount' => $amount, 'currency' => $currency]);
+
+        $this->sendJsonRequest('POST', '/app/payment/'.$payment->getId().'/attach', ['customer' => (string) $customer->getId()]);
+    }
+
+    /**
+     * @Then the payment for :arg3 :arg1 should belong to :arg2
+     */
+    public function thePaymentForShouldBelongTo($amount, $currency, $customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Payment $payment */
+        $payment = $this->paymentRepository->findOneBy(['amount' => $amount, 'currency' => $currency]);
+        $this->paymentRepository->getEntityManager()->refresh($payment);
+
+        if ($customer->getId() != $payment->getCustomer()?->getId()) {
+            throw new \Exception('Wrong customer');
+        }
+    }
+
+    /**
      * @Then I will see a payment for :arg1 for :arg2
      */
     public function iWillSeeAPaymentForFor($arg1, $arg2)

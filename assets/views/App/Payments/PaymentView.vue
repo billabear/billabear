@@ -45,6 +45,9 @@
                 <div v-if="payment.customer != null && payment.customer != undefined">
                   <router-link :to="{name: 'app.customer.view', params: {id: payment.customer.id}}" class="btn--main">{{ $t('app.payment.view.customer.more_info') }}</router-link>
                 </div>
+                <div class="" v-else>
+                  <button @click="attachOptions.modelValue = true" class="btn--main">{{ $t('app.payment.view.customer.attach') }}</button>
+                </div>
               </dl>
             </div>
           </div>
@@ -131,6 +134,26 @@
     </LoadingScreen>
 
     <VueFinalModal
+        v-model="attachOptions.modelValue"
+        :teleport-to="attachOptions.teleportTo"
+        :display-directive="attachOptions.displayDirective"
+        :hide-overlay="attachOptions.hideOverlay"
+        :overlay-transition="attachOptions.overlayTransition"
+        :content-transition="attachOptions.contentTransition"
+        :click-to-close="attachOptions.clickToClose"
+        :esc-to-close="attachOptions.escToClose"
+        :background="attachOptions.background"
+        :lock-scroll="attachOptions.lockScroll"
+        :swipe-to-close="attachOptions.swipeToClose"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      <h1>{{ $t('app.payment.view.modal.attach.title') }}</h1>
+      <Autocomplete search-key="email" rest-endpoint="/app/customer" display-key="email" v-model="attachCustomer" />
+
+      <SubmitButton @click="sendAttachToCustomer" :in-progress="attachInProgress">{{ $t('app.payment.view.modal.attach.button') }}</SubmitButton>
+    </VueFinalModal>
+    <VueFinalModal
         v-model="options.modelValue"
         :teleport-to="options.teleportTo"
         :display-directive="options.displayDirective"
@@ -183,10 +206,11 @@ import axios from "axios";
 import {VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import Autocomplete from "../../../components/app/Forms/Autocomplete.vue";
 
 export default {
   name: "PaymentView",
-  components: {RoleOnlyView, VueFinalModal},
+  components: {Autocomplete, RoleOnlyView, VueFinalModal},
   data() {
     return {
       ready: false,
@@ -218,9 +242,33 @@ export default {
         lockScroll: true,
         swipeToClose: 'none',
       },
+      attachCustomer: null,
+      attachInProgress: false,
+      attachOptions: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
     }
   },
   methods: {
+    sendAttachToCustomer() {
+      const paymentId = this.$route.params.id
+      this.attachInProgress = true;
+      axios.post("/app/payment/"+paymentId+"/attach", {customer: this.attachCustomer}).then(response => {
+        this.attachInProgress = false;
+        this.payment.customer = response.data;
+        this.attachOptions.modelValue = false;
+      })
+    },
     currency: function (value) {
       return currency(value, { fromCents: true });
     },

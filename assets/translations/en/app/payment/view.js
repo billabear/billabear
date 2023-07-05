@@ -12,7 +12,8 @@ export const PAYMENT_VIEW_TRANSLATION = {
         title: "Customer",
         email: "Email",
         more_info: "More Info",
-        country: "Country"
+        country: "Country",
+        attach: "Attach to customer"
     },
     refunds: {
         title: "Refunds",
@@ -39,6 +40,10 @@ export const PAYMENT_VIEW_TRANSLATION = {
         generate_receipt: "Generate Receipt"
     },
     modal: {
+        attach: {
+            title: "Attach To Customer",
+            button: 'Attach'
+        },
         refund: {
             title: "Refund",
             amount: {

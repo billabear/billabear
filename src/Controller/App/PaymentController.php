@@ -13,13 +13,17 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\PaymentList;
+use App\Controller\ValidationErrorResponseTrait;
+use App\Dto\Request\App\Payments\AttachToCustomer;
 use App\Dto\Request\App\Payments\RefundPayment;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Payment\PaymentView;
+use App\Factory\CustomerFactory;
 use App\Factory\PaymentFactory;
 use App\Factory\ReceiptFactory;
 use App\Factory\RefundFactory;
 use App\Factory\SubscriptionFactory;
+use App\Repository\CustomerRepositoryInterface;
 use App\User\UserProvider;
 use Brick\Money\Currency;
 use Brick\Money\Money;
@@ -41,6 +45,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentController
 {
+    use ValidationErrorResponseTrait;
+
     #[Route('/app/payments', name: 'app_payment_list', methods: ['GET'])]
     public function listPayment(
         Request $request,
@@ -126,6 +132,42 @@ class PaymentController
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
+    #[Route('/app/payment/{id}/attach', name: 'app_app_payment_createrefundforpayment', methods: ['POST'])]
+    public function attachPayment(
+        Request $request,
+        PaymentRepositoryInterface $paymentRepository,
+        CustomerRepositoryInterface $customerRepository,
+        CustomerFactory $customerFactory,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ) {
+        try {
+            /** @var Payment $payment */
+            $payment = $paymentRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var AttachToCustomer $dto */
+        $dto = $serializer->deserialize($request->getContent(), AttachToCustomer::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $customer = $customerRepository->findById($dto->getCustomer());
+        $payment->setCustomer($customer);
+        $paymentRepository->save($payment);
+
+        $customerDto = $customerFactory->createAppDto($customer);
+        $json = $serializer->serialize($customerDto, 'json');
+
+        return new JsonResponse($json, status: Response::HTTP_ACCEPTED, json: true);
     }
 
     #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
