@@ -26,7 +26,7 @@ class PostSubscriptionPlan
     protected $name;
 
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Regex(pattern: '~^[a-z0-9_]+$', message: 'Only lower case, underscores and numbers allowed')]
+    #[Assert\Regex(pattern: '~^[a-z0-9_]+$~', message: 'Only lower case, underscores and numbers allowed')]
     #[SerializedName('code_name')]
     #[UniqueSubscriptionPlanCodeName]
     protected $codeName;
