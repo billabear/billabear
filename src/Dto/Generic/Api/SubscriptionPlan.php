@@ -48,7 +48,7 @@ class SubscriptionPlan
         return $this->codeName;
     }
 
-    public function setCodeName(string $codeName): void
+    public function setCodeName(?string $codeName): void
     {
         $this->codeName = $codeName;
     }
