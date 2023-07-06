@@ -93,6 +93,7 @@
             <thead>
             <tr>
               <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
               <th></th>
             </tr>
@@ -100,6 +101,7 @@
             <tbody>
             <tr v-for="plan in subscriptionPlans" class="mt-5">
               <td>{{ plan.name }}</td>
+              <td>{{ plan.code_name }}</td>
               <td>
                 <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <span v-else>{{ plan.external_reference }}</span>
@@ -115,6 +117,7 @@
             <tfoot>
             <tr>
               <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
               <th></th>
             </tr>

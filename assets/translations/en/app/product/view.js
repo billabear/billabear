@@ -31,7 +31,8 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
         view: "View",
         list: {
             name: "Name",
-            external_reference: "External Reference"
+            external_reference: "External Reference",
+            code_name: "Code Name",
         }
     }
 }
