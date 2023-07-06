@@ -14,6 +14,7 @@ namespace App\Dto\Request\App;
 
 use App\Dto\Generic\App\Feature;
 use App\Dto\Generic\App\Price;
+use App\Validator\Constraints\UniqueSubscriptionPlanCodeName;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,6 +24,12 @@ class PostSubscriptionPlan
     #[Assert\Type('string')]
     #[SerializedName('name')]
     protected $name;
+
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Regex(pattern: '~^[a-z0-9_]+$', message: 'Only lower case, underscores and numbers allowed')]
+    #[SerializedName('code_name')]
+    #[UniqueSubscriptionPlanCodeName]
+    protected $codeName;
 
     #[Assert\Type('boolean')]
     #[SerializedName('public')]
@@ -70,6 +77,16 @@ class PostSubscriptionPlan
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    public function getCodeName()
+    {
+        return $this->codeName;
+    }
+
+    public function setCodeName($codeName): void
+    {
+        $this->codeName = $codeName;
     }
 
     public function getPublic()

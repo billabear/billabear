@@ -7,6 +7,7 @@ export const SUBSCRIPTION_PLAN_UPDATE_TRANSLATIONS = {
     address_title: "Address",
     fields: {
         name: "Name",
+        code_name: "Code Name",
         user_count: "User Count",
         public: "Publicly Available Plan",
         per_seat_plan: "Per Seat",
@@ -19,6 +20,7 @@ export const SUBSCRIPTION_PLAN_UPDATE_TRANSLATIONS = {
     },
     help_info: {
         name: "The name for the plan",
+        code_name: "The code name for the plan to be used with the API.",
         user_count: "The number of users allowed for this plan",
         public: "Is the plan available to the public or a custom plan",
         free: "Is this a free plan?",

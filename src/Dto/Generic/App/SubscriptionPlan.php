@@ -20,6 +20,9 @@ class SubscriptionPlan
 
     private string $name;
 
+    #[SerializedName('code_name')]
+    private ?string $codeName;
+
     #[SerializedName('user_count')]
     private int $userCount;
 
@@ -62,6 +65,16 @@ class SubscriptionPlan
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getCodeName(): ?string
+    {
+        return $this->codeName;
+    }
+
+    public function setCodeName(?string $codeName): void
+    {
+        $this->codeName = $codeName;
     }
 
     public function isPerSeat(): bool

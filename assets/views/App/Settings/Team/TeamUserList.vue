@@ -172,7 +172,7 @@ export default {
       setTimeout( function () {
         that.copied = false;
       }, 1000);
-      
+
       navigator.clipboard.writeText(window.location.origin+"/signup/"+invite.code);
     },
     syncQueryToFilters: function () {

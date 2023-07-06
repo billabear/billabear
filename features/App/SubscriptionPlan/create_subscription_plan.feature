@@ -34,3 +34,37 @@ Feature: Plan Creation
     Then there should be a subscription plan called "Test Plan"
     Then the subscription plan "Test Plan" should have a feature "Feature One"
     Then the subscription plan "Test Plan" should have a limit "Feature Two" with a limit of 10
+
+  Scenario: Create a Subscription Plan fails used code name
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+      | Name       | Test Plan  |
+      | Public     | True       |
+      | Per Seat   | False      |
+      | User Count | 10         |
+      | Code Name  | test_world |
+    When I create a Subscription Plan for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+      | Name       | Test Plan 2 |
+      | Public     | True        |
+      | Per Seat   | False       |
+      | User Count | 10          |
+      | Code Name  | test_world  |
+    Then there should not be a subscription plan called "Test Plan 2"
+    And there should be an error for "codeName"
+
+  Scenario: Create a Subscription Plan use code name
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+      | Name       | Test Plan  |
+      | Public     | True       |
+      | Per Seat   | False      |
+      | User Count | 10         |
+      | Code Name  | test       |
+    When I create a Subscription Plan for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+      | Name       | Test Plan 2 |
+      | Public     | True        |
+      | Per Seat   | False       |
+      | User Count | 10          |
+      | Code Name  | test_world  |
+    Then there should be a subscription plan called "Test Plan 2"
+    Then the subscription plan "Test Plan 2" should have the code name "test_world"

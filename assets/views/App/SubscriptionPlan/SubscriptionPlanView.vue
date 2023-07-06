@@ -19,6 +19,10 @@
                 <dd>{{ subscription_plan.name }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.subscription_plan.view.main.code_name') }}</dt>
+                <dd>{{ subscription_plan.code_name }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.subscription_plan.view.main.user_count') }}</dt>
                 <dd>{{ subscription_plan.user_count }}</dd>
               </div>

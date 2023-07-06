@@ -14,6 +14,15 @@
       </div>
 
       <div class="form-field-ctn">
+        <label class="form-field-lbl" for="name">
+          {{ $t('app.subscription_plan.create.fields.code_name') }}
+        </label>
+        <p class="form-field-error" v-if="errors.codeName != undefined">{{ errors.codeName }}</p>
+        <input type="text" class="form-field-input" id="name" v-model="subscription_plan.code_name" />
+        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.code_name') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
         <label class="form-field-lbl" for="public">
           {{ $t('app.subscription_plan.create.fields.public') }}
         </label>
@@ -119,6 +128,7 @@ export default {
     return {
       subscription_plan: {
         name: null,
+        code_name: null,
         external_reference: null,
         per_seat: false,
         free: false,
@@ -172,8 +182,13 @@ export default {
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
+      var codeName = null;
+      if (codeName !== undefined && this.subscription_plan.code_name !== '') {
+        codeName = this.subscription_plan.code_name;
+      }
       var payload = {
         name: this.subscription_plan.name,
+        code_name: codeName,
         free: this.subscription_plan.free,
         per_seat: this.subscription_plan.per_seat,
         user_count: this.subscription_plan.user_count,

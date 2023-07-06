@@ -12,11 +12,16 @@
 
 namespace App\Dto\Generic\Api;
 
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
 class SubscriptionPlan
 {
     private $id;
 
     private string $name;
+
+    #[SerializedName('code_name')]
+    private ?string $codeName;
 
     public function getId()
     {
@@ -36,5 +41,15 @@ class SubscriptionPlan
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getCodeName(): ?string
+    {
+        return $this->codeName;
+    }
+
+    public function setCodeName(string $codeName): void
+    {
+        $this->codeName = $codeName;
     }
 }

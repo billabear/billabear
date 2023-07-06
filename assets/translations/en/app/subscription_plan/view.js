@@ -8,6 +8,7 @@ export const SUBSCRIPTION_PLAN_VIEW_TRANSLATIONS = {
     main: {
         title: "Main Details",
         name: "Name",
+        code_name: "Code Name",
         per_seat: "Per Seat",
         free: "Free",
         user_count: "User Count",

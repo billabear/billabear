@@ -42,6 +42,7 @@ class SubscriptionPlanFactory
         }
 
         $subscriptionPlan->setName($dto->getName());
+        $subscriptionPlan->setCodeName($dto->getCodeName());
         $subscriptionPlan->setPublic($dto->getPublic());
         $subscriptionPlan->setPerSeat($dto->getPerSeat());
         $subscriptionPlan->setUserCount($dto->getUserCount());
@@ -88,6 +89,7 @@ class SubscriptionPlanFactory
     {
         $dto = new AppDto();
         $dto->setId((string) $subscriptionPlan->getId());
+        $dto->setCodeName($subscriptionPlan->getCodeName());
         $dto->setName($subscriptionPlan->getName());
         $dto->setPerSeat($subscriptionPlan->isPerSeat());
         $dto->setPublic($subscriptionPlan->isPublic());
@@ -117,6 +119,7 @@ class SubscriptionPlanFactory
         $dto = new ApiDto();
         $dto->setId((string) $subscriptionPlan->getId());
         $dto->setName($subscriptionPlan->getName());
+        $dto->setCodeName($subscriptionPlan->getCodeName());
 
         return $dto;
     }

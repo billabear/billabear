@@ -59,6 +59,7 @@ class AppContext implements Context
             'public' => 'true' === strtolower($data['Public']),
             'per_seat' => 'true' === strtolower($data['Per Seat']),
             'user_count' => intval($data['User Count']),
+            'code_name' => $data['Code Name'] ?? null,
             'prices' => [
                 ['id' => $price->getId()],
             ],
@@ -100,6 +101,7 @@ class AppContext implements Context
         $subscriptionPlan->setProduct($product);
         $subscriptionPlan->addFeature($feature);
         $subscriptionPlan->addLimit($subscriptionLimit);
+        $subscriptionPlan->setCodeName($data['Code Name'] ?? null);
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();
@@ -174,7 +176,6 @@ class AppContext implements Context
         $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
 
         if (!$subscriptionPlan instanceof SubscriptionPlan) {
-            var_dump($this->session->getPage()->getContent());
             throw new \Exception("Can't find plan");
         }
 
@@ -211,6 +212,19 @@ class AppContext implements Context
     public function thereShouldBeASubscriptionPlanCalled($planName)
     {
         $this->findSubscriptionPlanByName($planName);
+    }
+
+    /**
+     * @Then there should not be a subscription plan called :arg1
+     */
+    public function thereShouldNotBeASubscriptionPlanCalled($planName)
+    {
+        try {
+            $this->findSubscriptionPlanByName($planName);
+        } catch (\Throwable $e) {
+            return;
+        }
+        throw new \Exception('Plan found');
     }
 
     /**
@@ -252,5 +266,17 @@ class AppContext implements Context
         }
 
         throw new \Exception('No limit found');
+    }
+
+    /**
+     * @Then the subscription plan :arg1 should have the code name :arg2
+     */
+    public function theSubscriptionPlanShouldHaveTheCodeName($planName, $codeName)
+    {
+        $plan = $this->findSubscriptionPlanByName($planName);
+
+        if ($plan->getCodeName() !== $codeName) {
+            throw new \Exception(sprintf('Found %s instead of %s', $plan->getCodeName(), $codeName));
+        }
     }
 }
