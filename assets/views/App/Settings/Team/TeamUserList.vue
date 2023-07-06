@@ -2,6 +2,7 @@
   <div v-if="!has_error">
     <h1 class="page-title">{{ $t('app.settings.user.list.title') }}</h1>
 
+
     <div class="top-button-container">
       <div class="list">
         <div class="list_button">
@@ -61,6 +62,13 @@
             </td>
           </tr>
           </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.settings.user.list.list.email')}}</th>
+            <th>{{ $t('app.settings.user.list.list.role') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
         </table>
       </div>
       <div class="sm:grid sm:grid-cols-2">
@@ -78,6 +86,38 @@
           </select>
         </div>
       </div>
+
+      <div class="" v-if="invites.length > 0">
+        <h3>{{ $t('app.settings.user.list.invite_title') }}</h3>
+        <table class="list-table">
+          <thead>
+          <tr>
+            <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
+            <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(invite, key) in invites">
+            <td>{{ invite.email }}</td>
+            <td>{{ invite.role }}</td>
+            <td>
+              <button class="btn--main" v-if="copied === key" disabled><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copied_link') }}</button>
+              <button class="btn--main" @click="copyInviteToClipboard(invite, key)" v-else><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copy_link') }}</button>
+
+            </td>
+
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
+            <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
+            <th></th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
     </LoadingScreen>
   </div>
   <div v-else class="error-page">
@@ -93,7 +133,9 @@ export default {
   data() {
     return {
       ready: false,
-      customers: [],
+      users: [],
+      copied: false,
+      invites: [],
       has_more: false,
       has_error: false,
       loaded: true,
@@ -124,6 +166,15 @@ export default {
     }
   },
   methods: {
+    copyInviteToClipboard: function (invite, key) {
+      var that = this;
+      that.copied = key;
+      setTimeout( function () {
+        that.copied = false;
+      }, 1000);
+      
+      navigator.clipboard.writeText(window.location.origin+"/signup/"+invite.code);
+    },
     syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {
@@ -212,8 +263,8 @@ export default {
 
       this.loaded = false;
       axios.get(urlString).then(response => {
-
-        this.users = response.data.data;
+        this.invites = response.data.invites;
+        this.users = response.data.users;
         if (mode === 'normal') {
           this.has_more = response.data.has_more;
         } else {

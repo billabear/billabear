@@ -10,17 +10,20 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Factory;
 
-use App\Entity\InviteCode;
+use App\Dto\Generic\App\InviteCode as AppDto;
+use Parthenon\User\Entity\InviteCode as Entity;
 
-class InviteCodeRepository extends \Parthenon\User\Repository\InviteCodeRepository implements InviteCodeRepositoryInterface
+class InviteCodeFactory
 {
-    /**
-     * @return InviteCode[]
-     */
-    public function findAllUnusedInvites(): array
+    public function createAppDto(Entity $entity): AppDto
     {
-        return $this->entityRepository->findBy(['used' => false]);
+        $appDto = new AppDto();
+        $appDto->setEmail($entity->getEmail());
+        $appDto->setSentAt($entity->getCreatedAt());
+        $appDto->setCode($entity->getCode());
+
+        return $appDto;
     }
 }

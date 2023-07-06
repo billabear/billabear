@@ -14,10 +14,12 @@ namespace App\Controller\App\Settings;
 
 use App\Api\Filters\CustomerList;
 use App\Dto\Request\App\Settings\User\UserUpdate;
-use App\Dto\Response\App\ListResponse;
+use App\Dto\Response\App\Settings\User\UserListView;
 use App\Dto\Response\App\Settings\User\UserView;
 use App\Entity\User;
+use App\Factory\InviteCodeFactory;
 use App\Factory\UserFactory;
+use App\Repository\InviteCodeRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,6 +37,8 @@ class UserController
     public function readUserList(
         Request $request,
         UserRepositoryInterface $repository,
+        InviteCodeRepositoryInterface $inviteCodeRepository,
+        InviteCodeFactory $inviteCodeFactory,
         SerializerInterface $serializer,
         UserFactory $factory,
     ): Response {
@@ -65,11 +69,13 @@ class UserController
             lastId: $lastKey,
             firstId: $firstKey,
         );
+        $invites = $inviteCodeRepository->findAllUnusedInvites();
 
         $dtos = array_map([$factory, 'createAppDto'], $resultSet->getResults());
-        $listResponse = new ListResponse();
+        $listResponse = new UserListView();
         $listResponse->setHasMore($resultSet->hasMore());
-        $listResponse->setData($dtos);
+        $listResponse->setInvites(array_map([$inviteCodeFactory, 'createAppDto'], $invites));
+        $listResponse->setUsers($dtos);
         $listResponse->setLastKey($resultSet->getLastKey());
         $listResponse->setFirstKey($resultSet->getFirstKey());
 

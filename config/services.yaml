@@ -50,6 +50,11 @@ services:
         arguments:
             - '@App\Repository\Orm\ForgotPasswordCodeRepository'
 
+    Parthenon\User\Repository\InviteCodeRepositoryInterface: '@App\Repository\InviteCodeRepository'
+    App\Repository\InviteCodeRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.invite_code'
+    app.repository.orm.invite_code: '@App\Repository\Orm\InviteCodeRepository'
     parthenon.user.repository.orm.invite_code_repository_doctrine: '@App\Repository\Orm\InviteCodeRepository'
 
     App\Repository\SubscriptionRepository:
