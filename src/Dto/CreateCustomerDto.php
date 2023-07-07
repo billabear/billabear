@@ -50,7 +50,7 @@ class CreateCustomerDto
 
     #[Assert\Valid]
     #[SerializedName('address')]
-    private Address $address;
+    private ?Address $address = null;
 
     public function getEmail(): ?string
     {
@@ -82,12 +82,12 @@ class CreateCustomerDto
         $this->externalReference = $externalReference;
     }
 
-    public function getAddress(): Address
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    public function setAddress(Address $address): void
+    public function setAddress(?Address $address): void
     {
         $this->address = $address;
     }
