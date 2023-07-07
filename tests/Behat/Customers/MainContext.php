@@ -86,10 +86,13 @@ class MainContext implements Context
 
         $payload = [
             'email' => $data['Email'],
-            'address' => [
-                'country' => $data['Country'],
-            ],
         ];
+
+        if (isset($data['Country'])) {
+            $payload['address'] = [
+                'country' => $data['Country'],
+            ];
+        }
 
         if (isset($data['External Reference'])) {
             $payload['external_reference'] = $data['External Reference'];
