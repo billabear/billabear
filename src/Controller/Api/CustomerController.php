@@ -67,11 +67,6 @@ class CustomerController
 
         $customer = $customerFactory->createCustomer($dto);
 
-        // Todo move to validation
-        if ($customerRepository->hasCustomerByEmail((string) $customer->getBillingEmail())) {
-            return new JsonResponse(null, JsonResponse::HTTP_CONFLICT);
-        }
-
         if (!$customer->hasExternalsCustomerReference()) {
             try {
                 $this->getLogger()->info('Registering customer with payment provider');

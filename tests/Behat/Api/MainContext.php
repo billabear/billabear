@@ -38,6 +38,16 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I should not be told there is a conflict
+     */
+    public function iShouldNotBeToldThereIsAConflict()
+    {
+        if (Response::HTTP_CONFLICT === $this->session->getStatusCode()) {
+            throw new \Exception('There conflict response given');
+        }
+    }
+
+    /**
      * @Given I have authenticated to the API
      */
     public function iHaveAuthenticatedToTheApi()
