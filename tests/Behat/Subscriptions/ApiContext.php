@@ -140,4 +140,19 @@ class ApiContext implements Context
             'price' => (string) $price->getId(),
         ]);
     }
+
+    /**
+     * @When I create a subscription with code and currency via the API for :arg1 with the follow:
+     */
+    public function iCreateASubscriptionWithCodeAndCurrencyViaTheApiForWithTheFollow($customerEmail, TableNode $table)
+    {
+        $row = current($table->getColumnsHash());
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/start', [
+            'subscription_plan' => (string) $row['Subscription Plan'],
+            'currency' => $row['Price Currency'],
+            'schedule' => $row['Price Schedule'],
+        ]);
+    }
 }

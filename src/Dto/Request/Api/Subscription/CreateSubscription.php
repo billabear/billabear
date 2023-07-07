@@ -15,9 +15,11 @@ namespace App\Dto\Request\Api\Subscription;
 use App\Validator\Constraints\PaymentMethodExists;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
+use App\Validator\Constraints\ValidPrice;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ValidPrice]
 class CreateSubscription
 {
     #[Assert\NotBlank]
@@ -26,11 +28,17 @@ class CreateSubscription
     #[SerializedName('subscription_plan')]
     private $subscriptionPlan;
 
-    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[PriceExists]
     #[SerializedName('price')]
     private $price;
+
+    #[Assert\Type('string')]
+    private $currency;
+
+    #[Assert\Type('string')]
+    #[Assert\Choice(choices: ['week', 'month', 'year'])]
+    private $schedule;
 
     #[PaymentMethodExists]
     #[SerializedName('payment_details')]
@@ -84,5 +92,25 @@ class CreateSubscription
     public function hasPaymentDetails(): bool
     {
         return isset($this->paymentDetails);
+    }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getSchedule()
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule($schedule): void
+    {
+        $this->schedule = $schedule;
     }
 }

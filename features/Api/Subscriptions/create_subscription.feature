@@ -24,11 +24,12 @@ Feature: Customer Subscription Create APP
       | Feature One   | feature_one   | A dummy feature |
       | Feature Two   | feature_two   | A dummy feature |
       | Feature Three | feature_three | A dummy feature |
-    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "3000" in "USD" with:
       | Name       | Test Plan |
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
+      | Code Name  | test_plan |
 
 
   Scenario: Create
@@ -64,3 +65,21 @@ Feature: Customer Subscription Create APP
     And the payment amount stats for the day should be 50000 in the currency "USD"
     And the monthly recurring revenue estimate should be 0
     And the annual recurring revenue estimate should be 0
+
+
+  Scenario: Create
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    When I create a subscription with code and currency via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan | Price Currency | Price Schedule |
+      | test_plan         | USD            | month          |
+    Then there should be a subscription for the user "customer.one@example.org"
+    And the subscriber daily stat for the day should be 1
+    And the subscriber monthly stat for the day should be 1
+    And the subscriber yearly stat for the day should be 1
+    And the payment amount stats for the day should be 3000 in the currency "USD"
+    And the monthly recurring revenue estimate should be 3000
+    And the annual recurring revenue estimate should be 36000

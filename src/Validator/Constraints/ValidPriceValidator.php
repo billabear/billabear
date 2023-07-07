@@ -12,13 +12,13 @@
 
 namespace App\Validator\Constraints;
 
+use App\Dto\Request\Api\Subscription\CreateSubscription;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class SubscriptionPlanExistsValidator extends ConstraintValidator
+class ValidPriceValidator extends ConstraintValidator
 {
     public function __construct(private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository)
     {
@@ -26,26 +26,27 @@ class SubscriptionPlanExistsValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint)
     {
-        if (empty($value)) {
+        if (!$value instanceof CreateSubscription) {
+            return;
+        }
+        if (Uuid::isValid((string) $value->getPrice())) {
             return;
         }
 
-        if (Uuid::isValid($value)) {
-            try {
-                $this->subscriptionPlanRepository->getById($value);
+        if ($this->context->getViolations()->count() > 0) {
+            return;
+        }
 
-                return;
-            } catch (NoEntityFoundException $exception) {
-                $this->context->buildViolation($constraint->message)->addViolation();
-            }
+        if (Uuid::isValid($value->getSubscriptionPlan())) {
+            $subscriptionPlan = $this->subscriptionPlanRepository->findById($value->getSubscriptionPlan());
         } else {
-            try {
-                $this->subscriptionPlanRepository->getByCodeName($value);
+            $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value->getSubscriptionPlan());
+        }
 
-                return;
-            } catch (NoEntityFoundException $exception) {
-                $this->context->buildViolation($constraint->message)->addViolation();
-            }
+        try {
+            $subscriptionPlan->getPriceForCurrencyAndSchedule($value->getCurrency(), $value->getSchedule());
+        } catch (\Exception $e) {
+            $this->context->buildViolation($constraint->message)->atPath('price')->addViolation();
         }
     }
 }

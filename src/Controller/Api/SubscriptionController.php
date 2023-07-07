@@ -34,6 +34,7 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +88,13 @@ class SubscriptionController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());
+        $planIdentifier = $dto->getSubscriptionPlan();
+        if (Uuid::isValid($planIdentifier)) {
+            $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());
+        } else {
+            $subscriptionPlan = $subscriptionPlanRepository->getByCodeName($planIdentifier);
+        }
+
         if ($dto->hasPaymentDetails()) {
             $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         } else {
@@ -97,8 +104,11 @@ class SubscriptionController
                 return new JsonResponse(['error' => 'No default payment method'], JsonResponse::HTTP_NOT_ACCEPTABLE);
             }
         }
-        $price = $priceRepository->findById($dto->getPrice());
-
+        if ($dto->getPrice()) {
+            $price = $priceRepository->findById($dto->getPrice());
+        } else {
+            $price = $subscriptionPlan->getPriceForCurrencyAndSchedule($dto->getCurrency(), $dto->getSchedule());
+        }
         $transactionManager->start();
         try {
             $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
