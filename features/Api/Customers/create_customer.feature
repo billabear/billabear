@@ -56,7 +56,7 @@ Feature: Customer Creation
     When I create a customer with the following info
       | Email   | customer@example.org |
       | Country | DE                   |
-    Then I should be told there is a conflict
+    Then I should not be told there is a conflict
 
   Scenario: Successfully create customer with references and billing type
     Given I have authenticated to the API
