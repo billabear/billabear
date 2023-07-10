@@ -53,6 +53,33 @@ class SubscriptionController
         $this->cancellationRequestFactory = new CancellationRequestFactory();
     }
 
+    #[Route('/api/v1/customer/{customerId}/subscription', methods: ['GET'])]
+    public function listCustomerSubscriptions(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        \App\Repository\SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionFactory $subscriptionFactory,
+        SerializerInterface $serializer,
+    ) {
+        try {
+            $customer = $customerRepository->findById($request->get('customerId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
+        $dtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore(false);
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey(null);
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[Route('/api/v1/customer/{customerId}/subscription/start', name: 'api_v1_subscription_start', methods: ['POST'])]
     public function createSubscription(
         Request $request,

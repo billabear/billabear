@@ -1,4 +1,5 @@
-Feature: Subscription List
+Feature: Customer Subscription List
+
   Background:
     Given the following accounts exist:
       | Name        | Email                   | Password  |
@@ -29,6 +30,11 @@ Feature: Subscription List
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
+    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+      | Name       | Test Three |
+      | Public     | True       |
+      | Per Seat   | False      |
+      | User Count | 10         |
 
 
   Scenario: Get customer info
@@ -42,5 +48,8 @@ Feature: Subscription List
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
       | Test Plan         | 3000         | USD            | month          | customer.two@example.org |
       | Test Two          | 3000         | USD            | month          | customer.one@example.org |
-    When I request the subscription list api
+      | Test Three        | 3000         | USD            | month          | customer.two@example.org |
+    When I request the subscription list api for "customer.two@example.org"
     Then I will see a subscription in the list for "Test Plan"
+    Then I will see a subscription in the list for "Test Three"
+    But I will not see a subscription in the list for "Test Two"

@@ -282,6 +282,24 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I will not see a subscription in the list for :arg1
+     */
+    public function iWillNotSeeASubscriptionInTheListFor($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['data'])) {
+            throw new \Exception('No subscriptions found');
+        }
+
+        foreach ($data['data'] as $subscription) {
+            if ($subscription['plan']['name'] === $arg1) {
+                throw new \Exception('subscription found');
+            }
+        }
+    }
+
+    /**
      * @When I view the subscription :arg1 for :arg2
      */
     public function iViewTheSubscriptionFor($planName, $customerEmail)
