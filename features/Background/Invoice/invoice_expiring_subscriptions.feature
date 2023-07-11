@@ -31,13 +31,13 @@ Feature: Generate new invoices
       | Per Seat   | False    |
       | User Count | 10       |
     And the follow customers exist:
-      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference |
-      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              |
-      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         | ref_valid         |
-      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         | ref_valid         |
-      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         | ref_fails         |
-      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         | ref_valid         |
-      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         | ref_fails         |
+      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number |
+      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              | FJDKSLfjdf |
+      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     |
+      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         | ref_valid         | gfdgsfd    |
+      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         | ref_fails         | 35435 43   |
+      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      |
+      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     |
 
 
   Scenario:
@@ -138,6 +138,26 @@ Feature: Generate new invoices
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 1100
+    And the latest invoice for "customer.one@example.org" will have tax amount due
+
+  Scenario: No tax
+    Given that the tax settings for tax customers with tax number is false
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org   | +3 Minutes  | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.three@example.org | +3 Minutes  | Active    |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
+      | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
+    And stripe billing is enabled
+    And the following credit transactions exist:
+      | Customer                 | Type   | Amount | Currency |
+      | customer.one@example.org | debit  | 100   | USD      |
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    And the latest invoice for "customer.one@example.org" will have amount due as 1100
+    And the latest invoice for "customer.one@example.org" will not have tax amount due
 
   Scenario: Has voucher
     Given the following subscriptions exist:

@@ -317,6 +317,16 @@ services:
         class: App\Repository\Orm\VoucherApplicationRepository
 
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
+
+    tax_provider_factory:
+        class: App\Tax\TaxRateProvider
+        factory: [ '@App\Tax\TaxRateProviderFactory', 'getTaxRateProvider' ]
+
+    App\Tax\IgnoreCustomerTax:
+        arguments:
+            $taxRateProvider: '@tax_provider_factory'
+
+    App\Tax\TaxRateProviderInterface: '@App\Tax\IgnoreCustomerTax'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

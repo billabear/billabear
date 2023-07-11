@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Entity\Settings\NotificationSettings;
 use App\Entity\Settings\OnboardingSettings;
 use App\Entity\Settings\SystemSettings;
+use App\Entity\Settings\TaxSettings;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -41,6 +42,9 @@ class Settings
 
     #[ORM\Embedded(class: OnboardingSettings::class)]
     private OnboardingSettings $onboardingSettings;
+
+    #[ORM\Embedded(class: TaxSettings::class)]
+    private TaxSettings $taxSettings;
 
     public function getId()
     {
@@ -90,5 +94,15 @@ class Settings
     public function setOnboardingSettings(OnboardingSettings $onboardingSettings): void
     {
         $this->onboardingSettings = $onboardingSettings;
+    }
+
+    public function getTaxSettings(): TaxSettings
+    {
+        return $this->taxSettings;
+    }
+
+    public function setTaxSettings(TaxSettings $taxSettings): void
+    {
+        $this->taxSettings = $taxSettings;
     }
 }

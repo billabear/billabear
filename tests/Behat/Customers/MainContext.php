@@ -323,6 +323,7 @@ class MainContext implements Context
             $customer->setBrandSettings($brandSettings);
             $customer->setBrand($brand);
             $customer->setCreatedAt(new \DateTime('now'));
+            $customer->setTaxNumber($row['Tax Number'] ?? null);
 
             $this->customerRepository->getEntityManager()->persist($customer);
             $this->customerRepository->getEntityManager()->flush();

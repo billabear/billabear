@@ -6,6 +6,7 @@
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.user.settings'}" class="submenu-link">{{ $t('app.settings.menu.user_settings') }}</router-link></li>
           <RoleOnlyView role="ROLE_ADMIN">
+            <li class="submenu-list-item"><router-link :to="{name: 'app.settings.tax_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.tax_settings') }}</router-link></li>
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.import.stripe'}" class="submenu-link">{{ $t('app.settings.menu.stripe') }}</router-link></li>
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.users.list'}" class="submenu-link">{{ $t('app.settings.menu.users') }}</router-link></li>
           </RoleOnlyView>

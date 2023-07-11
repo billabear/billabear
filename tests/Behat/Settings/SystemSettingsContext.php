@@ -58,6 +58,18 @@ class SystemSettingsContext implements Context
     }
 
     /**
+     * @Given that the tax settings for tax customers with tax number is false
+     */
+    public function thatTheTaxSettingsForTaxCustomersWithTaxNumberIsFalse()
+    {
+        $settings = $this->getSettings();
+        $taxSettings = $settings->getTaxSettings();
+        $taxSettings->setTaxCustomersWithTaxNumbers(false);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @Given stripe billing is disabled
      */
     public function stripeBillingIsDisabled()

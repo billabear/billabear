@@ -58,6 +58,7 @@ import VouchersView from "../views/App/Vouchers/VouchersView.vue";
 import SubscriptionMassChange from "../views/App/Subscription/SubscriptionMassChange.vue";
 import SubscriptionsOverview from "../views/App/Reports/Subscriptions/SubscriptionsOverview.vue";
 import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
+import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -157,6 +158,11 @@ export const APP_ROUTES = [
                 name: "app.settings.pdf_template.list",
                 path: "templates/list",
                 component: PdfTemplateList
+            },
+            {
+                name: "app.settings.tax_settings.update",
+                path: "tax-settings",
+                component: TaxSettings
             },
             {
                 name: "app.settings.pdf_template.update",

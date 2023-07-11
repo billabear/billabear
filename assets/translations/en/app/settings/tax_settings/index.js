@@ -1,0 +1,5 @@
+import {TAX_SETTINGS_UPDATE_TRANSLATION} from "./update";
+
+export const TAX_SETTINGS_TRANSLATION = {
+    update: TAX_SETTINGS_UPDATE_TRANSLATION
+}

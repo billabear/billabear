@@ -51,4 +51,32 @@ class MainContext implements Context
             throw new \Exception('Different amount due - '.$invoice->getAmountDue());
         }
     }
+
+    /**
+     * @Then the latest invoice for :arg1 will have tax amount due
+     */
+    public function theLatestInvoiceForWillHaveTaxAmountDue($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if (!$invoice->getVatTotal()) {
+            throw new \Exception('Different amount due - '.$invoice->getVatTotal());
+        }
+    }
+
+    /**
+     * @Then the latest invoice for :arg1 will not have tax amount due
+     */
+    public function theLatestInvoiceForWillNotHaveTaxAmountDue($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if ($invoice->getVatTotal()) {
+            throw new \Exception('Different amount due - '.$invoice->getVatTotal());
+        }
+    }
 }
