@@ -123,6 +123,7 @@ Feature: Generate new invoices
     And the credit amount for "customer.one@example.org" should be 100
 
   Scenario:
+    Given that the tax settings for tax customers with tax number is true
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
       | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
