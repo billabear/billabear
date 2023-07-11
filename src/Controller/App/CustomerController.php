@@ -15,6 +15,7 @@ namespace App\Controller\App;
 use App\Api\Filters\CustomerList;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
+use App\Customer\ObolRegister;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\Customer\CreateCustomerView;
 use App\Dto\Response\App\CustomerView;
@@ -263,6 +264,7 @@ class CustomerController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CustomerFactory $customerFactory,
+        ObolRegister $obolRegister,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -287,6 +289,8 @@ class CustomerController
         }
 
         $newCustomer = $customerFactory->createCustomer($dto, $customer);
+
+        $obolRegister->update($newCustomer);
 
         $customerRepository->save($newCustomer);
         $dto = $customerFactory->createAppDto($newCustomer);

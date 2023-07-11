@@ -2496,12 +2496,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "d616600f893645b80b5287173275e5da1d03ee46"
+                "reference": "057297e8520981bf88ac35bc8a234ca3a45f7f20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/d616600f893645b80b5287173275e5da1d03ee46",
-                "reference": "d616600f893645b80b5287173275e5da1d03ee46",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/057297e8520981bf88ac35bc8a234ca3a45f7f20",
+                "reference": "057297e8520981bf88ac35bc8a234ca3a45f7f20",
                 "shasum": ""
             },
             "require": {
@@ -2536,9 +2536,9 @@
             "description": "A PHP 8.1+ Payment Gateway Abstraction library",
             "support": {
                 "issues": "https://github.com/getparthenon/obol/issues",
-                "source": "https://github.com/getparthenon/obol/tree/v0.1"
+                "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2023-06-15T17:50:49+00:00"
+            "time": "2023-07-11T14:40:56+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -2708,16 +2708,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.19.0",
+            "version": "1.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "1856a119a0b0ba8da8b5c33c080aa7af8fac25b4"
+                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/1856a119a0b0ba8da8b5c33c080aa7af8fac25b4",
-                "reference": "1856a119a0b0ba8da8b5c33c080aa7af8fac25b4",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/57f3de01d32085fea20865f9b16fb0e69347c39e",
+                "reference": "57f3de01d32085fea20865f9b16fb0e69347c39e",
                 "shasum": ""
             },
             "require": {
@@ -2780,9 +2780,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.19.0"
+                "source": "https://github.com/php-http/discovery/tree/1.19.1"
             },
-            "time": "2023-06-19T08:45:36+00:00"
+            "time": "2023-07-11T07:02:26+00:00"
         },
         {
             "name": "php-http/httplug",
