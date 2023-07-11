@@ -19,7 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'billabear:stripe:sync-customers', description: 'Sync customer data witha stripe')]
+#[AsCommand(name: 'billabear:stripe:sync-customers', description: 'Sync customer data with stripe')]
 class StripeSyncCustomersCommand extends Command
 {
     public function __construct(private CustomerRepositoryInterface $customerRepository, private ObolRegister $obolRegister)
