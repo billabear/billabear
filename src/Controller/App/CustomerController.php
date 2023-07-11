@@ -289,7 +289,6 @@ class CustomerController
         }
 
         $newCustomer = $customerFactory->createCustomer($dto, $customer);
-
         $obolRegister->update($newCustomer);
 
         $customerRepository->save($newCustomer);
