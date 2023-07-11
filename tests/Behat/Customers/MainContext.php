@@ -106,6 +106,10 @@ class MainContext implements Context
             $payload['billing_type'] = $data['Billing Type'];
         }
 
+        if (isset($data['Tax Number'])) {
+            $payload['tax_number'] = $data['Tax Number'];
+        }
+
         $this->sendJsonRequest('POST', '/api/v1/customer', $payload);
     }
 
@@ -216,6 +220,17 @@ class MainContext implements Context
         $customer = $this->getCustomerByEmail($email);
         if ($customer->getLocale() !== $locale) {
             throw new \Exception(sprintf("Expected '%s' but got '%s'", $locale, $customer->getLocale()));
+        }
+    }
+
+    /**
+     * @Then the customer :arg1 should have the tax number :arg2
+     */
+    public function theCustomerShouldHaveTheTaxNumber($email, $taxNumber)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        if ($customer->getTaxNumber() !== $taxNumber) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $taxNumber, $customer->getTaxNumber()));
         }
     }
 

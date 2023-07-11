@@ -172,6 +172,9 @@ class AppContext implements Context
         if (isset($data['Brand'])) {
             $payload['brand'] = $data['Brand'];
         }
+        if (isset($data['Tax Number'])) {
+            $payload['tax_number'] = $data['Tax Number'];
+        }
 
         $this->sendJsonRequest('POST', '/app/customer', $payload);
     }

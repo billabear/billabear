@@ -37,6 +37,10 @@
                   <dd>{{ customer.status }}</dd>
                 </div>
                 <div>
+                  <dt>{{ $t('app.customer.view.main.tax_number') }}</dt>
+                  <dd>{{ customer.tax_number }}</dd>
+                </div>
+                <div>
                   <dt>{{ $t('app.customer.view.main.reference') }}</dt>
                   <dd>{{ customer.reference }}</dd>
                 </div>

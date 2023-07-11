@@ -47,6 +47,9 @@ class Customer
     #[SerializedName('billing_type')]
     protected string $billingType;
 
+    #[SerializedName('tax_number')]
+    protected ?string $taxNumber;
+
     public function getId(): string
     {
         return $this->id;
@@ -145,5 +148,15 @@ class Customer
     public function setBillingType(string $billingType): void
     {
         $this->billingType = $billingType;
+    }
+
+    public function getTaxNumber(): ?string
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber(?string $taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

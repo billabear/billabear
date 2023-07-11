@@ -88,6 +88,9 @@ class Customer implements CustomerInterface
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
+    #[ORM\Column(name: 'tax_number', type: 'string', nullable: true)]
+    protected ?string $taxNumber = null;
+
     public function getId()
     {
         return $this->id;
@@ -329,5 +332,15 @@ class Customer implements CustomerInterface
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getTaxNumber(): ?string
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber(?string $taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

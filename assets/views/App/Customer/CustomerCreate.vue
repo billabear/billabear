@@ -14,6 +14,14 @@
         </div>
 
       <div class="form-field-ctn">
+        <label class="form-field-lbl" for="tax_number">
+          {{ $t('app.customer.create.tax_number') }}
+        </label>
+        <p class="form-field-error" v-if="errors.tax_number != undefined">{{ errors.tax_number }}</p>
+        <input type="text" class="form-field-input" id="tax_number" v-model="customer.tax_number"  />
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.tax_number') }}</p>
+      </div>
+      <div class="form-field-ctn">
         <label class="form-field-lbl" for="reference">
           {{ $t('app.customer.create.reference') }}
         </label>
@@ -152,6 +160,7 @@ export default {
         },
         reference: null,
         external_reference: null,
+        tax_number: null,
       },
       sendingInProgress: false,
       showAdvance: false,

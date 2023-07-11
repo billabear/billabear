@@ -71,3 +71,16 @@ Feature: Customer Creation
     And the customer "customer@example.org" should have the reference "Test Customer"
     And the customer "customer@example.org" should have the billing type "invoice"
 
+
+  Scenario: Successfully create customer with references and tax number
+    Given I have authenticated to the API
+    When I create a customer with the following info
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+      | External Reference | cust_4945959         |
+      | Reference          | Test Customer        |
+      | Billing Type       | invoice              |
+      | Tax Number         | GB2494944            |
+    Then there should be a customer for "customer@example.org"
+    And the customer "customer@example.org" should have the tax number "GB2494944"
+

@@ -86,3 +86,20 @@ Feature: Customer Creation
     Then there should be a customer for "customer@example.org"
     And the customer "customer@example.org" should have the brand "example"
     And the customer "customer@example.org" should have the locale "en"
+
+  Scenario: Successfully create customer with Brand and tax number
+    Given the follow brands exist:
+      | Name    | Code    | Email               |
+      | Example | example | example@example.org |
+    And I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a customer via the app with the following info
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+      | External Reference | cust_4945959         |
+      | Reference          | Test Customer        |
+      | Billing Type       | invoice              |
+      | Brand              | example              |
+      | Locale             | en                   |
+      | Tax Number         | GB2494944            |
+    Then there should be a customer for "customer@example.org"
+    And the customer "customer@example.org" should have the tax number "GB2494944"

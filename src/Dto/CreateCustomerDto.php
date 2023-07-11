@@ -52,6 +52,11 @@ class CreateCustomerDto
     #[SerializedName('address')]
     private ?Address $address = null;
 
+    #[SerializedName('tax_number')]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('string')]
+    private $taxNumber;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -130,5 +135,15 @@ class CreateCustomerDto
     public function setBillingType($billingType): void
     {
         $this->billingType = $billingType;
+    }
+
+    public function getTaxNumber()
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber($taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }
