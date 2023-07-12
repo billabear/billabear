@@ -82,20 +82,19 @@ class GenerateNewInvoices
                 $this->subscriptionRepository->save($activeSubscription);
             }
             $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+            $this->transactionManager->finish();
+            if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
+                $this->invoiceCharger->chargeInvoice($invoice);
+            }
         } catch (\Throwable $exception) {
             $this->transactionManager->abort();
 
-            $this->getLogger()->info('An error happened while generating exception', [
+            $this->getLogger()->error('An error happened while generating exception', [
                 'exception_message' => $exception->getMessage(),
                 'customer_id' => (string) $customer->getId(),
                 'subscriptions' => array_map(function ($item) {
                     return (string) $item->getId();
                 }, $activeSubscriptions)]);
-        }
-
-        $this->transactionManager->finish();
-        if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
-            $this->invoiceCharger->chargeInvoice($invoice);
         }
     }
 }

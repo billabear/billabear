@@ -89,7 +89,7 @@ class InvoiceGenerator
         $vat = null;
         $invoice = new Invoice();
         $invoice->setValid(true);
-        $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->generate());
+        $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->getGenerator()->generate());
 
         foreach ($subscriptions as $subscription) {
             $price = $subscription->getPrice();
