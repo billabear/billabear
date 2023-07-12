@@ -45,7 +45,7 @@ class GeneralContext implements Context
         $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
         $tool->dropSchema($metaData);
         $tool->createSchema($metaData);
-
+        exit;
         if ($this->session->isStarted()) {
             $this->session->stop();
         }
