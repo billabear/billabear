@@ -121,7 +121,7 @@ jobs:
 
   behat_invoice:
     needs: code_style
-    name: Behat Background
+    name: Behat Invoice
     runs-on: ubuntu-latest
 
     strategy:
@@ -172,7 +172,7 @@ jobs:
       - name: Behat
         run: |
           vendor/bin/behat -f progress features/Invoice
-          
+
   behat_app_background:
     needs: code_style
     name: Behat Background
