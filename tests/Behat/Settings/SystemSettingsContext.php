@@ -223,13 +223,13 @@ class SystemSettingsContext implements Context
      */
     public function iUpdateTheSystemSettingsTo(TableNode $table)
     {
+        $this->sendJsonRequest('GET', '/app/settings/system');
+        $settings = $this->getJsonContent()['system_settings'];
         $data = $table->getRowsHash();
-        $payload = [
-            'system_url' => $data['System URL'] ?? null,
-            'timezone' => $data['Timezone'] ?? null,
-        ];
+        $settings['system_url'] = $data['System URL'] ?? null;
+        $settings['timezone'] = $data['Timezone'] ?? null;
 
-        $this->sendJsonRequest('POST', '/app/settings/system', $payload);
+        $this->sendJsonRequest('POST', '/app/settings/system', $settings);
     }
 
     /**

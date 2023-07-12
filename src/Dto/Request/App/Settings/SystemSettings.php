@@ -26,7 +26,7 @@ class SystemSettings
     #[Assert\Timezone]
     private $timezone;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Choice(choices: ['random', 'subsequential'])]
     #[SerializedName('invoice_number_generation')]
     private $invoiceNumberGeneration;
