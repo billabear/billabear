@@ -17,6 +17,7 @@ use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Invoice\InvoiceGenerator;
 use App\Invoice\Number\InvoiceNumberGeneratorInterface;
+use App\Invoice\Number\InvoiceNumberGeneratorProvider;
 use App\Invoice\PriceInfo;
 use App\Invoice\Pricer;
 use App\Repository\InvoiceRepositoryInterface;
@@ -42,9 +43,11 @@ class InvoiceGeneratorTest extends TestCase
         $subscriptionTwo->method('getPlanName')->willReturn('Plan Name Two');
 
         $customer = $this->createMock(Customer::class);
-
         $invoiceNumberGenerator = $this->createMock(InvoiceNumberGeneratorInterface::class);
         $invoiceNumberGenerator->method('generate')->willReturn('D7-848484');
+
+        $invoiceNumberGeneratorProvider = $this->createMock(InvoiceNumberGeneratorProvider::class);
+        $invoiceNumberGeneratorProvider->method('getGenerator')->willReturn($invoiceNumberGenerator);
 
         $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), 20.0);
         $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), 20.0);
@@ -62,7 +65,7 @@ class InvoiceGeneratorTest extends TestCase
 
         $eventDispatcher = $this->createMock(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGenerator, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher);
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
