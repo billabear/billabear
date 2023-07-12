@@ -14,7 +14,7 @@ namespace App\Invoice\Number;
 
 use App\Repository\SettingsRepositoryInterface;
 
-class Provider
+class InvoiceNumberGeneratorProvider
 {
     public function __construct(
         private SettingsRepositoryInterface $settingsRepository,

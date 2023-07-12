@@ -18,7 +18,7 @@ use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Event\InvoiceCreated;
-use App\Invoice\Number\InvoiceNumberGeneratorInterface;
+use App\Invoice\Number\InvoiceNumberGeneratorProvider;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
@@ -31,7 +31,7 @@ class InvoiceGenerator
 {
     public function __construct(
         private PricerInterface $pricer,
-        private InvoiceNumberGeneratorInterface $invoiceNumberGenerator,
+        private InvoiceNumberGeneratorProvider $invoiceNumberGeneratorProvider,
         private InvoiceRepositoryInterface $invoiceRepository,
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
         private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
@@ -52,7 +52,7 @@ class InvoiceGenerator
         $vat = null;
         $invoice = new Invoice();
         $invoice->setValid(true);
-        $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generate());
+        $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->getGenerator()->generate());
 
         $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney())->abs();
         $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax());
@@ -89,7 +89,7 @@ class InvoiceGenerator
         $vat = null;
         $invoice = new Invoice();
         $invoice->setValid(true);
-        $invoice->setInvoiceNumber($this->invoiceNumberGenerator->generate());
+        $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->generate());
 
         foreach ($subscriptions as $subscription) {
             $price = $subscription->getPrice();

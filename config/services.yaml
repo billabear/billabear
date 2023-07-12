@@ -320,8 +320,8 @@ services:
 
 
     App\Invoice\Number\InvoiceNumberGeneratorInterface:
-        class: App\Invoice\Number\Provider
-        factory: [ '@App\Invoice\Number\Provider', 'getGenerator' ]
+        class: App\Invoice\Number\InvoiceNumberGeneratorProvider
+        factory: [ '@App\Invoice\Number\InvoiceNumberGeneratorProvider', 'getGenerator' ]
 
 
     tax_provider_factory:
