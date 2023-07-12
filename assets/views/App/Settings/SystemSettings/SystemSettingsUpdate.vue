@@ -24,9 +24,33 @@
             </select>
             <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.timezone') }}</p>
           </div>
+        </div>
+
+        <div class="mt-3 card-body">
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="invoice_number_generation">
+              {{ $t('app.settings.system_settings.update.fields.invoice_number_generation') }}
+            </label>
+            <p class="form-field-error" v-if="errors.invoiceNumberGeneration != undefined">{{ errors.invoiceNumberGeneration }}</p>
+            <select class="form-field" id="timezone" v-model="systemSettings.invoice_number_generation">
+              <option value="random">{{ $t('app.settings.system_settings.update.invoice_number_generation.random') }}</option>
+              <option value="subsequential">{{ $t('app.settings.system_settings.update.invoice_number_generation.subsequential') }}</option>
+            </select>
+            <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.invoice_number_generation') }}</p>
+          </div>
+
+          <div class="form-field-ctn" v-if="systemSettings.invoice_number_generation === 'subsequential'">
+            <label class="form-field-lbl" for="subsequential_number">
+              {{ $t('app.settings.system_settings.update.fields.subsequential_number') }}
+            </label>
+            <input type="number" class="form-field" v-model="systemSettings.subsequential_number" />
+            <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.subsequential_number') }}</p>
+          </div>
 
 
         </div>
+
+
 
         <div class="form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.system_settings.update.submit_btn') }}</SubmitButton>

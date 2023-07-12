@@ -66,6 +66,7 @@ default:
                 - App\Tests\Behat\Settings\UserManagementContext
                 - App\Tests\Behat\Settings\ApiKeyContext
                 - App\Tests\Behat\Settings\TaxSettingsContext
+                - App\Tests\Behat\Settings\InvoiceSettingsContext
 
                 # Stats
                 - App\Tests\Behat\Stats\MainContext

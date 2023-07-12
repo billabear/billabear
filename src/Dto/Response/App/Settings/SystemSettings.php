@@ -22,6 +22,12 @@ class SystemSettings
     #[SerializedName('timezone')]
     private ?string $timezone = null;
 
+    #[SerializedName('invoice_number_generation')]
+    private ?string $invoiceNumberGeneration = null;
+
+    #[SerializedName('subsequential_number')]
+    private ?int $subsequentialNumber = null;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -40,5 +46,25 @@ class SystemSettings
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function getInvoiceNumberGeneration(): ?string
+    {
+        return $this->invoiceNumberGeneration;
+    }
+
+    public function setInvoiceNumberGeneration(?string $invoiceNumberGeneration): void
+    {
+        $this->invoiceNumberGeneration = $invoiceNumberGeneration;
+    }
+
+    public function getSubsequentialNumber(): ?int
+    {
+        return $this->subsequentialNumber;
+    }
+
+    public function setSubsequentialNumber(?int $subsequentialNumber): void
+    {
+        $this->subsequentialNumber = $subsequentialNumber;
     }
 }

@@ -26,6 +26,15 @@ class SystemSettings
     #[Assert\Timezone]
     private $timezone;
 
+    #[Assert\NotBlank()]
+    #[Assert\Choice(choices: ['random', 'subsequential'])]
+    #[SerializedName('invoice_number_generation')]
+    private $invoiceNumberGeneration;
+
+    #[Assert\PositiveOrZero()]
+    #[SerializedName('subsequential_number')]
+    private $subsequentialNumber;
+
     public function getSystemUrl()
     {
         return $this->systemUrl;
@@ -44,5 +53,25 @@ class SystemSettings
     public function setTimezone($timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function getInvoiceNumberGeneration()
+    {
+        return $this->invoiceNumberGeneration;
+    }
+
+    public function setInvoiceNumberGeneration($invoiceNumberGeneration): void
+    {
+        $this->invoiceNumberGeneration = $invoiceNumberGeneration;
+    }
+
+    public function getSubsequentialNumber()
+    {
+        return $this->subsequentialNumber;
+    }
+
+    public function setSubsequentialNumber($subsequentialNumber): void
+    {
+        $this->subsequentialNumber = $subsequentialNumber;
     }
 }

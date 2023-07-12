@@ -21,6 +21,12 @@ class SystemSettings
     private ?string $webhookUrl = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $invoiceNumberGeneration = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $subsequentialNumber = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $systemUrl = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -62,6 +68,16 @@ class SystemSettings
     public function setTimezone(string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function getInvoiceNumberGeneration(): ?string
+    {
+        return $this->invoiceNumberGeneration;
+    }
+
+    public function setInvoiceNumberGeneration(?string $invoiceNumberGeneration): void
+    {
+        $this->invoiceNumberGeneration = $invoiceNumberGeneration;
     }
 
     public function isUseStripeBilling(): bool
@@ -132,5 +148,15 @@ class SystemSettings
     public function setUpdateAvailableDismissed(?bool $updateAvailableDismissed): void
     {
         $this->updateAvailableDismissed = $updateAvailableDismissed;
+    }
+
+    public function getSubsequentialNumber(): ?int
+    {
+        return $this->subsequentialNumber;
+    }
+
+    public function setSubsequentialNumber(?int $subsequentialNumber): void
+    {
+        $this->subsequentialNumber = $subsequentialNumber;
     }
 }

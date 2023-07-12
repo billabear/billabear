@@ -22,6 +22,8 @@ class SystemSettingsFactory
     {
         $settings->setSystemUrl($dto->getSystemUrl());
         $settings->setTimezone($dto->getTimezone());
+        $settings->setInvoiceNumberGeneration($dto->getInvoiceNumberGeneration());
+        $settings->setSubsequentialNumber($dto->getSubsequentialNumber());
 
         return $settings;
     }
@@ -31,6 +33,8 @@ class SystemSettingsFactory
         $dto = new AppDto();
         $dto->setSystemUrl($settings->getSystemUrl());
         $dto->setTimezone($settings->getTimezone());
+        $dto->setInvoiceNumberGeneration($settings->getInvoiceNumberGeneration());
+        $dto->setSubsequentialNumber($settings->getSubsequentialNumber());
 
         return $dto;
     }
