@@ -318,6 +318,12 @@ services:
 
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
+
+    App\Invoice\Number\InvoiceNumberGeneratorInterface:
+        class: App\Invoice\Number\Provider
+        factory: [ '@App\Invoice\Number\Provider', 'getGenerator' ]
+
+
     tax_provider_factory:
         class: App\Tax\TaxRateProvider
         factory: [ '@App\Tax\TaxRateProviderFactory', 'getTaxRateProvider' ]

@@ -16,7 +16,7 @@ use App\Credit\CreditAdjustmentRecorder;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Invoice\InvoiceGenerator;
-use App\Invoice\InvoiceNumberGeneratorInterface;
+use App\Invoice\Number\InvoiceNumberGeneratorInterface;
 use App\Invoice\PriceInfo;
 use App\Invoice\Pricer;
 use App\Repository\InvoiceRepositoryInterface;

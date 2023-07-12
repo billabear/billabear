@@ -40,6 +40,18 @@ class InvoiceSettingsContext implements Context
     }
 
     /**
+     * @Given the invoice number generation is subsequential with the count of :arg1
+     */
+    public function theInvoiceNumberGenerationIsSubsequentialWithTheCountOf($invoiceNumber)
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setInvoiceNumberGeneration('subsequential');
+        $settings->getSystemSettings()->setSubsequentialNumber(intval($invoiceNumber));
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @When I update the invoice number generation to subsequential with the count of :arg1
      */
     public function iUpdateTheInvoiceNumberGenerationToSubsequentialWithTheCountOf($count)

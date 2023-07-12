@@ -18,6 +18,7 @@ use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Event\InvoiceCreated;
+use App\Invoice\Number\InvoiceNumberGeneratorInterface;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
 use Parthenon\Billing\Entity\Price;

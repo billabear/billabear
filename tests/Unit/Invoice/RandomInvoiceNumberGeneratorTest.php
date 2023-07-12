@@ -12,7 +12,7 @@
 
 namespace App\Tests\Unit\Invoice;
 
-use App\Invoice\RandomInvoiceNumberGenerator;
+use App\Invoice\Number\RandomInvoiceNumberGenerator;
 use PHPUnit\Framework\TestCase;
 
 class RandomInvoiceNumberGeneratorTest extends TestCase

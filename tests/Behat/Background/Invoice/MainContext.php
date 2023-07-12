@@ -53,6 +53,20 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the latest invoice for :arg1 will have the invoice number :arg2
+     */
+    public function theLatestInvoiceForWillHaveTheInvoiceNumber($customerEmail, $invoiceNumber)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if ($invoice->getInvoiceNumber() != $invoiceNumber) {
+            throw new \Exception('Different invoice number - '.$invoice->getInvoiceNumber());
+        }
+    }
+
+    /**
      * @Then the latest invoice for :arg1 will have tax amount due
      */
     public function theLatestInvoiceForWillHaveTaxAmountDue($customerEmail)
