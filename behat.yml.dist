@@ -56,6 +56,7 @@ default:
 
                 # Invoices
                 - App\Tests\Behat\Invoices\AppContext
+                - App\Tests\Behat\Invoices\CreateInvoiceContext
 
                 # Settings
                 - App\Tests\Behat\Settings\PdfTemplatesContext

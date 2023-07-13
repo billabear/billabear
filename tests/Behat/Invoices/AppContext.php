@@ -135,6 +135,25 @@ class AppContext implements Context
     }
 
     /**
+     * @Then there will be an unpaid invoice for :arg1
+     */
+    public function thereWillBeAnUnpaidInvoiceFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+        if (!$invoice) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No invoice found');
+        }
+        $this->invoiceRepository->getEntityManager()->refresh($invoice);
+
+        if ($invoice->isPaid()) {
+            throw new \Exception('Invoice not paid');
+        }
+    }
+
+    /**
      * @Then then the invoice for :arg1 will not be marked as paid
      */
     public function thenTheInvoiceForWillNotBeMarkedAsPaid($customerEmail)

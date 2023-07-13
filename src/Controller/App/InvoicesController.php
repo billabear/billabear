@@ -13,9 +13,12 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\InvoiceList;
+use App\Controller\ValidationErrorResponseTrait;
+use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Invoice;
 use App\Factory\InvoiceFactory;
+use App\Invoice\ManualInvoiceCreator;
 use App\Payment\InvoiceCharger;
 use App\Pdf\InvoicePdfGenerator;
 use App\Repository\InvoiceRepositoryInterface;
@@ -29,9 +32,12 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class InvoicesController
 {
+    use ValidationErrorResponseTrait;
+
     #[Route('/app/invoices', name: 'app_invoices_list', methods: ['GET'])]
     public function listInvoice(
         Request $request,
@@ -177,5 +183,30 @@ class InvoicesController
         $invoiceCharger->chargeInvoice($invoice);
 
         return new JsonResponse(['paid' => $invoice->isPaid()]);
+    }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/invoices/create', name: 'app_invoice_create', methods: ['POST'])]
+    public function createInvoice(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        InvoiceFactory $invoiceFactory,
+        ManualInvoiceCreator $manualInvoiceCreator,
+    ): Response {
+        /** @var CreateInvoice $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateInvoice::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response) {
+            return $response;
+        }
+
+        $invoice = $manualInvoiceCreator->createInvoice($dto);
+        $output = $invoiceFactory->createAppDto($invoice);
+        $json = $serializer->serialize($output, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }

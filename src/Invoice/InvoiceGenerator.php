@@ -77,9 +77,9 @@ class InvoiceGenerator
     /**
      * @param Subscription[] $subscriptions
      */
-    public function generateForCustomerAndSubscriptions(Customer $customer, array $subscriptions): Invoice
+    public function generateForCustomerAndSubscriptions(Customer $customer, array $subscriptions, array $inputLines = []): Invoice
     {
-        if (empty($subscriptions)) {
+        if (empty($subscriptions) && empty($inputLines)) {
             throw new \Exception("Can't generate invoices for no subscription");
         }
 
@@ -115,6 +115,25 @@ class InvoiceGenerator
             $lines[] = $line;
         }
         $invoice->setSubscriptions($subscriptions);
+
+        /** @var LineItem $lineItem */
+        foreach ($inputLines as $lineItem) {
+            $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($lineItem->getMoney(), $customer, $lineItem->isIncludeTax());
+
+            $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
+            $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
+            $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
+
+            $line = new InvoiceLine();
+            $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+            $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
+            $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+            $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setInvoice($invoice);
+            $line->setDescription($lineItem->getDescription());
+            $line->setVatPercentage($priceInfo->taxRate);
+            $lines[] = $line;
+        }
 
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo, $vat);
     }

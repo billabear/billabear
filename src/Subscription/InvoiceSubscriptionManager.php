@@ -42,6 +42,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 {
     public function __construct(
+        private SubscriptionFactory $subscriptionFactory,
         private PaymentCardRepositoryInterface $paymentDetailsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private EntityFactoryInterface $entityFactory,
@@ -58,30 +59,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentCard $paymentDetails = null, int $seatNumbers = 1, bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
-        $subscription = $this->entityFactory->getSubscriptionEntity();
-        $subscription->setPlanName($plan->getName());
-        $subscription->setSubscriptionPlan($plan);
-        if ($planPrice->isRecurring()) {
-            $subscription->setPaymentSchedule($planPrice->getSchedule());
-        } else {
-            $subscription->setPaymentSchedule('one-off');
-        }
-        $subscription->setPrice($planPrice);
-        $subscription->setMoneyAmount($planPrice->getAsMoney());
-        $subscription->setActive(true);
-        $subscription->setStatus(SubscriptionStatus::ACTIVE);
-        $subscription->setSeats($seatNumbers);
-        $subscription->setCreatedAt(new \DateTime());
-        $subscription->setUpdatedAt(new \DateTime());
-        $subscription->setStartOfCurrentPeriod(new \DateTime());
-        $subscription->setCustomer($customer);
-        $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
-        $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
-        $subscription->setPaymentDetails($paymentDetails);
-
-        $this->schedulerProvider->getScheduler($planPrice)->scheduleNextDueDate($subscription);
-
-        $this->subscriptionRepository->save($subscription);
+        $subscription = $this->subscriptionFactory->create($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
 
         $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
