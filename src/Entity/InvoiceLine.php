@@ -43,7 +43,7 @@ class InvoiceLine
     #[ORM\Column(type: 'integer')]
     private int $vatTotal;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: 'float')]
     private float $vatPercentage;
 
     #[ORM\Column(type: 'string', nullable: true)]
