@@ -12,6 +12,7 @@
               <MenuItem route-name="app.product.list">{{ $t('app.menu.main.products') }}</MenuItem>
               <MenuItem route-name="app.customer.list">{{ $t('app.menu.main.customers') }}</MenuItem>
               <MenuItem route-name="app.subscription.list">{{ $t('app.menu.main.subscriptions') }}</MenuItem>
+              <MenuItem route-name="app.invoices.list">{{ $t('app.menu.main.invoices') }}</MenuItem>
               <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
                 <MenuItem route-name="app.user.settings">{{ $t('app.menu.main.settings') }}</MenuItem>
               </RoleOnlyView>

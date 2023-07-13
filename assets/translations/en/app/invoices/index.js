@@ -1,5 +1,7 @@
 import {INVOICES_LIST_TRANSLATIONS} from "./list";
+import {INVOICES_MENU_TRANSLATIONS} from "./menu";
 
 export const INVOICES_TRANSLATIONS = {
     list: INVOICES_LIST_TRANSLATIONS,
+    menu: INVOICES_MENU_TRANSLATIONS,
 }

@@ -6,6 +6,7 @@ export const MENU_TRANSLATIONS = {
         settings: "Settings",
         customers: "Customers",
         products: "Products",
+        invoices: "Invoices",
         docs: "Documentation"
     }
 }

@@ -59,6 +59,7 @@ import SubscriptionMassChange from "../views/App/Subscription/SubscriptionMassCh
 import SubscriptionsOverview from "../views/App/Reports/Subscriptions/SubscriptionsOverview.vue";
 import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
 import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
+import InvoiceGroup from "../views/App/Invoices/InvoiceGroup.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -338,6 +339,23 @@ export const APP_ROUTES = [
         ]
     },
     {
+        name: "app.invoices",
+        path: "invoices",
+        component: InvoiceGroup,
+        children: [
+            {
+                name: 'app.invoices.list',
+                path: "invoices/list",
+                component: InvoicesList
+            },
+            {
+                name: 'app.invoices.unpaid_list',
+                path: "invoices/unpaid/list",
+                component: UnpaidInvoicesList
+            }
+        ]
+    },
+    {
         name: 'app.transactions',
         path: 'transactions',
         redirect: "transactions",
@@ -367,16 +385,6 @@ export const APP_ROUTES = [
                 name: 'app.charge_backs.list',
                 path: 'charge-backs/list',
                 component: ChargeBacksList
-            },
-            {
-                name: 'app.invoices.list',
-                path: "invoices/list",
-                component: InvoicesList
-            },
-            {
-                name: 'app.invoices.unpaid_list',
-                path: "invoices/unpaid/list",
-                component: UnpaidInvoicesList
             }
         ]
     }

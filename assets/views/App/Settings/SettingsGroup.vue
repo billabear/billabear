@@ -13,7 +13,6 @@
           <RoleOnlyView role="ROLE_DEVELOPER">
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.notification_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.notification_settings') }}</router-link></li>
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.system_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.system_settings') }}</router-link></li>
-
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.api_keys.main'}" class="submenu-link">{{ $t('app.settings.menu.api_keys') }}</router-link></li>
           </RoleOnlyView>
           <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
