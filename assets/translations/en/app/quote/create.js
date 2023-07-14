@@ -4,7 +4,8 @@ export const QUOTES_CREATE_TRANSLATIONS = {
     create_invoice: "Create Invoice",
     errors: {
         no_customer: "A customer is needed",
-        nothing_to_invoice: "You need to add a subscription or a one-off item."
+        nothing_to_invoice: "You need to add a subscription or a one-off item.",
+        same_currency_and_schedule: "The same currency and schedule should be used for subscriptions"
     },
     customer: {
         create_customer: "Create Customer",

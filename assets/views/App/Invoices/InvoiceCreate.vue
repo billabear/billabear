@@ -54,10 +54,9 @@
                 </select>
               </td>
               <td>
-                <select class="form-field" v-model="plan.price">
 
-                  
-                  <option v-for="price in plan.plan.prices" :value="price">{{ displayCurrency(price.amount) }}/{{ price.schedule }}</option>
+                <select class="form-field" v-model="plan.price">
+                  <option v-for="price in getPrices(plan.plan.prices)" :value="price">{{ displayCurrency(price.amount) }}/{{ price.schedule }}</option>
                 </select>
               </td>
               <td><button class="btn--danger" @click="deleteSubscription(key)"><i class="fa-solid fa-trash"></i></button> </td>
@@ -145,6 +144,10 @@ export default {
     }
   },
   methods: {
+    getPrices: function (prices) {
+      var that = this;
+      return prices.filter(item => item.currency === that.quote.currency);
+    },
     addSubscriptionPlan: function (){
       this.quote.subscription_plans.push({
         plan: {prices: []},
@@ -226,13 +229,18 @@ export default {
         }
       }
 
-      if (!sameSchedule || sameCurrency) {
+      if (!sameSchedule || !sameCurrency) {
         this.errors.main_error = this.$t('app.quotes.create.errors.same_currency_and_schedule');
       }
 
       if (this.errors != {}) {
         this.send_quote = false;
         return;
+      }
+
+      const payload = {
+        customer: this.quote.customer,
+        
       }
     },
   }
