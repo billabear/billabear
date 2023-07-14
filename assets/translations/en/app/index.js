@@ -20,6 +20,7 @@ import {CREDIT_TRANSLATIONS} from "./credit";
 import {INVOICES_TRANSLATIONS} from "./invoices";
 import {HOME_TRANSLATIONS} from "./home";
 import {VOUCHER_TRANSLATIONS} from "./vouchers";
+import {QUOTE_TRANSLATIONS} from "./quote";
 
 
 export const APP_TRANSLATIONS = {
@@ -45,4 +46,5 @@ export const APP_TRANSLATIONS = {
     invoices: INVOICES_TRANSLATIONS,
     home: HOME_TRANSLATIONS,
     vouchers: VOUCHER_TRANSLATIONS,
+    quotes: QUOTE_TRANSLATIONS,
 };
