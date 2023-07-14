@@ -17,6 +17,7 @@ use App\Dto\Request\App\Invoice\CreateInvoiceItem;
 use App\Dto\Request\App\Invoice\CreateInvoiceSubscription;
 use App\Entity\Customer;
 use App\Entity\Invoice;
+use App\Payment\InvoiceCharger;
 use App\Repository\CustomerRepositoryInterface;
 use App\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
@@ -32,6 +33,7 @@ class ManualInvoiceCreator
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionFactory $subscriptionManager,
         private InvoiceGenerator $invoiceGenerator,
+        private InvoiceCharger $invoiceCharger,
     ) {
     }
 
@@ -63,6 +65,10 @@ class ManualInvoiceCreator
             $lines[] = $lineItem;
         }
 
-        return $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $subscriptions, $lines);
+        $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $subscriptions, $lines);
+
+        if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
+            $this->invoiceCharger->chargeInvoice($invoice);
+        }
     }
 }

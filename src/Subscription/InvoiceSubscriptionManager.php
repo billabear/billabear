@@ -16,9 +16,7 @@ use App\Credit\CreditAdjustmentRecorder;
 use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
-use App\Repository\SettingsRepositoryInterface;
 use App\Security\ApiUser;
-use App\Subscription\Schedule\SchedulerProvider;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -29,7 +27,6 @@ use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
-use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanManagerInterface;
 use Parthenon\Billing\Plan\PlanPrice;
@@ -45,11 +42,8 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         private SubscriptionFactory $subscriptionFactory,
         private PaymentCardRepositoryInterface $paymentDetailsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
-        private EntityFactoryInterface $entityFactory,
         private EventDispatcherInterface $dispatcher,
-        private SchedulerProvider $schedulerProvider,
         private InvoiceGenerator $invoiceGenerator,
-        private SettingsRepositoryInterface $settingsRepository,
         private PlanManagerInterface $planManager,
         private InvoiceCharger $invoiceCharger,
         private Security $security,
