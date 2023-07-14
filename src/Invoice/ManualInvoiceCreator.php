@@ -70,5 +70,7 @@ class ManualInvoiceCreator
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
             $this->invoiceCharger->chargeInvoice($invoice);
         }
+
+        return $invoice;
     }
 }
