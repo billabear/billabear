@@ -60,6 +60,7 @@ import SubscriptionsOverview from "../views/App/Reports/Subscriptions/Subscripti
 import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
 import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
 import InvoiceGroup from "../views/App/Invoices/InvoiceGroup.vue";
+import InvoiceCreate from "../views/App/Invoices/InvoiceCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -352,6 +353,11 @@ export const APP_ROUTES = [
                 name: 'app.invoices.unpaid_list',
                 path: "invoices/unpaid/list",
                 component: UnpaidInvoicesList
+            },
+            {
+                name: 'app.invoices.create',
+                path: "invoices/create",
+                component: InvoiceCreate,
             }
         ]
     },

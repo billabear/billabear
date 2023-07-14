@@ -155,8 +155,10 @@ class CustomerController
         }
         $customerRepository->save($customer);
         $customerCreationStats->handleStats($customer);
+        $dto = $customerFactory->createAppDto($customer);
+        $json = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse(['success' => true], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
     #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
