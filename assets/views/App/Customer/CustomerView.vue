@@ -40,6 +40,14 @@
                   <dt>{{ $t('app.customer.view.main.tax_number') }}</dt>
                   <dd>{{ customer.tax_number }}</dd>
                 </div>
+                <div v-if="customer.digital_tax_rate">
+                  <dt>{{ $t('app.customer.view.main.digital_tax_rate') }}</dt>
+                  <dd>{{ customer.digital_tax_rate }}</dd>
+                </div>
+                <div v-if="customer.physical_tax_rate">
+                  <dt>{{ $t('app.customer.view.main.physical_tax_rate') }}</dt>
+                  <dd>{{ customer.physical_tax_rate }}</dd>
+                </div>
                 <div>
                   <dt>{{ $t('app.customer.view.main.reference') }}</dt>
                   <dd>{{ customer.reference }}</dd>

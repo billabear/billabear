@@ -16,7 +16,9 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         locale: "Locale",
         brand: "Brand",
         billing_type: "Billing Type",
-        tax_number: "Tax Number"
+        tax_number: "Tax Number",
+        physical_tax_rate: "Physical Tax Rate",
+        digital_tax_rate: "Digital Tax Rate"
     },
     address: {
         title: "Address",
