@@ -15,8 +15,8 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     success_message: "Successfully update customer",
     address_title: "Address",
     tax_number: "Tax Number",
-    digital_tax_rate: "Digital Tax Rate",
-    physical_tax_rate: "Physical Tax Rate",
+    digital_tax_rate: "Digital Service Tax Rate",
+    standard_tax_rate: "Standard Tax Rate",
     locale: "Locale",
     error: {
         not_found: "No such customer found",

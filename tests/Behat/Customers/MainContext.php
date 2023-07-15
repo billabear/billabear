@@ -328,8 +328,8 @@ class MainContext implements Context
             if (isset($row['Digital Tax Rate']) && !empty($row['Digital Tax Rate'])) {
                 $customer->setDigitalTaxRate(floatval($row['Digital Tax Rate']));
             }
-            if (isset($row['Physical Tax Rate']) && !empty($row['Physical Tax Rate'])) {
-                $customer->setPhysicalTaxRate(floatval($row['Physical Tax Rate']));
+            if (isset($row['Standard Tax Rate']) && !empty($row['Standard Tax Rate'])) {
+                $customer->setStandardTaxRate(floatval($row['Standard Tax Rate']));
             }
 
             $this->customerRepository->getEntityManager()->persist($customer);

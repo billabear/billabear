@@ -80,7 +80,7 @@ class CustomerFactory
         $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
         $customer->setDigitalTaxRate($createCustomerDto->getDigitalTaxRate());
-        $customer->setPhysicalTaxRate($createCustomerDto->getPhysicalTaxRate());
+        $customer->setStandardTaxRate($createCustomerDto->getStandardTaxRate());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
@@ -118,7 +118,7 @@ class CustomerFactory
         $dto->setBillingType($customer->getBillingType());
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
-        $dto->setPhysicalTaxRate($customer->getPhysicalTaxRate());
+        $dto->setStandardTaxRate($customer->getStandardTaxRate());
 
         return $dto;
     }
@@ -147,7 +147,7 @@ class CustomerFactory
         $dto->setBillingType($customer->getBillingType());
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
-        $dto->setPhysicalTaxRate($customer->getPhysicalTaxRate());
+        $dto->setStandardTaxRate($customer->getStandardTaxRate());
 
         return $dto;
     }

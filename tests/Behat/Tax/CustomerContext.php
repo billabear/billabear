@@ -42,14 +42,14 @@ class CustomerContext implements Context
     }
 
     /**
-     * @Then the customer :arg1 should have the physical tax rate :arg2
+     * @Then the customer :arg1 should have the standard tax rate :arg2
      */
     public function theCustomerShouldHaveThePhysicalTaxRate($customerEmail, $rate)
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
-        if ($customer->getPhysicalTaxRate() != $rate) {
-            throw new \Exception('Got a different rate '.$customer->getPhysicalTaxRate());
+        if ($customer->getStandardTaxRate() != $rate) {
+            throw new \Exception('Got a different rate '.$customer->getStandardTaxRate());
         }
     }
 }

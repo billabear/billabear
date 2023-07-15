@@ -67,9 +67,9 @@
         <label class="form-field-lbl" for="tax_number">
           {{ $t('app.customer.update.physical_tax_rate') }}
         </label>
-        <p class="form-field-error" v-if="errors.physicalTaxRate != undefined">{{ errors.physicalTaxRate }}</p>
-        <input type="number" class="form-field-input" id="physical_tax_rate" v-model="customer.physical_tax_rate"  />
-        <p class="form-field-help">{{ $t('app.customer.update.help_info.physical_tax_rate') }}</p>
+        <p class="form-field-error" v-if="errors.standardTaxRate != undefined">{{ errors.standardTaxRate }}</p>
+        <input type="number" class="form-field-input" id="standard_tax_rate" v-model="customer.standard_tax_rate"  />
+        <p class="form-field-help">{{ $t('app.customer.update.help_info.standard_tax_rate') }}</p>
       </div>
     </div>
 
@@ -173,7 +173,7 @@ export default {
         external_reference: null,
         tax_number: null,
         digital_tax_rate: null,
-        physical_tax_rate: null,
+        standard_tax_rate: null,
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -211,8 +211,8 @@ export default {
         this.customer.digital_tax_rate = null;
       }
 
-      if (this.customer.physical_tax_rate == "") {
-        this.customer.physical_tax_rate = null;
+      if (this.customer.standard_tax_rate == "") {
+        this.customer.standard_tax_rate = null;
       }
 
       axios.post('/app/customer/'+customerId, this.customer).then(

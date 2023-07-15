@@ -56,8 +56,8 @@ class Customer
     #[SerializedName('digital_tax_rate')]
     protected ?float $digitalTaxRate;
 
-    #[SerializedName('physical_tax_rate')]
-    protected ?float $physicalTaxRate;
+    #[SerializedName('standard_tax_rate')]
+    protected ?float $standardTaxRate;
 
     public function getId(): string
     {
@@ -189,13 +189,13 @@ class Customer
         $this->digitalTaxRate = $digitalTaxRate;
     }
 
-    public function getPhysicalTaxRate(): ?float
+    public function getStandardTaxRate(): ?float
     {
-        return $this->physicalTaxRate;
+        return $this->standardTaxRate;
     }
 
-    public function setPhysicalTaxRate(?float $physicalTaxRate): void
+    public function setStandardTaxRate(?float $standardTaxRate): void
     {
-        $this->physicalTaxRate = $physicalTaxRate;
+        $this->standardTaxRate = $standardTaxRate;
     }
 }

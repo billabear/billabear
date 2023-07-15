@@ -97,8 +97,8 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'tax_rate_digital', type: 'float', nullable: true)]
     protected ?float $digitalTaxRate = 0.0;
 
-    #[ORM\Column(name: 'tax_rate_physical', type: 'float', nullable: true)]
-    protected ?float $physicalTaxRate = 0.0;
+    #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
+    protected ?float $standardTaxRate = 0.0;
 
     public function getId()
     {
@@ -373,13 +373,13 @@ class Customer implements CustomerInterface
         $this->digitalTaxRate = $digitalTaxRate;
     }
 
-    public function getPhysicalTaxRate(): ?float
+    public function getStandardTaxRate(): ?float
     {
-        return $this->physicalTaxRate;
+        return $this->standardTaxRate;
     }
 
-    public function setPhysicalTaxRate(?float $physicalTaxRate): void
+    public function setStandardTaxRate(?float $standardTaxRate): void
     {
-        $this->physicalTaxRate = $physicalTaxRate;
+        $this->standardTaxRate = $standardTaxRate;
     }
 }

@@ -23,8 +23,8 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
 
     public function getRateForCustomer(Customer $customer): float
     {
-        if ($customer->getDigitalTaxRate()) {
-            return $customer->getDigitalTaxRate();
+        if ($customer->getStandardTaxRate()) {
+            return $customer->getStandardTaxRate();
         }
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 

@@ -17,8 +17,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         brand: "Brand",
         billing_type: "Billing Type",
         tax_number: "Tax Number",
-        physical_tax_rate: "Physical Tax Rate",
-        digital_tax_rate: "Digital Tax Rate"
+        standard_tax_rate: "Standard Tax Rate",
+        digital_tax_rate: "Digital Services Tax Rate"
     },
     address: {
         title: "Address",

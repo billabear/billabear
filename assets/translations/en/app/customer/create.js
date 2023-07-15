@@ -20,8 +20,8 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     billing_type_invoice: "Invoice",
     brand: "Brand",
     tax_number: "Tax Number",
-    digital_tax_rate: "Digital Tax Rate",
-    physical_tax_rate: "Physical Tax Rate",
+    digital_tax_rate: "Digital Service Tax Rate",
+    standard_tax_rate: "Standard Tax Rate",
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",

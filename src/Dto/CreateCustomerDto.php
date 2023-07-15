@@ -63,11 +63,11 @@ class CreateCustomerDto
     #[Assert\PositiveOrZero]
     private $digitalTaxRate;
 
-    #[SerializedName('physical_tax_rate')]
+    #[SerializedName('standard_tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type(['integer', 'float'])]
     #[Assert\PositiveOrZero]
-    private $physicalTaxRate;
+    private $standardTaxRate;
 
     public function getEmail(): ?string
     {
@@ -169,13 +169,13 @@ class CreateCustomerDto
         $this->digitalTaxRate = $digitalTaxRate;
     }
 
-    public function getPhysicalTaxRate()
+    public function getStandardTaxRate()
     {
-        return $this->physicalTaxRate;
+        return $this->standardTaxRate;
     }
 
-    public function setPhysicalTaxRate($physicalTaxRate): void
+    public function setStandardTaxRate($standardTaxRate): void
     {
-        $this->physicalTaxRate = $physicalTaxRate;
+        $this->standardTaxRate = $standardTaxRate;
     }
 }

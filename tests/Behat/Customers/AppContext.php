@@ -226,8 +226,8 @@ class AppContext implements Context
             $payload['digital_tax_rate'] = (float) $data['Digital Tax Rate'];
         }
 
-        if (isset($data['Physical Tax Rate'])) {
-            $payload['physical_tax_rate'] = (float) $data['Physical Tax Rate'];
+        if (isset($data['Standard Tax Rate'])) {
+            $payload['standard_tax_rate'] = (float) $data['Standard Tax Rate'];
         }
 
         $this->sendJsonRequest('POST', sprintf('/app/customer/%s', $customer->getId()), $payload);

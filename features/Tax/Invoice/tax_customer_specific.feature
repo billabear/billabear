@@ -31,7 +31,7 @@ Feature: Generate new invoices
       | Per Seat   | False    |
       | User Count | 10       |
     And the follow customers exist:
-      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Digital Tax Rate | Physical Tax Rate |
+      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Digital Tax Rate | Standard Tax Rate |
       | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              | FJDKSLfjdf | 10               | 15                |
       | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     |                  |                   |
       | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         | ref_valid         | gfdgsfd    |                  |                   |
@@ -56,4 +56,4 @@ Feature: Generate new invoices
       | Test Plan         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
-    And there the latest invoice for "customer.one@example.org" will have tax rate of 10
+    And there the latest invoice for "customer.one@example.org" will have tax rate of 15
