@@ -23,6 +23,7 @@
         <label class="form-field-lbl" for="name">
           {{ $t('app.quotes.create.customer.fields.currency') }}
         </label>
+        <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
         <CurrencySelect v-model="quote.currency" />
         <p class="form-field-help">{{ $t('app.quotes.create.customer.help_info.currency') }}</p>
       </div>
@@ -86,9 +87,16 @@
           </tr>
         </tbody>
         <tbody v-else>
-          <tr v-for="item in quote.items">
-            <td><input type="text" class="form-field" v-model="item.description" /></td>
-            <td><input type="number" class="form-field" v-model="item.amount" ></td>
+          <tr v-for="(item, key) in quote.items">
+            <td>
+
+              <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].description !== undefined">{{ errors.items[key].description }}</p>
+              <input type="text" class="form-field" v-model="item.description" />
+            </td>
+            <td>
+              <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].amount !== undefined">{{ errors.items[key].amount }}</p>
+              <input type="number" class="form-field" v-model="item.amount" >
+            </td>
             <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
           </tr>
         </tbody>
@@ -102,6 +110,9 @@
     <div class="mt-5">
       <SubmitButton :in-progress="send_quote" class="btn--main">{{ $t('app.quotes.create.create_quote') }}</SubmitButton>
       <SubmitButton :in-progress="send_quote" class="btn--secondary ml-4" @click="createInvoice">{{ $t('app.quotes.create.create_invoice') }}</SubmitButton>
+    </div>
+    <div class="mt-1" v-if="success">
+      {{ $t('app.quotes.create.success_message') }}
     </div>
   </div>
 </template>
@@ -117,7 +128,7 @@ export default {
   components: {CurrencySelect, Autocomplete},
   data() {
     return {
-      errors: {},
+      errors: {items: []},
       quote: {
         customer: null,
         subscription_plans: [],
@@ -129,6 +140,7 @@ export default {
       create_customer_email: "",
       send_create_customer: false,
       plans: [],
+      success: false,
     }
   },
   mounted() {
@@ -161,6 +173,7 @@ export default {
       this.quote.items.push({
         description: null,
         amount: null,
+        include_tax: false,
       })
     },
     deleteItem: function (key) {
@@ -185,7 +198,7 @@ export default {
     createCustomer: function () {
 
       this.send_create_customer = true;
-      axios.post("/app/customer", {email: this.create_customer_email}).then(response => {
+      axios.post("/app/customer", {email: this.create_customer_email, billing_type: 'invoice'}).then(response => {
         this.quote.customer = response.data.id;
         this.create_customer = false;
         this.send_create_customer = false;
@@ -209,7 +222,7 @@ export default {
       if (!this.quote.currency) {
         this.errors.currency = this.$t('app.quotes.create.errors.currency');
       }
-
+      var subscriptions = [];
       var sameCurrency = true;
       var sameSchedule = true;
       var lastCurrency = null;
@@ -231,21 +244,64 @@ export default {
         if (lastCurrency !== plan.price.currency) {
           sameCurrency = false;
         }
+
+        subscriptions.push({
+          plan: plan.plan.id,
+          price: plan.price.id,
+        })
       }
 
       if (!sameSchedule || !sameCurrency) {
         this.errors.main_error = this.$t('app.quotes.create.errors.same_currency_and_schedule');
       }
 
-      if (this.errors != {}) {
+      var items = [];
+      var errors =  [];
+      var hasErrors = false;
+      for (var key in this.quote.items) {
+        var item = this.quote.items[key];
+        errors[key] = {};
+        if (!item.description) {
+          hasErrors = true;
+          errors[key].description = this.$t('app.quotes.create.errors.need_description');
+        }
+
+        if (!item.amount) {
+          hasErrors = true;
+          errors[key].amount = this.$t('app.quotes.create.errors.need_amount');
+        }
+        items.push(
+            {
+              description: item.description,
+              amount: item.amount,
+              currency: this.quote.currency,
+              include_tax: item.include_tax,
+            }
+        )
+      }
+
+      if (hasErrors) {
+        this.errors.items = errors;
+      }
+
+      if (Object.keys(this.errors).length > 0) {
         this.send_quote = false;
         return;
       }
 
       const payload = {
         customer: this.quote.customer,
-
+        subscriptions: subscriptions,
+        items: items,
       }
+
+      axios.post("/app/invoices/create", payload).then(response => {
+        this.send_quote = false;
+        this.success = true;
+      }).catch(error => {
+        this.errors = error.response.data.errors;
+        this.send_quote = false;
+      })
     },
   }
 }
