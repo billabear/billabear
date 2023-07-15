@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.quotes.create.title') }}</h1>
+    <h1 class="page-title mb-5">{{ $t('app.quotes.create.title') }}</h1>
 
     <div class="card-body">
 
