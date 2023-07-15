@@ -98,6 +98,7 @@
               <input type="number" class="form-field" v-model="item.amount" >
             </td>
             <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
+            <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
           </tr>
         </tbody>
       </table>
