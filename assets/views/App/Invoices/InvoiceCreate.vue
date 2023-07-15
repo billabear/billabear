@@ -206,6 +206,10 @@ export default {
         this.errors.main_error = this.$t('app.quotes.create.errors.nothing_to_invoice');
       }
 
+      if (!this.quote.currency) {
+        this.errors.currency = this.$t('app.quotes.create.errors.currency');
+      }
+
       var sameCurrency = true;
       var sameSchedule = true;
       var lastCurrency = null;
@@ -240,7 +244,7 @@ export default {
 
       const payload = {
         customer: this.quote.customer,
-        
+
       }
     },
   }
