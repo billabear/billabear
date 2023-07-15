@@ -65,7 +65,7 @@
 
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="tax_number">
-          {{ $t('app.customer.update.physical_tax_rate') }}
+          {{ $t('app.customer.update.standard_tax_rate') }}
         </label>
         <p class="form-field-error" v-if="errors.standardTaxRate != undefined">{{ errors.standardTaxRate }}</p>
         <input type="number" class="form-field-input" id="standard_tax_rate" v-model="customer.standard_tax_rate"  />

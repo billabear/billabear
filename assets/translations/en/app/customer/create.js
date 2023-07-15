@@ -36,7 +36,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
         external_reference: "The reference for the customer that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference.",
         brand: "The brand the customer will belong to.",
         tax_number: 'The tax number for the customer',
-        digital_tax_rate: "The tax rate to be applied for this customer on digital products",
-        physical_tax_rate: "The tax rate to be applied for the customer on physical products",
+        digital_tax_rate: "The tax rate to be applied for this customer on digital services as defined by that country",
+        standard_tax_rate: "The tax rate to be applied for the customer for everything but digital services",
     }
 }
