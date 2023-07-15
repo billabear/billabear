@@ -68,7 +68,7 @@ class Customer implements CustomerInterface
     private string $locale = self::DEFAULT_LOCALE;
 
     #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
-    protected ?string $paymentProviderDetailsUrl;
+    protected ?string $paymentProviderDetailsUrl = null;
 
     #[ORM\Column(name: 'status', type: 'string', nullable: true, enumType: CustomerStatus::class)]
     protected CustomerStatus $status;
