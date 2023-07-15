@@ -22,16 +22,6 @@
         </div>
 
       <div class="form-field-ctn">
-        <label class="form-field-lbl" for="tax_number">
-          {{ $t('app.customer.update.tax_number') }}
-        </label>
-        <p class="form-field-error" v-if="errors.tax_number != undefined">{{ errors.tax_number }}</p>
-        <input type="text" class="form-field-input" id="tax_number" v-model="customer.tax_number"  />
-        <p class="form-field-help">{{ $t('app.customer.update.help_info.tax_number') }}</p>
-      </div>
-
-
-      <div class="form-field-ctn">
           <label class="form-field-lbl" for="reference">
             {{ $t('app.customer.update.reference') }}
           </label>
@@ -52,6 +42,37 @@
           <p class="form-field-help">{{ $t('app.customer.update.help_info.billing_type') }}</p>
         </div>
     </div>
+
+    <div class="card-body mt-5">
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="tax_number">
+          {{ $t('app.customer.update.tax_number') }}
+        </label>
+        <p class="form-field-error" v-if="errors.taxNumber != undefined">{{ errors.taxNumber }}</p>
+        <input type="text" class="form-field-input" id="tax_number" v-model="customer.tax_number"  />
+        <p class="form-field-help">{{ $t('app.customer.update.help_info.tax_number') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="digital_tax_rate">
+          {{ $t('app.customer.update.digital_tax_rate') }}
+        </label>
+        <p class="form-field-error" v-if="errors.digitalTaxRate != undefined">{{ errors.digitalTaxRate }}</p>
+        <input type="number" class="form-field-input" id="digital_tax_rate" v-model="customer.digital_tax_rate"  />
+        <p class="form-field-help">{{ $t('app.customer.update.help_info.digital_tax_rate') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="tax_number">
+          {{ $t('app.customer.update.physical_tax_rate') }}
+        </label>
+        <p class="form-field-error" v-if="errors.physicalTaxRate != undefined">{{ errors.physicalTaxRate }}</p>
+        <input type="number" class="form-field-input" id="physical_tax_rate" v-model="customer.physical_tax_rate"  />
+        <p class="form-field-help">{{ $t('app.customer.update.help_info.physical_tax_rate') }}</p>
+      </div>
+    </div>
+
 
     <div class="card-body mt-5">
       <h2 class="mb-3">{{ $t('app.customer.update.address_title') }}</h2>
@@ -151,6 +172,8 @@ export default {
         reference: null,
         external_reference: null,
         tax_number: null,
+        digital_tax_rate: null,
+        physical_tax_rate: null,
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -182,6 +205,16 @@ export default {
       this.success = false;
       this.errors = {};
       var customerId = this.$route.params.id
+
+      // Make sure empty strings aren't sent
+      if (this.customer.digital_tax_rate == "") {
+        this.customer.digital_tax_rate = null;
+      }
+
+      if (this.customer.physical_tax_rate == "") {
+        this.customer.physical_tax_rate = null;
+      }
+
       axios.post('/app/customer/'+customerId, this.customer).then(
           response => {
             this.sendingInProgress = false;

@@ -222,6 +222,14 @@ class AppContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
+        if (isset($data['Digital Tax Rate'])) {
+            $payload['digital_tax_rate'] = (float) $data['Digital Tax Rate'];
+        }
+
+        if (isset($data['Physical Tax Rate'])) {
+            $payload['physical_tax_rate'] = (float) $data['Physical Tax Rate'];
+        }
+
         $this->sendJsonRequest('POST', sprintf('/app/customer/%s', $customer->getId()), $payload);
     }
 }

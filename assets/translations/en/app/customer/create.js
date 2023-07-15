@@ -20,6 +20,8 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     billing_type_invoice: "Invoice",
     brand: "Brand",
     tax_number: "Tax Number",
+    digital_tax_rate: "Digital Tax Rate",
+    physical_tax_rate: "Physical Tax Rate",
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",
@@ -33,6 +35,8 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
         billing_type: "How the customer should be billed. Card means payments will be automatic via a card that is registered. Invoice means they receive an invoice and pay manually",
         external_reference: "The reference for the customer that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference.",
         brand: "The brand the customer will belong to.",
-        tax_number: 'The tax number for the customer'
+        tax_number: 'The tax number for the customer',
+        digital_tax_rate: "The tax rate to be applied for this customer on digital products",
+        physical_tax_rate: "The tax rate to be applied for the customer on physical products",
     }
 }

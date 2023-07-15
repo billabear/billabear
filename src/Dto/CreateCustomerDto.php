@@ -57,6 +57,18 @@ class CreateCustomerDto
     #[Assert\Type('string')]
     private $taxNumber;
 
+    #[SerializedName('digital_tax_rate')]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type(['integer', 'float'])]
+    #[Assert\PositiveOrZero]
+    private $digitalTaxRate;
+
+    #[SerializedName('physical_tax_rate')]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type(['integer', 'float'])]
+    #[Assert\PositiveOrZero]
+    private $physicalTaxRate;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -145,5 +157,25 @@ class CreateCustomerDto
     public function setTaxNumber($taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getDigitalTaxRate()
+    {
+        return $this->digitalTaxRate;
+    }
+
+    public function setDigitalTaxRate($digitalTaxRate): void
+    {
+        $this->digitalTaxRate = $digitalTaxRate;
+    }
+
+    public function getPhysicalTaxRate()
+    {
+        return $this->physicalTaxRate;
+    }
+
+    public function setPhysicalTaxRate($physicalTaxRate): void
+    {
+        $this->physicalTaxRate = $physicalTaxRate;
     }
 }

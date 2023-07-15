@@ -86,6 +86,9 @@ default:
                 - App\Tests\Behat\Vouchers\AppContext
                 - App\Tests\Behat\Vouchers\ApiContext
 
+                # Tax
+                - App\Tests\Behat\Tax\CustomerContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

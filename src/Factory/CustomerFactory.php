@@ -79,6 +79,8 @@ class CustomerFactory
         $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
         $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
+        $customer->setDigitalTaxRate($createCustomerDto->getDigitalTaxRate());
+        $customer->setPhysicalTaxRate($createCustomerDto->getPhysicalTaxRate());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
@@ -115,6 +117,8 @@ class CustomerFactory
         $dto->setLocale($customer->getLocale());
         $dto->setBillingType($customer->getBillingType());
         $dto->setTaxNumber($customer->getTaxNumber());
+        $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
+        $dto->setPhysicalTaxRate($customer->getPhysicalTaxRate());
 
         return $dto;
     }
@@ -142,6 +146,8 @@ class CustomerFactory
         $dto->setLocale($customer->getLocale());
         $dto->setBillingType($customer->getBillingType());
         $dto->setTaxNumber($customer->getTaxNumber());
+        $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
+        $dto->setPhysicalTaxRate($customer->getPhysicalTaxRate());
 
         return $dto;
     }

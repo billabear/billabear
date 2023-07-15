@@ -53,6 +53,12 @@ class Customer
     #[SerializedName('tax_number')]
     protected ?string $taxNumber;
 
+    #[SerializedName('digital_tax_rate')]
+    protected ?float $digitalTaxRate;
+
+    #[SerializedName('physical_tax_rate')]
+    protected ?float $physicalTaxRate;
+
     public function getId(): string
     {
         return $this->id;
@@ -171,5 +177,25 @@ class Customer
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getDigitalTaxRate(): ?float
+    {
+        return $this->digitalTaxRate;
+    }
+
+    public function setDigitalTaxRate(?float $digitalTaxRate): void
+    {
+        $this->digitalTaxRate = $digitalTaxRate;
+    }
+
+    public function getPhysicalTaxRate(): ?float
+    {
+        return $this->physicalTaxRate;
+    }
+
+    public function setPhysicalTaxRate(?float $physicalTaxRate): void
+    {
+        $this->physicalTaxRate = $physicalTaxRate;
     }
 }

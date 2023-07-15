@@ -91,6 +91,15 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'tax_number', type: 'string', nullable: true)]
     protected ?string $taxNumber = null;
 
+    #[ORM\Column(name: 'tax_exempt', type: 'boolean', nullable: true)]
+    protected ?bool $taxExempt = false;
+
+    #[ORM\Column(name: 'tax_rate_digital', type: 'float', nullable: true)]
+    protected ?float $digitalTaxRate = 0.0;
+
+    #[ORM\Column(name: 'tax_rate_physical', type: 'float', nullable: true)]
+    protected ?float $physicalTaxRate = 0.0;
+
     public function getId()
     {
         return $this->id;
@@ -342,5 +351,35 @@ class Customer implements CustomerInterface
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTaxExempt(): ?bool
+    {
+        return $this->taxExempt;
+    }
+
+    public function setTaxExempt(?bool $taxExempt): void
+    {
+        $this->taxExempt = $taxExempt;
+    }
+
+    public function getDigitalTaxRate(): ?float
+    {
+        return $this->digitalTaxRate;
+    }
+
+    public function setDigitalTaxRate(?float $digitalTaxRate): void
+    {
+        $this->digitalTaxRate = $digitalTaxRate;
+    }
+
+    public function getPhysicalTaxRate(): ?float
+    {
+        return $this->physicalTaxRate;
+    }
+
+    public function setPhysicalTaxRate(?float $physicalTaxRate): void
+    {
+        $this->physicalTaxRate = $physicalTaxRate;
     }
 }
