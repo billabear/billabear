@@ -325,6 +325,13 @@ class MainContext implements Context
             $customer->setCreatedAt(new \DateTime('now'));
             $customer->setTaxNumber($row['Tax Number'] ?? null);
 
+            if (isset($row['Digital Tax Rate']) && !empty($row['Digital Tax Rate'])) {
+                $customer->setDigitalTaxRate(floatval($row['Digital Tax Rate']));
+            }
+            if (isset($row['Physical Tax Rate']) && !empty($row['Physical Tax Rate'])) {
+                $customer->setPhysicalTaxRate(floatval($row['Physical Tax Rate']));
+            }
+
             $this->customerRepository->getEntityManager()->persist($customer);
             $this->customerRepository->getEntityManager()->flush();
 
