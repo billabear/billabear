@@ -13,9 +13,9 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\RefundList;
+use App\DataMappers\RefundFactory;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\RefundView;
-use App\Factory\RefundFactory;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -12,8 +12,8 @@
 
 namespace App\Import\Stripe;
 
+use App\DataMappers\SubscriptionFactory;
 use App\Entity\StripeImport;
-use App\Factory\SubscriptionFactory;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\SubscriptionCancellationStats;
 use App\Stats\SubscriptionCreationStats;

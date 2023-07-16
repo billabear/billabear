@@ -12,10 +12,10 @@
 
 namespace App\Payment;
 
+use App\DataMappers\PaymentAttemptFactory;
 use App\Entity\Invoice;
 use App\Entity\PaymentFailureProcess;
 use App\Event\PaymentFailed;
-use App\Factory\PaymentAttemptFactory;
 use App\Repository\PaymentAttemptRepositoryInterface;
 use App\Repository\PaymentFailureProcessRepositoryInterface;
 use Obol\Model\ChargeCardResponse;

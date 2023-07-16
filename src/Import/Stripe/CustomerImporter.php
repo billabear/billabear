@@ -12,9 +12,9 @@
 
 namespace App\Import\Stripe;
 
+use App\DataMappers\CustomerFactory;
+use App\DataMappers\PaymentMethodsFactory;
 use App\Entity\StripeImport;
-use App\Factory\CustomerFactory;
-use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;

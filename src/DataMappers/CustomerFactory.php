@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Factory;
+namespace App\DataMappers;
 
 use App\Dto\CreateCustomerDto;
 use App\Dto\Generic\Address as AddressDto;

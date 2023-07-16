@@ -12,8 +12,8 @@
 
 namespace App\Controller\App\Settings;
 
+use App\DataMappers\Settings\TaxSettingsFactory;
 use App\Dto\Request\App\Settings\Tax\TaxSettings;
-use App\Factory\Settings\TaxSettingsFactory;
 use App\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

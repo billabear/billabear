@@ -12,8 +12,8 @@
 
 namespace App\Import\Stripe;
 
+use App\DataMappers\CreditFactory;
 use App\Entity\Customer;
-use App\Factory\CreditFactory;
 use App\Repository\CreditRepositoryInterface;
 use Obol\Provider\ProviderInterface;
 

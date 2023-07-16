@@ -12,8 +12,8 @@
 
 namespace App\Controller\App;
 
+use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\App\Invoice\ReadQuoteView;
-use App\Factory\SubscriptionPlanFactory;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -12,11 +12,11 @@
 
 namespace App\Controller\App\Settings;
 
+use App\DataMappers\Settings\BrandSettingsFactory;
 use App\Dto\Request\App\BrandSettings\CreateBrandSettings;
 use App\Dto\Request\App\BrandSettings\EditBrandSettings;
 use App\Dto\Response\App\BrandSettings\BrandSettingsView;
 use App\Dto\Response\App\ListResponse;
-use App\Factory\Settings\BrandSettingsFactory;
 use App\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -12,11 +12,11 @@
 
 namespace App\Controller\App;
 
+use App\DataMappers\PaymentMethodsFactory;
 use App\Dto\Request\Api\PaymentDetails\FrontendTokenComplete;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\PaymentDetails\FrontendToken;
 use App\Entity\Customer;
-use App\Factory\PaymentMethodsFactory;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Entity\PaymentCard;

@@ -12,9 +12,9 @@
 
 namespace App\Controller\App;
 
+use App\DataMappers\FeatureFactory;
 use App\Dto\Request\App\PostFeature;
 use App\Dto\Response\Api\ListResponse;
-use App\Factory\FeatureFactory;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

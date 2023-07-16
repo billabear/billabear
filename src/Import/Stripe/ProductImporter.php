@@ -12,8 +12,8 @@
 
 namespace App\Import\Stripe;
 
+use App\DataMappers\ProductFactory;
 use App\Entity\StripeImport;
-use App\Factory\ProductFactory;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Product;
 use Obol\Provider\ProviderInterface;

@@ -13,10 +13,10 @@
 namespace App\Controller\App\Settings;
 
 use App\Controller\ValidationErrorResponseTrait;
+use App\DataMappers\Settings\ApiKeyFactory;
 use App\Dto\Request\App\Settings\CreateApiKey;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\ApiKey;
-use App\Factory\Settings\ApiKeyFactory;
 use App\Repository\ApiKeyRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;

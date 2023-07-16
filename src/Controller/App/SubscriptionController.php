@@ -15,6 +15,13 @@ namespace App\Controller\App;
 use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
+use App\DataMappers\CustomerFactory;
+use App\DataMappers\PaymentFactory;
+use App\DataMappers\PaymentMethodsFactory;
+use App\DataMappers\PriceFactory;
+use App\DataMappers\ProductFactory;
+use App\DataMappers\SubscriptionFactory;
+use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Generic\App\SubscriptionPlan;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
@@ -25,13 +32,6 @@ use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Subscription\CreateView;
 use App\Dto\Response\App\Subscription\UpdatePlanView;
 use App\Dto\Response\App\Subscription\ViewSubscription;
-use App\Factory\CustomerFactory;
-use App\Factory\PaymentFactory;
-use App\Factory\PaymentMethodsFactory;
-use App\Factory\PriceFactory;
-use App\Factory\ProductFactory;
-use App\Factory\SubscriptionFactory;
-use App\Factory\SubscriptionPlanFactory;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
@@ -304,7 +304,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
-        \App\Factory\CancellationRequestFactory $cancellationRequestFactory,
+        \App\DataMappers\CancellationRequestFactory $cancellationRequestFactory,
         UserProvider $userProvider,
     ): Response {
         try {

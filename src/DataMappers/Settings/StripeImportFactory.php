@@ -10,20 +10,23 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Factory;
+namespace App\DataMappers\Settings;
 
-use App\Dto\Generic\App\InviteCode as AppDto;
-use Parthenon\User\Entity\InviteCode as Entity;
+use App\Dto\Response\App\Settings\StripeImport as AppDto;
+use App\Entity\StripeImport as Entity;
 
-class InviteCodeFactory
+class StripeImportFactory
 {
     public function createAppDto(Entity $entity): AppDto
     {
-        $appDto = new AppDto();
-        $appDto->setEmail($entity->getEmail());
-        $appDto->setSentAt($entity->getCreatedAt());
-        $appDto->setCode($entity->getCode());
+        $dto = new AppDto();
+        $dto->setId((string) $entity->getId());
+        $dto->setState($entity->getState());
+        $dto->setLastId($entity->getLastId());
+        $dto->setCreatedAt($entity->getCreatedAt());
+        $dto->setUpdateAt($entity->getUpdatedAt());
+        $dto->setError($entity->getError());
 
-        return $appDto;
+        return $dto;
     }
 }

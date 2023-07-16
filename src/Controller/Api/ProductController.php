@@ -13,9 +13,9 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\ProductList;
+use App\DataMappers\ProductFactory;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
-use App\Factory\ProductFactory;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;

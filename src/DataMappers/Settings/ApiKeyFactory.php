@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Factory\Settings;
+namespace App\DataMappers\Settings;
 
 use App\Dto\Request\App\Settings\CreateApiKey;
 use App\Dto\Response\App\Settings\ApiKey as AppDto;

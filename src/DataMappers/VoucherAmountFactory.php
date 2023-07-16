@@ -10,22 +10,19 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Factory\Settings;
+namespace App\DataMappers;
 
-use App\Dto\Response\App\Settings\StripeImport as AppDto;
-use App\Entity\StripeImport as Entity;
+use App\Dto\Generic\App\VoucherAmount as AppDto;
+use App\Entity\VoucherAmount as Entity;
 
-class StripeImportFactory
+class VoucherAmountFactory
 {
     public function createAppDto(Entity $entity): AppDto
     {
         $dto = new AppDto();
         $dto->setId((string) $entity->getId());
-        $dto->setState($entity->getState());
-        $dto->setLastId($entity->getLastId());
-        $dto->setCreatedAt($entity->getCreatedAt());
-        $dto->setUpdateAt($entity->getUpdatedAt());
-        $dto->setError($entity->getError());
+        $dto->setCurrency($entity->getCurrency());
+        $dto->setAmount($entity->getAmount());
 
         return $dto;
     }

@@ -13,12 +13,12 @@
 namespace App\Controller\App;
 
 use App\Controller\ValidationErrorResponseTrait;
+use App\DataMappers\VoucherAmountFactory;
+use App\DataMappers\VoucherFactory;
 use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\Vouchers\VoucherView;
 use App\Entity\Voucher;
-use App\Factory\VoucherAmountFactory;
-use App\Factory\VoucherFactory;
 use App\Repository\VoucherRepositoryInterface;
 use App\User\UserProvider;
 use App\Voucher\VoucherRegister;

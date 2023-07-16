@@ -13,9 +13,9 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\ProductList;
+use App\DataMappers\PaymentFactory;
 use App\Dto\Request\Api\Payments\RefundPayment;
 use App\Dto\Response\Api\ListResponse;
-use App\Factory\PaymentFactory;
 use Brick\Money\Currency;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\Payment;

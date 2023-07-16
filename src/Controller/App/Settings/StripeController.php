@@ -13,13 +13,13 @@
 namespace App\Controller\App\Settings;
 
 use App\Controller\ValidationErrorResponseTrait;
+use App\DataMappers\Settings\StripeImportFactory;
 use App\Dto\Request\App\Settings\RegisterWebhook;
 use App\Dto\Response\App\Settings\StripeImportView;
 use App\Entity\GenericBackgroundTask;
 use App\Entity\StripeImport;
 use App\Enum\GenericTask;
 use App\Enum\GenericTaskStatus;
-use App\Factory\Settings\StripeImportFactory;
 use App\Repository\GenericBackgroundTaskRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\StripeImportRepositoryInterface;

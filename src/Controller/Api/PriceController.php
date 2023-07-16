@@ -12,9 +12,9 @@
 
 namespace App\Controller\Api;
 
+use App\DataMappers\PriceFactory;
 use App\Dto\Request\Api\CreatePrice;
 use App\Dto\Response\Api\ListResponse;
-use App\Factory\PriceFactory;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Entity\Product;

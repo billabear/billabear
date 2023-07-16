@@ -12,13 +12,13 @@
 
 namespace App\Controller\App;
 
+use App\DataMappers\FeatureFactory;
+use App\DataMappers\PriceFactory;
+use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\App\PostSubscriptionPlan;
 use App\Dto\Response\App\SubscriptionPlanCreationInfo;
 use App\Dto\Response\App\SubscriptionPlanUpdateView;
 use App\Dto\Response\App\SubscriptionPlanView;
-use App\Factory\FeatureFactory;
-use App\Factory\PriceFactory;
-use App\Factory\SubscriptionPlanFactory;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;

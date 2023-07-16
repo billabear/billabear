@@ -12,9 +12,9 @@
 
 namespace App\Controller\App\Settings;
 
+use App\DataMappers\Settings\SystemSettingsFactory;
 use App\Dto\Request\App\Settings\SystemSettings;
 use App\Dto\Response\App\Settings\SystemSettingsView;
-use App\Factory\Settings\SystemSettingsFactory;
 use App\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

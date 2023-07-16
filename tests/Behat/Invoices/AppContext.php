@@ -12,10 +12,10 @@
 
 namespace App\Tests\Behat\Invoices;
 
+use App\DataMappers\PaymentAttemptFactory;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Entity\PaymentFailureProcess;
-use App\Factory\PaymentAttemptFactory;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Repository\Orm\PaymentAttemptRepository;

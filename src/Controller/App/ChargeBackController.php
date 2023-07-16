@@ -13,8 +13,8 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\ChargeBackList;
+use App\DataMappers\ChargeBackFactory;
 use App\Dto\Response\App\ListResponse;
-use App\Factory\ChargeBackFactory;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

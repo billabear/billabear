@@ -10,11 +10,11 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Factory\Reports;
+namespace App\DataMappers\Reports;
 
 use App\Dto\Response\App\Reports\ExpiringCard;
-use App\Factory\CustomerFactory;
-use App\Factory\PaymentMethodsFactory;
+use App\DataMappers\CustomerFactory;
+use App\DataMappers\PaymentMethodsFactory;
 use Parthenon\Billing\Entity\PaymentCard;
 
 class ExpiringCardsFactory

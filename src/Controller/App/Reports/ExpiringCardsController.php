@@ -12,8 +12,8 @@
 
 namespace App\Controller\App\Reports;
 
+use App\DataMappers\Reports\ExpiringCardsFactory;
 use App\Dto\Response\App\ListResponse;
-use App\Factory\Reports\ExpiringCardsFactory;
 use App\Repository\PaymentCardRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -12,8 +12,8 @@
 
 namespace App\Import\Stripe;
 
+use App\DataMappers\RefundFactory;
 use App\Entity\StripeImport;
-use App\Factory\RefundFactory;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\RefundAmountStats;
 use Obol\Model\Refund;

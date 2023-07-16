@@ -12,8 +12,8 @@
 
 namespace App\Import\Stripe;
 
+use App\DataMappers\ChargeBackFactory;
 use App\Entity\StripeImport;
-use App\Factory\ChargeBackFactory;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\ChargeBackAmountStats;
 use Obol\Model\ChargeBack\ChargeBack;

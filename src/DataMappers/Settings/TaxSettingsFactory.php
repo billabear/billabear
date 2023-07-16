@@ -10,19 +10,26 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Factory;
+namespace App\DataMappers\Settings;
 
-use App\Dto\Generic\App\VoucherAmount as AppDto;
-use App\Entity\VoucherAmount as Entity;
+use App\Dto\Request\App\Settings\Tax\TaxSettings as RequestDto;
+use App\Dto\Response\App\Settings\Tax\TaxSettings as AppDto;
+use App\Entity\Settings\TaxSettings as Entity;
 
-class VoucherAmountFactory
+class TaxSettingsFactory
 {
+    public function createEntity(RequestDto $requestDto): Entity
+    {
+        $entity = new Entity();
+        $entity->setTaxCustomersWithTaxNumbers($requestDto->getTaxCustomersWithTaxNumber());
+
+        return $entity;
+    }
+
     public function createAppDto(Entity $entity): AppDto
     {
         $dto = new AppDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setCurrency($entity->getCurrency());
-        $dto->setAmount($entity->getAmount());
+        $dto->setTaxCustomersWithTaxNumber($entity->getTaxCustomersWithTaxNumbers());
 
         return $dto;
     }

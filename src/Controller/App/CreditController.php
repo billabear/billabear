@@ -13,9 +13,9 @@
 namespace App\Controller\App;
 
 use App\Credit\CreditAdjustmentRecorder;
+use App\DataMappers\CreditFactory;
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Customer;
-use App\Factory\CreditFactory;
 use App\Repository\CustomerRepositoryInterface;
 use App\User\UserProvider;
 use Brick\Money\Money;
