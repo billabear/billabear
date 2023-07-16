@@ -15,7 +15,7 @@ namespace App\Factory;
 use App\Dto\Generic\Api\Price as ApiDto;
 use App\Dto\Generic\App\Price as AppDto;
 use App\Dto\Request\Api\CreatePrice;
-use Parthenon\Billing\Entity\Price;
+use App\Entity\Price;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
 class PriceFactory

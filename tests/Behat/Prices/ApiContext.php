@@ -12,14 +12,14 @@
 
 namespace App\Tests\Behat\Prices;
 
+use App\Entity\Price;
+use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\ProductRepository;
 use App\Tests\Behat\Products\ProductTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
-use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 
 class ApiContext implements Context
 {
@@ -28,8 +28,8 @@ class ApiContext implements Context
 
     public function __construct(
         private Session $session,
-        private ProductServiceRepository $productRepository,
-        private PriceServiceRepository $priceRepository,
+        private ProductRepository $productRepository,
+        private PriceRepository $priceRepository,
     ) {
     }
 

@@ -89,6 +89,7 @@ default:
                 # Tax
                 - App\Tests\Behat\Tax\CustomerContext
                 - App\Tests\Behat\Tax\InvoiceContext
+                - App\Tests\Behat\Tax\ProductContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

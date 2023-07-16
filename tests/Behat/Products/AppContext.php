@@ -12,11 +12,11 @@
 
 namespace App\Tests\Behat\Products;
 
+use App\Repository\Orm\ProductRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 
 class AppContext implements Context
 {
@@ -25,7 +25,7 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private ProductServiceRepository $productRepository,
+        private ProductRepository $productRepository,
     ) {
     }
 

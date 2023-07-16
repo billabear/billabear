@@ -14,7 +14,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
@@ -42,8 +42,8 @@ class CancellationRequest
     #[ORM\Column('comment', type: 'string', nullable: true)]
     private ?string $comment;
 
-    #[ORM\ManyToOne(targetEntity: Subscription::class)]
-    private Subscription $subscription;
+    #[ORM\ManyToOne(targetEntity: SubscriptionInterface::class)]
+    private SubscriptionInterface $subscription;
 
     #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
     private ?BillingAdminInterface $billingAdmin = null;
@@ -107,12 +107,12 @@ class CancellationRequest
         $this->comment = $comment;
     }
 
-    public function getSubscription(): Subscription
+    public function getSubscription(): SubscriptionInterface
     {
         return $this->subscription;
     }
 
-    public function setSubscription(Subscription $subscription): void
+    public function setSubscription(SubscriptionInterface $subscription): void
     {
         $this->subscription = $subscription;
     }

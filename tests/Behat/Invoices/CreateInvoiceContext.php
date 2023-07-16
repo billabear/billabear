@@ -14,14 +14,14 @@ namespace App\Tests\Behat\Invoices;
 
 use App\Entity\Customer;
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\Subscriptions\SubscriptionTrait;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
-use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 
 class CreateInvoiceContext implements Context
 {
@@ -32,8 +32,8 @@ class CreateInvoiceContext implements Context
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
-        private PriceServiceRepository $priceRepository,
-        private SubscriptionPlanServiceRepository $planServiceRepository,
+        private PriceRepository $priceRepository,
+        private SubscriptionPlanRepository $planServiceRepository,
     ) {
     }
 

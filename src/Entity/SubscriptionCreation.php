@@ -13,7 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Entity\SubscriptionInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
@@ -29,8 +29,8 @@ class SubscriptionCreation
     #[ORM\Column('state', type: 'string')]
     private string $state;
 
-    #[ORM\ManyToOne(targetEntity: Subscription::class)]
-    private Subscription $subscription;
+    #[ORM\ManyToOne(targetEntity: SubscriptionInterface::class)]
+    private SubscriptionInterface $subscription;
 
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
@@ -58,12 +58,12 @@ class SubscriptionCreation
         $this->state = $state;
     }
 
-    public function getSubscription(): Subscription
+    public function getSubscription(): SubscriptionInterface
     {
         return $this->subscription;
     }
 
-    public function setSubscription(Subscription $subscription): void
+    public function setSubscription(SubscriptionInterface $subscription): void
     {
         $this->subscription = $subscription;
     }

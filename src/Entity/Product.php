@@ -10,16 +10,24 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository\Orm;
+namespace App\Entity;
 
-use App\Entity\PaymentCreation;
-use Doctrine\Persistence\ManagerRegistry;
-use Parthenon\Common\Repository\CustomServiceRepository;
+use App\Enum\TaxType;
+use Doctrine\ORM\Mapping as ORM;
 
-class PaymentCreationRepository extends CustomServiceRepository
+#[ORM\Entity]
+class Product extends \Parthenon\Billing\Entity\Product
 {
-    public function __construct(ManagerRegistry $registry)
+    #[ORM\Column(enumType: TaxType::class)]
+    protected TaxType $taxType;
+
+    public function getTaxType(): TaxType
     {
-        parent::__construct($registry, PaymentCreation::class);
+        return $this->taxType;
+    }
+
+    public function setTaxType(TaxType $taxType): void
+    {
+        $this->taxType = $taxType;
     }
 }

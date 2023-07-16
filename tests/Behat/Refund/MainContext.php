@@ -13,6 +13,10 @@
 namespace App\Tests\Behat\Refund;
 
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PaymentRepository;
+use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\SubscriptionRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\Subscriptions\SubscriptionTrait;
@@ -22,11 +26,7 @@ use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Enum\RefundStatus;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
-use Parthenon\Billing\Repository\Orm\PaymentServiceRepository;
-use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
 use Parthenon\Billing\Repository\Orm\RefundServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
 
 class MainContext implements Context
 {
@@ -36,12 +36,12 @@ class MainContext implements Context
 
     public function __construct(
         private Session $session,
-        private SubscriptionServiceRepository $subscriptionRepository,
-        private PriceServiceRepository $priceRepository,
-        private SubscriptionPlanServiceRepository $planRepository,
+        private SubscriptionRepository $subscriptionRepository,
+        private PriceRepository $priceRepository,
+        private SubscriptionPlanRepository $planRepository,
         private CustomerRepository $customerRepository,
         private PaymentCardServiceRepository $paymentDetailsRepository,
-        private PaymentServiceRepository $paymentRepository,
+        private PaymentRepository $paymentRepository,
         private RefundServiceRepository $refundRepository,
     ) {
     }

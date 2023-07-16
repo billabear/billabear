@@ -12,14 +12,14 @@
 
 namespace App\Repository\Orm;
 
-use App\Entity\PaymentCreation;
+use App\Entity\SubscriptionPlan;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class PaymentCreationRepository extends CustomServiceRepository
+class SubscriptionPlanRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PaymentCreation::class);
+        parent::__construct($registry, SubscriptionPlan::class);
     }
 }

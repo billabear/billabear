@@ -12,6 +12,10 @@
 
 namespace App\Tests\Behat\SubscriptionPlan;
 
+use App\Entity\SubscriptionPlan;
+use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\ProductRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Tests\Behat\Features\FeatureTrait;
 use App\Tests\Behat\Products\ProductTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -19,12 +23,8 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Parthenon\Billing\Entity\SubscriptionFeature;
-use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
-use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
-use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 use Parthenon\Billing\Repository\Orm\SubscriptionFeatureServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
 
 class AppContext implements Context
 {
@@ -34,11 +34,11 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private SubscriptionPlanServiceRepository $planRepository,
-        private ProductServiceRepository $productRepository,
+        private SubscriptionPlanRepository $planRepository,
+        private ProductRepository $productRepository,
         private SubscriptionFeatureServiceRepository $subscriptionFeatureRepository,
-        private SubscriptionPlanServiceRepository $planServiceRepository,
-        private PriceServiceRepository $priceRepository,
+        private SubscriptionPlanRepository $planServiceRepository,
+        private PriceRepository $priceRepository,
     ) {
     }
 

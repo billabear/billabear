@@ -15,7 +15,8 @@ namespace App\Factory;
 use App\Dto\Generic\Api\Product as ProductDto;
 use App\Dto\Generic\App\Product as AppDto;
 use App\Dto\Request\Api\CreateProduct;
-use Parthenon\Billing\Entity\Product;
+use App\Entity\Product;
+use App\Enum\TaxType;
 
 class ProductFactory
 {
@@ -27,6 +28,7 @@ class ProductFactory
 
         $product->setName($createProduct->getName());
         $product->setExternalReference($createProduct->getExternalReference());
+        $product->setTaxType(TaxType::fromName($createProduct->getTaxType()));
 
         return $product;
     }

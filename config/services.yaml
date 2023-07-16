@@ -39,6 +39,13 @@ services:
     Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@App\Repository\PaymentCardRepository'
     Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@App\Subscription\SubscriptionManagerInterchange'
 
+
+    parthenon.billing.repository.orm.product_repository_doctrine: '@App\Repository\Orm\ProductRepository'
+    parthenon.billing.repository.orm.price_repository_doctrine: '@App\Repository\Orm\PriceRepository'
+    parthenon.billing.repository.orm.subscription_repository_doctrine: '@App\Repository\Orm\SubscriptionRepository'
+    parthenon.billing.repository.orm.subscription_plan_repository_doctrine: '@App\Repository\Orm\SubscriptionPlanRepository'
+    parthenon.billing.repository.orm.payment_repository_doctrine: '@App\Repository\Orm\PaymentRepository'
+
     App\Repository\UserRepository:
         arguments:
             $entityRepository: '@app.repository.orm.user'
@@ -112,6 +119,7 @@ services:
             $entityRepository: '@app.repository.orm.payment_failure_process'
     app.repository.orm.payment_failure_process:
         class: App\Repository\Orm\PaymentFailureProcessRepository
+
 
     App\Repository\StripeImportRepository:
         arguments:
@@ -348,3 +356,5 @@ services:
         factory: [ '@App\Webhook\ConfigFactory', 'createConfig' ]
 
     Parthenon\Common\Config\SiteUrlProviderInterface: '@App\Settings\SiteUrlProvider'
+
+    Parthenon\Billing\Factory\EntityFactoryInterface: '@App\Factory\EntityFactory'

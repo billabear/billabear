@@ -20,6 +20,8 @@ use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Repository\Orm\PaymentAttemptRepository;
 use App\Repository\Orm\PaymentFailureProcessRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\SubscriptionRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\Subscriptions\SubscriptionTrait;
@@ -27,8 +29,6 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use Obol\Model\Enum\ChargeFailureReasons;
-use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
 
 class AppContext implements Context
 {
@@ -43,8 +43,8 @@ class AppContext implements Context
         private PaymentAttemptFactory $paymentAttemptFactory,
         private PaymentAttemptRepository $paymentAttemptRepository,
         private PaymentFailureProcessRepository $paymentFailureProcessRepository,
-        private SubscriptionServiceRepository $subscriptionRepository,
-        private SubscriptionPlanServiceRepository $planRepository,
+        private SubscriptionRepository $subscriptionRepository,
+        private SubscriptionPlanRepository $planRepository,
     ) {
     }
 

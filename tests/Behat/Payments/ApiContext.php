@@ -13,11 +13,11 @@
 namespace App\Tests\Behat\Payments;
 
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PaymentRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use Parthenon\Billing\Repository\Orm\PaymentServiceRepository;
 
 class ApiContext implements Context
 {
@@ -27,7 +27,7 @@ class ApiContext implements Context
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
-        private PaymentServiceRepository $paymentRepository,
+        private PaymentRepository $paymentRepository,
     ) {
     }
 

@@ -24,6 +24,11 @@ class CreateProduct
     #[SerializedName('external_reference')]
     private ?string $externalReference = null;
 
+    #[SerializedName('tax_type')]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Choice(choices: ['digital_goods', 'physical', 'digital_services'])]
+    private $taxType;
+
     public function getName(): string
     {
         return $this->name;
@@ -42,5 +47,15 @@ class CreateProduct
     public function setExternalReference(?string $externalReference): void
     {
         $this->externalReference = $externalReference;
+    }
+
+    public function getTaxType()
+    {
+        return $this->taxType;
+    }
+
+    public function setTaxType($taxType): void
+    {
+        $this->taxType = $taxType;
     }
 }

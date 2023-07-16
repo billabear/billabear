@@ -12,19 +12,20 @@
 
 namespace App\Tests\Behat\Products;
 
+use App\Entity\Product;
+use App\Enum\TaxType;
+use App\Repository\Orm\ProductRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\Product;
-use Parthenon\Billing\Repository\Orm\ProductServiceRepository;
 
 class ApiContext implements Context
 {
     use SendRequestTrait;
     use ProductTrait;
 
-    public function __construct(private Session $session, private ProductServiceRepository $productRepository)
+    public function __construct(private Session $session, private ProductRepository $productRepository)
     {
     }
 
@@ -62,6 +63,7 @@ class ApiContext implements Context
             $product = new Product();
             $product->setName($row['Name']);
             $product->setExternalReference($row['External Reference'] ?? null);
+            $product->setTaxType(TaxType::DIGITAL_GOODS);
             $this->productRepository->getEntityManager()->persist($product);
         }
         $this->productRepository->getEntityManager()->flush();

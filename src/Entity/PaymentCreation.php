@@ -13,7 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Entity\PaymentInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
@@ -29,8 +29,8 @@ class PaymentCreation
     #[ORM\Column('state', type: 'string')]
     private string $state;
 
-    #[ORM\ManyToOne(targetEntity: Payment::class)]
-    private Payment $payment;
+    #[ORM\ManyToOne(targetEntity: PaymentInterface::class)]
+    private PaymentInterface $payment;
 
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
@@ -58,12 +58,12 @@ class PaymentCreation
         $this->state = $state;
     }
 
-    public function getPayment(): Payment
+    public function getPayment(): PaymentInterface
     {
         return $this->payment;
     }
 
-    public function setPayment(Payment $payment): void
+    public function setPayment(PaymentInterface $payment): void
     {
         $this->payment = $payment;
     }

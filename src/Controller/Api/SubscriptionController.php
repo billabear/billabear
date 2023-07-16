@@ -34,6 +34,7 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,6 +46,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SubscriptionController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     private CancellationRequestFactory $cancellationRequestFactory;
 
@@ -139,10 +141,13 @@ class SubscriptionController
         $transactionManager->start();
         try {
             $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
+            $transactionManager->finish();
         } catch (\Throwable $e) {
+            $this->getLogger()->error('Error while creating subscription', ['exception_message' => $e->getMessage()]);
             $transactionManager->abort();
+
+            return new JsonResponse([], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-        $transactionManager->finish();
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 

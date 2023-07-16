@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\ChargeBacks;
 
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PaymentRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -21,7 +22,6 @@ use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Enum\ChargeBackReason;
 use Parthenon\Billing\Enum\ChargeBackStatus;
 use Parthenon\Billing\Repository\Orm\ChargeBackServiceRepository;
-use Parthenon\Billing\Repository\Orm\PaymentServiceRepository;
 
 class AppContext implements Context
 {
@@ -30,7 +30,7 @@ class AppContext implements Context
 
     public function __construct(
         private Session $session,
-        private PaymentServiceRepository $paymentRepository,
+        private PaymentRepository $paymentRepository,
         private ChargeBackServiceRepository $chargeBackRepository,
         private CustomerRepository $customerRepository,
     ) {

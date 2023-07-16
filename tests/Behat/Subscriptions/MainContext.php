@@ -13,7 +13,12 @@
 namespace App\Tests\Behat\Subscriptions;
 
 use App\Dto\Request\App\Subscription\UpdatePlan;
+use App\Entity\Subscription;
+use App\Entity\SubscriptionPlan;
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\Orm\SubscriptionRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -22,14 +27,9 @@ use Behat\Mink\Session;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
-use Parthenon\Billing\Repository\Orm\PriceServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionPlanServiceRepository;
-use Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository;
 
 use function Symfony\Component\String\s;
 
@@ -41,9 +41,9 @@ class MainContext implements Context
 
     public function __construct(
         private Session $session,
-        private SubscriptionServiceRepository $subscriptionRepository,
-        private PriceServiceRepository $priceRepository,
-        private SubscriptionPlanServiceRepository $planRepository,
+        private SubscriptionRepository $subscriptionRepository,
+        private PriceRepository $priceRepository,
+        private SubscriptionPlanRepository $planRepository,
         private CustomerRepository $customerRepository,
         private PaymentCardServiceRepository $paymentDetailsRepository,
     ) {
