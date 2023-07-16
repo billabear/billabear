@@ -12,9 +12,9 @@
 
 namespace App\DataMappers\Reports;
 
-use App\Dto\Response\App\Reports\ExpiringCard;
 use App\DataMappers\CustomerFactory;
 use App\DataMappers\PaymentMethodsFactory;
+use App\Dto\Response\App\Reports\ExpiringCard;
 use Parthenon\Billing\Entity\PaymentCard;
 
 class ExpiringCardsFactory
