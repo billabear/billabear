@@ -21,6 +21,10 @@
                 <dd>{{ product.name }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.product.view.main.tax_type') }}</dt>
+                <dd>{{ $t('app.product.view.main.tax_types.'+product.tax_type) }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
                 <dd>
                   <a v-if="product.payment_provider_details_url" target="_blank" :href="product.payment_provider_details_url">{{ product.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>

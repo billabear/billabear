@@ -12,6 +12,18 @@
           <input type="text" class="form-field-input" id="name" v-model="product.name" />
           <p class="form-field-help">{{ $t('app.product.update.help_info.name') }}</p>
         </div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="tax_type">
+            {{ $t('app.product.create.tax_type') }}
+          </label>
+          <p class="form-field-error" v-if="errors.taxType != undefined">{{ errors.taxType }}</p>
+          <select class="form-field" id="name" v-model="product.tax_type">
+            <option value="digital_goods">{{ $t('app.product.create.tax_types.digital_goods') }}</option>
+            <option value="digital_services">{{ $t('app.product.create.tax_types.digital_services') }}</option>
+            <option value="physical">{{ $t('app.product.create.tax_types.physical') }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.product.create.help_info.tax_type') }}</p>
+        </div>
     </div>
 
       <div class="form-field-ctn">

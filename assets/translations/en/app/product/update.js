@@ -11,8 +11,15 @@ export const PRODUCT_UPDATE_TRANSLATIONS = {
         not_found: "No such product found",
         unknown: "An unknown error has occurred"
     },
+    tax_type: "Tax Type",
+    tax_types: {
+        digital_services: "Digital Services",
+        digital_goods: "Digital Goods",
+        physical: "Physical Goods/Services"
+    },
     help_info: {
         name: "The name of the product",
-        external_reference: "The reference for the product that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference."
+        external_reference: "The reference for the product that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference.",
+        tax_type: "This is to help with taxing correctly. Physical goods and services are taxed differently from digital goods. And in some countries they have a digital services tax."
     }
 }

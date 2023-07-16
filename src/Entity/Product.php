@@ -16,6 +16,7 @@ use App\Enum\TaxType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\Table('product')]
 class Product extends \Parthenon\Billing\Entity\Product
 {
     #[ORM\Column(enumType: TaxType::class)]

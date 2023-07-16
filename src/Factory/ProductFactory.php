@@ -39,6 +39,7 @@ class ProductFactory
         $dto->setId((string) $product->getId());
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
+        $dto->setTaxType($product->getTaxType()->value);
 
         return $dto;
     }
@@ -50,6 +51,7 @@ class ProductFactory
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
         $dto->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
+        $dto->setTaxType($product->getTaxType()->value);
 
         return $dto;
     }

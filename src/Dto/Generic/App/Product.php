@@ -22,6 +22,9 @@ class Product
     #[SerializedName('name')]
     protected string $name;
 
+    #[SerializedName('tax_type')]
+    protected string $taxType;
+
     #[SerializedName('external_reference')]
     protected ?string $externalReference = null;
 
@@ -72,5 +75,15 @@ class Product
     public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
     {
         $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
+    }
+
+    public function getTaxType(): string
+    {
+        return $this->taxType;
+    }
+
+    public function setTaxType(string $taxType): void
+    {
+        $this->taxType = $taxType;
     }
 }
