@@ -60,7 +60,7 @@ Feature: Create invoice
     And I want to invoice the customer "customer.seven@example.org"
     And I want to invoice for a subscription to "Test Two" at 1000 in "USD" per "week"
     And I want to invoice for a subscription to "Test Plan" at 2000 in "USD" per "week"
-    And I want to invoice for a bespoke one-off fee for "Setup Costs" at 5000 in "USD" including tax
+    And I want to invoice for a bespoke one-off fee for "Setup Costs" at 5000 in "USD" including tax for a digital goods
     When I finalise the invoice in APP
     Then there will be an unpaid invoice for "customer.seven@example.org"
     And the latest invoice for "customer.seven@example.org" will have amount due as 8000
@@ -69,7 +69,7 @@ Feature: Create invoice
   Scenario: Create without subscriptions and one off item
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And I want to invoice the customer "customer.seven@example.org"
-    And I want to invoice for a bespoke one-off fee for "Setup Costs" at 5000 in "USD" including tax
+    And I want to invoice for a bespoke one-off fee for "Setup Costs" at 5000 in "USD" including tax for a digital goods
     When I finalise the invoice in APP
     Then there will be an unpaid invoice for "customer.seven@example.org"
     And the latest invoice for "customer.seven@example.org" will have amount due as 5000

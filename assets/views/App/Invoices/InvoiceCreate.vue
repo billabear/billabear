@@ -78,6 +78,7 @@
           <th>{{ $t('app.quotes.create.items.list.description') }}</th>
           <th>{{ $t('app.quotes.create.items.list.amount') }}</th>
           <th>{{ $t('app.quotes.create.items.list.tax_included') }}</th>
+          <th>{{ $t('app.quotes.create.items.list.tax_type') }}</th>
           <th></th>
         </tr>
         </thead>
@@ -98,6 +99,14 @@
               <input type="number" class="form-field" v-model="item.amount" >
             </td>
             <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
+            <td>
+              <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].taxType != undefined">{{ errors.items[key].taxType }}</p>
+              <select class="form-field" id="name" v-model="item.tax_type">
+                <option value="digital_goods">{{ $t('app.quotes.create.items.tax_types.digital_goods') }}</option>
+                <option value="digital_services">{{ $t('app.quotes.create.items.tax_types.digital_services') }}</option>
+                <option value="physical">{{ $t('app.quotes.create.items.tax_types.physical') }}</option>
+              </select>
+            </td>
             <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
           </tr>
         </tbody>
@@ -270,6 +279,10 @@ export default {
         if (!item.amount) {
           hasErrors = true;
           errors[key].amount = this.$t('app.quotes.create.errors.need_amount');
+        }
+        if (!item.tax_type) {
+          hasErrors = true;
+          errors[key].taxType = this.$t('app.quotes.create.errors.need_tax_type');
         }
         items.push(
             {

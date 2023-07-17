@@ -83,7 +83,7 @@ class CreateInvoiceContext implements Context
     }
 
     /**
-     * @Given I want to invoice for a bespoke one-off fee for :description at :amount in :currency including tax
+     * @Given I want to invoice for a bespoke one-off fee for :description at :amount in :currency including tax for a digital goods
      */
     public function iWantToInvoiceForABespokeOneOffFeeForAtInIncludingTax($description, $amount, $currency)
     {
@@ -92,6 +92,7 @@ class CreateInvoiceContext implements Context
             'amount' => $amount,
             'currency' => $currency,
             'include_tax' => true,
+            'tax_type' => 'digital_goods',
         ];
     }
 
@@ -127,6 +128,7 @@ class CreateInvoiceContext implements Context
                 'amount' => $item['amount'],
                 'currency' => $item['currency'],
                 'include_tax' => $item['include_tax'],
+                'tax_type' => $item['tax_type'],
             ];
         }
 

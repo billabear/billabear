@@ -9,7 +9,8 @@ export const QUOTES_CREATE_TRANSLATIONS = {
         same_currency_and_schedule: "The same currency and schedule should be used for subscriptions",
         currency: "A currency is required",
         need_description: "Need a description",
-        need_amount: "Need amount"
+        need_amount: "Need amount",
+        need_tax_type: "Need a tax type"
     },
     customer: {
         create_customer: "Create Customer",
@@ -40,7 +41,13 @@ export const QUOTES_CREATE_TRANSLATIONS = {
             description: "Description",
             amount: "Amount",
             tax_included: "Tax Included",
-            digital_product: "Digital Product"
-        }
+            digital_product: "Digital Product",
+            tax_type: "Tax Type",
+        },
+        tax_types: {
+            digital_services: "Digital Services",
+            digital_goods: "Digital Goods",
+            physical: "Physical Goods/Services"
+        },
     }
 };

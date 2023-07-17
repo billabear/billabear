@@ -31,6 +31,11 @@ class CreateInvoiceItem
     #[Assert\Type('bool')]
     private $includeTax;
 
+    #[SerializedName('tax_type')]
+    #[Assert\NotBlank()]
+    #[Assert\Choice(choices: ['digital_goods', 'physical', 'digital_services'])]
+    private $taxType;
+
     public function getDescription()
     {
         return $this->description;
@@ -69,5 +74,15 @@ class CreateInvoiceItem
     public function setIncludeTax($includeTax): void
     {
         $this->includeTax = $includeTax;
+    }
+
+    public function getTaxType()
+    {
+        return $this->taxType;
+    }
+
+    public function setTaxType($taxType): void
+    {
+        $this->taxType = $taxType;
     }
 }
