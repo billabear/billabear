@@ -50,6 +50,7 @@ class ApiContext implements Context
         $product = $this->productRepository->findOneBy(['name' => $name]);
 
         if (!$product) {
+            var_dump($this->getJsonContent());
             throw new \Exception("Can't find product");
         }
     }
@@ -63,7 +64,12 @@ class ApiContext implements Context
             $product = new Product();
             $product->setName($row['Name']);
             $product->setExternalReference($row['External Reference'] ?? null);
-            $product->setTaxType(TaxType::DIGITAL_GOODS);
+            $taxType = match ($row['Tax Type'] ?? null) {
+                'Digital Services' => TaxType::DIGITAL_SERVICES,
+                'Physical' => TaxType::PHYSICAL,
+                default => TaxType::DIGITAL_GOODS,
+            };
+            $product->setTaxType($taxType);
             $this->productRepository->getEntityManager()->persist($product);
         }
         $this->productRepository->getEntityManager()->flush();

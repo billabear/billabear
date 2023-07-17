@@ -12,6 +12,7 @@
 
 namespace App\Tests\Behat\Products;
 
+use App\Enum\TaxType;
 use App\Repository\Orm\ProductRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -38,6 +39,14 @@ class AppContext implements Context
         $payload = [
             'name' => $data['Name'],
         ];
+
+        if (isset($data['Tax Type'])) {
+            $payload['tax_type'] = match ($data['Tax Type']) {
+                'Digital Services' => TaxType::DIGITAL_SERVICES->value,
+                'Physical' => TaxType::PHYSICAL->value,
+                default => TaxType::DIGITAL_GOODS->value,
+            };
+        }
 
         $this->sendJsonRequest('POST', '/app/product', $payload);
     }
@@ -71,6 +80,13 @@ class AppContext implements Context
         $payload = [
             'name' => $data['Name'],
         ];
+        if (isset($data['Tax Type'])) {
+            $payload['tax_type'] = match ($data['Tax Type']) {
+                'Digital Services' => TaxType::DIGITAL_SERVICES->value,
+                'Physical' => TaxType::PHYSICAL->value,
+                default => TaxType::DIGITAL_GOODS->value,
+            };
+        }
 
         $this->sendJsonRequest('POST', '/app/product/'.$product->getId(), $payload);
     }

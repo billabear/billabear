@@ -43,4 +43,30 @@ class ProductContext implements Context
             throw new \Exception('Got a different tax type');
         }
     }
+
+    /**
+     * @Then the tax type for product :arg1 is Digital Service
+     */
+    public function theTaxTypeForProductIsDigitalService($productName)
+    {
+        /** @var Product $product */
+        $product = $this->getProductByName($productName);
+
+        if (TaxType::DIGITAL_SERVICES !== $product->getTaxType()) {
+            throw new \Exception('Got a different tax type');
+        }
+    }
+
+    /**
+     * @Then the tax type for product :arg1 is Physical
+     */
+    public function theTaxTypeForProductIsPhysical($productName)
+    {
+        /** @var Product $product */
+        $product = $this->getProductByName($productName);
+
+        if (TaxType::PHYSICAL !== $product->getTaxType()) {
+            throw new \Exception('Got a different tax type');
+        }
+    }
 }
