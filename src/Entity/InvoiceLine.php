@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\TaxType;
 use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -48,6 +49,9 @@ class InvoiceLine
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column(enumType: TaxType::class, nullable: true)]
+    protected ?TaxType $taxType = null;
 
     public function getId()
     {
@@ -142,5 +146,15 @@ class InvoiceLine
     public function setVatPercentage(float $vatPercentage): void
     {
         $this->vatPercentage = $vatPercentage;
+    }
+
+    public function getTaxType(): TaxType
+    {
+        return $this->taxType ?? TaxType::DIGITAL_GOODS;
+    }
+
+    public function setTaxType(TaxType $taxType): void
+    {
+        $this->taxType = $taxType;
     }
 }

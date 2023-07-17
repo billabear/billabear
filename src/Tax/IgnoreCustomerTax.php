@@ -13,6 +13,7 @@
 namespace App\Tax;
 
 use App\Entity\Customer;
+use App\Enum\TaxType;
 use App\Repository\SettingsRepositoryInterface;
 
 class IgnoreCustomerTax implements TaxRateProviderInterface
@@ -21,17 +22,21 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
     {
     }
 
-    public function getRateForCustomer(Customer $customer): float
+    public function getRateForCustomer(Customer $customer, TaxType $taxType): ?float
     {
-        if ($customer->getStandardTaxRate()) {
+        if ($customer->getStandardTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
             return $customer->getStandardTaxRate();
+        }
+
+        if ($customer->getDigitalTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
+            return $customer->getDigitalTaxRate();
         }
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 
         if (!$taxCustomersWithTaxNumbers && $customer->getTaxNumber()) {
-            return 0.0;
+            return null;
         }
 
-        return $this->taxRateProvider->getRateForCustomer($customer);
+        return $this->taxRateProvider->getRateForCustomer($customer, $taxType);
     }
 }

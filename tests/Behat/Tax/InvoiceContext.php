@@ -14,6 +14,7 @@ namespace App\Tests\Behat\Tax;
 
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Enum\TaxType;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
@@ -79,5 +80,57 @@ class InvoiceContext implements Context
         }
 
         throw new \Exception('Got rate - '.$rate);
+    }
+
+    /**
+     * @Then there the latest invoice for :arg1 will have tax type for digital goods
+     */
+    public function thereTheLatestInvoiceForWillHaveTaxTypeForDigitalGoods($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $taxType = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if (TaxType::DIGITAL_GOODS == $line->getTaxType()) {
+                return;
+            } else {
+                $taxType = $line->getTaxType()->value;
+            }
+        }
+
+        throw new \Exception('Got taxType - '.$taxType);
+    }
+
+    /**
+     * @Then there the latest invoice for :arg1 will have tax type for physical goods
+     */
+    public function thereTheLatestInvoiceForWillHaveTaxTypeForPhysicalGoods($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $taxType = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if (TaxType::PHYSICAL == $line->getTaxType()) {
+                return;
+            } else {
+                $taxType = $line->getTaxType()->value;
+            }
+        }
+
+        throw new \Exception('Got taxType - '.$taxType);
     }
 }

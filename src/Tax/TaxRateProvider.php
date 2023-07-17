@@ -13,6 +13,7 @@
 namespace App\Tax;
 
 use App\Entity\Customer;
+use App\Enum\TaxType;
 
 class TaxRateProvider implements TaxRateProviderInterface
 {
@@ -20,8 +21,12 @@ class TaxRateProvider implements TaxRateProviderInterface
     {
     }
 
-    public function getRateForCustomer(Customer $customer): float
+    public function getRateForCustomer(Customer $customer, TaxType $taxType): ?float
     {
+        if (TaxType::PHYSICAL === $taxType) {
+            return $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
+        }
+
         return $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
     }
 }

@@ -13,6 +13,7 @@
 namespace App\Invoice;
 
 use App\Entity\Customer;
+use App\Enum\TaxType;
 use App\Tax\TaxRateProviderInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
@@ -24,18 +25,18 @@ class Pricer implements PricerInterface
     {
     }
 
-    public function getCustomerPriceInfo(Price $price, Customer $customer): PriceInfo
+    public function getCustomerPriceInfo(Price $price, Customer $customer, TaxType $taxType): PriceInfo
     {
         $money = $price->getAsMoney();
-        $rawRate = $this->taxRateProvider->getRateForCustomer($customer);
+        $rawRate = $this->taxRateProvider->getRateForCustomer($customer, $taxType);
 
         if ($price->isIncludingTax()) {
-            $rate = ($rawRate / 100) + 1;
+            $rate = ($rawRate ?? 0 / 100) + 1;
             $total = $money;
             $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);
             $vat = $money->minus($subTotal, RoundingMode::HALF_DOWN);
         } else {
-            $rate = ($rawRate / 100);
+            $rate = ($rawRate ?? 0 / 100);
             $subTotal = $money;
             $vat = $money->multipliedBy($rate, RoundingMode::HALF_UP);
             $total = $subTotal->plus($vat, RoundingMode::HALF_DOWN);
@@ -49,9 +50,9 @@ class Pricer implements PricerInterface
         );
     }
 
-    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax): PriceInfo
+    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, TaxType $taxType): PriceInfo
     {
-        $rawRate = $this->taxRateProvider->getRateForCustomer($customer);
+        $rawRate = $this->taxRateProvider->getRateForCustomer($customer, $taxType);
 
         if ($includeTax) {
             $rate = ($rawRate / 100) + 1;

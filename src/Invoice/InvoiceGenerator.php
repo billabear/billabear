@@ -17,6 +17,7 @@ use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use App\Enum\TaxType;
 use App\Event\InvoiceCreated;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
 use App\Repository\InvoiceRepositoryInterface;
@@ -55,7 +56,7 @@ class InvoiceGenerator
         $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->getGenerator()->generate());
 
         $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney())->abs();
-        $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax());
+        $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax(), TaxType::DIGITAL_GOODS);
 
         $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
         $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -69,6 +70,7 @@ class InvoiceGenerator
         $line->setInvoice($invoice);
         $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
         $line->setVatPercentage($priceInfo->taxRate);
+        $line->setTaxType(TaxType::DIGITAL_GOODS);
         $lines[] = $line;
 
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo, $vat);
@@ -98,7 +100,8 @@ class InvoiceGenerator
                 throw new \Exception(sprintf("The subscription '%s' has no price", $subscription->getPlanName()));
             }
 
-            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer);
+            $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
+            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType);
 
             $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
             $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -112,13 +115,14 @@ class InvoiceGenerator
             $line->setInvoice($invoice);
             $line->setDescription($subscription->getPlanName());
             $line->setVatPercentage($priceInfo->taxRate);
+            $line->setTaxType($taxType);
             $lines[] = $line;
         }
         $invoice->setSubscriptions($subscriptions);
 
         /** @var LineItem $lineItem */
         foreach ($inputLines as $lineItem) {
-            $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($lineItem->getMoney(), $customer, $lineItem->isIncludeTax());
+            $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($lineItem->getMoney(), $customer, $lineItem->isIncludeTax(), TaxType::DIGITAL_GOODS);
 
             $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
             $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -132,6 +136,7 @@ class InvoiceGenerator
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
             $line->setVatPercentage($priceInfo->taxRate);
+            $line->setTaxType(TaxType::DIGITAL_GOODS);
             $lines[] = $line;
         }
 
