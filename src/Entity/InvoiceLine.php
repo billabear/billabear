@@ -138,12 +138,12 @@ class InvoiceLine
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
-    public function getVatPercentage(): float
+    public function getVatPercentage(): ?float
     {
         return $this->vatPercentage;
     }
 
-    public function setVatPercentage(float $vatPercentage): void
+    public function setVatPercentage(?float $vatPercentage): void
     {
         $this->vatPercentage = $vatPercentage;
     }

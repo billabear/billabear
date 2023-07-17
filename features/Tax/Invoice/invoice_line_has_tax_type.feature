@@ -59,3 +59,20 @@ Feature: Invoices are tax type aware
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.four@example.org" will expire in a week
     And there the latest invoice for "customer.four@example.org" will have tax type for physical goods
+
+
+  Scenario: Create without subscriptions and one off item
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And I want to invoice the customer "customer.four@example.org"
+    And I want to invoice for a bespoke one-off fee for "Setup Costs" at 5000 in "USD" including tax for a digital goods
+    When I finalise the invoice in APP
+    Then there will be an unpaid invoice for "customer.four@example.org"
+    And there the latest invoice for "customer.four@example.org" will have tax type for digital goods
+
+  Scenario: Create without subscriptions and one off item
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And I want to invoice the customer "customer.four@example.org"
+    And I want to invoice for a bespoke one-off fee for "Setup Costs" at 5000 in "USD" including tax for a physical goods
+    When I finalise the invoice in APP
+    Then there will be an unpaid invoice for "customer.four@example.org"
+    And there the latest invoice for "customer.four@example.org" will have tax type for physical goods

@@ -97,6 +97,20 @@ class CreateInvoiceContext implements Context
     }
 
     /**
+     * @Given I want to invoice for a bespoke one-off fee for :description at :amount in :currency including tax for a physical goods
+     */
+    public function iWantToInvoiceForABespokeOneOffFeeForAtInIncludingTaxPhysical($description, $amount, $currency)
+    {
+        $this->items[] = [
+            'description' => $description,
+            'amount' => $amount,
+            'currency' => $currency,
+            'include_tax' => true,
+            'tax_type' => 'physical',
+        ];
+    }
+
+    /**
      * @When I finalise the invoice in APP
      */
     public function iFinaliseTheInvoiceInApp()

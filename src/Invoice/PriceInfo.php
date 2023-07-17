@@ -20,7 +20,7 @@ class PriceInfo
         public readonly Money $total,
         public readonly Money $subTotal,
         public readonly Money $vat,
-        public readonly float $taxRate,
+        public readonly ?float $taxRate,
     ) {
     }
 }

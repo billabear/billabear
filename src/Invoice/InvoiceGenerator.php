@@ -17,7 +17,6 @@ use App\Entity\Credit;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
-use App\Enum\TaxType;
 use App\Event\InvoiceCreated;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
 use App\Repository\InvoiceRepositoryInterface;
@@ -56,7 +55,7 @@ class InvoiceGenerator
         $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->getGenerator()->generate());
 
         $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney())->abs();
-        $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax(), TaxType::DIGITAL_GOODS);
+        $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax(), $newPlan->getProduct()->getTaxType());
 
         $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
         $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -70,7 +69,7 @@ class InvoiceGenerator
         $line->setInvoice($invoice);
         $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
         $line->setVatPercentage($priceInfo->taxRate);
-        $line->setTaxType(TaxType::DIGITAL_GOODS);
+        $line->setTaxType($newPlan->getProduct()->getTaxType());
         $lines[] = $line;
 
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo, $vat);
@@ -122,7 +121,7 @@ class InvoiceGenerator
 
         /** @var LineItem $lineItem */
         foreach ($inputLines as $lineItem) {
-            $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($lineItem->getMoney(), $customer, $lineItem->isIncludeTax(), TaxType::DIGITAL_GOODS);
+            $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($lineItem->getMoney(), $customer, $lineItem->isIncludeTax(), $lineItem->getTaxType());
 
             $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
             $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -136,7 +135,7 @@ class InvoiceGenerator
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
             $line->setVatPercentage($priceInfo->taxRate);
-            $line->setTaxType(TaxType::DIGITAL_GOODS);
+            $line->setTaxType($lineItem->getTaxType());
             $lines[] = $line;
         }
 

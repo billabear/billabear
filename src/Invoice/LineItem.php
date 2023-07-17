@@ -12,6 +12,7 @@
 
 namespace App\Invoice;
 
+use App\Enum\TaxType;
 use Brick\Money\Money;
 
 class LineItem
@@ -21,6 +22,8 @@ class LineItem
     private string $description;
 
     private bool $includeTax;
+
+    private TaxType $taxType;
 
     public function getMoney(): Money
     {
@@ -50,5 +53,15 @@ class LineItem
     public function setIncludeTax(bool $includeTax): void
     {
         $this->includeTax = $includeTax;
+    }
+
+    public function getTaxType(): TaxType
+    {
+        return $this->taxType;
+    }
+
+    public function setTaxType(TaxType $taxType): void
+    {
+        $this->taxType = $taxType;
     }
 }

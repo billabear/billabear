@@ -17,6 +17,7 @@ use App\Dto\Request\App\Invoice\CreateInvoiceItem;
 use App\Dto\Request\App\Invoice\CreateInvoiceSubscription;
 use App\Entity\Customer;
 use App\Entity\Invoice;
+use App\Enum\TaxType;
 use App\Payment\InvoiceCharger;
 use App\Repository\CustomerRepositoryInterface;
 use App\Subscription\SubscriptionFactory;
@@ -61,6 +62,7 @@ class ManualInvoiceCreator
             $lineItem->setMoney($money);
             $lineItem->setDescription($item->getDescription());
             $lineItem->setIncludeTax($item->getIncludeTax());
+            $lineItem->setTaxType(TaxType::fromName($item->getTaxType()));
 
             $lines[] = $lineItem;
         }
