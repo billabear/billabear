@@ -112,6 +112,16 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the response should be that payment is needed
+     */
+    public function theResponseShouldBeThatPaymentIsNeeded()
+    {
+        if (402 !== $this->session->getStatusCode()) {
+            throw new \Exception('Got '.$this->session->getStatusCode());
+        }
+    }
+
+    /**
      * @Then the subscription for :arg1 will expire in a week
      */
     public function theSubscriptionForWillExpireInAWeek($customerEmail)

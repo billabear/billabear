@@ -40,7 +40,7 @@ class InvoiceCharger
     ) {
     }
 
-    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null, \DateTime $createdAt = null): void
+    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null, \DateTime $createdAt = null): bool
     {
         if (!$paymentCard) {
             $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
@@ -57,7 +57,7 @@ class InvoiceCharger
         if (!$response->isSuccessful()) {
             $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $response);
 
-            return;
+            return false;
         }
 
         $payment = $this->paymentFactory->fromSubscriptionCreation($response->getPaymentDetails(), $invoice->getCustomer());
@@ -80,5 +80,7 @@ class InvoiceCharger
 
         $this->eventDispatcher->dispatch(new InvoicePaid($invoice), InvoicePaid::NAME);
         $this->eventDispatcher->dispatch(new PaymentCreated($payment, true), PaymentCreated::NAME);
+
+        return true;
     }
 }

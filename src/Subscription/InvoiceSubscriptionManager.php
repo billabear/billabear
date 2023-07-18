@@ -17,6 +17,7 @@ use App\Entity\Customer;
 use App\Invoice\InvoiceGenerator;
 use App\Payment\InvoiceCharger;
 use App\Security\ApiUser;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -58,7 +59,9 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
-            $this->invoiceCharger->chargeInvoice($invoice);
+            if (!$this->invoiceCharger->chargeInvoice($invoice)) {
+                throw new PaymentFailureException();
+            }
         }
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
