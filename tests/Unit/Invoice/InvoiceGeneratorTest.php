@@ -15,6 +15,9 @@ namespace App\Tests\Unit\Invoice;
 use App\Credit\CreditAdjustmentRecorder;
 use App\Entity\Customer;
 use App\Entity\Invoice;
+use App\Entity\Product;
+use App\Entity\SubscriptionPlan;
+use App\Enum\TaxType;
 use App\Invoice\InvoiceGenerator;
 use App\Invoice\Number\InvoiceNumberGeneratorInterface;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
@@ -34,13 +37,21 @@ class InvoiceGeneratorTest extends TestCase
     {
         $mockPrice = $this->createMock(Price::class);
 
+        $product = $this->createMock(Product::class);
+        $product->method('getTaxType')->willReturn(TaxType::DIGITAL_GOODS);
+
+        $subscriptionPlan = $this->createMock(SubscriptionPlan::class);
+        $subscriptionPlan->method('getProduct')->willReturn($product);
+
         $subscriptionOne = $this->createMock(Subscription::class);
         $subscriptionOne->method('getPrice')->willReturn($mockPrice);
         $subscriptionOne->method('getPlanName')->willReturn('Plan Name One');
+        $subscriptionOne->method('getSubscriptionPlan')->willReturn($subscriptionPlan);
 
         $subscriptionTwo = $this->createMock(Subscription::class);
         $subscriptionTwo->method('getPrice')->willReturn($mockPrice);
         $subscriptionTwo->method('getPlanName')->willReturn('Plan Name Two');
+        $subscriptionTwo->method('getSubscriptionPlan')->willReturn($subscriptionPlan);
 
         $customer = $this->createMock(Customer::class);
         $invoiceNumberGenerator = $this->createMock(InvoiceNumberGeneratorInterface::class);

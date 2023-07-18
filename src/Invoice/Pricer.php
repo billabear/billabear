@@ -29,14 +29,13 @@ class Pricer implements PricerInterface
     {
         $money = $price->getAsMoney();
         $rawRate = $this->taxRateProvider->getRateForCustomer($customer, $taxType);
-
         if ($price->isIncludingTax()) {
-            $rate = ($rawRate ?? 0 / 100) + 1;
+            $rate = ($rawRate / 100) + 1;
             $total = $money;
             $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);
             $vat = $money->minus($subTotal, RoundingMode::HALF_DOWN);
         } else {
-            $rate = ($rawRate ?? 0 / 100);
+            $rate = ($rawRate / 100);
             $subTotal = $money;
             $vat = $money->multipliedBy($rate, RoundingMode::HALF_UP);
             $total = $subTotal->plus($vat, RoundingMode::HALF_DOWN);
