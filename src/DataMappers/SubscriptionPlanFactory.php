@@ -18,6 +18,7 @@ use App\Dto\Generic\App\Limit;
 use App\Dto\Generic\App\Price;
 use App\Dto\Generic\App\SubscriptionPlan as AppDto;
 use App\Dto\Request\App\PostSubscriptionPlan;
+use App\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use App\Entity\SubscriptionPlan;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
@@ -35,7 +36,7 @@ class SubscriptionPlanFactory
     ) {
     }
 
-    public function createFromPostSubscriptionPlan(PostSubscriptionPlan $dto, SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
+    public function createFromPostSubscriptionPlan(PostSubscriptionPlan|UpdateSubscriptionPlan $dto, SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
     {
         if (!$subscriptionPlan) {
             $subscriptionPlan = new SubscriptionPlan();

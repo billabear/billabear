@@ -10,15 +10,17 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Request\App;
+namespace App\Dto\Request\App\Product;
 
 use App\Dto\Generic\App\Feature;
 use App\Dto\Generic\App\Price;
-use App\Validator\Constraints\UniqueSubscriptionPlanCodeName;
+use App\Dto\Request\App\PostLimit;
+use App\Validator\Constraints\UpdateUniqueSubscriptionPlanCodeName;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PostSubscriptionPlan
+#[UpdateUniqueSubscriptionPlanCodeName]
+class UpdateSubscriptionPlan
 {
     protected $id;
 
@@ -30,7 +32,6 @@ class PostSubscriptionPlan
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Regex(pattern: '~^[a-z0-9_]+$~', message: 'Only lower case, underscores and numbers allowed')]
     #[SerializedName('code_name')]
-    #[UniqueSubscriptionPlanCodeName]
     protected $codeName;
 
     #[Assert\Type('boolean')]
@@ -70,6 +71,16 @@ class PostSubscriptionPlan
     #[SerializedName('prices')]
     #[Assert\Count(min: 1)]
     protected array $prices = [];
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName()
     {

@@ -78,6 +78,41 @@ class AppContext implements Context
     }
 
     /**
+     * @When I update a Subscription Plan :arg1:
+     */
+    public function iUpdateASubscriptionPlan($planName, TableNode $table)
+    {
+        $subscriptionPlan = $this->findSubscriptionPlanByName($planName);
+        $product = $subscriptionPlan->getProduct();
+        $price = $this->priceRepository->findOneBy(['product' => $product]);
+        $feature = $subscriptionPlan->getFeatures()->current();
+        /** @var SubscriptionPlanLimit $limitFeature */
+        $limitFeature = $subscriptionPlan->getLimits()->current();
+        $data = $table->getRowsHash();
+        $payload = [
+            'name' => $data['Name'],
+            'public' => 'true' === strtolower($data['Public']),
+            'per_seat' => 'true' === strtolower($data['Per Seat']),
+            'user_count' => intval($data['User Count']),
+            'code_name' => $data['Code Name'] ?? null,
+            'prices' => [
+                ['id' => $price->getId()],
+            ],
+            'features' => [
+                ['id' => (string) $feature->getId()],
+            ],
+            'limits' => [
+                [
+                    'feature' => ['id' => (string) $limitFeature->getSubscriptionFeature()->getId()],
+                    'limit' => (int) $limitFeature->getLimit(),
+                ],
+            ],
+        ];
+
+        $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/plan/'.$subscriptionPlan->getId().'/update', $payload);
+    }
+
+    /**
      * @Given a Subscription Plan exists for product :arg1 with a feature :arg2 and a limit for :arg3 with a limit of :arg5 and price :arg4 with:
      */
     public function aSubscriptionPlanExistsForProductWithAFeatureAndALimitForWithALimitOfAndPriceWith($productName, $featureName, $limitFeatureName, $limit, $price, TableNode $table)

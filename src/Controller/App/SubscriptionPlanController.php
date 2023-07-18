@@ -16,9 +16,11 @@ use App\DataMappers\FeatureFactory;
 use App\DataMappers\PriceFactory;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\App\PostSubscriptionPlan;
+use App\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use App\Dto\Response\App\SubscriptionPlanCreationInfo;
 use App\Dto\Response\App\SubscriptionPlanUpdateView;
 use App\Dto\Response\App\SubscriptionPlanView;
+use App\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -183,13 +185,15 @@ class SubscriptionPlanController
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {
         try {
+            /** @var SubscriptionPlan $subscriptionPlan */
             $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        /** @var PostSubscriptionPlan $dto */
-        $dto = $serializer->deserialize($request->getContent(), PostSubscriptionPlan::class, 'json');
+        /** @var UpdateSubscriptionPlan $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdateSubscriptionPlan::class, 'json');
+        $dto->setId($subscriptionPlan->getId());
         $errors = $validator->validate($dto);
 
         if (count($errors) > 0) {

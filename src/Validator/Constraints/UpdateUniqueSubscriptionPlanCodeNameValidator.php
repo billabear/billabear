@@ -12,12 +12,13 @@
 
 namespace App\Validator\Constraints;
 
+use App\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class UniqueSubscriptionPlanCodeNameValidator extends ConstraintValidator
+class UpdateUniqueSubscriptionPlanCodeNameValidator extends ConstraintValidator
 {
     public function __construct(private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository)
     {
@@ -29,10 +30,22 @@ class UniqueSubscriptionPlanCodeNameValidator extends ConstraintValidator
             return;
         }
 
+        $id = null;
+        if ($value instanceof UpdateSubscriptionPlan) {
+            $id = $value->getId();
+            $value = $value->getCodeName();
+        }
+
         try {
             $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value);
         } catch (NoEntityFoundException $exception) {
             return;
+        }
+
+        if (isset($id)) {
+            if (strval($id) === strval($subscriptionPlan->getId())) {
+                return;
+            }
         }
 
         $this->context->buildViolation($constraint->message)->setParameter('{{ string }}', $value)->addViolation();

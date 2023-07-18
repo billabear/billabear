@@ -15,7 +15,7 @@ namespace App\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
-class UniqueSubscriptionPlanCodeName extends Constraint
+class UpdateUniqueSubscriptionPlanCodeName extends Constraint
 {
     public const NOT_UNIQUE_ERROR = '23bd9dbf-6b9b-41cd-a99e-4844bcf3077f';
 
@@ -24,4 +24,9 @@ class UniqueSubscriptionPlanCodeName extends Constraint
     ];
 
     public $message = 'The code name "{{ string }}" is already used.';
+
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }

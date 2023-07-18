@@ -85,6 +85,19 @@ class MainContext implements Context
     }
 
     /**
+     * @Then there should not be an error
+     */
+    public function thereShouldNotBeAnError()
+    {
+        $data = $this->getJsonContent();
+
+        if (isset($data['errors'])) {
+            var_dump($data['errors']);
+            throw new \Exception('Errors found');
+        }
+    }
+
+    /**
      * @Then there should not be an error for :arg1
      */
     public function thereShouldNotBeAnErrorFor($errorKey)
