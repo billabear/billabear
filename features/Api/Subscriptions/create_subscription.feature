@@ -102,6 +102,19 @@ Feature: Customer Subscription Create APP
     And the monthly recurring revenue estimate should be 3000
     And the annual recurring revenue estimate should be 36000
 
+  Scenario: Create using code name - fails no such plan
+    Given I have authenticated to the API
+    And stripe billing is disabled
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    When I create a subscription with code and currency via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan | Price Currency | Price Schedule |
+      | test_plan_two     | USD            | month          |
+    Then there should not be a subscription for the user "customer.one@example.org"
+    And there should be an error for "subscriptionPlan"
+
   Scenario: Create Failure
     Given I have authenticated to the API
     And the follow customers exist:

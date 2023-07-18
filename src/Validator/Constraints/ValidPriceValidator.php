@@ -36,11 +36,14 @@ class ValidPriceValidator extends ConstraintValidator
         if ($this->context->getViolations()->count() > 0) {
             return;
         }
-
-        if (Uuid::isValid($value->getSubscriptionPlan())) {
-            $subscriptionPlan = $this->subscriptionPlanRepository->findById($value->getSubscriptionPlan());
-        } else {
-            $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value->getSubscriptionPlan());
+        try {
+            if (Uuid::isValid($value->getSubscriptionPlan())) {
+                $subscriptionPlan = $this->subscriptionPlanRepository->findById($value->getSubscriptionPlan());
+            } else {
+                $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value->getSubscriptionPlan());
+            }
+        } catch (\Exception $e) {
+            return;
         }
 
         try {

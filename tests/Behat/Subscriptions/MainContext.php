@@ -607,7 +607,6 @@ class MainContext implements Context
         $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
 
         if (!$subscription instanceof Subscription) {
-            var_dump($this->getJsonContent());
             throw new \Exception('No subscription found');
         }
 

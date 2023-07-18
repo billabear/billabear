@@ -23,5 +23,5 @@ class SubscriptionPlanExists extends Constraint
         self::DOES_NOT_EXIST => 'DOES_NOT_EXIST',
     ];
 
-    public $message = 'Subscription does not exist';
+    public $message = 'Subscription plan does not exist';
 }
