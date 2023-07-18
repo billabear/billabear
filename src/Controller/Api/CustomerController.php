@@ -72,6 +72,8 @@ class CustomerController
                 $this->getLogger()->info('Registering customer with payment provider');
                 $externalRegister->register($customer);
             } catch (ProviderFailureException $e) {
+                $this->getLogger()->error('Got an error from payment provider', ['exception_message' => $e->getMessage()]);
+
                 return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
             }
         }
