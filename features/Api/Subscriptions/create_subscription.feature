@@ -67,7 +67,7 @@ Feature: Customer Subscription Create APP
     And the annual recurring revenue estimate should be 0
 
 
-  Scenario: Create
+  Scenario: Create using code name
     Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
@@ -83,3 +83,15 @@ Feature: Customer Subscription Create APP
     And the payment amount stats for the day should be 3000 in the currency "USD"
     And the monthly recurring revenue estimate should be 3000
     And the annual recurring revenue estimate should be 36000
+
+  Scenario: Create
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    | Payment Reference |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One | ref_fails         |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |                   |
+    When I create a subscription with code and currency via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan | Price Currency | Price Schedule |
+      | test_plan         | USD            | month          |
+    Then there should not be a subscription for the user "customer.one@example.org"
+    And the subscriber daily stat for the day should be 0

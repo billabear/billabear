@@ -12,6 +12,7 @@
 
 namespace App\Dummy\Provider;
 
+use Obol\Exception\PaymentFailureException;
 use Obol\Model\BillingDetails;
 use Obol\Model\CancelSubscription;
 use Obol\Model\CardFile;
@@ -31,6 +32,9 @@ class PaymentService implements PaymentServiceInterface
 {
     public function startSubscription(Subscription $subscription): SubscriptionCreationResponse
     {
+        if ('ref_fails' === $subscription->getBillingDetails()->getStoredPaymentReference()) {
+            throw new PaymentFailureException('Dummy failure');
+        }
         $paymentDetails = new PaymentDetails();
         $paymentDetails->setAmount($subscription->getTotalCost());
         $paymentDetails->setCustomerReference($subscription->getBillingDetails()->getCustomerReference());

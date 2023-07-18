@@ -99,6 +99,19 @@ class MainContext implements Context
     }
 
     /**
+     * @Then there should not be a subscription for the user :arg1
+     */
+    public function thereShouldNotBeASubscriptionForTheUser($customerEmail)
+    {
+        try {
+            $this->getSubscription($customerEmail);
+        } catch (\Exception $e) {
+            return;
+        }
+        throw new \Exception('Found Subscription');
+    }
+
+    /**
      * @Then the subscription for :arg1 will expire in a week
      */
     public function theSubscriptionForWillExpireInAWeek($customerEmail)

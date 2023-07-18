@@ -27,6 +27,7 @@ use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use App\Subscription\PaymentMethodUpdateProcessor;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -142,6 +143,11 @@ class SubscriptionController
         try {
             $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
             $transactionManager->finish();
+        } catch (PaymentFailureException $e) {
+            $this->getLogger()->warning('Payment failure during creation', ['exception_message' => $e->getMessage()]);
+            $transactionManager->abort();
+
+            return new JsonResponse([], JsonResponse::HTTP_PAYMENT_REQUIRED);
         } catch (\Throwable $e) {
             $this->getLogger()->error('Error while creating subscription', ['exception_message' => $e->getMessage()]);
             $transactionManager->abort();
