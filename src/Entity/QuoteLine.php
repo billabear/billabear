@@ -1,0 +1,199 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Copyright Humbly Arrogant Software Limited 2023.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ *
+ * Change Date: DD.MM.2026 ( 3 years after 1.1.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
+namespace App\Entity;
+
+use App\Enum\TaxType;
+use Brick\Money\Money;
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'quote_line')]
+class QuoteLine
+{
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private $id;
+
+    #[ORM\ManyToOne(targetEntity: Quote::class)]
+    private Quote $quote;
+
+    #[ORM\ManyToOne(targetEntity: SubscriptionPlan::class)]
+    private ?SubscriptionPlan $subscriptionPlan = null;
+
+    #[ORM\ManyToOne(targetEntity: Price::class)]
+    private ?Price $price = null;
+
+    #[ORM\Column(type: 'string')]
+    private string $currency;
+
+    #[ORM\Column(type: 'integer')]
+    private int $total;
+
+    #[ORM\Column(type: 'integer')]
+    private int $subTotal;
+
+    #[ORM\Column(type: 'integer')]
+    private int $vatTotal;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $vatPercentage = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(enumType: TaxType::class, nullable: true)]
+    protected ?TaxType $taxType = null;
+
+    #[ORM\Column(type: 'boolean')]
+    protected bool $includeTax;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getQuote(): Quote
+    {
+        return $this->quote;
+    }
+
+    public function setQuote(Quote $quote): void
+    {
+        $this->quote = $quote;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getTotal(): int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): void
+    {
+        $this->total = $total;
+    }
+
+    public function getSubTotal(): int
+    {
+        return $this->subTotal;
+    }
+
+    public function setSubTotal(int $subTotal): void
+    {
+        $this->subTotal = $subTotal;
+    }
+
+    public function getVatTotal(): int
+    {
+        return $this->vatTotal;
+    }
+
+    public function setVatTotal(int $vatTotal): void
+    {
+        $this->vatTotal = $vatTotal;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getTotalMoney(): Money
+    {
+        return Money::ofMinor($this->total, strtoupper($this->currency));
+    }
+
+    public function getVatTotalMoney(): Money
+    {
+        return Money::ofMinor($this->vatTotal, strtoupper($this->currency));
+    }
+
+    public function getSubTotalMoney(): Money
+    {
+        return Money::ofMinor($this->subTotal, strtoupper($this->currency));
+    }
+
+    public function getVatPercentage(): ?float
+    {
+        return $this->vatPercentage;
+    }
+
+    public function setVatPercentage(?float $vatPercentage): void
+    {
+        $this->vatPercentage = $vatPercentage;
+    }
+
+    public function getTaxType(): TaxType
+    {
+        return $this->taxType ?? TaxType::DIGITAL_GOODS;
+    }
+
+    public function setTaxType(TaxType $taxType): void
+    {
+        $this->taxType = $taxType;
+    }
+
+    public function getSubscriptionPlan(): SubscriptionPlan
+    {
+        return $this->subscriptionPlan;
+    }
+
+    public function setSubscriptionPlan(SubscriptionPlan $subscriptionPlan): void
+    {
+        $this->subscriptionPlan = $subscriptionPlan;
+    }
+
+    public function getPrice(): ?Price
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?Price $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function isIncludeTax(): bool
+    {
+        return $this->includeTax;
+    }
+
+    public function setIncludeTax(bool $includeTax): void
+    {
+        $this->includeTax = $includeTax;
+    }
+}

@@ -155,7 +155,7 @@ class InvoicesController
         file_put_contents($tmpFile, $pdf);
 
         $response = new BinaryFileResponse($tmpFile);
-        $filename = 'invoice.pdf';
+        $filename = sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber());
 
         $response->headers->set('Content-Type', 'application/pdf');
         $response->setContentDisposition(

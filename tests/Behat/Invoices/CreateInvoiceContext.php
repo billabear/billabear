@@ -13,8 +13,10 @@
 namespace App\Tests\Behat\Invoices;
 
 use App\Entity\Customer;
+use App\Entity\Quote;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\QuoteRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -34,6 +36,7 @@ class CreateInvoiceContext implements Context
         private CustomerRepository $customerRepository,
         private PriceRepository $priceRepository,
         private SubscriptionPlanRepository $planServiceRepository,
+        private QuoteRepository $quoteRepository,
     ) {
     }
 
@@ -167,5 +170,73 @@ class CreateInvoiceContext implements Context
         if ('Payment schedule is not all the same' !== $json['errors']['subscriptions']) {
             throw new \Exception('Invalid error - '.$json['errors']['subscriptions']);
         }
+    }
+
+    /**
+     * @When I finalise the quote in APP
+     */
+    public function iFinaliseTheQuoteInApp()
+    {
+        if (!isset($this->customer)) {
+            throw new \Exception('No customer set');
+        }
+
+        if (empty($this->subscriptions) && empty($this->items)) {
+            throw new \Exception('No subscriptions or items');
+        }
+
+        $payload = [
+            'customer' => $this->customer->getId(),
+            'subscriptions' => [],
+            'items' => [],
+        ];
+
+        foreach ($this->subscriptions as $subscription) {
+            $payload['subscriptions'][] = [
+                'plan' => (string) $subscription['plan']->getId(),
+                'price' => (string) $subscription['price']->getId(),
+            ];
+        }
+
+        foreach ($this->items as $item) {
+            $payload['items'][] = [
+                'description' => $item['description'],
+                'amount' => $item['amount'],
+                'currency' => $item['currency'],
+                'include_tax' => $item['include_tax'],
+                'tax_type' => $item['tax_type'],
+            ];
+        }
+
+        $this->sendJsonRequest('POST', '/app/quotes/create', $payload);
+    }
+
+    /**
+     * @Then there will be a quote for :arg1
+     */
+    public function thereWillBeAQuoteFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $this->getLatestQuoteForCustomer($customer);
+    }
+
+    /**
+     * @Then the latest quote for :arg1 will have amount due as :arg2
+     */
+    public function theLatestQuoteForWillHaveAmountDueAs($customerEmail, $amount)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $this->getLatestQuoteForCustomer($customer);
+    }
+
+    protected function getLatestQuoteForCustomer(Customer $customer): Quote
+    {
+        $quote = $this->quoteRepository->findOneBy(['customer' => $customer]);
+        if (!$quote) {
+            throw new \Exception('Unable to find quote');
+        }
+        $this->quoteRepository->getEntityManager()->refresh($quote);
+
+        return $quote;
     }
 }

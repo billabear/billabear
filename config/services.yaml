@@ -114,6 +114,12 @@ services:
     app.repository.orm.settings:
         class: App\Repository\Orm\SettingsRepository
 
+    App\Repository\QuoteRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.quote'
+    app.repository.orm.quote:
+        class: App\Repository\Orm\QuoteRepository
+
     App\Repository\PaymentFailureProcessRepository:
         arguments:
             $entityRepository: '@app.repository.orm.payment_failure_process'

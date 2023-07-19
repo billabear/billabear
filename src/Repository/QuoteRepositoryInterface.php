@@ -10,15 +10,10 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity;
+namespace App\Repository;
 
-use Doctrine\ORM\Mapping as ORM;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-/**
- * @method Product getProduct()
- */
-#[ORM\Entity]
-#[ORM\Table('subscription_plan')]
-class SubscriptionPlan extends \Parthenon\Billing\Entity\SubscriptionPlan
+interface QuoteRepositoryInterface extends CrudRepositoryInterface
 {
 }

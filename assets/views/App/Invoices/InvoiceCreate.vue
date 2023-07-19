@@ -118,7 +118,7 @@
     </div>
 
     <div class="mt-5">
-      <SubmitButton :in-progress="send_quote" class="btn--main">{{ $t('app.quotes.create.create_quote') }}</SubmitButton>
+      <SubmitButton :in-progress="send_quote" class="btn--main" @click="createInvoice('quotes')">{{ $t('app.quotes.create.create_quote') }}</SubmitButton>
       <SubmitButton :in-progress="send_quote" class="btn--secondary ml-4" @click="createInvoice">{{ $t('app.quotes.create.create_invoice') }}</SubmitButton>
     </div>
     <div class="mt-1" v-if="success">
@@ -218,7 +218,7 @@ export default {
     displayCurrency: function (value) {
       return currency(value, { fromCents: true }).format({symbol: ''});
     },
-    createInvoice: function () {
+    createInvoice: function (type = 'invoices') {
       this.errors = {};
       this.send_quote = true;
       if (!this.quote.customer) {
@@ -309,7 +309,7 @@ export default {
         items: items,
       }
 
-      axios.post("/app/invoices/create", payload).then(response => {
+      axios.post("/app/"+type+"/create", payload).then(response => {
         this.send_quote = false;
         this.success = true;
       }).catch(error => {

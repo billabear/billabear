@@ -12,16 +12,23 @@
 
 namespace App\Controller\App;
 
+use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\SubscriptionPlanFactory;
+use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Request\App\Invoice\ReadQuoteView;
+use App\Quotes\QuoteCreator;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuoteController
 {
+    use ValidationErrorResponseTrait;
+
     #[Route('/app/quotes/create', name: 'app_app_quote_readquoteinfo', methods: ['GET'])]
     public function readQuoteInfo(
         Request $request,
@@ -37,5 +44,26 @@ class QuoteController
         $json = $serializer->serialize($readQuote, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/quotes/create', name: 'app_app_quote_createquote', methods: ['POST'])]
+    public function createQuote(
+        Request $request,
+        QuoteCreator $quoteCreator,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        /** @var CreateInvoice $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateInvoice::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response) {
+            return $response;
+        }
+
+        $quoteCreator->createQuote($dto);
+
+        return new JsonResponse([]);
     }
 }
