@@ -36,6 +36,9 @@ class GenerateReceiptTransition implements EventSubscriberInterface
         /** @var PaymentCreation $paymentCreation */
         $paymentCreation = $event->getSubject();
         $payment = $paymentCreation->getPayment();
+        if (!$payment->getCustomer()) {
+            return;
+        }
 
         $receipt = $this->receiptGenerator->generateReceiptForPayment($payment);
         $this->receiptRepository->save($receipt);
