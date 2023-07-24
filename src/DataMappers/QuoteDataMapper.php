@@ -42,7 +42,7 @@ class QuoteDataMapper
         return $appDto;
     }
 
-    public function createAppLineDto(EntityLine $quoteLine): AppLineDto
+    protected function createAppLineDto(EntityLine $quoteLine): AppLineDto
     {
         $appLineDto = new AppLineDto();
         if ($quoteLine->getSubscriptionPlan()) {

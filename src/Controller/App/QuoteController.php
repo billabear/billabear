@@ -78,6 +78,7 @@ class QuoteController
         QuoteCreator $quoteCreator,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
+        QuoteDataMapper $quoteDataMapper,
     ): Response {
         /** @var CreateInvoice $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateInvoice::class, 'json');
@@ -88,8 +89,10 @@ class QuoteController
             return $response;
         }
 
-        $quoteCreator->createQuote($dto);
+        $quote = $quoteCreator->createQuote($dto);
+        $dto = $quoteDataMapper->createAppDto($quote);
+        $json = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse([]);
+        return new JsonResponse($json, json: true);
     }
 }

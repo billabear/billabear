@@ -122,7 +122,7 @@ class QuoteLine
         $this->vatTotal = $vatTotal;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -167,12 +167,12 @@ class QuoteLine
         $this->taxType = $taxType;
     }
 
-    public function getSubscriptionPlan(): SubscriptionPlan
+    public function getSubscriptionPlan(): ?SubscriptionPlan
     {
         return $this->subscriptionPlan;
     }
 
-    public function setSubscriptionPlan(SubscriptionPlan $subscriptionPlan): void
+    public function setSubscriptionPlan(?SubscriptionPlan $subscriptionPlan): void
     {
         $this->subscriptionPlan = $subscriptionPlan;
     }
