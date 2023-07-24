@@ -18,6 +18,7 @@ use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -60,6 +61,9 @@ class Quote
 
     #[ORM\Column(type: 'boolean')]
     private bool $paid = false;
+
+    #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
+    private BillingAdminInterface $createdBy;
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
@@ -250,5 +254,15 @@ class Quote
     public function getAmountDueAsMoney(): Money
     {
         return Money::ofMinor($this->amountDue, strtolower($this->currency));
+    }
+
+    public function getCreatedBy(): BillingAdminInterface
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(BillingAdminInterface $createdBy): void
+    {
+        $this->createdBy = $createdBy;
     }
 }

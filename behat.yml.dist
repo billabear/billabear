@@ -91,6 +91,9 @@ default:
                 - App\Tests\Behat\Tax\InvoiceContext
                 - App\Tests\Behat\Tax\ProductContext
 
+                # Quoutes
+                - App\Tests\Behat\Quote\AppContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

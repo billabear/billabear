@@ -25,6 +25,7 @@ use App\Repository\QuoteRepositoryInterface;
 use Brick\Money\Money;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class QuoteCreator
 {
@@ -34,6 +35,7 @@ class QuoteCreator
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private QuoteRepositoryInterface $quoteRepository,
         private Pricer $pricer,
+        private Security $security,
     ) {
     }
 
@@ -41,8 +43,9 @@ class QuoteCreator
     {
         /** @var Customer $customer */
         $customer = $this->customerRepository->getById($createInvoice->getCustomer());
-
+        $user = $this->security->getUser();
         $quote = new Quote();
+        $quote->setCreatedBy($user);
         $quote->setCustomer($customer);
         $lines = [];
         $totalAmount = null;
