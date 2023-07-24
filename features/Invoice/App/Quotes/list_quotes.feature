@@ -49,7 +49,13 @@ Feature: Read quote
   Scenario: Read Quote
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And a quote for "customer.seven@example.org" exists in "USD":
-     | Description | Total | Sub Total | Vat Total|
-     | Setup costs | 10000 | 8000      | 2000     |
-    When I view the quote for "customer.seven@example.org"
-    Then I will see a quote for a total of 10000
+      | Description | Total | Sub Total | Vat Total|
+      | Setup costs | 10000 | 8000      | 2000     |
+    And a quote for "customer.two@example.org" exists in "USD":
+      | Description | Total | Sub Total | Vat Total|
+      | Setup costs | 12000 | 8000      | 4000     |
+    And a quote for "customer.three@example.org" exists in "USD":
+      | Description | Total | Sub Total | Vat Total|
+      | Setup costs | 14000 | 10000     | 4000     |
+    When I view the quotes via the APP
+    Then I will see a 3 quotes

@@ -12,11 +12,13 @@
 
 namespace App\Controller\App;
 
+use App\Api\Filters\CustomerList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\QuoteDataMapper;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Request\App\Invoice\ReadQuoteView;
+use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Quote\ReadQuote;
 use App\Entity\Quote;
 use App\Quotes\QuoteCreator;
@@ -92,6 +94,53 @@ class QuoteController
         $quote = $quoteCreator->createQuote($dto);
         $dto = $quoteDataMapper->createAppDto($quote);
         $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/quotes', name: 'app_app_quote_listquotes', methods: ['GET'])]
+    public function listQuotes(
+        Request $request,
+        QuoteRepositoryInterface $quoteRepository,
+        SerializerInterface $serializer,
+        QuoteDataMapper $quoteDataMapper,
+    ): Response {
+        $lastKey = $request->get('last_key');
+        $firstKey = $request->get('first_key');
+        $resultsPerPage = (int) $request->get('per_page', 10);
+
+        if ($resultsPerPage < 1) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is below 1',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if ($resultsPerPage > 100) {
+            return new JsonResponse([
+                'success' => false,
+                'reason' => 'per_page is above 100',
+            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        }
+
+        $filterBuilder = new CustomerList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $resultSet = $quoteRepository->getList(
+            filters: $filters,
+            limit: $resultsPerPage,
+            lastId: $lastKey,
+            firstId: $firstKey,
+        );
+
+        $dtos = array_map([$quoteDataMapper, 'createAppDto'], $resultSet->getResults());
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore($resultSet->hasMore());
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey($resultSet->getLastKey());
+        $listResponse->setFirstKey($resultSet->getFirstKey());
+
+        $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
     }

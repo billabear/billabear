@@ -102,4 +102,23 @@ class AppContext implements Context
             throw new \Exception('Incorrect total');
         }
     }
+
+    /**
+     * @When I view the quotes via the APP
+     */
+    public function iViewTheQuotesViaTheApp()
+    {
+        $this->sendJsonRequest('GET', '/app/quotes');
+    }
+
+    /**
+     * @Then I will see a :arg1 quotes
+     */
+    public function iWillSeeAQuotes($arg1)
+    {
+        $data = $this->getJsonContent();
+        if (count($data['data']) != $arg1) {
+            throw new \Exception('Got a different count - '.count($data['data']));
+        }
+    }
 }
