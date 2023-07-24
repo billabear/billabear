@@ -88,7 +88,7 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($customerEmail);
         $quote = $this->quoteRepository->findOneBy(['customer' => $customer]);
-        $this->sendJsonRequest('GET', '/app/quotes/'.$quote->getId());
+        $this->sendJsonRequest('GET', '/app/quotes/'.$quote->getId().'/view');
     }
 
     /**

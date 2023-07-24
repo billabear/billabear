@@ -36,7 +36,7 @@ class QuoteController
 {
     use ValidationErrorResponseTrait;
 
-    #[Route('/app/quotes/{id}', name: 'app_app_quote_readquote', methods: ['GET'])]
+    #[Route('/app/quotes/{id}/view', name: 'app_app_quote_readquote', methods: ['GET'])]
     public function readQuote(
         Request $request,
         SerializerInterface $serializer,

@@ -290,6 +290,7 @@ export default {
               amount: item.amount,
               currency: this.quote.currency,
               include_tax: item.include_tax,
+              tax_type: item.tax_type,
             }
         )
       }

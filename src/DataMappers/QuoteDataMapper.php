@@ -30,6 +30,7 @@ class QuoteDataMapper
     public function createAppDto(Entity $entity): AppDto
     {
         $appDto = new AppDto();
+        $appDto->setCreatedAt($entity->getCreatedAt());
         $appDto->setCreatedBy($this->billingAdminDataMapper->createAppDto($entity->getCreatedBy()));
         $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
         $appDto->setId((string) $entity->getId());

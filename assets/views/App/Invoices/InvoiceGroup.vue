@@ -10,7 +10,7 @@
           </RoleOnlyView>
 
           <li class="submenu-list-item"><router-link :to="{name: 'app.invoices.unpaid_list'}" class="submenu-link"><i class="fa-solid fa-file-invoice-dollar"></i> {{ $t('app.invoices.menu.unpaid_invoices') }}</router-link></li>
-
+          <li class="submenu-list-item"><router-link :to="{name: 'app.quotes.list'}" class="submenu-link"><i class="fa-solid fa-file-invoice-dollar"></i> {{ $t('app.invoices.menu.quotes') }}</router-link></li>
         </ul>
       </div>
     </div>

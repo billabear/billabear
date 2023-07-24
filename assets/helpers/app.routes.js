@@ -61,6 +61,8 @@ import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
 import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
 import InvoiceGroup from "../views/App/Invoices/InvoiceGroup.vue";
 import InvoiceCreate from "../views/App/Invoices/InvoiceCreate.vue";
+import QuotesList from "../views/App/Quotes/QuotesList.vue";
+import QuotesView from "../views/App/Quotes/QuotesView.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -358,6 +360,16 @@ export const APP_ROUTES = [
                 name: 'app.invoices.create',
                 path: "invoices/create",
                 component: InvoiceCreate,
+            },
+            {
+                name: 'app.quotes.list',
+                path: "quotes",
+                component: QuotesList,
+            },
+            {
+                name: 'app.quotes.view',
+                path: "quotes/view/:id",
+                component: QuotesView,
             }
         ]
     },
