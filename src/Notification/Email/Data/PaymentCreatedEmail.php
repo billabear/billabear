@@ -52,7 +52,7 @@ class PaymentCreatedEmail extends AbstractEmailData
     {
         return [
             'total' => (string) $receipt->getTotalMoney(),
-            'vat_total' => (string) $receipt->getVatTotalMoney(),
+            'tax_total' => (string) $receipt->getVatTotalMoney(),
             'sub_total' => (string) $receipt->getSubTotalMoney(),
         ];
     }
