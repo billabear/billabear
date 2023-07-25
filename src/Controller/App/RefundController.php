@@ -13,7 +13,7 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\RefundList;
-use App\DataMappers\RefundFactory;
+use App\DataMappers\RefundDataMapper;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\RefundView;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -31,7 +31,7 @@ class RefundController
         Request $request,
         RefundRepositoryInterface $repository,
         SerializerInterface $serializer,
-        RefundFactory $factory,
+        RefundDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -77,7 +77,7 @@ class RefundController
     public function veiwRefund(
         Request $request,
         RefundRepositoryInterface $repository,
-        RefundFactory $factory,
+        RefundDataMapper $factory,
         SerializerInterface $serializer,
     ) {
         try {

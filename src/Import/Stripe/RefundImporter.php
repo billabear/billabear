@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\RefundFactory;
+use App\DataMappers\RefundDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\RefundAmountStats;
@@ -27,7 +27,7 @@ class RefundImporter
         private ProviderInterface $provider,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private RefundRepositoryInterface $refundRepository,
-        private RefundFactory $factory,
+        private RefundDataMapper $factory,
         private RefundAmountStats $amountStats,
     ) {
     }

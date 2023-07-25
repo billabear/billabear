@@ -13,7 +13,7 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\ProductList;
-use App\DataMappers\RefundFactory;
+use App\DataMappers\RefundDataMapper;
 use App\Dto\Response\Api\ListResponse;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -30,7 +30,7 @@ class RefundController
         Request $request,
         RefundRepositoryInterface $repository,
         SerializerInterface $serializer,
-        RefundFactory $factory,
+        RefundDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
@@ -72,7 +72,7 @@ class RefundController
     public function veiwRefund(
         Request $request,
         RefundRepositoryInterface $repository,
-        RefundFactory $factory,
+        RefundDataMapper $factory,
         SerializerInterface $serializer,
     ) {
         try {

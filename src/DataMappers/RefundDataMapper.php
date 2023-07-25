@@ -19,7 +19,7 @@ use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\RefundStatus;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
-class RefundFactory
+class RefundDataMapper
 {
     public function __construct(
         private PaymentDataMapper $paymentFactory,

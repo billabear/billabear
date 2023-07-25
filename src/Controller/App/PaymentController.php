@@ -17,7 +17,7 @@ use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\ReceiptDataMapper;
-use App\DataMappers\RefundFactory;
+use App\DataMappers\RefundDataMapper;
 use App\DataMappers\SubscriptionFactory;
 use App\Dto\Request\App\Payments\AttachToCustomer;
 use App\Dto\Request\App\Payments\RefundPayment;
@@ -101,7 +101,7 @@ class PaymentController
         RefundRepositoryInterface $refundRepository,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
-        RefundFactory $refundFactory,
+        RefundDataMapper $refundFactory,
         PaymentDataMapper $paymentFactory,
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptDataMapper $receiptFactory,
@@ -176,7 +176,7 @@ class PaymentController
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
         RefundManagerInterface $refundManager,
-        RefundFactory $refundFactory,
+        RefundDataMapper $refundFactory,
         SerializerInterface $serializer,
         UserProvider $userProvider,
         ValidatorInterface $validator,
