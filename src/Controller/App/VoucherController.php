@@ -14,7 +14,7 @@ namespace App\Controller\App;
 
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\VoucherAmountDataMapper;
-use App\DataMappers\VoucherFactory;
+use App\DataMappers\VoucherDataMapper;
 use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\Vouchers\VoucherView;
@@ -40,7 +40,7 @@ class VoucherController
     public function listVoucher(
         Request $request,
         SerializerInterface $serializer,
-        VoucherFactory $voucherFactory,
+        VoucherDataMapper $voucherFactory,
         VoucherRepositoryInterface $voucherRepository
     ): Response {
         $lastKey = $request->get('last_key');
@@ -106,7 +106,7 @@ class VoucherController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         VoucherRepositoryInterface $voucherRepository,
-        VoucherFactory $voucherFactory,
+        VoucherDataMapper $voucherFactory,
         UserProvider $userProvider,
         VoucherRegister $voucherRegister
     ) {
@@ -168,7 +168,7 @@ class VoucherController
     public function viewVoucher(
         Request $request,
         VoucherRepositoryInterface $voucherRepository,
-        VoucherFactory $voucherFactory,
+        VoucherDataMapper $voucherFactory,
         VoucherAmountDataMapper $voucherAmountFactory,
         SerializerInterface $serializer,
     ): Response {

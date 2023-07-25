@@ -21,7 +21,7 @@ use App\Enum\VoucherEvent;
 use App\Enum\VoucherType;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class VoucherFactory
+class VoucherDataMapper
 {
     public function createEntity(CreateVoucher $createVoucher): Entity
     {
