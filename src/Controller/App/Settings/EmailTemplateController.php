@@ -13,7 +13,7 @@
 namespace App\Controller\App\Settings;
 
 use App\Api\Filters\EmailTemplateList;
-use App\DataMappers\Settings\EmailTemplateFactory;
+use App\DataMappers\Settings\EmailTemplateDataMapper;
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
 use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use App\Dto\Response\App\EmailTemplate\EmailTemplateView;
@@ -58,7 +58,7 @@ class EmailTemplateController
     public function create(
         Request $request,
         EmailTemplateRepositoryInterface $repository,
-        EmailTemplateFactory $factory,
+        EmailTemplateDataMapper $factory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
@@ -93,7 +93,7 @@ class EmailTemplateController
     public function listTemplates(
         Request $request,
         EmailTemplateRepositoryInterface $repository,
-        EmailTemplateFactory $factory,
+        EmailTemplateDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
         $lastKey = $request->get('last_key');
@@ -140,7 +140,7 @@ class EmailTemplateController
     public function read(
         Request $request,
         EmailTemplateRepositoryInterface $repository,
-        EmailTemplateFactory $factory,
+        EmailTemplateDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
         try {
@@ -160,7 +160,7 @@ class EmailTemplateController
     public function update(
         Request $request,
         EmailTemplateRepositoryInterface $repository,
-        EmailTemplateFactory $factory,
+        EmailTemplateDataMapper $factory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {

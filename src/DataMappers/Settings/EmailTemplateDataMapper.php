@@ -19,7 +19,7 @@ use App\Dto\Response\App\EmailTemplate\FullEmailTemplate as FullAppDto;
 use App\Entity\EmailTemplate;
 use App\Repository\BrandSettingsRepositoryInterface;
 
-class EmailTemplateFactory
+class EmailTemplateDataMapper
 {
     public function __construct(private BrandSettingsRepositoryInterface $brandSettingRepository)
     {
