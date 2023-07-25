@@ -16,7 +16,7 @@ use App\Api\Filters\PaymentList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
-use App\DataMappers\ReceiptFactory;
+use App\DataMappers\ReceiptDataMapper;
 use App\DataMappers\RefundFactory;
 use App\DataMappers\SubscriptionFactory;
 use App\Dto\Request\App\Payments\AttachToCustomer;
@@ -104,7 +104,7 @@ class PaymentController
         RefundFactory $refundFactory,
         PaymentDataMapper $paymentFactory,
         ReceiptRepositoryInterface $receiptRepository,
-        ReceiptFactory $receiptFactory,
+        ReceiptDataMapper $receiptFactory,
         SerializerInterface $serializer,
     ) {
         try {

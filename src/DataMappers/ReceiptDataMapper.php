@@ -15,7 +15,7 @@ namespace App\DataMappers;
 use App\Dto\Generic\App\Receipt as AppDto;
 use Parthenon\Billing\Entity\Receipt;
 
-class ReceiptFactory
+class ReceiptDataMapper
 {
     public function createAppDto(Receipt $receipt): AppDto
     {

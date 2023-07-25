@@ -13,7 +13,7 @@
 namespace App\Controller\App;
 
 use App\Database\TransactionManager;
-use App\DataMappers\ReceiptFactory;
+use App\DataMappers\ReceiptDataMapper;
 use App\Dummy\Data\ReceiptProvider;
 use App\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Payment;
@@ -40,7 +40,7 @@ class ReceiptController
         PaymentRepositoryInterface $paymentRepository,
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptGeneratorInterface $receiptGenerator,
-        ReceiptFactory $receiptFactory,
+        ReceiptDataMapper $receiptFactory,
         SerializerInterface $serializer,
         TransactionManager $transactionManager
     ): Response {
