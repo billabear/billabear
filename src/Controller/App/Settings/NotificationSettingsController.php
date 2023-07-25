@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
-use App\DataMappers\Settings\NotificationSettingsFactory;
+use App\DataMappers\Settings\NotificationSettingsDataMapper;
 use App\Dto\Request\App\Settings\NotificationSettings;
 use App\Dto\Response\App\Settings\NotificationSettingsView;
 use App\Repository\SettingsRepository;
@@ -30,7 +30,7 @@ class NotificationSettingsController
     #[Route('/app/settings/notification-settings', name: 'app_app_settings_notificationsettings_readsettings', methods: ['GET'])]
     public function readSettings(
         SettingsRepository $settingsRepository,
-        NotificationSettingsFactory $factory,
+        NotificationSettingsDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
         $settings = $settingsRepository->getDefaultSettings();
@@ -48,7 +48,7 @@ class NotificationSettingsController
     public function updateSettings(
         Request $request,
         SettingsRepository $settingsRepository,
-        NotificationSettingsFactory $factory,
+        NotificationSettingsDataMapper $factory,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {

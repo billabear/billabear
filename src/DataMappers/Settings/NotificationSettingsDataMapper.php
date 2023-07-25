@@ -16,7 +16,7 @@ use App\Dto\Request\App\Settings\NotificationSettings as RequestDto;
 use App\Dto\Response\App\Settings\NotificationSettings as AppDto;
 use App\Entity\Settings\NotificationSettings;
 
-class NotificationSettingsFactory
+class NotificationSettingsDataMapper
 {
     public function updateEntity(RequestDto $dto, NotificationSettings $settings): NotificationSettings
     {
