@@ -15,6 +15,7 @@ namespace App\Tests\Unit\Invoice;
 use App\Entity\Customer;
 use App\Enum\TaxType;
 use App\Invoice\Pricer;
+use App\Tax\TaxInfo;
 use App\Tax\TaxRateProviderInterface;
 use Parthenon\Billing\Entity\Price;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +32,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(null);
+        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(null, 'DE'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -52,7 +53,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(19.0);
+        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(19.0, 'DE'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -73,7 +74,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(19.0);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(19.0, 'DE'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -94,7 +95,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(20.0);
+        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(20.0, 'DE'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -115,7 +116,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(20.0);
+        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(20.0, 'GB'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -136,7 +137,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(20.0);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -157,7 +158,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(20.0);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -178,7 +179,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(7.5);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'CH'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
@@ -199,7 +200,7 @@ class PricerTest extends TestCase
         $customer = new Customer();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(7.5);
+        $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'DE'));
 
         $subject = new Pricer($taxProvider);
         $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
