@@ -19,7 +19,7 @@ use Parthenon\Billing\Enum\ChargeBackReason;
 use Parthenon\Billing\Enum\ChargeBackStatus;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 
-class ChargeBackFactory
+class ChargeBackDataMapper
 {
     public function __construct(
         private CustomerFactory $customerFactory,

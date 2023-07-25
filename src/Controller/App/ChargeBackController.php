@@ -13,7 +13,7 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\ChargeBackList;
-use App\DataMappers\ChargeBackFactory;
+use App\DataMappers\ChargeBackDataMapper;
 use App\Dto\Response\App\ListResponse;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +29,7 @@ class ChargeBackController
         Request $request,
         ChargeBackRepositoryInterface $repository,
         SerializerInterface $serializer,
-        ChargeBackFactory $factory,
+        ChargeBackDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');

@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\ChargeBackFactory;
+use App\DataMappers\ChargeBackDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\ChargeBackAmountStats;
@@ -27,7 +27,7 @@ class ChargeBackImporter
         private ProviderInterface $provider,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private ChargeBackRepositoryInterface $chargeBackRepository,
-        private ChargeBackFactory $factory,
+        private ChargeBackDataMapper $factory,
         private ChargeBackAmountStats $amountStats,
     ) {
     }
