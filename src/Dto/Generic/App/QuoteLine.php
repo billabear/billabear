@@ -12,8 +12,11 @@
 
 namespace App\Dto\Generic\App;
 
+use Symfony\Component\Serializer\Annotation\SerializedName;
+
 class QuoteLine
 {
+    #[SerializedName('subscription_plan')]
     private ?SubscriptionPlan $subscriptionPlan = null;
 
     private ?Price $price = null;
@@ -24,9 +27,14 @@ class QuoteLine
 
     private int $total;
 
+    #[SerializedName('sub_total')]
     private int $subTotal;
 
+    #[SerializedName('tax_total')]
     private int $taxTotal;
+
+    #[SerializedName('tax_rate')]
+    private ?float $taxRate;
 
     public function getSubscriptionPlan(): ?SubscriptionPlan
     {
@@ -96,5 +104,15 @@ class QuoteLine
     public function setTaxTotal(int $taxTotal): void
     {
         $this->taxTotal = $taxTotal;
+    }
+
+    public function getTaxRate(): float
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate(?float $taxRate): void
+    {
+        $this->taxRate = $taxRate;
     }
 }

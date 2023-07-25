@@ -58,6 +58,7 @@ class QuoteDataMapper
         $appLineDto->setSubTotal($quoteLine->getSubTotal());
         $appLineDto->setTaxTotal($quoteLine->getVatTotal());
         $appLineDto->setCurrency($quoteLine->getCurrency());
+        $appLineDto->setTaxRate($quoteLine->getVatPercentage());
 
         return $appLineDto;
     }
