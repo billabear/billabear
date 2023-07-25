@@ -18,7 +18,7 @@ use App\Database\TransactionManager;
 use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsDataMapper;
-use App\DataMappers\PriceFactory;
+use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductFactory;
 use App\DataMappers\SubscriptionFactory;
 use App\DataMappers\SubscriptionPlanFactory;
@@ -356,7 +356,7 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         PriceRepositoryInterface $priceRepository,
-        PriceFactory $priceFactory,
+        PriceDataMapper $priceFactory,
         SerializerInterface $serializer,
     ): Response {
         try {

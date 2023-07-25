@@ -12,7 +12,7 @@
 
 namespace App\Controller\App;
 
-use App\DataMappers\PriceFactory;
+use App\DataMappers\PriceDataMapper;
 use App\Dto\Request\Api\CreatePrice;
 use App\Dto\Response\Api\ListResponse;
 use Obol\Exception\ProviderFailureException;
@@ -40,7 +40,7 @@ class PriceController
         ValidatorInterface $validator,
         PriceRepositoryInterface $priceRepository,
         ProductRepositoryInterface $productRepository,
-        PriceFactory $priceFactory,
+        PriceDataMapper $priceFactory,
         PriceRegisterInterface $priceRegister,
     ) {
         try {
@@ -89,7 +89,7 @@ class PriceController
         ProductRepositoryInterface $productRepository,
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
-        PriceFactory $priceFactory,
+        PriceDataMapper $priceFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);

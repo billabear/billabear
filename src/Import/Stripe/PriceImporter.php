@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\PriceFactory;
+use App\DataMappers\PriceDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Price;
@@ -26,7 +26,7 @@ class PriceImporter
     public function __construct(
         private ProviderInterface $provider,
         private PriceRepositoryInterface $priceRepository,
-        private PriceFactory $priceFactory,
+        private PriceDataMapper $priceFactory,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {

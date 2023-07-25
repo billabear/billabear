@@ -18,7 +18,7 @@ use App\Dto\Request\Api\CreatePrice;
 use App\Entity\Price;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
-class PriceFactory
+class PriceDataMapper
 {
     public function __construct(
         private ProductRepositoryInterface $productRepository,

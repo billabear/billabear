@@ -23,7 +23,7 @@ class QuoteDataMapper
         private BillingAdminDataMapper $billingAdminDataMapper,
         private CustomerDataMapper $customerDataMapper,
         private SubscriptionPlanFactory $subscriptionPlanDataMapper,
-        private PriceFactory $priceDataMapper,
+        private PriceDataMapper $priceDataMapper,
     ) {
     }
 

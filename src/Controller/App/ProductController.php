@@ -13,7 +13,7 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\ProductList;
-use App\DataMappers\PriceFactory;
+use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductFactory;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\Api\CreateProduct;
@@ -127,7 +127,7 @@ class ProductController
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SerializerInterface $serializer,
         ProductFactory $productFactory,
-        PriceFactory $priceFactory,
+        PriceDataMapper $priceFactory,
         SubscriptionPlanFactory $subscriptionPlanFactory,
     ): Response {
         try {

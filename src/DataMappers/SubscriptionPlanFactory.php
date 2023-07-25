@@ -30,7 +30,7 @@ class SubscriptionPlanFactory
     public function __construct(
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
-        private PriceFactory $priceFactory,
+        private PriceDataMapper $priceFactory,
         private FeatureDataMapper $featureFactory,
         private ProductFactory $productFactory,
     ) {
