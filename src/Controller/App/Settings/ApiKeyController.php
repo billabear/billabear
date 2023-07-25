@@ -13,7 +13,7 @@
 namespace App\Controller\App\Settings;
 
 use App\Controller\ValidationErrorResponseTrait;
-use App\DataMappers\Settings\ApiKeyFactory;
+use App\DataMappers\Settings\ApiKeyDataMapper;
 use App\Dto\Request\App\Settings\CreateApiKey;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\ApiKey;
@@ -35,7 +35,7 @@ class ApiKeyController
     #[Route('/app/settings/api-key', name: 'app_app_settings_apikey_showlist', methods: ['GET'])]
     public function showList(
         ApiKeyRepositoryInterface $apiKeyRepository,
-        ApiKeyFactory $apiKeyFactory,
+        ApiKeyDataMapper $apiKeyFactory,
         SerializerInterface $serializer,
     ): Response {
         $apiKeys = $apiKeyRepository->getAll();
@@ -52,7 +52,7 @@ class ApiKeyController
     public function createApi(
         Request $request,
         ApiKeyRepositoryInterface $apiKeyRepository,
-        ApiKeyFactory $apiKeyFactory,
+        ApiKeyDataMapper $apiKeyFactory,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {

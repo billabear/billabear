@@ -16,7 +16,7 @@ use App\Dto\Request\App\Settings\CreateApiKey;
 use App\Dto\Response\App\Settings\ApiKey as AppDto;
 use App\Entity\ApiKey as Entity;
 
-class ApiKeyFactory
+class ApiKeyDataMapper
 {
     public function createAppDto(Entity $entity): AppDto
     {
