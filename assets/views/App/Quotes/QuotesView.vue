@@ -14,6 +14,10 @@
                 <dd>{{ quote.customer.email }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.quotes.view.customer.address.company_name') }}</dt>
+                <dd>{{ quote.customer.address.company_name }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.quotes.view.customer.address.street_line_one') }}</dt>
                 <dd>{{ quote.customer.address.street_line_one }}</dd>
               </div>
@@ -38,6 +42,7 @@
                 <dd>{{ quote.customer.address.post_code }}</dd>
               </div>
             </dl>
+            <router-link :to="{name: 'app.customer.view', params: {id: quote.customer.id}}" class="btn--main">{{ $t('app.quotes.view.customer.more_info') }}</router-link>
           </div>
         </div>
         <div>

@@ -8,8 +8,9 @@ export const QUOTES_VIEW_TRANSLATIONS = {
     customer: {
         title: "Customer",
         email: "Email",
+        more_info: "More Info",
         address: {
-            title: "Address",
+            company_name: "Company Name",
             street_line_one: "Street Line 1",
             street_line_two: "Street Line 2",
             city: "City",
