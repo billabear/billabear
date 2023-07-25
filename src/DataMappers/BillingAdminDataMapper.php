@@ -16,7 +16,7 @@ use App\Dto\Generic\Api\BillingAdmin as ApiDto;
 use App\Dto\Generic\App\BillingAdmin as AppDto;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 
-class BillingAdminFactory
+class BillingAdminDataMapper
 {
     public function createAppDto(?BillingAdminInterface $billingAdmin): ?AppDto
     {

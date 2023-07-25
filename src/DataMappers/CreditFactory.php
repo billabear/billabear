@@ -20,7 +20,7 @@ use Obol\Model\Credit\BalanceOutput;
 
 class CreditFactory
 {
-    public function __construct(private CustomerFactory $customerFactory, private BillingAdminFactory $billingAdminFactory)
+    public function __construct(private CustomerFactory $customerFactory, private BillingAdminDataMapper $billingAdminFactory)
     {
     }
 

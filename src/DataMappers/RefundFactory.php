@@ -24,7 +24,7 @@ class RefundFactory
     public function __construct(
         private PaymentFactory $paymentFactory,
         private CustomerFactory $customerFactory,
-        private BillingAdminFactory $billingAdminFactory,
+        private BillingAdminDataMapper $billingAdminFactory,
         public PaymentRepositoryInterface $paymentRepository,
     ) {
     }

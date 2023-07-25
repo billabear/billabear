@@ -20,7 +20,7 @@ use App\Entity\QuoteLine as EntityLine;
 class QuoteDataMapper
 {
     public function __construct(
-        private BillingAdminFactory $billingAdminDataMapper,
+        private BillingAdminDataMapper $billingAdminDataMapper,
         private CustomerFactory $customerDataMapper,
         private SubscriptionPlanFactory $subscriptionPlanDataMapper,
         private PriceFactory $priceDataMapper,
