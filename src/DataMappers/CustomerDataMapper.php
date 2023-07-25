@@ -73,7 +73,13 @@ class CustomerDataMapper
             $customer->setStatus(CustomerStatus::NEW);
             $customer->setCreatedAt(new \DateTime('now'));
         }
-        $customer->setType(CustomerType::INDIVIDUAL);
+
+        $type = match (strtolower($createCustomerDto->getType())) {
+            'business' => CustomerType::BUSINESS,
+            default => CustomerType::INDIVIDUAL,
+        };
+
+        $customer->setType($type);
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);
@@ -122,6 +128,7 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
+        $dto->setType($customer->getType()->value);
 
         return $dto;
     }
@@ -151,6 +158,7 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
+        $dto->setType($customer->getType()->value);
 
         return $dto;
     }

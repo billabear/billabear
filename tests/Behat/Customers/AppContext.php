@@ -151,6 +151,7 @@ class AppContext implements Context
                 'country' => $data['Country'],
                 'postcode' => $data['Post Code'] ?? null,
             ],
+            'type' => strtolower($data['Type'] ?? 'Individual'),
         ];
 
         if (isset($data['External Reference'])) {

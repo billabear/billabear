@@ -95,6 +95,10 @@ class MainContext implements Context
             ];
         }
 
+        if (isset($data['Type'])) {
+            $payload['type'] = strtolower($data['Type']);
+        }
+
         if (isset($data['External Reference'])) {
             $payload['external_reference'] = $data['External Reference'];
         }
@@ -232,6 +236,28 @@ class MainContext implements Context
         $customer = $this->getCustomerByEmail($email);
         if ($customer->getTaxNumber() !== $taxNumber) {
             throw new \Exception(sprintf("Expected '%s' but got '%s'", $taxNumber, $customer->getTaxNumber()));
+        }
+    }
+
+    /**
+     * @Then the customer :arg1 should be a business customer
+     */
+    public function theCustomerShouldBeABusinessCustomer($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        if (CustomerType::BUSINESS !== $customer->getType()) {
+            throw new \Exception('Not a business customer');
+        }
+    }
+
+    /**
+     * @Then the customer :arg1 should be a individual customer
+     */
+    public function theCustomerShouldBeAIndividualCustomer($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        if (CustomerType::INDIVIDUAL !== $customer->getType()) {
+            throw new \Exception('Not a INDIVIDUAL customer');
         }
     }
 

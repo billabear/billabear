@@ -25,6 +25,9 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     billing_type: "Billing Type",
     billing_type_card: "Card",
     billing_type_invoice: "Invoice",
+    type: "Customer Type",
+    type_business: "Business",
+    type_individual: "Individual",
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",
@@ -40,5 +43,6 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
         tax_number: 'The tax number for the customer',
         digital_tax_rate: "The tax rate to be applied for this customer on digital services as defined by that country",
         standard_tax_rate: "The tax rate to be applied for the customer for everything but digital services",
+        type: "If the customer is a business or individual"
     }
 }

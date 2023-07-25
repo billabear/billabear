@@ -59,6 +59,8 @@ class Customer
     #[SerializedName('standard_tax_rate')]
     protected ?float $standardTaxRate;
 
+    protected string $type;
+
     public function getId(): string
     {
         return $this->id;
@@ -197,5 +199,15 @@ class Customer
     public function setStandardTaxRate(?float $standardTaxRate): void
     {
         $this->standardTaxRate = $standardTaxRate;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

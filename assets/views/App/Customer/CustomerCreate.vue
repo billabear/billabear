@@ -39,16 +39,29 @@
         <input type="text" class="form-field-input" id="locale" v-model="customer.locale"  />
         <p class="form-field-help">{{ $t('app.customer.create.help_info.locale') }}</p>
       </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="type">
+          {{ $t('app.customer.create.type') }}
+        </label>
+        <p class="form-field-error" v-if="errors.type != undefined">{{ errors.type }}</p>
+        <select class="form-field" id="type" v-model="customer.type">
+          <option value="business">{{ $t('app.customer.create.type_business') }}</option>
+          <option value="individual">{{ $t('app.customer.create.type_individual') }}</option>
+        </select>
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.type') }}</p>
+      </div>
+
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="reference">
-          {{ $t('app.customer.update.billing_type') }}
+          {{ $t('app.customer.create.billing_type') }}
         </label>
         <p class="form-field-error" v-if="errors.billingType != undefined">{{ errors.billingType }}</p>
         <select class="form-field" id="reference" v-model="customer.billing_type">
-          <option value="card">{{ $t('app.customer.update.billing_type_card') }}</option>
-          <option value="invoice">{{ $t('app.customer.update.billing_type_invoice') }}</option>
+          <option value="card">{{ $t('app.customer.create.billing_type_card') }}</option>
+          <option value="invoice">{{ $t('app.customer.create.billing_type_invoice') }}</option>
         </select>
-        <p class="form-field-help">{{ $t('app.customer.update.help_info.billing_type') }}</p>
+        <p class="form-field-help">{{ $t('app.customer.create.help_info.billing_type') }}</p>
       </div>
     </div>
 

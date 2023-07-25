@@ -29,6 +29,10 @@
                   <dd>{{ customer.billing_type }}</dd>
                 </div>
                 <div>
+                  <dt>{{ $t('app.customer.view.main.type') }}</dt>
+                  <dd>{{ customer.type }}</dd>
+                </div>
+                <div>
                   <dt>{{ $t('app.customer.view.main.brand') }}</dt>
                   <dd>{{ customer.brand }}</dd>
                 </div>

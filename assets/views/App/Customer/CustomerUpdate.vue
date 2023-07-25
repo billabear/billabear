@@ -31,6 +31,18 @@
         </div>
 
         <div class="form-field-ctn">
+          <label class="form-field-lbl" for="type">
+            {{ $t('app.customer.update.type') }}
+          </label>
+          <p class="form-field-error" v-if="errors.type != undefined">{{ errors.type }}</p>
+          <select class="form-field" id="type" v-model="customer.type">
+            <option value="business">{{ $t('app.customer.update.type_business') }}</option>
+            <option value="individual">{{ $t('app.customer.update.type_individual') }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.customer.update.help_info.type') }}</p>
+        </div>
+
+        <div class="form-field-ctn">
           <label class="form-field-lbl" for="reference">
             {{ $t('app.customer.update.billing_type') }}
           </label>

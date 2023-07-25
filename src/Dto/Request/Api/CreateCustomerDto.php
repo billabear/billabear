@@ -69,6 +69,11 @@ class CreateCustomerDto
     #[Assert\PositiveOrZero]
     private $standardTaxRate;
 
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('string')]
+    #[Assert\Choice(choices: ['individual', 'business'])]
+    private $type;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -177,5 +182,15 @@ class CreateCustomerDto
     public function setStandardTaxRate($standardTaxRate): void
     {
         $this->standardTaxRate = $standardTaxRate;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
     }
 }
