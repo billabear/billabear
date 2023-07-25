@@ -17,7 +17,7 @@ use App\DataMappers\PaymentMethodsDataMapper;
 use App\Dto\Response\App\Reports\ExpiringCard;
 use Parthenon\Billing\Entity\PaymentCard;
 
-class ExpiringCardsFactory
+class ExpiringCardsDataMapper
 {
     public function __construct(
         private CustomerDataMapper $customerFactory,

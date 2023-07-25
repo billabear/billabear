@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Reports;
 
-use App\DataMappers\Reports\ExpiringCardsFactory;
+use App\DataMappers\Reports\ExpiringCardsDataMapper;
 use App\Dto\Response\App\ListResponse;
 use App\Repository\PaymentCardRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +25,7 @@ class ExpiringCardsController
     #[Route('/app/reports/expiring-cards', name: 'app_app_reports_expiringcards_getcards', methods: ['GET'])]
     public function getCards(
         PaymentCardRepositoryInterface $paymentCardRepository,
-        ExpiringCardsFactory $expiringCardsFactory,
+        ExpiringCardsDataMapper $expiringCardsFactory,
         SerializerInterface $serializer,
     ): Response {
         $expiringCards = $paymentCardRepository->getExpiringDefaultThisMonth();
