@@ -19,6 +19,7 @@ use App\Dto\Request\Api\CreateCustomerDto as ApiCreate;
 use App\Dto\Request\App\CreateCustomerDto as AppCreate;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Enum\CustomerType;
 use App\Repository\BrandSettingsRepositoryInterface;
 use Obol\Model\Customer as ObolCustomer;
 use Parthenon\Common\Address;
@@ -72,6 +73,7 @@ class CustomerDataMapper
             $customer->setStatus(CustomerStatus::NEW);
             $customer->setCreatedAt(new \DateTime('now'));
         }
+        $customer->setType(CustomerType::INDIVIDUAL);
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
         $customer->setBillingAddress($address);

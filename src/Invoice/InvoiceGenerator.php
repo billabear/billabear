@@ -113,9 +113,10 @@ class InvoiceGenerator
             $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
             $line->setDescription($subscription->getPlanName());
-            $line->setTaxPercentage($priceInfo->taxRate);
+            $line->setTaxPercentage($priceInfo->taxInfo->rate);
             $line->setTaxType($taxType);
-            $line->setTaxCountry($priceInfo->taxCountry);
+            $line->setTaxCountry($priceInfo->taxInfo->country);
+            $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $lines[] = $line;
         }
         $invoice->setSubscriptions($subscriptions);
@@ -135,9 +136,10 @@ class InvoiceGenerator
             $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
-            $line->setTaxPercentage($priceInfo->taxRate);
+            $line->setTaxPercentage($priceInfo->taxInfo->rate);
             $line->setTaxType($lineItem->getTaxType());
-            $line->setTaxCountry($priceInfo->taxCountry);
+            $line->setTaxCountry($priceInfo->taxInfo->country);
+            $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $lines[] = $line;
         }
 

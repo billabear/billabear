@@ -159,4 +159,54 @@ class InvoiceContext implements Context
 
         throw new \Exception('Got country - '.$rate);
     }
+
+    /**
+     * @When there the latest invoice for :arg1 will have a reverse charge
+     */
+    public function thereTheLatestInvoiceForWillHaveAReverseCharge($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if ($line->isReverseCharge()) {
+                return;
+            }
+        }
+
+        throw new \Exception('No reverse charge items found');
+    }
+
+    /**
+     * @When there the latest invoice for :arg1 will have a zero tax rate
+     */
+    public function thereTheLatestInvoiceForWillHaveAZeroTaxRate($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if (0.0 === $line->getTaxPercentage()) {
+                return;
+            } else {
+                $rate = $line->getTaxPercentage();
+            }
+        }
+
+        throw new \Exception('Got rate - '.$rate);
+    }
 }

@@ -10,14 +10,10 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Tax;
+namespace App\Enum;
 
-class TaxInfo
+enum CustomerType: string
 {
-    public function __construct(
-        public readonly ?float $rate,
-        public readonly string $country,
-        public readonly bool $reverseCharge,
-    ) {
-    }
+    case BUSINESS = 'business';
+    case INDIVIDUAL = 'individual';
 }

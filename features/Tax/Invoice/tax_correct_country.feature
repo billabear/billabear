@@ -1,4 +1,4 @@
-Feature: Generate new invoices
+Feature: Tax the correct country
 
   Background:
     Given the following accounts exist:
@@ -42,16 +42,16 @@ Feature: Generate new invoices
 
   Scenario:
     Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Plan         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active |
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.one@example.org" will have tax country of "DE"
 
   Scenario:
     Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Plan         | 1000         | USD            | week           | customer.two@example.org  | +3 Minutes  | Active |
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.two@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.two@example.org" will have tax country of "GB"

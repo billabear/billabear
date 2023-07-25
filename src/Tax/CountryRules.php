@@ -18,8 +18,7 @@ use Parthenon\Common\Address;
 
 class CountryRules
 {
-    protected array $rates = [
-        // EU
+    protected array $europeanEconomicArea = [
         'AT' => 20,
         'BE' => 21,
         'BG' => 20,
@@ -48,14 +47,16 @@ class CountryRules
         'ES' => 21,
         'SE' => 25,
 
+        // EEA
+        'CH' => 7.7,
+        'NO' => 25,
         'IS' => 24,
+        'LI' => 7.7,
+    ];
 
+    protected array $rates = [
         // UK
         'GB' => 20,
-
-        // Swiss
-        'CH' => 7.7,
-
         // North America
         'US' => 0,
         'CA' => 5,
@@ -70,12 +71,19 @@ class CountryRules
         'CN' => 13,
     ];
 
+    public function inEu(Address $address)
+    {
+        return array_key_exists($address->getCountry(), $this->europeanEconomicArea);
+    }
+
     public function getDigitalVatPercentage(Address $address): float
     {
-        if (!isset($this->rates[$address->getCountry()])) {
+        $rates = array_merge($this->europeanEconomicArea, $this->rates);
+
+        if (!isset($rates[$address->getCountry()])) {
             return 0.0;
         }
 
-        return floatval($this->rates[$address->getCountry()]);
+        return floatval($rates[$address->getCountry()]);
     }
 }

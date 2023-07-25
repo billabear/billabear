@@ -14,6 +14,7 @@ namespace App\Tests\Behat\Customers;
 
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Enum\CustomerType;
 use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\CustomerRepository;
 use App\Tests\Behat\SendRequestTrait;
@@ -323,7 +324,18 @@ class MainContext implements Context
             $customer->setBrandSettings($brandSettings);
             $customer->setBrand($brand);
             $customer->setCreatedAt(new \DateTime('now'));
-            $customer->setTaxNumber($row['Tax Number'] ?? null);
+
+            if (isset($row['Tax Number']) && !empty($row['Tax Number'])) {
+                $customer->setTaxNumber($row['Tax Number']);
+            } else {
+                $customer->setTaxNumber(null);
+            }
+
+            $type = match (strtolower($row['Type'] ?? 'business')) {
+                'business' => CustomerType::BUSINESS,
+                default => CustomerType::INDIVIDUAL,
+            };
+            $customer->setType($type);
 
             if (isset($row['Digital Tax Rate']) && !empty($row['Digital Tax Rate'])) {
                 $customer->setDigitalTaxRate(floatval($row['Digital Tax Rate']));

@@ -46,8 +46,7 @@ class Pricer implements PricerInterface
             $total,
             $subTotal,
             $vat,
-            $rawRate,
-            $taxInfo->country,
+            $taxInfo,
         );
     }
 
@@ -72,8 +71,7 @@ class Pricer implements PricerInterface
             $total,
             $subTotal,
             $vat,
-            $rawRate,
-            $taxInfo->country
+            $taxInfo,
         );
     }
 }

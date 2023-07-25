@@ -56,6 +56,9 @@ class InvoiceLine
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $taxCountry;
 
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $reverseCharge = false;
+
     public function getId()
     {
         return $this->id;
@@ -169,5 +172,15 @@ class InvoiceLine
     public function setTaxCountry(?string $taxCountry): void
     {
         $this->taxCountry = $taxCountry;
+    }
+
+    public function isReverseCharge(): bool
+    {
+        return $this->reverseCharge;
+    }
+
+    public function setReverseCharge(bool $reverseCharge): void
+    {
+        $this->reverseCharge = $reverseCharge;
     }
 }

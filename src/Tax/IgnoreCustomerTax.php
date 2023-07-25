@@ -13,30 +13,44 @@
 namespace App\Tax;
 
 use App\Entity\Customer;
+use App\Enum\CustomerType;
 use App\Enum\TaxType;
 use App\Repository\SettingsRepositoryInterface;
 
 class IgnoreCustomerTax implements TaxRateProviderInterface
 {
-    public function __construct(private TaxRateProviderInterface $taxRateProvider, private SettingsRepositoryInterface $settingsRepository)
+    public function __construct(
+        private CountryRules $countryRules,
+        private SettingsRepositoryInterface $settingsRepository)
     {
     }
 
     public function getRateForCustomer(Customer $customer, TaxType $taxType): TaxInfo
     {
         if ($customer->getStandardTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
-            return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry());
+            return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }
 
-        if ($customer->getDigitalTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
-            return new TaxInfo($customer->getDigitalTaxRate(), $customer->getBillingAddress()->getCountry());
+        if ($customer->getDigitalTaxRate() && TaxType::DIGITAL_SERVICES === $taxType) {
+            return new TaxInfo($customer->getDigitalTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 
-        if (!$taxCustomersWithTaxNumbers && $customer->getTaxNumber()) {
-            return new TaxInfo(null, $customer->getBrandSettings()->getAddress()->getCountry());
+        $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
+        $businessTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
+
+        if (CustomerType::BUSINESS === $customer->getType() && $this->countryRules->inEu($customer->getBillingAddress())) {
+            if (TaxType::PHYSICAL === $taxType) {
+                return new TaxInfo(0, $customer->getBillingAddress()->getCountry(), false);
+            } else {
+                return new TaxInfo($customerTaxRate, $customer->getBillingAddress()->getCountry(), true);
+            }
         }
 
-        return $this->taxRateProvider->getRateForCustomer($customer, $taxType);
+        if (!$taxCustomersWithTaxNumbers && $customer->getTaxNumber()) {
+            return new TaxInfo(null, $customer->getBrandSettings()->getAddress()->getCountry(), false);
+        }
+
+        return new TaxInfo($customerTaxRate, $customer->getBillingAddress()->getCountry(), false);
     }
 }

@@ -12,6 +12,7 @@
 
 namespace App\Invoice;
 
+use App\Tax\TaxInfo;
 use Brick\Money\Money;
 
 class PriceInfo
@@ -20,8 +21,7 @@ class PriceInfo
         public readonly Money $total,
         public readonly Money $subTotal,
         public readonly Money $vat,
-        public readonly ?float $taxRate,
-        public readonly string $taxCountry,
+        public readonly TaxInfo $taxInfo,
     ) {
     }
 }

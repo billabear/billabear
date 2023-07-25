@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Enum\CustomerStatus;
+use App\Enum\CustomerType;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -99,6 +100,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
     protected ?float $standardTaxRate = 0.0;
+
+    #[ORM\Column(enumType: CustomerType::class)]
+    protected CustomerType $type;
 
     public function getId()
     {
@@ -381,5 +385,15 @@ class Customer implements CustomerInterface
     public function setStandardTaxRate(?float $standardTaxRate): void
     {
         $this->standardTaxRate = $standardTaxRate;
+    }
+
+    public function getType(): CustomerType
+    {
+        return $this->type;
+    }
+
+    public function setType(CustomerType $type): void
+    {
+        $this->type = $type;
     }
 }
