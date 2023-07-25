@@ -12,7 +12,7 @@
 
 namespace App\Tests\Behat\Invoices;
 
-use App\DataMappers\PaymentAttemptFactory;
+use App\DataMappers\PaymentAttemptDataMapper;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Entity\PaymentFailureProcess;
@@ -40,7 +40,7 @@ class AppContext implements Context
         private Session $session,
         private InvoiceRepository $invoiceRepository,
         private CustomerRepository $customerRepository,
-        private PaymentAttemptFactory $paymentAttemptFactory,
+        private PaymentAttemptDataMapper $paymentAttemptFactory,
         private PaymentAttemptRepository $paymentAttemptRepository,
         private PaymentFailureProcessRepository $paymentFailureProcessRepository,
         private SubscriptionRepository $subscriptionRepository,

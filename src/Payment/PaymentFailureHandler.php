@@ -12,7 +12,7 @@
 
 namespace App\Payment;
 
-use App\DataMappers\PaymentAttemptFactory;
+use App\DataMappers\PaymentAttemptDataMapper;
 use App\Entity\Invoice;
 use App\Entity\PaymentFailureProcess;
 use App\Event\PaymentFailed;
@@ -27,7 +27,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 class PaymentFailureHandler
 {
     public function __construct(
-        private PaymentAttemptFactory $paymentAttemptFactory,
+        private PaymentAttemptDataMapper $paymentAttemptFactory,
         private PaymentAttemptRepositoryInterface $paymentAttemptRepository,
         private PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
         private EventDispatcherInterface $dispatcher,

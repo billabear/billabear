@@ -18,7 +18,7 @@ use Obol\Model\Enum\ChargeFailureReasons;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\Payment;
 
-class PaymentAttemptFactory
+class PaymentAttemptDataMapper
 {
     public function __construct(private ProviderInterface $provider)
     {
