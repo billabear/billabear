@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\CreditFactory;
+use App\DataMappers\CreditDataMapper;
 use App\Entity\Customer;
 use App\Repository\CreditRepositoryInterface;
 use Obol\Provider\ProviderInterface;
@@ -21,7 +21,7 @@ class CustomerCreditImporter
 {
     public function __construct(
         private ProviderInterface $provider,
-        private CreditFactory $creditFactory,
+        private CreditDataMapper $creditFactory,
         private CreditRepositoryInterface $repository, )
     {
     }

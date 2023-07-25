@@ -13,7 +13,7 @@
 namespace App\Controller\App;
 
 use App\Credit\CreditAdjustmentRecorder;
-use App\DataMappers\CreditFactory;
+use App\DataMappers\CreditDataMapper;
 use App\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
@@ -35,7 +35,7 @@ class CreditController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        CreditFactory $factory,
+        CreditDataMapper $factory,
         UserProvider $userProvider,
         CreditAdjustmentRecorder $creditAdjustmentRecorder
     ): Response {

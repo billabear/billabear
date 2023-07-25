@@ -16,7 +16,7 @@ use App\Api\Filters\CustomerList;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\Customer\ObolRegister;
-use App\DataMappers\CreditFactory;
+use App\DataMappers\CreditDataMapper;
 use App\DataMappers\CustomerFactory;
 use App\DataMappers\PaymentFactory;
 use App\DataMappers\PaymentMethodsFactory;
@@ -219,7 +219,7 @@ class CustomerController
         SubscriptionFactory $subscriptionFactory,
         LimitsFactory $limitsFactory,
         CreditRepositoryInterface $creditNoteRepository,
-        CreditFactory $creditNoteFactory,
+        CreditDataMapper $creditNoteFactory,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));

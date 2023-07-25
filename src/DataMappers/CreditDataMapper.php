@@ -18,7 +18,7 @@ use App\Entity\Credit as Entity;
 use App\Entity\Customer;
 use Obol\Model\Credit\BalanceOutput;
 
-class CreditFactory
+class CreditDataMapper
 {
     public function __construct(private CustomerFactory $customerFactory, private BillingAdminDataMapper $billingAdminFactory)
     {
