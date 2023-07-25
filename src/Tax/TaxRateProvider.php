@@ -21,12 +21,12 @@ class TaxRateProvider implements TaxRateProviderInterface
     {
     }
 
-    public function getRateForCustomer(Customer $customer, TaxType $taxType): ?float
+    public function getRateForCustomer(Customer $customer, TaxType $taxType): TaxInfo
     {
         if (TaxType::PHYSICAL === $taxType) {
-            return $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
+            return new TaxInfo($this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress()), $customer->getBrandSettings()->getAddress()->getCountry());
         }
 
-        return $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
+        return new TaxInfo($this->countryRules->getDigitalVatPercentage($customer->getBillingAddress()), $customer->getBillingAddress()->getAddress()->getCountry());
     }
 }

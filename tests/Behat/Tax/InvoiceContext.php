@@ -133,4 +133,30 @@ class InvoiceContext implements Context
 
         throw new \Exception('Got taxType - '.$taxType);
     }
+
+    /**
+     * @When there the latest invoice for :arg1 will have tax country of :arg2
+     */
+    public function thereTheLatestInvoiceForWillHaveTaxCountryOf($customerEmail, $expectedCountry)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if ($line->getTaxCountry() == $expectedCountry) {
+                return;
+            } else {
+                $rate = $line->getTaxCountry();
+            }
+        }
+
+        throw new \Exception('Got country - '.$rate);
+    }
 }

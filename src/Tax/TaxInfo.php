@@ -10,18 +10,13 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Invoice;
+namespace App\Tax;
 
-use Brick\Money\Money;
-
-class PriceInfo
+class TaxInfo
 {
     public function __construct(
-        public readonly Money $total,
-        public readonly Money $subTotal,
-        public readonly Money $vat,
-        public readonly ?float $taxRate,
-        public readonly string $taxCountry,
+        public readonly ?float $rate,
+        public readonly string $country,
     ) {
     }
 }

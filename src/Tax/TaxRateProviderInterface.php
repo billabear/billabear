@@ -17,5 +17,5 @@ use App\Enum\TaxType;
 
 interface TaxRateProviderInterface
 {
-    public function getRateForCustomer(Customer $customer, TaxType $taxType): ?float;
+    public function getRateForCustomer(Customer $customer, TaxType $taxType): TaxInfo;
 }

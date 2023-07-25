@@ -22,19 +22,19 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
     {
     }
 
-    public function getRateForCustomer(Customer $customer, TaxType $taxType): ?float
+    public function getRateForCustomer(Customer $customer, TaxType $taxType): TaxInfo
     {
         if ($customer->getStandardTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
-            return $customer->getStandardTaxRate();
+            return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry());
         }
 
         if ($customer->getDigitalTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
-            return $customer->getDigitalTaxRate();
+            return new TaxInfo($customer->getDigitalTaxRate(), $customer->getBillingAddress()->getCountry());
         }
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 
         if (!$taxCustomersWithTaxNumbers && $customer->getTaxNumber()) {
-            return null;
+            return new TaxInfo(null, $customer->getBrandSettings()->getAddress()->getCountry());
         }
 
         return $this->taxRateProvider->getRateForCustomer($customer, $taxType);

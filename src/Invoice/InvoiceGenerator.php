@@ -115,6 +115,7 @@ class InvoiceGenerator
             $line->setDescription($subscription->getPlanName());
             $line->setVatPercentage($priceInfo->taxRate);
             $line->setTaxType($taxType);
+            $line->setTaxCountry($priceInfo->taxCountry);
             $lines[] = $line;
         }
         $invoice->setSubscriptions($subscriptions);
@@ -136,6 +137,7 @@ class InvoiceGenerator
             $line->setDescription($lineItem->getDescription());
             $line->setVatPercentage($priceInfo->taxRate);
             $line->setTaxType($lineItem->getTaxType());
+            $line->setTaxCountry($priceInfo->taxCountry);
             $lines[] = $line;
         }
 

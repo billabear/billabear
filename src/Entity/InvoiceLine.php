@@ -53,6 +53,9 @@ class InvoiceLine
     #[ORM\Column(enumType: TaxType::class, nullable: true)]
     protected ?TaxType $taxType = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $taxCountry;
+
     public function getId()
     {
         return $this->id;
@@ -156,5 +159,15 @@ class InvoiceLine
     public function setTaxType(TaxType $taxType): void
     {
         $this->taxType = $taxType;
+    }
+
+    public function getTaxCountry(): ?string
+    {
+        return $this->taxCountry;
+    }
+
+    public function setTaxCountry(?string $taxCountry): void
+    {
+        $this->taxCountry = $taxCountry;
     }
 }
