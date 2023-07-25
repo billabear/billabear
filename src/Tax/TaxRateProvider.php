@@ -27,6 +27,6 @@ class TaxRateProvider implements TaxRateProviderInterface
             return new TaxInfo($this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress()), $customer->getBrandSettings()->getAddress()->getCountry());
         }
 
-        return new TaxInfo($this->countryRules->getDigitalVatPercentage($customer->getBillingAddress()), $customer->getBillingAddress()->getAddress()->getCountry());
+        return new TaxInfo($this->countryRules->getDigitalVatPercentage($customer->getBillingAddress()), $customer->getBillingAddress()->getCountry());
     }
 }
