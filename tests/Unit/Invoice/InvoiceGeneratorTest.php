@@ -25,6 +25,7 @@ use App\Invoice\PriceInfo;
 use App\Invoice\Pricer;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
+use App\Tax\TaxInfo;
 use Brick\Money\Money;
 use Monolog\Test\TestCase;
 use Parthenon\Billing\Entity\Price;
@@ -60,8 +61,8 @@ class InvoiceGeneratorTest extends TestCase
         $invoiceNumberGeneratorProvider = $this->createMock(InvoiceNumberGeneratorProvider::class);
         $invoiceNumberGeneratorProvider->method('getGenerator')->willReturn($invoiceNumberGenerator);
 
-        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), 20.0, 'de');
-        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), 20.0, 'de');
+        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false));
+        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false));
 
         $pricer = $this->createMock(Pricer::class);
         $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls($priceInfoOne, $priceInfoTwo);
