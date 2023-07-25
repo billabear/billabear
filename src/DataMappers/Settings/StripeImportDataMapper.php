@@ -15,7 +15,7 @@ namespace App\DataMappers\Settings;
 use App\Dto\Response\App\Settings\StripeImport as AppDto;
 use App\Entity\StripeImport as Entity;
 
-class StripeImportFactory
+class StripeImportDataMapper
 {
     public function createAppDto(Entity $entity): AppDto
     {

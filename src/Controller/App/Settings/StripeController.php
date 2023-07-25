@@ -13,7 +13,7 @@
 namespace App\Controller\App\Settings;
 
 use App\Controller\ValidationErrorResponseTrait;
-use App\DataMappers\Settings\StripeImportFactory;
+use App\DataMappers\Settings\StripeImportDataMapper;
 use App\Dto\Request\App\Settings\RegisterWebhook;
 use App\Dto\Response\App\Settings\StripeImportView;
 use App\Entity\GenericBackgroundTask;
@@ -75,7 +75,7 @@ class StripeController
     public function mainView(
         Request $request,
         StripeImportRepositoryInterface $stripeImportRepository,
-        StripeImportFactory $importFactory,
+        StripeImportDataMapper $importFactory,
         SerializerInterface $serializer,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
@@ -93,7 +93,7 @@ class StripeController
     #[Route('/app/settings/stripe-import/start', name: 'app_app_settings_stripeimport_startimport', methods: ['POST'])]
     public function startImport(
         StripeImportRepositoryInterface $stripeImportRepository,
-        StripeImportFactory $importFactory,
+        StripeImportDataMapper $importFactory,
         SerializerInterface $serializer,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
@@ -136,7 +136,7 @@ class StripeController
     public function viewImport(
         Request $request,
         StripeImportRepositoryInterface $stripeImportRepository,
-        StripeImportFactory $importFactory,
+        StripeImportDataMapper $importFactory,
         SerializerInterface $serializer,
     ): Response {
         try {
