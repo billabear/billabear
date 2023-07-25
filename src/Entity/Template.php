@@ -22,10 +22,12 @@ class Template
     public const NAMES = [
         self::NAME_RECEIPT,
         self::NAME_INVOICE,
+        self::NAME_QUOTE,
     ];
 
     public const NAME_RECEIPT = 'receipt';
     public const NAME_INVOICE = 'invoice';
+    public const NAME_QUOTE = 'quote';
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
