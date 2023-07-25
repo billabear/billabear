@@ -14,7 +14,7 @@ namespace App\Controller\App;
 
 use App\Api\Filters\InvoiceList;
 use App\Controller\ValidationErrorResponseTrait;
-use App\DataMappers\InvoiceFactory;
+use App\DataMappers\InvoiceDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Invoice;
@@ -43,7 +43,7 @@ class InvoicesController
         Request $request,
         InvoiceRepositoryInterface $repository,
         SerializerInterface $serializer,
-        InvoiceFactory $factory,
+        InvoiceDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -90,7 +90,7 @@ class InvoicesController
         Request $request,
         InvoiceRepositoryInterface $repository,
         SerializerInterface $serializer,
-        InvoiceFactory $factory,
+        InvoiceDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -191,7 +191,7 @@ class InvoicesController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        InvoiceFactory $invoiceFactory,
+        InvoiceDataMapper $invoiceFactory,
         ManualInvoiceCreator $manualInvoiceCreator,
     ): Response {
         /** @var CreateInvoice $dto */

@@ -15,7 +15,7 @@ namespace App\DataMappers;
 use App\Dto\Generic\App\Invoice as AppDto;
 use App\Entity\Invoice as Entity;
 
-class InvoiceFactory
+class InvoiceDataMapper
 {
     public function __construct(private CustomerDataMapper $customerFactory)
     {
