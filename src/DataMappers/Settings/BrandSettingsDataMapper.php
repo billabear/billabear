@@ -19,7 +19,7 @@ use App\Dto\Response\App\BrandSettings\BrandSettings as AppDto;
 use App\Entity\BrandSettings;
 use Parthenon\Common\Address;
 
-class BrandSettingsFactory
+class BrandSettingsDataMapper
 {
     public function createEntityFromEditDto(EditDto|CreateBrandSettings $dto, BrandSettings $brandSettings = null): BrandSettings
     {

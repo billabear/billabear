@@ -21,7 +21,7 @@ use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\RefundDataMapper;
-use App\DataMappers\Settings\BrandSettingsFactory;
+use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\DataMappers\SubscriptionDataMapper;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\Customer\CreateCustomerView;
@@ -103,7 +103,7 @@ class CustomerController
     public function createCustomerView(
         Request $request,
         BrandSettingsRepositoryInterface $settingsRepository,
-        BrandSettingsFactory $brandSettingsFactory,
+        BrandSettingsDataMapper $brandSettingsFactory,
         SerializerInterface $serializer,
     ) {
         $brandSettings = $settingsRepository->getAll();

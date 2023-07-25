@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
-use App\DataMappers\Settings\BrandSettingsFactory;
+use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\Dto\Request\App\BrandSettings\CreateBrandSettings;
 use App\Dto\Request\App\BrandSettings\EditBrandSettings;
 use App\Dto\Response\App\BrandSettings\BrandSettingsView;
@@ -34,7 +34,7 @@ class BrandSettingsController
     public function listBrandSettings(
         Request $request,
         BrandSettingsRepositoryInterface $brandSettingRepository,
-        BrandSettingsFactory $brandFactory,
+        BrandSettingsDataMapper $brandFactory,
         SerializerInterface $serializer,
     ): Response {
         $brands = $brandSettingRepository->getAll();
@@ -56,7 +56,7 @@ class BrandSettingsController
     public function viewBrandSettings(
         Request $request,
         BrandSettingsRepositoryInterface $brandSettingRepository,
-        BrandSettingsFactory $brandSettingsFactory,
+        BrandSettingsDataMapper $brandSettingsFactory,
         SerializerInterface $serializer,
     ): Response {
         try {
@@ -77,7 +77,7 @@ class BrandSettingsController
     public function editBrandSettings(
         Request $request,
         BrandSettingsRepositoryInterface $brandSettingRepository,
-        BrandSettingsFactory $brandSettingsFactory,
+        BrandSettingsDataMapper $brandSettingsFactory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
@@ -118,7 +118,7 @@ class BrandSettingsController
     public function createBrandSettings(
         Request $request,
         BrandSettingsRepositoryInterface $brandSettingRepository,
-        BrandSettingsFactory $brandSettingsFactory,
+        BrandSettingsDataMapper $brandSettingsFactory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
