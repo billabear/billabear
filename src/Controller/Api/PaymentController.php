@@ -13,7 +13,7 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\ProductList;
-use App\DataMappers\PaymentFactory;
+use App\DataMappers\PaymentDataMapper;
 use App\Dto\Request\Api\Payments\RefundPayment;
 use App\Dto\Response\Api\ListResponse;
 use Brick\Money\Currency;
@@ -37,7 +37,7 @@ class PaymentController
         Request $request,
         PaymentRepositoryInterface $repository,
         SerializerInterface $serializer,
-        PaymentFactory $factory,
+        PaymentDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);

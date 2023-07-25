@@ -18,7 +18,7 @@ use App\Customer\LimitsFactory;
 use App\Customer\ObolRegister;
 use App\DataMappers\CreditDataMapper;
 use App\DataMappers\CustomerDataMapper;
-use App\DataMappers\PaymentFactory;
+use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsFactory;
 use App\DataMappers\RefundFactory;
 use App\DataMappers\Settings\BrandSettingsFactory;
@@ -212,7 +212,7 @@ class CustomerController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodsFactory $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
-        PaymentFactory $paymentFactory,
+        PaymentDataMapper $paymentFactory,
         RefundRepositoryInterface $refundRepository,
         RefundFactory $refundFactory,
         SubscriptionRepositoryInterface $subscriptionRepository,

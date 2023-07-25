@@ -22,7 +22,7 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 class RefundFactory
 {
     public function __construct(
-        private PaymentFactory $paymentFactory,
+        private PaymentDataMapper $paymentFactory,
         private CustomerDataMapper $customerFactory,
         private BillingAdminDataMapper $billingAdminFactory,
         public PaymentRepositoryInterface $paymentRepository,

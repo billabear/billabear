@@ -16,7 +16,7 @@ use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
 use App\DataMappers\CustomerDataMapper;
-use App\DataMappers\PaymentFactory;
+use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsFactory;
 use App\DataMappers\PriceFactory;
 use App\DataMappers\ProductFactory;
@@ -227,7 +227,7 @@ class SubscriptionController
         ProductFactory $productFactory,
         SerializerInterface $serializer,
         PaymentRepositoryInterface $paymentRepository,
-        PaymentFactory $paymentFactory,
+        PaymentDataMapper $paymentFactory,
     ): Response {
         try {
             /** @var Subscription $subscription */

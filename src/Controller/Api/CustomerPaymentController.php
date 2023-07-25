@@ -13,7 +13,7 @@
 namespace App\Controller\Api;
 
 use App\Api\Filters\RefundList;
-use App\DataMappers\PaymentFactory;
+use App\DataMappers\PaymentDataMapper;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
 use App\Repository\CustomerRepositoryInterface;
@@ -34,7 +34,7 @@ class CustomerPaymentController
         CustomerRepositoryInterface $customerRepository,
         PaymentRepositoryInterface $repository,
         SerializerInterface $serializer,
-        PaymentFactory $factory,
+        PaymentDataMapper $factory,
     ): Response {
         try {
             /** @var Customer $customer */

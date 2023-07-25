@@ -17,7 +17,7 @@ use App\Dto\Generic\App\Payment as AppDto;
 use App\Entity\Customer;
 use Parthenon\Billing\Entity\Payment;
 
-class PaymentFactory
+class PaymentDataMapper
 {
     public function __construct(
         private CustomerDataMapper $customerFactory

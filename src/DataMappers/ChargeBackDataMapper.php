@@ -23,7 +23,7 @@ class ChargeBackDataMapper
 {
     public function __construct(
         private CustomerDataMapper $customerFactory,
-        private PaymentFactory $paymentFactory,
+        private PaymentDataMapper $paymentFactory,
         private PaymentRepositoryInterface $paymentRepository,
     ) {
     }

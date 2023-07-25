@@ -15,7 +15,7 @@ namespace App\Controller\App;
 use App\Api\Filters\PaymentList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CustomerDataMapper;
-use App\DataMappers\PaymentFactory;
+use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\ReceiptFactory;
 use App\DataMappers\RefundFactory;
 use App\DataMappers\SubscriptionFactory;
@@ -52,7 +52,7 @@ class PaymentController
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
         SerializerInterface $serializer,
-        PaymentFactory $paymentFactory,
+        PaymentDataMapper $paymentFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -102,7 +102,7 @@ class PaymentController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
         RefundFactory $refundFactory,
-        PaymentFactory $paymentFactory,
+        PaymentDataMapper $paymentFactory,
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptFactory $receiptFactory,
         SerializerInterface $serializer,
