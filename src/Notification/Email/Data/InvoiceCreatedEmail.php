@@ -43,7 +43,7 @@ class InvoiceCreatedEmail extends AbstractEmailData
         return [
             'total' => $this->invoice->getTotal(),
             'sub_total' => $this->invoice->getSubTotal(),
-            'vat_total' => $this->invoice->getTaxTotal(),
+            'tax_total' => $this->invoice->getTaxTotal(),
             'currency' => $this->invoice->getCurrency(),
             'lines' => array_map([$this, 'getInvoiceLineData'], $this->invoice->getLines()->toArray()),
             'biller_address' => $this->getAddress($this->invoice->getBillerAddress()),
@@ -56,8 +56,8 @@ class InvoiceCreatedEmail extends AbstractEmailData
         return [
             'total' => $invoiceLine->getTotal(),
             'sub_total' => $invoiceLine->getSubTotal(),
-            'vat_total' => $invoiceLine->getTaxTotal(),
-            'vat_percentage' => $invoiceLine->getTaxPercentage(),
+            'tax_total' => $invoiceLine->getTaxTotal(),
+            'tax_percentage' => $invoiceLine->getTaxPercentage(),
             'description' => $invoiceLine->getDescription(),
         ];
     }
