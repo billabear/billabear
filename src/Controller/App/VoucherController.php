@@ -13,7 +13,7 @@
 namespace App\Controller\App;
 
 use App\Controller\ValidationErrorResponseTrait;
-use App\DataMappers\VoucherAmountFactory;
+use App\DataMappers\VoucherAmountDataMapper;
 use App\DataMappers\VoucherFactory;
 use App\Dto\Request\App\Voucher\CreateVoucher;
 use App\Dto\Response\Api\ListResponse;
@@ -169,7 +169,7 @@ class VoucherController
         Request $request,
         VoucherRepositoryInterface $voucherRepository,
         VoucherFactory $voucherFactory,
-        VoucherAmountFactory $voucherAmountFactory,
+        VoucherAmountDataMapper $voucherAmountFactory,
         SerializerInterface $serializer,
     ): Response {
         try {

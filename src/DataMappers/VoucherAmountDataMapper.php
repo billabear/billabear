@@ -15,7 +15,7 @@ namespace App\DataMappers;
 use App\Dto\Generic\App\VoucherAmount as AppDto;
 use App\Entity\VoucherAmount as Entity;
 
-class VoucherAmountFactory
+class VoucherAmountDataMapper
 {
     public function createAppDto(Entity $entity): AppDto
     {
