@@ -13,7 +13,7 @@
 namespace App\Controller\App\Settings;
 
 use App\Api\Filters\CustomerList;
-use App\DataMappers\InviteCodeFactory;
+use App\DataMappers\InviteCodeDataMapper;
 use App\DataMappers\UserFactory;
 use App\Dto\Request\App\Settings\User\UserUpdate;
 use App\Dto\Response\App\Settings\User\UserListView;
@@ -38,7 +38,7 @@ class UserController
         Request $request,
         UserRepositoryInterface $repository,
         InviteCodeRepositoryInterface $inviteCodeRepository,
-        InviteCodeFactory $inviteCodeFactory,
+        InviteCodeDataMapper $inviteCodeFactory,
         SerializerInterface $serializer,
         UserFactory $factory,
     ): Response {

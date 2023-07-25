@@ -15,7 +15,7 @@ namespace App\DataMappers;
 use App\Dto\Generic\App\InviteCode as AppDto;
 use Parthenon\User\Entity\InviteCode as Entity;
 
-class InviteCodeFactory
+class InviteCodeDataMapper
 {
     public function createAppDto(Entity $entity): AppDto
     {
