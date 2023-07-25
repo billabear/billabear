@@ -20,7 +20,7 @@ use Parthenon\Billing\Entity\Payment;
 class PaymentFactory
 {
     public function __construct(
-        private CustomerFactory $customerFactory
+        private CustomerDataMapper $customerFactory
     ) {
     }
 

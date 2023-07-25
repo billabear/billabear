@@ -17,7 +17,7 @@ use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\Customer\ObolRegister;
 use App\DataMappers\CreditDataMapper;
-use App\DataMappers\CustomerFactory;
+use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentFactory;
 use App\DataMappers\PaymentMethodsFactory;
 use App\DataMappers\RefundFactory;
@@ -56,7 +56,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -123,7 +123,7 @@ class CustomerController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
@@ -208,7 +208,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodsFactory $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
@@ -265,7 +265,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         ObolRegister $obolRegister,
     ): Response {
         try {

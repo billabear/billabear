@@ -23,7 +23,7 @@ class RefundFactory
 {
     public function __construct(
         private PaymentFactory $paymentFactory,
-        private CustomerFactory $customerFactory,
+        private CustomerDataMapper $customerFactory,
         private BillingAdminDataMapper $billingAdminFactory,
         public PaymentRepositoryInterface $paymentRepository,
     ) {

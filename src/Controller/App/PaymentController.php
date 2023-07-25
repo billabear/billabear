@@ -14,7 +14,7 @@ namespace App\Controller\App;
 
 use App\Api\Filters\PaymentList;
 use App\Controller\ValidationErrorResponseTrait;
-use App\DataMappers\CustomerFactory;
+use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentFactory;
 use App\DataMappers\ReceiptFactory;
 use App\DataMappers\RefundFactory;
@@ -140,7 +140,7 @@ class PaymentController
         Request $request,
         PaymentRepositoryInterface $paymentRepository,
         CustomerRepositoryInterface $customerRepository,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ) {

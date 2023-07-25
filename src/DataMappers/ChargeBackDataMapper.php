@@ -22,7 +22,7 @@ use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 class ChargeBackDataMapper
 {
     public function __construct(
-        private CustomerFactory $customerFactory,
+        private CustomerDataMapper $customerFactory,
         private PaymentFactory $paymentFactory,
         private PaymentRepositoryInterface $paymentRepository,
     ) {

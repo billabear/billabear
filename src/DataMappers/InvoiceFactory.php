@@ -17,7 +17,7 @@ use App\Entity\Invoice as Entity;
 
 class InvoiceFactory
 {
-    public function __construct(private CustomerFactory $customerFactory)
+    public function __construct(private CustomerDataMapper $customerFactory)
     {
     }
 

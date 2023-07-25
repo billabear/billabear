@@ -22,7 +22,7 @@ use App\Repository\BrandSettingsRepositoryInterface;
 use Obol\Model\Customer as ObolCustomer;
 use Parthenon\Common\Address;
 
-class CustomerFactory
+class CustomerDataMapper
 {
     public function __construct(private BrandSettingsRepositoryInterface $brandSettingRepository)
     {

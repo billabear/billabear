@@ -15,7 +15,7 @@ namespace App\Controller\App;
 use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
-use App\DataMappers\CustomerFactory;
+use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentFactory;
 use App\DataMappers\PaymentMethodsFactory;
 use App\DataMappers\PriceFactory;
@@ -64,7 +64,7 @@ class SubscriptionController
     public function createSubscriptionDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanFactory $subscriptionPlanFactory,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
@@ -222,7 +222,7 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         PaymentMethodsFactory $paymentDetailsFactory,
         ProductFactory $productFactory,
         SerializerInterface $serializer,

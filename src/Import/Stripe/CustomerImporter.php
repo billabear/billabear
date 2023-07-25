@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\CustomerFactory;
+use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentMethodsFactory;
 use App\Entity\StripeImport;
 use App\Repository\CustomerRepositoryInterface;
@@ -26,7 +26,7 @@ class CustomerImporter
 {
     public function __construct(
         private ProviderInterface $provider,
-        private CustomerFactory $factory,
+        private CustomerDataMapper $factory,
         private CustomerRepositoryInterface $customerRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,

@@ -15,7 +15,7 @@ namespace App\Controller\Api;
 use App\Api\Filters\CustomerList;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
-use App\DataMappers\CustomerFactory;
+use App\DataMappers\CustomerDataMapper;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
@@ -42,7 +42,7 @@ class CustomerController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
@@ -92,7 +92,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
     ): Response {
         $this->getLogger()->info('Started list customer API request');
 
@@ -137,7 +137,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
     ): Response {
         $this->getLogger()->info('Starting read customer API request');
         try {
@@ -185,7 +185,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        CustomerFactory $customerFactory,
+        CustomerDataMapper $customerFactory,
     ): Response {
         $this->getLogger()->info('Starting customer update API request');
         try {
