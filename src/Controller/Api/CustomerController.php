@@ -16,7 +16,7 @@ use App\Api\Filters\CustomerList;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\DataMappers\CustomerDataMapper;
-use App\Dto\CreateCustomerDto;
+use App\Dto\Request\Api\CreateCustomerDto;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;

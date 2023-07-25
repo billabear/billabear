@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto;
+namespace App\Dto\Request\App;
 
 use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;

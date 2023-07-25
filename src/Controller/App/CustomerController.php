@@ -23,7 +23,7 @@ use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\RefundDataMapper;
 use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\DataMappers\SubscriptionDataMapper;
-use App\Dto\CreateCustomerDto;
+use App\Dto\Request\App\CreateCustomerDto;
 use App\Dto\Response\App\Customer\CreateCustomerView;
 use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;

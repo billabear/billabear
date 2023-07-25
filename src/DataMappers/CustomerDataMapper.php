@@ -12,10 +12,10 @@
 
 namespace App\DataMappers;
 
-use App\Dto\CreateCustomerDto;
 use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
+use App\Dto\Request\App\CreateCustomerDto;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
 use App\Repository\BrandSettingsRepositoryInterface;
