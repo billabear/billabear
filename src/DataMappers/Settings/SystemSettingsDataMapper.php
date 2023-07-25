@@ -16,7 +16,7 @@ use App\Dto\Request\App\Settings\SystemSettings as RequestDto;
 use App\Dto\Response\App\Settings\SystemSettings as AppDto;
 use App\Entity\Settings\SystemSettings;
 
-class SystemSettingsFactory
+class SystemSettingsDataMapper
 {
     public function updateEntity(RequestDto $dto, SystemSettings $settings): SystemSettings
     {

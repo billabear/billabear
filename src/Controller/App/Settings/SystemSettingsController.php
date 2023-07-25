@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
-use App\DataMappers\Settings\SystemSettingsFactory;
+use App\DataMappers\Settings\SystemSettingsDataMapper;
 use App\Dto\Request\App\Settings\SystemSettings;
 use App\Dto\Response\App\Settings\SystemSettingsView;
 use App\Repository\SettingsRepositoryInterface;
@@ -32,7 +32,7 @@ class SystemSettingsController
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
         SerializerInterface $serializer,
-        SystemSettingsFactory $systemSettingsFactory,
+        SystemSettingsDataMapper $systemSettingsFactory,
     ): Response {
         $systemSettingsDto = $systemSettingsFactory->createAppDto($settingsRepository->getDefaultSettings()->getSystemSettings());
         $dto = new SystemSettingsView();
@@ -48,7 +48,7 @@ class SystemSettingsController
     public function updateSettings(
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
-        SystemSettingsFactory $factory,
+        SystemSettingsDataMapper $factory,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
