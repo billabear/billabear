@@ -16,7 +16,7 @@ use App\Dto\Request\App\Settings\User\UserUpdate;
 use App\Dto\Response\App\Settings\User\User as AppDto;
 use App\Entity\User;
 
-class UserFactory
+class UserDataMapper
 {
     public function createAppDto(User $user): AppDto
     {

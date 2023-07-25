@@ -14,7 +14,7 @@ namespace App\Controller\App\Settings;
 
 use App\Api\Filters\CustomerList;
 use App\DataMappers\InviteCodeDataMapper;
-use App\DataMappers\UserFactory;
+use App\DataMappers\UserDataMapper;
 use App\Dto\Request\App\Settings\User\UserUpdate;
 use App\Dto\Response\App\Settings\User\UserListView;
 use App\Dto\Response\App\Settings\User\UserView;
@@ -40,7 +40,7 @@ class UserController
         InviteCodeRepositoryInterface $inviteCodeRepository,
         InviteCodeDataMapper $inviteCodeFactory,
         SerializerInterface $serializer,
-        UserFactory $factory,
+        UserDataMapper $factory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -89,7 +89,7 @@ class UserController
         Request $request,
         UserRepositoryInterface $userRepository,
         SerializerInterface $serializer,
-        UserFactory $userFactory,
+        UserDataMapper $userFactory,
     ): Response {
         try {
             $user = $userRepository->getById($request->get('id'), true);
@@ -112,7 +112,7 @@ class UserController
         UserRepositoryInterface $userRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        UserFactory $userFactory,
+        UserDataMapper $userFactory,
     ): Response {
         try {
             $user = $userRepository->getById($request->get('id'), true);
