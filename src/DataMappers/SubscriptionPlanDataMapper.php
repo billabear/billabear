@@ -25,7 +25,7 @@ use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 
-class SubscriptionPlanFactory
+class SubscriptionPlanDataMapper
 {
     public function __construct(
         private PriceRepositoryInterface $priceRepository,

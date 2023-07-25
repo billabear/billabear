@@ -15,7 +15,7 @@ namespace App\Controller\App;
 use App\Api\Filters\CustomerList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\QuoteDataMapper;
-use App\DataMappers\SubscriptionPlanFactory;
+use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Request\App\Invoice\ReadQuoteView;
 use App\Dto\Response\App\ListResponse;
@@ -62,7 +62,7 @@ class QuoteController
         Request $request,
         SerializerInterface $serializer,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        SubscriptionPlanFactory $subscriptionPlanFactory,
+        SubscriptionPlanDataMapper $subscriptionPlanFactory,
     ) {
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);

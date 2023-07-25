@@ -15,7 +15,7 @@ namespace App\Controller\App;
 use App\Api\Filters\ProductList;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductDataMapper;
-use App\DataMappers\SubscriptionPlanFactory;
+use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
@@ -128,7 +128,7 @@ class ProductController
         SerializerInterface $serializer,
         ProductDataMapper $productFactory,
         PriceDataMapper $priceFactory,
-        SubscriptionPlanFactory $subscriptionPlanFactory,
+        SubscriptionPlanDataMapper $subscriptionPlanFactory,
     ): Response {
         try {
             $product = $productRepository->getById($request->get('id'));

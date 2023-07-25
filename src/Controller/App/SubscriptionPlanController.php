@@ -14,7 +14,7 @@ namespace App\Controller\App;
 
 use App\DataMappers\FeatureDataMapper;
 use App\DataMappers\PriceDataMapper;
-use App\DataMappers\SubscriptionPlanFactory;
+use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\PostSubscriptionPlan;
 use App\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use App\Dto\Response\App\SubscriptionPlanCreationInfo;
@@ -76,7 +76,7 @@ class SubscriptionPlanController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        SubscriptionPlanFactory $factory,
+        SubscriptionPlanDataMapper $factory,
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {
@@ -117,7 +117,7 @@ class SubscriptionPlanController
         Request $request,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SerializerInterface $serializer,
-        SubscriptionPlanFactory $factory,
+        SubscriptionPlanDataMapper $factory,
     ): Response {
         try {
             $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));
@@ -140,7 +140,7 @@ class SubscriptionPlanController
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SerializerInterface $serializer,
-        SubscriptionPlanFactory $factory,
+        SubscriptionPlanDataMapper $factory,
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
@@ -180,7 +180,7 @@ class SubscriptionPlanController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        SubscriptionPlanFactory $factory,
+        SubscriptionPlanDataMapper $factory,
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {

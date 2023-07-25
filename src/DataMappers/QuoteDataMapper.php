@@ -22,7 +22,7 @@ class QuoteDataMapper
     public function __construct(
         private BillingAdminDataMapper $billingAdminDataMapper,
         private CustomerDataMapper $customerDataMapper,
-        private SubscriptionPlanFactory $subscriptionPlanDataMapper,
+        private SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
         private PriceDataMapper $priceDataMapper,
     ) {
     }

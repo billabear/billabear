@@ -29,7 +29,7 @@ class SubscriptionDataMapper
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionPlanFactory $subscriptionPlanFactory,
+        private SubscriptionPlanDataMapper $subscriptionPlanFactory,
         private PriceDataMapper $priceFactory,
         private CustomerDataMapper $customerFactory,
         private CustomerRepositoryInterface $customerRepository,

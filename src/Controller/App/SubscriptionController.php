@@ -21,7 +21,7 @@ use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductDataMapper;
 use App\DataMappers\SubscriptionDataMapper;
-use App\DataMappers\SubscriptionPlanFactory;
+use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Generic\App\SubscriptionPlan;
 use App\Dto\Request\App\CancelSubscription;
 use App\Dto\Request\App\CreateSubscription;
@@ -66,7 +66,7 @@ class SubscriptionController
         CustomerRepositoryInterface $customerRepository,
         CustomerDataMapper $customerFactory,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        SubscriptionPlanFactory $subscriptionPlanFactory,
+        SubscriptionPlanDataMapper $subscriptionPlanFactory,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodsDataMapper $paymentDetailsFactory,
         SerializerInterface $serializer,
@@ -426,7 +426,7 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        SubscriptionPlanFactory $subscriptionPlanFactory,
+        SubscriptionPlanDataMapper $subscriptionPlanFactory,
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
     ): Response {
