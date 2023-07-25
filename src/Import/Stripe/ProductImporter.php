@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\ProductFactory;
+use App\DataMappers\ProductDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Product;
@@ -29,7 +29,7 @@ class ProductImporter
         private ProductRepositoryInterface $productRepository,
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
-        private ProductFactory $productFactory,
+        private ProductDataMapper $productFactory,
     ) {
     }
 

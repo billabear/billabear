@@ -14,7 +14,7 @@ namespace App\Controller\App;
 
 use App\Api\Filters\ProductList;
 use App\DataMappers\PriceDataMapper;
-use App\DataMappers\ProductFactory;
+use App\DataMappers\ProductDataMapper;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
@@ -42,7 +42,7 @@ class ProductController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        ProductFactory $productFactory,
+        ProductDataMapper $productFactory,
         ProductRegisterInterface $productRegister,
         ProductRepositoryInterface $productRepository,
     ): Response {
@@ -81,7 +81,7 @@ class ProductController
         Request $request,
         ProductRepositoryInterface $productRepository,
         SerializerInterface $serializer,
-        ProductFactory $productFactory,
+        ProductDataMapper $productFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
@@ -126,7 +126,7 @@ class ProductController
         PriceRepositoryInterface $priceRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SerializerInterface $serializer,
-        ProductFactory $productFactory,
+        ProductDataMapper $productFactory,
         PriceDataMapper $priceFactory,
         SubscriptionPlanFactory $subscriptionPlanFactory,
     ): Response {
@@ -162,7 +162,7 @@ class ProductController
         ProductRepositoryInterface $productRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        ProductFactory $productFactory,
+        ProductDataMapper $productFactory,
     ): Response {
         try {
             /** @var Product $product */

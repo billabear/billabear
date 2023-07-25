@@ -19,7 +19,7 @@ use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\PriceDataMapper;
-use App\DataMappers\ProductFactory;
+use App\DataMappers\ProductDataMapper;
 use App\DataMappers\SubscriptionFactory;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Generic\App\SubscriptionPlan;
@@ -224,7 +224,7 @@ class SubscriptionController
         SubscriptionFactory $subscriptionFactory,
         CustomerDataMapper $customerFactory,
         PaymentMethodsDataMapper $paymentDetailsFactory,
-        ProductFactory $productFactory,
+        ProductDataMapper $productFactory,
         SerializerInterface $serializer,
         PaymentRepositoryInterface $paymentRepository,
         PaymentDataMapper $paymentFactory,

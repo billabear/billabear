@@ -32,7 +32,7 @@ class SubscriptionPlanFactory
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         private PriceDataMapper $priceFactory,
         private FeatureDataMapper $featureFactory,
-        private ProductFactory $productFactory,
+        private ProductDataMapper $productFactory,
     ) {
     }
 

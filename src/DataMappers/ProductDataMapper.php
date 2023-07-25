@@ -18,7 +18,7 @@ use App\Dto\Request\Api\CreateProduct;
 use App\Entity\Product;
 use App\Enum\TaxType;
 
-class ProductFactory
+class ProductDataMapper
 {
     public function createFromApiCreate(CreateProduct $createProduct, Product $product = null): Product
     {
