@@ -20,7 +20,7 @@ use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductDataMapper;
-use App\DataMappers\SubscriptionFactory;
+use App\DataMappers\SubscriptionDataMapper;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Generic\App\SubscriptionPlan;
 use App\Dto\Request\App\CancelSubscription;
@@ -125,7 +125,7 @@ class SubscriptionController
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
         TransactionManager $transactionManager,
     ): Response {
         try {
@@ -175,7 +175,7 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -221,7 +221,7 @@ class SubscriptionController
     public function viewSubscription(
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
         CustomerDataMapper $customerFactory,
         PaymentMethodsDataMapper $paymentDetailsFactory,
         ProductDataMapper $productFactory,

@@ -22,7 +22,7 @@ use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\RefundDataMapper;
 use App\DataMappers\Settings\BrandSettingsFactory;
-use App\DataMappers\SubscriptionFactory;
+use App\DataMappers\SubscriptionDataMapper;
 use App\Dto\CreateCustomerDto;
 use App\Dto\Response\App\Customer\CreateCustomerView;
 use App\Dto\Response\App\CustomerView;
@@ -216,7 +216,7 @@ class CustomerController
         RefundRepositoryInterface $refundRepository,
         RefundDataMapper $refundFactory,
         SubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
         LimitsFactory $limitsFactory,
         CreditRepositoryInterface $creditNoteRepository,
         CreditDataMapper $creditNoteFactory,

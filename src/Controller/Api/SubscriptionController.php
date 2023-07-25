@@ -16,7 +16,7 @@ use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
 use App\DataMappers\CancellationDataMapper;
-use App\DataMappers\SubscriptionFactory;
+use App\DataMappers\SubscriptionDataMapper;
 use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
 use App\Dto\Request\Api\Subscription\UpdatePlan;
@@ -61,7 +61,7 @@ class SubscriptionController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         \App\Repository\SubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
         SerializerInterface $serializer,
     ) {
         try {
@@ -93,7 +93,7 @@ class SubscriptionController
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
         TransactionManager $transactionManager
     ): Response {
         try {
@@ -165,7 +165,7 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -211,7 +211,7 @@ class SubscriptionController
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
     ): Response {
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));

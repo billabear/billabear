@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\SubscriptionFactory;
+use App\DataMappers\SubscriptionDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\SubscriptionCancellationStats;
@@ -27,7 +27,7 @@ class SubscriptionImporter
     public function __construct(
         private ProviderInterface $provider,
         private SubscriptionRepositoryInterface $subscriptionRepository,
-        private SubscriptionFactory $subscriptionFactory,
+        private SubscriptionDataMapper $subscriptionFactory,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private SubscriptionCreationStats $subscriptionCreationStats,
         private SubscriptionCancellationStats $subscriptionCancellationStats,

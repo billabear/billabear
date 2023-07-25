@@ -24,7 +24,7 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 
-class SubscriptionFactory
+class SubscriptionDataMapper
 {
     use LoggerAwareTrait;
 

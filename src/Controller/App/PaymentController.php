@@ -18,7 +18,7 @@ use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\ReceiptDataMapper;
 use App\DataMappers\RefundDataMapper;
-use App\DataMappers\SubscriptionFactory;
+use App\DataMappers\SubscriptionDataMapper;
 use App\Dto\Request\App\Payments\AttachToCustomer;
 use App\Dto\Request\App\Payments\RefundPayment;
 use App\Dto\Response\App\ListResponse;
@@ -100,7 +100,7 @@ class PaymentController
         PaymentRepositoryInterface $paymentRepository,
         RefundRepositoryInterface $refundRepository,
         SubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionFactory $subscriptionFactory,
+        SubscriptionDataMapper $subscriptionFactory,
         RefundDataMapper $refundFactory,
         PaymentDataMapper $paymentFactory,
         ReceiptRepositoryInterface $receiptRepository,
