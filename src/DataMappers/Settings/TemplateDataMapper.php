@@ -15,7 +15,7 @@ namespace App\DataMappers\Settings;
 use App\Dto\Generic\App\Template as AppDto;
 use App\Entity\Template;
 
-class TemplateFactory
+class TemplateDataMapper
 {
     public function createAppDto(Template $template): AppDto
     {

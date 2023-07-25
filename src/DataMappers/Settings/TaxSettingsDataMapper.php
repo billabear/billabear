@@ -16,7 +16,7 @@ use App\Dto\Request\App\Settings\Tax\TaxSettings as RequestDto;
 use App\Dto\Response\App\Settings\Tax\TaxSettings as AppDto;
 use App\Entity\Settings\TaxSettings as Entity;
 
-class TaxSettingsFactory
+class TaxSettingsDataMapper
 {
     public function createEntity(RequestDto $requestDto): Entity
     {

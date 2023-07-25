@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
-use App\DataMappers\Settings\TaxSettingsFactory;
+use App\DataMappers\Settings\TaxSettingsDataMapper;
 use App\Dto\Request\App\Settings\Tax\TaxSettings;
 use App\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +27,7 @@ class TaxSettingsController
     #[Route('/app/settings/tax', name: 'app_app_settings_taxsettings_readsettings', methods: ['GET'])]
     public function readSettings(
         SerializerInterface $serializer,
-        TaxSettingsFactory $taxSettingsFactory,
+        TaxSettingsDataMapper $taxSettingsFactory,
         SettingsRepositoryInterface $settingsRepository,
     ) {
         $settings = $settingsRepository->getDefaultSettings();
@@ -42,7 +42,7 @@ class TaxSettingsController
     public function setSettings(
         Request $request,
         SerializerInterface $serializer,
-        TaxSettingsFactory $taxSettingsFactory,
+        TaxSettingsDataMapper $taxSettingsFactory,
         SettingsRepositoryInterface $settingsRepository,
     ) {
         /** @var TaxSettings $dto */

@@ -12,7 +12,7 @@
 
 namespace App\Controller\App\Settings;
 
-use App\DataMappers\Settings\TemplateFactory;
+use App\DataMappers\Settings\TemplateDataMapper;
 use App\Dto\Request\App\Template\PdfTemplate;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Template\TemplateView;
@@ -40,7 +40,7 @@ class PdfTemplateController
     public function getTemplateList(
         Request $request,
         TemplateRepositoryInterface $templateRepository,
-        TemplateFactory $factory,
+        TemplateDataMapper $factory,
         SerializerInterface $serializer
     ): Response {
         $templates = $templateRepository->getByBrand($request->get('brand', 'default'));
@@ -61,7 +61,7 @@ class PdfTemplateController
     public function getTemplate(
         Request $request,
         TemplateRepositoryInterface $templateRepository,
-        TemplateFactory $factory,
+        TemplateDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
         try {
@@ -84,7 +84,7 @@ class PdfTemplateController
     public function updateTemplate(
         Request $request,
         TemplateRepositoryInterface $templateRepository,
-        TemplateFactory $factory,
+        TemplateDataMapper $factory,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
