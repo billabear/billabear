@@ -304,7 +304,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
-        \App\DataMappers\CancellationRequestFactory $cancellationRequestFactory,
+        \App\DataMappers\CancellationDataMapper $cancellationRequestFactory,
         UserProvider $userProvider,
     ): Response {
         try {

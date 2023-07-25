@@ -15,7 +15,7 @@ namespace App\Controller\Api;
 use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
-use App\DataMappers\CancellationRequestFactory;
+use App\DataMappers\CancellationDataMapper;
 use App\DataMappers\SubscriptionFactory;
 use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
@@ -49,11 +49,11 @@ class SubscriptionController
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
 
-    private CancellationRequestFactory $cancellationRequestFactory;
+    private CancellationDataMapper $cancellationRequestFactory;
 
     public function __construct()
     {
-        $this->cancellationRequestFactory = new CancellationRequestFactory();
+        $this->cancellationRequestFactory = new CancellationDataMapper();
     }
 
     #[Route('/api/v1/customer/{customerId}/subscription', methods: ['GET'])]
@@ -231,7 +231,7 @@ class SubscriptionController
         SubscriptionRepositoryInterface $subscriptionRepository,
         CancellationRequestProcessor $cancellationRequestProcessor,
         CancellationRequestRepositoryInterface $cancellationRequestRepository,
-        CancellationRequestFactory $cancellationRequestFactory,
+        CancellationDataMapper $cancellationRequestFactory,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {

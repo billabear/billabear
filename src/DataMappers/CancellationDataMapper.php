@@ -18,7 +18,7 @@ use App\Entity\CancellationRequest;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 
-class CancellationRequestFactory
+class CancellationDataMapper
 {
     public function getCancellationRequestEntity(Subscription $subscription, AppDto|ApiDto $dto, BillingAdminInterface $user = null): CancellationRequest
     {
