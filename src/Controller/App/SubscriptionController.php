@@ -17,7 +17,7 @@ use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
 use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
-use App\DataMappers\PaymentMethodsFactory;
+use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\PriceFactory;
 use App\DataMappers\ProductFactory;
 use App\DataMappers\SubscriptionFactory;
@@ -68,7 +68,7 @@ class SubscriptionController
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanFactory $subscriptionPlanFactory,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
-        PaymentMethodsFactory $paymentDetailsFactory,
+        PaymentMethodsDataMapper $paymentDetailsFactory,
         SerializerInterface $serializer,
         SubscriptionRepositoryInterface $subscriptionRepository,
     ): Response {
@@ -223,7 +223,7 @@ class SubscriptionController
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionFactory $subscriptionFactory,
         CustomerDataMapper $customerFactory,
-        PaymentMethodsFactory $paymentDetailsFactory,
+        PaymentMethodsDataMapper $paymentDetailsFactory,
         ProductFactory $productFactory,
         SerializerInterface $serializer,
         PaymentRepositoryInterface $paymentRepository,

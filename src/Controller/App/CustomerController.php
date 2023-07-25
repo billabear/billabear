@@ -19,7 +19,7 @@ use App\Customer\ObolRegister;
 use App\DataMappers\CreditDataMapper;
 use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
-use App\DataMappers\PaymentMethodsFactory;
+use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\RefundFactory;
 use App\DataMappers\Settings\BrandSettingsFactory;
 use App\DataMappers\SubscriptionFactory;
@@ -210,7 +210,7 @@ class CustomerController
         SerializerInterface $serializer,
         CustomerDataMapper $customerFactory,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
-        PaymentMethodsFactory $paymentDetailsFactory,
+        PaymentMethodsDataMapper $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
         PaymentDataMapper $paymentFactory,
         RefundRepositoryInterface $refundRepository,

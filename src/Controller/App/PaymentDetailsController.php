@@ -12,7 +12,7 @@
 
 namespace App\Controller\App;
 
-use App\DataMappers\PaymentMethodsFactory;
+use App\DataMappers\PaymentMethodsDataMapper;
 use App\Dto\Request\Api\PaymentDetails\FrontendTokenComplete;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\PaymentDetails\FrontendToken;
@@ -68,7 +68,7 @@ class PaymentDetailsController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        PaymentMethodsFactory $paymentDetailsFactory,
+        PaymentMethodsDataMapper $paymentDetailsFactory,
     ): Response {
         try {
             /** @var Customer $customer */
@@ -105,7 +105,7 @@ class PaymentDetailsController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
-        PaymentMethodsFactory $paymentDetailsFactory,
+        PaymentMethodsDataMapper $paymentDetailsFactory,
         SerializerInterface $serializer,
     ): Response {
         try {

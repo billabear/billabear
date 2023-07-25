@@ -13,7 +13,7 @@
 namespace App\Import\Stripe;
 
 use App\DataMappers\CustomerDataMapper;
-use App\DataMappers\PaymentMethodsFactory;
+use App\DataMappers\PaymentMethodsDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
@@ -30,7 +30,7 @@ class CustomerImporter
         private CustomerRepositoryInterface $customerRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,
-        private PaymentMethodsFactory $paymentMethodsFactory,
+        private PaymentMethodsDataMapper $paymentMethodsFactory,
         private CustomerCreditImporter $customerCreditImporter,
     ) {
     }

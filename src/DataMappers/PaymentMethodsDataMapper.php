@@ -17,7 +17,7 @@ use App\Dto\Generic\App\PaymentMethod as AppDto;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Billing\Entity\PaymentCard;
 
-class PaymentMethodsFactory
+class PaymentMethodsDataMapper
 {
     public function __construct(private CustomerRepositoryInterface $customerRepository)
     {

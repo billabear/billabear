@@ -13,7 +13,7 @@
 namespace App\DataMappers\Reports;
 
 use App\DataMappers\CustomerDataMapper;
-use App\DataMappers\PaymentMethodsFactory;
+use App\DataMappers\PaymentMethodsDataMapper;
 use App\Dto\Response\App\Reports\ExpiringCard;
 use Parthenon\Billing\Entity\PaymentCard;
 
@@ -21,7 +21,7 @@ class ExpiringCardsFactory
 {
     public function __construct(
         private CustomerDataMapper $customerFactory,
-        private PaymentMethodsFactory $paymentMethodsFactory,
+        private PaymentMethodsDataMapper $paymentMethodsFactory,
     ) {
     }
 
