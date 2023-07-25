@@ -10,39 +10,30 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Generic\App;
+namespace App\Dto\Request\App;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class Product
+class CreateProduct
 {
-    #[SerializedName('id')]
-    protected string $id;
-
+    #[Assert\NotBlank()]
     #[SerializedName('name')]
-    protected string $name;
-
-    #[SerializedName('tax_type')]
-    protected string $taxType;
+    private string $name;
 
     #[SerializedName('external_reference')]
-    protected ?string $externalReference = null;
+    private ?string $externalReference = null;
 
-    #[SerializedName('payment_provider_details_url')]
-    protected ?string $paymentProviderDetailsUrl = null;
+    #[SerializedName('tax_type')]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Choice(choices: ['digital_goods', 'physical', 'digital_services'])]
+    private $taxType;
 
     #[SerializedName('tax_rate')]
-    protected ?float $taxRate = null;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type(['float', 'integer'])]
+    #[Assert\PositiveOrZero]
+    private $taxRate;
 
     public function getName(): string
     {
@@ -54,48 +45,32 @@ class Product
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getExternalReference(): ?string
     {
         return $this->externalReference;
     }
 
-    /**
-     * @param string $externalReference
-     */
     public function setExternalReference(?string $externalReference): void
     {
         $this->externalReference = $externalReference;
     }
 
-    public function getPaymentProviderDetailsUrl(): ?string
-    {
-        return $this->paymentProviderDetailsUrl;
-    }
-
-    public function setPaymentProviderDetailsUrl(?string $paymentProviderDetailsUrl): void
-    {
-        $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
-    }
-
-    public function getTaxType(): string
+    public function getTaxType()
     {
         return $this->taxType;
     }
 
-    public function setTaxType(string $taxType): void
+    public function setTaxType($taxType): void
     {
         $this->taxType = $taxType;
     }
 
-    public function getTaxRate(): ?float
+    public function getTaxRate()
     {
         return $this->taxRate;
     }
 
-    public function setTaxRate(?float $taxRate): void
+    public function setTaxRate($taxRate): void
     {
         $this->taxRate = $taxRate;
     }

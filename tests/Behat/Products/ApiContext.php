@@ -70,6 +70,9 @@ class ApiContext implements Context
                 default => TaxType::DIGITAL_GOODS,
             };
             $product->setTaxType($taxType);
+            if (isset($row['Tax Rate']) && !empty($row['Tax Rate'])) {
+                $product->setTaxRate(floatval($row['Tax Rate']));
+            }
             $this->productRepository->getEntityManager()->persist($product);
         }
         $this->productRepository->getEntityManager()->flush();

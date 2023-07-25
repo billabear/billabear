@@ -1,4 +1,4 @@
-Feature: Use Customer defined tax rates
+Feature: Use Product Tax Rate
 
   Background:
     Given the following accounts exist:
@@ -7,9 +7,9 @@ Feature: Use Customer defined tax rates
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
     And the follow products exist:
-      | Name        | External Reference |
-      | Product One | prod_jf9j545       |
-      | Product Two | prod_jf9j542       |
+      | Name        | External Reference | Tax Rate |
+      | Product One | prod_jf9j545       | 25       |
+      | Product Two | prod_jf9j542       |          |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
@@ -43,17 +43,7 @@ Feature: Use Customer defined tax rates
   Scenario:
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Active |
-    And stripe billing is disabled
-    And that the tax settings for tax customers with tax number is true
-    When the background task to reinvoice active subscriptions
-    Then the subscription for "customer.four@example.org" will expire in a week
-    And there the latest invoice for "customer.four@example.org" will have tax rate for UK
-
-  Scenario:
-    Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
       | Test Plan         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
-    And there the latest invoice for "customer.one@example.org" will have tax rate of 15
+    And there the latest invoice for "customer.one@example.org" will have tax rate of 25

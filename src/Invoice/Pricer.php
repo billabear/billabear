@@ -28,7 +28,7 @@ class Pricer implements PricerInterface
     public function getCustomerPriceInfo(Price $price, Customer $customer, TaxType $taxType): PriceInfo
     {
         $money = $price->getAsMoney();
-        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType);
+        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, $price->getProduct());
         $rawRate = $taxInfo->rate;
         if ($price->isIncludingTax()) {
             $rate = ($rawRate / 100) + 1;

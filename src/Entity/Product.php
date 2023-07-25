@@ -22,6 +22,9 @@ class Product extends \Parthenon\Billing\Entity\Product
     #[ORM\Column(enumType: TaxType::class)]
     protected TaxType $taxType;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    protected ?float $taxRate = null;
+
     public function getTaxType(): TaxType
     {
         return $this->taxType;
@@ -30,5 +33,15 @@ class Product extends \Parthenon\Billing\Entity\Product
     public function setTaxType(TaxType $taxType): void
     {
         $this->taxType = $taxType;
+    }
+
+    public function getTaxRate(): ?float
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate(?float $taxRate): void
+    {
+        $this->taxRate = $taxRate;
     }
 }

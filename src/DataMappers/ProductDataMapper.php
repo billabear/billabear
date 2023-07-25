@@ -14,13 +14,14 @@ namespace App\DataMappers;
 
 use App\Dto\Generic\Api\Product as ProductDto;
 use App\Dto\Generic\App\Product as AppDto;
-use App\Dto\Request\Api\CreateProduct;
+use App\Dto\Request\Api\CreateProduct as ApiCreate;
+use App\Dto\Request\App\CreateProduct as AppCreate;
 use App\Entity\Product;
 use App\Enum\TaxType;
 
 class ProductDataMapper
 {
-    public function createFromApiCreate(CreateProduct $createProduct, Product $product = null): Product
+    public function createFromApiCreate(ApiCreate $createProduct, Product $product = null): Product
     {
         if (!$product) {
             $product = new Product();
@@ -29,6 +30,22 @@ class ProductDataMapper
         $product->setName($createProduct->getName());
         $product->setExternalReference($createProduct->getExternalReference());
         $product->setTaxType(TaxType::fromName($createProduct->getTaxType()));
+
+        return $product;
+    }
+
+    public function createFromAppCreate(AppCreate $createProduct, Product $product = null): Product
+    {
+        if (!$product) {
+            $product = new Product();
+        }
+
+        $product->setName($createProduct->getName());
+        $product->setExternalReference($createProduct->getExternalReference());
+        $product->setTaxType(TaxType::fromName($createProduct->getTaxType()));
+        if ($createProduct->getTaxRate()) {
+            $product->setTaxRate(floatval($createProduct->getTaxRate()));
+        }
 
         return $product;
     }
@@ -52,6 +69,7 @@ class ProductDataMapper
         $dto->setExternalReference($product->getExternalReference());
         $dto->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
         $dto->setTaxType($product->getTaxType()->value);
+        $dto->setTaxRate($product->getTaxRate());
 
         return $dto;
     }

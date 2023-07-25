@@ -15,3 +15,10 @@ Feature: Create Product
     When I create a product via the app with the following info
       | Name | Product Four |
     Then there should be a product with the name "Product Four"
+
+  Scenario: Successfully create product with tax rate
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a product via the app with the following info
+      | Name     | Product Four |
+      | Tax Rate | 20           |
+    Then the product "Product Four" should have the tax rate 20

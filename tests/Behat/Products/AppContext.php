@@ -48,7 +48,23 @@ class AppContext implements Context
             };
         }
 
+        if (isset($data['Tax Rate'])) {
+            $payload['tax_rate'] = floatval($data['Tax Rate']);
+        }
+
         $this->sendJsonRequest('POST', '/app/product', $payload);
+    }
+
+    /**
+     * @Then the product :arg1 should have the tax rate :arg2
+     */
+    public function theProductShouldHaveTheTaxRate($name, $arg2)
+    {
+        $product = $this->getProductByName($name);
+
+        if ($product->getTaxRate() != $arg2) {
+            throw new \Exception(sprintf('Expected %s but got %s', $arg2, $product->getTaxRate()));
+        }
     }
 
     /**
@@ -86,6 +102,10 @@ class AppContext implements Context
                 'Physical' => TaxType::PHYSICAL->value,
                 default => TaxType::DIGITAL_GOODS->value,
             };
+        }
+
+        if (isset($data['Tax Rate'])) {
+            $payload['tax_rate'] = floatval($data['Tax Rate']);
         }
 
         $this->sendJsonRequest('POST', '/app/product/'.$product->getId(), $payload);

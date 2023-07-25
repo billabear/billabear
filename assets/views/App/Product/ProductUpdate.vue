@@ -4,14 +4,22 @@
 
     <form @submit.prevent="send">
     <div class="mt-3 card-body">
-        <div class="form-field-ctn">
-          <label class="form-field-lbl" for="email">
-            {{ $t('app.product.update.name') }}
-          </label>
-          <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
-          <input type="text" class="form-field-input" id="name" v-model="product.name" />
-          <p class="form-field-help">{{ $t('app.product.update.help_info.name') }}</p>
-        </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="email">
+          {{ $t('app.product.update.name') }}
+        </label>
+        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
+        <input type="text" class="form-field-input" id="name" v-model="product.name" />
+        <p class="form-field-help">{{ $t('app.product.update.help_info.name') }}</p>
+      </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="tax_rate">
+          {{ $t('app.product.update.tax_rate') }}
+        </label>
+        <p class="form-field-error" v-if="errors.taxRate != undefined">{{ errors.taxRate }}</p>
+        <input type="number" class="form-field-input" id="tax_rate" v-model="product.tax_rate" />
+        <p class="form-field-help">{{ $t('app.product.update.help_info.tax_rate') }}</p>
+      </div>
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="tax_type">
             {{ $t('app.product.create.tax_type') }}

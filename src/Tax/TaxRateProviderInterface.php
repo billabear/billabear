@@ -13,9 +13,10 @@
 namespace App\Tax;
 
 use App\Entity\Customer;
+use App\Entity\Product;
 use App\Enum\TaxType;
 
 interface TaxRateProviderInterface
 {
-    public function getRateForCustomer(Customer $customer, TaxType $taxType): TaxInfo;
+    public function getRateForCustomer(Customer $customer, TaxType $taxType, Product $product = null): TaxInfo;
 }

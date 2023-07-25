@@ -13,6 +13,7 @@
 namespace App\Tax;
 
 use App\Entity\Customer;
+use App\Entity\Product;
 use App\Enum\CustomerType;
 use App\Enum\TaxType;
 use App\Repository\SettingsRepositoryInterface;
@@ -25,8 +26,12 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
     {
     }
 
-    public function getRateForCustomer(Customer $customer, TaxType $taxType): TaxInfo
+    public function getRateForCustomer(Customer $customer, TaxType $taxType, Product $product = null): TaxInfo
     {
+        if ($product && null !== $product->getTaxRate()) {
+            return new TaxInfo($product->getTaxRate(), $customer->getBillingAddress()->getCountry(), false);
+        }
+
         if ($customer->getStandardTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
             return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }

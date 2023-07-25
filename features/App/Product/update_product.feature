@@ -13,9 +13,20 @@ Feature: Product Update APP
   Scenario: Update product info
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow products exist:
+      | Name        | Tax Rate |
+      | Product One | 14       |
+      | Product Two |          |
+    When I update the product info via the APP for "Product One":
+      | Name          | Product Three |
+    Then there should be a product with the name "Product Three"
+
+  Scenario: Update product info - tax info
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the follow products exist:
       | Name        |
       | Product One |
       | Product Two |
     When I update the product info via the APP for "Product One":
       | Name          | Product Three |
-    Then there should be a product with the name "Product Three"
+      | Tax Rate      | 34            |
+    Then the product "Product Three" should have the tax rate 34

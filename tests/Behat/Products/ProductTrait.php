@@ -12,7 +12,7 @@
 
 namespace App\Tests\Behat\Products;
 
-use Parthenon\Billing\Entity\Product;
+use App\Entity\Product;
 
 trait ProductTrait
 {

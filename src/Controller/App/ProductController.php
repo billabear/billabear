@@ -16,7 +16,7 @@ use App\Api\Filters\ProductList;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductDataMapper;
 use App\DataMappers\SubscriptionPlanDataMapper;
-use App\Dto\Request\Api\CreateProduct;
+use App\Dto\Request\App\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
 use Obol\Exception\ProviderFailureException;
@@ -61,7 +61,7 @@ class ProductController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $product = $productFactory->createFromApiCreate($dto);
+        $product = $productFactory->createFromAppCreate($dto);
         if (!$product->hasExternalReference()) {
             try {
                 $product = $productRegister->registerProduct($product);
@@ -187,7 +187,7 @@ class ProductController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $newProduct = $productFactory->createFromApiCreate($dto, $product);
+        $newProduct = $productFactory->createFromAppCreate($dto, $product);
 
         $productRepository->save($newProduct);
         $dto = $productFactory->createAppDtoFromProduct($newProduct);

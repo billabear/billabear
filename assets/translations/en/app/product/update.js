@@ -17,9 +17,11 @@ export const PRODUCT_UPDATE_TRANSLATIONS = {
         digital_goods: "Digital Goods",
         physical: "Physical Goods/Services"
     },
+    tax_rate: "Tax Rate",
     help_info: {
         name: "The name of the product",
         external_reference: "The reference for the product that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference.",
-        tax_type: "This is to help with taxing correctly. Physical goods and services are taxed differently from digital goods. And in some countries they have a digital services tax."
+        tax_type: "This is to help with taxing correctly. Physical goods and services are taxed differently from digital goods. And in some countries they have a digital services tax.",
+        tax_rate: "The tax rate that is to be used for this product. It will override other tax rates."
     }
 }
