@@ -102,7 +102,7 @@ class ReceiptProvider
         $lineOne->setCurrency('EUR');
         $lineOne->setTotal(10000);
         $lineOne->setSubTotal(8000);
-        $lineOne->setVatTotal(2000);
+        $lineOne->setTaxTotal(2000);
         $lineOne->setDescription('Example Line One');
 
         $lineTwo = new InvoiceLine();
@@ -110,13 +110,13 @@ class ReceiptProvider
         $lineTwo->setCurrency('EUR');
         $lineTwo->setTotal(20000);
         $lineTwo->setSubTotal(16000);
-        $lineTwo->setVatTotal(4000);
+        $lineTwo->setTaxTotal(4000);
         $lineTwo->setDescription('Example Line Two');
 
         $invoice->setLines([$lineOne, $lineTwo]);
         $invoice->setTotal(30000);
         $invoice->setSubTotal(24000);
-        $invoice->setVatTotal(6000);
+        $invoice->setTaxTotal(6000);
         $invoice->setCurrency('EUR');
         $invoice->setValid(true);
 

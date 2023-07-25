@@ -82,6 +82,6 @@ class InvoiceGeneratorTest extends TestCase
         $this->assertCount(2, $actual->getLines());
         $this->assertEquals(5000, $actual->getTotal());
         $this->assertEquals(4000, $actual->getSubTotal());
-        $this->assertEquals(1000, $actual->getVatTotal());
+        $this->assertEquals(1000, $actual->getTaxTotal());
     }
 }

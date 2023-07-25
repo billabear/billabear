@@ -46,10 +46,10 @@ class InvoiceContext implements Context
         $rate = null;
         /** @var InvoiceLine $line */
         foreach ($invoice->getLines() as $line) {
-            if (20 == $line->getVatPercentage()) {
+            if (20 == $line->getTaxPercentage()) {
                 return;
             } else {
-                $rate = $line->getVatPercentage();
+                $rate = $line->getTaxPercentage();
             }
         }
 
@@ -72,10 +72,10 @@ class InvoiceContext implements Context
         $rate = null;
         /** @var InvoiceLine $line */
         foreach ($invoice->getLines() as $line) {
-            if ($line->getVatPercentage() == $expectedRate) {
+            if ($line->getTaxPercentage() == $expectedRate) {
                 return;
             } else {
-                $rate = $line->getVatPercentage();
+                $rate = $line->getTaxPercentage();
             }
         }
 

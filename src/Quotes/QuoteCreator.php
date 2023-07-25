@@ -65,10 +65,10 @@ class QuoteCreator
             $quoteLine->setPrice($price);
             $quoteLine->setQuote($quote);
             $quoteLine->setTaxType($plan->getProduct()->getTaxType());
-            $quoteLine->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $quoteLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $quoteLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $quoteLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-            $quoteLine->setVatPercentage($priceInfo->taxRate);
+            $quoteLine->setTaxPercentage($priceInfo->taxRate);
             $quoteLine->setIncludeTax($price->isIncludingTax());
             $quoteLine->setCurrency($price->getCurrency());
 
@@ -92,10 +92,10 @@ class QuoteCreator
             $quoteLine->setTaxType($taxType);
             $quoteLine->setIncludeTax($item->getIncludeTax());
             $quoteLine->setDescription($item->getDescription());
-            $quoteLine->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $quoteLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $quoteLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $quoteLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-            $quoteLine->setVatPercentage($priceInfo->taxRate);
+            $quoteLine->setTaxPercentage($priceInfo->taxRate);
             $quoteLine->setCurrency($item->getCurrency());
 
             $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
@@ -114,7 +114,7 @@ class QuoteCreator
         $quote->setAmountDue($totalAmount->getMinorAmount()->toInt());
         $quote->setTotal($totalAmount->getMinorAmount()->toInt());
         $quote->setSubTotal($subTotal->getMinorAmount()->toInt());
-        $quote->setVatTotal($totalVat->getMinorAmount()->toInt());
+        $quote->setTaxTotal($totalVat->getMinorAmount()->toInt());
         $quote->setCreatedAt(new \DateTime());
         $quote->setUpdatedAt(new \DateTime());
 

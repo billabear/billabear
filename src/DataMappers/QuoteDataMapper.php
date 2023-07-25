@@ -36,7 +36,7 @@ class QuoteDataMapper
         $appDto->setId((string) $entity->getId());
         $appDto->setCurrency($entity->getCurrency());
         $appDto->setTotal($entity->getTotal());
-        $appDto->setTaxTotal($entity->getVatTotal());
+        $appDto->setTaxTotal($entity->getTaxTotal());
         $appDto->setSubTotal($entity->getSubTotal());
         $appDto->setLines(array_map([$this, 'createAppLineDto'], $entity->getLines()->toArray()));
 
@@ -56,9 +56,9 @@ class QuoteDataMapper
         $appLineDto->setDescription($quoteLine->getDescription());
         $appLineDto->setTotal($quoteLine->getTotal());
         $appLineDto->setSubTotal($quoteLine->getSubTotal());
-        $appLineDto->setTaxTotal($quoteLine->getVatTotal());
+        $appLineDto->setTaxTotal($quoteLine->getTaxTotal());
         $appLineDto->setCurrency($quoteLine->getCurrency());
-        $appLineDto->setTaxRate($quoteLine->getVatPercentage());
+        $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
 
         return $appLineDto;
     }

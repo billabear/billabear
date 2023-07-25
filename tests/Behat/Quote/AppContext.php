@@ -62,7 +62,7 @@ class AppContext implements Context
             $quoteLine->setCurrency($currency);
             $quoteLine->setTotal(intval($row['Total']));
             $quoteLine->setSubTotal(intval($row['Sub Total']));
-            $quoteLine->setVatTotal(intval($row['Vat Total']));
+            $quoteLine->setTaxTotal(intval($row['Vat Total']));
             $quoteLine->setIncludeTax('true' === strtolower($row['Include Tax'] ?? 'false'));
 
             $lines[] = $quoteLine;
@@ -72,7 +72,7 @@ class AppContext implements Context
         $quote->setAmountDue($total);
         $quote->setTotal($total);
         $quote->setSubTotal($subTotal);
-        $quote->setVatTotal($vatTotal);
+        $quote->setTaxTotal($vatTotal);
         $quote->setCurrency($currency);
         $quote->setCreatedAt(new \DateTime());
         $quote->setUpdatedAt(new \DateTime());

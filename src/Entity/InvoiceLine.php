@@ -42,10 +42,10 @@ class InvoiceLine
     private int $subTotal;
 
     #[ORM\Column(type: 'integer')]
-    private int $vatTotal;
+    private int $taxTotal;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private ?float $vatPercentage = null;
+    private ?float $taxPercentage = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
@@ -106,14 +106,14 @@ class InvoiceLine
         $this->subTotal = $subTotal;
     }
 
-    public function getVatTotal(): int
+    public function getTaxTotal(): int
     {
-        return $this->vatTotal;
+        return $this->taxTotal;
     }
 
-    public function setVatTotal(int $vatTotal): void
+    public function setTaxTotal(int $taxTotal): void
     {
-        $this->vatTotal = $vatTotal;
+        $this->taxTotal = $taxTotal;
     }
 
     public function getDescription(): string
@@ -133,7 +133,7 @@ class InvoiceLine
 
     public function getVatTotalMoney(): Money
     {
-        return Money::ofMinor($this->vatTotal, strtoupper($this->currency));
+        return Money::ofMinor($this->taxTotal, strtoupper($this->currency));
     }
 
     public function getSubTotalMoney(): Money
@@ -141,14 +141,14 @@ class InvoiceLine
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
-    public function getVatPercentage(): ?float
+    public function getTaxPercentage(): ?float
     {
-        return $this->vatPercentage;
+        return $this->taxPercentage;
     }
 
-    public function setVatPercentage(?float $vatPercentage): void
+    public function setTaxPercentage(?float $taxPercentage): void
     {
-        $this->vatPercentage = $vatPercentage;
+        $this->taxPercentage = $taxPercentage;
     }
 
     public function getTaxType(): TaxType

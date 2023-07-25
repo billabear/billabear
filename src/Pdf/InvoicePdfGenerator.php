@@ -76,7 +76,7 @@ class InvoicePdfGenerator
             'total' => $invoice->getTotal(),
             'total_display' => (string) $invoice->getTotalMoney(),
             'sub_total' => $invoice->getSubTotal(),
-            'vat_total' => $invoice->getVatTotal(),
+            'vat_total' => $invoice->getTaxTotal(),
             'currency' => $invoice->getCurrency(),
             'lines' => array_map([$this, 'getInvoiceLineData'], $invoice->getLines()->toArray()),
             'biller_address' => $this->getAddress($invoice->getBillerAddress()),
@@ -91,8 +91,8 @@ class InvoicePdfGenerator
             'total' => $invoiceLine->getTotal(),
             'total_display' => (string) $invoiceLine->getTotalMoney(),
             'sub_total' => $invoiceLine->getSubTotal(),
-            'vat_total' => $invoiceLine->getVatTotal(),
-            'vat_percentage' => $invoiceLine->getVatPercentage(),
+            'vat_total' => $invoiceLine->getTaxTotal(),
+            'vat_percentage' => $invoiceLine->getTaxPercentage(),
             'description' => $invoiceLine->getDescription(),
         ];
     }

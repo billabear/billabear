@@ -57,7 +57,7 @@ class Quote
     private int $subTotal;
 
     #[ORM\Column(type: 'integer')]
-    private int $vatTotal;
+    private int $taxTotal;
 
     #[ORM\Column(type: 'boolean')]
     private bool $paid = false;
@@ -140,14 +140,14 @@ class Quote
         $this->subTotal = $subTotal;
     }
 
-    public function getVatTotal(): int
+    public function getTaxTotal(): int
     {
-        return $this->vatTotal;
+        return $this->taxTotal;
     }
 
-    public function setVatTotal(int $vatTotal): void
+    public function setTaxTotal(int $taxTotal): void
     {
-        $this->vatTotal = $vatTotal;
+        $this->taxTotal = $taxTotal;
     }
 
     public function getCreatedAt(): \DateTimeInterface
@@ -193,7 +193,7 @@ class Quote
 
     public function getVatTotalMoney(): Money
     {
-        return Money::ofMinor($this->vatTotal, strtoupper($this->currency));
+        return Money::ofMinor($this->taxTotal, strtoupper($this->currency));
     }
 
     public function getSubTotalMoney(): Money

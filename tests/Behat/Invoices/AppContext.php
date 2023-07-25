@@ -247,9 +247,9 @@ class AppContext implements Context
         $line = new InvoiceLine();
         $line->setInvoice($invoice);
         $line->setTotal(10000);
-        $line->setVatPercentage(20.0);
+        $line->setTaxPercentage(20.0);
         $line->setSubTotal(8000);
-        $line->setVatTotal(2000);
+        $line->setTaxTotal(2000);
         $line->setDescription('A test line');
         $line->setCurrency('USD');
         $lines = [$line];
@@ -264,7 +264,7 @@ class AppContext implements Context
         $invoice->setLines($lines);
         $invoice->setTotal(10000);
         $invoice->setSubTotal(8000);
-        $invoice->setVatTotal(2000);
+        $invoice->setTaxTotal(2000);
         $invoice->setAmountDue(10000);
         $invoice->setBillerAddress($customer->getBillingAddress());
         $invoice->setPayeeAddress($customer->getBillingAddress());

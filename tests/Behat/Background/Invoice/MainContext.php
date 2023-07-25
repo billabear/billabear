@@ -75,8 +75,8 @@ class MainContext implements Context
         /** @var Invoice $invoice */
         $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
 
-        if (!$invoice->getVatTotal()) {
-            throw new \Exception('Different amount due - '.$invoice->getVatTotal());
+        if (!$invoice->getTaxTotal()) {
+            throw new \Exception('Different amount due - '.$invoice->getTaxTotal());
         }
     }
 
@@ -89,8 +89,8 @@ class MainContext implements Context
         /** @var Invoice $invoice */
         $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
 
-        if ($invoice->getVatTotal()) {
-            throw new \Exception('Different amount due - '.$invoice->getVatTotal());
+        if ($invoice->getTaxTotal()) {
+            throw new \Exception('Different amount due - '.$invoice->getTaxTotal());
         }
     }
 }

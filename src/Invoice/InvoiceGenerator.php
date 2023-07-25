@@ -65,10 +65,10 @@ class InvoiceGenerator
         $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
         $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
         $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-        $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+        $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
         $line->setInvoice($invoice);
         $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
-        $line->setVatPercentage($priceInfo->taxRate);
+        $line->setTaxPercentage($priceInfo->taxRate);
         $line->setTaxType($newPlan->getProduct()->getTaxType());
         $lines[] = $line;
 
@@ -110,10 +110,10 @@ class InvoiceGenerator
             $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
             $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-            $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
             $line->setDescription($subscription->getPlanName());
-            $line->setVatPercentage($priceInfo->taxRate);
+            $line->setTaxPercentage($priceInfo->taxRate);
             $line->setTaxType($taxType);
             $line->setTaxCountry($priceInfo->taxCountry);
             $lines[] = $line;
@@ -132,10 +132,10 @@ class InvoiceGenerator
             $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
             $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-            $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
-            $line->setVatPercentage($priceInfo->taxRate);
+            $line->setTaxPercentage($priceInfo->taxRate);
             $line->setTaxType($lineItem->getTaxType());
             $line->setTaxCountry($priceInfo->taxCountry);
             $lines[] = $line;
@@ -153,8 +153,8 @@ class InvoiceGenerator
             $line = new InvoiceLine();
             $line->setCurrency($customer->getCreditCurrency());
             $line->setInvoice($invoice);
-            $line->setVatTotal(0);
-            $line->setVatPercentage(0);
+            $line->setTaxTotal(0);
+            $line->setTaxPercentage(0);
             if ($customer->getCreditAsMoney()->isPositive()) {
                 $amount = $customer->getCreditAsMoney()->negated();
                 if ($total->plus($amount)->isPositive()) {
@@ -198,10 +198,10 @@ class InvoiceGenerator
             $vatAmount = $vat->multipliedBy($percentage)->negated();
 
             $line->setDescription($voucherApplication->getVoucher()->getName());
-            $line->setVatPercentage($vatAmount->getMinorAmount()->toInt());
+            $line->setTaxPercentage($vatAmount->getMinorAmount()->toInt());
             $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setTotal($amount->getMinorAmount()->toInt());
-            $line->setVatTotal(0);
+            $line->setTaxTotal(0);
 
             $vat = $vat?->plus($vatAmount);
             $total = $total->plus($amount);
@@ -215,7 +215,7 @@ class InvoiceGenerator
 
         $invoice->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
         $invoice->setLines($lines);
-        $invoice->setVatTotal($vat->getMinorAmount()->toInt());
+        $invoice->setTaxTotal($vat->getMinorAmount()->toInt());
         $invoice->setTotal($total->getMinorAmount()->toInt());
         $invoice->setAmountDue($total->getMinorAmount()->toInt());
         $invoice->setSubTotal($subTotal->getMinorAmount()->toInt());
