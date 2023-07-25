@@ -12,7 +12,7 @@
 
 namespace App\Controller\App;
 
-use App\DataMappers\FeatureFactory;
+use App\DataMappers\FeatureDataMapper;
 use App\DataMappers\PriceFactory;
 use App\DataMappers\SubscriptionPlanFactory;
 use App\Dto\Request\App\PostSubscriptionPlan;
@@ -43,7 +43,7 @@ class SubscriptionPlanController
         Request $request,
         ProductRepositoryInterface $productRepository,
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
-        FeatureFactory $featureFactory,
+        FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
         PriceFactory $priceFactory,
         SerializerInterface $serializer
@@ -142,7 +142,7 @@ class SubscriptionPlanController
         SerializerInterface $serializer,
         SubscriptionPlanFactory $factory,
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
-        FeatureFactory $featureFactory,
+        FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
         PriceFactory $priceFactory,
     ): Response {

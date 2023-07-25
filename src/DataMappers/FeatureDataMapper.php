@@ -16,7 +16,7 @@ use App\Dto\Generic\App\Feature as AppDto;
 use App\Dto\Request\App\PostFeature;
 use Parthenon\Billing\Entity\SubscriptionFeature;
 
-class FeatureFactory
+class FeatureDataMapper
 {
     public function createFromPostFeature(PostFeature $postFeature): SubscriptionFeature
     {

@@ -12,7 +12,7 @@
 
 namespace App\Controller\App;
 
-use App\DataMappers\FeatureFactory;
+use App\DataMappers\FeatureDataMapper;
 use App\Dto\Request\App\PostFeature;
 use App\Dto\Response\Api\ListResponse;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
@@ -32,7 +32,7 @@ class FeatureController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        FeatureFactory $featureFactory,
+        FeatureDataMapper $featureFactory,
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
     ): Response {
         $dto = $serializer->deserialize($request->getContent(), PostFeature::class, 'json');
@@ -63,7 +63,7 @@ class FeatureController
         Request $request,
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         SerializerInterface $serializer,
-        FeatureFactory $featureFactory,
+        FeatureDataMapper $featureFactory,
     ): Response {
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);

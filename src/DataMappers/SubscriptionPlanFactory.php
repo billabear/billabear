@@ -31,7 +31,7 @@ class SubscriptionPlanFactory
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         private PriceFactory $priceFactory,
-        private FeatureFactory $featureFactory,
+        private FeatureDataMapper $featureFactory,
         private ProductFactory $productFactory,
     ) {
     }
