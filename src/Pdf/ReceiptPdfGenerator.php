@@ -81,7 +81,7 @@ class ReceiptPdfGenerator
             'total' => $receipt->getTotal(),
             'total_display' => (string) $receipt->getTotalMoney(),
             'sub_total' => $receipt->getSubTotal(),
-            'vat_total' => $receipt->getVatTotal(),
+            'tax_total' => $receipt->getVatTotal(),
             'currency' => $receipt->getCurrency(),
             'lines' => array_map([$this, 'getReceiptLine'], $receipt->getLines()),
             'biller_address' => $this->getAddress($receipt->getBillerAddress()),
@@ -96,8 +96,8 @@ class ReceiptPdfGenerator
             'total' => $receiptLine->getTotal(),
             'total_display' => (string) $receiptLine->getTotalMoney(),
             'sub_total' => $receiptLine->getSubTotal(),
-            'vat_total' => $receiptLine->getVatTotal(),
-            'vat_percentage' => $receiptLine->getVatPercentage(),
+            'tax_total' => $receiptLine->getVatTotal(),
+            'tax_percentage' => $receiptLine->getVatPercentage(),
             'description' => $receiptLine->getDescription(),
         ];
     }
