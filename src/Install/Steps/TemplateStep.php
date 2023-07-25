@@ -490,6 +490,15 @@ SOFTWARE. #}
         $this->emailTemplateRepository->save($emailTemplate);
 
         $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_QUOTE_CREATED);
+        $emailTemplate->setSubject('New Quote');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your new quote is ready.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
         $emailTemplate->setName(EmailTemplate::NAME_PAYMENT_FAILURE_WARNING);
         $emailTemplate->setSubject('Payment Failed');
         $emailTemplate->setTemplateBody($this->getEmailTemplate('We\'ve tried to charge you and the payment failed! We\'ll try and charge you later.'));

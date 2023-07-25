@@ -37,6 +37,8 @@ class EmailTemplate
 
     public const NAME_INVOICE_CREATED = 'invoice_created';
 
+    public const NAME_QUOTE_CREATED = 'quote_created';
+
     public const TEMPLATE_NAMES = [
         self::NAME_SUBSCRIPTION_CREATED,
         self::NAME_SUBSCRIPTION_PAUSED,
@@ -47,6 +49,7 @@ class EmailTemplate
         self::NAME_PAYMENT_METHOD_EXPIRY_WARNING,
         self::NAME_PAYMENT_METHOD_NO_VALID_METHODS,
         self::NAME_INVOICE_CREATED,
+        self::NAME_QUOTE_CREATED,
     ];
 
     #[ORM\Id]
