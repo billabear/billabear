@@ -68,7 +68,9 @@ class InvoiceGenerator
         $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
         $line->setInvoice($invoice);
         $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
-        $line->setTaxPercentage($priceInfo->taxRate);
+        $line->setTaxPercentage($priceInfo->taxInfo->rate);
+        $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+        $line->setTaxCountry($priceInfo->taxInfo->country);
         $line->setTaxType($newPlan->getProduct()->getTaxType());
         $lines[] = $line;
 
