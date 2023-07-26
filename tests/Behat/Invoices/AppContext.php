@@ -120,6 +120,18 @@ class AppContext implements Context
     }
 
     /**
+     * @When I mark the invoice for :arg1 as paid
+     */
+    public function iMarkTheInvoiceForAsPaid($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        $this->sendJsonRequest('POST', '/app/invoice/'.$invoice->getId().'/paid');
+    }
+
+    /**
      * @Then then the invoice for :arg1 will be marked as paid
      */
     public function thenTheInvoiceForWillBeMarkedAsPaid($customerEmail)

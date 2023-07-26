@@ -18,12 +18,14 @@ use App\DataMappers\InvoiceDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Invoice;
+use App\Event\InvoicePaid;
 use App\Invoice\ManualInvoiceCreator;
 use App\Payment\InvoiceCharger;
 use App\Pdf\InvoicePdfGenerator;
 use App\Repository\InvoiceRepositoryInterface;
 use Parthenon\Athena\Filters\BoolFilter;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -181,6 +183,28 @@ class InvoicesController
         }
 
         $invoiceCharger->chargeInvoice($invoice);
+
+        return new JsonResponse(['paid' => $invoice->isPaid()]);
+    }
+
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
+    #[Route('/app/invoice/{id}/paid', name: 'app_invoice_paid', methods: ['POST'])]
+    public function markAsPaid(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        EventDispatcherInterface $eventDispatcher,
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $invoice->setPaid(true);
+        $invoice->setPaidAt(new \DateTime());
+        $invoiceRepository->save($invoice);
+        $eventDispatcher->dispatch(new InvoicePaid($invoice), InvoicePaid::NAME);
 
         return new JsonResponse(['paid' => $invoice->isPaid()]);
     }

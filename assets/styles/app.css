@@ -179,6 +179,13 @@ body {
     @apply items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700;
 }
 
+.btn--secondary--main {
+    @apply inline items-center justify-center w-1/2 pl-3 pr-2 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border-y border-l rounded-l-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700;
+}
+.btn--secondary--menu {
+    @apply inline items-center justify-center pl-2 pr-3 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border-y border-r rounded-r-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700;
+}
+
 .btn--secondary:hover {
     @apply bg-blue-500 text-white;
 }

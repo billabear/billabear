@@ -15,5 +15,6 @@ export const INVOICES_LIST_TRANSLATIONS = {
         button: "Filters",
         email: "Customer Email",
         number: "Invoice Number"
-    }
+    },
+    mark_as_paid: "Mark as Paid"
 };

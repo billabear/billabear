@@ -41,6 +41,7 @@
               <th>{{ $t('app.invoices.list.currency')}}</th>
               <th>{{ $t('app.invoices.list.created_at') }}</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
@@ -50,9 +51,15 @@
               <td>{{ invoice.currency }}</td>
               <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
               <td>
-                <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a>
-                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-                  <SubmitButton class="ml-3 btn--secondary" :in-progress="charging_invoice" @click="attemptPayment(invoice)" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.list.charge') }}</SubmitButton>
+                <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a></td>
+              <td>
+                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">
+                  <SubmitButton button-class="ml-3 btn--secondary--main" :in-progress="charging_invoice" @click="attemptPayment(invoice)" >{{ $t('app.invoices.list.charge') }}</SubmitButton>
+                  <button class="btn--secondary--menu" @click="showMenu(invoice)"><i class="fa-solid fa-caret-down"></i></button>
+                  <div id="dropdown-menu" class="absolute w-40 bg-white rounded-md ml-3 shadow-lg z-10" :class="{hidden: invoice.show_menu !== true}">
+                    <a @click="markAsPaid(invoice)" class="cursor-pointer block px-4 py-2 text-gray-800 hover:bg-blue-500 hover:text-white">{{ $t('app.invoices.list.mark_as_paid') }}</a>
+                    <!-- Add more dropdown options as needed -->
+                  </div>
                 </RoleOnlyView>
               </td>
             </tr>
@@ -73,6 +80,7 @@
             <th>{{ $t('app.invoices.list.total')}}</th>
             <th>{{ $t('app.invoices.list.currency')}}</th>
             <th>{{ $t('app.invoices.list.created_at') }}</th>
+            <th></th>
             <th></th>
           </tr>
           </tfoot>
@@ -114,7 +122,7 @@ export default {
       ready: false,
       loaded: false,
       has_error: false,
-      customers: [],
+      invoices: [],
       has_more: false,
       last_key: null,
       first_key: null,
@@ -149,6 +157,17 @@ export default {
     }
   },
   methods: {
+    markAsPaid: function (invoice) {
+      this.charging_invoice = true;
+      axios.post('/app/invoice/'+invoice.id+'/paid').then(response => {
+        invoice.paid = true
+        this.charging_invoice = false;
+      })
+    },
+    showMenu: function (invoice) {
+        invoice.show_menu = !invoice.show_menu;
+
+    },
     attemptPayment: function (invoice ) {
       this.charging_invoice = true;
       axios.post('/app/invoice/'+invoice.id+'/charge').then(response => {
