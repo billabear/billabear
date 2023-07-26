@@ -39,6 +39,10 @@ class CreateBrandSettings
 
     private Notifications $notifications;
 
+    #[Assert\Type('string')]
+    #[SerializedName('tax_number')]
+    private $taxNumber;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -92,5 +96,15 @@ class CreateBrandSettings
     public function setNotifications(Notifications $notifications): void
     {
         $this->notifications = $notifications;
+    }
+
+    public function getTaxNumber()
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber($taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

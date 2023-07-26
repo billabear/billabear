@@ -122,6 +122,7 @@ class BrandsContext implements Context
                 'postcode' => $rowsHash['Post Code'],
                 'country' => $rowsHash['Country'],
             ],
+            'tax_number' => $rowsHash['Tax Number'] ?? null,
         ];
 
         $this->sendJsonRequest('POST', '/app/settings/brand/'.$brand->getId(), $payload);
@@ -149,6 +150,18 @@ class BrandsContext implements Context
     }
 
     /**
+     * @Then the brand :arg1 should have the tax number :arg2
+     */
+    public function theBrandShouldHaveTheTaxNumber($brandName, $taxNumber)
+    {
+        $brand = $this->getBrandSettings($brandName);
+
+        if ($brand->getTaxNumber() != $taxNumber) {
+            throw new \Exception(sprintf('Expected %s got %s', $taxNumber, $brand->getTaxNumber()));
+        }
+    }
+
+    /**
      * @When I create a new brand
      */
     public function iCreateANewBrand(TableNode $table)
@@ -166,6 +179,7 @@ class BrandsContext implements Context
                 'postcode' => $rowsHash['Post Code'],
                 'country' => $rowsHash['Country'],
             ],
+            'tax_number' => $rowsHash['Tax Number'] ?? null,
         ];
 
         $this->sendJsonRequest('POST', '/app/settings/brand', $payload);

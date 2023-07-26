@@ -10,7 +10,8 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         region: "Region",
         country: "Country",
         postcode: "Post Code",
-        code: "Code"
+        code: "Code",
+        tax_number: "Tax Number"
     },
     help_info: {
         name: "The name of the brand",
@@ -23,6 +24,7 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         region: "The region/state for the billing address",
         country: "The customer's billing country - ISO 3166-1 alpha-2 country code.",
         postcode: "The post code for the billing address",
+        tax_number: "The tax number for the company/brand"
     },
     general: "General Settings",
     notifications: "Notifications",

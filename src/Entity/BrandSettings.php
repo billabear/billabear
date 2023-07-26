@@ -46,6 +46,9 @@ class BrandSettings
     #[ORM\Embedded(class: NotificationSettings::class)]
     private NotificationSettings $notificationSettings;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $taxNumber = null;
+
     public function getId()
     {
         return $this->id;
@@ -118,5 +121,15 @@ class BrandSettings
     public function setNotificationSettings(NotificationSettings $notificationSettings): void
     {
         $this->notificationSettings = $notificationSettings;
+    }
+
+    public function getTaxNumber(): ?string
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber(?string $taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

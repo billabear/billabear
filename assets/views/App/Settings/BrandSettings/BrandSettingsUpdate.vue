@@ -27,6 +27,15 @@
               <input type="text" class="form-field-input" id="reference" v-model="brand.code" disabled />
               <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.code') }}</p>
             </div>
+
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="tax_number">
+                {{ $t('app.settings.brand_settings.update.fields.tax_number') }}
+              </label>
+              <input type="text" class="form-field-input" id="tax_number" v-model="brand.tax_number" />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.tax_number') }}</p>
+            </div>
+
             <div class="form-field-ctn">
               <label class="form-field-lbl" for="email">
                 {{ $t('app.settings.brand_settings.update.fields.email') }}
@@ -185,6 +194,7 @@ export default {
             postcode: this.brand.address.postcode,
           },
           notifications: this.brand.notifications,
+          tax_number: this.brand.tax_number,
         };
 
         axios.post('/app/settings/brand/'+brandId, payload).then(response => {

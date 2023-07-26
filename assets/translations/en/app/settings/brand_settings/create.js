@@ -11,10 +11,12 @@ export const BRAND_SETTINGS_CREATE_TRANSLATIONS = {
         country: "Country",
         post_code: "Post Code",
         code: "Code",
+        tax_number: "Tax Number"
     },
     help_info: {
         name: "The name of the brand",
         code: "The code to be used to identify the brand in API calls. This can't be updated. Most be lower alphanumeric case with underscores only.",
+        tax_number: "The tax number for the brand/company",
         email: "The email to be used when sending emails to brand customer",
         company_name: "The company name for being billing purposes",
         street_line_one: "The first line of the street billing address",

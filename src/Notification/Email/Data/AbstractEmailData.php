@@ -35,6 +35,7 @@ abstract class AbstractEmailData
         return [
             'name' => $brandSettings->getBrandName(),
             'address' => $this->getAddress($brandSettings->getAddress()),
+            'tax_number' => $brandSettings->getTaxNumber(),
         ];
     }
 
