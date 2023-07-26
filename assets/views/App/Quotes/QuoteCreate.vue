@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1 class="page-title mb-5">{{ $t('app.invoices.create.title') }}</h1>
+    <h1 class="page-title mb-5">{{ $t('app.quotes.create.title') }}</h1>
 
     <div class="card-body">
 
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="name">
-          {{ $t('app.invoices.create.customer.fields.customer') }}
+          {{ $t('app.quotes.create.customer.fields.customer') }}
         </label>
         <p class="form-field-error" v-if="errors.customer != undefined">{{ errors.customer }}</p>
         <Autocomplete
@@ -16,35 +16,35 @@
             v-model="quote.customer"
             :blur-callback="blurCallback" />
         <SubmitButton :in-progress="send_create_customer" @click="createCustomer" v-if="create_customer">{{ $t('app.invoices.create.customer.create_customer') }}</SubmitButton>
-        <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.customer') }}</p>
+        <p class="form-field-help">{{ $t('app.quotes.create.customer.help_info.customer') }}</p>
       </div>
 
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="name">
-          {{ $t('app.invoices.create.customer.fields.currency') }}
+          {{ $t('app.quotes.create.customer.fields.currency') }}
         </label>
         <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
         <CurrencySelect v-model="quote.currency" />
-        <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.currency') }}</p>
+        <p class="form-field-help">{{ $t('app.quotes.create.customer.help_info.currency') }}</p>
       </div>
     </div>
 
     <div class="card-body mt-5">
         <div class="grid grid-cols-2">
-          <div><h2 class="mb-3">{{ $t('app.invoices.create.subscriptions.title') }}</h2></div>
-          <div class="text-right"><button class="btn--main" @click="addSubscriptionPlan">{{ $t('app.invoices.create.subscriptions.add_subscription') }}</button></div>
+          <div><h2 class="mb-3">{{ $t('app.quotes.create.subscriptions.title') }}</h2></div>
+          <div class="text-right"><button class="btn--main" @click="addSubscriptionPlan">{{ $t('app.quotes.create.subscriptions.add_subscription') }}</button></div>
         </div>
         <table class="list-table">
           <thead>
           <tr>
-            <th>{{ $t('app.invoices.create.subscriptions.list.subscription_plan') }}</th>
-            <th>{{ $t('app.invoices.create.subscriptions.list.price')}}</th>
+            <th>{{ $t('app.quotes.create.subscriptions.list.subscription_plan') }}</th>
+            <th>{{ $t('app.quotes.create.subscriptions.list.price')}}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="quote.subscription_plans.length === 0">
             <tr>
-              <td colspan="3" class="text-center">{{ $t('app.invoices.create.subscriptions.no_subscriptions') }}</td>
+              <td colspan="3" class="text-center">{{ $t('app.quotes.create.subscriptions.no_subscriptions') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
@@ -68,23 +68,23 @@
 
     <div class="card-body mt-5">
       <div class="grid grid-cols-2">
-        <div><h2 class="mb-3">{{ $t('app.invoices.create.items.title') }}</h2></div>
-        <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.invoices.create.items.add_item') }}</button></div>
+        <div><h2 class="mb-3">{{ $t('app.quotes.create.items.title') }}</h2></div>
+        <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.quotes.create.items.add_item') }}</button></div>
       </div>
 
       <table class="list-table">
         <thead>
         <tr>
-          <th>{{ $t('app.invoices.create.items.list.description') }}</th>
-          <th>{{ $t('app.invoices.create.items.list.amount') }}</th>
-          <th>{{ $t('app.invoices.create.items.list.tax_included') }}</th>
-          <th>{{ $t('app.invoices.create.items.list.tax_type') }}</th>
+          <th>{{ $t('app.quotes.create.items.list.description') }}</th>
+          <th>{{ $t('app.quotes.create.items.list.amount') }}</th>
+          <th>{{ $t('app.quotes.create.items.list.tax_included') }}</th>
+          <th>{{ $t('app.quotes.create.items.list.tax_type') }}</th>
           <th></th>
         </tr>
         </thead>
         <tbody v-if="quote.items.length === 0">
           <tr>
-            <td colspan="5" class="text-center">{{ $t('app.invoices.create.items.no_items') }}</td>
+            <td colspan="5" class="text-center">{{ $t('app.quotes.create.items.no_items') }}</td>
           </tr>
         </tbody>
         <tbody v-else>
@@ -102,9 +102,9 @@
             <td>
               <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].taxType != undefined">{{ errors.items[key].taxType }}</p>
               <select class="form-field" id="name" v-model="item.tax_type">
-                <option value="digital_goods">{{ $t('app.invoices.create.items.tax_types.digital_goods') }}</option>
-                <option value="digital_services">{{ $t('app.invoices.create.items.tax_types.digital_services') }}</option>
-                <option value="physical">{{ $t('app.invoices.create.items.tax_types.physical') }}</option>
+                <option value="digital_goods">{{ $t('app.quotes.create.items.tax_types.digital_goods') }}</option>
+                <option value="digital_services">{{ $t('app.quotes.create.items.tax_types.digital_services') }}</option>
+                <option value="physical">{{ $t('app.quotes.create.items.tax_types.physical') }}</option>
               </select>
             </td>
             <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
@@ -118,7 +118,7 @@
     </div>
 
     <div class="mt-5">
-      <SubmitButton :in-progress="send_quote" class="btn--secondary" @click="createInvoice">{{ $t('app.invoices.create.create_invoice') }}</SubmitButton>
+      <SubmitButton :in-progress="send_quote" class="btn--main" @click="createInvoice('quotes')">{{ $t('app.quotes.create.create_quote') }}</SubmitButton>
     </div>
     <div class="mt-1" v-if="success">
       {{ $t('app.quotes.create.success_message') }}

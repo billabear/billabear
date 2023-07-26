@@ -1,8 +1,7 @@
 export const QUOTES_CREATE_TRANSLATIONS = {
     title: "Create Quote",
     create_quote: "Create Quote",
-    create_invoice: "Create Invoice",
-    success_message: "Invoice created",
+    success_message: "Quote created",
     errors: {
         no_customer: "A customer is needed",
         nothing_to_invoice: "You need to add a subscription or a one-off item.",
