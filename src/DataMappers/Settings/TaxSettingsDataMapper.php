@@ -22,6 +22,7 @@ class TaxSettingsDataMapper
     {
         $entity = new Entity();
         $entity->setTaxCustomersWithTaxNumbers($requestDto->getTaxCustomersWithTaxNumber());
+        $entity->setEuropeanBusinessTaxRules($requestDto->getEuBusinessTaxRules());
 
         return $entity;
     }
@@ -30,6 +31,7 @@ class TaxSettingsDataMapper
     {
         $dto = new AppDto();
         $dto->setTaxCustomersWithTaxNumber($entity->getTaxCustomersWithTaxNumbers());
+        $dto->setEuBusinessTaxRules($entity->getEuropeanBusinessTaxRules());
 
         return $dto;
     }

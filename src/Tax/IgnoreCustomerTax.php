@@ -22,8 +22,8 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
 {
     public function __construct(
         private CountryRules $countryRules,
-        private SettingsRepositoryInterface $settingsRepository)
-    {
+        private SettingsRepositoryInterface $settingsRepository,
+    ) {
     }
 
     public function getRateForCustomer(Customer $customer, TaxType $taxType, Product $product = null): TaxInfo
@@ -43,8 +43,8 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
 
         $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
         $businessTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
-
-        if (CustomerType::BUSINESS === $customer->getType() && $this->countryRules->inEu($customer->getBillingAddress())) {
+        $euBusinessTaxRules = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getEuropeanBusinessTaxRules();
+        if ($euBusinessTaxRules && CustomerType::BUSINESS === $customer->getType() && $this->countryRules->inEu($customer->getBillingAddress())) {
             if (TaxType::PHYSICAL === $taxType) {
                 return new TaxInfo(0, $customer->getBillingAddress()->getCountry(), false);
             } else {

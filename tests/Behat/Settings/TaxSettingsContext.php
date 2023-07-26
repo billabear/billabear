@@ -38,7 +38,8 @@ class TaxSettingsContext implements Context
     {
         $data = $table->getRowsHash();
         $taxCustomersWithTaxNumbers = 'true' === strtolower($data['Tax Customers with Tax Number'] ?? 'true');
-        $this->sendJsonRequest('POST', '/app/settings/tax', ['tax_customers_with_tax_number' => $taxCustomersWithTaxNumbers]);
+        $euBusinessTaxRules = 'true' === strtolower($data['EU Business Tax Rules'] ?? 'true');
+        $this->sendJsonRequest('POST', '/app/settings/tax', ['tax_customers_with_tax_number' => $taxCustomersWithTaxNumbers, 'eu_business_tax_rules' => $euBusinessTaxRules]);
     }
 
     /**
@@ -62,6 +63,30 @@ class TaxSettingsContext implements Context
 
         if (!$settings->getTaxSettings()->getTaxCustomersWithTaxNumbers()) {
             throw new \Exception('Set to not tax customers with tax numbers');
+        }
+    }
+
+    /**
+     * @Then the tax settings for eu business tax rules should be false
+     */
+    public function theTaxSettingsForEuBusinessTaxRulesShouldBeFalse()
+    {
+        $settings = $this->getSettings();
+
+        if ($settings->getTaxSettings()->getEuropeanBusinessTaxRules()) {
+            throw new \Exception('EU business tax rules enabled');
+        }
+    }
+
+    /**
+     * @Then the tax settings for eu business tax rules should be true
+     */
+    public function theTaxSettingsForEuBusinessTaxRulesShouldBeTrue()
+    {
+        $settings = $this->getSettings();
+
+        if (!$settings->getTaxSettings()->getEuropeanBusinessTaxRules()) {
+            throw new \Exception('EU business tax rules disabled');
         }
     }
 }

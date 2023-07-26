@@ -185,6 +185,50 @@ class InvoiceContext implements Context
     }
 
     /**
+     * @When there the latest invoice for :arg1 will not have a zero tax rate
+     */
+    public function thereTheLatestInvoiceForWillNotHaveAZeroTaxRate($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if (0.0 === $line->getTaxPercentage()) {
+                throw new \Exception('Found a zero rate tax item');
+            }
+        }
+    }
+
+    /**
+     * @When there the latest invoice for :arg1 will not have a reverse charge
+     */
+    public function thereTheLatestInvoiceForWillNotHaveAReverseCharge($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if ($line->isReverseCharge()) {
+                throw new \Exception('Found a reverse charge item');
+            }
+        }
+    }
+
+    /**
      * @When there the latest invoice for :arg1 will have a zero tax rate
      */
     public function thereTheLatestInvoiceForWillHaveAZeroTaxRate($customerEmail)

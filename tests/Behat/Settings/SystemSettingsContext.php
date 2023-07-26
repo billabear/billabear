@@ -82,6 +82,30 @@ class SystemSettingsContext implements Context
     }
 
     /**
+     * @Given that the tax settings for eu business tax rules is true
+     */
+    public function thatTheTaxSettingsForEuBusinessTaxRulesIsTrue()
+    {
+        $settings = $this->getSettings();
+        $taxSettings = $settings->getTaxSettings();
+        $taxSettings->setEuropeanBusinessTaxRules(true);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given that the tax settings for eu business tax rules is false
+     */
+    public function thatTheTaxSettingsForEuBusinessTaxRulesIsFalse()
+    {
+        $settings = $this->getSettings();
+        $taxSettings = $settings->getTaxSettings();
+        $taxSettings->setEuropeanBusinessTaxRules(false);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @Given stripe billing is disabled
      */
     public function stripeBillingIsDisabled()

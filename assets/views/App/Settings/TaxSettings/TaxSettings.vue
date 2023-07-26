@@ -10,9 +10,17 @@
             <label class="form-field-lbl" for="tax_customers_with_tax_number">
               {{ $t('app.settings.tax_settings.update.fields.tax_customers_with_tax_number') }}
             </label>
-            <p class="form-field-error" v-if="errors.taxCustomersWithTaxtNumber != undefined">{{ errors.taxCustomersWithTaxtNumber }}</p>
+            <p class="form-field-error" v-if="errors.taxCustomersWithTaxNumber != undefined">{{ errors.taxCustomersWithTaxNumber }}</p>
             <input type="checkbox" class="form-field" id="tax_customers_with_tax_number" v-model="tax_settings.tax_customers_with_tax_number"  />
             <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.tax_customers_with_tax_number') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="eu_business_tax_rules">
+              {{ $t('app.settings.tax_settings.update.fields.eu_business_tax_rules') }}
+            </label>
+            <p class="form-field-error" v-if="errors.euBusinessTaxRules != undefined">{{ errors.euBusinessTaxRules }}</p>
+            <input type="checkbox" class="form-field" id="eu_business_tax_rules" v-model="tax_settings.eu_business_tax_rules"  />
+            <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.eu_business_tax_rules') }}</p>
           </div>
         </div>
 
@@ -38,7 +46,8 @@ export default {
       success: false,
       sending: false,
       tax_settings: {
-        tax_customers_with_tax_number: false
+        tax_customers_with_tax_number: false,
+        eu_business_tax_rules: false,
       }
     }
   },

@@ -38,19 +38,49 @@ Feature: Handle business tax reverse in europe.
       | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         | ref_fails         | 35435 43   | Individual |
       | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      | Individual |
       | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | Individual |
+      | customer.seven@example.org | US      | cust_mlklfdu       | Customer Three | card         | ref_valid         |            | Business   |
 
   Scenario: Physicial Goods for a Business with a tax number - Zero tax
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
-      | Physical Plan         | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
+      | Physical Plan     | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
+    And that the tax settings for eu business tax rules is true
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.one@example.org" will have a zero tax rate
 
   Scenario: Digital Goods for a Business with tax number - Reverse tax
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
-      | Digital Plan          | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
+      | Digital Plan      | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
+    And that the tax settings for eu business tax rules is true
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.one@example.org" will have a reverse charge
+
+  Scenario: Digital Goods for a Business with tax number - Reverse tax - non-eu customer
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+      | Digital Plan      | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
+    And stripe billing is disabled
+    And that the tax settings for eu business tax rules is true
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.seven@example.org" will not have a reverse charge
+
+  Scenario: Physicial Goods for a Business with a tax number - Zero tax - EU tax rules disabled
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
+      | Physical Plan     | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
+    And that the tax settings for eu business tax rules is false
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.one@example.org" will not have a zero tax rate
+
+  Scenario: Digital Goods for a Business with tax number - Reverse tax - EU tax rules disabled
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
+      | Digital Plan      | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
+    And that the tax settings for eu business tax rules is false
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.one@example.org" will not have a reverse charge

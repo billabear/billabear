@@ -20,6 +20,9 @@ class TaxSettings
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $taxCustomersWithTaxNumbers = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $europeanBusinessTaxRules = null;
+
     public function getTaxCustomersWithTaxNumbers(): bool
     {
         return true === $this->taxCustomersWithTaxNumbers;
@@ -28,5 +31,15 @@ class TaxSettings
     public function setTaxCustomersWithTaxNumbers(?bool $taxCustomersWithTaxNumbers): void
     {
         $this->taxCustomersWithTaxNumbers = $taxCustomersWithTaxNumbers;
+    }
+
+    public function getEuropeanBusinessTaxRules(): bool
+    {
+        return true === $this->europeanBusinessTaxRules;
+    }
+
+    public function setEuropeanBusinessTaxRules(?bool $europeanBusinessTaxRules): void
+    {
+        $this->europeanBusinessTaxRules = $europeanBusinessTaxRules;
     }
 }

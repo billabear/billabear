@@ -19,6 +19,9 @@ class TaxSettings
     #[SerializedName('tax_customers_with_tax_number')]
     private $taxCustomersWithTaxNumber;
 
+    #[SerializedName('eu_business_tax_rules')]
+    private $euBusinessTaxRules;
+
     public function getTaxCustomersWithTaxNumber()
     {
         return $this->taxCustomersWithTaxNumber;
@@ -27,5 +30,15 @@ class TaxSettings
     public function setTaxCustomersWithTaxNumber($taxCustomersWithTaxNumber): void
     {
         $this->taxCustomersWithTaxNumber = $taxCustomersWithTaxNumber;
+    }
+
+    public function getEuBusinessTaxRules()
+    {
+        return $this->euBusinessTaxRules;
+    }
+
+    public function setEuBusinessTaxRules($euBusinessTaxRules): void
+    {
+        $this->euBusinessTaxRules = $euBusinessTaxRules;
     }
 }
