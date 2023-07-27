@@ -12,24 +12,15 @@
 
 namespace App\Dto\Generic\App;
 
-use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class Invoice
+class InvoiceQuickView
 {
     private string $id;
-
-    private string $number;
 
     private string $currency;
 
     private int $total;
-
-    #[SerializedName('tax_total')]
-    private int $taxTotal;
-
-    #[SerializedName('sub_total')]
-    private int $subTotal;
 
     #[SerializedName('amount_due')]
     private int $amountDue;
@@ -41,14 +32,6 @@ class Invoice
     private \DateTime $createdAt;
 
     private Customer $customer;
-
-    #[SerializedName('biller_address')]
-    private Address $billerAddress;
-
-    #[SerializedName('payee_address')]
-    private Address $payeeAddress;
-
-    private array $lines;
 
     public function getId(): string
     {
@@ -118,65 +101,5 @@ class Invoice
     public function setTotal(int $total): void
     {
         $this->total = $total;
-    }
-
-    public function getNumber(): string
-    {
-        return $this->number;
-    }
-
-    public function setNumber(string $number): void
-    {
-        $this->number = $number;
-    }
-
-    public function getTaxTotal(): int
-    {
-        return $this->taxTotal;
-    }
-
-    public function setTaxTotal(int $taxTotal): void
-    {
-        $this->taxTotal = $taxTotal;
-    }
-
-    public function getSubTotal(): int
-    {
-        return $this->subTotal;
-    }
-
-    public function setSubTotal(int $subTotal): void
-    {
-        $this->subTotal = $subTotal;
-    }
-
-    public function getBillerAddress(): Address
-    {
-        return $this->billerAddress;
-    }
-
-    public function setBillerAddress(Address $billerAddress): void
-    {
-        $this->billerAddress = $billerAddress;
-    }
-
-    public function getPayeeAddress(): Address
-    {
-        return $this->payeeAddress;
-    }
-
-    public function setPayeeAddress(Address $payeeAddress): void
-    {
-        $this->payeeAddress = $payeeAddress;
-    }
-
-    public function getLines(): array
-    {
-        return $this->lines;
-    }
-
-    public function setLines(array $lines): void
-    {
-        $this->lines = $lines;
     }
 }

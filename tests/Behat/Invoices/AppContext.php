@@ -132,6 +132,29 @@ class AppContext implements Context
     }
 
     /**
+     * @When I view the invoice for :arg1
+     */
+    public function iViewTheInvoiceFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+        $this->sendJsonRequest('GET', '/app/invoice/'.$invoice->getId().'/view');
+    }
+
+    /**
+     * @Then I should see the invoice for :arg1
+     */
+    public function iShouldSeeTheInvoiceFor($arg1)
+    {
+        $invoice = $this->getJsonContent();
+
+        if (!isset($invoice['invoice']['customer']['email']) || $invoice['invoice']['customer']['email'] != $arg1) {
+            throw new \Exception("Can't see the correct invoice");
+        }
+    }
+
+    /**
      * @Then then the invoice for :arg1 will be marked as paid
      */
     public function thenTheInvoiceForWillBeMarkedAsPaid($customerEmail)

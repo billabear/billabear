@@ -233,7 +233,7 @@ class Invoice
     }
 
     /**
-     * @return Collection|ReceiptLine[]
+     * @return Collection|InvoiceLine[]
      */
     public function getLines(): Collection|array
     {

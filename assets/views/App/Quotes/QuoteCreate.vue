@@ -312,6 +312,7 @@ export default {
       axios.post("/app/"+type+"/create", payload).then(response => {
         this.send_quote = false;
         this.success = true;
+        this.$router.push({'name': 'app.'+type+'.view', params: {id: response.data.id}})
       }).catch(error => {
         this.errors = error.response.data.errors;
         this.send_quote = false;

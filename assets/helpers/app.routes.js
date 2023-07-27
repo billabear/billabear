@@ -64,6 +64,7 @@ import InvoiceCreate from "../views/App/Invoices/InvoiceCreate.vue";
 import QuotesList from "../views/App/Quotes/QuotesList.vue";
 import QuotesView from "../views/App/Quotes/QuotesView.vue";
 import QuoteCreate from "../views/App/Quotes/QuoteCreate.vue";
+import InvoicesView from "../views/App/Invoices/InvoicesView.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -361,6 +362,11 @@ export const APP_ROUTES = [
                 name: 'app.invoices.create',
                 path: "invoices/create",
                 component: InvoiceCreate,
+            },
+            {
+                name: 'app.invoices.view',
+                path: "invoices/view/:id",
+                component: InvoicesView,
             },
             {
                 name: 'app.quotes.create',

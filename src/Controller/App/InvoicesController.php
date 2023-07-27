@@ -16,6 +16,7 @@ use App\Api\Filters\InvoiceList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\InvoiceDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
+use App\Dto\Response\App\Invoice\ViewInvoice;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Invoice;
 use App\Event\InvoicePaid;
@@ -75,7 +76,7 @@ class InvoicesController
             firstId: $firstKey,
         );
 
-        $dtos = array_map([$factory, 'createAppDto'], $resultSet->getResults());
+        $dtos = array_map([$factory, 'createQuickViewAppDto'], $resultSet->getResults());
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
@@ -128,7 +129,7 @@ class InvoicesController
             firstId: $firstKey,
         );
 
-        $dtos = array_map([$factory, 'createAppDto'], $resultSet->getResults());
+        $dtos = array_map([$factory, 'createQuickViewAppDto'], $resultSet->getResults());
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
@@ -187,6 +188,29 @@ class InvoicesController
         return new JsonResponse(['paid' => $invoice->isPaid()]);
     }
 
+    #[Route('/app/invoice/{id}/view', name: 'app_invoice_view', methods: ['GET'])]
+    public function viewInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoiceDataMapper $invoiceDataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $invoiceDto = $invoiceDataMapper->createAppDto($invoice);
+        $dto = new ViewInvoice();
+        $dto->setInvoice($invoiceDto);
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/invoice/{id}/paid', name: 'app_invoice_paid', methods: ['POST'])]
     public function markAsPaid(
@@ -228,7 +252,7 @@ class InvoicesController
         }
 
         $invoice = $manualInvoiceCreator->createInvoice($dto);
-        $output = $invoiceFactory->createAppDto($invoice);
+        $output = $invoiceFactory->createQuickViewAppDto($invoice);
         $json = $serializer->serialize($output, 'json');
 
         return new JsonResponse($json, json: true);
