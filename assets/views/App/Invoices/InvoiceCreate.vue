@@ -118,7 +118,7 @@
     </div>
 
     <div class="mt-5">
-      <SubmitButton :in-progress="send_quote" class="btn--secondary" @click="createInvoice">{{ $t('app.invoices.create.create_invoice') }}</SubmitButton>
+      <SubmitButton :in-progress="send_quote" class="btn--secondary" @click="createInvoice('invoices')">{{ $t('app.invoices.create.create_invoice') }}</SubmitButton>
     </div>
     <div class="mt-1" v-if="success">
       {{ $t('app.quotes.create.success_message') }}
@@ -312,6 +312,7 @@ export default {
       axios.post("/app/"+type+"/create", payload).then(response => {
         this.send_quote = false;
         this.success = true;
+        this.$router.push({'name': 'app.'+type+'.view', params: {id: response.data.id}})
       }).catch(error => {
         this.errors = error.response.data.errors;
         this.send_quote = false;
