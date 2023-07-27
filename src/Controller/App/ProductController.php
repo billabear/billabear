@@ -19,12 +19,12 @@ use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
+use App\Repository\SubscriptionPlanRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
-use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -142,7 +142,7 @@ class ProductController
         });
         $pricesDtos = array_map([$priceFactory, 'createAppDto'], $prices);
 
-        $plans = $subscriptionPlanRepository->getAllForProduct($product);
+        $plans = $subscriptionPlanRepository->getNonDeletedForProduct($product);
         $planDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $plans);
 
         $productDto = $productFactory->createAppDtoFromProduct($product);

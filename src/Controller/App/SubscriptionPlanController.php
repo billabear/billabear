@@ -134,6 +134,27 @@ class SubscriptionPlanController
     }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/product/{productId}/plan/{id}', name: 'app_product_plan_delete', methods: ['DELETE'])]
+    public function deletePlan(
+        Request $request,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        SerializerInterface $serializer,
+        SubscriptionPlanDataMapper $factory,
+    ): Response {
+        try {
+            /** @var SubscriptionPlan $subscriptionPlan */
+            $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $subscriptionPlan->markAsDeleted();
+        $subscriptionPlanRepository->save($subscriptionPlan);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{productId}/plan/{id}/update', name: 'app_product_plan_update_view', methods: ['GET'])]
     public function updateViewPlan(
         Request $request,

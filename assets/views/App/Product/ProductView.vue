@@ -104,6 +104,7 @@
               <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
               <th></th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
@@ -117,6 +118,11 @@
               <td>
                 <router-link :to="{name: 'app.subscription_plan.view', params: {productId: id, subscriptionPlanId: plan.id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.view') }}</router-link>
               </td>
+              <td>
+                <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+                  <button class="btn--danger" @click="deleteSubscriptionPlan(plan, key)"><i class="fa-solid fa-trash"></i></button>
+                </RoleOnlyView>
+              </td>
             </tr>
             <tr v-if="subscriptionPlans.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
@@ -127,6 +133,7 @@
               <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
               <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+              <th></th>
               <th></th>
             </tr>
             </tfoot>
@@ -185,6 +192,14 @@ export default {
     })
   },
   methods: {
+    deleteSubscriptionPlan: function (plan, key) {
+      var productId = this.$route.params.id
+      axios.delete('/app/product/'+productId+'/plan/'+plan.id).then(response => {
+        this.subscriptionPlans.splice(key,1)
+      }).catch(error => {
+        alert(this.$t("app.product.view.error_delete"))
+      })
+    },
     deletePrice: function (price, key) {
       var productId = this.$route.params.id
       axios.post('/app/product/'+productId+'/price/'+price.id+'/delete').then(response => {

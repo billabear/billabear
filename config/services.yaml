@@ -68,6 +68,10 @@ services:
         arguments:
             $entityRepository: '@Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository'
 
+    App\Repository\SubscriptionPlanRepository:
+        arguments:
+            $entityRepository: '@parthenon.billing.repository.orm.subscription_plan_repository_doctrine'
+
     App\Repository\PaymentCardRepository:
         arguments:
             $entityRepository: '@Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository'

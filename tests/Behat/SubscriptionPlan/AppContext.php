@@ -221,6 +221,28 @@ class AppContext implements Context
     }
 
     /**
+     * @When I delete the subscription plan :arg1
+     */
+    public function iDeleteTheSubscriptionPlan($planName)
+    {
+        $plan = $this->findSubscriptionPlanByName($planName);
+        $product = $plan->getProduct();
+        $this->sendJsonRequest('DELETE', '/app/product/'.$product->getId().'/plan/'.$plan->getId());
+    }
+
+    /**
+     * @Then the subscription plan :arg1 should be marked as deleted
+     */
+    public function theSubscriptionPlanShouldBeMarkedAsDeleted($planName)
+    {
+        $plan = $this->findSubscriptionPlanByName($planName);
+
+        if (!$plan->isDeleted()) {
+            throw new \Exception('Not marked as deleted');
+        }
+    }
+
+    /**
      * @When I view the subscription plan :arg1
      */
     public function iViewTheSubscriptionPlan($planName)
