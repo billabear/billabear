@@ -8,6 +8,19 @@
         <div class="alert-error" v-else>{{ $t('app.invoices.view.status.outstanding') }}</div>
       </div>
 
+      <div class=" mb-5">
+          <h2 class="section-header">{{ $t('app.invoices.view.main.title') }}</h2>
+          <div class="section-body">
+
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.invoices.view.main.created_at') }}</dt>
+                <dd>{{ $filters.moment(invoice.created_at, 'llll') }}</dd>
+              </div>
+            </dl>
+          </div>
+      </div>
+
       <div class="grid grid-cols-2 gap-4">
         <div>
           <h2 class="section-header">{{ $t('app.invoices.view.customer.title') }}</h2>

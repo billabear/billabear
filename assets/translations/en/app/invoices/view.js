@@ -1,5 +1,9 @@
 export const INVOICES_VIEW_TRANSLATIONS = {
     title: "View Invoice",
+    main: {
+      title: "Invoice Information",
+      created_at: "Created At"
+    },
     customer: {
         title: "Customer",
         email: "Email",
