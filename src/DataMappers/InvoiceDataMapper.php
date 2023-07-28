@@ -47,8 +47,11 @@ class InvoiceDataMapper
         $dto->setCustomer($this->customerFactory->createAppDto($invoice->getCustomer()));
         $dto->setCreatedAt($invoice->getCreatedAt());
         $dto->setAmountDue($invoice->getAmountDue());
+
         $dto->setCurrency($invoice->getCurrency());
         $dto->setIsPaid($invoice->isPaid());
+        $dto->setTaxTotal($invoice->getTaxTotal());
+        $dto->setSubTotal($invoice->getSubTotal());
         $dto->setTotal($invoice->getTotal());
         $dto->setBillerAddress($this->addressDataMapper->createDto($invoice->getBillerAddress()));
         $dto->setPayeeAddress($this->addressDataMapper->createDto($invoice->getPayeeAddress()));

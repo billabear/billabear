@@ -3,6 +3,11 @@
     <h1 class="page-title mb-5">{{ $t('app.invoices.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="mb-5">
+        <div class="alert-success" v-if="invoice.paid">{{ $t('app.invoices.view.status.paid') }}</div>
+        <div class="alert-error" v-else>{{ $t('app.invoices.view.status.outstanding') }}</div>
+      </div>
+
       <div class="grid grid-cols-2 gap-4">
         <div>
           <h2 class="section-header">{{ $t('app.invoices.view.customer.title') }}</h2>
@@ -98,7 +103,9 @@
               <td>{{line.description }}</td>
               <td v-if="line.tax_rate !== null">{{ line.tax_rate }}</td>
               <td v-else>{{ $t('app.invoices.view.lines.tax_exempt') }}</td>
-              <td>{{ invoice.total }}</td>
+              <td>
+                <Currency :amount="line.total" />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -110,32 +117,67 @@
           <dl class="total-list">
             <div>
               <dt>{{ $t('app.invoices.view.total.tax_total') }}</dt>
-              <dd>{{ invoice.currency }} {{ invoice.tax_total }}</dd>
+              <dd>
+                <Currency :currency="invoice.currency" :amount="invoice.tax_total" />
+              </dd>
             </div>
             <div>
               <dt>{{ $t('app.invoices.view.total.sub_total') }}</dt>
-              <dd>{{ invoice.currency }} {{ invoice.sub_total }}</dd>
+              <dd>
+                <Currency :currency="invoice.currency" :amount="invoice.sub_total" />
+              </dd>
             </div>
             <div>
               <dt>{{ $t('app.invoices.view.total.total') }}</dt>
-              <dd>{{ invoice.currency }} {{ invoice.total }}</dd>
+              <dd>
+                <Currency :currency="invoice.currency" :amount="invoice.total" />
+              </dd>
             </div>
           </dl>
         </div>
       </div>
+      <div class="mt-3 clear-both">
+        <SubmitButton :in-progress="chargingCard" @click="chargeCard" button-class="btn--main" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.view.actions.charge_card') }}</SubmitButton>
+      </div>
     </LoadingScreen>
+
+    <VueFinalModal
+        v-model="failed.modelValue"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      {{ $t('app.invoices.view.payment_failed.message') }}
+    </VueFinalModal>
+
+    <VueFinalModal
+        v-model="success.modelValue"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      {{ $t('app.invoices.view.payment_succeeded.message') }}
+    </VueFinalModal>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Currency from "../../../components/app/Currency.vue";
+import {VueFinalModal} from "vue-final-modal";
 
 export default {
   name: "InvoiceView",
+  components: {VueFinalModal, Currency},
   data() {
     return {
       invoice: {},
       ready: false,
+      chargingCard: false,
+      failed: {
+        modelValue: false,
+      },
+      success: {
+        modelValue: false,
+      },
     }
   },
   mounted() {
@@ -144,6 +186,26 @@ export default {
       this.invoice = response.data.invoice;
       this.ready = true;
     })
+  },
+  methods: {
+    chargeCard: function () {
+      this.chargingCard = true;
+
+      axios.post('/app/invoice/'+this.invoice.id+'/charge').then(response => {
+        this.invoice.paid = response.data.paid;
+        if (this.invoice.paid === false) {
+          this.failed.modelValue = true;
+        } else {
+          this.invoice.paid_at = Date.now();
+          this.success.modelValue = true;
+        }
+        this.chargingCard = false;
+      }).catch(error => {
+        console.log(error)
+        this.failed.modelValue = true;
+        this.chargingCard = false;
+      })
+    }
   }
 }
 </script>

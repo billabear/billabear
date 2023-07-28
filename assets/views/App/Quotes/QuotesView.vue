@@ -83,7 +83,9 @@
               <td v-else>{{ $t('app.quotes.view.lines.one_off') }}</td>
               <td v-if="line.tax_rate !== null">{{ line.tax_rate }}</td>
               <td v-else>{{ $t('app.quotes.view.lines.tax_exempt') }}</td>
-              <td>{{ line.total }}</td>
+              <td>
+                <Currency :amount="line.total" />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -95,15 +97,21 @@
           <dl class="total-list">
             <div>
               <dt>{{ $t('app.quotes.view.total.tax_total') }}</dt>
-              <dd>{{ quote.currency }} {{ quote.tax_total }}</dd>
+              <dd>
+                <Currency :currency="quote.currency" :amount="quote.tax_total" />
+              </dd>
             </div>
             <div>
               <dt>{{ $t('app.quotes.view.total.sub_total') }}</dt>
-              <dd>{{ quote.currency }} {{ quote.sub_total }}</dd>
+              <dd>
+                <Currency :currency="quote.currency" :amount="quote.sub_total" />
+              </dd>
             </div>
             <div>
               <dt>{{ $t('app.quotes.view.total.total') }}</dt>
-              <dd>{{ quote.currency }} {{ quote.total }}</dd>
+              <dd>
+                <Currency :currency="quote.currency" :amount="quote.total" />
+              </dd>
             </div>
           </dl>
         </div>
@@ -114,9 +122,11 @@
 
 <script>
 import axios from "axios";
+import Currency from "../../../components/app/Currency.vue";
 
 export default {
   name: "QuotesRead",
+  components: {Currency},
   data() {
     return {
       quote: {},

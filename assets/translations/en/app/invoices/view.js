@@ -40,5 +40,18 @@ export const INVOICES_VIEW_TRANSLATIONS = {
         total: "Total",
         sub_total: "Sub Total",
         tax_total: "Tax Total",
+    },
+    status: {
+        paid: "Invoice successfully paid",
+        outstanding: "Invoice still needs to be paid."
+    },
+    actions: {
+        charge_card: "Charge Card"
+    },
+    payment_failed: {
+        message: "Unable to successfully make payment"
+    },
+    payment_succeeded: {
+        message: "Payment successfully made."
     }
 }
