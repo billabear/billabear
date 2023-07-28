@@ -49,7 +49,7 @@ Feature: Tax home country when country not found
       | customer.south@example.org   | ZA      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     | example |
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Plan         | 1000         | USD            | week           | customer.south@example.org  | +3 Minutes  | Active |
+      | Test Plan         | 1000         | USD            | week           | customer.south@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.south@example.org" will have tax country of "DE"
