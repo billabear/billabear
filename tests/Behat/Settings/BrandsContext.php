@@ -66,6 +66,7 @@ class BrandsContext implements Context
             $brand->setEmailAddress($row['Email']);
             $brand->setAddress(new Address());
             $brand->getAddress()->setCountry($row['Country'] ?? 'DE');
+            $brand->setTaxRate($row['Tax Rate'] ?? null);
 
             $this->brandSettingsRepository->getEntityManager()->persist($brand);
         }

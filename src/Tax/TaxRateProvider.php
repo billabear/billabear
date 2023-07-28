@@ -46,10 +46,13 @@ class TaxRateProvider implements TaxRateProviderInterface
             $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
             $customerTaxCountry = $customer->getBillingAddress()->getCountry();
         } catch (NoRateForCountryException $e) {
-            $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
+            try {
+                $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
+            } catch (NoRateForCountryException $e) {
+                $customerTaxRate = $customer->getBrandSettings()->getTaxRate();
+            }
             $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
         }
-        $businessTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
         $euBusinessTaxRules = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getEuropeanBusinessTaxRules();
         if ($euBusinessTaxRules && CustomerType::BUSINESS === $customer->getType() && $this->countryRules->inEu($customer->getBillingAddress())) {
             if (TaxType::PHYSICAL === $taxType) {

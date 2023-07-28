@@ -77,6 +77,8 @@ class GeneralContext implements Context
         $settings->getSystemSettings()->setMainCurrency('USD');
         $settings->getSystemSettings()->setSystemUrl('http://test.example.org/');
         $settings->getSystemSettings()->setInvoiceNumberGeneration('random');
+        $settings->setTaxSettings(new Settings\TaxSettings());
+        $settings->getTaxSettings()->setTaxCustomersWithTaxNumbers(true);
 
         $em->persist($settings);
         $em->flush();
