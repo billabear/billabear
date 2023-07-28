@@ -18,6 +18,7 @@ use App\Customer\LimitsFactory;
 use App\Customer\ObolRegister;
 use App\DataMappers\CreditDataMapper;
 use App\DataMappers\CustomerDataMapper;
+use App\DataMappers\InvoiceDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\PaymentMethodsDataMapper;
 use App\DataMappers\RefundDataMapper;
@@ -32,6 +33,7 @@ use App\Enum\CustomerStatus;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Stats\CustomerCreationStats;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -208,18 +210,20 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
-        CustomerDataMapper $customerFactory,
+        CustomerDataMapper $customerDataMapper,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodsDataMapper $paymentDetailsFactory,
         PaymentRepositoryInterface $paymentRepository,
-        PaymentDataMapper $paymentFactory,
+        PaymentDataMapper $paymentDataMapper,
         RefundRepositoryInterface $refundRepository,
-        RefundDataMapper $refundFactory,
+        RefundDataMapper $refundDataMapper,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionDataMapper $subscriptionFactory,
         LimitsFactory $limitsFactory,
         CreditRepositoryInterface $creditNoteRepository,
-        CreditDataMapper $creditNoteFactory,
+        CreditDataMapper $creditDataMapper,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoiceDataMapper $invoiceDataMapper,
     ): Response {
         try {
             $customer = $customerRepository->getById($request->get('id'));
@@ -228,10 +232,10 @@ class CustomerController
         }
 
         $payments = $paymentRepository->getPaymentsForCustomer($customer);
-        $paymentDtos = array_map([$paymentFactory, 'createAppDto'], $payments);
+        $paymentDtos = array_map([$paymentDataMapper, 'createAppDto'], $payments);
 
         $refunds = $refundRepository->getForCustomer($customer);
-        $refundDtos = array_map([$refundFactory, 'createAppDto'], $refunds);
+        $refundDtos = array_map([$refundDataMapper, 'createAppDto'], $refunds);
 
         $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
@@ -242,9 +246,12 @@ class CustomerController
         $limits = $limitsFactory->createAppDto($customer, $subscriptions);
 
         $creditNotes = $creditNoteRepository->getForCustomer($customer);
-        $creditNotesDto = array_map([$creditNoteFactory, 'createAppDto'], $creditNotes);
+        $creditNotesDto = array_map([$creditDataMapper, 'createAppDto'], $creditNotes);
 
-        $customerDto = $customerFactory->createAppDto($customer);
+        $invoices = $invoiceRepository->getAllForCustomer($customer);
+        $invoiceDtos = array_map([$invoiceDataMapper, 'createQuickViewAppDto'], $invoices);
+
+        $customerDto = $customerDataMapper->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
         $dto->setPaymentDetails($paymentDetailsDto);
@@ -253,6 +260,7 @@ class CustomerController
         $dto->setRefunds($refundDtos);
         $dto->setLimits($limits);
         $dto->setCredit($creditNotesDto);
+        $dto->setInvoices($invoiceDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

@@ -10,6 +10,7 @@ export const INVOICES_LIST_TRANSLATIONS = {
     no_invoices: "There are no invoices here",
     next: "Next",
     prev: "Previous",
+    view_btn: "View Invoice",
     filter: {
         title: "Filters",
         button: "Filters",

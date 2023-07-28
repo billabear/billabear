@@ -37,6 +37,8 @@ class CustomerView
     #[SerializedName('credit')]
     protected array $credit = [];
 
+    protected array $invoices = [];
+
     public function getCustomer(): Customer
     {
         return $this->customer;
@@ -115,5 +117,15 @@ class CustomerView
     public function setCredit(array $credit): void
     {
         $this->credit = $credit;
+    }
+
+    public function getInvoices(): array
+    {
+        return $this->invoices;
+    }
+
+    public function setInvoices(array $invoices): void
+    {
+        $this->invoices = $invoices;
     }
 }

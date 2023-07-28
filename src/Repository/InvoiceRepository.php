@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class InvoiceRepository extends DoctrineCrudRepository implements InvoiceRepositoryInterface
 {
+    public function getAllForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
+    }
 }

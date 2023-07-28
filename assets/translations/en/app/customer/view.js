@@ -113,5 +113,18 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             feature: "Feature"
         },
         no_features: "No features"
+    },
+    invoices: {
+        title: "Invoices",
+        list:{
+            amount: "Amount",
+            currency: "Currency",
+            status: "Status",
+            outstanding: "Outstanding",
+            overdue: "Overdue",
+            paid: "Paid",
+            created_at: "Created At",
+            view_btn: "View"
+        },
     }
 }

@@ -12,8 +12,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface InvoiceRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getAllForCustomer(Customer $customer): array;
 }

@@ -372,6 +372,56 @@
               </table>
             </div>
           </div>
+          <div class="mt-3">
+            <div class="grid grid-cols-2">
+              <div>
+                <h2 class="">{{ $t('app.customer.view.invoices.title') }}</h2>
+              </div>
+              <div class="text-end">
+              </div>
+            </div>
+            <div class="">
+
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.customer.view.invoices.list.amount') }}</th>
+                  <th>{{ $t('app.customer.view.invoices.list.currency') }}</th>
+                  <th>{{ $t('app.customer.view.invoices.list.status') }}</th>
+                  <th>{{ $t('app.customer.view.invoices.list.created_at') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="invoice in invoices">
+                  <td>{{ currency(invoice.total) }}</td>
+                  <td>{{ invoice.currency }}</td>
+                  <td>
+                    <span class="badge--green" v-if="invoice.paid">
+                      {{ $t('app.customer.view.invoices.list.paid') }}
+                    </span>
+                    <span class="badge--red" v-else>
+                      {{ $t('app.customer.view.invoices.list.outstanding') }}
+                    </span></td>
+                  <td>{{ $filters.moment(invoice.created_at, "LLL") || "unknown" }}</td>
+                  <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="btn--main">{{ $t('app.customer.view.invoices.list.view_btn') }}</router-link></td>
+                </tr>
+                <tr v-if="invoices.length == 0">
+                  <td colspan="5" class="text-center">{{ $t('app.customer.view.invoices.no_invoices') }}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>{{ $t('app.customer.view.invoices.list.amount') }}</th>
+                  <th>{{ $t('app.customer.view.invoices.list.currency') }}</th>
+                  <th>{{ $t('app.customer.view.invoices.list.status') }}</th>
+                  <th>{{ $t('app.customer.view.invoices.list.created_at') }}</th>
+                  <th></th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
       </div>
       </div>
 
@@ -403,6 +453,7 @@ export default {
       subscriptions: [],
       limits: {},
       credit: [],
+      invoices: [],
     }
   },
   methods: {
@@ -454,6 +505,7 @@ export default {
       this.refunds = response.data.refunds;
       this.limits = response.data.limits;
       this.credit = response.data.credit;
+      this.invoices = response.data.invoices;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
