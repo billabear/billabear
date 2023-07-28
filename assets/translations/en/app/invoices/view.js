@@ -50,7 +50,8 @@ export const INVOICES_VIEW_TRANSLATIONS = {
         outstanding: "Invoice still needs to be paid."
     },
     actions: {
-        charge_card: "Charge Card"
+        charge_card: "Charge Card",
+        mark_as_paid: "Mark As Paid"
     },
     payment_failed: {
         message: "Unable to successfully make payment"

@@ -50,8 +50,7 @@
               <td>{{ currency(invoice.total) }}</td>
               <td>{{ invoice.currency }}</td>
               <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
-              <td>
-                <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.list.download') }}</a></td>
+              <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="list-btn">{{ $t('app.invoices.list.view_btn') }}</router-link></td>
               <td>
                 <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">
                   <SubmitButton button-class="ml-3 btn--secondary--main" :in-progress="charging_invoice" @click="attemptPayment(invoice)" >{{ $t('app.invoices.list.charge') }}</SubmitButton>

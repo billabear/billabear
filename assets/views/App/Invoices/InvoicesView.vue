@@ -151,6 +151,7 @@
       </div>
       <div class="mt-3 clear-both">
         <SubmitButton :in-progress="chargingCard" @click="chargeCard" button-class="btn--main" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.view.actions.charge_card') }}</SubmitButton>
+        <SubmitButton :in-progress="markingAsPaid" @click="markAsPaid" button-class="btn--secondary" v-if="invoice.paid === false">{{ $t('app.invoices.view.actions.mark_as_paid') }}</SubmitButton>
       </div>
     </LoadingScreen>
 
@@ -185,6 +186,7 @@ export default {
       invoice: {},
       ready: false,
       chargingCard: false,
+      markingAsPaid: false,
       failed: {
         modelValue: false,
       },
@@ -201,6 +203,20 @@ export default {
     })
   },
   methods: {
+    markAsPaid: function () {
+        this.markingAsPaid = true;
+
+      this.charging_invoice = true;
+      axios.post('/app/invoice/'+this.invoice.id+'/paid').then(response => {
+        this.invoice.paid = true
+        this.invoice.paid_at = Date.now();
+        this.markingAsPaid = false;
+      }).catch(error => {
+        console.log(error)
+        this.failed.modelValue = true;
+        this.markingAsPaid = false;
+      })
+    },
     chargeCard: function () {
       this.chargingCard = true;
 
