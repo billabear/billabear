@@ -37,6 +37,9 @@ class Invoice
     #[SerializedName('is_paid')]
     private bool $isPaid;
 
+    #[SerializedName('paid_at')]
+    private ?\DateTimeInterface $paidAt;
+
     #[SerializedName('created_at')]
     private \DateTime $createdAt;
 
@@ -178,5 +181,15 @@ class Invoice
     public function setLines(array $lines): void
     {
         $this->lines = $lines;
+    }
+
+    public function setPaidAt(?\DateTimeInterface $getPaidAt)
+    {
+        $this->paidAt = $getPaidAt;
+    }
+
+    public function getPaidAt(): ?\DateTimeInterface
+    {
+        return $this->paidAt;
     }
 }

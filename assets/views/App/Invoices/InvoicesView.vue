@@ -4,7 +4,7 @@
 
     <LoadingScreen :ready="ready">
       <div class="mb-5">
-        <div class="alert-success" v-if="invoice.paid">{{ $t('app.invoices.view.status.paid') }}</div>
+        <div class="alert-success" v-if="invoice.paid">{{ $t('app.invoices.view.status.paid',  {date: $filters.moment(invoice.paid_at, 'LLL')}) }}</div>
         <div class="alert-error" v-else>{{ $t('app.invoices.view.status.outstanding') }}</div>
       </div>
 

@@ -47,7 +47,7 @@ class InvoiceDataMapper
         $dto->setCustomer($this->customerFactory->createAppDto($invoice->getCustomer()));
         $dto->setCreatedAt($invoice->getCreatedAt());
         $dto->setAmountDue($invoice->getAmountDue());
-
+        $dto->setPaidAt($invoice->getPaidAt());
         $dto->setCurrency($invoice->getCurrency());
         $dto->setIsPaid($invoice->isPaid());
         $dto->setTaxTotal($invoice->getTaxTotal());

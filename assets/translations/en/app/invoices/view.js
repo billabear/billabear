@@ -42,7 +42,7 @@ export const INVOICES_VIEW_TRANSLATIONS = {
         tax_total: "Tax Total",
     },
     status: {
-        paid: "Invoice successfully paid",
+        paid: "Invoice successfully paid at {date}",
         outstanding: "Invoice still needs to be paid."
     },
     actions: {
