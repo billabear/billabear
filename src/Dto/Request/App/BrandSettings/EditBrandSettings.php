@@ -36,6 +36,10 @@ class EditBrandSettings
     #[Assert\Type('string')]
     private $taxNumber;
 
+    #[Assert\Type(['numeric'])]
+    #[Assert\PositiveOrZero]
+    private $taxRate;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -89,5 +93,15 @@ class EditBrandSettings
     public function setTaxNumber($taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTaxRate()
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate($taxRate): void
+    {
+        $this->taxRate = $taxRate;
     }
 }

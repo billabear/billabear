@@ -9,4 +9,8 @@ export const HOME_TRANSLATIONS = {
         link: "Release Details",
         dismiss: "Dismiss",
     },
+    default_tax: {
+        text: "Your country isn't supported for tax rates by default. You must set a tax rate on your default brand!",
+        link: "Vew Brands"
+    }
 };

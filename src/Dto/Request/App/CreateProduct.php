@@ -31,7 +31,7 @@ class CreateProduct
 
     #[SerializedName('tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(['float', 'integer'])]
+    #[Assert\Type('numeric')]
     #[Assert\PositiveOrZero]
     private $taxRate;
 

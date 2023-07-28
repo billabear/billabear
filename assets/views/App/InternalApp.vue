@@ -35,6 +35,9 @@
               {{ $t('app.home.update_available.text') }} <a target="_blank" :href="'https://docs.billabear.com/technical/update?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('app.home.update_available.link') }}</a> - <a  href="#"  @click="dimissUpdateNotification">{{ $t('app.home.update_available.dismiss') }}</a>
             </div>
           </RoleOnlyView>
+          <div class="alert-error my-3" v-if="!has_default_tax">
+            {{ $t('app.home.default_tax.text') }} <router-link :to="{name: 'app.settings.brand_settings.list'}">{{ $t('app.home.default_tax.link') }}</router-link>
+          </div>
         <router-view></router-view>
         </div>
       </div>
@@ -54,6 +57,7 @@ export default {
   data() {
     return {
       is_update_available: false,
+      has_default_tax: false,
       origin: '',
     }
   },
@@ -78,6 +82,7 @@ export default {
     axios.get("/app/system/data").then(response => {
       this.setStripeImport({defaultValue: response.data.has_stripe_import});
       this.is_update_available = response.data.is_update_available;
+      this.has_default_tax = response.data.has_default_tax;
     })
   }
 }

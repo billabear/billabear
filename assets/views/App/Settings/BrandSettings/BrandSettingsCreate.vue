@@ -24,13 +24,6 @@
           </div>
 
           <div class="form-field-ctn">
-            <label class="form-field-lbl" for="tax_number">
-              {{ $t('app.settings.brand_settings.create.fields.tax_number') }}
-            </label>
-            <input type="text" class="form-field-input" id="tax_number" v-model="brand.tax_number" />
-            <p class="form-field-help">{{ $t('app.settings.brand_settings.create.help_info.tax_number') }}</p>
-          </div>
-          <div class="form-field-ctn">
             <label class="form-field-lbl" for="email">
               {{ $t('app.settings.brand_settings.create.fields.email') }}
             </label>
@@ -40,6 +33,25 @@
           </div>
 
         </div>
+
+
+        <div class="card-body mt-5">
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="tax_number">
+              {{ $t('app.settings.brand_settings.create.fields.tax_number') }}
+            </label>
+            <input type="text" class="form-field-input" id="tax_number" v-model="brand.tax_number" />
+            <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.tax_number') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="tax_rate">
+              {{ $t('app.settings.brand_settings.create.fields.tax_rate') }}
+            </label>
+            <input type="text" class="form-field-input" id="tax_rate" v-model="brand.tax_rate" />
+            <p class="form-field-help">{{ $t('app.settings.brand_settings.create.help_info.tax_rate') }}</p>
+          </div>
+        </div>
+
 
         <div class="card-body mt-5">
           <h2 class="mb-3">{{ $t('app.settings.brand_settings.create.address_title') }}</h2>
@@ -147,6 +159,7 @@ export default {
             postcode: this.brand.address.postcode,
           },
           tax_number: this.brand.tax_number,
+          tax_rate: this.brand.tax_rate != "" ? this.brand.tax_rate : null,
         };
 
         axios.post('/app/settings/brand', payload).then(response => {

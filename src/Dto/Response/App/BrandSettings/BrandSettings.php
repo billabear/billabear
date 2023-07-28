@@ -36,6 +36,9 @@ class BrandSettings
     #[SerializedName('tax_number')]
     private ?string $taxNumber;
 
+    #[SerializedName('tax_rate')]
+    private ?float $taxRate;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -119,5 +122,15 @@ class BrandSettings
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTaxRate(): ?float
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate(?float $taxRate): void
+    {
+        $this->taxRate = $taxRate;
     }
 }
