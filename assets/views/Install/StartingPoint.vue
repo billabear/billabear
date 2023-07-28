@@ -19,6 +19,11 @@
           <input type="text" class="input-field" v-model="default_brand" />
         </div>
         <div class="px-5 mb-3">
+          <label class="block mb-1">{{ $t('install.settings.country') }}</label>
+          <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
+          <CountrySelect v-model="country" />
+        </div>
+        <div class="px-5 mb-3">
           <label class="block mb-1">{{ $t('install.settings.currency') }}</label>
           <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
           <CurrencyRate v-model="currency" />
@@ -163,10 +168,11 @@
 import PublicLogo from "../../components/public/PublicLogo.vue";
 import axios from "axios";
 import CurrencyRate from "../../components/app/Forms/CurrencySelect.vue";
+import CountrySelect from "../../components/app/Forms/CountrySelect.vue";
 
 export default {
   name: "StartingPoint",
-  components: {CurrencyRate, PublicLogo},
+  components: {CountrySelect, CurrencyRate, PublicLogo},
   data() {
     return {
       error_info: {
@@ -183,6 +189,7 @@ export default {
       complete: false,
       errorMessage: null,
       currency: null,
+      country: null,
     }
   },
   mounted() {
@@ -199,6 +206,7 @@ export default {
          email: this.email,
          password: this.password,
          currency: this.currency,
+         country: this.country,
       };
       axios.post('/install/process', payload).then(
           response => {

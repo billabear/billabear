@@ -29,6 +29,7 @@ class SystemSettingsStep
         $systemSettings->setSystemUrl($request->getWebhookUrl());
         $systemSettings->setMainCurrency(strtoupper($request->getCurrency()));
         $systemSettings->setInvoiceNumberGeneration('random');
+        $systemSettings->setUseStripeBilling(false);
 
         $notification = new Settings\NotificationSettings();
         $notification->setEmsp(Settings\NotificationSettings::EMSP_SYSTEM);

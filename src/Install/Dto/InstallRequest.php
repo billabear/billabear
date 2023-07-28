@@ -22,6 +22,10 @@ class InstallRequest
     private $defaultBrand;
 
     #[Assert\NotBlank]
+    #[Assert\Country]
+    private $country;
+
+    #[Assert\NotBlank]
     #[Assert\Email]
     #[SerializedName('from_email')]
     private $fromEmail;
@@ -114,5 +118,15 @@ class InstallRequest
     public function setCurrency($currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function setCountry($country): void
+    {
+        $this->country = $country;
     }
 }

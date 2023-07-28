@@ -16,6 +16,7 @@ use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use App\Install\Dto\InstallRequest;
 use App\Repository\BrandSettingsRepositoryInterface;
+use Parthenon\Common\Address;
 
 class BrandStep
 {
@@ -30,6 +31,10 @@ class BrandStep
         $brand->setBrandName($request->getDefaultBrand());
         $brand->setIsDefault(true);
         $brand->setEmailAddress($request->getFromEmail());
+
+        $address = new Address();
+        $address->setCountry($request->getCountry());
+        $brand->setAddress($address);
 
         $brand->getNotificationSettings()->setSubscriptionCancellation(true);
         $brand->getNotificationSettings()->setSubscriptionCreation(true);
