@@ -18,6 +18,7 @@ use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Parthenon\Common\Address;
 
 class BrandsContext implements Context
 {
@@ -63,6 +64,8 @@ class BrandsContext implements Context
             $brand->setBrandName($row['Name']);
             $brand->setCode($row['Code']);
             $brand->setEmailAddress($row['Email']);
+            $brand->setAddress(new Address());
+            $brand->getAddress()->setCountry($row['Country'] ?? 'DE');
 
             $this->brandSettingsRepository->getEntityManager()->persist($brand);
         }

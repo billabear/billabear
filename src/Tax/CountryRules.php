@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Tax;
 
+use App\Exception\NoRateForCountryException;
 use Parthenon\Common\Address;
 
 class CountryRules
@@ -80,8 +81,8 @@ class CountryRules
     {
         $rates = array_merge($this->europeanEconomicArea, $this->rates);
 
-        if (!isset($rates[$address->getCountry()])) {
-            return 0.0;
+        if (!array_key_exists($address->getCountry(), $rates)) {
+            throw new NoRateForCountryException(sprintf('Unable to find a tax rate for %s', $address->getCountry()));
         }
 
         return floatval($rates[$address->getCountry()]);

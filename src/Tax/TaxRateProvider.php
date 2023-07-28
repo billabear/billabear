@@ -16,9 +16,10 @@ use App\Entity\Customer;
 use App\Entity\Product;
 use App\Enum\CustomerType;
 use App\Enum\TaxType;
+use App\Exception\NoRateForCountryException;
 use App\Repository\SettingsRepositoryInterface;
 
-class IgnoreCustomerTax implements TaxRateProviderInterface
+class TaxRateProvider implements TaxRateProviderInterface
 {
     public function __construct(
         private CountryRules $countryRules,
@@ -41,7 +42,13 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
         }
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 
-        $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
+        try {
+            $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBillingAddress());
+            $customerTaxCountry = $customer->getBillingAddress()->getCountry();
+        } catch (NoRateForCountryException $e) {
+            $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
+            $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
+        }
         $businessTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
         $euBusinessTaxRules = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getEuropeanBusinessTaxRules();
         if ($euBusinessTaxRules && CustomerType::BUSINESS === $customer->getType() && $this->countryRules->inEu($customer->getBillingAddress())) {
@@ -53,9 +60,9 @@ class IgnoreCustomerTax implements TaxRateProviderInterface
         }
 
         if (!$taxCustomersWithTaxNumbers && $customer->getTaxNumber()) {
-            return new TaxInfo(null, $customer->getBrandSettings()->getAddress()->getCountry(), false);
+            return new TaxInfo(null, $customerTaxCountry, false);
         }
 
-        return new TaxInfo($customerTaxRate, $customer->getBillingAddress()->getCountry(), false);
+        return new TaxInfo($customerTaxRate, $customerTaxCountry, false);
     }
 }
