@@ -49,7 +49,12 @@ class TaxRateProvider implements TaxRateProviderInterface
             try {
                 $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
             } catch (NoRateForCountryException $e) {
-                $customerTaxRate = $customer->getBrandSettings()->getTaxRate();
+                if (TaxType::DIGITAL_SERVICES === $taxType) {
+                    $customerTaxRate = $customer->getBrandSettings()->getDigitalServicesRate();
+                }
+                if (!isset($customerTaxRate)) {
+                    $customerTaxRate = $customer->getBrandSettings()->getTaxRate();
+                }
             }
             $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
         }

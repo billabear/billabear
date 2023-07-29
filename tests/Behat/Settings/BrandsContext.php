@@ -68,6 +68,10 @@ class BrandsContext implements Context
             $brand->getAddress()->setCountry($row['Country'] ?? 'DE');
             $brand->setTaxRate($row['Tax Rate'] ?? null);
 
+            if (isset($row['Digital Services Tax Rate']) && !empty($row['Digital Services Tax Rate'])) {
+                $brand->setDigitalServicesRate($row['Digital Services Tax Rate']);
+            }
+
             $this->brandSettingsRepository->getEntityManager()->persist($brand);
         }
         $this->brandSettingsRepository->getEntityManager()->flush();
