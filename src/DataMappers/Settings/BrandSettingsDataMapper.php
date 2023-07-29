@@ -49,6 +49,7 @@ class BrandSettingsDataMapper
 
         $brandSettings->setTaxNumber($dto->getTaxNumber());
         $brandSettings->setTaxRate($dto->getTaxRate());
+        $brandSettings->setDigitalServicesRate($dto->getDigitalServicesTaxRate());
 
         return $brandSettings;
     }
@@ -73,6 +74,7 @@ class BrandSettingsDataMapper
         $dto->setIsDefault($brandSettings->getIsDefault());
         $dto->setTaxNumber($brandSettings->getTaxNumber());
         $dto->setTaxRate($brandSettings->getTaxRate());
+        $dto->setDigitalServicesTaxRate($brandSettings->getDigitalServicesRate());
 
         $dto->getNotifications()->setSubscriptionCreation($brandSettings->getNotificationSettings()->getSubscriptionCreation());
         $dto->getNotifications()->setSubscriptionCancellation($brandSettings->getNotificationSettings()->getSubscriptionCancellation());

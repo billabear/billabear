@@ -47,6 +47,10 @@ class CreateBrandSettings
     #[SerializedName('tax_rate')]
     private $taxRate;
 
+    #[Assert\Type('numeric')]
+    #[SerializedName('digital_services_tax_rate')]
+    private $digitalServicesTaxRate;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -120,5 +124,15 @@ class CreateBrandSettings
     public function setTaxRate($taxRate): void
     {
         $this->taxRate = $taxRate;
+    }
+
+    public function getDigitalServicesTaxRate()
+    {
+        return $this->digitalServicesTaxRate;
+    }
+
+    public function setDigitalServicesTaxRate($digitalServicesTaxRate): void
+    {
+        $this->digitalServicesTaxRate = $digitalServicesTaxRate;
     }
 }

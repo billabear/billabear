@@ -39,6 +39,9 @@ class BrandSettings
     #[SerializedName('tax_rate')]
     private ?float $taxRate;
 
+    #[SerializedName('digital_services_tax_rate')]
+    private ?float $digitalServicesTaxRate;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -132,5 +135,15 @@ class BrandSettings
     public function setTaxRate(?float $taxRate): void
     {
         $this->taxRate = $taxRate;
+    }
+
+    public function getDigitalServicesTaxRate(): ?float
+    {
+        return $this->digitalServicesTaxRate;
+    }
+
+    public function setDigitalServicesTaxRate(?float $digitalServicesTaxRate): void
+    {
+        $this->digitalServicesTaxRate = $digitalServicesTaxRate;
     }
 }

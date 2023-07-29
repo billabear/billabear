@@ -52,6 +52,9 @@ class BrandSettings
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $taxRate = null;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $digitalServicesRate = null;
+
     public function getId()
     {
         return $this->id;
@@ -149,5 +152,15 @@ class BrandSettings
     public function hasTaxRate(): bool
     {
         return isset($this->taxRate);
+    }
+
+    public function getDigitalServicesRate(): ?float
+    {
+        return $this->digitalServicesRate;
+    }
+
+    public function setDigitalServicesRate(?float $digitalServicesRate): void
+    {
+        $this->digitalServicesRate = $digitalServicesRate;
     }
 }

@@ -57,6 +57,14 @@
               <input type="text" class="form-field-input" id="tax_rate" v-model="brand.tax_rate" />
               <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.tax_rate') }}</p>
             </div>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="tax_rate">
+                {{ $t('app.settings.brand_settings.update.fields.digital_services_tax_rate') }}
+              </label>
+              <p class="form-field-error" v-if="errors.digitalServicesTaxRate != undefined">{{ errors.digitalServicesTaxRate }}</p>
+              <input type="text" class="form-field-input" id="tax_rate" v-model="brand.digital_services_tax_rate" />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.digital_services_tax_rate') }}</p>
+            </div>
           </div>
 
           <div class="card-body mt-5">
@@ -208,6 +216,7 @@ export default {
           notifications: this.brand.notifications,
           tax_number: this.brand.tax_number,
           tax_rate: this.brand.tax_rate != "" ? this.brand.tax_rate : null,
+          digital_services_tax_rate: this.brand.digital_services_tax_rate != "" ? this.brand.digital_services_tax_rate : null,
         };
 
         axios.post('/app/settings/brand/'+brandId, payload).then(response => {

@@ -12,7 +12,8 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         postcode: "Post Code",
         code: "Code",
         tax_number: "Tax Number",
-        tax_rate: "Tax Rate"
+        tax_rate: "Tax Rate",
+        digital_services_tax_rate: "Digital Services Tax Rate"
     },
     help_info: {
         name: "The name of the brand",
@@ -26,7 +27,8 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         country: "The customer's billing country - ISO 3166-1 alpha-2 country code.",
         postcode: "The post code for the billing address",
         tax_number: "The tax number for the company/brand",
-        tax_rate: "The rax rate that is to be used for your home country or when no other tax rate can be found"
+        tax_rate: "The rax rate that is to be used for your home country or when no other tax rate can be found",
+        digital_services_tax_rate: "The tax rate that is to be used for your home country or when no other tax rate can be found for digital services"
     },
     general: "General Settings",
     notifications: "Notifications",
