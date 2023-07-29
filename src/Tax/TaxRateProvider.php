@@ -33,13 +33,13 @@ class TaxRateProvider implements TaxRateProviderInterface
             return new TaxInfo($product->getTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }
 
-        if ($customer->getStandardTaxRate() && TaxType::DIGITAL_SERVICES !== $taxType) {
-            return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry(), false);
-        }
-
         if ($customer->getDigitalTaxRate() && TaxType::DIGITAL_SERVICES === $taxType) {
             return new TaxInfo($customer->getDigitalTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }
+        if ($customer->getStandardTaxRate()) {
+            return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry(), false);
+        }
+
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 
         try {
