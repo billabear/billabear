@@ -66,4 +66,49 @@ class WebhookContext implements Context
             throw new \Exception('Webhook endpoint found');
         }
     }
+
+    /**
+     * @Given the following webhook endpoints exist:
+     */
+    public function theFollowingWebhookEndpointsExist(TableNode $table)
+    {
+        $rows = $table->getColumnsHash();
+
+        foreach ($rows as $row) {
+            $webhookEndpoint = new WebhookEndpoint();
+            $webhookEndpoint->setName($row['Name']);
+            $webhookEndpoint->setUrl($row['URL']);
+
+            $webhookEndpoint->setCreatedAt(new \DateTime());
+            $webhookEndpoint->setUpdatedAt(new \DateTime());
+            $webhookEndpoint->setActive(true);
+
+            $this->webhookRepository->getEntityManager()->persist($webhookEndpoint);
+        }
+        $this->webhookRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the webhook list
+     */
+    public function iViewTheWebhookList()
+    {
+        $this->sendJsonRequest('GET', '/app/developer/webhook');
+    }
+
+    /**
+     * @Then I should see the webhook :arg1 in the list
+     */
+    public function iShouldSeeTheWebhookInTheList($name)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $item) {
+            if ($item['name'] == $name) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't see webhook");
+    }
 }
