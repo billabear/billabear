@@ -27,4 +27,4 @@ Feature: Create the webhook
     When I create a webhook with the following information:
       | Name | test |
       | URL | trest |
-    Then I should be told there is a validation error with the url
+    Then I should be told there is a validation error with the URL
