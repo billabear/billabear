@@ -15,8 +15,10 @@ namespace App\Controller\App\Developer;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\Developer\WebhookEndpointDataMapper;
 use App\Dto\Request\App\Developer\Webhook\CreateWebhookEndpoint;
+use App\Dto\Response\App\Developer\Webhook\ViewWebhookEndpoint;
 use App\Dto\Response\App\ListResponse;
 use App\Repository\WebhookEndpointRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,6 +94,29 @@ class WebhookController
         $listResponse->setFirstKey($resultSet->getFirstKey());
 
         $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/developer/webhook/{id}/view', name: 'app_app_developer_webhook_view_webhooks', methods: ['GET'])]
+    public function viewWebhooks(
+        Request $request,
+        WebhookEndpointRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        WebhookEndpointDataMapper $factory,
+    ): Response {
+        try {
+            $webhookEndpoint = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $endpointDto = $factory->createAppDto($webhookEndpoint);
+
+        $mainDto = new ViewWebhookEndpoint();
+        $mainDto->setWebhookEndpoint($endpointDto);
+
+        $json = $serializer->serialize($mainDto, 'json');
 
         return new JsonResponse($json, json: true);
     }

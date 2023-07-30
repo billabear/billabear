@@ -111,4 +111,39 @@ class WebhookContext implements Context
 
         throw new \Exception("Can't see webhook");
     }
+
+    /**
+     * @When I view the webhook :arg1
+     */
+    public function iViewTheWebhook($name)
+    {
+        $webhook = $this->getWebhookEndpoint($name);
+
+        $this->sendJsonRequest('GET', '/app/developer/webhook/'.$webhook->getId().'/view');
+    }
+
+    /**
+     * @Then I should see the webhook url is :arg1
+     */
+    public function iShouldSeeTheWebhookUrlIs($url)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['webhook_endpoint']['url'] != $url) {
+            throw new \Exception('Not the correct url - '.$url);
+        }
+    }
+
+    protected function getWebhookEndpoint(string $name): WebhookEndpoint
+    {
+        $entity = $this->webhookRepository->findOneBy(['name' => $name]);
+
+        if (!$entity instanceof WebhookEndpoint) {
+            throw new \Exception('Unable to find webhook for '.$name);
+        }
+
+        $this->webhookRepository->getEntityManager()->refresh($entity);
+
+        return $entity;
+    }
 }
