@@ -54,4 +54,16 @@ class WebhookContext implements Context
             throw new \Exception('Webhook endpoint not found');
         }
     }
+
+    /**
+     * @Then there should not be a webhook for the URL :arg1
+     */
+    public function thereShouldNotBeAWebhookForTheUrl($url)
+    {
+        $webhookEndpoint = $this->webhookRepository->findOneBy(['url' => $url]);
+
+        if ($webhookEndpoint instanceof WebhookEndpoint) {
+            throw new \Exception('Webhook endpoint found');
+        }
+    }
 }

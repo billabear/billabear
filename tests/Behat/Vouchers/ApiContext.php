@@ -75,6 +75,36 @@ class ApiContext implements Context
     }
 
     /**
+     * @Then I should be told there is a validation error with the name
+     */
+    public function iShouldBeToldThereIsAValidationErrorWithThename()
+    {
+        $data = $this->getJsonContent();
+        if (!isset($data['errors'])) {
+            throw new \Exception('No errors');
+        }
+
+        if (!isset($data['errors']['name'])) {
+            throw new \Exception('No error with name');
+        }
+    }
+
+    /**
+     * @Then I should be told there is a validation error with the URL
+     */
+    public function iShouldBeToldThereIsAValidationErrorWithTheUrl()
+    {
+        $data = $this->getJsonContent();
+        if (!isset($data['errors'])) {
+            throw new \Exception('No errors');
+        }
+
+        if (!isset($data['errors']['url'])) {
+            throw new \Exception('No error with url');
+        }
+    }
+
+    /**
      * @Then there should not be a record of :arg1 being applied to :arg2
      */
     public function thereShouldNotBeARecordOfBeingAppliedTo($voucherName, $customerEmail)
