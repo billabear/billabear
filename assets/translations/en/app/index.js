@@ -21,6 +21,7 @@ import {INVOICES_TRANSLATIONS} from "./invoices";
 import {HOME_TRANSLATIONS} from "./home";
 import {VOUCHER_TRANSLATIONS} from "./vouchers";
 import {QUOTE_TRANSLATIONS} from "./quote";
+import {SYSTEM_TRANSLATIONS} from "./system";
 
 
 export const APP_TRANSLATIONS = {
@@ -47,4 +48,5 @@ export const APP_TRANSLATIONS = {
     home: HOME_TRANSLATIONS,
     vouchers: VOUCHER_TRANSLATIONS,
     quotes: QUOTE_TRANSLATIONS,
+    system: SYSTEM_TRANSLATIONS,
 };

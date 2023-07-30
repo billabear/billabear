@@ -16,6 +16,9 @@
               <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
                 <MenuItem route-name="app.user.settings">{{ $t('app.menu.main.settings') }}</MenuItem>
               </RoleOnlyView>
+              <RoleOnlyView role="ROLE_DEVELOPER">
+                <MenuItem route-name="app.system.webhooks">{{ $t('app.menu.main.system') }}</MenuItem>
+              </RoleOnlyView>
               <li class="menu-item"><a class="menu-link" target="_blank" :href="'https://docs.billabear.com/user?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('app.menu.main.docs') }} <i class="fa-solid fa-up-right-from-square"></i></a></li>
             </MenuGroup>
           </Menu>

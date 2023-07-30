@@ -65,6 +65,9 @@ import QuotesList from "../views/App/Quotes/QuotesList.vue";
 import QuotesView from "../views/App/Quotes/QuotesView.vue";
 import QuoteCreate from "../views/App/Quotes/QuoteCreate.vue";
 import InvoicesView from "../views/App/Invoices/InvoicesView.vue";
+import DeveloperGroup from "../views/App/System/SystemGroup.vue";
+import {SYSTEM_ROUTES} from "./app.system.routes";
+import SystemGroup from "../views/App/System/SystemGroup.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -101,6 +104,12 @@ export const APP_ROUTES = [
 
             }
         ]
+    },
+    {
+        name: "app.system",
+        path: "system",
+        component: SystemGroup,
+        children: SYSTEM_ROUTES
     },
     {
         name: 'app.customer',
