@@ -4,7 +4,7 @@
 
     <LoadingScreen :ready="ready">
       <div class="mt-3 text-end">
-        <router-link :to="{name: 'app.system.webhook_endpoints.list'}" class="btn--main"><i class="fa-solid fa-plus"></i>{{ $t('app.system.webhooks.webhook_endpoint.list.add') }}</router-link>
+        <router-link :to="{name: 'app.system.webhook_endpoints.create'}" class="btn--main"><i class="fa-solid fa-plus"></i>{{ $t('app.system.webhooks.webhook_endpoint.list.add') }}</router-link>
       </div>
       <div class="mt-3">
         <table class="list-table">
