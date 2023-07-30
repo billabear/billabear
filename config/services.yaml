@@ -334,6 +334,13 @@ services:
     app.repository.orm.voucher_application:
         class: App\Repository\Orm\VoucherApplicationRepository
 
+
+    App\Repository\WebhookEndpointRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.webhook_endpoint'
+    app.repository.orm.webhook_endpoint:
+        class: App\Repository\Orm\WebhookEndpointRepository
+
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
 

@@ -94,6 +94,9 @@ default:
                 # Quoutes
                 - App\Tests\Behat\Quote\AppContext
 
+                # Developer
+                - App\Tests\Behat\Developer\WebhookContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
