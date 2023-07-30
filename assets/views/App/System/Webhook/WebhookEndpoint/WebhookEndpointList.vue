@@ -24,7 +24,7 @@
               <td>{{ item.name }}</td>
               <td>{{ item.url }}</td>
               <td>{{ item.status }}</td>
-              <td></td>
+              <td><router-link :to="{name: 'app.system.webhook_endpoints.view', params: {id: item.id}}" class="btn--main">{{ $t('app.system.webhooks.webhook_endpoint.list.view') }}</router-link></td>
             </tr>
           </tbody>
         </table>
