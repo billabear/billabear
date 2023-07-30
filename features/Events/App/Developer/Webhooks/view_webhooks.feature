@@ -13,7 +13,7 @@ Feature: View webhooks
       | Name        | URL                 |
       | Example.org | https://example.org |
       | Example.com | https://example.com |
-    When I view the webhook "Example.com"
+    When I view the webhook endpoint "Example.com"
     Then I should see the webhook url is "https://example.com"
 
   Scenario: Success
@@ -22,5 +22,5 @@ Feature: View webhooks
       | Name        | URL                 |
       | Example.org | https://example.org |
       | Example.com | https://example.com |
-    When I view the webhook "Example.org"
+    When I view the webhook endpoint "Example.org"
     Then I should see the webhook url is "https://example.org"

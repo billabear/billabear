@@ -113,7 +113,7 @@ class WebhookContext implements Context
     }
 
     /**
-     * @When I view the webhook :arg1
+     * @When I view the webhook endpoint :arg1
      */
     public function iViewTheWebhook($name)
     {
