@@ -156,6 +156,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), TaxType::DIGITAL_GOODS);
                 $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
                 $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                $line->setVatPercentage($priceInfo->taxInfo->rate);
 
                 $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
                 $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
