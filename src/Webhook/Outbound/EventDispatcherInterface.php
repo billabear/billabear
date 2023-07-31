@@ -14,14 +14,7 @@ namespace App\Webhook\Outbound;
 
 use App\Webhook\Outbound\Payload\PayloadInterface;
 
-class EventDisptacher
+interface EventDispatcherInterface
 {
-    public function __construct(private EventProcessor $eventProcessor)
-    {
-    }
-
-    public function dispatch(PayloadInterface $payload): void
-    {
-        $this->eventProcessor->process($payload);
-    }
+    public function dispatch(PayloadInterface $payload): void;
 }

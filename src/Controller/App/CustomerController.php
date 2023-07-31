@@ -36,7 +36,7 @@ use App\Repository\CustomerRepositoryInterface;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Stats\CustomerCreationStats;
-use App\Webhook\Outbound\EventDisptacher;
+use App\Webhook\Outbound\EventDispatcherInterface;
 use App\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -189,7 +189,7 @@ class CustomerController
     public function enableCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        EventDisptacher $eventProcessor,
+        EventDispatcherInterface $eventProcessor,
     ) {
         $this->getLogger()->info('Starting customer enable APP request');
 

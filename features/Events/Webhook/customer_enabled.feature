@@ -14,5 +14,8 @@ Feature: Customer Enable webhook event
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
     And customer "customer.one@example.org" is disabled
+    And the following webhook endpoints exist:
+      | Name        | URL                 |
+      | Example.org | https://example.org |
     When I enable the customer info via the APP for "customer.one@example.org"
     Then there should be a webhook event for customer enabled
