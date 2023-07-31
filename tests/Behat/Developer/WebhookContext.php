@@ -13,7 +13,9 @@
 namespace App\Tests\Behat\Developer;
 
 use App\Entity\WebhookEndpoint;
+use App\Enum\WebhookEventType;
 use App\Repository\Orm\WebhookEndpointRepository;
+use App\Repository\Orm\WebhookEventRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -25,7 +27,8 @@ class WebhookContext implements Context
 
     public function __construct(
         private Session $session,
-        private WebhookEndpointRepository $webhookRepository
+        private WebhookEndpointRepository $webhookEndpointRepository,
+        private WebhookEventRepository $webhookEventRepository,
     ) {
     }
 
@@ -48,7 +51,7 @@ class WebhookContext implements Context
      */
     public function thereShouldBeAWebhookForTheUrl($url)
     {
-        $webhookEndpoint = $this->webhookRepository->findOneBy(['url' => $url]);
+        $webhookEndpoint = $this->webhookEndpointRepository->findOneBy(['url' => $url]);
 
         if (!$webhookEndpoint instanceof WebhookEndpoint) {
             throw new \Exception('Webhook endpoint not found');
@@ -60,7 +63,7 @@ class WebhookContext implements Context
      */
     public function thereShouldNotBeAWebhookForTheUrl($url)
     {
-        $webhookEndpoint = $this->webhookRepository->findOneBy(['url' => $url]);
+        $webhookEndpoint = $this->webhookEndpointRepository->findOneBy(['url' => $url]);
 
         if ($webhookEndpoint instanceof WebhookEndpoint) {
             throw new \Exception('Webhook endpoint found');
@@ -83,9 +86,9 @@ class WebhookContext implements Context
             $webhookEndpoint->setUpdatedAt(new \DateTime());
             $webhookEndpoint->setActive(true);
 
-            $this->webhookRepository->getEntityManager()->persist($webhookEndpoint);
+            $this->webhookEndpointRepository->getEntityManager()->persist($webhookEndpoint);
         }
-        $this->webhookRepository->getEntityManager()->flush();
+        $this->webhookEndpointRepository->getEntityManager()->flush();
     }
 
     /**
@@ -136,14 +139,26 @@ class WebhookContext implements Context
 
     protected function getWebhookEndpoint(string $name): WebhookEndpoint
     {
-        $entity = $this->webhookRepository->findOneBy(['name' => $name]);
+        $entity = $this->webhookEndpointRepository->findOneBy(['name' => $name]);
 
         if (!$entity instanceof WebhookEndpoint) {
             throw new \Exception('Unable to find webhook for '.$name);
         }
 
-        $this->webhookRepository->getEntityManager()->refresh($entity);
+        $this->webhookEndpointRepository->getEntityManager()->refresh($entity);
 
         return $entity;
+    }
+
+    /**
+     * @Then there should be a webhook event for payment received
+     */
+    public function thereShouldBeAWebhookEventForPaymentReceived()
+    {
+        $entity = $this->webhookEventRepository->findOneBy(['type' => WebhookEventType::PAYMENT_RECEIVED]);
+
+        if (!$entity) {
+            throw new \Exception("Can't find event");
+        }
     }
 }

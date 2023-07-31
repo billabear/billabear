@@ -13,6 +13,7 @@
 namespace App\Payment;
 
 use App\Entity\Invoice;
+use App\Entity\Payment;
 use App\Event\InvoicePaid;
 use App\Repository\InvoiceRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -60,6 +61,7 @@ class InvoiceCharger
             return false;
         }
 
+        /** @var Payment $payment */
         $payment = $this->paymentFactory->fromSubscriptionCreation($response->getPaymentDetails(), $invoice->getCustomer());
 
         if ($createdAt) {
@@ -72,6 +74,7 @@ class InvoiceCharger
         foreach ($invoice->getSubscriptions() as $subscription) {
             $payment->addSubscription($subscription);
         }
+        $payment->setInvoice($invoice);
 
         $this->paymentRepository->save($payment);
         $invoice->setPayments(new ArrayCollection([$payment]));

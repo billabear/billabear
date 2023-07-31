@@ -10,15 +10,9 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Enum;
 
-use App\Entity\WebhookEndpoint;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-
-interface WebhookEndpointRepositoryInterface extends CrudRepositoryInterface
+enum WebhookEventType: string
 {
-    /**
-     * @return WebhookEndpoint[]
-     */
-    public function getActive(): array;
+    case PAYMENT_RECEIVED = 'payment_received';
 }

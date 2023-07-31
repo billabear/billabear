@@ -16,4 +16,8 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class WebhookEndpointRepository extends DoctrineCrudRepository implements WebhookEndpointRepositoryInterface
 {
+    public function getActive(): array
+    {
+        return $this->entityRepository->findBy(['active' => true]);
+    }
 }

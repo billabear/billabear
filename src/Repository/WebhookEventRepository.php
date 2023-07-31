@@ -12,13 +12,8 @@
 
 namespace App\Repository;
 
-use App\Entity\WebhookEndpoint;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-interface WebhookEndpointRepositoryInterface extends CrudRepositoryInterface
+class WebhookEventRepository extends DoctrineCrudRepository implements WebhookEventRepositoryInterface
 {
-    /**
-     * @return WebhookEndpoint[]
-     */
-    public function getActive(): array;
 }

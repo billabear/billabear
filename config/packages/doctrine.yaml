@@ -17,6 +17,8 @@ doctrine:
             Parthenon\Billing\Entity\PaymentInterface: App\Entity\Payment
             Parthenon\Billing\Entity\ProductInterface: App\Entity\Product
             Parthenon\Billing\Entity\PriceInterface: App\Entity\Price
+            Parthenon\Billing\Entity\ReceiptInterface: App\Entity\Receipt
+            Parthenon\Billing\Entity\ReceiptLineInterface: App\Entity\ReceiptLine
             Parthenon\Billing\Entity\SubscriptionInterface: App\Entity\Subscription
             Parthenon\Billing\Entity\SubscriptionPlanInterface: App\Entity\SubscriptionPlan
         mappings:

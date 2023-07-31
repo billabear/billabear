@@ -58,7 +58,7 @@ class PaymentCreation
         $this->state = $state;
     }
 
-    public function getPayment(): PaymentInterface
+    public function getPayment(): Payment
     {
         return $this->payment;
     }

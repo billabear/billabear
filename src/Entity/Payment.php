@@ -18,4 +18,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table('payment')]
 class Payment extends \Parthenon\Billing\Entity\Payment
 {
+    #[ORM\ManyToOne(targetEntity: Invoice::class)]
+    private ?Invoice $invoice = null;
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(?Invoice $invoice): void
+    {
+        $this->invoice = $invoice;
+    }
 }

@@ -38,6 +38,7 @@ services:
     Parthenon\Billing\Repository\CustomerRepositoryInterface: '@App\Repository\CustomerRepository'
     Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@App\Repository\PaymentCardRepository'
     Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@App\Subscription\SubscriptionManagerInterchange'
+    Parthenon\Billing\Receipt\ReceiptGeneratorInterface: '@App\Payment\ReceiptGenerator'
 
 
     parthenon.billing.repository.orm.product_repository_doctrine: '@App\Repository\Orm\ProductRepository'
@@ -340,6 +341,12 @@ services:
             $entityRepository: '@app.repository.orm.webhook_endpoint'
     app.repository.orm.webhook_endpoint:
         class: App\Repository\Orm\WebhookEndpointRepository
+
+    App\Repository\WebhookEventRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.webhook_event'
+    app.repository.orm.webhook_event:
+        class: App\Repository\Orm\WebhookEventRepository
 
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 

@@ -10,15 +10,12 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Entity;
 
-use App\Entity\WebhookEndpoint;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Doctrine\ORM\Mapping as ORM;
 
-interface WebhookEndpointRepositoryInterface extends CrudRepositoryInterface
+#[ORM\Entity]
+#[ORM\Table('receipt')]
+class Receipt extends \Parthenon\Billing\Entity\Receipt
 {
-    /**
-     * @return WebhookEndpoint[]
-     */
-    public function getActive(): array;
 }

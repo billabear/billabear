@@ -10,15 +10,23 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Webhook\Outbound\Payload;
 
-use App\Entity\WebhookEndpoint;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use App\Entity\Customer;
 
-interface WebhookEndpointRepositoryInterface extends CrudRepositoryInterface
+trait CustomerPayloadTrait
 {
-    /**
-     * @return WebhookEndpoint[]
-     */
-    public function getActive(): array;
+    protected function getCustomerData(?Customer $customer): ?array
+    {
+        if (!$customer) {
+            return null;
+        }
+
+        return [
+            'id' => (string) $customer->getId(),
+            'email' => $customer->getBillingEmail(),
+            'brand' => $customer->getBrand(),
+            'is_disabled' => $customer->isDisabled(),
+        ];
+    }
 }

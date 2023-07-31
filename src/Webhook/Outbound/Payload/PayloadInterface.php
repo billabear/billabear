@@ -10,15 +10,13 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Webhook\Outbound\Payload;
 
-use App\Entity\WebhookEndpoint;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use App\Enum\WebhookEventType;
 
-interface WebhookEndpointRepositoryInterface extends CrudRepositoryInterface
+interface PayloadInterface
 {
-    /**
-     * @return WebhookEndpoint[]
-     */
-    public function getActive(): array;
+    public function getType(): WebhookEventType;
+
+    public function getPayload(): array;
 }
