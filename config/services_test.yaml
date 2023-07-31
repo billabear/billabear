@@ -13,3 +13,4 @@ services:
     Parthenon\Billing\Obol\ProductRegisterInterface: '@App\Dummy\ProductRegister'
     Parthenon\Billing\Obol\PriceRegisterInterface: '@App\Dummy\ProductRegister'
     Obol\Provider\ProviderInterface: '@App\Dummy\Provider\Provider'
+    App\Webhook\Outbound\EventDispatcherInterface: '@App\Webhook\Outbound\EventDispatcher'

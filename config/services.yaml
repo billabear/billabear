@@ -39,6 +39,7 @@ services:
     Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@App\Repository\PaymentCardRepository'
     Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@App\Subscription\SubscriptionManagerInterchange'
     Parthenon\Billing\Receipt\ReceiptGeneratorInterface: '@App\Payment\ReceiptGenerator'
+    App\Webhook\Outbound\EventDispatcherInterface: '@App\Webhook\Outbound\Messenger\EventDispatcher'
 
 
     parthenon.billing.repository.orm.product_repository_doctrine: '@App\Repository\Orm\ProductRepository'
