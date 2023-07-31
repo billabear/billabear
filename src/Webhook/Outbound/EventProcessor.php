@@ -42,6 +42,7 @@ class EventProcessor
             $eventResponse = new WebhookEventResponse();
             $eventResponse->setEvent($event);
             $eventResponse->setEndpoint($endpoint);
+            $eventResponse->setUrl($endpoint->getUrl());
 
             $start = microtime(true);
             try {
