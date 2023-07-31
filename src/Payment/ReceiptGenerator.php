@@ -13,6 +13,8 @@
 namespace App\Payment;
 
 use App\Entity\InvoiceLine;
+use App\Enum\TaxType;
+use App\Invoice\PricerInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -23,13 +25,12 @@ use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Receipt\ReceiptGeneratorInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Tax\TaxCalculatorInterface;
 
 class ReceiptGenerator implements ReceiptGeneratorInterface
 {
     public function __construct(
         private PaymentRepositoryInterface $paymentRepository,
-        private TaxCalculatorInterface $taxCalculator,
+        private PricerInterface $pricer,
         private EntityFactoryInterface $entityFactory,
     ) {
     }
@@ -63,7 +64,9 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setDescription($payment->getDescription());
                 $line->setReceipt($receipt);
 
-                $this->taxCalculator->calculateReceiptLine($customer, $line);
+                $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($payment->getMoneyAmount(), $customer, true, TaxType::DIGITAL_GOODS);
+                $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+                $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
 
                 $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
                 $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
@@ -80,7 +83,9 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $line->setDescription($subscription->getPlanName());
             $line->setReceipt($receipt);
 
-            $this->taxCalculator->calculateReceiptLine($customer, $line);
+            $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), TaxType::DIGITAL_GOODS);
+            $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
 
             $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
             $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
@@ -148,7 +153,9 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setDescription($subscription->getPlanName());
                 $line->setReceipt($receipt);
 
-                $this->taxCalculator->calculateReceiptLine($customer, $line);
+                $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), TaxType::DIGITAL_GOODS);
+                $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+                $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
 
                 $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
                 $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
