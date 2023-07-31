@@ -13,6 +13,7 @@
 namespace App\Webhook\Outbound;
 
 use App\Webhook\Outbound\Payload\PayloadInterface;
+use GuzzleHttp\Exception\BadResponseException;
 use Parthenon\Common\Http\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -32,7 +33,11 @@ class PsrRquestSender implements RequestSenderInterface
         $stream = $this->streamFactory->createStream(json_encode($payload->getPayload()));
         $request = $request->withBody($stream);
 
-        $response = $this->client->sendRequest($request);
+        try {
+            $response = $this->client->sendRequest($request);
+        } catch (BadResponseException $exception) {
+            return new WebhookResponse($exception->getResponse()->getStatusCode(), $exception->getResponse()->getBody()->getContents());
+        }
 
         return new WebhookResponse($response->getStatusCode(), $response->getBody()->getContents());
     }

@@ -31,14 +31,17 @@ class WebhookEventResponse
     #[ORM\ManyToOne(targetEntity: WebhookEndpoint::class)]
     private WebhookEndpoint $endpoint;
 
-    #[ORM\Column(type: 'integer')]
-    private int $statusCode;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $statusCode;
 
-    #[ORM\Column(type: 'text')]
-    private string $body;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $body;
 
     #[ORM\Column(type: 'float')]
     private float $processingTime;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $errorMessage;
 
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
@@ -111,5 +114,15 @@ class WebhookEventResponse
     public function setProcessingTime(float $processingTime): void
     {
         $this->processingTime = $processingTime;
+    }
+
+    public function getErrorMessage(): ?string
+    {
+        return $this->errorMessage;
+    }
+
+    public function setErrorMessage(?string $errorMessage): void
+    {
+        $this->errorMessage = $errorMessage;
     }
 }

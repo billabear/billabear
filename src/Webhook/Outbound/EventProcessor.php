@@ -39,15 +39,20 @@ class EventProcessor
         $event->setPayload(json_encode($payload->getPayload()));
         $eventResponses = [];
         foreach ($endpoints as $endpoint) {
-            $start = microtime(true);
-            $response = $this->requestSender->send($endpoint->getUrl(), $payload);
-
             $eventResponse = new WebhookEventResponse();
             $eventResponse->setEvent($event);
             $eventResponse->setEndpoint($endpoint);
+
+            $start = microtime(true);
+            try {
+                $response = $this->requestSender->send($endpoint->getUrl(), $payload);
+                $eventResponse->setBody($response->body);
+                $eventResponse->setStatusCode($response->statusCode);
+            } catch (\Throwable $exception) {
+                $eventResponse->setErrorMessage($exception->getMessage());
+            }
+
             $eventResponse->setProcessingTime(microtime(true) - $start);
-            $eventResponse->setBody($response->body);
-            $eventResponse->setStatusCode($response->statusCode);
             $eventResponse->setCreatedAt(new \DateTime());
 
             $eventResponses[] = $eventResponse;
