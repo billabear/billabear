@@ -161,4 +161,16 @@ class WebhookContext implements Context
             throw new \Exception("Can't find event");
         }
     }
+
+    /**
+     * @Then there should be a webhook event for customer enabled
+     */
+    public function thereShouldBeAWebhookEventForCustomerEnabled()
+    {
+        $entity = $this->webhookEventRepository->findOneBy(['type' => WebhookEventType::CUSTOMER_ENABLED]);
+
+        if (!$entity) {
+            throw new \Exception("Can't find event");
+        }
+    }
 }

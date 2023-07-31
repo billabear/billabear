@@ -15,4 +15,5 @@ namespace App\Enum;
 enum WebhookEventType: string
 {
     case PAYMENT_RECEIVED = 'payment_received';
+    case CUSTOMER_ENABLED = 'customer_enabled';
 }
