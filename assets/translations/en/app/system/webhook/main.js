@@ -4,7 +4,7 @@ export const WEBHOOK_MAIN_TRANSLATIONS = {
     list: {
         type: "Type",
         created_at: "Created At",
-        view: "View Event Data",
+        view_btn: "View Event Data",
         loading: "Loading Webhook Events",
         no_events: "No webhook events have happened"
     }

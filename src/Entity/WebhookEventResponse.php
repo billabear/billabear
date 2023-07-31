@@ -31,6 +31,9 @@ class WebhookEventResponse
     #[ORM\ManyToOne(targetEntity: WebhookEndpoint::class)]
     private WebhookEndpoint $endpoint;
 
+    #[ORM\Column(type: 'string')]
+    private string $url;
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $statusCode;
 
@@ -124,5 +127,15 @@ class WebhookEventResponse
     public function setErrorMessage(?string $errorMessage): void
     {
         $this->errorMessage = $errorMessage;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): void
+    {
+        $this->url = $url;
     }
 }

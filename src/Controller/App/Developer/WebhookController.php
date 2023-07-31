@@ -15,9 +15,12 @@ namespace App\Controller\App\Developer;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\Developer\WebhookEndpointDataMapper;
 use App\DataMappers\Developer\WebhookEventDataMapper;
+use App\DataMappers\Developer\WebhookEventResponseDataMapper;
 use App\Dto\Request\App\Developer\Webhook\CreateWebhookEndpoint;
 use App\Dto\Response\App\Developer\Webhook\ViewWebhookEndpoint;
+use App\Dto\Response\App\Developer\Webhook\ViewWebhookEvent;
 use App\Dto\Response\App\ListResponse;
+use App\Entity\WebhookEvent;
 use App\Repository\WebhookEndpointRepositoryInterface;
 use App\Repository\WebhookEventRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -163,6 +166,32 @@ class WebhookController
         $listResponse->setFirstKey($resultSet->getFirstKey());
 
         $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/developer/webhook/event/{id}/view', name: 'app_app_developer_webhook_viewevent', methods: ['GET'])]
+    public function viewEvent(
+        Request $request,
+        WebhookEventRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        WebhookEventDataMapper $factory,
+        WebhookEventResponseDataMapper $responseDataMapper,
+    ): Response {
+        try {
+            /** @var WebhookEvent $event */
+            $event = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $eventDto = $factory->createAppDto($event);
+        $responseDtos = array_map([$responseDataMapper, 'createAppDto'], $event->getResponses()->toArray());
+        $viewDto = new ViewWebhookEvent();
+        $viewDto->setEvent($eventDto);
+        $viewDto->setResponses($responseDtos);
+
+        $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
     }
