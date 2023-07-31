@@ -13,14 +13,14 @@
 namespace App\Workflow\Payment;
 
 use App\Entity\PaymentCreation;
-use App\Webhook\Outbound\EventProcessor;
+use App\Webhook\Outbound\EventDisptacher;
 use App\Webhook\Outbound\Payload\PaymentReceivedPayload;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class SendInternalNoticeTransition implements EventSubscriberInterface
 {
-    public function __construct(private EventProcessor $eventProcessor)
+    public function __construct(private EventDisptacher $eventDisptacher)
     {
     }
 
@@ -30,7 +30,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
         $paymentCreation = $event->getSubject();
         $payment = $paymentCreation->getPayment();
         $payload = new PaymentReceivedPayload($payment);
-        $this->eventProcessor->process($payload);
+        $this->eventDisptacher->dispatch($payload);
     }
 
     public static function getSubscribedEvents()
