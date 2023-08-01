@@ -12,7 +12,6 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
 use App\DataMappers\CustomerDataMapper;
@@ -58,6 +57,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SubscriptionController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_view', methods: ['GET'])]
@@ -177,44 +177,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionDataMapper $subscriptionFactory,
     ): Response {
-        $lastKey = $request->get('last_key');
-        $firstKey = $request->get('first_key');
-        $resultsPerPage = (int) $request->get('per_page', 10);
-
-        if ($resultsPerPage < 1) {
-            return new JsonResponse([
-                'success' => false,
-                'reason' => 'per_page is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        if ($resultsPerPage > 100) {
-            return new JsonResponse([
-                'success' => false,
-                'reason' => 'per_page is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
-        }
-
-        $filterBuilder = new SubscriptionList();
-        $filters = $filterBuilder->buildFilters($request);
-
-        $resultSet = $subscriptionRepository->getList(
-            filters: $filters,
-            limit: $resultsPerPage,
-            lastId: $lastKey,
-            firstId: $firstKey,
-        );
-
-        $dtos = array_map([$subscriptionFactory, 'createAppDto'], $resultSet->getResults());
-        $listResponse = new ListResponse();
-        $listResponse->setHasMore($resultSet->hasMore());
-        $listResponse->setData($dtos);
-        $listResponse->setLastKey($resultSet->getLastKey());
-        $listResponse->setFirstKey($resultSet->getFirstKey());
-
-        $json = $serializer->serialize($listResponse, 'json');
-
-        return new JsonResponse($json, json: true);
+        return $this->crudList($request, $subscriptionRepository, $serializer, $subscriptionFactory, 'updatedAt');
     }
 
     #[Route('/app/subscription/{subscriptionId}', name: 'app_subscription_view', methods: ['GET'])]

@@ -22,11 +22,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 trait CrudListTrait
 {
-    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper): Response
+    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper, string $defaultSortKey = 'createdAt'): Response
     {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
-        $key = $request->get('key', 'createdAt');
+        $key = $request->get('key', $defaultSortKey);
         $resultsPerPage = (int) $request->get('per_page', 10);
 
         if ($resultsPerPage < 1) {

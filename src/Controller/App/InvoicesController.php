@@ -40,6 +40,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class InvoicesController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
 
     #[Route('/app/invoices', name: 'app_invoices_list', methods: ['GET'])]
     public function listInvoice(
@@ -48,44 +49,7 @@ class InvoicesController
         SerializerInterface $serializer,
         InvoiceDataMapper $factory,
     ): Response {
-        $lastKey = $request->get('last_key');
-        $firstKey = $request->get('first_key');
-        $resultsPerPage = (int) $request->get('per_page', 10);
-
-        if ($resultsPerPage < 1) {
-            return new JsonResponse([
-                'success' => false,
-                'reason' => 'per_page is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        if ($resultsPerPage > 100) {
-            return new JsonResponse([
-                'success' => false,
-                'reason' => 'per_page is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
-        }
-
-        $filterBuilder = new InvoiceList();
-        $filters = $filterBuilder->buildFilters($request);
-
-        $resultSet = $repository->getList(
-            filters: $filters,
-            limit: $resultsPerPage,
-            lastId: $lastKey,
-            firstId: $firstKey,
-        );
-
-        $dtos = array_map([$factory, 'createQuickViewAppDto'], $resultSet->getResults());
-        $listResponse = new ListResponse();
-        $listResponse->setHasMore($resultSet->hasMore());
-        $listResponse->setData($dtos);
-        $listResponse->setLastKey($resultSet->getLastKey());
-        $listResponse->setFirstKey($resultSet->getFirstKey());
-
-        $json = $serializer->serialize($listResponse, 'json');
-
-        return new JsonResponse($json, json: true);
+        return $this->crudList($request, $repository, $serializer, $factory);
     }
 
     #[Route('/app/invoices/unpaid', name: 'app_invoices_unpaid_list', methods: ['GET'])]

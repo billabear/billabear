@@ -211,12 +211,13 @@ export default {
       this.syncQueryToFilters();
       var mode = 'normal';
       let urlString = '/app/invoices?';
+
       if (this.$route.query.last_key !== undefined) {
-        urlString = urlString + '&last_key=' + this.$route.query.last_key;
+        urlString = urlString + '&last_key=' +  encodeURIComponent(this.$route.query.last_key);
         this.show_back = true;
         mode = 'normal';
       } else if (this.$route.query.first_key !== undefined) {
-        urlString = urlString + '&first_key=' + this.$route.query.first_key;
+        urlString = urlString + '&first_key=' +  encodeURIComponent(this.$route.query.first_key);
         this.has_more = true;
         mode = 'first_key';
       }
@@ -227,7 +228,7 @@ export default {
 
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {
-          urlString = urlString + '&'+key+'=' + this.$route.query[key];
+          urlString = urlString + '&'+key+'=' + encodeURIComponent(this.$route.query[key]);
         }
       });
 
