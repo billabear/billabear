@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="w-1/2 m-auto">
     <router-view></router-view>
     <ModalsContainer />
   </div>

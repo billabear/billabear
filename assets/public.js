@@ -5,6 +5,10 @@ import App from "./public/views/App.vue";
 import {createVfm} from "vue-final-modal";
 import {router} from "./public/helper/router";
 
+import '@fortawesome/fontawesome-free/css/all.css';
+import 'vue-final-modal/style.css';
+import './public/styles/app.css';
+
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS
 };
