@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 trait CrudListTrait
 {
-    protected function table(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper): Response
+    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper): Response
     {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');

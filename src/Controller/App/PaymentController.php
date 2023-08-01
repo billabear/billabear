@@ -53,7 +53,7 @@ class PaymentController
         SerializerInterface $serializer,
         PaymentDataMapper $paymentFactory,
     ): Response {
-        return $this->table($request, $paymentRepository, $serializer, $paymentFactory);
+        return $this->crudList($request, $paymentRepository, $serializer, $paymentFactory);
     }
 
     #[Route('/app/payments/{id}', name: 'app_payment_view', methods: ['GET'])]
