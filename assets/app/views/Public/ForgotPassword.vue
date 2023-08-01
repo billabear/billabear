@@ -54,7 +54,7 @@
 
 <script>
 import {userservice} from "../../services/userservice";
-import PublicLogo from "../../components/public/PublicLogo";
+import PublicLogo from "../../components/public/PublicLogo.vue";
 
 export default {
   name: "ForgotPassword",

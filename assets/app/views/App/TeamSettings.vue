@@ -16,9 +16,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import TeamInvite from "../../components/app/Team/TeamInvite";
-import TeamPendingInvites from "../../components/app/Team/TeamPendingInvites";
-import TeamMembers from "../../components/app/Team/TeamMembers";
+import TeamInvite from "../../components/app/Team/TeamInvite.vue";
+import TeamPendingInvites from "../../components/app/Team/TeamPendingInvites.vue";
+import TeamMembers from "../../components/app/Team/TeamMembers.vue";
 
 export default {
   name: "TeamSettings",

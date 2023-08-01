@@ -1,13 +1,13 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
 import axios from "axios";
-import Login from "../views/Public/Login";
-import Signup from "../views/Public/Signup";
-import ForgotPassword from "../views/Public/ForgotPassword";
-import ForgotPasswordConfirm from "../views/Public/ForgotPasswordConfirm";
-import ConfirmEmail from "../views/Public/ConfirmEmail";
+import Login from "../views/Public/Login.vue";
+import Signup from "../views/Public/Signup.vue";
+import ForgotPassword from "../views/Public/ForgotPassword.vue";
+import ForgotPasswordConfirm from "../views/Public/ForgotPasswordConfirm.vue";
+import ConfirmEmail from "../views/Public/ConfirmEmail.vue";
 import {APP_ROUTES} from "./app.routes";
-import InternalApp from "../views/App/InternalApp";
+import InternalApp from "../views/App/InternalApp.vue";
 import StartingPoint from "../views/Install/StartingPoint.vue";
 import StripeNoKey from "../views/Install/StripeNoKey.vue";
 import StripeInvalid from "../views/Install/StripeInvalid.vue";

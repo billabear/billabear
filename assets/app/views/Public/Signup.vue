@@ -59,7 +59,7 @@
 
 <script>
 import {userservice} from "../../services/userservice";
-import PublicLogo from "../../components/public/PublicLogo";
+import PublicLogo from "../../components/public/PublicLogo.vue";
 import {mapActions} from "vuex";
 
 export default {

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import AppLogo from "../../components/app/AppLogo";
+import AppLogo from "../../components/app/AppLogo.vue";
 import axios from "axios";
 import {mapActions, mapState} from "vuex";
 import RoleOnlyView from "../../components/app/RoleOnlyView.vue";

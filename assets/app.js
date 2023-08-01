@@ -6,17 +6,17 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+import './app/styles/app.css';
 import 'vue-final-modal/style.css';
 
 
-import App from "./views/App";
+import App from "./app/views/App";
 
-import {router} from "./helpers/router"
-import {store} from './store'
+import {router} from "./app/helpers/router"
+import {store} from './app/store'
 import { createApp } from "vue";
 import { createVfm } from 'vue-final-modal'
-import {ENGLISH_TRANSLATIONS} from "./translations/en";
+import {ENGLISH_TRANSLATIONS} from "./app/translations/en";
 import {createI18n} from "vue-i18n";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -26,7 +26,7 @@ import ParthenonUI from "@parthenon/ui";
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import RoleOnlyView from "./components/app/RoleOnlyView.vue";
+import RoleOnlyView from "./app/components/app/RoleOnlyView.vue";
 
 
 const TRANSLATIONS = {
