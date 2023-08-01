@@ -12,7 +12,6 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\PaymentList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
@@ -21,7 +20,6 @@ use App\DataMappers\RefundDataMapper;
 use App\DataMappers\SubscriptionDataMapper;
 use App\Dto\Request\App\Payments\AttachToCustomer;
 use App\Dto\Request\App\Payments\RefundPayment;
-use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Payment\PaymentView;
 use App\Repository\CustomerRepositoryInterface;
 use App\User\UserProvider;
@@ -46,6 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PaymentController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
 
     #[Route('/app/payments', name: 'app_payment_list', methods: ['GET'])]
     public function listPayment(
@@ -54,44 +53,7 @@ class PaymentController
         SerializerInterface $serializer,
         PaymentDataMapper $paymentFactory,
     ): Response {
-        $lastKey = $request->get('last_key');
-        $firstKey = $request->get('first_key');
-        $resultsPerPage = (int) $request->get('per_page', 10);
-
-        if ($resultsPerPage < 1) {
-            return new JsonResponse([
-                'success' => false,
-                'reason' => 'per_page is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        if ($resultsPerPage > 100) {
-            return new JsonResponse([
-                'success' => false,
-                'reason' => 'per_page is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
-        }
-
-        $filterBuilder = new PaymentList();
-        $filters = $filterBuilder->buildFilters($request);
-
-        $resultSet = $paymentRepository->getList(
-            filters: $filters,
-            limit: $resultsPerPage,
-            lastId: $lastKey,
-            firstId: $firstKey,
-        );
-
-        $dtos = array_map([$paymentFactory, 'createAppDto'], $resultSet->getResults());
-        $listResponse = new ListResponse();
-        $listResponse->setHasMore($resultSet->hasMore());
-        $listResponse->setData($dtos);
-        $listResponse->setLastKey($resultSet->getLastKey());
-        $listResponse->setFirstKey($resultSet->getFirstKey());
-
-        $json = $serializer->serialize($listResponse, 'json');
-
-        return new JsonResponse($json, json: true);
+        return $this->table($request, $paymentRepository, $serializer, $paymentFactory);
     }
 
     #[Route('/app/payments/{id}', name: 'app_payment_view', methods: ['GET'])]

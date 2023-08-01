@@ -22,10 +22,10 @@ class ListResponse
     protected bool $hasMore;
 
     #[SerializedName('last_key')]
-    protected ?string $lastKey;
+    protected $lastKey;
 
     #[SerializedName('first_key')]
-    protected ?string $firstKey;
+    protected $firstKey;
 
     public function getData(): array
     {
@@ -47,7 +47,7 @@ class ListResponse
         $this->hasMore = $hasMore;
     }
 
-    public function getLastKey(): string
+    public function getLastKey()
     {
         return $this->lastKey;
     }
@@ -55,17 +55,17 @@ class ListResponse
     /**
      * @param string $lastId
      */
-    public function setLastKey(?string $lastId): void
+    public function setLastKey($lastId): void
     {
         $this->lastKey = $lastId;
     }
 
-    public function getFirstKey(): ?string
+    public function getFirstKey()
     {
         return $this->firstKey;
     }
 
-    public function setFirstKey(?string $firstKey): void
+    public function setFirstKey($firstKey): void
     {
         $this->firstKey = $firstKey;
     }
