@@ -22,7 +22,7 @@ use Twig\Environment;
 
 class FrontController
 {
-    #[Route('/public/{vueRouting}', name: 'public_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/portal/{vueRouting}', name: 'public_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function handlePublic(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,

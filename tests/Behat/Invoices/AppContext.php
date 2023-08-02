@@ -290,7 +290,7 @@ class AppContext implements Context
         $lines = [$line];
 
         $invoice->setCustomer($customer);
-        $invoice->setInvoiceNumber(bin2hex(random_bytes(16)));
+        $invoice->setInvoiceNumber($row['Invoice Number'] ?? bin2hex(random_bytes(16)));
         $invoice->setCreatedAt(new \DateTime('now'));
         $invoice->setUpdatedAt(new \DateTime('now'));
         $invoice->setCurrency('USD');

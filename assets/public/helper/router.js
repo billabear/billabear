@@ -7,15 +7,15 @@ export const router = createRouter({
     routes: [
         {
             name: "app.home",
-            path: "/public/home",
+            path: "/portal/pay/:hash",
             component: PayView,
         },
         {
             name: "public.error",
-            path: "/public/error",
+            path: "/portal/error",
             component: ErrorView,
         },
         // otherwise redirect to home
-        { path: '/:pathMatch(.*)/', redirect: '/public/error' }
+        { path: '/:pathMatch(.*)/', redirect: '/portal/error' }
     ]
 })

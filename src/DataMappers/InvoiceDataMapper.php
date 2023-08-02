@@ -15,6 +15,7 @@ namespace App\DataMappers;
 use App\Dto\Generic\App\Invoice as AppDto;
 use App\Dto\Generic\App\InvoiceLine;
 use App\Dto\Generic\App\InvoiceQuickView as AppQuickViewDto;
+use App\Dto\Response\Portal\Invoice\Invoice as PublicDto;
 use App\Entity\Invoice as Entity;
 
 class InvoiceDataMapper
@@ -69,6 +70,18 @@ class InvoiceDataMapper
             $lines[] = $lineDto;
         }
         $dto->setLines($lines);
+
+        return $dto;
+    }
+
+    public function createPublicDto(Entity $invoice): PublicDto
+    {
+        $dto = new PublicDto();
+        $dto->setAmount($invoice->getAmountDue());
+        $dto->setCurrency($invoice->getCurrency());
+        $dto->setNumber($invoice->getInvoiceNumber());
+        $dto->setCreatedAt($invoice->getCreatedAt());
+        $dto->setPaid($invoice->isPaid());
 
         return $dto;
     }

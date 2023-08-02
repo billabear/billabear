@@ -1,7 +1,12 @@
 export const ENGLISH_TRANSLATIONS = {
-    invoice: {
-        pay: {
-            title: "Pay"
+    public: {
+        invoice: {
+            pay: {
+                title: "Pay"
+            }
+        },
+        loading: {
+            message: "Loading"
         }
-    }
+    },
 };

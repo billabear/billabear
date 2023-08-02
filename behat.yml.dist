@@ -97,6 +97,9 @@ default:
                 # Developer
                 - App\Tests\Behat\Developer\WebhookContext
 
+                # Public
+                - App\Tests\Behat\Public\InvoiceContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
