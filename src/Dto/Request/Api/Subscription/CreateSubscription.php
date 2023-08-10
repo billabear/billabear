@@ -36,6 +36,9 @@ class CreateSubscription
     #[Assert\Type('string')]
     private $currency;
 
+    #[Assert\Type('card_token')]
+    private $cardToken;
+
     #[Assert\Type('string')]
     #[Assert\Choice(choices: ['week', 'month', 'year'])]
     private $schedule;
@@ -112,5 +115,15 @@ class CreateSubscription
     public function setSchedule($schedule): void
     {
         $this->schedule = $schedule;
+    }
+
+    public function getCardToken()
+    {
+        return $this->cardToken;
+    }
+
+    public function setCardToken($cardToken): void
+    {
+        $this->cardToken = $cardToken;
     }
 }

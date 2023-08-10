@@ -30,6 +30,7 @@ use App\Subscription\PaymentMethodUpdateProcessor;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
+use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -94,7 +95,8 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         SubscriptionDataMapper $subscriptionFactory,
-        TransactionManager $transactionManager
+        TransactionManager $transactionManager,
+        FrontendAddProcessorInterface $frontendAddProcessor,
     ): Response {
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
@@ -125,7 +127,13 @@ class SubscriptionController
             $subscriptionPlan = $subscriptionPlanRepository->getByCodeName($planIdentifier);
         }
 
-        if ($dto->hasPaymentDetails()) {
+        if ($dto->getCardToken()) {
+            try {
+                $paymentDetails = $frontendAddProcessor->createPaymentDetailsFromToken($customer, $dto->getCardToken());
+            } catch (\Exception $exception) {
+                return new JsonResponse(['error' => 'Unable to add card via token'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+            }
+        } elseif ($dto->hasPaymentDetails()) {
             $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         } else {
             try {
