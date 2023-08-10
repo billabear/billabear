@@ -118,7 +118,7 @@ jobs:
       - name: Behat
         run: |
           vendor/bin/behat -f progress features/Portal
-          
+
   behat_app_user:
     needs: code_style
     name: Behat User

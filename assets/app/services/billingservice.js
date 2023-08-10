@@ -7,6 +7,9 @@ function sendAddress(address) {
 function saveToken(customerId, token) {
     return axios.post("/app/customer/"+customerId+"/payment-card/frontend-payment-token", {token}).then(handleResponse);
 }
+function portalPay(invoiceId, token) {
+    return axios.post("/public/invoice/"+invoiceId+"/pay", {token}).then(handleResponse);
+}
 
 function getAddress() {
     return axios.get("/app/billing/details").then(handleResponse);
@@ -31,4 +34,5 @@ export const billingservice = {
     saveToken,
     getPaymentDetails,
     deletePaymentDetails,
+    portalPay,
 }

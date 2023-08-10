@@ -1,4 +1,3 @@
-
 function redirectToCheckout(apiKey, sessionId) {
     addJs();
     setTimeout(function () {
@@ -9,36 +8,44 @@ function redirectToCheckout(apiKey, sessionId) {
 }
 
 function getCardToken(stripe, client_secret) {
-        var elements = stripe.elements({
-            clientSecret: client_secret,
-        });
+    var elements = stripe.elements({
+        clientSecret: client_secret,
+    });
 
-        var style = {
+    var card = elements.create('card', {
+        iconStyle: 'solid',
+        style: {
             base: {
-                color: "#32325d",
-                fontFamily: 'Arial, sans-serif',
-                fontSmoothing: "antialiased",
-                fontSize: "16px",
-                "::placeholder": {
-                    color: "#32325d"
-                }
+                color: 'black',
+                fontWeight: 500,
+                fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+                fontSize: '16px',
+                fontSmoothing: 'antialiased',
+
+                ':-webkit-autofill': {
+                    color: '#fce883',
+                },
+                '::placeholder': {
+                    color: 'black',
+                },
             },
             invalid: {
-                fontFamily: 'Arial, sans-serif',
-                color: "#fa755a",
-                iconColor: "#fa755a"
-            }
-        };
+                iconColor: 'red',
+                color: 'red',
+            },
+        },
+    });
 
-        var card = elements.create("card", { style: style });
-        card.mount("#cardInput");
+    card.mount("#cardInput");
 
-        card.on("change", function (event) {
-            // Disable the Pay button if there are no card details in the Element
-            document.querySelector("button").disabled = event.empty;
-            document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
-        });
-        return card;
+    const cardElement = document.querySelector('.StripeElement');
+    card.on("change", function (event) {
+        // Disable the Pay button if there are no card details in the Element
+        document.querySelector(".btn--main").disabled = event.empty;
+        document.querySelector("#cardError").textContent = event.error ? event.error.message : "";
+    });
+
+    return card;
 
 
 }
@@ -52,6 +59,9 @@ function sendCard(stripe, card) {
 function addJs() {
 
 }
+
+
+
 
 export const stripeservice = {
     redirectToCheckout,

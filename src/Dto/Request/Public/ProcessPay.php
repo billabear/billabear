@@ -10,31 +10,23 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Response\Portal\Invoice;
+namespace App\Dto\Request\Public;
 
-class StripeInfo
+use Symfony\Component\Validator\Constraints as Assert;
+
+class ProcessPay
 {
-    protected string $token;
+    #[Assert\NotBlank()]
+    #[Assert\Type('string')]
+    private $token;
 
-    protected string $key;
-
-    public function getToken(): string
+    public function getToken()
     {
         return $this->token;
     }
 
-    public function setToken(string $token): void
+    public function setToken($token): void
     {
         $this->token = $token;
-    }
-
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
-    public function setKey(string $key): void
-    {
-        $this->key = $key;
     }
 }
