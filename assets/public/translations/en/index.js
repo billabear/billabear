@@ -24,6 +24,9 @@ export const ENGLISH_TRANSLATIONS = {
                     total: "Total",
                     tax_rate: "Tax Rate",
                 },
+                payment_details: {
+                    title: "Payment Details"
+                },
                 totals: {
                     total: "Total",
                     amount_due: "Amount Due",

@@ -66,9 +66,12 @@
       <div v-else>
        <form @submit.prevent="send" :disabled="sending">
 
+         <div class="w-1/2 m-auto p-5">
+           <h2>{{ $t('portal.invoice.pay.payment_details.title') }}</h2>
           <div id="cardInput" class="my-5"></div>
           <div id="cardError"></div>
 
+         </div>
           <div class="mt-5 text-center">
             <SubmitButton @click="send" :in-progress="sending">{{ $t('portal.invoice.pay.payment.pay_button') }}</SubmitButton>
           </div>
