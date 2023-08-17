@@ -50,6 +50,10 @@
         </table>
       </div>
 
+      <div class="my-5 text-end">
+        <strong>{{ $t('portal.invoice.pay.totals.total') }}</strong> {{ displayCurrency(invoice.amount) }}
+      </div>
+
       <div v-if="not_found">
         {{ $t('portal.invoice.pay.not_found') }}
       </div>
