@@ -12,17 +12,29 @@
 
 namespace App\Dto\Response\Portal\Invoice;
 
+use App\Dto\Generic\Address;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Invoice
 {
+    #[SerializedName('biller_address')]
+    private ?Address $billerAddress = null;
+
+    #[SerializedName('payee_address')]
+    private ?Address $payeeAddress = null;
+
     protected string $number;
+
+    #[SerializedName('email_address')]
+    private string $emailAddress;
 
     protected string $currency;
 
     protected int $amount;
 
     protected bool $paid;
+
+    private array $lines = [];
 
     #[SerializedName('created_at')]
     protected \DateTime $createdAt;
@@ -75,5 +87,45 @@ class Invoice
     public function setPaid(bool $paid): void
     {
         $this->paid = $paid;
+    }
+
+    public function getBillerAddress(): Address
+    {
+        return $this->billerAddress;
+    }
+
+    public function setBillerAddress(Address $billerAddress): void
+    {
+        $this->billerAddress = $billerAddress;
+    }
+
+    public function getPayeeAddress(): ?Address
+    {
+        return $this->payeeAddress;
+    }
+
+    public function setPayeeAddress(?Address $payeeAddress): void
+    {
+        $this->payeeAddress = $payeeAddress;
+    }
+
+    public function getEmailAddress(): string
+    {
+        return $this->emailAddress;
+    }
+
+    public function setEmailAddress(string $emailAddress): void
+    {
+        $this->emailAddress = $emailAddress;
+    }
+
+    public function getLines(): array
+    {
+        return $this->lines;
+    }
+
+    public function setLines(array $lines): void
+    {
+        $this->lines = $lines;
     }
 }

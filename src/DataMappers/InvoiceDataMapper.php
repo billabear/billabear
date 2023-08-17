@@ -13,9 +13,10 @@
 namespace App\DataMappers;
 
 use App\Dto\Generic\App\Invoice as AppDto;
-use App\Dto\Generic\App\InvoiceLine;
+use App\Dto\Generic\App\InvoiceLine as MainInvoiceLine;
 use App\Dto\Generic\App\InvoiceQuickView as AppQuickViewDto;
 use App\Dto\Response\Portal\Invoice\Invoice as PublicDto;
+use App\Dto\Response\Portal\Invoice\InvoiceLine;
 use App\Entity\Invoice as Entity;
 
 class InvoiceDataMapper
@@ -59,7 +60,7 @@ class InvoiceDataMapper
 
         $lines = [];
         foreach ($invoice->getLines() as $line) {
-            $lineDto = new InvoiceLine();
+            $lineDto = new MainInvoiceLine();
             $lineDto->setDescription($line->getDescription());
             $lineDto->setTaxRate($line->getTaxPercentage());
             $lineDto->setCurrency($line->getCurrency());
@@ -80,8 +81,25 @@ class InvoiceDataMapper
         $dto->setAmount($invoice->getAmountDue());
         $dto->setCurrency($invoice->getCurrency());
         $dto->setNumber($invoice->getInvoiceNumber());
+        $dto->setBillerAddress($this->addressDataMapper->createDto($invoice->getBillerAddress()));
+        $dto->setPayeeAddress($this->addressDataMapper->createDto($invoice->getPayeeAddress()));
         $dto->setCreatedAt($invoice->getCreatedAt());
+        $dto->setEmailAddress($invoice->getCustomer()->getBillingEmail());
         $dto->setPaid($invoice->isPaid());
+
+        $lines = [];
+        foreach ($invoice->getLines() as $line) {
+            $lineDto = new InvoiceLine();
+            $lineDto->setDescription($line->getDescription());
+            $lineDto->setTaxRate($line->getTaxPercentage());
+            $lineDto->setCurrency($line->getCurrency());
+            $lineDto->setTaxTotal($line->getTaxTotal());
+            $lineDto->setSubTotal($line->getSubTotal());
+            $lineDto->setTotal($line->getTotal());
+
+            $lines[] = $lineDto;
+        }
+        $dto->setLines($lines);
 
         return $dto;
     }

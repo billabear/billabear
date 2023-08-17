@@ -1,21 +1,66 @@
 <template>
   <div class="mt-5">
-    <h1 class="text-xl3">{{ $t('portal.invoice.pay.title') }}</h1>
+    <h1 class="text-xl6 mb-5">{{ $t('portal.invoice.pay.title') }}</h1>
     <div v-if="ready">
+      <div class="w-50 text-end mb-5">
+        <strong>{{ $t('portal.invoice.pay.general.invoice_number') }}:</strong> {{ invoice.number }}
+        <br /><strong>{{ $t('portal.invoice.pay.general.issued_at') }}:</strong> {{ invoice.created_at }}
+      </div>
+      <div class="grid grid-cols-2">
+        <div class="w-50">
+          <h3 class="mb-5 font-extrabold">{{ $t('portal.invoice.pay.biller_details.title') }}</h3>
+          {{ invoice.biller_address.company_name }} <br v-if="invoice.biller_address.company_name" />
+          {{ invoice.biller_address.street_line_one }}<br  v-if="invoice.biller_address.street_line_one" />
+          {{ invoice.biller_address.street_line_two }}<br v-if="invoice.biller_address.street_line_two" />
+          {{ invoice.biller_address.city }}<br v-if="invoice.biller_address.city" />
+          {{ invoice.biller_address.region }}<br v-if="invoice.biller_address.region" />
+          {{ invoice.biller_address.postcode }}<br v-if="invoice.biller_address.postcode" />
+        </div>
+
+        <div class="w-50 text-end">
+          <h3 class="my-5 font-extrabold">{{ $t('portal.invoice.pay.payee_details.title') }}</h3>
+          {{ invoice.email_address }} <br v-if="invoice.email_address" />
+          {{ invoice.payee_address.company_name }} <br v-if="invoice.payee_address.company_name" />
+          {{ invoice.payee_address.street_line_one }}<br  v-if="invoice.payee_address.street_line_one" />
+          {{ invoice.payee_address.street_line_two }}<br v-if="invoice.payee_address.street_line_two" />
+          {{ invoice.payee_address.city }}<br v-if="invoice.payee_address.city" />
+          {{ invoice.payee_address.region }}<br v-if="invoice.payee_address.region" />
+          {{ invoice.payee_address.postcode }}<br v-if="invoice.payee_address.postcode" />
+        </div>
+      </div>
+
+      <div class="my-5">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th class="w-90">{{ $t('portal.invoice.pay.lines.description') }}</th>
+              <th>{{ $t('portal.invoice.pay.lines.tax_rate') }}</th>
+              <th>{{ $t('portal.invoice.pay.lines.tax_total') }}</th>
+              <th>{{ $t('portal.invoice.pay.lines.total') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="line in invoice.lines">
+              <td>{{ line.description }}</td>
+              <td class="text-center">{{ line.tax_rate }}</td>
+              <td class="text-center">{{ displayCurrency(line.tax_total) }}</td>
+              <td class="text-center">{{ displayCurrency(line.total) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div v-if="not_found">
         {{ $t('portal.invoice.pay.not_found') }}
       </div>
       <div v-else-if="general_error">
         {{ $t('portal.invoice.pay.general_error') }}
       </div>
-      <div v-else-if="invoice.paid">
+      <div v-else-if="invoice.paid" class="text-center font-extrabold italic">
         {{ $t('portal.invoice.pay.payment.already_paid')}}
       </div>
       <div v-else>
-        <div class="mt-5">{{ $t('portal.invoice.pay.payment.amount', {amount: displayCurrency(invoice.amount), currency: invoice.currency}) }}</div>
-
-
-        <form @submit.prevent="send" :disabled="sending">
+       <form @submit.prevent="send" :disabled="sending">
 
           <div id="cardInput" class="my-5"></div>
           <div id="cardError"></div>
