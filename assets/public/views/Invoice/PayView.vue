@@ -18,7 +18,7 @@
         </div>
 
         <div class="w-50 text-end">
-          <h3 class="my-5 font-extrabold">{{ $t('portal.invoice.pay.payee_details.title') }}</h3>
+          <h3 class="mb-5 font-extrabold">{{ $t('portal.invoice.pay.payee_details.title') }}</h3>
           {{ invoice.email_address }} <br v-if="invoice.email_address" />
           {{ invoice.payee_address.company_name }} <br v-if="invoice.payee_address.company_name" />
           {{ invoice.payee_address.street_line_one }}<br  v-if="invoice.payee_address.street_line_one" />
