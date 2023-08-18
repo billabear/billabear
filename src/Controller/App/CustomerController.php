@@ -37,6 +37,7 @@ use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Stats\CustomerCreationStats;
 use App\Webhook\Outbound\EventDispatcherInterface;
+use App\Webhook\Outbound\Payload\CustomerDisabledPayload;
 use App\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -170,6 +171,7 @@ class CustomerController
     public function disableCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
+        EventDispatcherInterface $eventProcessor,
     ) {
         try {
             /** @var Customer $customer */
@@ -180,6 +182,7 @@ class CustomerController
 
         $customer->setStatus(CustomerStatus::DISABLED);
         $customerRepository->save($customer);
+        $eventProcessor->dispatch(new CustomerDisabledPayload($customer));
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
