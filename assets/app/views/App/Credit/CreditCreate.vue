@@ -30,15 +30,7 @@
               {{ $t('app.credit.create.currency') }}
             </label>
             <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
-            <select class="form-field-input" id="name" v-model="creditNote.currency">
-              <option>USD</option>
-              <option>EUR</option>
-              <option>GBP</option>
-              <option>CAD</option>
-              <option>AUD</option>
-              <option>NOK</option>
-              <option>SEK</option>
-            </select>
+            <CurrencySelect v-model="creditNote.currency" />
             <p class="form-field-help">{{ $t('app.credit.create.help_info.currency') }}</p>
           </div>
           <div class="form-field-ctn">
@@ -62,10 +54,11 @@
 import axios from "axios";
 import currency from "currency.js";
 import SettingsGroup from "../Settings/SettingsGroup.vue";
+import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 
 export default {
   name: "CustomerCreate",
-  components: {SettingsGroup},
+  components: {CurrencySelect, SettingsGroup},
   data() {
     return {
       creditNote: {

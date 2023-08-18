@@ -18,15 +18,7 @@
             {{ $t('app.price.create.currency') }}
           </label>
           <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
-          <select class="form-field-input" id="name" v-model="price.currency">
-            <option>USD</option>
-            <option>EUR</option>
-            <option>GBP</option>
-            <option>CAD</option>
-            <option>AUD</option>
-            <option>NOK</option>
-            <option>SEK</option>
-          </select>
+          <CurrencySelect v-model="price.currency" />
           <p class="form-field-help">{{ $t('app.price.create.help_info.currency') }}</p>
         </div>
         <div class="form-field-ctn">
@@ -99,9 +91,11 @@
 <script>
 import axios from "axios";
 import currency from "currency.js";
+import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 
 export default {
   name: "PriceCreate",
+  components: {CurrencySelect},
   data() {
     return {
       price: {

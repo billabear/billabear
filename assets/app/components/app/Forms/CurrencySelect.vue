@@ -11,6 +11,8 @@
     <option>SEK</option>
     <option>CHF</option>
     <option>CZK</option>
+    <option>HKD</option>
+    <option>JPY</option>
   </select>
 </template>
 
