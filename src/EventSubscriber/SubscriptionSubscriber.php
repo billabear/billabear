@@ -16,6 +16,8 @@ use App\Entity\SubscriptionCreation;
 use App\Repository\SubscriptionCreationRepositoryInterface;
 use App\Stats\RevenueEstimatesGeneration;
 use App\Subscription\SubscriptionCreationProcessor;
+use App\Webhook\Outbound\EventDispatcherInterface;
+use App\Webhook\Outbound\Payload\StartSubscriptionPayload;
 use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,6 +28,7 @@ class SubscriptionSubscriber implements EventSubscriberInterface
         private SubscriptionCreationRepositoryInterface $subscriptionCreationRepository,
         private SubscriptionCreationProcessor $subscriptionCreationProcessor,
         private RevenueEstimatesGeneration $revenueEstimatesGeneration,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -52,6 +55,8 @@ class SubscriptionSubscriber implements EventSubscriberInterface
         $this->subscriptionCreationProcessor->process($subscriptionCreation);
 
         $this->revenueEstimatesGeneration->generate();
+
+        $this->eventDispatcher->dispatch(new StartSubscriptionPayload($subscriptionCreated->getSubscription()));
     }
 
     public function adjustStats(): void

@@ -185,4 +185,16 @@ class WebhookContext implements Context
             throw new \Exception("Can't find event");
         }
     }
+
+    /**
+     * @Then there should be a webhook event for start subscription
+     */
+    public function thereShouldBeAWebhookEventForStartSubscription()
+    {
+        $entity = $this->webhookEventRepository->findOneBy(['type' => WebhookEventType::SUBSCRIPTION_CREATED]);
+
+        if (!$entity) {
+            throw new \Exception("Can't find event");
+        }
+    }
 }

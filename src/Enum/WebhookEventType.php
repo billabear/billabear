@@ -17,4 +17,5 @@ enum WebhookEventType: string
     case PAYMENT_RECEIVED = 'payment_received';
     case CUSTOMER_ENABLED = 'customer_enabled';
     case CUSTOMER_DISABLED = 'customer_disabled';
+    case SUBSCRIPTION_CREATED = 'subscription_created';
 }
