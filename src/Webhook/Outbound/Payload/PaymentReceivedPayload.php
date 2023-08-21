@@ -26,7 +26,7 @@ class PaymentReceivedPayload implements PayloadInterface
     public function getPayload(): array
     {
         return [
-            'type' => WebhookEventType::PAYMENT_RECEIVED,
+            'type' => WebhookEventType::PAYMENT_RECEIVED->value,
             'id' => (string) $this->payment->getId(),
             'customer' => $this->getCustomerData($this->payment->getCustomer()),
             'amount' => $this->payment->getAmount(),
