@@ -1,5 +1,9 @@
 <template>
   <select v-model="localValue" @change="$emit('update:modelValue', $event.target.value)" class="form-field">
+    <option value="EUR">EUR - Euro</option>
+    <option value="GBP">GBP - British Pound Sterling</option>
+    <option value="USD">USD - United States Dollar</option>
+    <option value="CAD">CAD - Canadian Dollar</option>
     <option value="AED">AED - United Arab Emirates Dirham</option>
     <option value="AFN">AFN - Afghan Afghani</option>
     <option value="ALL">ALL - Albanian Lek</option>
@@ -23,7 +27,6 @@
     <option value="BSD">BSD - Bahamian Dollar</option>
     <option value="BWP">BWP - Botswana Pula</option>
     <option value="BZD">BZD - Belize Dollar</option>
-    <option value="CAD">CAD - Canadian Dollar</option>
     <option value="CDF">CDF - Congolese Franc</option>
     <option value="CHF">CHF - Swiss Franc</option>
     <option value="CLP">CLP - Chilean Peso</option>
@@ -38,10 +41,8 @@
     <option value="DZD">DZD - Algerian Dinar</option>
     <option value="EGP">EGP - Egyptian Pound</option>
     <option value="ETB">ETB - Ethiopian Birr</option>
-    <option value="EUR">EUR - Euro</option>
     <option value="FJD">FJD - Fijian Dollar</option>
     <option value="FKP">FKP - Falkland Islands Pound</option>
-    <option value="GBP">GBP - British Pound Sterling</option>
     <option value="GEL">GEL - Georgian Lari</option>
     <option value="GIP">GIP - Gibraltar Pound</option>
     <option value="GMD">GMD - Gambian Dalasi</option>
@@ -128,7 +129,6 @@
     <option value="TZS">TZS - Tanzanian Shilling</option>
     <option value="UAH">UAH - Ukrainian Hryvnia</option>
     <option value="UGX">UGX - Ugandan Shilling</option>
-    <option value="USD">USD - United States Dollar</option>
     <option value="UYU">UYU - Uruguayan Peso</option>
     <option value="UZS">UZS - Uzbekistani Som</option>
     <option value="VEF">VEF - Venezuelan Bolívar (Obsolete)</option>
