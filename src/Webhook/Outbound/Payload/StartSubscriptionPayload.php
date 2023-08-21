@@ -18,6 +18,7 @@ use App\Enum\WebhookEventType;
 class StartSubscriptionPayload implements PayloadInterface
 {
     use CustomerPayloadTrait;
+    use SubscriptionPayloadTrait;
 
     public function __construct(
         private Subscription $subscription,
@@ -33,11 +34,7 @@ class StartSubscriptionPayload implements PayloadInterface
     {
         return [
             'type' => WebhookEventType::SUBSCRIPTION_CREATED->value,
-            'subscription' => [
-                'id' => (string) $this->subscription->getId(),
-                'plan_name' => $this->subscription->getPlanName(),
-                'status' => $this->subscription->getStatus()->value,
-            ],
+            'subscription' => $this->getSubscriptionData($this->subscription),
             'customer' => $this->getCustomerData($this->subscription->getCustomer()),
         ];
     }
