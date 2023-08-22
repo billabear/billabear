@@ -221,6 +221,17 @@ class CreateInvoiceContext implements Context
     }
 
     /**
+     * @When I accept and pay for the quote for :arg1
+     */
+    public function iAcceptAndPayForTheQuoteFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $quote = $this->getLatestQuoteForCustomer($customer);
+
+        $this->sendJsonRequest('POST', '/public/quote/'.$quote->getId().'/pay', ['token' => bin2hex(random_bytes(32))]);
+    }
+
+    /**
      * @Then the latest quote for :arg1 will have amount due as :arg2
      */
     public function theLatestQuoteForWillHaveAmountDueAs($customerEmail, $amount)
