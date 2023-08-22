@@ -19,6 +19,7 @@ use App\Entity\Customer;
 use App\Entity\Quote;
 use App\Entity\QuoteLine;
 use App\Enum\TaxType;
+use App\Event\QuoteCreated;
 use App\Invoice\Pricer;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\QuoteRepositoryInterface;
@@ -26,6 +27,7 @@ use Brick\Money\Money;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class QuoteCreator
 {
@@ -36,6 +38,7 @@ class QuoteCreator
         private QuoteRepositoryInterface $quoteRepository,
         private Pricer $pricer,
         private Security $security,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -119,6 +122,8 @@ class QuoteCreator
         $quote->setUpdatedAt(new \DateTime());
 
         $this->quoteRepository->save($quote);
+
+        $this->eventDispatcher->dispatch(new QuoteCreated($quote), QuoteCreated::NAME);
 
         return $quote;
     }

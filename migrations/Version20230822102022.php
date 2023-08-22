@@ -121,12 +121,211 @@ final class Version20230822102022 extends AbstractMigration
         $this->addSql('ALTER TABLE subscription_plan_price ADD CONSTRAINT FK_5B8B27409B8CE200 FOREIGN KEY (subscription_plan_id) REFERENCES subscription_plan (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE subscription_plan_price ADD CONSTRAINT FK_5B8B2740D614C7E7 FOREIGN KEY (price_id) REFERENCES price (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE brand_settings ADD notification_settings_quote_created BOOLEAN DEFAULT NULL');
+
+        $this->addSql("INSERT INTO templates
+(id, \"name\", \"content\", brand)
+VALUES('b17474b0-80ce-4331-858c-6c9b79ec7be2'::uuid, 'quote', '<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=\"utf-8\" />
+        <title></title>
+{% verbatim %}
+        
+        <style>
+            .invoice-box {
+                max-width: 800px;
+                margin: auto;
+                padding: 30px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+                font-size: 16px;
+                line-height: 24px;
+                font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;
+                color: #555;
+            }
+
+            .invoice-box table {
+                width: 100%;
+                line-height: inherit;
+                text-align: left;
+            }
+
+            .invoice-box table td {
+                padding: 5px;
+                vertical-align: top;
+            }
+
+            .invoice-box table tr td:nth-child(2) {
+                text-align: right;
+            }
+
+            .invoice-box table tr.top table td {
+                padding-bottom: 20px;
+            }
+
+            .invoice-box table tr.top table td.title {
+                font-size: 45px;
+                line-height: 45px;
+                color: #333;
+            }
+
+            .invoice-box table tr.information table td {
+                padding-bottom: 40px;
+            }
+
+            .invoice-box table tr.heading td {
+                background: #eee;
+                border-bottom: 1px solid #ddd;
+                font-weight: bold;
+            }
+
+            .invoice-box table tr.details td {
+                padding-bottom: 20px;
+            }
+
+            .invoice-box table tr.item td {
+                border-bottom: 1px solid #eee;
+            }
+
+            .invoice-box table tr.item.last td {
+                border-bottom: none;
+            }
+
+            .invoice-box table tr.total td:nth-child(2) {
+                border-top: 2px solid #eee;
+                font-weight: bold;
+            }
+
+            @media only screen and (max-width: 600px) {
+                .invoice-box table tr.top table td {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                }
+
+                .invoice-box table tr.information table td {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                }
+            }
+
+            /** RTL **/
+            .invoice-box.rtl {
+                direction: rtl;
+                font-family: Tahoma, ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;
+            }
+
+            .invoice-box.rtl table {
+                text-align: right;
+            }
+
+            .invoice-box.rtl table tr td:nth-child(2) {
+                text-align: left;
+            }
+        </style>
+{% endverbatim %}
+    </head>
+
+    <body>
+        <div class=\"invoice-box\">
+            <table cellpadding=\"0\" cellspacing=\"0\">
+                <tr class=\"top\">
+                    <td colspan=\"2\">
+                        <strong>QUOTE</strong>
+                    </td>
+                </tr>
+                <tr class=\"top\">
+                    <td colspan=\"2\">
+                         <table>
+                            <tr>
+                                <td class=\"title\">
+                                    {{ brand.name }}
+                                </td>
+
+                                <td>
+                                    Created: {{ quote.created_at }} <br />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+                <tr class=\"heading\">
+                    <td>Item</td>
+
+                    <td>Price</td>
+                </tr>
+
+                {% for line in quote.lines %}
+                <tr class=\"item\">
+                    <td>{{ line.description }}</td>
+
+                    <td>{{ line.total_display }}</td>
+                </tr>
+                {% endfor %}
+
+                <tr class=\"total\">
+                    <td></td>
+
+                    <td>Total: {{ quote.total_display }}</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
+
+{# MIT License
+
+Copyright (c) 2021 Sparksuite
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the \"Software\"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. #}
+', 'default');
+");
+
+        $this->addSql("INSERT INTO email_templates
+(id, brand_id, \"name\", locale, subject, use_emsp_template, template_id, template_body)
+SELECT '4370990c-63eb-4fec-baa9-7daeba11407b'::uuid, b.id, 'quote_created', 'en', 'New Quote', false, NULL, '<html>
+    <head>
+      <title></title>
+    </head>
+    <body style=\"background: rgb(254,234,0);
+background: radial-gradient(circle, rgba(254,234,0,1) 0%, rgba(246,156,0,1) 100%);; color: black;\">
+    
+    <div style=\"padding-top: 40px;\">
+      <div style=\"margin:auto; background-color: white; max-width: 700px; padding: 50px; border-radius: 15px; margin-top: 40px; \">
+        <h1 style=\"text-align:center;\"><img src=\"https://ha-static-data.s3.eu-central-1.amazonaws.com/github-readme-logo.png\" alt=\"{{ brand.name  }}\" /></h1>
+
+    Your new quote is ready.
+      </div>
+      </div>
+    </body>
+  </html>'
+  FROM brand_settings b
+  WHERE b.code = 'default';
+");
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE quote DROP CONSTRAINT FK_6B71CBF49395C3F3');
         $this->addSql('ALTER TABLE quote DROP CONSTRAINT FK_6B71CBF4B03A8386');
         $this->addSql('ALTER TABLE quote_subscription DROP CONSTRAINT FK_14273BD5DB805178');
