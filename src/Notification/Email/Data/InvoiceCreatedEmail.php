@@ -20,7 +20,7 @@ use App\Entity\InvoiceLine;
 
 class InvoiceCreatedEmail extends AbstractEmailData
 {
-    public function __construct(private Invoice $invoice)
+    public function __construct(private Invoice $invoice, private string $payLink)
     {
     }
 
@@ -48,6 +48,7 @@ class InvoiceCreatedEmail extends AbstractEmailData
             'lines' => array_map([$this, 'getInvoiceLineData'], $this->invoice->getLines()->toArray()),
             'biller_address' => $this->getAddress($this->invoice->getBillerAddress()),
             'payee_address' => $this->getAddress($this->invoice->getPayeeAddress()),
+            'pay_link' => $this->payLink,
         ];
     }
 
