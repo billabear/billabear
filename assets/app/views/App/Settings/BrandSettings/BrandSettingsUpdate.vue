@@ -155,6 +155,10 @@
               <input type="checkbox" id="invoice_created" v-model="brand.notifications.invoice_created" />
               <label for="invoice_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.invoice_created') }}</label>
             </div>
+            <div class="ds">
+              <input type="checkbox" id="quote_created" v-model="brand.notifications.quote_created" />
+              <label for="quote_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.quote_created') }}</label>
+            </div>
           </div></div>
         </div>
         <div class="form-field-submit-ctn">

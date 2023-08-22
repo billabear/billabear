@@ -40,6 +40,7 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         subscription_cancellation: "Subscription Cancellation",
         expiring_card_warning: "Expiring Card Warning",
         expiring_card_warning_day_before: "Expiring Card Warning - Day Before",
-        invoice_created: "Invoice Created"
+        invoice_created: "Invoice Created",
+        quote_created: "Quote Created"
     }
 };

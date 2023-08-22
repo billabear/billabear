@@ -120,6 +120,7 @@ final class Version20230822102022 extends AbstractMigration
         $this->addSql('ALTER TABLE subscription_plan_price DROP CONSTRAINT FK_5B8B2740D614C7E7');
         $this->addSql('ALTER TABLE subscription_plan_price ADD CONSTRAINT FK_5B8B27409B8CE200 FOREIGN KEY (subscription_plan_id) REFERENCES subscription_plan (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE subscription_plan_price ADD CONSTRAINT FK_5B8B2740D614C7E7 FOREIGN KEY (price_id) REFERENCES price (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE brand_settings ADD notification_settings_quote_created BOOLEAN DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -192,5 +193,6 @@ final class Version20230822102022 extends AbstractMigration
         $this->addSql('ALTER TABLE customers DROP tax_rate_digital');
         $this->addSql('ALTER TABLE customers DROP tax_rate_standard');
         $this->addSql('ALTER TABLE customers DROP type');
+        $this->addSql('ALTER TABLE brand_settings DROP notification_settings_quote_created');
     }
 }

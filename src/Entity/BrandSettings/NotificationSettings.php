@@ -32,6 +32,9 @@ class NotificationSettings
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $invoiceCreated = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $quoteCreated = null;
+
     public function getSubscriptionCreation(): bool
     {
         return true === $this->subscriptionCreation;
@@ -80,5 +83,15 @@ class NotificationSettings
     public function setInvoiceCreated(?bool $invoiceCreated): void
     {
         $this->invoiceCreated = $invoiceCreated;
+    }
+
+    public function getQuoteCreated(): bool
+    {
+        return true === $this->quoteCreated;
+    }
+
+    public function setQuoteCreated(?bool $quoteCreated): void
+    {
+        $this->quoteCreated = $quoteCreated;
     }
 }

@@ -31,6 +31,9 @@ class Notifications
     #[SerializedName('invoice_created')]
     private $invoiceCreated;
 
+    #[SerializedName('quote_created')]
+    private $quoteCreated;
+
     public function getSubscriptionCreation()
     {
         return true === $this->subscriptionCreation;
@@ -79,5 +82,15 @@ class Notifications
     public function setInvoiceCreated($invoiceCreated): void
     {
         $this->invoiceCreated = $invoiceCreated;
+    }
+
+    public function getQuoteCreated()
+    {
+        return $this->quoteCreated;
+    }
+
+    public function setQuoteCreated($quoteCreated): void
+    {
+        $this->quoteCreated = $quoteCreated;
     }
 }
