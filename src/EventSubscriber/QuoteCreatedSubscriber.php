@@ -16,9 +16,11 @@ use App\Event\QuoteCreated;
 use App\Notification\Email\Data\QuoteCreatedEmail;
 use App\Notification\Email\EmailBuilder;
 use App\Pdf\QuotePdfGenerator;
+use App\Repository\SettingsRepositoryInterface;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class QuoteCreatedSubscriber implements EventSubscriberInterface
 {
@@ -26,6 +28,8 @@ class QuoteCreatedSubscriber implements EventSubscriberInterface
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
         private QuotePdfGenerator $pdfGenerator,
+        private UrlGeneratorInterface $urlGenerator,
+        private SettingsRepositoryInterface $settingsRepository,
     ) {
     }
 
@@ -47,8 +51,10 @@ class QuoteCreatedSubscriber implements EventSubscriberInterface
         if (!$brand->getNotificationSettings()->getQuoteCreated()) {
             return;
         }
+        $payLink = $this->urlGenerator->generate('app_public_quote_readpay', ['hash' => $quote->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $fullPayLink = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getSystemUrl().$payLink;
 
-        $quoteCreatedEmail = new QuoteCreatedEmail($quote);
+        $quoteCreatedEmail = new QuoteCreatedEmail($quote, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $quoteCreatedEmail);
 
         $pdf = $this->pdfGenerator->generate($quote);

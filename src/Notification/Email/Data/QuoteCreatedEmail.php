@@ -20,7 +20,7 @@ use App\Entity\QuoteLine;
 
 class QuoteCreatedEmail extends AbstractEmailData
 {
-    public function __construct(private Quote $quote)
+    public function __construct(private Quote $quote, private string $fullUrl)
     {
     }
 
@@ -46,6 +46,7 @@ class QuoteCreatedEmail extends AbstractEmailData
             'tax_total' => $this->quote->getTaxTotal(),
             'currency' => $this->quote->getCurrency(),
             'lines' => array_map([$this, 'getQuoteLineData'], $this->quote->getLines()->toArray()),
+            'pay_link' => $this->fullUrl,
         ];
     }
 
