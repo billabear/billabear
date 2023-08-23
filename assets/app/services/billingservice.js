@@ -9,6 +9,8 @@ function saveToken(customerId, token) {
 }
 function portalPay(invoiceId, token) {
     return axios.post("/public/invoice/"+invoiceId+"/pay", {token}).then(handleResponse);
+}function portalQuotePay(invoiceId, token) {
+    return axios.post("/public/quote/"+invoiceId+"/pay", {token}).then(handleResponse);
 }
 
 function getAddress() {
@@ -35,4 +37,5 @@ export const billingservice = {
     getPaymentDetails,
     deletePaymentDetails,
     portalPay,
+    portalQuotePay,
 }

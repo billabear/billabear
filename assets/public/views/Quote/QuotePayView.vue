@@ -141,12 +141,13 @@ export default {
       return currency(value, { fromCents: true }).format({symbol: ''});
     },
     send: function (value) {
+      this.sending = true;
       var that = this
       stripeservice.sendCard(this.stripe, this.card).then(
           response => {
             var token = response.token.id;
             const hash = this.$route.params.hash;
-            billingservice.portalPay(hash, token).then(response => {
+            billingservice.portalQuotePay(hash, token).then(response => {
               if (response.data.success) {
                 that.quote.paid = true;
               } else {
