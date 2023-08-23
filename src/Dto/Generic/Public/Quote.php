@@ -38,6 +38,8 @@ class Quote
     #[SerializedName('updated_at')]
     private \DateTime $updatedAt;
 
+    private bool $paid;
+
     public function getId(): string
     {
         return $this->id;
@@ -126,5 +128,15 @@ class Quote
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): void
+    {
+        $this->paid = $paid;
     }
 }

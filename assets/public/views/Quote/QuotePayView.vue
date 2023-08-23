@@ -2,45 +2,52 @@
   <div class="mt-5">
     <h1 class="text-2xl mb-5">{{ $t('portal.quote.pay.title') }}</h1>
     <div v-if="ready">
+      <div v-if="!quote.paid">
+        <div class="my-5">
+          <table class="table w-full">
+            <thead>
+              <tr>
+                <th class="w-90">{{ $t('portal.quote.pay.lines.description') }}</th>
+                <th>{{ $t('portal.quote.pay.lines.tax_rate') }}</th>
+                <th>{{ $t('portal.quote.pay.lines.tax_total') }}</th>
+                <th>{{ $t('portal.quote.pay.lines.total') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="line in quote.lines">
+                <td>{{ line.description }}</td>
+                <td class="text-center">{{ line.tax_rate }}</td>
+                <td class="text-center">{{ displayCurrency(line.tax_total) }}</td>
+                <td class="text-center">{{ displayCurrency(line.total) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div class="my-5">
-        <table class="table w-full">
-          <thead>
-            <tr>
-              <th class="w-90">{{ $t('portal.quote.pay.lines.description') }}</th>
-              <th>{{ $t('portal.quote.pay.lines.tax_rate') }}</th>
-              <th>{{ $t('portal.quote.pay.lines.tax_total') }}</th>
-              <th>{{ $t('portal.quote.pay.lines.total') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="line in quote.lines">
-              <td>{{ line.description }}</td>
-              <td class="text-center">{{ line.tax_rate }}</td>
-              <td class="text-center">{{ displayCurrency(line.tax_total) }}</td>
-              <td class="text-center">{{ displayCurrency(line.total) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="my-5 text-end">
+          <strong>{{ $t('portal.quote.pay.totals.total') }}</strong> {{ displayCurrency(quote.total) }}
+        </div>
+
+        <div>
+         <form @submit.prevent="send" :disabled="sending">
+
+           <div class="w-1/2 m-auto p-5">
+             <h2>{{ $t('portal.quote.pay.payment_details.title') }}</h2>
+            <div id="cardInput" class="my-5"></div>
+            <div id="cardError"></div>
+
+           </div>
+            <div class="mt-5 text-center">
+              <SubmitButton @click="send" :in-progress="sending">{{ $t('portal.quote.pay.payment.pay_button') }}</SubmitButton>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <div class="my-5 text-end">
-        <strong>{{ $t('portal.quote.pay.totals.total') }}</strong> {{ displayCurrency(quote.total) }}
-      </div>
-
-      <div>
-       <form @submit.prevent="send" :disabled="sending">
-
-         <div class="w-1/2 m-auto p-5">
-           <h2>{{ $t('portal.quote.pay.payment_details.title') }}</h2>
-          <div id="cardInput" class="my-5"></div>
-          <div id="cardError"></div>
-
-         </div>
-          <div class="mt-5 text-center">
-            <SubmitButton @click="send" :in-progress="sending">{{ $t('portal.quote.pay.payment.pay_button') }}</SubmitButton>
-          </div>
-        </form>
+      <div v-else>
+        <div class="text-center">
+          <img src="/images/bear-with-papers.png" width="250"  class="m-auto" alt="BillaBear - Success" />
+          <p class="text-3xl font-bold">{{ $t('portal.quote.pay.already_paid') }}</p>
+        </div>
       </div>
     </div>
     <div v-else-if="not_found">
@@ -58,7 +65,7 @@
     </div>
     <div v-else>
       <div class="text-center">
-        <img src="/images/bear-with-papers.png" width="250"  class="m-auto" alt="BillaBear - Error" />
+        <img src="/images/bear-with-papers.png" width="250"  class="m-auto" alt="BillaBear - Loading" />
         <p class="text-3xl font-bold">{{ $t('portal.quote.pay.loading') }}</p>
       </div>
     </div>
@@ -97,10 +104,12 @@ export default {
       this.ready = true;
       this.stripe = Stripe(this.stripeConfig.key);
       var that = this;
+      if (this.quote.paid === false) {
 
         setTimeout(()=> {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
         }, 500)
+      }
     }).catch(error => {
       if (error.response !== undefined && error.response.status === 404) {
         this.not_found = true;

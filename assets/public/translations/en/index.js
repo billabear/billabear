@@ -67,7 +67,8 @@ export const ENGLISH_TRANSLATIONS = {
                 },
                 loading: "Loading",
                 not_found: "No such quote found",
-                general_error: "Something unexpected happened. Try again later."
+                general_error: "Something unexpected happened. Try again later.",
+                already_paid: "This quote has been accepted and paid for"
             },
         },
         loading: {

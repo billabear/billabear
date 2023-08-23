@@ -67,17 +67,18 @@ class QuoteDataMapper
 
     public function createPublicDto(Entity $entity): PublicDto
     {
-        $appDto = new PublicDto();
-        $appDto->setCreatedAt($entity->getCreatedAt());
-        $appDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
-        $appDto->setId((string) $entity->getId());
-        $appDto->setCurrency($entity->getCurrency());
-        $appDto->setTotal($entity->getTotal());
-        $appDto->setTaxTotal($entity->getTaxTotal());
-        $appDto->setSubTotal($entity->getSubTotal());
-        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
+        $publicDto = new PublicDto();
+        $publicDto->setCreatedAt($entity->getCreatedAt());
+        $publicDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
+        $publicDto->setId((string) $entity->getId());
+        $publicDto->setCurrency($entity->getCurrency());
+        $publicDto->setTotal($entity->getTotal());
+        $publicDto->setTaxTotal($entity->getTaxTotal());
+        $publicDto->setSubTotal($entity->getSubTotal());
+        $publicDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
+        $publicDto->setPaid($entity->isPaid());
 
-        return $appDto;
+        return $publicDto;
     }
 
     protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto
