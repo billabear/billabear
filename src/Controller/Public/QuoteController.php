@@ -89,7 +89,7 @@ class QuoteController
             return $errorResponse;
         }
         $paymentCard = $addCardByTokenDriver->createPaymentDetailsFromToken($quote->getCustomer(), $processPay->getToken());
-        $invoice = $quoteConverter->convertToInvoice($quote, $paymentCard);
+        $invoice = $quoteConverter->convertToInvoice($quote);
         $success = $invoiceCharger->chargeInvoice($invoice, $paymentCard);
 
         return new JsonResponse(['success' => $success]);

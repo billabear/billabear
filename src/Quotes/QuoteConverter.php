@@ -20,21 +20,18 @@ use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\QuoteRepositoryInterface;
 use App\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
-use Parthenon\Billing\Entity\PaymentCard;
-use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 
 class QuoteConverter
 {
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,
-        private SubscriptionManagerInterface $subscriptionManager,
         private SubscriptionFactory $subscriptionFactory,
         private QuoteRepositoryInterface $quoteRepository,
         private InvoiceNumberGeneratorProvider $provider,
     ) {
     }
 
-    public function convertToInvoice(Quote $quote, PaymentCard $paymentCard): Invoice
+    public function convertToInvoice(Quote $quote): Invoice
     {
         $customer = $quote->getCustomer();
         $subscriptions = [];
