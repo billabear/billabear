@@ -65,7 +65,8 @@ export const ENGLISH_TRANSLATIONS = {
                     total: "Total",
                     amount_due: "Amount Due",
                 },
-                loading: "Loading"
+                loading: "Loading",
+                not_found: "No such quote found"
             },
         },
         loading: {

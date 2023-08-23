@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-    <h1 class="text-xl6 mb-5">{{ $t('portal.quote.pay.title') }}</h1>
+    <h1 class="text-2xl mb-5">{{ $t('portal.quote.pay.title') }}</h1>
     <div v-if="ready">
 
       <div class="my-5">
@@ -28,13 +28,7 @@
         <strong>{{ $t('portal.quote.pay.totals.total') }}</strong> {{ displayCurrency(quote.total) }}
       </div>
 
-      <div v-if="not_found">
-        {{ $t('portal.quote.pay.not_found') }}
-      </div>
-      <div v-else-if="general_error">
-        {{ $t('portal.quote.pay.general_error') }}
-      </div>
-      <div v-else>
+      <div>
        <form @submit.prevent="send" :disabled="sending">
 
          <div class="w-1/2 m-auto p-5">
@@ -48,6 +42,15 @@
           </div>
         </form>
       </div>
+    </div>
+    <div v-else-if="not_found">
+      <div class="text-center">
+        <img src="/images/error-bear.png" width="250"  class="m-auto" alt="BillaBear - Error" />
+        <p class="text-3xl font-bold">{{ $t('portal.quote.pay.not_found') }}</p>
+      </div>
+    </div>
+    <div v-else-if="general_error">
+      {{ $t('portal.quote.pay.general_error') }}
     </div>
     <div v-else>{{ $t('portal.quote.pay.loading') }}</div>
   </div>
@@ -90,7 +93,6 @@ export default {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
         }, 500)
     }).catch(error => {
-      console.log(error)
       if (error.response !== undefined && error.response.status === 404) {
         this.not_found = true;
         return;
