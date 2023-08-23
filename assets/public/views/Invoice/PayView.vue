@@ -1,5 +1,8 @@
 <template>
   <div class="mt-5">
+    <div class="w-full mb-5 mt-5">
+      <img src="/images/app-logo.png" alt="" class="" width="175" />
+    </div>
     <h1 class="text-xl6 mb-5">{{ $t('portal.invoice.pay.title') }}</h1>
     <div v-if="ready">
       <div class="w-50 text-end mb-5">
