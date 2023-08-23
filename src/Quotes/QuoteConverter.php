@@ -70,6 +70,8 @@ class QuoteConverter
             $invoiceLine->setTaxTotal($line->getTaxTotal());
             $invoiceLine->setTaxType($line->getTaxType());
             $invoiceLine->setTaxPercentage($line->getTaxPercentage());
+            $invoiceLine->setReverseCharge($line->isReverseCharge());
+            $invoiceLine->setTaxCountry($line->getTaxCountry());
 
             $total = $this->addAmount($total, $invoiceLine->getTotalMoney());
             $subTotal = $this->addAmount($subTotal, $invoiceLine->getSubTotalMoney());

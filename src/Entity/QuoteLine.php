@@ -62,6 +62,12 @@ class QuoteLine
     #[ORM\Column(type: 'boolean')]
     protected bool $includeTax;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $taxCountry;
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $reverseCharge = false;
+
     public function getId()
     {
         return $this->id;
@@ -195,5 +201,25 @@ class QuoteLine
     public function setIncludeTax(bool $includeTax): void
     {
         $this->includeTax = $includeTax;
+    }
+
+    public function getTaxCountry(): ?string
+    {
+        return $this->taxCountry;
+    }
+
+    public function setTaxCountry(?string $taxCountry): void
+    {
+        $this->taxCountry = $taxCountry;
+    }
+
+    public function isReverseCharge(): bool
+    {
+        return $this->reverseCharge;
+    }
+
+    public function setReverseCharge(bool $reverseCharge): void
+    {
+        $this->reverseCharge = $reverseCharge;
     }
 }

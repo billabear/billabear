@@ -41,7 +41,7 @@ final class Version20230822102022 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_14273BD59A1887DC ON quote_subscription (subscription_id)');
         $this->addSql('COMMENT ON COLUMN quote_subscription.quote_id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN quote_subscription.subscription_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE quote_line (id UUID NOT NULL, quote_id UUID DEFAULT NULL, subscription_plan_id UUID DEFAULT NULL, price_id UUID DEFAULT NULL, currency VARCHAR(255) NOT NULL, total INT NOT NULL, sub_total INT NOT NULL, tax_total INT NOT NULL, tax_percentage DOUBLE PRECISION DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, tax_type VARCHAR(255) DEFAULT NULL, include_tax BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE quote_line (id UUID NOT NULL, quote_id UUID DEFAULT NULL, subscription_plan_id UUID DEFAULT NULL, price_id UUID DEFAULT NULL, currency VARCHAR(255) NOT NULL, total INT NOT NULL, sub_total INT NOT NULL, tax_total INT NOT NULL, tax_percentage DOUBLE PRECISION DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, tax_type VARCHAR(255) DEFAULT NULL, include_tax BOOLEAN NOT NULL, tax_country VARCHAR(255) DEFAULT NULL, reverse_charge BOOLEAN NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_43F3EB7CDB805178 ON quote_line (quote_id)');
         $this->addSql('CREATE INDEX IDX_43F3EB7C9B8CE200 ON quote_line (subscription_plan_id)');
         $this->addSql('CREATE INDEX IDX_43F3EB7CD614C7E7 ON quote_line (price_id)');
