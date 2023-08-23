@@ -144,7 +144,7 @@ class CustomerDataMapper
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostcode($customer->getBillingAddress()->getPostcode());
 
-        $dto = new CustomerApiDto();
+        $dto = new CustomerAppDto();
         $dto->setName($customer->getName());
         $dto->setId((string) $customer->getId());
         $dto->setReference($customer->getReference());
