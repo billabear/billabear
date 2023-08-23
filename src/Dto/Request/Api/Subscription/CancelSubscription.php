@@ -71,9 +71,6 @@ class CancelSubscription
         $this->refundType = $refundType;
     }
 
-    /**
-     * @return null
-     */
     public function getComment()
     {
         return $this->comment;

@@ -40,6 +40,7 @@ class StripeImportProcessor
 
         if ($request->getUpdatedAt() > $fiveMinutesAgo && 'started' !== $request->getState()) {
             $this->getLogger()->info('Waiting 2 minutes incase last process is still running');
+
             // Wait 5 minutes to restart a failed import process
             return;
         }
