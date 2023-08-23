@@ -3,7 +3,8 @@ export const QUOTES_VIEW_TRANSLATIONS = {
     quote: {
         title: "Quote Info",
         created_by: "Created By",
-        created_at: "Created At"
+        created_at: "Created At",
+        pay_link: "Pay Link"
     },
     customer: {
         title: "Customer",

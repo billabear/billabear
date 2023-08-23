@@ -18,6 +18,7 @@ use App\Dto\Generic\Public\Quote as PublicDto;
 use App\Dto\Generic\Public\QuoteLine as PublicLineDto;
 use App\Entity\Quote as Entity;
 use App\Entity\QuoteLine as EntityLine;
+use App\Quotes\PayLinkGenerator;
 
 class QuoteDataMapper
 {
@@ -26,6 +27,7 @@ class QuoteDataMapper
         private CustomerDataMapper $customerDataMapper,
         private SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
         private PriceDataMapper $priceDataMapper,
+        private PayLinkGenerator $payLinkGenerator,
     ) {
     }
 
@@ -41,6 +43,7 @@ class QuoteDataMapper
         $appDto->setTaxTotal($entity->getTaxTotal());
         $appDto->setSubTotal($entity->getSubTotal());
         $appDto->setLines(array_map([$this, 'createAppLineDto'], $entity->getLines()->toArray()));
+        $appDto->setPayLink($this->payLinkGenerator->generatePayLink($entity));
 
         return $appDto;
     }
