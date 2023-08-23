@@ -3,7 +3,23 @@
     <h1 class="text-2xl mb-5">{{ $t('portal.quote.pay.title') }}</h1>
     <div v-if="ready">
       <div v-if="!quote.paid">
-        <div class="my-5">
+
+        <div class="grid grid-cols-2">
+          <div class="w-50">
+          </div>
+
+          <div class="w-50 text-end">
+            <h3 class="mb-5 font-extrabold">{{ $t('portal.quote.pay.payee_details.title') }}</h3>
+            {{ quote.customer.email }} <br v-if="quote.customer.email" />
+            {{ quote.customer.address.company_name }} <br v-if="quote.customer.address.company_name" />
+            {{ quote.customer.address.street_line_one }}<br  v-if="quote.customer.address.street_line_one" />
+            {{ quote.customer.address.street_line_two }}<br v-if="quote.customer.address.street_line_two" />
+            {{ quote.customer.address.city }}<br v-if="quote.customer.address.city" />
+            {{ quote.customer.address.region }}<br v-if="quote.customer.address.region" />
+            {{ quote.customer.address.postcode }}<br v-if="quote.customer.address.postcode" />
+          </div>
+        </div>
+        <div class="my-5 pt-3">
           <table class="table w-full">
             <thead>
               <tr>
@@ -15,7 +31,10 @@
             </thead>
             <tbody>
               <tr v-for="line in quote.lines">
-                <td>{{ line.description }}</td>
+                <td>
+                  <span v-if="line.subscription_plan === null || line.subscription_plan === undefined">{{ line.description }}</span>
+                  <span v-else>{{ line.subscription_plan.name }} / {{ line.price.schedule }}</span>
+                </td>
                 <td class="text-center">{{ line.tax_rate }}</td>
                 <td class="text-center">{{ displayCurrency(line.tax_total) }}</td>
                 <td class="text-center">{{ displayCurrency(line.total) }}</td>
@@ -61,7 +80,6 @@
         <img src="/images/error-bear.png" width="250"  class="m-auto" alt="BillaBear - Error" />
         <p class="text-3xl font-bold">{{ $t('portal.quote.pay.general_error') }}</p>
       </div>
-      {{ $t('portal.quote.pay.general_error') }}
     </div>
     <div v-else>
       <div class="text-center">

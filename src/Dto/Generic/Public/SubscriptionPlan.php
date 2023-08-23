@@ -12,7 +12,6 @@
 
 namespace App\Dto\Generic\Public;
 
-use App\Dto\Generic\App\Product;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class SubscriptionPlan
@@ -100,36 +99,6 @@ class SubscriptionPlan
         $this->public = $public;
     }
 
-    public function getFeatures(): array
-    {
-        return $this->features;
-    }
-
-    public function setFeatures(array $features): void
-    {
-        $this->features = $features;
-    }
-
-    public function getPrices(): array
-    {
-        return $this->prices;
-    }
-
-    public function setPrices(array $prices): void
-    {
-        $this->prices = $prices;
-    }
-
-    public function getLimits(): array
-    {
-        return $this->limits;
-    }
-
-    public function setLimits(array $limits): void
-    {
-        $this->limits = $limits;
-    }
-
     public function getUserCount(): int
     {
         return $this->userCount;
@@ -164,15 +133,5 @@ class SubscriptionPlan
     public function setTrialLengthDays(?int $trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
-    }
-
-    public function getProduct(): Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(Product $product): void
-    {
-        $this->product = $product;
     }
 }
