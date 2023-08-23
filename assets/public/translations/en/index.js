@@ -66,7 +66,8 @@ export const ENGLISH_TRANSLATIONS = {
                     amount_due: "Amount Due",
                 },
                 loading: "Loading",
-                not_found: "No such quote found"
+                not_found: "No such quote found",
+                general_error: "Something unexpected happened. Try again later."
             },
         },
         loading: {

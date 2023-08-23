@@ -50,9 +50,18 @@
       </div>
     </div>
     <div v-else-if="general_error">
+      <div class="text-center">
+        <img src="/images/error-bear.png" width="250"  class="m-auto" alt="BillaBear - Error" />
+        <p class="text-3xl font-bold">{{ $t('portal.quote.pay.general_error') }}</p>
+      </div>
       {{ $t('portal.quote.pay.general_error') }}
     </div>
-    <div v-else>{{ $t('portal.quote.pay.loading') }}</div>
+    <div v-else>
+      <div class="text-center">
+        <img src="/images/bear-with-papers.png" width="250"  class="m-auto" alt="BillaBear - Error" />
+        <p class="text-3xl font-bold">{{ $t('portal.quote.pay.loading') }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
