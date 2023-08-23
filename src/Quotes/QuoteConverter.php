@@ -91,6 +91,9 @@ class QuoteConverter
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
 
         $quote->setSubscriptions($subscriptions);
+        $quote->setUpdatedAt(new \DateTime('now'));
+        $quote->setPaid(true);
+        $quote->setPaidAt(new \DateTime('now'));
 
         $this->quoteRepository->save($quote);
         $this->invoiceRepository->save($invoice);

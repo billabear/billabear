@@ -232,6 +232,19 @@ class CreateInvoiceContext implements Context
     }
 
     /**
+     * @Then the quote for :arg1 should be marked as paid
+     */
+    public function theQuoteForShouldBeMarkedAsPaid($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $quote = $this->getLatestQuoteForCustomer($customer);
+
+        if (!$quote->isPaid()) {
+            throw new \Exception('Quote should be marked as paid');
+        }
+    }
+
+    /**
      * @Then the latest quote for :arg1 will have amount due as :arg2
      */
     public function theLatestQuoteForWillHaveAmountDueAs($customerEmail, $amount)

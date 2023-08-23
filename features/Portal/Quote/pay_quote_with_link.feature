@@ -55,3 +55,4 @@ Feature: Read quote
     And I finalise the quote in APP
     When I accept and pay for the quote for "customer.seven@example.org"
     Then there should be a subscription for the user "customer.seven@example.org"
+    And the quote for "customer.seven@example.org" should be marked as paid
