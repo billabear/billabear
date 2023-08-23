@@ -15,6 +15,7 @@ namespace App\DataMappers;
 use App\Dto\Generic\Address as AddressDto;
 use App\Dto\Generic\Api\Customer as CustomerApiDto;
 use App\Dto\Generic\App\Customer as CustomerAppDto;
+use App\Dto\Generic\Public\Customer as CustomerPublicDto;
 use App\Dto\Request\Api\CreateCustomerDto as ApiCreate;
 use App\Dto\Request\App\CreateCustomerDto as AppCreate;
 use App\Entity\Customer;
@@ -143,14 +144,13 @@ class CustomerDataMapper
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostcode($customer->getBillingAddress()->getPostcode());
 
-        $dto = new CustomerAppDto();
+        $dto = new CustomerApiDto();
         $dto->setName($customer->getName());
         $dto->setId((string) $customer->getId());
         $dto->setReference($customer->getReference());
         $dto->setEmail($customer->getBillingEmail());
         $dto->setExternalReference($customer->getExternalCustomerReference());
         $dto->setAddress($address);
-        $dto->setPaymentProviderDetailsUrl($customer->getPaymentProviderDetailsUrl());
         $dto->setStatus($customer->getStatus()->value);
         $dto->setBrand($customer->getBrand());
         $dto->setLocale($customer->getLocale());
@@ -158,6 +158,28 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
+        $dto->setType($customer->getType()->value);
+
+        return $dto;
+    }
+
+    public function createPublicDto(Customer $customer): CustomerPublicDto
+    {
+        $address = new AddressDto();
+        $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
+        $address->setStreetLineTwo($customer->getBillingAddress()->getStreetLineTwo());
+        $address->setCity($customer->getBillingAddress()->getCity());
+        $address->setRegion($customer->getBillingAddress()->getRegion());
+        $address->setCountry($customer->getBillingAddress()->getCountry());
+        $address->setPostcode($customer->getBillingAddress()->getPostcode());
+
+        $dto = new CustomerPublicDto();
+        $dto->setName($customer->getName());
+        $dto->setId((string) $customer->getId());
+        $dto->setEmail($customer->getBillingEmail());
+        $dto->setAddress($address);
+        $dto->setBrand($customer->getBrand());
+        $dto->setLocale($customer->getLocale());
         $dto->setType($customer->getType()->value);
 
         return $dto;

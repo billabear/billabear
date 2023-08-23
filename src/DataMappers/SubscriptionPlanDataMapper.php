@@ -17,6 +17,7 @@ use App\Dto\Generic\App\Feature;
 use App\Dto\Generic\App\Limit;
 use App\Dto\Generic\App\Price;
 use App\Dto\Generic\App\SubscriptionPlan as AppDto;
+use App\Dto\Generic\Public\SubscriptionPlan as PublicDto;
 use App\Dto\Request\App\PostSubscriptionPlan;
 use App\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use App\Entity\SubscriptionPlan;
@@ -84,6 +85,22 @@ class SubscriptionPlanDataMapper
         }
 
         return $subscriptionPlan;
+    }
+
+    public function createPublicDto(SubscriptionPlan $subscriptionPlan): PublicDto
+    {
+        $dto = new PublicDto();
+        $dto->setId((string) $subscriptionPlan->getId());
+        $dto->setCodeName($subscriptionPlan->getCodeName());
+        $dto->setName($subscriptionPlan->getName());
+        $dto->setPerSeat($subscriptionPlan->isPerSeat());
+        $dto->setPublic($subscriptionPlan->isPublic());
+        $dto->setFree($subscriptionPlan->isFree());
+        $dto->setUserCount($subscriptionPlan->getUserCount());
+        $dto->setHasTrial($subscriptionPlan->getHasTrial());
+        $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
+
+        return $dto;
     }
 
     public function createAppDto(SubscriptionPlan $subscriptionPlan): AppDto

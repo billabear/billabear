@@ -13,15 +13,13 @@
 namespace App\Controller\Public;
 
 use App\Controller\ValidationErrorResponseTrait;
-use App\DataMappers\InvoiceDataMapper;
+use App\DataMappers\QuoteDataMapper;
 use App\Dto\Request\Public\ProcessPay;
-use App\Dto\Response\Portal\Invoice\StripeInfo;
-use App\Dto\Response\Portal\Invoice\ViewPay;
-use App\Entity\Invoice;
+use App\Dto\Response\Portal\Quote\StripeInfo;
+use App\Dto\Response\Portal\Quote\ViewPay;
 use App\Entity\Quote;
 use App\Payment\InvoiceCharger;
 use App\Quotes\QuoteConverter;
-use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\QuoteRepositoryInterface;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
@@ -40,25 +38,25 @@ class QuoteController
     #[Route('/public/quote/{hash}/pay', name: 'app_public_quote_readpay', methods: ['GET'])]
     public function readPay(
         Request $request,
-        InvoiceRepositoryInterface $invoiceRepository,
-        InvoiceDataMapper $invoiceDataMapper,
+        QuoteRepositoryInterface $quoteRepository,
+        QuoteDataMapper $quoteDataMapper,
         SerializerInterface $serializer,
         FrontendAddProcessorInterface $addCardByTokenDriver,
         FrontendConfig $config,
     ): Response {
         try {
-            /** @var Invoice $invoice */
-            $invoice = $invoiceRepository->findById($request->get('hash'));
+            /** @var Quote $quote */
+            $quote = $quoteRepository->findById($request->get('hash'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         $stripe = new StripeInfo();
-        $stripe->setToken($addCardByTokenDriver->startTokenProcess($invoice->getCustomer()));
+        $stripe->setToken($addCardByTokenDriver->startTokenProcess($quote->getCustomer()));
         $stripe->setKey($config->getApiInfo());
         $viewDto = new ViewPay();
         $viewDto->setStripe($stripe);
-        $viewDto->setInvoice($invoiceDataMapper->createPublicDto($invoice));
+        $viewDto->setQuote($quoteDataMapper->createPublicDto($quote));
 
         $json = $serializer->serialize($viewDto, 'json');
 

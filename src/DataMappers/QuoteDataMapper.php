@@ -14,6 +14,8 @@ namespace App\DataMappers;
 
 use App\Dto\Generic\App\Quote as AppDto;
 use App\Dto\Generic\App\QuoteLine as AppLineDto;
+use App\Dto\Generic\Public\Quote as PublicDto;
+use App\Dto\Generic\Public\QuoteLine as PublicLineDto;
 use App\Entity\Quote as Entity;
 use App\Entity\QuoteLine as EntityLine;
 
@@ -52,6 +54,41 @@ class QuoteDataMapper
 
         if ($quoteLine->getPrice()) {
             $appLineDto->setPrice($this->priceDataMapper->createAppDto($quoteLine->getPrice()));
+        }
+        $appLineDto->setDescription($quoteLine->getDescription());
+        $appLineDto->setTotal($quoteLine->getTotal());
+        $appLineDto->setSubTotal($quoteLine->getSubTotal());
+        $appLineDto->setTaxTotal($quoteLine->getTaxTotal());
+        $appLineDto->setCurrency($quoteLine->getCurrency());
+        $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
+
+        return $appLineDto;
+    }
+
+    public function createPublicDto(Entity $entity): PublicDto
+    {
+        $appDto = new PublicDto();
+        $appDto->setCreatedAt($entity->getCreatedAt());
+        $appDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
+        $appDto->setId((string) $entity->getId());
+        $appDto->setCurrency($entity->getCurrency());
+        $appDto->setTotal($entity->getTotal());
+        $appDto->setTaxTotal($entity->getTaxTotal());
+        $appDto->setSubTotal($entity->getSubTotal());
+        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
+
+        return $appDto;
+    }
+
+    protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto
+    {
+        $appLineDto = new PublicLineDto();
+        if ($quoteLine->getSubscriptionPlan()) {
+            $appLineDto->setSubscriptionPlan($this->subscriptionPlanDataMapper->createPublicDto($quoteLine->getSubscriptionPlan()));
+        }
+
+        if ($quoteLine->getPrice()) {
+            $appLineDto->setPrice($this->priceDataMapper->createPublicDto($quoteLine->getPrice()));
         }
         $appLineDto->setDescription($quoteLine->getDescription());
         $appLineDto->setTotal($quoteLine->getTotal());

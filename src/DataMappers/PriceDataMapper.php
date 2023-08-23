@@ -14,6 +14,7 @@ namespace App\DataMappers;
 
 use App\Dto\Generic\Api\Price as ApiDto;
 use App\Dto\Generic\App\Price as AppDto;
+use App\Dto\Generic\Public\Price as PublicDto;
 use App\Dto\Request\Api\CreatePrice;
 use App\Entity\Price;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -51,6 +52,20 @@ class PriceDataMapper
     public function createApiDto(Price $price): ApiDto
     {
         $dto = new ApiDto();
+        $dto->setId((string) $price->getId());
+        $dto->setExternalReference($price->getExternalReference());
+        $dto->setAmount($price->getAmount());
+        $dto->setCurrency($price->getCurrency());
+        $dto->setRecurring($price->isRecurring());
+        $dto->setSchedule($price->getSchedule());
+        $dto->setPublic($price->isPublic());
+
+        return $dto;
+    }
+
+    public function createPublicDto(Price $price): PublicDto
+    {
+        $dto = new PublicDto();
         $dto->setId((string) $price->getId());
         $dto->setExternalReference($price->getExternalReference());
         $dto->setAmount($price->getAmount());
