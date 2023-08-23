@@ -3,6 +3,7 @@
     <h1 class="page-title mb-5">{{ $t('app.quotes.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="alert-success mb-5" v-if="quote.paid">{{ $t('app.quotes.view.status.paid',  {date: $filters.moment(quote.paid_at, 'LLL')}) }}</div>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <h2 class="section-header">{{ $t('app.quotes.view.customer.title') }}</h2>

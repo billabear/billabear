@@ -44,6 +44,11 @@ class Quote
     #[SerializedName('pay_link')]
     private string $payLink;
 
+    private bool $paid;
+
+    #[SerializedName('paid_at')]
+    private ?\DateTime $paidAt;
+
     public function getId(): string
     {
         return $this->id;
@@ -152,5 +157,25 @@ class Quote
     public function setPayLink(string $payLink): void
     {
         $this->payLink = $payLink;
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): void
+    {
+        $this->paid = $paid;
+    }
+
+    public function getPaidAt(): ?\DateTime
+    {
+        return $this->paidAt;
+    }
+
+    public function setPaidAt(?\DateTime $paidAt): void
+    {
+        $this->paidAt = $paidAt;
     }
 }

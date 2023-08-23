@@ -6,6 +6,9 @@ export const QUOTES_VIEW_TRANSLATIONS = {
         created_at: "Created At",
         pay_link: "Pay Link"
     },
+    status: {
+        paid: "Quote successfully paid at {date}",
+    },
     customer: {
         title: "Customer",
         email: "Email",

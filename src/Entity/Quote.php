@@ -69,7 +69,7 @@ class Quote
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $paidAt;
+    private ?\DateTimeInterface $paidAt = null;
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
@@ -221,12 +221,12 @@ class Quote
         $this->paid = $paid;
     }
 
-    public function getPaidAt(): \DateTimeInterface
+    public function getPaidAt(): ?\DateTimeInterface
     {
         return $this->paidAt;
     }
 
-    public function setPaidAt(\DateTimeInterface $paidAt): void
+    public function setPaidAt(?\DateTimeInterface $paidAt): void
     {
         $this->paidAt = $paidAt;
     }

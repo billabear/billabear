@@ -44,6 +44,8 @@ class QuoteDataMapper
         $appDto->setSubTotal($entity->getSubTotal());
         $appDto->setLines(array_map([$this, 'createAppLineDto'], $entity->getLines()->toArray()));
         $appDto->setPayLink($this->payLinkGenerator->generatePayLink($entity));
+        $appDto->setPaid($entity->isPaid());
+        $appDto->setPaidAt($entity->getPaidAt());
 
         return $appDto;
     }
