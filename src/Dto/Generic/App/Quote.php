@@ -41,6 +41,9 @@ class Quote
     #[SerializedName('updated_at')]
     private \DateTime $updatedAt;
 
+    #[SerializedName('pay_link')]
+    private string $payLink;
+
     public function getId(): string
     {
         return $this->id;
@@ -139,5 +142,15 @@ class Quote
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function getPayLink(): string
+    {
+        return $this->payLink;
+    }
+
+    public function setPayLink(string $payLink): void
+    {
+        $this->payLink = $payLink;
     }
 }
