@@ -53,6 +53,9 @@ class Invoice
 
     private array $lines;
 
+    #[SerializedName('pay_link')]
+    private string $payLink;
+
     public function getId(): string
     {
         return $this->id;
@@ -191,5 +194,15 @@ class Invoice
     public function getPaidAt(): ?\DateTimeInterface
     {
         return $this->paidAt;
+    }
+
+    public function getPayLink(): string
+    {
+        return $this->payLink;
+    }
+
+    public function setPayLink(string $payLink): void
+    {
+        $this->payLink = $payLink;
     }
 }

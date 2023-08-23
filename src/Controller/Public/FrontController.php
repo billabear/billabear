@@ -23,6 +23,8 @@ use Twig\Environment;
 class FrontController
 {
     #[Route('/portal/{vueRouting}', name: 'public_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/portal/pay/{hash}', name: 'portal_pay_invoice', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/portal/quote/{hash}', name: 'portal_pay_quote', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function handlePublic(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,

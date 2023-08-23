@@ -18,12 +18,14 @@ use App\Dto\Generic\App\InvoiceQuickView as AppQuickViewDto;
 use App\Dto\Response\Portal\Invoice\Invoice as PublicDto;
 use App\Dto\Response\Portal\Invoice\InvoiceLine;
 use App\Entity\Invoice as Entity;
+use App\Invoice\PayLinkGenerator;
 
 class InvoiceDataMapper
 {
     public function __construct(
         private CustomerDataMapper $customerFactory,
         private AddressDataMapper $addressDataMapper,
+        private PayLinkGenerator $payLinkGenerator,
     ) {
     }
 
@@ -57,6 +59,7 @@ class InvoiceDataMapper
         $dto->setTotal($invoice->getTotal());
         $dto->setBillerAddress($this->addressDataMapper->createDto($invoice->getBillerAddress()));
         $dto->setPayeeAddress($this->addressDataMapper->createDto($invoice->getPayeeAddress()));
+        $dto->setPayLink($this->payLinkGenerator->generatePayLink($invoice));
 
         $lines = [];
         foreach ($invoice->getLines() as $line) {

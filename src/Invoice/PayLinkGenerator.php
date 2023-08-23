@@ -10,9 +10,9 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Quotes;
+namespace App\Invoice;
 
-use App\Entity\Quote;
+use App\Entity\Invoice;
 use App\Repository\SettingsRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -24,9 +24,9 @@ class PayLinkGenerator
     ) {
     }
 
-    public function generatePayLink(Quote $quote): string
+    public function generatePayLink(Invoice $invoice): string
     {
-        $payLink = $this->urlGenerator->generate('portal_pay_quote', ['hash' => $quote->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $payLink = $this->urlGenerator->generate('portal_pay_invoice', ['hash' => $invoice->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
         $fullPayLink = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getSystemUrl().$payLink;
 
         return $fullPayLink;

@@ -13,20 +13,18 @@
 namespace App\EventSubscriber;
 
 use App\Event\InvoiceCreated;
+use App\Invoice\PayLinkGenerator;
 use App\Notification\Email\Data\InvoiceCreatedEmail;
 use App\Notification\Email\EmailBuilder;
-use App\Repository\SettingsRepositoryInterface;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class InvoiceCreatedSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
-        private UrlGeneratorInterface $urlGenerator,
-        private SettingsRepositoryInterface $settingsRepository,
+        private PayLinkGenerator $payLinkGenerator,
     ) {
     }
 
@@ -49,8 +47,7 @@ class InvoiceCreatedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $payLink = $this->urlGenerator->generate('app_public_invoice_readpay', ['hash' => $invoice->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
-        $fullPayLink = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getSystemUrl().$payLink;
+        $fullPayLink = $this->payLinkGenerator->generatePayLink($invoice);
 
         $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $invoiceCreatedEmail);

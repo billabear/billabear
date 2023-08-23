@@ -17,6 +17,10 @@
                 <dt>{{ $t('app.invoices.view.main.created_at') }}</dt>
                 <dd>{{ $filters.moment(invoice.created_at, 'llll') }}</dd>
               </div>
+              <div>
+                <dt>{{ $t('app.invoices.view.main.pay_link') }}</dt>
+                <dd>{{ invoice.pay_link }}</dd>
+              </div>
             </dl>
           </div>
       </div>
