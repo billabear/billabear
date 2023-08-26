@@ -34,10 +34,10 @@ Watch the video on youtube.
 * Stripe Billing Integration
 * Ability to Migrate away from Stripe Billing
 * Invoice payment type for Enterprise customers
+* Webhooks for events
 
 ## RoadMap
 
-* Webhooks to listen for billing events
 * Tax Software Integrations
 * Better Reports
 * Slack/etc integration for internal communications
