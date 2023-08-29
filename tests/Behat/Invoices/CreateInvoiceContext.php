@@ -300,8 +300,8 @@ class CreateInvoiceContext implements Context
         $customer = $this->getCustomerByEmail($customerEmail);
         $quote = $this->getLatestQuoteForCustomer($customer);
 
-        if ($quote->getAmountDue() === (int) $amount) {
-            throw new \Exception('Quote does not have the same value');
+        if ($quote->getAmountDue() !== (int) $amount) {
+            throw new \Exception(sprintf('Expected %d but got %d', $amount, $quote->getAmountDue()));
         }
     }
 }
