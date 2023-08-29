@@ -50,7 +50,10 @@
           <strong>{{ $t('portal.quote.pay.totals.total') }}</strong> {{ displayCurrency(quote.total) }}
         </div>
 
-        <div>
+        <div v-if="!quote.expired">
+          <div v-if="quote.expires_at !== null && quote.expires_at !== undefined" class="my-3 text-center text-xl text-red-500">
+            {{ $t('portal.quote.pay.expires_at', {date: $filters.moment(quote.created_at, "LLL")}) }}
+          </div>
          <form @submit.prevent="send" :disabled="sending">
 
            <div class="w-1/2 m-auto p-5">
@@ -63,6 +66,9 @@
               <SubmitButton @click="send" :in-progress="sending">{{ $t('portal.quote.pay.payment.pay_button') }}</SubmitButton>
             </div>
           </form>
+        </div>
+        <div v-else class="text-center text-4xl">
+          {{ $t('portal.quote.pay.has_expired') }}
         </div>
       </div>
       <div v-else>
@@ -125,8 +131,7 @@ export default {
       this.ready = true;
       this.stripe = Stripe(this.stripeConfig.key);
       var that = this;
-      if (this.quote.paid === false) {
-
+      if (this.quote.paid === false && this.quote.expired === false) {
         setTimeout(()=> {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
         }, 500)

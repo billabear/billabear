@@ -27,6 +27,14 @@
         <CurrencySelect v-model="quote.currency" />
         <p class="form-field-help">{{ $t('app.quotes.create.customer.help_info.currency') }}</p>
       </div>
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="name">
+          {{ $t('app.quotes.create.customer.fields.expires_at') }}
+        </label>
+        <p class="form-field-error" v-if="errors.expiresAt != undefined">{{ errors.expiresAt }}</p>
+        <VueDatePicker  class="mt-2" v-model="quote.expires_at" :enable-time-picker="true"></VueDatePicker>
+        <p class="form-field-help">{{ $t('app.quotes.create.customer.help_info.expires_at') }}</p>
+      </div>
     </div>
 
     <div class="card-body mt-5">
@@ -143,6 +151,7 @@ export default {
         subscription_plans: [],
         items: [],
         currency: null,
+        expires_at: null,
       },
       send_quote: false,
       create_customer: false,
@@ -307,6 +316,7 @@ export default {
         customer: this.quote.customer,
         subscriptions: subscriptions,
         items: items,
+        expires_at: this.quote.expires_at,
       }
 
       axios.post("/app/"+type+"/create", payload).then(response => {

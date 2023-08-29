@@ -15,11 +15,13 @@ export const QUOTES_CREATE_TRANSLATIONS = {
         create_customer: "Create Customer",
         fields: {
             customer: "Customer",
-            currency: "Currency"
+            currency: "Currency",
+            expires_at: "Expires At"
         },
         help_info: {
             customer: "The customer the quote is for",
             currency: "The currency to be used for the invoice",
+            expires_at: "When the quote expires and can't be paid for"
         }
     },
     subscriptions: {

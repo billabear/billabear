@@ -71,6 +71,9 @@ class Quote
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $paidAt = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $expiresAt = null;
+
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
@@ -264,5 +267,15 @@ class Quote
     public function setCreatedBy(BillingAdminInterface $createdBy): void
     {
         $this->createdBy = $createdBy;
+    }
+
+    public function getExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?\DateTimeInterface $expiresAt): void
+    {
+        $this->expiresAt = $expiresAt;
     }
 }

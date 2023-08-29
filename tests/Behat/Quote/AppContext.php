@@ -26,6 +26,7 @@ class AppContext implements Context
 {
     use SendRequestTrait;
     use CustomerTrait;
+    use QuoteTrait;
 
     public function __construct(
         private QuoteRepository $quoteRepository,
@@ -119,6 +120,20 @@ class AppContext implements Context
         $data = $this->getJsonContent();
         if (count($data['data']) != $arg1) {
             throw new \Exception('Got a different count - '.count($data['data']));
+        }
+    }
+
+    /**
+     * @Then the latest quote for :arg1 will expire in :arg2
+     */
+    public function theLatestQuoteForWillExpireIn($email, $dateTimeInput)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $quote = $this->getLatestQuoteForCustomer($customer);
+        $dateTime = new \DateTime($dateTimeInput);
+
+        if ($quote->getExpiresAt() == $dateTime) {
+            throw new \Exception('Quote does not have the same value');
         }
     }
 }

@@ -12,9 +12,9 @@
 
 namespace App\Quotes;
 
-use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Request\App\Invoice\CreateInvoiceItem;
 use App\Dto\Request\App\Invoice\CreateInvoiceSubscription;
+use App\Dto\Request\App\Quote\CreateQuote;
 use App\Entity\Customer;
 use App\Entity\Quote;
 use App\Entity\QuoteLine;
@@ -42,20 +42,24 @@ class QuoteCreator
     ) {
     }
 
-    public function createQuote(CreateInvoice $createInvoice): Quote
+    public function createQuote(CreateQuote $createQuote): Quote
     {
         /** @var Customer $customer */
-        $customer = $this->customerRepository->getById($createInvoice->getCustomer());
+        $customer = $this->customerRepository->getById($createQuote->getCustomer());
         $user = $this->security->getUser();
         $quote = new Quote();
         $quote->setCreatedBy($user);
         $quote->setCustomer($customer);
+        if ($createQuote->getExpiresAt()) {
+            $expiresAt = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $createQuote->getExpiresAt());
+            $quote->setExpiresAt($expiresAt);
+        }
         $lines = [];
         $totalAmount = null;
         $totalVat = null;
         $subTotal = null;
         /** @var CreateInvoiceSubscription $subscription */
-        foreach ($createInvoice->getSubscriptions() as $subscription) {
+        foreach ($createQuote->getSubscriptions() as $subscription) {
             /** @var \App\Entity\SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
             /** @var \App\Entity\Price $price */
@@ -86,7 +90,7 @@ class QuoteCreator
         }
 
         /** @var CreateInvoiceItem $item */
-        foreach ($createInvoice->getItems() as $item) {
+        foreach ($createQuote->getItems() as $item) {
             $quoteLine = new QuoteLine();
             $taxType = TaxType::fromName($item->getTaxType());
             $money = Money::ofMinor($item->getAmount(), $item->getCurrency());

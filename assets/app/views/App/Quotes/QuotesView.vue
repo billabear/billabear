@@ -59,6 +59,10 @@
                 <dd>{{ quote.created_at }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.quotes.view.quote.expires_at') }}</dt>
+                <dd>{{ quote.expires_at }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.quotes.view.quote.pay_link') }}</dt>
                 <dd>{{ quote.pay_link }}</dd>
               </div>

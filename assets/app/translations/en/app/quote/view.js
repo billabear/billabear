@@ -4,6 +4,7 @@ export const QUOTES_VIEW_TRANSLATIONS = {
         title: "Quote Info",
         created_by: "Created By",
         created_at: "Created At",
+        expires_at: "Expires At",
         pay_link: "Pay Link"
     },
     status: {

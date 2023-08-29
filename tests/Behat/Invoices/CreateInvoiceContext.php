@@ -19,6 +19,7 @@ use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\QuoteRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
+use App\Tests\Behat\Quote\QuoteTrait;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\Subscriptions\SubscriptionTrait;
 use Behat\Behat\Context\Context;
@@ -30,6 +31,7 @@ class CreateInvoiceContext implements Context
     use SendRequestTrait;
     use CustomerTrait;
     use SubscriptionTrait;
+    use QuoteTrait;
 
     public function __construct(
         private Session $session,
@@ -43,6 +45,7 @@ class CreateInvoiceContext implements Context
     private ?Customer $customer = null;
     private array $subscriptions = [];
     private array $items = [];
+    private ?\DateTime $expiresAt = null;
 
     /**
      * @BeforeScenario
@@ -52,6 +55,7 @@ class CreateInvoiceContext implements Context
         $this->customer = null;
         $this->subscriptions = [];
         $this->items = [];
+        $this->expiresAt = null;
     }
 
     /**
@@ -173,6 +177,14 @@ class CreateInvoiceContext implements Context
     }
 
     /**
+     * @Given I want to set a time limit of :arg1 for the quote
+     */
+    public function iWantToSetATimeLimitOfForTheQuote($dateTimeInput)
+    {
+        $this->expiresAt = new \DateTime($dateTimeInput);
+    }
+
+    /**
      * @When I finalise the quote in APP
      */
     public function iFinaliseTheQuoteInApp()
@@ -189,6 +201,7 @@ class CreateInvoiceContext implements Context
             'customer' => $this->customer->getId(),
             'subscriptions' => [],
             'items' => [],
+            'expires_at' => $this->expiresAt?->format(\DATE_RFC3339_EXTENDED),
         ];
 
         foreach ($this->subscriptions as $subscription) {
@@ -232,6 +245,41 @@ class CreateInvoiceContext implements Context
     }
 
     /**
+     * @Then the attempt to pay accept will be rejected
+     */
+    public function theAttemptToPayAcceptWillBeRejected()
+    {
+        $statusCode = $this->session->getStatusCode();
+
+        if (406 !== $statusCode) {
+            throw new \Exception('Status code is not 406');
+        }
+    }
+
+    /**
+     * @When I view the paylink for the quote for :arg1
+     */
+    public function iViewThePaylinkForTheQuoteFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $quote = $this->getLatestQuoteForCustomer($customer);
+
+        $this->sendJsonRequest('GET', '/public/quote/'.$quote->getId().'/pay');
+    }
+
+    /**
+     * @Then the paylink will show that it's expired
+     */
+    public function thePaylinkWillShowThatItsExpired()
+    {
+        $data = $this->getJsonContent();
+
+        if (true !== $data['quote']['expired']) {
+            throw new \Exception('Is not marked as expired');
+        }
+    }
+
+    /**
      * @Then the quote for :arg1 should be marked as paid
      */
     public function theQuoteForShouldBeMarkedAsPaid($customerEmail)
@@ -250,17 +298,10 @@ class CreateInvoiceContext implements Context
     public function theLatestQuoteForWillHaveAmountDueAs($customerEmail, $amount)
     {
         $customer = $this->getCustomerByEmail($customerEmail);
-        $this->getLatestQuoteForCustomer($customer);
-    }
+        $quote = $this->getLatestQuoteForCustomer($customer);
 
-    protected function getLatestQuoteForCustomer(Customer $customer): Quote
-    {
-        $quote = $this->quoteRepository->findOneBy(['customer' => $customer]);
-        if (!$quote) {
-            throw new \Exception('Unable to find quote');
+        if ($quote->getAmountDue() === (int) $amount) {
+            throw new \Exception('Quote does not have the same value');
         }
-        $this->quoteRepository->getEntityManager()->refresh($quote);
-
-        return $quote;
     }
 }

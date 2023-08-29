@@ -46,6 +46,7 @@ class QuoteDataMapper
         $appDto->setPayLink($this->payLinkGenerator->generatePayLink($entity));
         $appDto->setPaid($entity->isPaid());
         $appDto->setPaidAt($entity->getPaidAt());
+        $appDto->setExpiresAt($entity->getExpiresAt());
 
         return $appDto;
     }
@@ -72,6 +73,8 @@ class QuoteDataMapper
 
     public function createPublicDto(Entity $entity): PublicDto
     {
+        $now = new \DateTime();
+
         $publicDto = new PublicDto();
         $publicDto->setCreatedAt($entity->getCreatedAt());
         $publicDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
@@ -82,6 +85,8 @@ class QuoteDataMapper
         $publicDto->setSubTotal($entity->getSubTotal());
         $publicDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
         $publicDto->setPaid($entity->isPaid());
+        $publicDto->setExpiresAt($entity->getExpiresAt());
+        $publicDto->setExpired(null !== $entity->getExpiresAt() && $now > $entity->getExpiresAt());
 
         return $publicDto;
     }

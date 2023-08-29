@@ -18,6 +18,7 @@ use App\DataMappers\QuoteDataMapper;
 use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Request\App\Invoice\ReadQuoteView;
+use App\Dto\Request\App\Quote\CreateQuote;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Quote\ReadQuote;
 use App\Entity\Quote;
@@ -83,7 +84,7 @@ class QuoteController
         QuoteDataMapper $quoteDataMapper,
     ): Response {
         /** @var CreateInvoice $dto */
-        $dto = $serializer->deserialize($request->getContent(), CreateInvoice::class, 'json');
+        $dto = $serializer->deserialize($request->getContent(), CreateQuote::class, 'json');
         $errors = $validator->validate($dto);
         $response = $this->handleErrors($errors);
 

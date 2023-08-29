@@ -49,6 +49,9 @@ class Quote
     #[SerializedName('paid_at')]
     private ?\DateTime $paidAt;
 
+    #[SerializedName('expires_at')]
+    private ?\DateTime $expiresAt;
+
     public function getId(): string
     {
         return $this->id;
@@ -177,5 +180,15 @@ class Quote
     public function setPaidAt(?\DateTime $paidAt): void
     {
         $this->paidAt = $paidAt;
+    }
+
+    public function getExpiresAt(): ?\DateTime
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?\DateTime $expiresAt): void
+    {
+        $this->expiresAt = $expiresAt;
     }
 }

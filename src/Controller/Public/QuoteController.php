@@ -80,6 +80,10 @@ class QuoteController
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
+        $now = new \DateTime();
+        if ($quote->getExpiresAt() < $now) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_ACCEPTABLE);
+        }
 
         $processPay = $serializer->deserialize($request->getContent(), ProcessPay::class, 'json');
         $errors = $validator->validate($processPay);

@@ -68,7 +68,9 @@ export const ENGLISH_TRANSLATIONS = {
                 loading: "Loading",
                 not_found: "No such quote found",
                 general_error: "Something unexpected happened. Try again later.",
-                already_paid: "This quote has been accepted and paid for"
+                already_paid: "This quote has been accepted and paid for",
+                has_expired: "This quote has now expired. Contact your sales rep for a new quote",
+                expires_at: "This quote will expire at {date}"
             },
         },
         loading: {
