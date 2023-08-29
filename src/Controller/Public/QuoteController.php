@@ -81,7 +81,7 @@ class QuoteController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
         $now = new \DateTime();
-        if ($quote->getExpiresAt() < $now) {
+        if (null !== $quote->getExpiresAt() && $quote->getExpiresAt() < $now) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_ACCEPTABLE);
         }
 
