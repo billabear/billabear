@@ -28,12 +28,12 @@ class VatReportInvoiceRepository implements VatReportRepositoryInterface
         $end = clone $dateTime;
         $end->modify('last day of this month');
         $qb = $this->entityRepository->createQueryBuilder('vri');
-        $qb->select('SUM(vri.vatTotal) as totalVat, vri.currency, vri.payeeAddress.country as countryCode')
+        $qb->select('SUM(vri.taxTotal) as totalVat, vri.currency, vri.payeeAddress.country as countryCode')
             ->groupBy('vri.currency, vri.payeeAddress.country')
             ->orderBy('vri.payeeAddress.country')
             ->where('vri.paidAt >= :paidAtStart')
             ->andWhere('vri.paidAt <= :paidAtEnd')
-            ->andWhere('vri.vatTotal != 0')
+            ->andWhere('vri.taxTotal != 0')
             ->setParameter('paidAtStart', $start)
             ->setParameter('paidAtEnd', $end);
 
