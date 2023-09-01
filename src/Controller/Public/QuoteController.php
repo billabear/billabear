@@ -22,8 +22,10 @@ use App\Payment\InvoiceCharger;
 use App\Quotes\QuoteConverter;
 use App\Repository\QuoteRepositoryInterface;
 use Parthenon\Billing\Config\FrontendConfig;
+use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,6 +75,7 @@ class QuoteController
         ValidatorInterface $validator,
         InvoiceCharger $invoiceCharger,
         QuoteConverter $quoteConverter,
+        EventDispatcherInterface $eventDispatcher,
     ): Response {
         try {
             /** @var Quote $quote */
@@ -95,6 +98,11 @@ class QuoteController
         $paymentCard = $addCardByTokenDriver->createPaymentDetailsFromToken($quote->getCustomer(), $processPay->getToken());
         $invoice = $quoteConverter->convertToInvoice($quote);
         $success = $invoiceCharger->chargeInvoice($invoice, $paymentCard);
+        if ($success) {
+            foreach ($invoice->getSubscriptions() as $subscription) {
+                $eventDispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
+            }
+        }
 
         return new JsonResponse(['success' => $success]);
     }
