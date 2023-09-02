@@ -31,6 +31,9 @@ class Notifications
     #[SerializedName('invoice_created')]
     private $invoiceCreated;
 
+    #[SerializedName('invoice_overdue')]
+    private $invoiceOverdue;
+
     #[SerializedName('quote_created')]
     private $quoteCreated;
 
@@ -92,5 +95,15 @@ class Notifications
     public function setQuoteCreated($quoteCreated): void
     {
         $this->quoteCreated = $quoteCreated;
+    }
+
+    public function getInvoiceOverdue()
+    {
+        return true === $this->invoiceOverdue;
+    }
+
+    public function setInvoiceOverdue($invoiceOverdue): void
+    {
+        $this->invoiceOverdue = $invoiceOverdue;
     }
 }

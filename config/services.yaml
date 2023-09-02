@@ -290,6 +290,12 @@ services:
     app.repository.orm.expiring_cards_process:
         class: App\Repository\Orm\ExpiringCardProcessRepository
 
+    App\Repository\Processes\InvoiceProcessRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.invoice_process'
+    app.repository.orm.invoice_process:
+        class: App\Repository\Orm\InvoiceProcessRepository
+
     App\Repository\InvoiceRepository:
         arguments:
             $entityRepository: '@app.repository.orm.invoice'

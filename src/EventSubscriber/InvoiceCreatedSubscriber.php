@@ -12,19 +12,17 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Processes\InvoiceProcess;
 use App\Event\InvoiceCreated;
-use App\Invoice\PayLinkGenerator;
-use App\Notification\Email\Data\InvoiceCreatedEmail;
-use App\Notification\Email\EmailBuilder;
-use Parthenon\Notification\EmailSenderInterface;
+use App\Invoice\InvoiceStateMachineProcessor;
+use App\Repository\Processes\InvoiceProcessRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InvoiceCreatedSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private EmailBuilder $emailBuilder,
-        private EmailSenderInterface $emailSender,
-        private PayLinkGenerator $payLinkGenerator,
+        private InvoiceProcessRepositoryInterface $invoiceProcessRepository,
+        private InvoiceStateMachineProcessor $invoiceStateMachineProcessor,
     ) {
     }
 
@@ -40,17 +38,16 @@ class InvoiceCreatedSubscriber implements EventSubscriberInterface
     public function handleNewInvoice(InvoiceCreated $created)
     {
         $invoice = $created->getInvoice();
-        $customer = $invoice->getCustomer();
-        $brand = $customer->getBrandSettings();
 
-        if (!$brand->getNotificationSettings()->getInvoiceCreated()) {
-            return;
-        }
+        $invoiceProcess = new InvoiceProcess();
+        $invoiceProcess->setState('started');
+        $invoiceProcess->setCustomer($invoice->getCustomer());
+        $invoiceProcess->setInvoice($invoice);
+        $invoiceProcess->setCreatedAt(new \DateTime('now'));
+        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
 
-        $fullPayLink = $this->payLinkGenerator->generatePayLink($invoice);
+        $this->invoiceProcessRepository->save($invoiceProcess);
 
-        $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);
-        $email = $this->emailBuilder->build($customer, $invoiceCreatedEmail);
-        $this->emailSender->send($email);
+        $this->invoiceStateMachineProcessor->process($invoiceProcess);
     }
 }

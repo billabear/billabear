@@ -36,6 +36,7 @@ class EmailTemplate
     public const NAME_PAYMENT_METHOD_NO_VALID_METHODS = 'payment_method_no_valid_methods';
 
     public const NAME_INVOICE_CREATED = 'invoice_created';
+    public const NAME_INVOICE_OVERDUE = 'invoice_overdue';
 
     public const NAME_QUOTE_CREATED = 'quote_created';
 
@@ -49,6 +50,7 @@ class EmailTemplate
         self::NAME_PAYMENT_METHOD_EXPIRY_WARNING,
         self::NAME_PAYMENT_METHOD_NO_VALID_METHODS,
         self::NAME_INVOICE_CREATED,
+        self::NAME_INVOICE_OVERDUE,
         self::NAME_QUOTE_CREATED,
     ];
 

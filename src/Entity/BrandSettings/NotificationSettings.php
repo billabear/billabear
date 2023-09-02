@@ -33,6 +33,9 @@ class NotificationSettings
     private ?bool $invoiceCreated = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $invoiceOverdue = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $quoteCreated = null;
 
     public function getSubscriptionCreation(): bool
@@ -93,5 +96,15 @@ class NotificationSettings
     public function setQuoteCreated(?bool $quoteCreated): void
     {
         $this->quoteCreated = $quoteCreated;
+    }
+
+    public function getInvoiceOverdue(): ?bool
+    {
+        return true === $this->invoiceOverdue;
+    }
+
+    public function setInvoiceOverdue(?bool $invoiceOverdue): void
+    {
+        $this->invoiceOverdue = $invoiceOverdue;
     }
 }

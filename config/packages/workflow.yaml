@@ -1,5 +1,32 @@
 framework:
     workflows:
+        invoice_process:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Processes\InvoiceProcess
+            places:
+                - started
+                - customer_notifications_sent
+                - internal_notification_sent
+                - customer_warning_sent
+                - paid
+            transitions:
+                send_customer_notifications:
+                    from: started
+                    to: customer_notifications_sent
+                send_internal_notifications:
+                    from: customer_notifications_sent
+                    to: internal_notification_sent
+                send_customer_warning:
+                    from: internal_notification_sent
+                    to: customer_warning_sent
+                mark_as_paid:
+                    from: [internal_notification_sent, customer_warning_sent]
+                    to: paid
+
         expiring_card_process:
             type: 'state_machine'
             marking_store:

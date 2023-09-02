@@ -156,6 +156,10 @@
               <label for="invoice_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.invoice_created') }}</label>
             </div>
             <div class="ds">
+              <input type="checkbox" id="invoice_overdue" v-model="brand.notifications.invoice_overdue" />
+              <label for="invoice_overdue" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.invoice_overdue') }}</label>
+            </div>
+            <div class="ds">
               <input type="checkbox" id="quote_created" v-model="brand.notifications.quote_created" />
               <label for="quote_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.quote_created') }}</label>
             </div>

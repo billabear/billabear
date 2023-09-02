@@ -47,6 +47,7 @@ class BrandSettingsDataMapper
         $brandSettings->getNotificationSettings()->setExpiringCardDayBefore($dto->getNotifications()->getExpiringCardDayBeforeWarning());
         $brandSettings->getNotificationSettings()->setInvoiceCreated($dto->getNotifications()->getInvoiceCreated());
         $brandSettings->getNotificationSettings()->setQuoteCreated($dto->getNotifications()->getQuoteCreated());
+        $brandSettings->getNotificationSettings()->setInvoiceOverdue($dto->getNotifications()->getInvoiceOverdue());
 
         $brandSettings->setTaxNumber($dto->getTaxNumber());
         $brandSettings->setTaxRate($dto->getTaxRate());
@@ -83,6 +84,7 @@ class BrandSettingsDataMapper
         $dto->getNotifications()->setExpiringCardDayBeforeWarning($brandSettings->getNotificationSettings()->getExpiringCardDayBefore());
         $dto->getNotifications()->setInvoiceCreated($brandSettings->getNotificationSettings()->getInvoiceCreated());
         $dto->getNotifications()->setQuoteCreated($brandSettings->getNotificationSettings()->getQuoteCreated());
+        $dto->getNotifications()->setInvoiceOverdue($brandSettings->getNotificationSettings()->getInvoiceOverdue());
 
         return $dto;
     }

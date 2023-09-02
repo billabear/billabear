@@ -13,8 +13,11 @@
 namespace App\Tests\Behat\Background\Invoice;
 
 use App\Background\Invoice\GenerateNewInvoices;
+use App\Background\Invoice\UnpaidInvoices;
 use App\Entity\Invoice;
+use App\Entity\Processes\InvoiceProcess;
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\InvoiceProcessRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use Behat\Behat\Context\Context;
@@ -25,8 +28,10 @@ class MainContext implements Context
 
     public function __construct(
         private GenerateNewInvoices $generateNewInvoices,
+        private UnpaidInvoices $unpaidInvoices,
         private CustomerRepository $customerRepository,
         private InvoiceRepository $invoiceRepository,
+        private InvoiceProcessRepository $invoiceProcessRepository,
     ) {
     }
 
@@ -106,6 +111,30 @@ class MainContext implements Context
 
         if ($invoice->getTaxTotal()) {
             throw new \Exception('Different amount due - '.$invoice->getTaxTotal());
+        }
+    }
+
+    /**
+     * @When the background task to send reminders for unpaid invoices
+     */
+    public function theBackgroundTaskToSendRemindersForUnpaidInvoices()
+    {
+        $this->unpaidInvoices->execute();
+    }
+
+    /**
+     * @Then the workflow for the invoice for :arg1 will be at :arg2
+     */
+    public function theWorkflowForTheInvoiceForWillBeAt($customerEmail, $state)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+        /** @var InvoiceProcess $invoiceProcess */
+        $invoiceProcess = $this->invoiceProcessRepository->findOneBy(['invoice' => $invoice]);
+
+        if ($invoiceProcess->getState() !== $state) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", $state, $invoiceProcess->getState()));
         }
     }
 }

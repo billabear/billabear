@@ -21,4 +21,17 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
     {
         return $this->entityRepository->findBy(['customer' => $customer]);
     }
+
+    public function getOverdueInvoices(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('i');
+        $qb->where('i.paid = false')
+            ->andWhere('i.dueAt < :now')
+            ->setParameter(':now', new \DateTime('now'));
+
+        $query = $qb->getQuery();
+        $query->execute();
+
+        return $query->getResult();
+    }
 }

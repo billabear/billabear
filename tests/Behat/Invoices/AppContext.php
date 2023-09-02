@@ -16,6 +16,7 @@ use App\DataMappers\PaymentAttemptDataMapper;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Entity\PaymentFailureProcess;
+use App\Entity\Processes\InvoiceProcess;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Repository\Orm\PaymentAttemptRepository;
@@ -304,8 +305,21 @@ class AppContext implements Context
         $invoice->setBillerAddress($customer->getBillingAddress());
         $invoice->setPayeeAddress($customer->getBillingAddress());
 
-        $this->invoiceRepository->getEntityManager()->persist($invoice);
+        if (isset($row['Due Date'])) {
+            $invoice->setDueAt(new \DateTime($row['Due Date']));
+        }
 
+        $this->invoiceRepository->getEntityManager()->persist($invoice);
+        $this->invoiceRepository->getEntityManager()->flush();
+
+        $invoiceProcess = new InvoiceProcess();
+        $invoiceProcess->setState($invoice->isPaid() ? 'paid' : 'internal_notification_sent');
+        $invoiceProcess->setCustomer($invoice->getCustomer());
+        $invoiceProcess->setInvoice($invoice);
+        $invoiceProcess->setCreatedAt(new \DateTime('now'));
+        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
+
+        $this->invoiceRepository->getEntityManager()->persist($invoiceProcess);
         $this->invoiceRepository->getEntityManager()->flush();
 
         return $invoice;
