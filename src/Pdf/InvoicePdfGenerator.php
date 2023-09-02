@@ -82,6 +82,7 @@ class InvoicePdfGenerator
             'biller_address' => $this->getAddress($invoice->getBillerAddress()),
             'payee_address' => $this->getAddress($invoice->getPayeeAddress()),
             'created_at' => $invoice->getCreatedAt()->format(\DATE_ATOM),
+            'due_date' => $invoice->getDueAt()?->format(\DATE_ATOM),
         ];
     }
 
