@@ -21,6 +21,10 @@
                 <dt>{{ $t('app.invoices.view.main.pay_link') }}</dt>
                 <dd>{{ invoice.pay_link }}</dd>
               </div>
+              <div v-if="invoice.due_date">
+                <dt>{{ $t('app.invoices.view.main.due_date') }}</dt>
+                <dd>{{ invoice.due_date }}</dd>
+              </div>
             </dl>
           </div>
       </div>

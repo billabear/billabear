@@ -46,6 +46,7 @@ class CreateInvoiceContext implements Context
     private array $subscriptions = [];
     private array $items = [];
     private ?\DateTime $expiresAt = null;
+    private ?\DateTime $dueAt = null;
 
     /**
      * @BeforeScenario
@@ -56,6 +57,7 @@ class CreateInvoiceContext implements Context
         $this->subscriptions = [];
         $this->items = [];
         $this->expiresAt = null;
+        $this->dueAt = null;
     }
 
     /**
@@ -87,6 +89,14 @@ class CreateInvoiceContext implements Context
             'plan' => $subscriptionPlan,
             'price' => $price,
         ];
+    }
+
+    /**
+     * @Given I want the invoice to be paid within :arg1
+     */
+    public function iWantTheInvoiceToBePaidWithin($dateFormat)
+    {
+        $this->dueAt = new \DateTime('+'.$dateFormat);
     }
 
     /**
@@ -134,6 +144,7 @@ class CreateInvoiceContext implements Context
             'customer' => $this->customer->getId(),
             'subscriptions' => [],
             'items' => [],
+            'due_date' => $this->dueAt?->format(\DATE_RFC3339_EXTENDED),
         ];
 
         foreach ($this->subscriptions as $subscription) {

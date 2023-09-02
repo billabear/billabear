@@ -87,6 +87,9 @@ class Invoice
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $dueAt = null;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection([]);
@@ -326,5 +329,15 @@ class Invoice
     public function getAmountDueAsMoney(): Money
     {
         return Money::ofMinor($this->amountDue, strtolower($this->currency));
+    }
+
+    public function getDueAt(): ?\DateTimeInterface
+    {
+        return $this->dueAt;
+    }
+
+    public function setDueAt(?\DateTimeInterface $dueAt): void
+    {
+        $this->dueAt = $dueAt;
     }
 }

@@ -60,6 +60,7 @@ class InvoiceDataMapper
         $dto->setBillerAddress($this->addressDataMapper->createDto($invoice->getBillerAddress()));
         $dto->setPayeeAddress($this->addressDataMapper->createDto($invoice->getPayeeAddress()));
         $dto->setPayLink($this->payLinkGenerator->generatePayLink($invoice));
+        $dto->setDueDate($invoice->getDueAt());
 
         $lines = [];
         foreach ($invoice->getLines() as $line) {

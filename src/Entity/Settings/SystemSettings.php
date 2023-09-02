@@ -17,11 +17,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Embeddable]
 class SystemSettings
 {
+    public const DEFAULT_DUE_TIME = '30 days';
+
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $webhookUrl = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $invoiceNumberGeneration = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $defaultInvoiceDueTime = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $subsequentialNumber = null;
@@ -158,5 +163,15 @@ class SystemSettings
     public function setSubsequentialNumber(?int $subsequentialNumber): void
     {
         $this->subsequentialNumber = $subsequentialNumber;
+    }
+
+    public function getDefaultInvoiceDueTime(): ?string
+    {
+        return $this->defaultInvoiceDueTime;
+    }
+
+    public function setDefaultInvoiceDueTime(?string $defaultInvoiceDueTime): void
+    {
+        $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
     }
 }

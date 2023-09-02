@@ -32,13 +32,16 @@ final class Version20230829144803 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE quote ADD expires_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
         $this->addSql('ALTER TABLE quote_line ALTER reverse_charge DROP DEFAULT');
+        $this->addSql('ALTER TABLE invoice ADD due_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('ALTER TABLE settings ADD system_settings_default_invoice_due_time VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE quote_line ALTER reverse_charge SET DEFAULT false');
         $this->addSql('ALTER TABLE quote DROP expires_at');
+        $this->addSql('ALTER TABLE invoice DROP due_at');
+        $this->addSql('ALTER TABLE settings DROP system_settings_default_invoice_due_time');
     }
 }

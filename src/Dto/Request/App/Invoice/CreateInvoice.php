@@ -14,6 +14,7 @@ namespace App\Dto\Request\App\Invoice;
 
 use App\Validator\Constraints\CustomerExists;
 use App\Validator\Constraints\SamePaymentSchedule;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateInvoice
@@ -28,6 +29,10 @@ class CreateInvoice
     #[Assert\Valid]
     #[SamePaymentSchedule]
     private $subscriptions = [];
+
+    #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
+    #[SerializedName('due_date')]
+    private $dueDate;
 
     public function getCustomer()
     {
@@ -67,5 +72,15 @@ class CreateInvoice
     public function addSubscription(CreateInvoiceSubscription $createInvoiceSubscription): void
     {
         $this->subscriptions[] = $createInvoiceSubscription;
+    }
+
+    public function getDueDate()
+    {
+        return $this->dueDate;
+    }
+
+    public function setDueDate($dueDate): void
+    {
+        $this->dueDate = $dueDate;
     }
 }

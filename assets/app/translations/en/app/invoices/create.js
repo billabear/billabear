@@ -15,11 +15,13 @@ export const INVOICES_CREATE_TRANSLATIONS = {
         create_customer: "Create Customer",
         fields: {
             customer: "Customer",
-            currency: "Currency"
+            currency: "Currency",
+            due_date: "Due Date",
         },
         help_info: {
             customer: "The customer the quote is for",
             currency: "The currency to be used for the invoice",
+            due_date: "The due date for the invoice, if none is given the system default is used."
         }
     },
     subscriptions: {

@@ -36,6 +36,7 @@ class InvoiceGenerator
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
         private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
         private EventDispatcherInterface $eventDispatcher,
+        private DueDateDecider $dateDecider,
     ) {
     }
 
@@ -229,6 +230,8 @@ class InvoiceGenerator
         $invoice->setCustomer($customer);
         $invoice->setPayeeAddress($customer->getBillingAddress());
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
+
+        $this->dateDecider->setDueAt($invoice);
 
         $this->invoiceRepository->save($invoice);
 

@@ -56,6 +56,9 @@ class Invoice
     #[SerializedName('pay_link')]
     private string $payLink;
 
+    #[SerializedName('due_date')]
+    private ?\DateTime $dueDate;
+
     public function getId(): string
     {
         return $this->id;
@@ -204,5 +207,15 @@ class Invoice
     public function setPayLink(string $payLink): void
     {
         $this->payLink = $payLink;
+    }
+
+    public function getDueDate(): ?\DateTime
+    {
+        return $this->dueDate;
+    }
+
+    public function setDueDate(?\DateTime $dueDate): void
+    {
+        $this->dueDate = $dueDate;
     }
 }

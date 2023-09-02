@@ -141,7 +141,7 @@ import currency from "currency.js";
 import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 
 export default {
-  name: "InvoiceCreate",
+  name: "QuoteCreate",
   components: {CurrencySelect, Autocomplete},
   data() {
     return {

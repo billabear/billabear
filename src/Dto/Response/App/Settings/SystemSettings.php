@@ -28,6 +28,9 @@ class SystemSettings
     #[SerializedName('subsequential_number')]
     private ?int $subsequentialNumber = null;
 
+    #[SerializedName('default_invoice_due_time')]
+    private ?string $defaultInvoiceDueTime = null;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -66,5 +69,15 @@ class SystemSettings
     public function setSubsequentialNumber(?int $subsequentialNumber): void
     {
         $this->subsequentialNumber = $subsequentialNumber;
+    }
+
+    public function getDefaultInvoiceDueTime(): ?string
+    {
+        return $this->defaultInvoiceDueTime;
+    }
+
+    public function setDefaultInvoiceDueTime(?string $defaultInvoiceDueTime): void
+    {
+        $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
     }
 }

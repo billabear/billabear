@@ -20,6 +20,7 @@ use App\Entity\Invoice;
 use App\Enum\TaxType;
 use App\Payment\InvoiceCharger;
 use App\Repository\CustomerRepositoryInterface;
+use App\Repository\InvoiceRepositoryInterface;
 use App\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -35,6 +36,8 @@ class ManualInvoiceCreator
         private SubscriptionFactory $subscriptionManager,
         private InvoiceGenerator $invoiceGenerator,
         private InvoiceCharger $invoiceCharger,
+        private DueDateDecider $dateDecider,
+        private InvoiceRepositoryInterface $invoiceRepository,
     ) {
     }
 
@@ -68,6 +71,11 @@ class ManualInvoiceCreator
         }
 
         $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $subscriptions, $lines);
+
+        if (null !== $createInvoice->getDueDate()) {
+            $invoice->setDueAt(new \DateTime($createInvoice->getDueDate()));
+            $this->invoiceRepository->save($invoice);
+        }
 
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
             $this->invoiceCharger->chargeInvoice($invoice);

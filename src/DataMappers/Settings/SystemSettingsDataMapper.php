@@ -24,6 +24,7 @@ class SystemSettingsDataMapper
         $settings->setTimezone($dto->getTimezone());
         $settings->setInvoiceNumberGeneration($dto->getInvoiceNumberGeneration());
         $settings->setSubsequentialNumber($dto->getSubsequentialNumber());
+        $settings->setDefaultInvoiceDueTime($dto->getDefaultInvoiceDueTime());
 
         return $settings;
     }
@@ -35,6 +36,7 @@ class SystemSettingsDataMapper
         $dto->setTimezone($settings->getTimezone());
         $dto->setInvoiceNumberGeneration($settings->getInvoiceNumberGeneration());
         $dto->setSubsequentialNumber($settings->getSubsequentialNumber());
+        $dto->setDefaultInvoiceDueTime($settings->getDefaultInvoiceDueTime());
 
         return $dto;
     }

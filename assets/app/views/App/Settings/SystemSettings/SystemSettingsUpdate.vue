@@ -47,6 +47,19 @@
             <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.subsequential_number') }}</p>
           </div>
 
+          <div class="form-field-ctn" >
+            <label class="form-field-lbl" for="default_invoice_due_time">
+              {{ $t('app.settings.system_settings.update.fields.default_invoice_due_time') }}
+            </label>
+            <select class="form-field" id="default_invoice_due_time" v-model="systemSettings.default_invoice_due_time">
+              <option value="30 days">{{ $t('app.settings.system_settings.update.default_invoice_due_time.30_days') }}</option>
+              <option value="60 days">{{ $t('app.settings.system_settings.update.default_invoice_due_time.60_days') }}</option>
+              <option value="90 days">{{ $t('app.settings.system_settings.update.default_invoice_due_time.90_days') }}</option>
+              <option value="120 days">{{ $t('app.settings.system_settings.update.default_invoice_due_time.120_days') }}</option>
+            </select>
+            <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.default_invoice_due_time') }}</p>
+          </div>
+
 
         </div>
 

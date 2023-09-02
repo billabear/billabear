@@ -49,6 +49,7 @@ class InvoiceCreatedEmail extends AbstractEmailData
             'biller_address' => $this->getAddress($this->invoice->getBillerAddress()),
             'payee_address' => $this->getAddress($this->invoice->getPayeeAddress()),
             'pay_link' => $this->payLink,
+            'due_date' => $this->invoice->getDueAt()?->format(\DATE_ATOM),
         ];
     }
 

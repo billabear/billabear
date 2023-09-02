@@ -27,6 +27,16 @@
         <CurrencySelect v-model="quote.currency" />
         <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.currency') }}</p>
       </div>
+
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="name">
+          {{ $t('app.invoices.create.customer.fields.due_date') }}
+        </label>
+        <p class="form-field-error" v-if="errors.dueDate != undefined">{{ errors.dueDate }}</p>
+        <VueDatePicker  class="mt-2" v-model="quote.due_date" :enable-time-picker="true"></VueDatePicker>
+        <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.due_date') }}</p>
+      </div>
     </div>
 
     <div class="card-body mt-5">
@@ -143,6 +153,7 @@ export default {
         subscription_plans: [],
         items: [],
         currency: null,
+        due_date: null,
       },
       send_quote: false,
       create_customer: false,
@@ -307,6 +318,7 @@ export default {
         customer: this.quote.customer,
         subscriptions: subscriptions,
         items: items,
+        due_date: this.quote.due_date
       }
 
       axios.post("/app/"+type+"/create", payload).then(response => {

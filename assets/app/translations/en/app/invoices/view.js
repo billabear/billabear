@@ -4,6 +4,7 @@ export const INVOICES_VIEW_TRANSLATIONS = {
         title: "Invoice Information",
         created_at: "Created At",
         pay_link: "Pay Link",
+        due_date: "Due Date",
     },
     customer: {
         title: "Customer",

@@ -35,6 +35,10 @@ class SystemSettings
     #[SerializedName('subsequential_number')]
     private $subsequentialNumber;
 
+    #[Assert\Choice(choices: ['30 days', '60 days', '90 days', '120 days'])]
+    #[SerializedName('default_invoice_due_time')]
+    private $defaultInvoiceDueTime;
+
     public function getSystemUrl()
     {
         return $this->systemUrl;
@@ -73,5 +77,15 @@ class SystemSettings
     public function setSubsequentialNumber($subsequentialNumber): void
     {
         $this->subsequentialNumber = $subsequentialNumber;
+    }
+
+    public function getDefaultInvoiceDueTime()
+    {
+        return $this->defaultInvoiceDueTime;
+    }
+
+    public function setDefaultInvoiceDueTime($defaultInvoiceDueTime): void
+    {
+        $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
     }
 }

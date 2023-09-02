@@ -195,3 +195,22 @@ Feature: Generate new invoices
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 1000
+
+
+  Scenario:
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org   | +3 Minutes  | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.three@example.org | +3 Minutes  | Active    |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Cancelled |
+      | Test Plan         | 3000         | USD            | month          | customer.five@example.org  | +10 Minutes | Active    |
+      | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
+    And stripe billing is enabled
+    And the following credit transactions exist:
+      | Customer                 | Type   | Amount | Currency |
+      | customer.one@example.org | credit | 100   | USD      |
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    And the latest invoice for "customer.one@example.org" will have amount due as 900
+    And the latest invoice for "customer.one@example.org" will be due in "30 days"

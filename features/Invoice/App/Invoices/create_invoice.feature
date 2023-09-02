@@ -81,3 +81,13 @@ Feature: Create invoice
     And I want to invoice for a subscription to "Test Three" at 3000 in "USD" per "month"
     When I finalise the invoice in APP
     Then I will get the error that the payment schedules must all match
+
+
+  Scenario:
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And I want to invoice the customer "customer.seven@example.org"
+    And I want to invoice for a subscription to "Test Two" at 1000 in "USD" per "week"
+    And I want to invoice for a subscription to "Test Plan" at 2000 in "USD" per "week"
+    And I want the invoice to be paid within "60 days"
+    When I finalise the invoice in APP
+    And the latest invoice for "customer.seven@example.org" will be due in "60 days"
