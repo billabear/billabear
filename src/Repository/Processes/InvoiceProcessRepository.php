@@ -28,4 +28,16 @@ class InvoiceProcessRepository extends DoctrineRepository implements InvoiceProc
 
         return $invoiceProcess;
     }
+
+    public function getOverdueBy30days(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('ip');
+        $qb->where('ip.dueAt < :deadline')
+            ->andWhere('ip.state = :warnedState')
+            ->setParameter('deadline', new \DateTime('-30 days'))
+            ->setParameter('warnedState', 'customer_warning_sent');
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

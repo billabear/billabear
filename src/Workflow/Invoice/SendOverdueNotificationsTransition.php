@@ -19,9 +19,10 @@ use App\Notification\Email\EmailBuilder;
 use App\Pdf\InvoicePdfGenerator;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class SendOverdueNotificationsTransition
+class SendOverdueNotificationsTransition implements EventSubscriberInterface
 {
     public function __construct(
         private EmailBuilder $emailBuilder,
@@ -38,7 +39,7 @@ class SendOverdueNotificationsTransition
         ];
     }
 
-    public function handleNewInvoice(Event $event)
+    public function transition(Event $event)
     {
         /** @var InvoiceProcess $invoiceProcess */
         $invoiceProcess = $event->getSubject();

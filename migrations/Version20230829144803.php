@@ -43,6 +43,7 @@ final class Version20230829144803 extends AbstractMigration
         $this->addSql('ALTER TABLE invoice_process ADD CONSTRAINT FK_74C42E459395C3F3 FOREIGN KEY (customer_id) REFERENCES customers (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE invoice_process ADD CONSTRAINT FK_74C42E452989F1FD FOREIGN KEY (invoice_id) REFERENCES invoice (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE brand_settings ADD notification_settings_invoice_overdue BOOLEAN DEFAULT NULL');
+        $this->addSql('ALTER TABLE invoice_process DROP due_at');
 
         $this->addSql("INSERT INTO email_templates
 (id, brand_id, \"name\", locale, subject, use_emsp_template, template_id, template_body)

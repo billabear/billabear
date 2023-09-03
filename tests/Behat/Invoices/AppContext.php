@@ -313,11 +313,18 @@ class AppContext implements Context
         $this->invoiceRepository->getEntityManager()->flush();
 
         $invoiceProcess = new InvoiceProcess();
-        $invoiceProcess->setState($invoice->isPaid() ? 'paid' : 'internal_notification_sent');
+        if (isset($row['State'])) {
+            $state = $row['State'];
+        } else {
+            $state = $invoice->isPaid() ? 'paid' : 'internal_notification_sent';
+        }
+
+        $invoiceProcess->setState($state);
         $invoiceProcess->setCustomer($invoice->getCustomer());
         $invoiceProcess->setInvoice($invoice);
         $invoiceProcess->setCreatedAt(new \DateTime('now'));
         $invoiceProcess->setUpdatedAt(new \DateTime('now'));
+        $invoiceProcess->setDueAt($invoice->getDueAt());
 
         $this->invoiceRepository->getEntityManager()->persist($invoiceProcess);
         $this->invoiceRepository->getEntityManager()->flush();

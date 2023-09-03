@@ -12,13 +12,12 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\Processes\InvoiceProcess;
 use App\Event\InvoiceCreated;
 use App\Invoice\InvoiceStateMachineProcessor;
 use App\Repository\Processes\InvoiceProcessRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class InvoiceCreatedSubscriber implements EventSubscriberInterface
+class InvoicePaidSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private InvoiceProcessRepositoryInterface $invoiceProcessRepository,
@@ -30,25 +29,16 @@ class InvoiceCreatedSubscriber implements EventSubscriberInterface
     {
         return [
             InvoiceCreated::NAME => [
-                'handleNewInvoice',
+                'handlePaidInvoice',
             ],
         ];
     }
 
-    public function handleNewInvoice(InvoiceCreated $created)
+    public function handlePaidInvoice(InvoiceCreated $created)
     {
         $invoice = $created->getInvoice();
+        $invoiceProcess = $this->invoiceProcessRepository->getForInvoice($invoice);
 
-        $invoiceProcess = new InvoiceProcess();
-        $invoiceProcess->setState('started');
-        $invoiceProcess->setCustomer($invoice->getCustomer());
-        $invoiceProcess->setInvoice($invoice);
-        $invoiceProcess->setCreatedAt(new \DateTime('now'));
-        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
-        $invoiceProcess->setDueAt($invoice->getDueAt());
-
-        $this->invoiceProcessRepository->save($invoiceProcess);
-
-        $this->invoiceStateMachineProcessor->process($invoiceProcess);
+        $this->invoiceStateMachineProcessor->processPaid($invoiceProcess);
     }
 }

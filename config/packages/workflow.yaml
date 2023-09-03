@@ -12,6 +12,7 @@ framework:
                 - customer_notifications_sent
                 - internal_notification_sent
                 - customer_warning_sent
+                - customer_disabled
                 - paid
             transitions:
                 send_customer_notifications:
@@ -23,8 +24,11 @@ framework:
                 send_customer_warning:
                     from: internal_notification_sent
                     to: customer_warning_sent
+                disable_customer:
+                    from: customer_warning_sent
+                    to: customer_disabled
                 mark_as_paid:
-                    from: [internal_notification_sent, customer_warning_sent]
+                    from: [internal_notification_sent, customer_warning_sent, customer_disabled]
                     to: paid
 
         expiring_card_process:

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16f1b4f53367e2b92fc31d68fdee9aac",
+    "content-hash": "036376d1bd2e79ce54f37adb15ff5594",
     "packages": [
         {
             "name": "brick/math",
@@ -2494,16 +2494,16 @@
         },
         {
             "name": "parthenon/obol",
-            "version": "v0.2",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "330040e20563b20c6fe9eb909f83ac11aa1c2d9b"
+                "reference": "b7bfb6422ae78c7a49b1f93dec0836b3e73e406e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/330040e20563b20c6fe9eb909f83ac11aa1c2d9b",
-                "reference": "330040e20563b20c6fe9eb909f83ac11aa1c2d9b",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/b7bfb6422ae78c7a49b1f93dec0836b3e73e406e",
+                "reference": "b7bfb6422ae78c7a49b1f93dec0836b3e73e406e",
                 "shasum": ""
             },
             "require": {
@@ -2537,9 +2537,9 @@
             "description": "A PHP 8.1+ Payment Gateway Abstraction library",
             "support": {
                 "issues": "https://github.com/getparthenon/obol/issues",
-                "source": "https://github.com/getparthenon/obol/tree/v0.2"
+                "source": "https://github.com/getparthenon/obol/tree/v0.2.1"
             },
-            "time": "2023-08-10T16:25:42+00:00"
+            "time": "2023-09-03T13:28:25+00:00"
         },
         {
             "name": "parthenon/parthenon",

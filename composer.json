@@ -19,7 +19,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "knplabs/knp-snappy": "^1.4",
         "mailgun/mailgun-php": "^3.5",
-        "parthenon/obol": "^v0.2",
+        "parthenon/obol": "^v0.2.1",
         "parthenon/parthenon": "^v2.2.2",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",

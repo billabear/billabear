@@ -29,14 +29,14 @@ class InvoiceStateMachineProcessor
     ) {
     }
 
-    public function process(InvoiceProcess $request): void
+    public function process(InvoiceProcess $invoiceProcess): void
     {
         $invoiceProcessStateMachine = $this->invoiceProcessStateMachine;
 
         try {
             foreach (self::TRANSITIONS as $transition) {
-                if ($invoiceProcessStateMachine->can($request, $transition)) {
-                    $invoiceProcessStateMachine->apply($request, $transition);
+                if ($invoiceProcessStateMachine->can($invoiceProcess, $transition)) {
+                    $invoiceProcessStateMachine->apply($invoiceProcess, $transition);
 
                     $this->getLogger()->info('Did invoice process transition', ['transition' => $transition]);
                 } else {
@@ -45,9 +45,50 @@ class InvoiceStateMachineProcessor
             }
         } catch (\Throwable $e) {
             $this->getLogger()->info('Invoice process transition failed', ['transition' => $transition, 'message' => $e->getMessage()]);
-            $request->setError($e->getMessage());
+            $invoiceProcess->setError($e->getMessage());
         }
+        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
 
-        $this->invoiceProcessRepository->save($request);
+        $this->invoiceProcessRepository->save($invoiceProcess);
+    }
+
+    public function processPaid(InvoiceProcess $invoiceProcess): void
+    {
+        $invoiceProcessStateMachine = $this->invoiceProcessStateMachine;
+        try {
+            if ($invoiceProcessStateMachine->can($invoiceProcess, 'mark_as_paid')) {
+                $invoiceProcessStateMachine->apply($invoiceProcess, 'mark_as_paid');
+
+                $this->getLogger()->info('Did invoice process transition', ['transition' => 'mark_as_paid']);
+            } else {
+                $this->getLogger()->info("Can't do invoice process transition", ['transition' => 'mark_as_paid']);
+            }
+        } catch (\Throwable $e) {
+            $this->getLogger()->info('Invoice process transition failed', ['transition' => 'mark_as_paid', 'message' => $e->getMessage()]);
+            $invoiceProcess->setError($e->getMessage());
+        }
+        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
+
+        $this->invoiceProcessRepository->save($invoiceProcess);
+    }
+
+    public function processDisableCustomer(InvoiceProcess $invoiceProcess): void
+    {
+        $invoiceProcessStateMachine = $this->invoiceProcessStateMachine;
+        try {
+            if ($invoiceProcessStateMachine->can($invoiceProcess, 'disable_customer')) {
+                $invoiceProcessStateMachine->apply($invoiceProcess, 'disable_customer');
+
+                $this->getLogger()->info('Did invoice process transition', ['transition' => 'disable_customer']);
+            } else {
+                $this->getLogger()->info("Can't do invoice process transition", ['transition' => 'disable_customer']);
+            }
+        } catch (\Throwable $e) {
+            $this->getLogger()->info('Invoice process transition failed', ['transition' => 'disable_customer', 'message' => $e->getMessage()]);
+            $invoiceProcess->setError($e->getMessage());
+        }
+        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
+
+        $this->invoiceProcessRepository->save($invoiceProcess);
     }
 }

@@ -10,17 +10,8 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository\Processes;
+namespace App\Schedule\Messenger\Message;
 
-use App\Entity\Processes\InvoiceProcess;
-use Parthenon\Common\Repository\RepositoryInterface;
-
-interface InvoiceProcessRepositoryInterface extends RepositoryInterface
+class DisableOverdueCustomers
 {
-    public function getForInvoice(\App\Entity\Invoice $invoice): InvoiceProcess;
-
-    /**
-     * @return InvoiceProcess[]
-     */
-    public function getOverdueBy30days(): array;
 }

@@ -13,6 +13,7 @@
 namespace App\Controller\App;
 
 use App\Api\Filters\CustomerList;
+use App\Customer\Disabler;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
 use App\Customer\ObolRegister;
@@ -37,7 +38,6 @@ use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Stats\CustomerCreationStats;
 use App\Webhook\Outbound\EventDispatcherInterface;
-use App\Webhook\Outbound\Payload\CustomerDisabledPayload;
 use App\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -171,7 +171,7 @@ class CustomerController
     public function disableCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        EventDispatcherInterface $eventProcessor,
+        Disabler $disabler,
     ) {
         try {
             /** @var Customer $customer */
@@ -180,9 +180,7 @@ class CustomerController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $customer->setStatus(CustomerStatus::DISABLED);
-        $customerRepository->save($customer);
-        $eventProcessor->dispatch(new CustomerDisabledPayload($customer));
+        $disabler->disable($customer);
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }

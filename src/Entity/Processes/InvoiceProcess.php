@@ -36,6 +36,9 @@ class InvoiceProcess
     #[ORM\Column('state', type: 'string')]
     private string $state;
 
+    #[ORM\Column('due_at', type: 'datetime')]
+    private \DateTimeInterface $dueAt;
+
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
@@ -113,5 +116,15 @@ class InvoiceProcess
     public function setError(?string $error): void
     {
         $this->error = $error;
+    }
+
+    public function getDueAt(): \DateTimeInterface
+    {
+        return $this->dueAt;
+    }
+
+    public function setDueAt(\DateTimeInterface $dueAt): void
+    {
+        $this->dueAt = $dueAt;
     }
 }

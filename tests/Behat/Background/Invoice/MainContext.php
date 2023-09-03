@@ -12,6 +12,7 @@
 
 namespace App\Tests\Behat\Background\Invoice;
 
+use App\Background\Invoice\DisableOverdueInvoices;
 use App\Background\Invoice\GenerateNewInvoices;
 use App\Background\Invoice\UnpaidInvoices;
 use App\Entity\Invoice;
@@ -32,6 +33,7 @@ class MainContext implements Context
         private CustomerRepository $customerRepository,
         private InvoiceRepository $invoiceRepository,
         private InvoiceProcessRepository $invoiceProcessRepository,
+        private DisableOverdueInvoices $disableOverdueInvoices,
     ) {
     }
 
@@ -120,6 +122,14 @@ class MainContext implements Context
     public function theBackgroundTaskToSendRemindersForUnpaidInvoices()
     {
         $this->unpaidInvoices->execute();
+    }
+
+    /**
+     * @When I run the background task to cancel overdue customers
+     */
+    public function iRunTheBackgroundTaskToCancelOverdueCustomers()
+    {
+        $this->disableOverdueInvoices->execute();
     }
 
     /**
