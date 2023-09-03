@@ -16,6 +16,7 @@ use App\Schedule\Messenger\Message\ExpiredCardsDayBefore;
 use App\Schedule\Messenger\Message\ExpiredCardsFirstOfMonth;
 use App\Schedule\Messenger\Message\GenerateNewInvoices;
 use App\Schedule\Messenger\Message\GenericTasks;
+use App\Schedule\Messenger\Message\InvoiceOverdueWarning;
 use App\Schedule\Messenger\Message\RefreshExchangeRates;
 use App\Schedule\Messenger\Message\RetryPayments;
 use App\Schedule\Messenger\Message\StripeImport;
@@ -39,6 +40,7 @@ class MainSchedule implements ScheduleProviderInterface
         $schedule->add(RecurringMessage::cron('5 0 * * *', new ExpiredCardsDayBefore()));
         $schedule->add(RecurringMessage::cron('1 0 1 * *', new ExpiredCardsFirstOfMonth()));
         $schedule->add(RecurringMessage::cron('1 2 * * *', new UpdateChecker()));
+        $schedule->add(RecurringMessage::cron('1 3 * * *', new InvoiceOverdueWarning()));
 
         return $schedule;
     }
