@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'billabear:invoices:overdue-warning', description: 'Start the process of overdue warning sending')]
-class InvoiceOverdueWarningCommand
+class InvoiceOverdueWarningCommand extends Command
 {
     public function __construct(private UnpaidInvoices $unpaidInvoices)
     {
