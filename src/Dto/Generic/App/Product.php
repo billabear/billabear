@@ -54,17 +54,11 @@ class Product
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getExternalReference(): ?string
     {
         return $this->externalReference;
     }
 
-    /**
-     * @param string $externalReference
-     */
     public function setExternalReference(?string $externalReference): void
     {
         $this->externalReference = $externalReference;

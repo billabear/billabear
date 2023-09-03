@@ -78,9 +78,6 @@ class CreatePrice
         $this->public = $public;
     }
 
-    /**
-     * @return string
-     */
     public function getExternalReference(): ?string
     {
         return $this->externalReference;

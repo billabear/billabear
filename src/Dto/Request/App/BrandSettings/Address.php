@@ -14,7 +14,6 @@ namespace App\Dto\Request\App\BrandSettings;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Address
 {

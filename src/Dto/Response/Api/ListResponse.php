@@ -49,9 +49,6 @@ class ListResponse
         return $this->lastKey;
     }
 
-    /**
-     * @param string $lastId
-     */
     public function setLastKey(?string $lastId): void
     {
         $this->lastKey = $lastId;

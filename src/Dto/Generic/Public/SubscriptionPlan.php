@@ -114,9 +114,6 @@ class SubscriptionPlan
         return $this->hasTrial;
     }
 
-    /**
-     * @param bool $hasTrial
-     */
     public function setHasTrial(?bool $hasTrial): void
     {
         $this->hasTrial = $hasTrial;
@@ -127,9 +124,6 @@ class SubscriptionPlan
         return $this->trialLengthDays;
     }
 
-    /**
-     * @param int $trialLengthDays
-     */
     public function setTrialLengthDays(?int $trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
