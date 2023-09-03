@@ -34,7 +34,7 @@ final class Version20230829144803 extends AbstractMigration
         $this->addSql('ALTER TABLE quote_line ALTER reverse_charge DROP DEFAULT');
         $this->addSql('ALTER TABLE invoice ADD due_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
         $this->addSql('ALTER TABLE settings ADD system_settings_default_invoice_due_time VARCHAR(255) DEFAULT NULL');
-        $this->addSql('CREATE TABLE invoice_process (id UUID NOT NULL, customer_id UUID DEFAULT NULL, invoice_id UUID DEFAULT NULL, state VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, error VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE invoice_process (id UUID NOT NULL, customer_id UUID DEFAULT NULL, invoice_id UUID DEFAULT NULL, state VARCHAR(255) NOT NULL,due_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULl, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, error VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_74C42E459395C3F3 ON invoice_process (customer_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_74C42E452989F1FD ON invoice_process (invoice_id)');
         $this->addSql('COMMENT ON COLUMN invoice_process.id IS \'(DC2Type:uuid)\'');
@@ -43,7 +43,6 @@ final class Version20230829144803 extends AbstractMigration
         $this->addSql('ALTER TABLE invoice_process ADD CONSTRAINT FK_74C42E459395C3F3 FOREIGN KEY (customer_id) REFERENCES customers (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE invoice_process ADD CONSTRAINT FK_74C42E452989F1FD FOREIGN KEY (invoice_id) REFERENCES invoice (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE brand_settings ADD notification_settings_invoice_overdue BOOLEAN DEFAULT NULL');
-        $this->addSql('ALTER TABLE invoice_process DROP due_at');
 
         $this->addSql("INSERT INTO email_templates
 (id, brand_id, \"name\", locale, subject, use_emsp_template, template_id, template_body)
