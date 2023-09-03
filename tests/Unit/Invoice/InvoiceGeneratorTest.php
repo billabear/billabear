@@ -18,6 +18,7 @@ use App\Entity\Invoice;
 use App\Entity\Product;
 use App\Entity\SubscriptionPlan;
 use App\Enum\TaxType;
+use App\Invoice\DueDateDecider;
 use App\Invoice\InvoiceGenerator;
 use App\Invoice\Number\InvoiceNumberGeneratorInterface;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
@@ -77,7 +78,9 @@ class InvoiceGeneratorTest extends TestCase
 
         $eventDispatcher = $this->createMock(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher);
+        $dueDateDecider = $this->createMock(DueDateDecider::class);
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
