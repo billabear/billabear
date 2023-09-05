@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "036376d1bd2e79ce54f37adb15ff5594",
+    "content-hash": "9404e8da5e1f8e53c791d5e25af2bbe9",
     "packages": [
         {
             "name": "brick/math",
@@ -8952,6 +8952,56 @@
                 }
             ],
             "time": "2023-07-31T07:08:24+00:00"
+        },
+        {
+            "name": "taxjar/taxjar-php",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/taxjar/taxjar-php.git",
+                "reference": "e3d75d561bf76e7891b2d4ab437596789c1b3a73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/taxjar/taxjar-php/zipball/e3d75d561bf76e7891b2d4ab437596789c1b3a73",
+                "reference": "e3d75d561bf76e7891b2d4ab437596789c1b3a73",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.2",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TaxJar\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "TaxJar"
+                }
+            ],
+            "description": "Sales Tax API Client for PHP 8.0+",
+            "homepage": "https://www.taxjar.com/",
+            "keywords": [
+                "api",
+                "sales tax",
+                "taxjar"
+            ],
+            "support": {
+                "issues": "https://github.com/taxjar/taxjar-php/issues",
+                "source": "https://github.com/taxjar/taxjar-php/tree/v2.0.0"
+            },
+            "time": "2022-10-03T21:16:09+00:00"
         },
         {
             "name": "twig/twig",
