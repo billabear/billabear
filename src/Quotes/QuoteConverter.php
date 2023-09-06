@@ -53,7 +53,7 @@ class QuoteConverter
             $invoiceLine = new InvoiceLine();
 
             if ($plan) {
-                $subscription = $this->subscriptionFactory->create($customer, $plan, $price);
+                $subscription = $this->subscriptionFactory->create($customer, $plan, $price, seatNumbers: $line->getSeatNumber());
                 $subscriptions[] = $subscription;
                 $invoiceLine->setDescription($subscription->getPlanName());
             } else {

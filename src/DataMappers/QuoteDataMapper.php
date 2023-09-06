@@ -67,6 +67,7 @@ class QuoteDataMapper
         $appLineDto->setTaxTotal($quoteLine->getTaxTotal());
         $appLineDto->setCurrency($quoteLine->getCurrency());
         $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
+        $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
 
         return $appLineDto;
     }
@@ -107,6 +108,7 @@ class QuoteDataMapper
         $appLineDto->setTaxTotal($quoteLine->getTaxTotal());
         $appLineDto->setCurrency($quoteLine->getCurrency());
         $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
+        $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
 
         return $appLineDto;
     }

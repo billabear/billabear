@@ -86,6 +86,7 @@
             <tr v-for="line in quote.lines">
               <td>
                 <span v-if="line.subscription_plan === null || line.subscription_plan === undefined">{{ line.description }}</span>
+                <span v-else-if="line.seat_number">{{ line.seat_number }} x {{ line.subscription_plan.name }}</span>
                 <span v-else>{{ line.subscription_plan.name }}</span>
               </td>
               <td v-if="line.price !== undefined && line.price !== null">{{ line.price.schedule }}</td>

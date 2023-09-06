@@ -46,6 +46,7 @@
           <thead>
           <tr>
             <th>{{ $t('app.quotes.create.subscriptions.list.subscription_plan') }}</th>
+            <th>{{ $t('app.quotes.create.subscriptions.list.per_seat')}}</th>
             <th>{{ $t('app.quotes.create.subscriptions.list.price')}}</th>
             <th></th>
           </tr>
@@ -61,6 +62,9 @@
                 <select class="form-field" v-model="plan.plan">
                   <option v-for="subscriptionPlan in this.plans" :value="subscriptionPlan">{{ subscriptionPlan.name }}</option>
                 </select>
+              </td>
+              <td>
+                <input type="number" class="form-field" :disabled="plan.plan.per_seat === undefined ||  plan.plan.per_seat !== true" v-model="plan.seat_number" />
               </td>
               <td>
 
@@ -181,7 +185,8 @@ export default {
     addSubscriptionPlan: function (){
       this.quote.subscription_plans.push({
         plan: {prices: []},
-        price: null
+        price: null,
+        seat_number: null,
       })
     },
     deleteSubscription: function (key) {
@@ -266,6 +271,7 @@ export default {
         subscriptions.push({
           plan: plan.plan.id,
           price: plan.price.id,
+          seat_number: plan.seat_number,
         })
       }
 

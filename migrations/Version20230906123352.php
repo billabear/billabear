@@ -36,6 +36,7 @@ final class Version20230906123352 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN subscription_seat_modification.subscription_id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE subscription_seat_modification ADD CONSTRAINT FK_E532907B9A1887DC FOREIGN KEY (subscription_id) REFERENCES subscription (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE invoice_process ALTER due_at DROP NOT NULL');
+        $this->addSql('ALTER TABLE quote_line ADD seat_number INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -45,5 +46,6 @@ final class Version20230906123352 extends AbstractMigration
         $this->addSql('ALTER TABLE subscription_seat_modification DROP CONSTRAINT FK_E532907B9A1887DC');
         $this->addSql('DROP TABLE subscription_seat_modification');
         $this->addSql('ALTER TABLE invoice_process ALTER due_at SET NOT NULL');
+        $this->addSql('ALTER TABLE quote_line DROP seat_number');
     }
 }

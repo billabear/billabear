@@ -14,6 +14,7 @@ Feature: Create quote
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
       | Product One | 2000   | USD      | true      | week     | true   |
+      | Product One | 3000   | USD      | true      | week     | false  |
       | Product One | 3000   | USD      | true      | month    | true   |
       | Product One | 30000  | USD      | true      | year     | false  |
     And the following features exist:
@@ -36,6 +37,11 @@ Feature: Create quote
       | Public     | True     |
       | Per Seat   | False    |
       | User Count | 10       |
+    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price 3000 in "USD" with:
+      | Name       | Per Seat Plan |
+      | Public     | True     |
+      | Per Seat   | True    |
+      | User Count | 10       |
     And the follow customers exist:
       | Email                      | Country | External Reference | Reference      | Billing Type |
       | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      |
@@ -54,6 +60,14 @@ Feature: Create quote
     When I finalise the quote in APP
     Then there will be a quote for "customer.seven@example.org"
     And the latest quote for "customer.seven@example.org" will have amount due as 3000
+
+  Scenario: Create subscriptions - per seat
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And I want to invoice the customer "customer.seven@example.org"
+    And I want to invoice for a subscription to "Per Seat Plan" at 3000 in "USD" per "week" with 30 seats
+    When I finalise the quote in APP
+    Then there will be a quote for "customer.seven@example.org"
+    And the latest quote for "customer.seven@example.org" will have amount due as 90000
 
   Scenario: Create subscriptions and one-off item
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

@@ -38,6 +38,9 @@ class QuoteLine
     #[ORM\ManyToOne(targetEntity: Price::class)]
     private ?Price $price = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $seatNumber = null;
+
     #[ORM\Column(type: 'string')]
     private string $currency;
 
@@ -221,5 +224,15 @@ class QuoteLine
     public function setReverseCharge(bool $reverseCharge): void
     {
         $this->reverseCharge = $reverseCharge;
+    }
+
+    public function getSeatNumber(): ?int
+    {
+        return $this->seatNumber;
+    }
+
+    public function setSeatNumber(?int $seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
     }
 }

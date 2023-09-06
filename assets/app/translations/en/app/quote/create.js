@@ -29,7 +29,8 @@ export const QUOTES_CREATE_TRANSLATIONS = {
         add_new: "Add Subscription",
         list: {
             subscription_plan: "Subscription Plan",
-            price: "Price"
+            price: "Price",
+            per_seat: "Per Seat"
         },
         no_subscriptions: "No Subscriptions",
         add_subscription: "Add Subscription"

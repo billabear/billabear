@@ -27,6 +27,9 @@ class QuoteLine
 
     private int $total;
 
+    #[SerializedName('seat_number')]
+    private ?int $seatNumber = null;
+
     #[SerializedName('sub_total')]
     private int $subTotal;
 
@@ -114,5 +117,15 @@ class QuoteLine
     public function setTaxRate(?float $taxRate): void
     {
         $this->taxRate = $taxRate;
+    }
+
+    public function getSeatNumber(): ?int
+    {
+        return $this->seatNumber;
+    }
+
+    public function setSeatNumber(?int $seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
     }
 }

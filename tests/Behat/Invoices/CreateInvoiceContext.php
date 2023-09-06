@@ -244,6 +244,7 @@ class CreateInvoiceContext implements Context
             $payload['subscriptions'][] = [
                 'plan' => (string) $subscription['plan']->getId(),
                 'price' => (string) $subscription['price']->getId(),
+                'seat_number' => $subscription['seat_number'] ?? null,
             ];
         }
 

@@ -13,8 +13,8 @@
 namespace App\Quotes;
 
 use App\Dto\Request\App\Invoice\CreateInvoiceItem;
-use App\Dto\Request\App\Invoice\CreateInvoiceSubscription;
 use App\Dto\Request\App\Quote\CreateQuote;
+use App\Dto\Request\App\Quote\CreateQuoteSubscription;
 use App\Entity\Customer;
 use App\Entity\Quote;
 use App\Entity\QuoteLine;
@@ -58,18 +58,19 @@ class QuoteCreator
         $totalAmount = null;
         $totalVat = null;
         $subTotal = null;
-        /** @var CreateInvoiceSubscription $subscription */
+        /** @var CreateQuoteSubscription $subscription */
         foreach ($createQuote->getSubscriptions() as $subscription) {
             /** @var \App\Entity\SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
             /** @var \App\Entity\Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
 
-            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType());
+            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);
 
             $quoteLine = new QuoteLine();
             $quoteLine->setSubscriptionPlan($plan);
             $quoteLine->setPrice($price);
+            $quoteLine->setSeatNumber($subscription->getSeatNumber());
             $quoteLine->setQuote($quote);
             $quoteLine->setTaxType($plan->getProduct()->getTaxType());
             $quoteLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
