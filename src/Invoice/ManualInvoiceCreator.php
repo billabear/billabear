@@ -53,7 +53,7 @@ class ManualInvoiceCreator
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
             /** @var \Parthenon\Billing\Entity\Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
-            $subscription = $this->subscriptionManager->create($customer, $plan, $price);
+            $subscription = $this->subscriptionManager->create($customer, $plan, $price, seatNumbers: $subscription->getSeatNumber());
             $subscriptions[] = $subscription;
         }
 

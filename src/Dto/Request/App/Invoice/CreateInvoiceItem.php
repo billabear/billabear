@@ -85,4 +85,14 @@ class CreateInvoiceItem
     {
         $this->taxType = $taxType;
     }
+
+    public function getSeatNumber()
+    {
+        return $this->seatNumber;
+    }
+
+    public function setSeatNumber($seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
+    }
 }

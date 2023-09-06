@@ -38,10 +38,14 @@ class SubscriptionFactory
         SubscriptionPlan|Plan $plan,
         Price|PlanPrice $planPrice,
         PaymentCard $paymentDetails = null,
-        int $seatNumbers = 1,
+        ?int $seatNumbers = 1,
         bool $hasTrial = null,
         ?int $trialLengthDays = 0,
     ): Subscription {
+        if (null === $seatNumbers) {
+            $seatNumbers = 1;
+        }
+
         $subscription = $this->entityFactory->getSubscriptionEntity();
         $subscription->setPlanName($plan->getName());
         $subscription->setSubscriptionPlan($plan);

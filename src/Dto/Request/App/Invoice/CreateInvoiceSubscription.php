@@ -14,6 +14,7 @@ namespace App\Dto\Request\App\Invoice;
 
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateInvoiceSubscription
@@ -25,6 +26,11 @@ class CreateInvoiceSubscription
     #[Assert\NotBlank]
     #[PriceExists]
     private $price;
+
+    #[SerializedName('seat_number')]
+    #[Assert\Type('integer')]
+    #[Assert\Positive]
+    private $seatNumber;
 
     public function getPlan()
     {
@@ -44,5 +50,15 @@ class CreateInvoiceSubscription
     public function setPrice($price): void
     {
         $this->price = $price;
+    }
+
+    public function getSeatNumber()
+    {
+        return $this->seatNumber;
+    }
+
+    public function setSeatNumber($seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
     }
 }

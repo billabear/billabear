@@ -69,6 +69,30 @@ class CreateInvoiceContext implements Context
     }
 
     /**
+     * @Given I want to invoice for a subscription to :arg1 at :arg4 in :arg2 per :arg3 with :arg5 seats
+     */
+    public function iWantToInvoiceForASubscriptionToAtInPerWithSeats($planName, $amount, $currency, $schedule, $seatNumber)
+    {
+        $subscriptionPlan = $this->planServiceRepository->findOneBy(['name' => $planName]);
+
+        if (!$subscriptionPlan) {
+            throw new \Exception(sprintf("Subscription plan for '%s' not found", $planName));
+        }
+
+        $price = $this->priceRepository->findOneBy(['amount' => $amount, 'currency' => $currency, 'schedule' => $schedule]);
+
+        if (!$price) {
+            throw new \Exception(sprintf('Price for %d in %s per %s not found', $amount, $currency, $schedule));
+        }
+
+        $this->subscriptions[] = [
+            'plan' => $subscriptionPlan,
+            'price' => $price,
+            'seat_number' => intval($seatNumber),
+        ];
+    }
+
+    /**
      * @Given I want to invoice for a subscription to :planName at :priceNumber in :currency per :schedule
      */
     public function iWantToInvoiceForASubscriptionToAtInPer($planName, $amount, $currency, $schedule)
@@ -151,6 +175,7 @@ class CreateInvoiceContext implements Context
             $payload['subscriptions'][] = [
                 'plan' => (string) $subscription['plan']->getId(),
                 'price' => (string) $subscription['price']->getId(),
+                'seat_number' => $subscription['seat_number'] ?? null,
             ];
         }
 
