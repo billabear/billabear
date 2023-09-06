@@ -32,6 +32,15 @@
       </div>
 
       <div class="form-field-ctn">
+        <label class="form-field-lbl" for="per_seat">
+          {{ $t('app.subscription_plan.create.fields.per_seat') }}
+        </label>
+        <p class="form-field-error" v-if="errors.perSeat != undefined">{{ errors.perSeat }}</p>
+        <input type="checkbox" id="per_seat" v-model="subscription_plan.per_seat" />
+        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.per_seat') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
         <label class="form-field-lbl" for="free">
           {{ $t('app.subscription_plan.create.fields.free') }}
         </label>
@@ -58,7 +67,7 @@
         <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.trial_length_days') }}</p>
       </div>
 
-      <div class="form-field-ctn">
+      <div class="form-field-ctn" v-if="subscription_plan.per_seat == false">
         <label class="form-field-lbl" for="user_count">
           {{ $t('app.subscription_plan.create.fields.user_count') }}
         </label>

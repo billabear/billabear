@@ -103,7 +103,7 @@ class InvoiceGenerator
             }
 
             $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
-            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType);
+            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $subscription->getSeats());
 
             $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
             $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -115,7 +115,11 @@ class InvoiceGenerator
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
-            $line->setDescription($subscription->getPlanName());
+            if (null !== $subscription->getSeats() && $subscription->getSeats() > 1) {
+                $line->setDescription(sprintf('%d x %s', $subscription->getSeats(), $subscription->getPlanName()));
+            } else {
+                $line->setDescription($subscription->getPlanName());
+            }
             $line->setTaxPercentage($priceInfo->taxInfo->rate);
             $line->setTaxType($taxType);
             $line->setTaxCountry($priceInfo->taxInfo->country);

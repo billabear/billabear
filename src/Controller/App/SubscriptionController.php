@@ -158,7 +158,7 @@ class SubscriptionController
         $price = $priceRepository->findById($dto->getPrice());
         $transactionManager->start();
         try {
-            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers(), $dto->getHasTrial(), $dto->getTrialLengthDays());
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumber(), $dto->getHasTrial(), $dto->getTrialLengthDays());
         } catch (\Throwable $e) {
             $transactionManager->abort();
             throw $e;

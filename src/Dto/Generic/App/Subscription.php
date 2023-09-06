@@ -22,6 +22,9 @@ class Subscription
 
     private string $status;
 
+    #[SerializedName('seat_number')]
+    private ?int $seatNumber = null;
+
     #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
 
@@ -178,5 +181,15 @@ class Subscription
     public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getSeatNumber(): ?int
+    {
+        return $this->seatNumber;
+    }
+
+    public function setSeatNumber(?int $seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
     }
 }

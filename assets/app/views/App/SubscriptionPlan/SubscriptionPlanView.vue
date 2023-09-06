@@ -31,6 +31,10 @@
                 <dd>{{ subscription_plan.public }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.subscription_plan.view.main.per_seat') }}</dt>
+                <dd>{{ subscription_plan.per_seat }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.subscription_plan.view.main.free') }}</dt>
                 <dd>{{ subscription_plan.free }}</dd>
               </div>

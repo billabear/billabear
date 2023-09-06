@@ -9,9 +9,11 @@ export const SUBSCRIPTION_CREATE_TRANSLATION = {
     trial: "Free Trial",
     trial_length_days: "Number of days",
     unknown_error: "An unknown error has occured during creation",
+    seats: "Number of seats",
     help_info: {
         eligible_prices: "When a customer already has an active subscription any new subscriptions must be for the same billing period and currency.",
         trial: "When a customer already has an active subscription they're not eligible for another free trial.",
-        no_trial: "This plan doesn't have a free trial"
+        no_trial: "This plan doesn't have a free trial",
+        seats: "The number of seats the subscription should be for"
     }
 }

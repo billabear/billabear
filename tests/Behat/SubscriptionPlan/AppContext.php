@@ -132,7 +132,7 @@ class AppContext implements Context
         $subscriptionPlan->setPublic('true' === strtolower($data['Public']));
         $subscriptionPlan->setPerSeat('true' === strtolower($data['Per Seat']));
         $subscriptionPlan->setFree('true' === strtolower($data['Free'] ?? 'false'));
-        $subscriptionPlan->setUserCount(intval($data['User Count']));
+        $subscriptionPlan->setUserCount(intval($data['User Count'] ?? 0));
         $subscriptionPlan->setProduct($product);
         $subscriptionPlan->addFeature($feature);
         $subscriptionPlan->addLimit($subscriptionLimit);

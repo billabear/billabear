@@ -143,11 +143,16 @@ class ApiContext implements Context
         }
         /** @var Price $price */
         $price = $this->priceRepository->findOneBy($priceCritera);
-
-        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/start', [
+        $payload = [
             'subscription_plan' => (string) $subscriptionPlan->getId(),
             'price' => (string) $price->getId(),
-        ]);
+        ];
+
+        if (isset($row['Seats'])) {
+            $payload['seat_number'] = (int) $row['Seats'];
+        }
+
+        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/start', $payload);
     }
 
     /**

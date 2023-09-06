@@ -62,6 +62,10 @@
               <dt>{{ $t('app.subscription.view.pricing.price') }}</dt>
               <dd>{{ subscription.price.display_value }}</dd>
             </div>
+            <div v-if="subscription.plan.per_seat == true">
+              <dt>{{ $t('app.subscription.view.pricing.seat_number') }}</dt>
+              <dd>{{ subscription.seat_number }}</dd>
+            </div>
             <div>
               <dt>{{ $t('app.subscription.view.pricing.recurring') }}</dt>
               <dd>{{ subscription.price.recurring }}</dd>

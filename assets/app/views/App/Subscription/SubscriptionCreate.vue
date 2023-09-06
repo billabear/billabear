@@ -32,6 +32,16 @@
         <p class="form-field-help" v-if="eligible_currency != null">{{ $t('app.subscription.create.help_info.eligible_prices') }}</p>
       </div>
 
+      <div class="mt-3 card-body" v-if="subscription_plan != null && subscription_plan.per_seat == true">
+        <h2>{{ $t('app.subscription.create.seats') }}</h2>
+
+        <div>
+          <p class="form-field-error" v-if="errors['seatNumber'] != undefined">{{ errors['seatNumber'] }}</p>
+          <input type="number" v-model="seat_number"  class="form-field" />
+        </div>
+        <p class="form-field-help" v-if="eligible_currency != null">{{ $t('app.subscription.create.help_info.seats') }}</p>
+      </div>
+
       <div class="mt-3 card-body" v-if="customer.billing_type != 'invoice'">
         <h2>{{ $t('app.subscription.create.payment_details') }}</h2>
 
@@ -86,6 +96,7 @@ export default {
       eligible_currency: null,
       eligible_schedule: null,
       showAdvance: false,
+      seat_number: 1,
       success: false,
       errors: {
       },
@@ -170,6 +181,10 @@ export default {
         has_trial: this.trial,
         trial_length_days: this.trial_length_days
       }
+      if (this.subscription_plan.per_seat) {
+        payload.seat_number = this.seat_number;
+      }
+
       this.sendingInProgress = true;
       axios.post('/app/customer/'+customerId+'/subscription', payload).then(response => {
         this.sendingInProgress = false;

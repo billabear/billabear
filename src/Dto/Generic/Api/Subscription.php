@@ -45,6 +45,9 @@ class Subscription
     #[SerializedName('price')]
     private Price $price;
 
+    #[SerializedName('seat_number')]
+    private ?int $seatNumber = null;
+
     public function getId(): string
     {
         return $this->id;
@@ -143,5 +146,15 @@ class Subscription
     public function setPrice(Price $price): void
     {
         $this->price = $price;
+    }
+
+    public function getSeatNumber(): ?int
+    {
+        return $this->seatNumber;
+    }
+
+    public function setSeatNumber(?int $seatNumber): void
+    {
+        $this->seatNumber = $seatNumber;
     }
 }

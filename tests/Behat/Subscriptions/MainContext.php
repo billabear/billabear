@@ -15,10 +15,13 @@ namespace App\Tests\Behat\Subscriptions;
 use App\Dto\Request\App\Subscription\UpdatePlan;
 use App\Entity\Subscription;
 use App\Entity\SubscriptionPlan;
+use App\Entity\SubscriptionSeatModification;
+use App\Enum\SubscriptionSeatModificationType;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Repository\Orm\SubscriptionRepository;
+use App\Repository\Orm\SubscriptionSeatModificationRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -46,6 +49,7 @@ class MainContext implements Context
         private SubscriptionPlanRepository $planRepository,
         private CustomerRepository $customerRepository,
         private PaymentCardServiceRepository $paymentDetailsRepository,
+        private SubscriptionSeatModificationRepository $subscriptionSeatModificationRepository,
     ) {
     }
 
@@ -67,6 +71,10 @@ class MainContext implements Context
         if ('card' === $customer->getBillingType()) {
             $paymentCard = $this->paymentDetailsRepository->findOneBy(['customer' => $customer]);
             $payload['payment_details'] = (string) $paymentCard->getId();
+        }
+
+        if (isset($row['Seats'])) {
+            $payload['seat_number'] = (int) $row['Seats'];
         }
 
         $this->sendJsonRequest('POST', '/app/customer/'.$customer->getId().'/subscription', $payload);
@@ -96,6 +104,36 @@ class MainContext implements Context
     public function thereShouldBeASubscriptionForTheUser($customerEmail)
     {
         $this->getSubscription($customerEmail);
+    }
+
+    /**
+     * @Then there is a subscription modification to add :arg2 seats to the subscription for :arg1
+     */
+    public function thereIsASubscriptionModificationToAddSeatsToTheSubscriptionFor($seatNumber, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        $modification = $this->subscriptionSeatModificationRepository->findOneBy(['subscription' => $subscription, 'type' => SubscriptionSeatModificationType::ADDED]);
+
+        if (!$modification instanceof SubscriptionSeatModification) {
+            throw new \Exception('Not found change');
+        }
+
+        if ($modification->getChangeValue() !== intval($seatNumber)) {
+            throw new \Exception(sprintf('Expected %d but got %d', $seatNumber, $modification->getChangeValue()));
+        }
+    }
+
+    /**
+     * @Then the subscription for :arg1 has :arg2 seats
+     */
+    public function theSubscriptionForHasSeats($customerEmail, $seatNumber)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        if ($subscription->getSeats() !== intval($seatNumber)) {
+            throw new \Exception(sprintf('Expected %d but got %d', $seatNumber, $subscription->getSeats()));
+        }
     }
 
     /**

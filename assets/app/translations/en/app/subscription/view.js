@@ -15,7 +15,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         price: "Price",
         recurring: "Recurring",
         schedule: "Schedule",
-        change: "Change"
+        change: "Change",
+        seat_number: "Seat Number"
     },
     payments: {
         title: "Payments",

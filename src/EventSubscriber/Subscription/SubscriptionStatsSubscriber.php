@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\EventSubscriber;
+namespace App\EventSubscriber\Subscription;
 
 use App\Entity\SubscriptionCreation;
 use App\Repository\SubscriptionCreationRepositoryInterface;
@@ -22,7 +22,7 @@ use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class SubscriptionSubscriber implements EventSubscriberInterface
+class SubscriptionStatsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private SubscriptionCreationRepositoryInterface $subscriptionCreationRepository,

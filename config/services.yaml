@@ -145,6 +145,12 @@ services:
     app.repository.orm.refund_created_process:
         class: App\Repository\Orm\RefundCreatedProcessRepository
 
+    App\Repository\SubscriptionSeatModificationRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.subscription_seat_modification'
+    app.repository.orm.subscription_seat_modification:
+        class: App\Repository\Orm\SubscriptionSeatModificationRepository
+
     App\Repository\ApiKeyRepository:
         arguments:
             $entityRepository: '@app.repository.orm.api_key'

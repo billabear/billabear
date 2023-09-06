@@ -51,6 +51,7 @@ class SubscriptionDataMapper
         $subscription->setStartOfCurrentPeriod($model->getStartOfCurrentPeriod());
         $subscription->setValidUntil($model->getValidUntil());
         $subscription->setHasTrial($model->hasTrial());
+
         $subscription->setMoneyAmount($model->getCostPerSeat());
         $status = match ($model->getStatus()) {
             'active' => SubscriptionStatus::ACTIVE,
@@ -101,6 +102,7 @@ class SubscriptionDataMapper
         $dto->setPaymentProviderDetailsUrl($subscription->getMainExternalReferenceDetailsUrl());
         $dto->setCreatedAt($subscription->getCreatedAt());
         $dto->setUpdatedAt($subscription->getUpdatedAt());
+        $dto->setSeatNumber($subscription->getSeats());
         $dto->setValidUntil($subscription->getValidUntil());
         $dto->setCustomer($this->customerFactory->createAppDto($subscription->getCustomer()));
 
@@ -116,6 +118,7 @@ class SubscriptionDataMapper
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());
         $dto->setCreatedAt($subscription->getCreatedAt());
+        $dto->setSeatNumber($subscription->getSeats());
         $dto->setUpdatedAt($subscription->getUpdatedAt());
         $dto->setValidUntil($subscription->getValidUntil());
 

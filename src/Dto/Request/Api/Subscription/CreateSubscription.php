@@ -49,7 +49,7 @@ class CreateSubscription
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    #[SerializedName('seat_numbrers')]
+    #[SerializedName('seat_number')]
     private $seatNumbers = 1;
 
     public function getSubscriptionPlan()

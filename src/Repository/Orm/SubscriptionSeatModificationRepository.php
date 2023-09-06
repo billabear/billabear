@@ -10,16 +10,16 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Invoice;
+namespace App\Repository\Orm;
 
-use App\Entity\Customer;
-use App\Enum\TaxType;
-use Brick\Money\Money;
-use Parthenon\Billing\Entity\Price;
+use App\Entity\SubscriptionSeatModification;
+use Doctrine\Persistence\ManagerRegistry;
+use Parthenon\Common\Repository\CustomServiceRepository;
 
-interface PricerInterface
+class SubscriptionSeatModificationRepository extends CustomServiceRepository
 {
-    public function getCustomerPriceInfo(Price $price, Customer $customer, TaxType $taxType, int $seatNumber = 1): PriceInfo;
-
-    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, TaxType $taxType): PriceInfo;
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, SubscriptionSeatModification::class);
+    }
 }

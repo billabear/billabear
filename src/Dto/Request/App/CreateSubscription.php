@@ -40,7 +40,8 @@ class CreateSubscription
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    private $seatNumbers = 1;
+    #[SerializedName('seat_number')]
+    private $seatNumber = 1;
 
     #[SerializedName('has_trial')]
     #[Assert\Type('boolean')]
@@ -81,14 +82,14 @@ class CreateSubscription
         $this->paymentDetails = $paymentDetails;
     }
 
-    public function getSeatNumbers(): int
+    public function getSeatNumber(): int
     {
-        return $this->seatNumbers;
+        return $this->seatNumber;
     }
 
-    public function setSeatNumbers(int $seatNumbers): void
+    public function setSeatNumber(int $seatNumber): void
     {
-        $this->seatNumbers = $seatNumbers;
+        $this->seatNumber = $seatNumber;
     }
 
     public function getHasTrial()
