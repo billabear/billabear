@@ -260,6 +260,10 @@ class MainContext implements Context
             $subscription->setPaymentDetails($paymentDetails);
             $subscription->setValidUntil(new \DateTime($row['Next Charge'] ?? '+1 '.$row['Price Schedule']));
 
+            if (isset($row['Seats'])) {
+                $subscription->setSeats(intval($row['Seats']));
+            }
+
             $this->subscriptionRepository->getEntityManager()->persist($subscription);
             $this->subscriptionRepository->getEntityManager()->flush();
 

@@ -134,7 +134,7 @@ class MainContext implements Context
         }
 
         if ($statEntity->getAmount() != $amount) {
-            throw new \Exception('Amount is wrong');
+            throw new \Exception(sprintf('Expected %d but got %d', $amount, $statEntity->getAmount()));
         }
         if ($statEntity->getCurrency() != $currency) {
             throw new \Exception('Currency is wrong');
