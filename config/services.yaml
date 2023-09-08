@@ -348,6 +348,11 @@ services:
     app.repository.orm.voucher_application:
         class: App\Repository\Orm\VoucherApplicationRepository
 
+    App\Repository\CheckoutRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.checkout'
+    app.repository.orm.checkout:
+        class: App\Repository\Orm\CheckoutRepository
 
     App\Repository\WebhookEndpointRepository:
         arguments:

@@ -10,16 +10,23 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Request\App\Quote;
+namespace App\Dto\Request\App\Checkout;
 
 use App\Validator\Constraints\CustomerExists;
 use App\Validator\Constraints\SamePaymentSchedule;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateQuote
+class CreateCheckout
 {
     #[Assert\NotBlank()]
+    #[Assert\Type('string')]
+    private $name;
+
+    #[Assert\NotBlank()]
+    #[Assert\Type('boolean')]
+    private $permanent = false;
+
     #[CustomerExists]
     private $customer;
 
@@ -33,6 +40,16 @@ class CreateQuote
     #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
     #[SerializedName('expires_at')]
     private $expiresAt;
+
+    public function isPermanent(): bool
+    {
+        return true === $this->permanent;
+    }
+
+    public function setPermanent(bool $permanent): void
+    {
+        $this->permanent = $permanent;
+    }
 
     public function getCustomer()
     {
@@ -82,5 +99,15 @@ class CreateQuote
     public function setExpiresAt($expiresAt): void
     {
         $this->expiresAt = $expiresAt;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name): void
+    {
+        $this->name = $name;
     }
 }

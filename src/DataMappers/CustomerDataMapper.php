@@ -134,8 +134,12 @@ class CustomerDataMapper
         return $dto;
     }
 
-    public function createAppDto(Customer $customer): CustomerAppDto
+    public function createAppDto(?Customer $customer): ?CustomerAppDto
     {
+        if (!$customer) {
+            return null;
+        }
+
         $address = new AddressDto();
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
         $address->setStreetLineTwo($customer->getBillingAddress()->getStreetLineTwo());
