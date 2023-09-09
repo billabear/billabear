@@ -17,6 +17,9 @@
           </span>
         </div>
       </div>
+      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+        <router-link :to="{name: 'app.checkout.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.checkout.list.create_new') }}</router-link>
+      </RoleOnlyView>
     </div>
 
     <div class="card-body my-5" v-if="active_filters.length > 0">
