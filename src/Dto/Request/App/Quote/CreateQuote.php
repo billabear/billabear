@@ -54,9 +54,9 @@ class CreateQuote
         $this->items = $items;
     }
 
-    public function addItem(CreateCheckoutItem $createInvoiceItem): void
+    public function addItem(CreateQuoteItem $createQuoteItem): void
     {
-        $this->items[] = $createInvoiceItem;
+        $this->items[] = $createQuoteItem;
     }
 
     public function getSubscriptions()
@@ -69,9 +69,9 @@ class CreateQuote
         $this->subscriptions = $subscriptions;
     }
 
-    public function addSubscription(CreateCheckoutSubscription $createInvoiceSubscription): void
+    public function addSubscription(CreateQuoteSubscription $createQuoteSubscription): void
     {
-        $this->subscriptions[] = $createInvoiceSubscription;
+        $this->subscriptions[] = $createQuoteSubscription;
     }
 
     public function getExpiresAt()
