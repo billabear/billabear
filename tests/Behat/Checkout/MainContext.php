@@ -211,6 +211,7 @@ class MainContext implements Context
     {
         $checkout = new Checkout();
         $checkout->setName($name);
+        $checkout->setSlug(bin2hex(random_bytes(42)));
         $checkout->setPermanent(true);
 
         $total = 0;
@@ -249,6 +250,30 @@ class MainContext implements Context
 
         $this->quoteRepository->getEntityManager()->persist($checkout);
         $this->quoteRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the checkout list in the APP
+     */
+    public function iViewTheCheckoutListInTheApp()
+    {
+        $this->sendJsonRequest('GET', '/app/checkout');
+    }
+
+    /**
+     * @Then I will see a checkout in the list called :arg1
+     */
+    public function iWillSeeACheckoutInTheListCalled($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $item) {
+            if ($item['name'] === $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find such a checkout");
     }
 
     /**

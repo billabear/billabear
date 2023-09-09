@@ -31,7 +31,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CheckoutController
 {
+    use CrudListTrait;
     use ValidationErrorResponseTrait;
+
+    #[Route('/app/checkout', name: 'app_app_checkout_listcheckout', methods: ['GET'])]
+    public function listCheckout(
+        Request $request,
+        CheckoutRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        CheckoutDataMapper $factory,
+    ): Response {
+        return $this->crudList($request, $repository, $serializer, $factory);
+    }
 
     #[Route('/app/checkout/create', name: 'app_app_checkout_readcreatecheckoutinfo', methods: ['GET'])]
     public function readCreateCheckoutInfo(
