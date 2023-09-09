@@ -51,6 +51,13 @@ class CheckoutCreator
             $customer = $this->customerRepository->getById($createCheckout->getCustomer());
             $checkout->setCustomer($customer);
         }
+
+        if ($createCheckout->getSlug()) {
+            $checkout->setSlug($createCheckout->getSlug());
+        } else {
+            $checkout->setSlug(bin2hex(random_bytes(48)));
+        }
+
         $user = $this->security->getUser();
         $checkout->setCreatedBy($user);
         $checkout->setName($createCheckout->getName());

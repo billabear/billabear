@@ -18,6 +18,7 @@ export const CHECKOUT_CREATE_TRANSLATIONS = {
             permanent: "Permanent",
             customer: "Customer",
             currency: "Currency",
+            slug: "Slug",
             expires_at: "Expires At"
         },
         help_info: {
@@ -25,7 +26,8 @@ export const CHECKOUT_CREATE_TRANSLATIONS = {
             name: "The identifying name for the checkout",
             customer: "The customer the checkout is for",
             currency: "The currency to be used for the checkout",
-            expires_at: "When the quote expires and can't be paid for"
+            expires_at: "When the quote expires and can't be paid for",
+            slug: "The slug for the URL. If you want the checkout to have a pretty url use this."
         }
     },
     subscriptions: {

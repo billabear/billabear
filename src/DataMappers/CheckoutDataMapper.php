@@ -12,6 +12,7 @@
 
 namespace App\DataMappers;
 
+use App\Checkout\PortalLinkGenerator;
 use App\Dto\Generic\App\Checkout as AppDto;
 use App\Dto\Generic\App\CheckoutLine as AppLineDto;
 use App\Entity\Checkout as Entity;
@@ -24,6 +25,7 @@ class CheckoutDataMapper
         private CustomerDataMapper $customerDataMapper,
         private SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
         private PriceDataMapper $priceDataMapper,
+        private PortalLinkGenerator $portalLinkGenerator,
     ) {
     }
 
@@ -41,6 +43,7 @@ class CheckoutDataMapper
         $appDto->setSubTotal($entity->getSubTotal());
         $appDto->setLines(array_map([$this, 'createAppLineDto'], $entity->getLines()->toArray()));
         $appDto->setExpiresAt($entity->getExpiresAt());
+        $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
 
         return $appDto;
     }

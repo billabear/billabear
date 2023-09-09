@@ -22,6 +22,14 @@
         <input type="checkbox" class="form-field" v-model="checkout.permanent" />
         <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.permanent') }}</p>
       </div>
+      <div class="form-field-ctn" v-if="checkout.permanent">
+        <label class="form-field-lbl" for="slug">
+          {{ $t('app.checkout.create.customer.fields.slug') }}
+        </label>
+        <p class="form-field-error" v-if="errors.slug != undefined">{{ errors.slug }}</p>
+        <input type="text" class="form-field" v-model="checkout.slug" />
+        <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.slug') }}</p>
+      </div>
       <div class="form-field-ctn">
 
         <label class="form-field-lbl" for="customer">
@@ -163,6 +171,7 @@ export default {
       errors: {items: []},
       checkout: {
         name: null,
+        slug: null,
         customer: null,
         subscription_plans: [],
         items: [],
@@ -338,6 +347,7 @@ export default {
         subscriptions: subscriptions,
         items: items,
         expires_at: this.checkout.expires_at,
+        slug: this.checkout.slug,
       }
 
       axios.post("/app/checkout/create", payload).then(response => {

@@ -37,6 +37,9 @@ class Checkout
     private bool $permanent;
 
     #[ORM\Column(type: 'string')]
+    private string $slug;
+
+    #[ORM\Column(type: 'string')]
     private string $currency;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -242,5 +245,15 @@ class Checkout
     public function setCancelRedirect(?string $cancelRedirect): void
     {
         $this->cancelRedirect = $cancelRedirect;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 }

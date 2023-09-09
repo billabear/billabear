@@ -23,6 +23,11 @@ class CreateCheckout
     #[Assert\Type('string')]
     private $name;
 
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('string')]
+    #[Assert\Regex('~[a-zA-Z0-9_-]+~isU')]
+    private $slug;
+
     #[Assert\NotBlank()]
     #[Assert\Type('boolean')]
     private $permanent = false;
@@ -109,5 +114,15 @@ class CreateCheckout
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
     }
 }
