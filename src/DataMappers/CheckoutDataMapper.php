@@ -30,6 +30,7 @@ class CheckoutDataMapper
     public function createAppDto(Entity $entity): AppDto
     {
         $appDto = new AppDto();
+        $appDto->setName($entity->getName());
         $appDto->setCreatedAt($entity->getCreatedAt());
         $appDto->setCreatedBy($this->billingAdminDataMapper->createAppDto($entity->getCreatedBy()));
         $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));

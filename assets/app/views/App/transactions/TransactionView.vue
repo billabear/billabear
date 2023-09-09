@@ -9,6 +9,7 @@
           <li class="submenu-list-item"><router-link :to="{name: 'app.payment.list'}" class="submenu-link"><i class="fa-solid fa-money-bill-wave"></i> {{ $t('app.transactions.menu.payments') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.refund.list'}" class="submenu-link"><i class="fa-solid fa-money-bill-transfer"></i> {{ $t('app.transactions.menu.refunds') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.charge_backs.list'}" class="submenu-link"><i class="fa-solid fa-triangle-exclamation"></i> {{ $t('app.transactions.menu.charge_backs') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.checkout.create'}" class="submenu-link"><i class="fa-solid fa-triangle-exclamation"></i> {{ $t('app.transactions.menu.checkout') }}</router-link></li>
         </ul>
       </div>
     </div>

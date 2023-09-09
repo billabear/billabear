@@ -10,14 +10,21 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Response\App\Checkout;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use App\Dto\Generic\App\Checkout;
 
-/**
- * @method getById($id, $includeDeleted = false) Checkout
- * @method findById($id) Checkout
- */
-interface CheckoutRepositoryInterface extends CrudRepositoryInterface
+class ReadCheckout
 {
+    private Checkout $checkout;
+
+    public function getCheckout(): Checkout
+    {
+        return $this->checkout;
+    }
+
+    public function setCheckout(Checkout $checkout): void
+    {
+        $this->checkout = $checkout;
+    }
 }

@@ -10,14 +10,22 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Response\App\Checkout;
 
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
-/**
- * @method getById($id, $includeDeleted = false) Checkout
- * @method findById($id) Checkout
- */
-interface CheckoutRepositoryInterface extends CrudRepositoryInterface
+class ReadCreateCheckoutView
 {
+    #[SerializedName('subscription_plans')]
+    private array $subscriptionPlans = [];
+
+    public function getSubscriptionPlans(): array
+    {
+        return $this->subscriptionPlans;
+    }
+
+    public function setSubscriptionPlans(array $subscriptionPlans): void
+    {
+        $this->subscriptionPlans = $subscriptionPlans;
+    }
 }

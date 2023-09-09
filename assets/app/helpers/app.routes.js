@@ -68,6 +68,8 @@ import InvoicesView from "../views/App/Invoices/InvoicesView.vue";
 import DeveloperGroup from "../views/App/System/SystemGroup.vue";
 import {SYSTEM_ROUTES} from "./app.system.routes";
 import SystemGroup from "../views/App/System/SystemGroup.vue";
+import CheckoutCreate from "../views/App/Checkout/CheckoutCreate.vue";
+import CheckoutView from "../views/App/Checkout/CheckoutView.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -424,6 +426,16 @@ export const APP_ROUTES = [
                 name: 'app.charge_backs.list',
                 path: 'charge-backs/list',
                 component: ChargeBacksList
+            },
+            {
+                name: 'app.checkout.create',
+                path: 'checkout/create',
+                component: CheckoutCreate
+            },
+            {
+                name: 'app.checkout.view',
+                path: 'checkout/view/:id',
+                component: CheckoutView
             }
         ]
     }

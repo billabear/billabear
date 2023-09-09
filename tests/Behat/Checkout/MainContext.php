@@ -19,12 +19,14 @@ use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\QuoteRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\Orm\UserRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\Quote\QuoteTrait;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\Subscriptions\SubscriptionTrait;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 
 class MainContext implements Context
@@ -41,6 +43,7 @@ class MainContext implements Context
         private SubscriptionPlanRepository $planServiceRepository,
         private QuoteRepository $quoteRepository,
         private CheckoutRepository $checkoutRepository,
+        private UserRepository $userRepository,
     ) {
     }
 
@@ -199,5 +202,78 @@ class MainContext implements Context
         }
 
         return $checkout;
+    }
+
+    /**
+     * @Given a permanent checkout called :arg2 exists in :arg3:
+     */
+    public function aCheckoutForCalledExistsIn($name, $currency, TableNode $table)
+    {
+        $checkout = new Checkout();
+        $checkout->setName($name);
+        $checkout->setPermanent(true);
+
+        $total = 0;
+        $subTotal = 0;
+        $vatTotal = 0;
+        $lines = [];
+
+        $billingAdmin = $this->userRepository->findOneBy([]);
+        $checkout->setCreatedBy($billingAdmin);
+
+        foreach ($table->getColumnsHash() as $row) {
+            $total += $row['Total'];
+            $subTotal += $row['Sub Total'];
+            $vatTotal += $row['Vat Total'];
+
+            $checkoutLine = new \App\Entity\CheckoutLine();
+            $checkoutLine->setCheckout($checkout);
+            $checkoutLine->setCurrency($currency);
+            $checkoutLine->setDescription($row['Description']);
+            $checkoutLine->setTotal(intval($row['Total']));
+            $checkoutLine->setSubTotal(intval($row['Sub Total']));
+            $checkoutLine->setTaxTotal(intval($row['Vat Total']));
+            $checkoutLine->setIncludeTax('true' === strtolower($row['Include Tax'] ?? 'false'));
+
+            $lines[] = $checkoutLine;
+        }
+
+        $checkout->setLines($lines);
+        $checkout->setAmountDue($total);
+        $checkout->setTotal($total);
+        $checkout->setSubTotal($subTotal);
+        $checkout->setTaxTotal($vatTotal);
+        $checkout->setCurrency($currency);
+        $checkout->setCreatedAt(new \DateTime());
+        $checkout->setUpdatedAt(new \DateTime());
+
+        $this->quoteRepository->getEntityManager()->persist($checkout);
+        $this->quoteRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the checkout :arg1
+     */
+    public function iViewTheCheckout($checkoutName)
+    {
+        $checkout = $this->getCheckoutByName($checkoutName);
+
+        $this->sendJsonRequest('GET', '/app/checkout/'.$checkout->getId().'/view');
+    }
+
+    /**
+     * @Then I will see a line item with the description :arg1
+     */
+    public function iWillSeeALineItemWithTheDescription($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['checkout']['lines'] as $line) {
+            if ($line['description'] === $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find line with that description");
     }
 }

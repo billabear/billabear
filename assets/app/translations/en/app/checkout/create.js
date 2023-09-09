@@ -1,7 +1,7 @@
-export const QUOTES_CREATE_TRANSLATIONS = {
-    title: "Create Quote",
-    create_quote: "Create Quote",
-    success_message: "Quote created",
+export const CHECKOUT_CREATE_TRANSLATIONS = {
+    title: "Create Checkout",
+    create_quote: "Create Checkout",
+    success_message: "Checkout created",
     errors: {
         no_customer: "A customer is needed",
         nothing_to_invoice: "You need to add a subscription or a one-off item.",
@@ -14,13 +14,17 @@ export const QUOTES_CREATE_TRANSLATIONS = {
     customer: {
         create_customer: "Create Customer",
         fields: {
+            name: "Name",
+            permanent: "Permanent",
             customer: "Customer",
             currency: "Currency",
             expires_at: "Expires At"
         },
         help_info: {
-            customer: "The customer the quote is for",
-            currency: "The currency to be used for the quote",
+            permanent: "If the checkout is permanent or a one-time checkout",
+            name: "The identifying name for the checkout",
+            customer: "The customer the checkout is for",
+            currency: "The currency to be used for the checkout",
             expires_at: "When the quote expires and can't be paid for"
         }
     },

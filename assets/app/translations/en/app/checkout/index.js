@@ -1,0 +1,7 @@
+import {CHECKOUT_CREATE_TRANSLATIONS} from "./create";
+import {CHECKOUT_VIEW_TRANSLATIONS} from "./view";
+
+export const CHECKOUT_TRANSLATIONS = {
+    create: CHECKOUT_CREATE_TRANSLATIONS,
+    view: CHECKOUT_VIEW_TRANSLATIONS,
+}

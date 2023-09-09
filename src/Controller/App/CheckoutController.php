@@ -15,7 +15,13 @@ namespace App\Controller\App;
 use App\Checkout\CheckoutCreator;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CheckoutDataMapper;
+use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Checkout\CreateCheckout;
+use App\Dto\Response\App\Checkout\ReadCheckout;
+use App\Dto\Response\App\Checkout\ReadCreateCheckoutView;
+use App\Repository\CheckoutRepositoryInterface;
+use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +32,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CheckoutController
 {
     use ValidationErrorResponseTrait;
+
+    #[Route('/app/checkout/create', name: 'app_app_checkout_readcreatecheckoutinfo', methods: ['GET'])]
+    public function readCreateCheckoutInfo(
+        Request $request,
+        SerializerInterface $serializer,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        SubscriptionPlanDataMapper $subscriptionPlanFactory,
+    ) {
+        $subscriptionPlans = $subscriptionPlanRepository->getAll();
+        $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
+
+        $readQuote = new ReadCreateCheckoutView();
+        $readQuote->setSubscriptionPlans($subscriptionPlanDtos);
+        $json = $serializer->serialize($readQuote, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
 
     #[Route('/app/checkout/create', name: 'app_app_checkout_createcheckout', methods: ['POST'])]
     public function createCheckout(
@@ -47,6 +70,28 @@ class CheckoutController
         $quote = $checkoutCreator->createCheckout($dto);
         $dto = $checkoutDataMapper->createAppDto($quote);
         $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/checkout/{id}/view', name: 'app_app_checkout_readcheckout', methods: ['GET'])]
+    public function readCheckout(
+        Request $request,
+        CheckoutRepositoryInterface $checkoutRepository,
+        CheckoutDataMapper $checkoutDataMapper,
+        SerializerInterface $serializer,
+    ) {
+        try {
+            $checkout = $checkoutRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $dto = $checkoutDataMapper->createAppDto($checkout);
+        $viewDto = new ReadCheckout();
+        $viewDto->setCheckout($dto);
+
+        $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
     }

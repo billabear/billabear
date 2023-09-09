@@ -18,6 +18,8 @@ class Checkout
 {
     private string $id;
 
+    private string $name;
+
     private string $currency;
 
     private ?Customer $customer = null;
@@ -190,5 +192,15 @@ class Checkout
     public function setExpiresAt(?\DateTime $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 }

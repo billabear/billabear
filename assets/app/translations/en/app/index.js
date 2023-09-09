@@ -22,6 +22,7 @@ import {HOME_TRANSLATIONS} from "./home";
 import {VOUCHER_TRANSLATIONS} from "./vouchers";
 import {QUOTE_TRANSLATIONS} from "./quote";
 import {SYSTEM_TRANSLATIONS} from "./system";
+import {CHECKOUT_TRANSLATIONS} from "./checkout";
 
 
 export const APP_TRANSLATIONS = {
@@ -49,4 +50,5 @@ export const APP_TRANSLATIONS = {
     vouchers: VOUCHER_TRANSLATIONS,
     quotes: QUOTE_TRANSLATIONS,
     system: SYSTEM_TRANSLATIONS,
+    checkout: CHECKOUT_TRANSLATIONS,
 };
