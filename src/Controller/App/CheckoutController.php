@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -44,6 +45,7 @@ class CheckoutController
         return $this->crudList($request, $repository, $serializer, $factory);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/checkout/create', name: 'app_app_checkout_readcreatecheckoutinfo', methods: ['GET'])]
     public function readCreateCheckoutInfo(
         Request $request,
@@ -61,6 +63,7 @@ class CheckoutController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/checkout/create', name: 'app_app_checkout_createcheckout', methods: ['POST'])]
     public function createCheckout(
         Request $request,
