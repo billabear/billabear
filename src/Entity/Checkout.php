@@ -39,6 +39,12 @@ class Checkout
     #[ORM\Column(type: 'string')]
     private string $currency;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $successRedirect = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $cancelRedirect = null;
+
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $amountDue = null;
 
@@ -216,5 +222,25 @@ class Checkout
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getSuccessRedirect(): ?string
+    {
+        return $this->successRedirect;
+    }
+
+    public function setSuccessRedirect(?string $successRedirect): void
+    {
+        $this->successRedirect = $successRedirect;
+    }
+
+    public function getCancelRedirect(): ?string
+    {
+        return $this->cancelRedirect;
+    }
+
+    public function setCancelRedirect(?string $cancelRedirect): void
+    {
+        $this->cancelRedirect = $cancelRedirect;
     }
 }
