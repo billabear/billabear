@@ -40,6 +40,7 @@
         </div>
         <div v-else-if="stage == 'payment'">
 
+          <h2 class="text-xl mb-5">{{ $t('portal.checkout.payment.title') }}</h2>
           <div id="cardInput" class="my-5"></div>
           <div id="cardError"></div>
         </div>
@@ -138,5 +139,15 @@ export default {
 
 .form-field-input {
   @apply p-2 border rounded-xl;
+}
+
+#cardInput {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.hide {
+  display: none;
 }
 </style>

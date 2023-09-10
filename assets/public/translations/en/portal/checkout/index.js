@@ -24,5 +24,9 @@ export const CHECKOUT_TRANSLATIONS = {
             email: "The email to be used for billing"
         },
         submit: "Proceed To Payment"
+    },
+    payment: {
+        title: "Payment",
+        submit: "Pay"
     }
 }
