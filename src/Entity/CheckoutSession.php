@@ -15,12 +15,12 @@ namespace App\Entity;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-class Checkout
+#[ORM\Table(name: 'checkout_session')]
+class CheckoutSession
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -28,29 +28,14 @@ class Checkout
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    private string $name;
-
     #[ORM\ManyToOne(targetEntity: Customer::class)]
     private ?CustomerInterface $customer = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $permanent;
-
-    #[ORM\ManyToOne(targetEntity: BrandSettings::class)]
-    private BrandSettings $brandSettings;
-
-    #[ORM\Column(type: 'string')]
-    private string $slug;
+    #[ORM\ManyToOne(targetEntity: Checkout::class)]
+    private Checkout $checkout;
 
     #[ORM\Column(type: 'string')]
     private string $currency;
-
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $successRedirect = null;
-
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $cancelRedirect = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $amountDue = null;
@@ -64,17 +49,8 @@ class Checkout
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $taxTotal = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $expiresAt = null;
-
-    #[ORM\Column(type: 'boolean')]
-    private bool $valid = true;
-
-    #[ORM\OneToMany(targetEntity: CheckoutLine::class, mappedBy: 'checkout', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: CheckoutSessionLine::class, mappedBy: 'checkoutSession', cascade: ['persist'])]
     private array|Collection $lines;
-
-    #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
-    private ?BillingAdminInterface $createdBy = null;
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
@@ -92,16 +68,6 @@ class Checkout
         $this->id = $id;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
     public function getCustomer(): ?CustomerInterface
     {
         return $this->customer;
@@ -110,16 +76,6 @@ class Checkout
     public function setCustomer(?CustomerInterface $customer): void
     {
         $this->customer = $customer;
-    }
-
-    public function isPermanent(): bool
-    {
-        return $this->permanent;
-    }
-
-    public function setPermanent(bool $permanent): void
-    {
-        $this->permanent = $permanent;
     }
 
     public function getCurrency(): string
@@ -177,29 +133,6 @@ class Checkout
         $this->taxTotal = $taxTotal;
     }
 
-    public function getExpiresAt(): ?\DateTime
-    {
-        return $this->expiresAt;
-    }
-
-    public function setExpiresAt(?\DateTime $expiresAt): void
-    {
-        $this->expiresAt = $expiresAt;
-    }
-
-    public function isValid(): bool
-    {
-        return $this->valid;
-    }
-
-    public function setValid(bool $valid): void
-    {
-        $this->valid = $valid;
-    }
-
-    /**
-     * @return Collection|array|CheckoutLine[]
-     */
     public function getLines(): Collection|array
     {
         return $this->lines;
@@ -208,16 +141,6 @@ class Checkout
     public function setLines(Collection|array $lines): void
     {
         $this->lines = $lines;
-    }
-
-    public function getCreatedBy(): ?BillingAdminInterface
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?BillingAdminInterface $createdBy): void
-    {
-        $this->createdBy = $createdBy;
     }
 
     public function getCreatedAt(): \DateTimeInterface
@@ -240,43 +163,13 @@ class Checkout
         $this->updatedAt = $updatedAt;
     }
 
-    public function getSuccessRedirect(): ?string
+    public function getCheckout(): Checkout
     {
-        return $this->successRedirect;
+        return $this->checkout;
     }
 
-    public function setSuccessRedirect(?string $successRedirect): void
+    public function setCheckout(Checkout $checkout): void
     {
-        $this->successRedirect = $successRedirect;
-    }
-
-    public function getCancelRedirect(): ?string
-    {
-        return $this->cancelRedirect;
-    }
-
-    public function setCancelRedirect(?string $cancelRedirect): void
-    {
-        $this->cancelRedirect = $cancelRedirect;
-    }
-
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
-    }
-
-    public function getBrandSettings(): BrandSettings
-    {
-        return $this->brandSettings;
-    }
-
-    public function setBrandSettings(BrandSettings $brandSettings): void
-    {
-        $this->brandSettings = $brandSettings;
+        $this->checkout = $checkout;
     }
 }

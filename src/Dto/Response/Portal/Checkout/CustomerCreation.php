@@ -18,6 +18,18 @@ class CustomerCreation
 {
     protected StripeInfo $stripe;
 
+    private UpdatedCheckoutAmounts $amounts;
+
+    public function getAmounts(): UpdatedCheckoutAmounts
+    {
+        return $this->amounts;
+    }
+
+    public function setAmounts(UpdatedCheckoutAmounts $amounts): void
+    {
+        $this->amounts = $amounts;
+    }
+
     public function getStripe(): StripeInfo
     {
         return $this->stripe;

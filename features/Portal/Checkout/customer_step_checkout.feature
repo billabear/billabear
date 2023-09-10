@@ -62,3 +62,5 @@ Feature: View checkout
       | Country            | DE                   |
     Then there should be a customer for "customer@example.org"
     And the response should have the stripe config
+    And there should be a checkout session for "customer@example.org"
+    And there should have an updated tax amount in the response of 4000

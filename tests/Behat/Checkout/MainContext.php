@@ -14,9 +14,11 @@ namespace App\Tests\Behat\Checkout;
 
 use App\Entity\BrandSettings;
 use App\Entity\Checkout;
+use App\Entity\CheckoutSession;
 use App\Entity\Customer;
 use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\CheckoutRepository;
+use App\Repository\Orm\CheckoutSessionRepository;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\QuoteRepository;
@@ -45,6 +47,7 @@ class MainContext implements Context
         private SubscriptionPlanRepository $planServiceRepository,
         private QuoteRepository $quoteRepository,
         private CheckoutRepository $checkoutRepository,
+        private CheckoutSessionRepository $checkoutSessionRepository,
         private UserRepository $userRepository,
         private BrandSettingsRepository $brandSettingsRepository,
     ) {
@@ -299,6 +302,32 @@ class MainContext implements Context
 
         if (!isset($data['stripe'])) {
             throw new \Exception('No stripe data');
+        }
+    }
+
+    /**
+     * @Then there should be a checkout session for :arg1
+     */
+    public function thereShouldBeACheckoutSessionFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $session = $this->checkoutSessionRepository->findOneBy(['customer' => $customer]);
+
+        if (!$session instanceof CheckoutSession) {
+            throw new \Exception("Can't find checkout session");
+        }
+    }
+
+    /**
+     * @Then there should have an updated tax amount in the response of :arg1
+     */
+    public function thereShouldHaveAnUpdatedTaxAmountInTheResponseOf($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (isset($data['amounts']['tax_total']) && $data['amounts']['tax_total'] === intval($arg1)) {
+            throw new \Exception(sprintf('Expected %d but got %d', $arg1, $data['amounts']['tax_total']));
         }
     }
 

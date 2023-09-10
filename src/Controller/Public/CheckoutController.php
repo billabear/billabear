@@ -12,11 +12,13 @@
 
 namespace App\Controller\Public;
 
+use App\Checkout\CheckoutSessionCreator;
 use App\Customer\ExternalRegisterInterface;
 use App\DataMappers\CheckoutDataMapper;
 use App\DataMappers\CustomerDataMapper;
 use App\Dto\Request\Public\CreateCustomerDto;
 use App\Dto\Response\Portal\Checkout\CustomerCreation;
+use App\Dto\Response\Portal\Checkout\UpdatedCheckoutAmounts;
 use App\Dto\Response\Portal\Checkout\ViewCheckout;
 use App\Dto\Response\Portal\Quote\StripeInfo;
 use App\Repository\CheckoutRepositoryInterface;
@@ -66,6 +68,7 @@ class CheckoutController
         FrontendAddProcessorInterface $addCardByTokenDriver,
         ExternalRegisterInterface $externalRegister,
         FrontendConfig $config,
+        CheckoutSessionCreator $checkoutSessionCreator,
     ) {
         try {
             $checkout = $checkoutRepository->findBySlug($request->get('slug'));
@@ -85,11 +88,20 @@ class CheckoutController
         $externalRegister->register($customer);
         $customerRepository->save($customer);
 
+        $checkoutSession = $checkoutSessionCreator->createCheckoutSession($checkout, $customer);
+
+        $amounts = new UpdatedCheckoutAmounts();
+        $amounts->setAmountDue($checkoutSession->getAmountDue());
+        $amounts->setTaxTotal($checkoutSession->getTaxTotal());
+        $amounts->setSubTotal($checkoutSession->getSubTotal());
+        $amounts->setCurrency($checkoutSession->getCurrency());
+
         $stripe = new StripeInfo();
         $stripe->setToken($addCardByTokenDriver->startTokenProcess($customer));
         $stripe->setKey($config->getApiInfo());
         $viewDto = new CustomerCreation();
         $viewDto->setStripe($stripe);
+        $viewDto->setAmounts($amounts);
 
         $json = $serializer->serialize($viewDto, 'json');
 

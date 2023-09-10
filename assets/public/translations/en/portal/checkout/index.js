@@ -1,4 +1,5 @@
 export const CHECKOUT_TRANSLATIONS = {
+    total: "Tax : {amount} {currency}",
     items: {
         title: "Item Breakdown"
     },
@@ -21,6 +22,7 @@ export const CHECKOUT_TRANSLATIONS = {
         },
         help_info: {
             email: "The email to be used for billing"
-        }
+        },
+        submit: "Proceed To Payment"
     }
 }

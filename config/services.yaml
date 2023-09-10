@@ -354,6 +354,12 @@ services:
     app.repository.orm.checkout:
         class: App\Repository\Orm\CheckoutRepository
 
+    App\Repository\CheckoutSessionRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.checkout_session'
+    app.repository.orm.checkout_session:
+        class: App\Repository\Orm\CheckoutSessionRepository
+
     App\Repository\WebhookEndpointRepository:
         arguments:
             $entityRepository: '@app.repository.orm.webhook_endpoint'
