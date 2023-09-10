@@ -1,5 +1,8 @@
+import {CHECKOUT_TRANSLATIONS} from "./portal/checkout";
+
 export const ENGLISH_TRANSLATIONS = {
     portal: {
+        checkout: CHECKOUT_TRANSLATIONS,
         invoice: {
             pay: {
                 title: "Pay",

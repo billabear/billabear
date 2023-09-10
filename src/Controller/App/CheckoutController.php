@@ -15,10 +15,12 @@ namespace App\Controller\App;
 use App\Checkout\CheckoutCreator;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CheckoutDataMapper;
+use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Checkout\CreateCheckout;
 use App\Dto\Response\App\Checkout\ReadCheckout;
 use App\Dto\Response\App\Checkout\ReadCreateCheckoutView;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CheckoutRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -52,12 +54,18 @@ class CheckoutController
         SerializerInterface $serializer,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanDataMapper $subscriptionPlanFactory,
+        BrandSettingsRepositoryInterface $brandSettingsRepository,
+        BrandSettingsDataMapper $brandSettingsDataMapper,
     ) {
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
 
+        $brands = $brandSettingsRepository->getAll();
+        $brandDtos = array_map([$brandSettingsDataMapper, 'createAppDto'], $brands);
+
         $readQuote = new ReadCreateCheckoutView();
         $readQuote->setSubscriptionPlans($subscriptionPlanDtos);
+        $readQuote->setBrands($brandDtos);
         $json = $serializer->serialize($readQuote, 'json');
 
         return new JsonResponse($json, json: true);

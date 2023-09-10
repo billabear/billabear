@@ -26,7 +26,7 @@ class PortalLinkGenerator
 
     public function generatePayLink(Checkout $checkout): string
     {
-        $payLink = $this->urlGenerator->generate('app_public_checkout_readcheckout', ['slug' => $checkout->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH);
+        $payLink = $this->urlGenerator->generate('portal_pay_checkout', ['slug' => $checkout->getSlug()], UrlGeneratorInterface::ABSOLUTE_PATH);
         $fullPayLink = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getSystemUrl().$payLink;
 
         return $fullPayLink;

@@ -18,6 +18,7 @@ use App\Dto\Generic\App\Customer as CustomerAppDto;
 use App\Dto\Generic\Public\Customer as CustomerPublicDto;
 use App\Dto\Request\Api\CreateCustomerDto as ApiCreate;
 use App\Dto\Request\App\CreateCustomerDto as AppCreate;
+use App\Dto\Request\Public\CreateCustomerDto as PublicCreate;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
 use App\Enum\CustomerType;
@@ -59,7 +60,7 @@ class CustomerDataMapper
         return $customer;
     }
 
-    public function createCustomer(ApiCreate|AppCreate $createCustomerDto, Customer $customer = null): Customer
+    public function createCustomer(ApiCreate|AppCreate|PublicCreate $createCustomerDto, Customer $customer = null): Customer
     {
         $address = new Address();
         $address->setStreetLineOne($createCustomerDto->getAddress()?->getStreetLineOne());

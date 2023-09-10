@@ -10,16 +10,21 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Response\Portal\Checkout;
 
-use App\Entity\Checkout;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use App\Dto\Response\Portal\Quote\StripeInfo;
 
-/**
- * @method getById($id, $includeDeleted = false) Checkout
- * @method findById($id) Checkout
- */
-interface CheckoutRepositoryInterface extends CrudRepositoryInterface
+class CustomerCreation
 {
-    public function findBySlug(string $slug): Checkout;
+    protected StripeInfo $stripe;
+
+    public function getStripe(): StripeInfo
+    {
+        return $this->stripe;
+    }
+
+    public function setStripe(StripeInfo $stripe): void
+    {
+        $this->stripe = $stripe;
+    }
 }

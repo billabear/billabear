@@ -21,6 +21,7 @@ use App\Entity\Customer;
 use App\Enum\TaxType;
 use App\Event\CheckoutCreated;
 use App\Invoice\Pricer;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CheckoutRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use Brick\Money\Money;
@@ -36,6 +37,7 @@ class CheckoutCreator
         private PriceRepositoryInterface $priceRepository,
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private CheckoutRepositoryInterface $checkoutRepository,
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private Pricer $pricer,
         private Security $security,
         private EventDispatcherInterface $eventDispatcher,
@@ -60,6 +62,7 @@ class CheckoutCreator
 
         $user = $this->security->getUser();
         $checkout->setCreatedBy($user);
+        $checkout->setBrandSettings($this->brandSettingsRepository->getByCode($createCheckout->getBrand()));
         $checkout->setName($createCheckout->getName());
         $checkout->setPermanent($createCheckout->isPermanent());
         if ($createCheckout->getExpiresAt()) {
@@ -95,6 +98,7 @@ class CheckoutCreator
                 $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
                 $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
             } else {
+                $checkoutLine->setTotal($price->getAsMoney()->getMinorAmount()->toInt());
                 $totalAmount = $this->addAmount($totalAmount, $price->getAsMoney());
             }
 

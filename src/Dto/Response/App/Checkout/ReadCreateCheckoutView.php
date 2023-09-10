@@ -19,6 +19,18 @@ class ReadCreateCheckoutView
     #[SerializedName('subscription_plans')]
     private array $subscriptionPlans = [];
 
+    private array $brands = [];
+
+    public function getBrands(): array
+    {
+        return $this->brands;
+    }
+
+    public function setBrands(array $brands): void
+    {
+        $this->brands = $brands;
+    }
+
     public function getSubscriptionPlans(): array
     {
         return $this->subscriptionPlans;

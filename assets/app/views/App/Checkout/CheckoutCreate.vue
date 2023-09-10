@@ -2,158 +2,170 @@
   <div>
     <h1 class="page-title mb-5">{{ $t('app.checkout.create.title') }}</h1>
 
-    <div class="card-body">
+    <LoadingScreen :ready="ready">
+      <div class="card-body">
 
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="name">
-          {{ $t('app.checkout.create.customer.fields.name') }}
-        </label>
-        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
-        <input type="text" class="form-field" v-model="checkout.name" />
-        <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.name') }}</p>
-      </div>
-
-
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="permanent">
-          {{ $t('app.checkout.create.customer.fields.permanent') }}
-        </label>
-        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.permanent }}</p>
-        <input type="checkbox" class="form-field" v-model="checkout.permanent" />
-        <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.permanent') }}</p>
-      </div>
-      <div class="form-field-ctn" v-if="checkout.permanent">
-        <label class="form-field-lbl" for="slug">
-          {{ $t('app.checkout.create.customer.fields.slug') }}
-        </label>
-        <p class="form-field-error" v-if="errors.slug != undefined">{{ errors.slug }}</p>
-        <input type="text" class="form-field" v-model="checkout.slug" />
-        <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.slug') }}</p>
-      </div>
-      <div class="form-field-ctn">
-
-        <label class="form-field-lbl" for="customer">
-          {{ $t('app.checkout.create.customer.fields.customer') }}
-        </label>
-        <p class="form-field-error" v-if="errors.customer != undefined">{{ errors.customer }}</p>
-        <Autocomplete
-            display-key="email"
-            search-key="email"
-            rest-endpoint="/app/customer"
-            v-model="checkout.customer"
-            :blur-callback="blurCallback" />
-        <SubmitButton :in-progress="send_create_customer" @click="createCustomer" v-if="create_customer">{{ $t('app.checkout.create.customer.create_customer') }}</SubmitButton>
-        <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.customer') }}</p>
-      </div>
-
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="name">
-          {{ $t('app.checkout.create.customer.fields.currency') }}
-        </label>
-        <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
-        <CurrencySelect v-model="checkout.currency" />
-        <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.currency') }}</p>
-      </div>
-    </div>
-
-    <div class="card-body mt-5">
-        <div class="grid grid-cols-2">
-          <div><h2 class="mb-3">{{ $t('app.checkout.create.subscriptions.title') }}</h2></div>
-          <div class="text-right"><button class="btn--main" @click="addSubscriptionPlan">{{ $t('app.checkout.create.subscriptions.add_subscription') }}</button></div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.checkout.create.customer.fields.name') }}
+          </label>
+          <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
+          <input type="text" class="form-field" v-model="checkout.name" />
+          <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.name') }}</p>
         </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="brand">
+            {{ $t('app.checkout.create.customer.fields.brand') }}
+          </label>
+          <p class="form-field-error" v-if="errors.brand != undefined">{{ errors.brand }}</p>
+          <select class="form-field" id="brand" v-model="checkout.brand">
+            <option v-for="brand in brands" :value="brand.code">{{ brand.name }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.brand') }}</p>
+        </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="permanent">
+            {{ $t('app.checkout.create.customer.fields.permanent') }}
+          </label>
+          <p class="form-field-error" v-if="errors.name != undefined">{{ errors.permanent }}</p>
+          <input type="checkbox" class="form-field" v-model="checkout.permanent" />
+          <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.permanent') }}</p>
+        </div>
+        <div class="form-field-ctn" v-if="checkout.permanent">
+          <label class="form-field-lbl" for="slug">
+            {{ $t('app.checkout.create.customer.fields.slug') }}
+          </label>
+          <p class="form-field-error" v-if="errors.slug != undefined">{{ errors.slug }}</p>
+          <input type="text" class="form-field" v-model="checkout.slug" />
+          <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.slug') }}</p>
+        </div>
+        <div class="form-field-ctn">
+
+          <label class="form-field-lbl" for="customer">
+            {{ $t('app.checkout.create.customer.fields.customer') }}
+          </label>
+          <p class="form-field-error" v-if="errors.customer != undefined">{{ errors.customer }}</p>
+          <Autocomplete
+              display-key="email"
+              search-key="email"
+              rest-endpoint="/app/customer"
+              v-model="checkout.customer"
+              :blur-callback="blurCallback" />
+          <SubmitButton :in-progress="send_create_customer" @click="createCustomer" v-if="create_customer">{{ $t('app.checkout.create.customer.create_customer') }}</SubmitButton>
+          <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.customer') }}</p>
+        </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.checkout.create.customer.fields.currency') }}
+          </label>
+          <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
+          <CurrencySelect v-model="checkout.currency" />
+          <p class="form-field-help">{{ $t('app.checkout.create.customer.help_info.currency') }}</p>
+        </div>
+      </div>
+
+      <div class="card-body mt-5">
+          <div class="grid grid-cols-2">
+            <div><h2 class="mb-3">{{ $t('app.checkout.create.subscriptions.title') }}</h2></div>
+            <div class="text-right"><button class="btn--main" @click="addSubscriptionPlan">{{ $t('app.checkout.create.subscriptions.add_subscription') }}</button></div>
+          </div>
+          <table class="list-table">
+            <thead>
+            <tr>
+              <th>{{ $t('app.checkout.create.subscriptions.list.subscription_plan') }}</th>
+              <th>{{ $t('app.checkout.create.subscriptions.list.per_seat')}}</th>
+              <th>{{ $t('app.checkout.create.subscriptions.list.price')}}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody v-if="checkout.subscription_plans.length === 0">
+              <tr>
+                <td colspan="3" class="text-center">{{ $t('app.quotes.create.subscriptions.no_subscriptions') }}</td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr v-for="(plan, key) in checkout.subscription_plans">
+                <td>
+                  <select class="form-field" v-model="plan.plan">
+                    <option v-for="subscriptionPlan in this.plans" :value="subscriptionPlan">{{ subscriptionPlan.name }}</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" class="form-field" :disabled="plan.plan.per_seat === undefined ||  plan.plan.per_seat !== true" v-model="plan.seat_number" />
+                </td>
+                <td>
+
+                  <select class="form-field" v-model="plan.price">
+                    <option v-for="price in getPrices(plan.plan.prices)" :value="price">{{ displayCurrency(price.amount) }}/{{ price.schedule }}</option>
+                  </select>
+                </td>
+                <td><button class="btn--danger" @click="deleteSubscription(key)"><i class="fa-solid fa-trash"></i></button> </td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+
+      <div class="card-body mt-5">
+        <div class="grid grid-cols-2">
+          <div><h2 class="mb-3">{{ $t('app.checkout.create.items.title') }}</h2></div>
+          <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.checkout.create.items.add_item') }}</button></div>
+        </div>
+
         <table class="list-table">
           <thead>
           <tr>
-            <th>{{ $t('app.checkout.create.subscriptions.list.subscription_plan') }}</th>
-            <th>{{ $t('app.checkout.create.subscriptions.list.per_seat')}}</th>
-            <th>{{ $t('app.checkout.create.subscriptions.list.price')}}</th>
+            <th>{{ $t('app.checkout.create.items.list.description') }}</th>
+            <th>{{ $t('app.checkout.create.items.list.amount') }}</th>
+            <th>{{ $t('app.checkout.create.items.list.tax_included') }}</th>
+            <th>{{ $t('app.checkout.create.items.list.tax_type') }}</th>
             <th></th>
           </tr>
           </thead>
-          <tbody v-if="checkout.subscription_plans.length === 0">
+          <tbody v-if="checkout.items.length === 0">
             <tr>
-              <td colspan="3" class="text-center">{{ $t('app.quotes.create.subscriptions.no_subscriptions') }}</td>
+              <td colspan="5" class="text-center">{{ $t('app.quotes.create.items.no_items') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
-            <tr v-for="(plan, key) in checkout.subscription_plans">
-              <td>
-                <select class="form-field" v-model="plan.plan">
-                  <option v-for="subscriptionPlan in this.plans" :value="subscriptionPlan">{{ subscriptionPlan.name }}</option>
-                </select>
-              </td>
-              <td>
-                <input type="number" class="form-field" :disabled="plan.plan.per_seat === undefined ||  plan.plan.per_seat !== true" v-model="plan.seat_number" />
-              </td>
+            <tr v-for="(item, key) in checkout.items">
               <td>
 
-                <select class="form-field" v-model="plan.price">
-                  <option v-for="price in getPrices(plan.plan.prices)" :value="price">{{ displayCurrency(price.amount) }}/{{ price.schedule }}</option>
+                <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].description !== undefined">{{ errors.items[key].description }}</p>
+                <input type="text" class="form-field" v-model="item.description" />
+              </td>
+              <td>
+                <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].amount !== undefined">{{ errors.items[key].amount }}</p>
+                <input type="number" class="form-field" v-model="item.amount" >
+              </td>
+              <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
+              <td>
+                <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].taxType != undefined">{{ errors.items[key].taxType }}</p>
+                <select class="form-field" id="name" v-model="item.tax_type">
+                  <option value="digital_goods">{{ $t('app.checkout.create.items.tax_types.digital_goods') }}</option>
+                  <option value="digital_services">{{ $t('app.checkout.create.items.tax_types.digital_services') }}</option>
+                  <option value="physical">{{ $t('app.checkout.create.items.tax_types.physical') }}</option>
                 </select>
               </td>
-              <td><button class="btn--danger" @click="deleteSubscription(key)"><i class="fa-solid fa-trash"></i></button> </td>
+              <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
             </tr>
           </tbody>
-      </table>
-    </div>
-
-    <div class="card-body mt-5">
-      <div class="grid grid-cols-2">
-        <div><h2 class="mb-3">{{ $t('app.checkout.create.items.title') }}</h2></div>
-        <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.checkout.create.items.add_item') }}</button></div>
+        </table>
       </div>
 
-      <table class="list-table">
-        <thead>
-        <tr>
-          <th>{{ $t('app.checkout.create.items.list.description') }}</th>
-          <th>{{ $t('app.checkout.create.items.list.amount') }}</th>
-          <th>{{ $t('app.checkout.create.items.list.tax_included') }}</th>
-          <th>{{ $t('app.checkout.create.items.list.tax_type') }}</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody v-if="checkout.items.length === 0">
-          <tr>
-            <td colspan="5" class="text-center">{{ $t('app.quotes.create.items.no_items') }}</td>
-          </tr>
-        </tbody>
-        <tbody v-else>
-          <tr v-for="(item, key) in checkout.items">
-            <td>
+      <div class="alert-error mt-5" v-if="errors.main_error">
+        {{ errors.main_error }}
+      </div>
 
-              <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].description !== undefined">{{ errors.items[key].description }}</p>
-              <input type="text" class="form-field" v-model="item.description" />
-            </td>
-            <td>
-              <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].amount !== undefined">{{ errors.items[key].amount }}</p>
-              <input type="number" class="form-field" v-model="item.amount" >
-            </td>
-            <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
-            <td>
-              <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].taxType != undefined">{{ errors.items[key].taxType }}</p>
-              <select class="form-field" id="name" v-model="item.tax_type">
-                <option value="digital_goods">{{ $t('app.checkout.create.items.tax_types.digital_goods') }}</option>
-                <option value="digital_services">{{ $t('app.checkout.create.items.tax_types.digital_services') }}</option>
-                <option value="physical">{{ $t('app.checkout.create.items.tax_types.physical') }}</option>
-              </select>
-            </td>
-            <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="alert-error mt-5" v-if="errors.main_error">
-      {{ errors.main_error }}
-    </div>
-
-    <div class="mt-5">
-      <SubmitButton :in-progress="send_checkout" class="btn--main" @click="createInvoice('checkout')">{{ $t('app.checkout.create.create_quote') }}</SubmitButton>
-    </div>
-    <div class="mt-1" v-if="success">
-      {{ $t('app.checkout.create.success_message') }}
-    </div>
+      <div class="mt-5">
+        <SubmitButton :in-progress="send_checkout" class="btn--main" @click="createInvoice('checkout')">{{ $t('app.checkout.create.create_quote') }}</SubmitButton>
+      </div>
+      <div class="mt-1" v-if="success">
+        {{ $t('app.checkout.create.success_message') }}
+      </div>
+    </LoadingScreen>
   </div>
 </template>
 
@@ -168,6 +180,7 @@ export default {
   components: {CurrencySelect, Autocomplete},
   data() {
     return {
+      brands: [],
       errors: {items: []},
       checkout: {
         name: null,
@@ -184,11 +197,14 @@ export default {
       send_create_customer: false,
       plans: [],
       success: false,
+      ready: false
     }
   },
   mounted() {
     axios.get("/app/checkout/create").then(response => {
+      this.ready = true;
       this.plans = response.data.subscription_plans;
+      this.brands = response.data.brands;
     })
   },
   watch: {
@@ -348,6 +364,7 @@ export default {
         items: items,
         expires_at: this.checkout.expires_at,
         slug: this.checkout.slug,
+        brand: this.checkout.brand,
       }
 
       axios.post("/app/checkout/create", payload).then(response => {

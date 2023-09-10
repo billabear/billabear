@@ -1,4 +1,4 @@
-Feature: Create Checkout
+Feature: View checkout
 
   Background:
     Given the following accounts exist:
@@ -51,17 +51,14 @@ Feature: Create Checkout
       | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         |
       | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
       | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |
-    And the follow brands exist:
-      | Name    | Code    | Email               |
-      | Example | example | example@example.org |
 
-  Scenario: Create Checkout
+  Scenario: View Checkout
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    And I start creating a checkout called "Test"
-    And I add a subscription to "Test Two" at 1000 in "USD" per "week" to checkout
-    And I add a one-off fee of 3000 in "USD" for "Setup Fee"
-    And I set the brand for the checkout as "Example"
-    And I set the checkout to be permanent
-    When I create the checkout
-    Then there should be a permanent checkout called "Test"
-    And the checkout "Test" should have a payment amount of 4000 "USD"
+    And a permanent checkout called "Test" exists in "USD":
+      | Description | Total | Sub Total | Vat Total |
+      | Setup costs | 12000 | 8000      | 4000      |
+    When I submit the customer in the portal checkout for "Test"
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+    Then there should be a customer for "customer@example.org"
+    And the response should have the stripe config

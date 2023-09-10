@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\Checkout;
 
+use App\Validator\Constraints\BrandCodeExists;
 use App\Validator\Constraints\CustomerExists;
 use App\Validator\Constraints\SamePaymentSchedule;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -22,6 +23,11 @@ class CreateCheckout
     #[Assert\NotBlank()]
     #[Assert\Type('string')]
     private $name;
+
+    #[Assert\NotBlank()]
+    #[SerializedName('brand')]
+    #[BrandCodeExists]
+    private $brand;
 
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
@@ -124,5 +130,15 @@ class CreateCheckout
     public function setSlug($slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    public function setBrand($brand): void
+    {
+        $this->brand = $brand;
     }
 }

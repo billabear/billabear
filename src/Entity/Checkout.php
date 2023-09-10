@@ -36,6 +36,9 @@ class Checkout
     #[ORM\Column(type: 'boolean')]
     private bool $permanent;
 
+    #[ORM\ManyToOne(targetEntity: BrandSettings::class)]
+    private BrandSettings $brandSettings;
+
     #[ORM\Column(type: 'string')]
     private string $slug;
 
@@ -255,5 +258,15 @@ class Checkout
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function getBrandSettings(): BrandSettings
+    {
+        return $this->brandSettings;
+    }
+
+    public function setBrandSettings(BrandSettings $brandSettings): void
+    {
+        $this->brandSettings = $brandSettings;
     }
 }

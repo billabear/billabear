@@ -12,8 +12,20 @@
 
 namespace App\Repository;
 
+use App\Entity\Checkout;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CheckoutRepository extends DoctrineCrudRepository implements CheckoutRepositoryInterface
 {
+    public function findBySlug(string $slug): Checkout
+    {
+        $checkout = $this->entityRepository->findOneBy(['slug' => $slug]);
+
+        if (!$checkout instanceof Checkout) {
+            throw new NoEntityFoundException(sprintf("Didn't find a checkout for slug '%s'", $slug));
+        }
+
+        return $checkout;
+    }
 }

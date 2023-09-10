@@ -12,8 +12,10 @@
 
 namespace App\Tests\Behat\Checkout;
 
+use App\Entity\BrandSettings;
 use App\Entity\Checkout;
 use App\Entity\Customer;
+use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\CheckoutRepository;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
@@ -44,6 +46,7 @@ class MainContext implements Context
         private QuoteRepository $quoteRepository,
         private CheckoutRepository $checkoutRepository,
         private UserRepository $userRepository,
+        private BrandSettingsRepository $brandSettingsRepository,
     ) {
     }
 
@@ -53,6 +56,7 @@ class MainContext implements Context
     private array $items = [];
     private ?\DateTime $expiresAt = null;
     private bool $permanent = false;
+    private ?BrandSettings $brandSettings = null;
 
     /**
      * @BeforeScenario
@@ -66,6 +70,7 @@ class MainContext implements Context
         $this->expiresAt = null;
         $this->dueAt = null;
         $this->permanent = false;
+        $this->brandSettings = null;
     }
 
     /**
@@ -115,6 +120,20 @@ class MainContext implements Context
     }
 
     /**
+     * @Given I set the brand for the checkout as :arg1
+     */
+    public function iSetTheBrandForTheCheckoutAs($brand)
+    {
+        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $brand]);
+
+        if (!$brand instanceof BrandSettings) {
+            throw new \Exception('No brand found');
+        }
+
+        $this->brandSettings = $brand;
+    }
+
+    /**
      * @Given I set the checkout to be permanent
      */
     public function iSetTheCheckoutToBePermanent()
@@ -138,6 +157,7 @@ class MainContext implements Context
             'items' => [],
             'due_date' => $this->expiresAt?->format(\DATE_RFC3339_EXTENDED),
             'permanent' => $this->permanent,
+            'brand' => $this->brandSettings?->getCode(),
         ];
 
         foreach ($this->subscriptions as $subscription) {
@@ -213,6 +233,8 @@ class MainContext implements Context
         $checkout->setName($name);
         $checkout->setSlug(bin2hex(random_bytes(42)));
         $checkout->setPermanent(true);
+        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => 'Default']);
+        $checkout->setBrandSettings($brand);
 
         $total = 0;
         $subTotal = 0;
@@ -253,6 +275,34 @@ class MainContext implements Context
     }
 
     /**
+     * @When I submit the customer in the portal checkout for :arg1
+     */
+    public function iSubmitTheCustomerInThePortalCheckoutFor($checkoutName, TableNode $table)
+    {
+        $checkout = $this->getCheckoutByName($checkoutName);
+
+        $row = $table->getRowsHash();
+        $this->sendJsonRequest('POST', '/public/checkout/'.$checkout->getSlug().'/customer', [
+            'email' => $row['Email'],
+            'address' => [
+                'country' => $row['Country'],
+            ],
+        ]);
+    }
+
+    /**
+     * @Then the response should have the stripe config
+     */
+    public function theResponseShouldHaveTheStripeConfig()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['stripe'])) {
+            throw new \Exception('No stripe data');
+        }
+    }
+
+    /**
      * @When I view the checkout list in the APP
      */
     public function iViewTheCheckoutListInTheApp()
@@ -274,6 +324,28 @@ class MainContext implements Context
         }
 
         throw new \Exception("Can't find such a checkout");
+    }
+
+    /**
+     * @When I view the portal checkout for :arg1
+     */
+    public function iViewThePortalCheckoutFor($checkoutName)
+    {
+        $checkout = $this->getCheckoutByName($checkoutName);
+
+        $this->sendJsonRequest('GET', '/public/checkout/'.$checkout->getSlug().'/view');
+    }
+
+    /**
+     * @Then I will see a checkout
+     */
+    public function iWillSeeACheckout()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['checkout'])) {
+            throw new \Exception("Can't find checkout");
+        }
     }
 
     /**
