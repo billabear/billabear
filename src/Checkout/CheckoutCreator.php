@@ -132,6 +132,7 @@ class CheckoutCreator
                 $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
                 $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
             } else {
+                $checkoutLine->setTotal($money->getMinorAmount()->toInt());
                 $totalAmount = $this->addAmount($totalAmount, $money);
             }
 
