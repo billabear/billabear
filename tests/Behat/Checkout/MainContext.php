@@ -220,11 +220,85 @@ class MainContext implements Context
         $checkout = $this->checkoutRepository->findOneBy(['name' => $name]);
 
         if (!$checkout instanceof Checkout) {
-            var_dump($this->session->getPage()->getContent());
             throw new \Exception('No checkout found');
         }
+        $this->checkoutRepository->getEntityManager()->refresh($checkout);
 
         return $checkout;
+    }
+
+    /**
+     * @Given a temporary checkout called :arg1 exists in :arg2:
+     */
+    public function aTemporaryCheckoutCalledExistsIn($name, $currency, TableNode $table)
+    {
+        $checkout = new Checkout();
+        $checkout->setName($name);
+        $checkout->setSlug(bin2hex(random_bytes(42)));
+        $checkout->setPermanent(false);
+        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => 'Default']);
+        $checkout->setBrandSettings($brand);
+
+        $total = 0;
+        $subTotal = 0;
+        $vatTotal = 0;
+        $lines = [];
+
+        $billingAdmin = $this->userRepository->findOneBy([]);
+        $checkout->setCreatedBy($billingAdmin);
+
+        foreach ($table->getColumnsHash() as $row) {
+            $total += $row['Total'];
+            $subTotal += $row['Sub Total'];
+            $vatTotal += $row['Vat Total'];
+
+            $checkoutLine = new \App\Entity\CheckoutLine();
+            $checkoutLine->setCheckout($checkout);
+            $checkoutLine->setCurrency($currency);
+            $checkoutLine->setDescription($row['Description']);
+            $checkoutLine->setTotal(intval($row['Total']));
+            $checkoutLine->setSubTotal(intval($row['Sub Total']));
+            $checkoutLine->setTaxTotal(intval($row['Vat Total']));
+            $checkoutLine->setIncludeTax('true' === strtolower($row['Include Tax'] ?? 'false'));
+
+            $lines[] = $checkoutLine;
+        }
+
+        $checkout->setLines($lines);
+        $checkout->setAmountDue($total);
+        $checkout->setTotal($total);
+        $checkout->setSubTotal($subTotal);
+        $checkout->setTaxTotal($vatTotal);
+        $checkout->setCurrency($currency);
+        $checkout->setCreatedAt(new \DateTime());
+        $checkout->setUpdatedAt(new \DateTime());
+
+        $this->quoteRepository->getEntityManager()->persist($checkout);
+        $this->quoteRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When the checkout :arg1 will not be valid
+     */
+    public function theCheckoutWillNotBeValid($name)
+    {
+        $checkout = $this->getCheckoutByName($name);
+
+        if ($checkout->isValid()) {
+            throw new \Exception('The checkout is still valid');
+        }
+    }
+
+    /**
+     * @When the checkout :arg1 will be valid
+     */
+    public function theCheckoutWillBeValid($name)
+    {
+        $checkout = $this->getCheckoutByName($name);
+
+        if (!$checkout->isValid()) {
+            throw new \Exception('The checkout is not still valid');
+        }
     }
 
     /**

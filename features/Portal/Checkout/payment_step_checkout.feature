@@ -52,7 +52,7 @@ Feature: View checkout
       | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
       | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |
 
-  Scenario: View Checkout
+  Scenario: Pay permanent Checkout
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And a permanent checkout called "Test" exists in "USD":
       | Description | Total | Sub Total | Vat Total | Include Tax |
@@ -62,3 +62,16 @@ Feature: View checkout
       | Country            | DE                   |
     When I enter the payment details in the portal checkout for "Test"
     And the payment amount stats for the day should be 12000 in the currency "USD"
+    And the checkout "Test" will be valid
+
+  Scenario: Pay temporary Checkout
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And a temporary checkout called "Test" exists in "USD":
+      | Description | Total | Sub Total | Vat Total | Include Tax |
+      | Setup costs | 12000 | 8000      | 4000      | True        |
+    And I submit the customer in the portal checkout for "Test"
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+    When I enter the payment details in the portal checkout for "Test"
+    And the payment amount stats for the day should be 12000 in the currency "USD"
+    And the checkout "Test" will not be valid

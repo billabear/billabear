@@ -147,6 +147,11 @@ class CheckoutController
             foreach ($invoice->getSubscriptions() as $subscription) {
                 $eventDispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
             }
+
+            if (!$checkout->isPermanent()) {
+                $checkout->setValid(false);
+                $checkoutRepository->save($checkout);
+            }
         }
 
         return new JsonResponse(['success' => $success]);
