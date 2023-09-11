@@ -12,12 +12,11 @@
 
 namespace App\Quotes;
 
+use App\Entity\ConvertableToInvoiceInterface;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
-use App\Entity\Quote;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
 use App\Repository\InvoiceRepositoryInterface;
-use App\Repository\QuoteRepositoryInterface;
 use App\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
 
@@ -26,12 +25,11 @@ class QuoteConverter
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,
         private SubscriptionFactory $subscriptionFactory,
-        private QuoteRepositoryInterface $quoteRepository,
         private InvoiceNumberGeneratorProvider $provider,
     ) {
     }
 
-    public function convertToInvoice(Quote $quote): Invoice
+    public function convertToInvoice(ConvertableToInvoiceInterface $quote): Invoice
     {
         $customer = $quote->getCustomer();
         $subscriptions = [];
@@ -94,7 +92,6 @@ class QuoteConverter
         $quote->setPaid(true);
         $quote->setPaidAt(new \DateTime('now'));
 
-        $this->quoteRepository->save($quote);
         $this->invoiceRepository->save($invoice);
 
         return $invoice;

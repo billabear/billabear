@@ -14,8 +14,10 @@ namespace App\Dto\Response\Portal\Checkout;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class UpdatedCheckoutAmounts
+class CheckoutSession
 {
+    private string $id;
+
     #[SerializedName('amount_due')]
     private int $amountDue;
 
@@ -26,6 +28,16 @@ class UpdatedCheckoutAmounts
     private int $subTotal;
 
     private string $currency;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getAmountDue(): int
     {

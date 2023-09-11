@@ -294,6 +294,17 @@ class MainContext implements Context
     }
 
     /**
+     * @When I enter the payment details in the portal checkout for :arg1
+     */
+    public function iEnterThePaymentDetailsInThePortalCheckoutFor($checkoutName)
+    {
+        $data = $this->getJsonContent();
+        $checkout = $this->getCheckoutByName($checkoutName);
+
+        $this->sendJsonRequest('POST', '/public/checkout/'.$checkout->getSlug().'/pay', ['checkout_session' => $data['checkout_session']['id'], 'token' => bin2hex(random_bytes(12))]);
+    }
+
+    /**
      * @Then the response should have the stripe config
      */
     public function theResponseShouldHaveTheStripeConfig()

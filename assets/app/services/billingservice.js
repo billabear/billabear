@@ -9,8 +9,12 @@ function saveToken(customerId, token) {
 }
 function portalPay(invoiceId, token) {
     return axios.post("/public/invoice/"+invoiceId+"/pay", {token}).then(handleResponse);
-}function portalQuotePay(invoiceId, token) {
-    return axios.post("/public/quote/"+invoiceId+"/pay", {token}).then(handleResponse);
+}
+function portalQuotePay(quoteId, token) {
+    return axios.post("/public/quote/"+quoteId+"/pay", {token}).then(handleResponse);
+}
+function portalCheckoutPay(slug, checkout_session, token) {
+    return axios.post("/public/checkout/"+slug+"/pay", {checkout_session, token}).then(handleResponse);
 }
 
 function getAddress() {
@@ -38,4 +42,5 @@ export const billingservice = {
     deletePaymentDetails,
     portalPay,
     portalQuotePay,
+    portalCheckoutPay,
 }

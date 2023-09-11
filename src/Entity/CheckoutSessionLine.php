@@ -21,7 +21,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'checkout_session_line')]
-class CheckoutSessionLine
+class CheckoutSessionLine implements ConvertableToInvoiceLineInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -101,32 +101,32 @@ class CheckoutSessionLine
         $this->currency = $currency;
     }
 
-    public function getTotal(): ?int
+    public function getTotal(): int
     {
         return $this->total;
     }
 
-    public function setTotal(?int $total): void
+    public function setTotal(int $total): void
     {
         $this->total = $total;
     }
 
-    public function getSubTotal(): ?int
+    public function getSubTotal(): int
     {
         return $this->subTotal;
     }
 
-    public function setSubTotal(?int $subTotal): void
+    public function setSubTotal(int $subTotal): void
     {
         $this->subTotal = $subTotal;
     }
 
-    public function getTaxTotal(): ?int
+    public function getTaxTotal(): int
     {
         return $this->taxTotal;
     }
 
-    public function setTaxTotal(?int $taxTotal): void
+    public function setTaxTotal(int $taxTotal): void
     {
         $this->taxTotal = $taxTotal;
     }

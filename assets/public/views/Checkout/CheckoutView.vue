@@ -6,8 +6,8 @@
     <div class="grid grid-cols-2 gap-4">
 
       <div class="mt-5 rounded-xl basket-container">
-        <h2 class="text-4xl">{{ displayCurrency(amounts.amount_due) }} {{ checkout.currency }}</h2>
-        <h3 class="text-2xl" v-if="amounts.tax_total !== null">{{ $t('portal.checkout.total', {amount: displayCurrency(amounts.tax_total), currency: checkout.currency}) }}</h3>
+        <h2 class="text-4xl">{{ displayCurrency(checkout_session.amount_due) }} {{ checkout.currency }}</h2>
+        <h3 class="text-2xl" v-if="checkout_session.tax_total !== null">{{ $t('portal.checkout.total', {amount: displayCurrency(checkout_session.tax_total), currency: checkout.currency}) }}</h3>
 
         <h3 class="text-xl mt-5 mb-2">{{ $t('portal.checkout.items.title') }}</h3>
         <div v-for="line in checkout.lines" class="item-line">
@@ -23,7 +23,7 @@
               {{ $t('portal.checkout.customer.fields.email') }}
             </label>
             <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
-            <input type="email" class="form-field-input" id="email" v-model="customer.email" />
+            <input type="email" class="form-field-input w-full" id="email" v-model="customer.email" />
           </div>
 
           <div class="form-field-ctn">
@@ -31,7 +31,7 @@
               {{ $t('portal.checkout.customer.fields.country') }}
             </label>
             <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
-            <input type="text" class="form-field-input" id="country"  v-model="customer.address.country"  />
+            <CountrySelect class="form-field-input w-full"  v-model="customer.address.country" />
           </div>
 
           <div class="form-field-ctn mt-2">
@@ -43,6 +43,12 @@
           <h2 class="text-xl mb-5">{{ $t('portal.checkout.payment.title') }}</h2>
           <div id="cardInput" class="my-5"></div>
           <div id="cardError"></div>
+          <SubmitButton :in-progress="sending" class="w-full btn--main" @click="createPayment">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
+        </div>
+        <div v-else>
+          <h2 class="text-xl mb-5">{{ $t('portal.checkout.success.title') }}</h2>
+
+          <p>{{ $t('portal.checkout.success.message') }}</p>
         </div>
 
 
@@ -55,9 +61,12 @@
 import axios from "axios";
 import {stripeservice} from "../../../app/services/stripeservice";
 import currency from "currency.js";
+import CountrySelect from "../../../app/components/app/Forms/CountrySelect.vue";
+import {billingservice} from "../../../app/services/billingservice";
 
 export default {
   name: "CheckoutView",
+  components: {CountrySelect},
   data() {
     return {
       stage: 'customer',
@@ -68,7 +77,8 @@ export default {
       sending: false,
       stripe: null,
       stripeConfig: {},
-      amounts: {
+      checkout_session: {
+        id: null,
         amount_due: null,
         tax_total: null,
         sub_total: null,
@@ -81,9 +91,9 @@ export default {
 
     axios.get("/public/checkout/"+slug+"/view").then(response => {
       this.checkout = response.data.checkout;
-      this.amounts.amount_due = this.checkout.total;
-      this.amounts.tax_total = this.checkout.tax_total;
-      this.amounts.sub_total = this.checkout.sub_total;
+      this.checkout_session.amount_due = this.checkout.total;
+      this.checkout_session.tax_total = this.checkout.tax_total;
+      this.checkout_session.sub_total = this.checkout.sub_total;
     }).catch(error => {
       if (error.response !== undefined && error.response.status === 404) {
         this.not_found = true;
@@ -108,16 +118,34 @@ export default {
       axios.post("/public/checkout/"+slug+"/customer", this.customer).then(response => {
         this.stage = 'payment';
         this.stripeConfig = response.data.stripe;
-        this.amounts.amount_due = response.data.amounts.amount_due;
-        this.amounts.tax_total = response.data.amounts.tax_total;
-        this.amounts.sub_total = response.data.amounts.sub_total;
+        this.checkout_session = response.data.checkout_session;
         this.ready = true;
         this.stripe = Stripe(this.stripeConfig.key);
+        this.sending = false;
         var that = this;
         setTimeout(()=> {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
         }, 500)
       })
+    },
+    createPayment: function () {
+      const slug = this.$route.params.slug;
+      this.sending = true;
+      var that = this
+      stripeservice.sendCard(this.stripe, this.card).then(
+          response => {
+            var token = response.token.id;
+            const hash = this.$route.params.hash;
+            billingservice.portalCheckoutPay(slug, this.checkout_session.id, token).then(response => {
+              if (response.data.success) {
+                that.stage = 'success';
+              } else {
+                this.general_error = true;
+              }
+              that.sending = false;
+            })
+          }
+      )
     }
   }
 }

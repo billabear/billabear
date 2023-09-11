@@ -97,6 +97,7 @@ class QuoteController
         }
         $paymentCard = $addCardByTokenDriver->createPaymentDetailsFromToken($quote->getCustomer(), $processPay->getToken());
         $invoice = $quoteConverter->convertToInvoice($quote);
+        $quoteRepository->save($quote);
         $success = $invoiceCharger->chargeInvoice($invoice, $paymentCard);
         if ($success) {
             foreach ($invoice->getSubscriptions() as $subscription) {

@@ -16,11 +16,12 @@ use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\CustomerInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'checkout_session')]
-class CheckoutSession
+class CheckoutSession implements ConvertableToInvoiceInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -57,6 +58,15 @@ class CheckoutSession
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
+
+    #[ORM\ManyToMany(targetEntity: Subscription::class)]
+    private array|Collection $subscriptions;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $paid = false;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $paidAt = null;
 
     public function getId()
     {
@@ -171,5 +181,35 @@ class CheckoutSession
     public function setCheckout(Checkout $checkout): void
     {
         $this->checkout = $checkout;
+    }
+
+    public function getSubscriptions(): Collection|array
+    {
+        return $this->subscriptions;
+    }
+
+    public function setSubscriptions(Collection|array $subscriptions): void
+    {
+        $this->subscriptions = $subscriptions;
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): void
+    {
+        $this->paid = $paid;
+    }
+
+    public function getPaidAt(): ?\DateTime
+    {
+        return $this->paidAt;
+    }
+
+    public function setPaidAt(?\DateTime $paidAt): void
+    {
+        $this->paidAt = $paidAt;
     }
 }

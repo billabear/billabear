@@ -19,12 +19,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'quote')]
-class Quote
+class Quote implements ConvertableToInvoiceInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -93,7 +94,7 @@ class Quote
         $this->id = $id;
     }
 
-    public function getCustomer(): Customer
+    public function getCustomer(): ?CustomerInterface
     {
         return $this->customer;
     }

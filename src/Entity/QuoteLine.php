@@ -21,7 +21,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'quote_line')]
-class QuoteLine
+class QuoteLine implements ConvertableToInvoiceLineInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]

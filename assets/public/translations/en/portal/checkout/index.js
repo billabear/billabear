@@ -9,6 +9,10 @@ export const CHECKOUT_TRANSLATIONS = {
         total: "Total",
         tax_rate: "Tax Rate",
     },
+    success: {
+        title: "Success",
+        message: "Thanks for your payment!"
+    },
     customer: {
         title: "Customer Information",
         fields: {

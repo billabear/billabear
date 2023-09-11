@@ -10,35 +10,34 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Response\Portal\Checkout;
+namespace App\Dto\Request\Public\Checkout;
 
-use App\Dto\Response\Portal\Quote\StripeInfo;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class CustomerCreation
+class PayCheckout
 {
-    protected StripeInfo $stripe;
-
     #[SerializedName('checkout_session')]
-    private CheckoutSession $checkoutSession;
+    private $checkoutSession;
 
-    public function getCheckoutSession(): CheckoutSession
+    private $token;
+
+    public function getCheckoutSession()
     {
         return $this->checkoutSession;
     }
 
-    public function setCheckoutSession(CheckoutSession $checkoutSession): void
+    public function setCheckoutSession($checkoutSession): void
     {
         $this->checkoutSession = $checkoutSession;
     }
 
-    public function getStripe(): StripeInfo
+    public function getToken()
     {
-        return $this->stripe;
+        return $this->token;
     }
 
-    public function setStripe(StripeInfo $stripe): void
+    public function setToken($token): void
     {
-        $this->stripe = $stripe;
+        $this->token = $token;
     }
 }
