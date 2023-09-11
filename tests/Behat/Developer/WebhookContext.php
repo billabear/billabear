@@ -187,6 +187,30 @@ class WebhookContext implements Context
     }
 
     /**
+     * @Then there should be a webhook event for customer created
+     */
+    public function thereShouldBeAWebhookEventForCustomerCreated()
+    {
+        $entity = $this->webhookEventRepository->findOneBy(['type' => WebhookEventType::CUSTOMER_CREATED]);
+
+        if (!$entity) {
+            throw new \Exception("Can't find event");
+        }
+    }
+
+    /**
+     * @Then there should not be a webhook event for customer created
+     */
+    public function thereShouldNotBeAWebhookEventForCustomerCreated()
+    {
+        $entity = $this->webhookEventRepository->findOneBy(['type' => WebhookEventType::CUSTOMER_CREATED]);
+
+        if ($entity) {
+            throw new \Exception('found event');
+        }
+    }
+
+    /**
      * @Then there should be a webhook event for start subscription
      */
     public function thereShouldBeAWebhookEventForStartSubscription()

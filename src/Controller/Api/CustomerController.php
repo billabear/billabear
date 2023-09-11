@@ -22,6 +22,8 @@ use App\Entity\Customer;
 use App\Enum\CustomerStatus;
 use App\Repository\CustomerRepositoryInterface;
 use App\Stats\CustomerCreationStats;
+use App\Webhook\Outbound\EventDispatcherInterface;
+use App\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -46,6 +48,7 @@ class CustomerController
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
+        EventDispatcherInterface $eventProcessor,
     ): Response {
         $this->getLogger()->info('Start create customer API request');
 
@@ -80,6 +83,8 @@ class CustomerController
         $this->getLogger()->info('Customer creation complete');
         $customerRepository->save($customer);
         $customerCreationStats->handleStats($customer);
+
+        $eventProcessor->dispatch(new CustomerCreatedPayload($customer));
 
         $dto = $customerFactory->createApiDto($customer);
         $jsonResponse = $serializer->serialize($dto, 'json');

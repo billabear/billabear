@@ -38,6 +38,7 @@ use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;
 use App\Stats\CustomerCreationStats;
 use App\Webhook\Outbound\EventDispatcherInterface;
+use App\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use App\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -132,6 +133,7 @@ class CustomerController
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
+        EventDispatcherInterface $eventProcessor,
     ): Response {
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
@@ -162,6 +164,8 @@ class CustomerController
         $customerCreationStats->handleStats($customer);
         $dto = $customerFactory->createAppDto($customer);
         $json = $serializer->serialize($dto, 'json');
+
+        $eventProcessor->dispatch(new CustomerCreatedPayload($customer));
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
