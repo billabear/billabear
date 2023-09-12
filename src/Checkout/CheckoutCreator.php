@@ -86,6 +86,7 @@ class CheckoutCreator
             $checkoutLine->setSeatNumber($subscription->getSeatNumber());
             $checkoutLine->setCheckout($checkout);
             $checkoutLine->setTaxType($plan->getProduct()->getTaxType());
+            $checkoutLine->setDescription($plan->getProduct()->getName().' / '.$price->getSchedule());
             if (isset($customer)) {
                 $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);
                 $checkoutLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
