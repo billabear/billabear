@@ -217,7 +217,7 @@ export default {
   methods: {
     getPrices: function (prices) {
       var that = this;
-      return prices.filter(item => item.currency === that.quote.currency);
+      return prices.filter(item => item.currency === that.checkout.currency);
     },
     addSubscriptionPlan: function (){
       this.checkout.subscription_plans.push({
