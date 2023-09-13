@@ -32,5 +32,7 @@ export const CHECKOUT_TRANSLATIONS = {
     payment: {
         title: "Payment",
         submit: "Pay"
-    }
+    },
+    loading: "Loading checkout details",
+    error: "Checkout unavailable"
 }

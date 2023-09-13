@@ -3,55 +3,68 @@
     <div class="w-full mb-5 mt-5">
       <img src="/images/app-logo.png" alt="" class="" width="175" />
     </div>
-    <div class="grid grid-cols-2 gap-4">
+    <div v-if="ready">
+      <div class="grid grid-cols-2 gap-4" v-if="!error_page">
+        <div class="mt-5 rounded-xl basket-container">
+          <h2 class="text-4xl">{{ displayCurrency(checkout_session.amount_due) }} {{ checkout.currency }}</h2>
+          <h3 class="text-2xl" v-if="checkout_session.tax_total !== null">{{ $t('portal.checkout.total', {amount: displayCurrency(checkout_session.tax_total), currency: checkout.currency}) }}</h3>
 
-      <div class="mt-5 rounded-xl basket-container">
-        <h2 class="text-4xl">{{ displayCurrency(checkout_session.amount_due) }} {{ checkout.currency }}</h2>
-        <h3 class="text-2xl" v-if="checkout_session.tax_total !== null">{{ $t('portal.checkout.total', {amount: displayCurrency(checkout_session.tax_total), currency: checkout.currency}) }}</h3>
+          <h3 class="text-xl mt-5 mb-2">{{ $t('portal.checkout.items.title') }}</h3>
+          <div v-for="line in checkout.lines" class="item-line">
+            <p>{{ displayCurrency(line.total) }} {{ line.currency }} - {{ line.description }}</p>
+          </div>
 
-        <h3 class="text-xl mt-5 mb-2">{{ $t('portal.checkout.items.title') }}</h3>
-        <div v-for="line in checkout.lines" class="item-line">
-          <p>{{ displayCurrency(line.total) }} {{ line.currency }} - {{ line.description }}</p>
         </div>
+        <div class="mt-5">
+          <div v-if="stage === 'customer'">
+            <h2 class="text-xl mb-5">{{ $t('portal.checkout.customer.title') }}</h2>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="email">
+                {{ $t('portal.checkout.customer.fields.email') }}
+              </label>
+              <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
+              <input type="email" class="form-field-input w-full" id="email" v-model="customer.email" />
+            </div>
 
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="country">
+                {{ $t('portal.checkout.customer.fields.country') }}
+              </label>
+              <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
+              <CountrySelect class="form-field-input w-full"  v-model="customer.address.country" />
+            </div>
+
+            <div class="form-field-ctn mt-2">
+              <SubmitButton :in-progress="sending" class="w-full btn--main" @click="createCustomer">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
+            </div>
+          </div>
+          <div v-else-if="stage == 'payment'">
+
+            <h2 class="text-xl mb-5">{{ $t('portal.checkout.payment.title') }}</h2>
+            <div id="cardInput" class="my-5"></div>
+            <div id="cardError"></div>
+            <SubmitButton :in-progress="sending" class="w-full btn--main" @click="createPayment">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
+          </div>
+          <div v-else>
+            <h2 class="text-xl mb-5">{{ $t('portal.checkout.success.title') }}</h2>
+
+            <p>{{ $t('portal.checkout.success.message') }}</p>
+          </div>
+
+
+        </div>
       </div>
-      <div class="mt-5">
-        <div v-if="stage === 'customer'">
-          <h2 class="text-xl mb-5">{{ $t('portal.checkout.customer.title') }}</h2>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="email">
-              {{ $t('portal.checkout.customer.fields.email') }}
-            </label>
-            <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
-            <input type="email" class="form-field-input w-full" id="email" v-model="customer.email" />
-          </div>
-
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="country">
-              {{ $t('portal.checkout.customer.fields.country') }}
-            </label>
-            <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
-            <CountrySelect class="form-field-input w-full"  v-model="customer.address.country" />
-          </div>
-
-          <div class="form-field-ctn mt-2">
-            <SubmitButton :in-progress="sending" class="w-full btn--main" @click="createCustomer">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
-          </div>
+      <div v-else>
+        <div class="text-center">
+          <img src="/images/error-bear.png" width="250"  class="m-auto" alt="BillaBear - Loading" />
+          <p class="text-3xl font-bold">{{ $t('portal.checkout.error') }}</p>
         </div>
-        <div v-else-if="stage == 'payment'">
-
-          <h2 class="text-xl mb-5">{{ $t('portal.checkout.payment.title') }}</h2>
-          <div id="cardInput" class="my-5"></div>
-          <div id="cardError"></div>
-          <SubmitButton :in-progress="sending" class="w-full btn--main" @click="createPayment">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
-        </div>
-        <div v-else>
-          <h2 class="text-xl mb-5">{{ $t('portal.checkout.success.title') }}</h2>
-
-          <p>{{ $t('portal.checkout.success.message') }}</p>
-        </div>
-
-
+      </div>
+    </div>
+    <div v-else>
+      <div class="text-center">
+        <img src="/images/bear-with-papers.png" width="250"  class="m-auto" alt="BillaBear - Loading" />
+        <p class="text-3xl font-bold">{{ $t('portal.checkout.loading') }}</p>
       </div>
     </div>
   </div>
@@ -69,6 +82,7 @@ export default {
   components: {CountrySelect},
   data() {
     return {
+      error_page: false,
       stage: 'customer',
       checkout: {},
       customer: {address: {}},
@@ -90,16 +104,18 @@ export default {
     const slug = this.$route.params.slug;
 
     axios.get("/public/checkout/"+slug+"/view").then(response => {
+      this.ready = true;
       this.checkout = response.data.checkout;
       this.checkout_session.amount_due = this.checkout.total;
       this.checkout_session.tax_total = this.checkout.tax_total;
       this.checkout_session.sub_total = this.checkout.sub_total;
     }).catch(error => {
+      this.ready = true;
       if (error.response !== undefined && error.response.status === 404) {
-        this.not_found = true;
+        this.error_page = true;
         return;
       }
-      this.general_error = true;
+      this.error_page = true;
     })
   },
   methods: {
