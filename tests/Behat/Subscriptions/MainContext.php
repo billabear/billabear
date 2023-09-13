@@ -107,6 +107,16 @@ class MainContext implements Context
     }
 
     /**
+     * @When I add :arg2 seat to the suscription for :arg1
+     */
+    public function iAddSeatToTheSuscriptionFor($seatNumber, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/seats/add', ['seats' => intval($seatNumber)]);
+    }
+
+    /**
      * @Then there is a subscription modification to add :arg2 seats to the subscription for :arg1
      */
     public function thereIsASubscriptionModificationToAddSeatsToTheSubscriptionFor($seatNumber, $customerEmail)
@@ -132,6 +142,7 @@ class MainContext implements Context
         $subscription = $this->getSubscription($customerEmail);
 
         if ($subscription->getSeats() !== intval($seatNumber)) {
+            var_dump($this->getJsonContent());
             throw new \Exception(sprintf('Expected %d but got %d', $seatNumber, $subscription->getSeats()));
         }
     }

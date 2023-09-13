@@ -15,6 +15,9 @@ namespace App\Repository;
 use App\Entity\BrandSettings;
 use Parthenon\Billing\Entity\Subscription;
 
+/**
+ * @method findById($id) \App\Entity\Subscription
+ */
 interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\SubscriptionRepositoryInterface
 {
     /**
