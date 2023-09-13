@@ -117,6 +117,34 @@ class MainContext implements Context
     }
 
     /**
+     * @When I remove :arg2 seat to the suscription for :arg1
+     */
+    public function iRemoveSeatToTheSuscriptionFor($seatNumber, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/seats/remove', ['seats' => intval($seatNumber)]);
+    }
+
+    /**
+     * @Then there is a subscription modification to remove :arg2 seats to the subscription for :arg1
+     */
+    public function thereIsASubscriptionModificationToRemoveSeatsToTheSubscriptionFor($seatNumber, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        $modification = $this->subscriptionSeatModificationRepository->findOneBy(['subscription' => $subscription, 'type' => SubscriptionSeatModificationType::REMOVED]);
+
+        if (!$modification instanceof SubscriptionSeatModification) {
+            throw new \Exception('Not found change');
+        }
+
+        if ($modification->getChangeValue() !== intval($seatNumber)) {
+            throw new \Exception(sprintf('Expected %d but got %d', $seatNumber, $modification->getChangeValue()));
+        }
+    }
+
+    /**
      * @Then there is a subscription modification to add :arg2 seats to the subscription for :arg1
      */
     public function thereIsASubscriptionModificationToAddSeatsToTheSubscriptionFor($seatNumber, $customerEmail)
