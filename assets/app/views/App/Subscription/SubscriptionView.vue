@@ -53,6 +53,10 @@
               <dd> {{ $filters.moment(subscription.valid_until, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}
               </dd>
             </div>
+            <div v-if="subscription.plan.per_seat == true">
+              <dt>{{ $t('app.subscription.view.main.seat_number') }}</dt>
+              <dd>{{ subscription.seat_number }}</dd>
+            </div>
           </dl>
         </div>
         <div class="mt-5">
@@ -61,10 +65,6 @@
             <div>
               <dt>{{ $t('app.subscription.view.pricing.price') }}</dt>
               <dd>{{ subscription.price.display_value }}</dd>
-            </div>
-            <div v-if="subscription.plan.per_seat == true">
-              <dt>{{ $t('app.subscription.view.pricing.seat_number') }}</dt>
-              <dd>{{ subscription.seat_number }}</dd>
             </div>
             <div>
               <dt>{{ $t('app.subscription.view.pricing.recurring') }}</dt>

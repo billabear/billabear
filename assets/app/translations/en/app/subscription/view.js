@@ -8,15 +8,15 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         main_external_reference: "Main External Reference",
         created_at: "Created At",
         ended_at: "Ended At",
-        valid_until: "Valid Until"
+        valid_until: "Valid Until",
+        seat_number: "Seat Number"
     },
     pricing: {
         title: "Pricing",
         price: "Price",
         recurring: "Recurring",
         schedule: "Schedule",
-        change: "Change",
-        seat_number: "Seat Number"
+        change: "Change"
     },
     payments: {
         title: "Payments",
