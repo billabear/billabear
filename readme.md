@@ -93,7 +93,7 @@ We sell perpetual licenses for the version that was released on the date of purc
 
 ### How much does BillaBear cost?
 
-To get pricing email sales@billabear.com.
+You can get the pricing information at https://billabear.com/pricing
 
 ### Is it possible to get a hosted version?
 
