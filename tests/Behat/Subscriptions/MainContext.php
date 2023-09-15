@@ -117,6 +117,16 @@ class MainContext implements Context
     }
 
     /**
+     * @When I set the seat number to :arg2 for the suscription for :arg1 in the APP
+     */
+    public function iSetTheSeatNumberToForTheSuscriptionForInTheApp($seatNumber, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        $this->sendJsonRequest('POST', '/app/subscription/'.$subscription->getId().'/seats/set', ['seats' => intval($seatNumber)]);
+    }
+
+    /**
      * @When I remove :arg2 seat to the suscription for :arg1
      */
     public function iRemoveSeatToTheSuscriptionFor($seatNumber, $customerEmail)

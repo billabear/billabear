@@ -9,7 +9,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         created_at: "Created At",
         ended_at: "Ended At",
         valid_until: "Valid Until",
-        seat_number: "Seat Number"
+        seat_number: "Seat Number",
+        change_seat: "Change Seats"
     },
     pricing: {
         title: "Pricing",
@@ -37,6 +38,11 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         payment_method: "Update Payment Details"
     },
     modal: {
+        seats: {
+            seats: "Seats",
+            seats_help: "The number of seats for the plan",
+            submit: "Save"
+        },
         price: {
             price: "New Price",
             price_help: "The new price to be charged at next invoice",

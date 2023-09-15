@@ -55,7 +55,12 @@
             </div>
             <div v-if="subscription.plan.per_seat == true">
               <dt>{{ $t('app.subscription.view.main.seat_number') }}</dt>
-              <dd>{{ subscription.seat_number }}</dd>
+              <dd>
+                {{ subscription.seat_number }}
+                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+                  <button class="btn--main ml-3" @click="showSeatChange">{{ $t('app.subscription.view.main.change_seat') }}</button>
+                </RoleOnlyView>
+              </dd>
             </div>
           </dl>
         </div>
@@ -197,6 +202,35 @@
       </div>
 
     </VueFinalModal>
+
+    <VueFinalModal
+        v-model="seatOptions.modelValue"
+        :teleport-to="seatOptions.teleportTo"
+        :display-directive="seatOptions.displayDirective"
+        :hide-overlay="seatOptions.hideOverlay"
+        :overlay-transition="seatOptions.overlayTransition"
+        :content-transition="seatOptions.contentTransition"
+        :click-to-close="seatOptions.clickToClose"
+        :esc-to-close="seatOptions.escToClose"
+        :background="seatOptions.background"
+        :lock-scroll="seatOptions.lockScroll"
+        :swipe-to-close="priceOptions.swipeToClose"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+
+        <div class="">
+          <label class="form-field-lbl" for="price">
+            {{ $t('app.subscription.view.modal.seats.seats') }}
+          </label>
+          <input type="number" class="form-field" v-model="subscription.seat_number" />
+          <p class="form-field-help">{{ $t('app.subscription.view.modal.seats.seats_help') }}</p>
+        </div>
+        <div class="mt-4">
+          <SubmitButton :in-progress="seatSending" @click="sendSeats">{{ $t('app.subscription.view.modal.seats.submit') }}</SubmitButton>
+        </div>
+    </VueFinalModal>
+
     <VueFinalModal
         v-model="priceOptions.modelValue"
         :teleport-to="priceOptions.teleportTo"
@@ -228,8 +262,8 @@
           <SubmitButton :in-progress="priceSending" @click="sendPrice">{{ $t('app.subscription.view.modal.price.submit') }}</SubmitButton>
         </div>
       </div>
-
     </VueFinalModal>
+
     <VueFinalModal
         v-model="paymentMethodOptions.modelValue"
         :teleport-to="paymentMethodOptions.teleportTo"
@@ -342,6 +376,19 @@ export default {
           errors: {},
           cancelled: false
       },
+      seatOptions: {
+        teleportTo: 'body',
+        modelValue: false,
+        displayDirective: 'if',
+        hideOverlay: false,
+        overlayTransition: 'vfm-fade',
+        contentTransition: 'vfm-fade',
+        clickToClose: true,
+        escToClose: true,
+        background: 'non-interactive',
+        lockScroll: true,
+        swipeToClose: 'none',
+      },
       cancelSending: false,
       planErrors: {},
       planWhen: null,
@@ -406,7 +453,8 @@ export default {
       paymentMethodReady: false,
       paymentMethods: [],
       newPaymentMethod: {},
-      paymentMethodsSending: false
+      paymentMethodsSending: false,
+      seatSending: false,
     };
   },
   mounted() {
@@ -467,6 +515,18 @@ export default {
           this.newPrice = this.subscription.price;
           this.prices = response.data.data;
           this.priceReady = true;
+      })
+    },
+    showSeatChange: function () {
+        this.seatOptions.modelValue = true;
+    },
+    sendSeats: function () {
+
+      var subscriptionId = this.$route.params.subscriptionId
+      this.seatSending = true;
+      axios.post('/app/subscription/' + subscriptionId+'/seats/set', {seats: this.subscription.seat_number}).then(response => {
+        this.seatSending = false;
+        this.seatOptions.modelValue = false;
       })
     },
     sendPrice: function () {
