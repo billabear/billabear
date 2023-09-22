@@ -48,6 +48,9 @@
     json5 "^2.2.2"
     semver "^6.3.0"
 
+"semver@^6.3.1":
+  version "6.3.1"
+
 "@babel/generator@^7.22.5", "@babel/generator@^7.7.2":
   version "7.22.5"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.22.5.tgz#1e7bf768688acfb05cf30b2369ef855e82d984f7"
