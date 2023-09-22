@@ -59,7 +59,7 @@ class SubscriptionCreation
 
         for ($i = 0; $i < $numberOfMonths; ++$i) {
             $elements[] = $currentValue;
-            $currentValue = $currentValue - intval($currentValue * 0.25);
+            $currentValue -= intval($currentValue * 0.25);
         }
 
         for ($i = 0; $i < $numberOfMonths; ++$i) {

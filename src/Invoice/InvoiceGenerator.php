@@ -201,7 +201,7 @@ class InvoiceGenerator
             $line->setInvoice($invoice);
 
             $percentage = $voucherApplication->getVoucher()->getPercentage();
-            $percentage = $percentage / 100;
+            $percentage /= 100;
             $amount = $total->multipliedBy($percentage)->negated();
 
             $vatAmount = $vat->multipliedBy($percentage)->negated();
