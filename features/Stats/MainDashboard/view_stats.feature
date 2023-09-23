@@ -20,3 +20,6 @@ Feature: Customer Subscription Update Payment Method APP
     And I will see there is 5 years of yearly stats
     And I will see there is 12 months of monthly revenue stats for "USD"
     And I will see there is 12 months of monthly revenue stats for "EUR"
+    And I will see the total number of active subscriptions
+    And I will see the total number of active customers
+    And I will see the number of outstanding payments

@@ -19,5 +19,10 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
         title: "Amount Disputed"
     },
     estimated_mrr: "Estimated MRR",
-    estimated_arr: "Estimated ARR"
+    estimated_arr: "Estimated ARR",
+    header: {
+        active_subscriptions: "Active Subscriptions",
+        active_customers: "Active Customers",
+        unpaid_invoices: "Unpaid Invoices"
+    }
 };

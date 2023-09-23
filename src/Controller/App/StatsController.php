@@ -12,10 +12,13 @@
 
 namespace App\Controller\App;
 
+use App\Dto\Response\App\Stats\MainDashboardHeader;
 use App\Dto\Response\App\Stats\MainDashboardStats;
 use App\Entity\Stats\CachedStats;
+use App\Invoice\UnpaidInvoiceStatsProvider;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\Stats\CachedStatsRepositoryInterface;
+use App\Repository\SubscriptionRepositoryInterface;
 use App\Stats\Graphs\ChargeBackAmountStatsProvider;
 use App\Stats\Graphs\PaymentAmountStatsProvider;
 use App\Stats\Graphs\RefundAmountStatsProvider;
@@ -37,11 +40,21 @@ class StatsController
         SubscriptionCountStatsProvider $subscriptionCountStatsProvider,
         SubscriptionCreationStatsProvider $subscriptionCreationStatsProvider,
         SubscriptionCancellationStatsProvider $subscriptionCancellationStatsProvider,
+        SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
         CachedStatsRepositoryInterface $cachedStatsRepository,
         SettingsRepositoryInterface $settingsRepository,
+        UnpaidInvoiceStatsProvider $invoiceStatsProvider,
     ): Response {
+        $headerStats = new MainDashboardHeader();
+        $headerStats->setActiveSubscriptions($subscriptionRepository->getCountActive());
+        $headerStats->setActiveCustomers($subscriptionRepository->getCountOfActiveCustomers());
+        list($count, $amount) = $invoiceStatsProvider->getStats();
+        $headerStats->setUnpaidInvoicesCount($count);
+        $headerStats->setUnpaidInvoicesAmount($amount);
+
         $mainDashboardStat = new MainDashboardStats();
+        $mainDashboardStat->setHeader($headerStats);
         $mainDashboardStat->setPaymentAmount($paymentAmountStatsProvider->getMainDashboard());
         $mainDashboardStat->setRefundAmount($refundAmountStatsProvider->getMainDashboard());
         $mainDashboardStat->setChargeBackAmount($chargeBackAmountStatsProvider->getMainDashboard());

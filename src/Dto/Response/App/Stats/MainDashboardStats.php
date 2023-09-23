@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class MainDashboardStats
 {
+    private MainDashboardHeader $header;
+
     #[SerializedName('subscription_count')]
     private DashboardStats $subscriptionCount;
 
@@ -130,5 +132,15 @@ class MainDashboardStats
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function getHeader(): MainDashboardHeader
+    {
+        return $this->header;
+    }
+
+    public function setHeader(MainDashboardHeader $header): void
+    {
+        $this->header = $header;
     }
 }

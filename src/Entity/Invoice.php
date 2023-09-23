@@ -328,7 +328,7 @@ class Invoice
 
     public function getAmountDueAsMoney(): Money
     {
-        return Money::ofMinor($this->amountDue, strtolower($this->currency));
+        return Money::ofMinor($this->amountDue, strtoupper($this->currency));
     }
 
     public function getDueAt(): ?\DateTimeInterface

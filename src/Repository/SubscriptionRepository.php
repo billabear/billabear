@@ -72,6 +72,16 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return $this->entityRepository->count(['status' => SubscriptionStatus::ACTIVE]);
     }
 
+    public function getCountOfActiveCustomers(): int
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->select($qb->expr()->countDistinct('s.customer'))
+            ->where('s.status = :activeStatus')
+            ->setParameter('activeStatus', SubscriptionStatus::ACTIVE);
+
+        return intval($qb->getQuery()->getSingleScalarResult());
+    }
+
     public function getActiveCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int
     {
         $queryBuilder = $this->entityRepository->createQueryBuilder('s');

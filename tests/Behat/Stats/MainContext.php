@@ -491,6 +491,46 @@ class MainContext implements Context
     }
 
     /**
+     * @Then I will see the total number of active subscriptions
+     */
+    public function iWillSeeTheTotalNumberOfActiveSubscriptions()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['header']['active_subscriptions'])) {
+            throw new \Exception("Can't see active_subscriptions");
+        }
+    }
+
+    /**
+     * @Then I will see the total number of active customers
+     */
+    public function iWillSeeTheTotalNumberOfActiveCustomers()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['header']['active_customers'])) {
+            throw new \Exception("Can't see active_customers");
+        }
+    }
+
+    /**
+     * @Then I will see the number of outstanding payments
+     */
+    public function iWillSeeTheNumberOfOutstandingPayments()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['header']['unpaid_invoices_count'])) {
+            throw new \Exception("Can't see unpaid invoices count");
+        }
+
+        if (!isset($data['header']['unpaid_invoices_amount'])) {
+            throw new \Exception("Can't see unpaid invoices amount");
+        }
+    }
+
+    /**
      * @Then the monthly recurring revenue estimate should be :arg1
      */
     public function theMonthlyRecurringRevenueEstimateShouldBe($arg1)

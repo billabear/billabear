@@ -51,4 +51,6 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getPlanCounts(): array;
 
     public function getScheduleCounts(): array;
+
+    public function getCountOfActiveCustomers(): int;
 }

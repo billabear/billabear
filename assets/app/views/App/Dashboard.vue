@@ -3,6 +3,26 @@
     <h1 class="page-title mb-5">{{ $t('app.reports.dashboard.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="grid grid-cols-3 gap-5 mb-5">
+        <div>
+          <h2 class="section-header text-center">{{ $t('app.reports.dashboard.header.active_subscriptions') }}</h2>
+          <div class="section-body text-7xl text-center">
+            {{ responseData.header.active_subscriptions }}
+          </div>
+        </div>
+        <div>
+          <h2 class="section-header text-center">{{ $t('app.reports.dashboard.header.active_customers') }}</h2>
+          <div class="section-body text-7xl text-center">
+            {{ responseData.header.active_customers }}
+          </div>
+        </div>
+        <div>
+          <h2 class="section-header text-center">{{ $t('app.reports.dashboard.header.unpaid_invoices') }}</h2>
+          <div class="section-body text-7xl text-center">
+            {{ responseData.header.unpaid_invoices_count }} / {{ displayCurrency(responseData.header.unpaid_invoices_count) }} {{ currency }}
+          </div>
+        </div>
+      </div>
       <div class="grid grid-cols-2 gap-5">
         <div>
           <h2 class="section-header">{{ $t('app.reports.dashboard.subscription_count.title') }}</h2>
@@ -72,6 +92,7 @@ export default {
       estimated_mrr: 0,
       estimated_arr: 0,
       currency: null,
+      header: {},
       subscriptionCountChartSeries: [],
       subscriptionCountChartOptions: {
         title: {
