@@ -31,10 +31,11 @@ class AppContext implements Context
     use SendRequestTrait;
     use ProductTrait;
     use FeatureTrait;
+    use SubscriptionPlanTrait;
 
     public function __construct(
         private Session $session,
-        private SubscriptionPlanRepository $planRepository,
+        private SubscriptionPlanRepository $subscriptionPlanRepository,
         private ProductRepository $productRepository,
         private SubscriptionFeatureServiceRepository $subscriptionFeatureRepository,
         private SubscriptionPlanRepository $planServiceRepository,
@@ -205,19 +206,6 @@ class AppContext implements Context
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();
-    }
-
-    protected function findSubscriptionPlanByName(string $planName): SubscriptionPlan
-    {
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $planName]);
-
-        if (!$subscriptionPlan instanceof SubscriptionPlan) {
-            throw new \Exception("Can't find plan");
-        }
-
-        $this->planRepository->getEntityManager()->refresh($subscriptionPlan);
-
-        return $subscriptionPlan;
     }
 
     /**

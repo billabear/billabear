@@ -360,6 +360,12 @@ services:
     app.repository.orm.checkout_session:
         class: App\Repository\Orm\CheckoutSessionRepository
 
+    App\Repository\MassSubscriptionChangeRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.mass_subscription_change'
+    app.repository.orm.mass_subscription_change:
+        class: App\Repository\Orm\MassSubscriptionChangeRepository
+
     App\Repository\WebhookEndpointRepository:
         arguments:
             $entityRepository: '@app.repository.orm.webhook_endpoint'

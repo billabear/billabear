@@ -32,6 +32,7 @@ default:
                 # Subscriptions
                 - App\Tests\Behat\Subscriptions\MainContext
                 - App\Tests\Behat\Subscriptions\ApiContext
+                - App\Tests\Behat\Subscriptions\MassChangeContext
 
                 # Subscription Plan
                 - App\Tests\Behat\SubscriptionPlan\AppContext
