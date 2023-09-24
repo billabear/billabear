@@ -19,9 +19,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -78,9 +75,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -136,9 +130,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -194,9 +185,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -252,9 +240,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -310,9 +295,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -368,9 +350,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -426,9 +405,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -484,9 +460,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -542,9 +515,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
@@ -624,9 +594,6 @@ jobs:
       matrix:
         php-versions: ['8.1', '8.2']
         experimental: [false]
-        include:
-          - php-versions: '8.3'
-            experimental: true
 
     services:
       postgres:
