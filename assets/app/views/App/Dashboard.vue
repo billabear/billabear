@@ -18,8 +18,8 @@
         </div>
         <div>
           <h2 class="section-header text-center">{{ $t('app.reports.dashboard.header.unpaid_invoices') }}</h2>
-          <div class="section-body text-7xl text-center">
-            {{ responseData.header.unpaid_invoices_count }} / {{ displayCurrency(responseData.header.unpaid_invoices_count) }} {{ currency }}
+          <div class="section-body text-center">
+            <span class="text-7xl">{{ responseData.header.unpaid_invoices_count }}</span> / {{ displayCurrency(responseData.header.unpaid_invoices_count) }} {{ currency }}
           </div>
         </div>
       </div>
