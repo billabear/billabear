@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\Subscriptions;
 
 use App\Entity\MassSubscriptionChange;
+use App\Enum\MassSubscriptionChangeStatus;
 use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\MassSubscriptionChangeRepository;
 use App\Repository\Orm\PriceRepository;
@@ -192,6 +193,48 @@ class MassChangeContext implements Context
             if ($changeDate->format('Y-m-d') != $one->getChangeDate()->format('Y-m-d')) {
                 throw new \Exception("Date doesn't match");
             }
+        }
+    }
+
+    /**
+     * @When there are the following mass subscription changes exists:
+     */
+    public function thereAreTheFollowingMassSubscriptionChangesExists(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $targetPlan = $this->findSubscriptionPlanByName($row['Target Subscription Plan']);
+            $newPlan = $this->findSubscriptionPlanByName($row['New Subscription Plan']);
+
+            $entity = new MassSubscriptionChange();
+
+            $entity->setTargetSubscriptionPlan($targetPlan);
+            $entity->setNewSubscriptionPlan($newPlan);
+            $entity->setCreatedAt(new \DateTime());
+            $entity->setStatus(MassSubscriptionChangeStatus::CREATED);
+            $entity->setChangeDate(new \DateTime($row['Change Date']));
+
+            $this->massSubscriptionChangeRepository->getEntityManager()->persist($entity);
+        }
+        $this->massSubscriptionChangeRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I look at the mass subscription change list
+     */
+    public function iLookAtTheMassSubscriptionChangeList()
+    {
+        $this->sendJsonRequest('GET', '/app/subscription/mass-change');
+    }
+
+    /**
+     * @Then I will see there are :arg1 mass subscriptions changes in the list
+     */
+    public function iWillSeeThereAreMassSubscriptionsChangesInTheList($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (count($data['data']) !== intval($arg1)) {
+            throw new \Exception('Wrong count');
         }
     }
 }

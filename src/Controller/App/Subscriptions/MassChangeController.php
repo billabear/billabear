@@ -12,6 +12,7 @@
 
 namespace App\Controller\App\Subscriptions;
 
+use App\Controller\App\CrudListTrait;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\Subscriptions\MassChangeDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
@@ -27,6 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class MassChangeController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/subscription/mass-change', name: 'app_app_subscriptions_masschange_createchange', methods: ['POST'])]
@@ -49,5 +51,15 @@ class MassChangeController
         $massSubscriptionChangeRepository->save($entity);
 
         return new JsonResponse(['success' => true]);
+    }
+
+    #[Route('/app/subscription/mass-change', name: 'app_app_subscriptions_masschange_listchange', methods: ['GET'])]
+    public function listChange(
+        Request $request,
+        SerializerInterface $serializer,
+        MassChangeDataMapper $changeDataMapper,
+        MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
+    ) {
+        return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper, 'createdAt');
     }
 }

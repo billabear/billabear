@@ -56,8 +56,12 @@ class BrandSettingsDataMapper
         return $brandSettings;
     }
 
-    public function createAppDto(BrandSettings $brandSettings): AppDto
+    public function createAppDto(?BrandSettings $brandSettings): ?AppDto
     {
+        if (null === $brandSettings) {
+            return null;
+        }
+
         $address = new AddressDto();
         $address->setCompanyName($brandSettings->getAddress()->getCompanyName());
         $address->setStreetLineOne($brandSettings->getAddress()->getStreetLineOne());

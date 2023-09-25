@@ -77,8 +77,12 @@ class PriceDataMapper
         return $dto;
     }
 
-    public function createAppDto(Price $price): AppDto
+    public function createAppDto(?Price $price): ?AppDto
     {
+        if (null === $price) {
+            return null;
+        }
+
         $dto = new AppDto();
         $dto->setId((string) $price->getId());
         $dto->setExternalReference($price->getExternalReference());

@@ -103,8 +103,12 @@ class SubscriptionPlanDataMapper
         return $dto;
     }
 
-    public function createAppDto(SubscriptionPlan $subscriptionPlan): AppDto
+    public function createAppDto(?SubscriptionPlan $subscriptionPlan): ?AppDto
     {
+        if (null === $subscriptionPlan) {
+            return null;
+        }
+
         $dto = new AppDto();
         $dto->setId((string) $subscriptionPlan->getId());
         $dto->setCodeName($subscriptionPlan->getCodeName());

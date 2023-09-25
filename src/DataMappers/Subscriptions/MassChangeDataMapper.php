@@ -12,7 +12,11 @@
 
 namespace App\DataMappers\Subscriptions;
 
+use App\DataMappers\PriceDataMapper;
+use App\DataMappers\Settings\BrandSettingsDataMapper;
+use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
+use App\Dto\Response\App\Subscription\MassChange\MassSubscriptionChange as AppDto;
 use App\Entity\MassSubscriptionChange as Entity;
 use App\Enum\MassSubscriptionChangeStatus;
 use App\Repository\BrandSettingsRepositoryInterface;
@@ -27,6 +31,9 @@ class MassChangeDataMapper
         private PriceRepositoryInterface $priceRepository,
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private UserProvider $userProvider,
+        private BrandSettingsDataMapper $brandSettingsDataMapper,
+        private SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
+        private PriceDataMapper $priceDataMapper,
     ) {
     }
 
@@ -64,5 +71,18 @@ class MassChangeDataMapper
         $entity->setStatus(MassSubscriptionChangeStatus::CREATED);
 
         return $entity;
+    }
+
+    public function createAppDto(Entity $entity): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setTargetBrandSettings($this->brandSettingsDataMapper->createAppDto($entity->getBrandSettings()));
+        $dto->setTargetPlan($this->subscriptionPlanDataMapper->createAppDto($entity->getTargetSubscriptionPlan()));
+        $dto->setNewPlan($this->subscriptionPlanDataMapper->createAppDto($entity->getNewSubscriptionPlan()));
+        $dto->setTargetPrice($this->priceDataMapper->createAppDto($entity->getTargetPrice()));
+        $dto->setNewPrice($this->priceDataMapper->createAppDto($entity->getNewPrice()));
+        $dto->setTargetCountry($entity->getTargetCountry());
+
+        return $dto;
     }
 }
