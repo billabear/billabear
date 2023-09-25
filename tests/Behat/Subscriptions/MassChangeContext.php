@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\Subscriptions;
 
 use App\Entity\MassSubscriptionChange;
+use App\Repository\Orm\BrandSettingsRepository;
 use App\Repository\Orm\MassSubscriptionChangeRepository;
 use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
@@ -32,6 +33,7 @@ class MassChangeContext implements Context
         private SubscriptionPlanRepository $subscriptionPlanRepository,
         private MassSubscriptionChangeRepository $massSubscriptionChangeRepository,
         private PriceRepository $priceRepository,
+        private BrandSettingsRepository $brandSettingsRepository,
     ) {
     }
 
@@ -49,6 +51,11 @@ class MassChangeContext implements Context
 
         $dateTime = new \DateTime($data['Date']);
         $payload['change_date'] = $dateTime->format(\DATE_RFC3339_EXTENDED);
+
+        if (isset($data['Target Brand'])) {
+            $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $data['Target Brand']]);
+            $payload['target_brand'] = $brand?->getCode();
+        }
 
         if (isset($data['Target Subscription Plan'])) {
             if ('invalid' == strtolower($data['Target Subscription Plan'])) {
@@ -117,6 +124,13 @@ class MassChangeContext implements Context
         $data = $table->getRowsHash();
         /** @var MassSubscriptionChange $one */
         $one = $this->massSubscriptionChangeRepository->findOneBy([]);
+
+        if (isset($data['Target Brand'])) {
+            $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $data['Target Brand']]);
+            if ($one->getBrandSettings()?->getId() != $brand->getId()) {
+                throw new \Exception('Wrong brand');
+            }
+        }
 
         if (isset($data['Target Subscription Plan'])) {
             $subscriptionPlan = $this->findSubscriptionPlanByName($data['Target Subscription Plan']);

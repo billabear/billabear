@@ -10,6 +10,9 @@ Feature: Create Subscription Mass Change
       | Name        | External Reference |
       | Product One | prod_jf9j545       |
       | Product Two | prod_jf9j542       |
+    And the follow brands exist:
+      | Name    | Code    | Email               |
+      | Example | example | example@example.org |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
@@ -127,6 +130,30 @@ Feature: Create Subscription Mass Change
       | Target Price Amount      | 3400        |
       | Target Price Currency    | USD         |
       | Target Price Schedule    | month       |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |
+
+
+  Scenario: Create Mass Change change - target brand
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | Target Subscription Plan | Test Plan   |
+      | Target Price Amount      | 3400        |
+      | Target Price Currency    | USD         |
+      | Target Price Schedule    | month       |
+      | Target Brand             | Example     |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |
+    Then there should be a mass subscription change that contains:
+      | Target Subscription Plan | Test Plan   |
+      | Target Price Amount      | 3400        |
+      | Target Price Currency    | USD         |
+      | Target Price Schedule    | month       |
+      | Target Brand             | Example     |
       | New Price Amount         | 3400        |
       | New Price Currency       | USD         |
       | New Price Schedule       | month       |

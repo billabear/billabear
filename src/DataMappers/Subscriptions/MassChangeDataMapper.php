@@ -15,6 +15,7 @@ namespace App\DataMappers\Subscriptions;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use App\Entity\MassSubscriptionChange as Entity;
 use App\Enum\MassSubscriptionChangeStatus;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\SubscriptionPlanRepositoryInterface;
 use App\User\UserProvider;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -24,6 +25,7 @@ class MassChangeDataMapper
     public function __construct(
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private PriceRepositoryInterface $priceRepository,
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private UserProvider $userProvider,
     ) {
     }
@@ -50,6 +52,10 @@ class MassChangeDataMapper
         if ($dto->getTargetPrice()) {
             $targetPrice = $this->priceRepository->findById($dto->getTargetPrice());
             $entity->setTargetPrice($targetPrice);
+        }
+        if ($dto->getTargetBrand()) {
+            $brand = $this->brandSettingsRepository->getByCode($dto->getTargetBrand());
+            $entity->setBrandSettings($brand);
         }
 
         $entity->setCreatedAt(new \DateTime());

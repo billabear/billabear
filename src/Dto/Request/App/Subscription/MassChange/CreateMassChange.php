@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\Subscription\MassChange;
 
+use App\Validator\Constraints\BrandCodeExists;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -39,6 +40,10 @@ class CreateMassChange
     #[PriceExists]
     #[SerializedName('target_price')]
     private $targetPrice;
+
+    #[BrandCodeExists]
+    #[SerializedName('target_brand')]
+    private $targetBrand;
 
     public function getChangeDate()
     {
@@ -88,5 +93,15 @@ class CreateMassChange
     public function setTargetPrice($targetPrice): void
     {
         $this->targetPrice = $targetPrice;
+    }
+
+    public function getTargetBrand()
+    {
+        return $this->targetBrand;
+    }
+
+    public function setTargetBrand($targetBrand): void
+    {
+        $this->targetBrand = $targetBrand;
     }
 }
