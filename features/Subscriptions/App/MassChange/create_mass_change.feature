@@ -79,3 +79,19 @@ Feature: Create Subscription Mass Change
       | Target Subscription Plan | Test Plan   |
       | New Subscription Plan    | Third Plan  |
       | Date                     | +3 days     |
+
+  Scenario: Create Mass Change change failed invalid new subscription plan
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | Target Subscription Plan | Test Plan   |
+      | New Subscription Plan    | invalid        |
+      | Date                     | +3 days     |
+    Then there should not be a mass subscription change
+
+  Scenario: Create Mass Change change failed invalid target subscription plan
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | Target Subscription Plan | invalid        |
+      | New Subscription Plan    | Test Plan   |
+      | Date                     | +3 days     |
+    Then there should not be a mass subscription change

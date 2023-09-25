@@ -49,16 +49,37 @@ class MassChangeContext implements Context
         $payload['change_date'] = $dateTime->format(\DATE_RFC3339_EXTENDED);
 
         if (isset($data['Target Subscription Plan'])) {
-            $subscriptionPlan = $this->findSubscriptionPlanByName($data['Target Subscription Plan']);
-            $payload['target_plan'] = (string) $subscriptionPlan->getId();
+            if ('invalid' == strtolower($data['Target Subscription Plan'])) {
+                $payload['target_plan'] = 'invalid';
+            } else {
+                $subscriptionPlan = $this->findSubscriptionPlanByName($data['Target Subscription Plan']);
+                $payload['target_plan'] = (string) $subscriptionPlan->getId();
+            }
         }
 
         if (isset($data['New Subscription Plan'])) {
-            $subscriptionPlan = $this->findSubscriptionPlanByName($data['New Subscription Plan']);
-            $payload['new_plan'] = (string) $subscriptionPlan->getId();
+            if ('invalid' == strtolower($data['New Subscription Plan'])) {
+                $payload['new_plan'] = 'invalid';
+            } else {
+                $subscriptionPlan = $this->findSubscriptionPlanByName($data['New Subscription Plan']);
+                $payload['new_plan'] = (string) $subscriptionPlan->getId();
+            }
         }
 
         $this->sendJsonRequest('POST', '/app/subscription/mass-change', $payload);
+    }
+
+    /**
+     * @Then there should not be a mass subscription change
+     */
+    public function thereShouldNotBeAMassSubscriptionChange()
+    {
+        /** @var MassSubscriptionChange $one */
+        $one = $this->massSubscriptionChangeRepository->findOneBy([]);
+
+        if ($one) {
+            throw new \Exception('Found mass subscription change');
+        }
     }
 
     /**

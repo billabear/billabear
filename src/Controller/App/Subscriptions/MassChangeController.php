@@ -37,9 +37,10 @@ class MassChangeController
     ) {
         $dto = $serializer->deserialize($request->getContent(), CreateMassChange::class, 'json');
         $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
 
-        if ($errors instanceof Response) {
-            return $errors;
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
         }
 
         $entity = $changeDataMapper->createEntity($dto);
