@@ -17,7 +17,9 @@ use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+#[Assert\Callback('validate')]
 class CreateMassChange
 {
     #[Assert\NotBlank]
@@ -117,5 +119,15 @@ class CreateMassChange
     public function setTargetCountry($targetCountry): void
     {
         $this->targetCountry = $targetCountry;
+    }
+
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if (!isset($this->targetPrice) && !isset($this->targetCountry) && !isset($this->targetPlan) && !isset($this->targetBrand)) {
+            $context->buildViolation('must have at least one target criteria')->atPath('targetPrice')->addViolation();
+            $context->buildViolation('must have at least one target criteria')->atPath('targetPlan')->addViolation();
+            $context->buildViolation('must have at least one target criteria')->atPath('targetCountry')->addViolation();
+            $context->buildViolation('must have at least one target criteria')->atPath('targetBrand')->addViolation();
+        }
     }
 }

@@ -99,6 +99,13 @@ Feature: Create Subscription Mass Change
       | Date                     | +3 days     |
     Then there should not be a mass subscription change
 
+  Scenario: Create Mass Change change failed no target group
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | New Subscription Plan    | Test Plan   |
+      | Date                     | +3 days     |
+    Then there should not be a mass subscription change
+
   Scenario: Create Mass Change change - new price
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a mass subscription change:
