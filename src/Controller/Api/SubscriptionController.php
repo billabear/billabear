@@ -16,7 +16,7 @@ use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
 use App\DataMappers\CancellationDataMapper;
-use App\DataMappers\SubscriptionDataMapper;
+use App\DataMappers\Subscriptions\SubscriptionDataMapper;
 use App\Dto\Request\Api\Subscription\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CreateSubscription;
 use App\Dto\Request\Api\Subscription\UpdatePlan;

@@ -10,8 +10,10 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\DataMappers;
+namespace App\DataMappers\Subscriptions;
 
+use App\DataMappers\CustomerDataMapper;
+use App\DataMappers\PriceDataMapper;
 use App\Dto\Generic\Api\Subscription as ApiDto;
 use App\Dto\Generic\App\Subscription as AppDto;
 use App\Repository\CustomerRepositoryInterface;

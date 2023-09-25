@@ -12,7 +12,7 @@
 
 namespace App\Import\Stripe;
 
-use App\DataMappers\SubscriptionDataMapper;
+use App\DataMappers\Subscriptions\SubscriptionDataMapper;
 use App\Entity\StripeImport;
 use App\Repository\StripeImportRepositoryInterface;
 use App\Stats\SubscriptionCancellationStats;

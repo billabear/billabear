@@ -13,6 +13,7 @@
 namespace App\DataMappers;
 
 use App\Checkout\PortalLinkGenerator;
+use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Generic\App\Checkout as AppDto;
 use App\Dto\Generic\App\CheckoutLine as AppLineDto;
 use App\Dto\Generic\Public\Checkout as PublicDto;

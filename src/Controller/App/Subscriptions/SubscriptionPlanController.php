@@ -14,7 +14,7 @@ namespace App\Controller\App\Subscriptions;
 
 use App\DataMappers\FeatureDataMapper;
 use App\DataMappers\PriceDataMapper;
-use App\DataMappers\SubscriptionPlanDataMapper;
+use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\PostSubscriptionPlan;
 use App\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use App\Dto\Response\App\SubscriptionPlanCreationInfo;

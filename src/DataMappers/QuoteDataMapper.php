@@ -12,6 +12,7 @@
 
 namespace App\DataMappers;
 
+use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Generic\App\Quote as AppDto;
 use App\Dto\Generic\App\QuoteLine as AppLineDto;
 use App\Dto\Generic\Public\Quote as PublicDto;

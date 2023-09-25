@@ -16,7 +16,7 @@ use App\Checkout\CheckoutCreator;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CheckoutDataMapper;
 use App\DataMappers\Settings\BrandSettingsDataMapper;
-use App\DataMappers\SubscriptionPlanDataMapper;
+use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Checkout\CreateCheckout;
 use App\Dto\Response\App\Checkout\ReadCheckout;
 use App\Dto\Response\App\Checkout\ReadCreateCheckoutView;

@@ -14,7 +14,6 @@ namespace App\DataMappers\Subscriptions;
 
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\Settings\BrandSettingsDataMapper;
-use App\DataMappers\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use App\Dto\Response\App\Subscription\MassChange\MassSubscriptionChange as AppDto;
 use App\Entity\MassSubscriptionChange as Entity;

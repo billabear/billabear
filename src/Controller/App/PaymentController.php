@@ -17,7 +17,7 @@ use App\DataMappers\CustomerDataMapper;
 use App\DataMappers\PaymentDataMapper;
 use App\DataMappers\ReceiptDataMapper;
 use App\DataMappers\RefundDataMapper;
-use App\DataMappers\SubscriptionDataMapper;
+use App\DataMappers\Subscriptions\SubscriptionDataMapper;
 use App\Dto\Request\App\Payments\AttachToCustomer;
 use App\Dto\Request\App\Payments\RefundPayment;
 use App\Dto\Response\App\Payment\PaymentView;
