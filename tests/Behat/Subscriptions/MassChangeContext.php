@@ -74,10 +74,22 @@ class MassChangeContext implements Context
                     'amount' => $data['New Price Amount'],
                     'currency' => $data['New Price Currency'],
                     'schedule' => $data['New Price Schedule'],
-                    ]);
+                ]);
                 $payload['new_price'] = $price?->getId();
             } else {
                 throw new \Exception('Not all price data set');
+            }
+        }
+        if (isset($data['Target Price Amount']) || isset($data['Target Price Currency']) || isset($data['Target Price Schedule'])) {
+            if (isset($data['Target Price Amount']) && isset($data['Target Price Currency']) && isset($data['Target Price Schedule'])) {
+                $price = $this->priceRepository->findOneBy([
+                    'amount' => $data['Target Price Amount'],
+                    'currency' => $data['Target Price Currency'],
+                    'schedule' => $data['Target Price Schedule'],
+                ]);
+                $payload['target_price'] = $price?->getId();
+            } else {
+                throw new \Exception('Not all target price data set');
             }
         }
 
@@ -133,6 +145,22 @@ class MassChangeContext implements Context
         if (isset($data['New Price Schedule'])) {
             if ($one->getNewPrice()?->getSchedule() !== $data['New Price Schedule']) {
                 throw new \Exception('Wrong new price Schedule');
+            }
+        }
+
+        if (isset($data['Target Price Amount'])) {
+            if ($one->getTargetPrice()?->getAmount() !== intval($data['Target Price Amount'])) {
+                throw new \Exception('Wrong Target price amount');
+            }
+        }
+        if (isset($data['Target Price Currency'])) {
+            if ($one->getTargetPrice()?->getCurrency() !== $data['Target Price Currency']) {
+                throw new \Exception('Wrong Target price Currency');
+            }
+        }
+        if (isset($data['Target Price Schedule'])) {
+            if ($one->getTargetPrice()?->getSchedule() !== $data['Target Price Schedule']) {
+                throw new \Exception('Wrong Target price Schedule');
             }
         }
 

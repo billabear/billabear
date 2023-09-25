@@ -91,7 +91,7 @@ Feature: Create Subscription Mass Change
   Scenario: Create Mass Change change failed invalid target subscription plan
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a mass subscription change:
-      | Target Subscription Plan | invalid        |
+      | Target Subscription Plan | invalid     |
       | New Subscription Plan    | Test Plan   |
       | Date                     | +3 days     |
     Then there should not be a mass subscription change
@@ -106,6 +106,27 @@ Feature: Create Subscription Mass Change
       | Date                     | +3 days     |
     Then there should be a mass subscription change that contains:
       | Target Subscription Plan | Test Plan   |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |
+
+  Scenario: Create Mass Change change - target price
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | Target Subscription Plan | Test Plan   |
+      | Target Price Amount      | 3400        |
+      | Target Price Currency    | USD         |
+      | Target Price Schedule    | month       |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |
+    Then there should be a mass subscription change that contains:
+      | Target Subscription Plan | Test Plan   |
+      | Target Price Amount      | 3400        |
+      | Target Price Currency    | USD         |
+      | Target Price Schedule    | month       |
       | New Price Amount         | 3400        |
       | New Price Currency       | USD         |
       | New Price Schedule       | month       |

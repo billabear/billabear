@@ -36,6 +36,10 @@ class CreateMassChange
     #[SerializedName('new_price')]
     private $newPrice;
 
+    #[PriceExists]
+    #[SerializedName('target_price')]
+    private $targetPrice;
+
     public function getChangeDate()
     {
         return $this->changeDate;
@@ -74,5 +78,15 @@ class CreateMassChange
     public function setNewPrice($newPrice): void
     {
         $this->newPrice = $newPrice;
+    }
+
+    public function getTargetPrice()
+    {
+        return $this->targetPrice;
+    }
+
+    public function setTargetPrice($targetPrice): void
+    {
+        $this->targetPrice = $targetPrice;
     }
 }

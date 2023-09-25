@@ -47,6 +47,10 @@ class MassChangeDataMapper
             $newPrice = $this->priceRepository->findById($dto->getNewPrice());
             $entity->setNewPrice($newPrice);
         }
+        if ($dto->getTargetPrice()) {
+            $targetPrice = $this->priceRepository->findById($dto->getTargetPrice());
+            $entity->setTargetPrice($targetPrice);
+        }
 
         $entity->setCreatedAt(new \DateTime());
         $entity->setCreatedBy($this->userProvider->getUser());
