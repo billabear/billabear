@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\Subscription\MassChange;
 
+use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,6 +31,10 @@ class CreateMassChange
     #[SubscriptionPlanExists]
     #[SerializedName('new_plan')]
     private $newPlan;
+
+    #[PriceExists]
+    #[SerializedName('new_price')]
+    private $newPrice;
 
     public function getChangeDate()
     {
@@ -59,5 +64,15 @@ class CreateMassChange
     public function setNewPlan($newPlan): void
     {
         $this->newPlan = $newPlan;
+    }
+
+    public function getNewPrice()
+    {
+        return $this->newPrice;
+    }
+
+    public function setNewPrice($newPrice): void
+    {
+        $this->newPrice = $newPrice;
     }
 }

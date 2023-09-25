@@ -14,6 +14,7 @@ namespace App\Tests\Behat\Subscriptions;
 
 use App\Entity\MassSubscriptionChange;
 use App\Repository\Orm\MassSubscriptionChangeRepository;
+use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Tests\Behat\SendRequestTrait;
 use App\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
@@ -30,6 +31,7 @@ class MassChangeContext implements Context
         private Session $session,
         private SubscriptionPlanRepository $subscriptionPlanRepository,
         private MassSubscriptionChangeRepository $massSubscriptionChangeRepository,
+        private PriceRepository $priceRepository,
     ) {
     }
 
@@ -63,6 +65,19 @@ class MassChangeContext implements Context
             } else {
                 $subscriptionPlan = $this->findSubscriptionPlanByName($data['New Subscription Plan']);
                 $payload['new_plan'] = (string) $subscriptionPlan->getId();
+            }
+        }
+
+        if (isset($data['New Price Amount']) || isset($data['New Price Currency']) || isset($data['New Price Schedule'])) {
+            if (isset($data['New Price Amount']) && isset($data['New Price Currency']) && isset($data['New Price Schedule'])) {
+                $price = $this->priceRepository->findOneBy([
+                    'amount' => $data['New Price Amount'],
+                    'currency' => $data['New Price Currency'],
+                    'schedule' => $data['New Price Schedule'],
+                    ]);
+                $payload['new_price'] = $price?->getId();
+            } else {
+                throw new \Exception('Not all price data set');
             }
         }
 
@@ -102,6 +117,22 @@ class MassChangeContext implements Context
             $subscriptionPlan = $this->findSubscriptionPlanByName($data['New Subscription Plan']);
             if ($one->getNewSubscriptionPlan()?->getId() != $subscriptionPlan->getId()) {
                 throw new \Exception('Wrong new subscription plan');
+            }
+        }
+
+        if (isset($data['New Price Amount'])) {
+            if ($one->getNewPrice()?->getAmount() !== intval($data['New Price Amount'])) {
+                throw new \Exception('Wrong new price amount');
+            }
+        }
+        if (isset($data['New Price Currency'])) {
+            if ($one->getNewPrice()?->getCurrency() !== $data['New Price Currency']) {
+                throw new \Exception('Wrong new price Currency');
+            }
+        }
+        if (isset($data['New Price Schedule'])) {
+            if ($one->getNewPrice()?->getSchedule() !== $data['New Price Schedule']) {
+                throw new \Exception('Wrong new price Schedule');
             }
         }
 

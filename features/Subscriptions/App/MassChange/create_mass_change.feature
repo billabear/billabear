@@ -95,3 +95,18 @@ Feature: Create Subscription Mass Change
       | New Subscription Plan    | Test Plan   |
       | Date                     | +3 days     |
     Then there should not be a mass subscription change
+
+  Scenario: Create Mass Change change - new price
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | Target Subscription Plan | Test Plan   |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |
+    Then there should be a mass subscription change that contains:
+      | Target Subscription Plan | Test Plan   |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |

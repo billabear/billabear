@@ -17,11 +17,13 @@ use App\Entity\MassSubscriptionChange as Entity;
 use App\Enum\MassSubscriptionChangeStatus;
 use App\Repository\SubscriptionPlanRepositoryInterface;
 use App\User\UserProvider;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class MassChangeDataMapper
 {
     public function __construct(
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        private PriceRepositoryInterface $priceRepository,
         private UserProvider $userProvider,
     ) {
     }
@@ -40,6 +42,10 @@ class MassChangeDataMapper
         if ($dto->getTargetPlan()) {
             $subscriptionPlan = $this->subscriptionPlanRepository->findById($dto->getTargetPlan());
             $entity->setTargetSubscriptionPlan($subscriptionPlan);
+        }
+        if ($dto->getNewPrice()) {
+            $newPrice = $this->priceRepository->findById($dto->getNewPrice());
+            $entity->setNewPrice($newPrice);
         }
 
         $entity->setCreatedAt(new \DateTime());
