@@ -158,3 +158,26 @@ Feature: Create Subscription Mass Change
       | New Price Currency       | USD         |
       | New Price Schedule       | month       |
       | Date                     | +3 days     |
+
+  Scenario: Create Mass Change change - target country
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a mass subscription change:
+      | Target Subscription Plan | Test Plan   |
+      | Target Price Amount      | 3400        |
+      | Target Price Currency    | USD         |
+      | Target Price Schedule    | month       |
+      | Target Country           | US          |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |
+    Then there should be a mass subscription change that contains:
+      | Target Subscription Plan | Test Plan   |
+      | Target Price Amount      | 3400        |
+      | Target Price Currency    | USD         |
+      | Target Price Schedule    | month       |
+      | Target Country           | US          |
+      | New Price Amount         | 3400        |
+      | New Price Currency       | USD         |
+      | New Price Schedule       | month       |
+      | Date                     | +3 days     |

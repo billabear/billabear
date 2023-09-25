@@ -56,6 +56,9 @@ class MassChangeContext implements Context
             $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $data['Target Brand']]);
             $payload['target_brand'] = $brand?->getCode();
         }
+        if (isset($data['Target Country'])) {
+            $payload['target_country'] = $data['Target Country'];
+        }
 
         if (isset($data['Target Subscription Plan'])) {
             if ('invalid' == strtolower($data['Target Subscription Plan'])) {
@@ -129,6 +132,12 @@ class MassChangeContext implements Context
             $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $data['Target Brand']]);
             if ($one->getBrandSettings()?->getId() != $brand->getId()) {
                 throw new \Exception('Wrong brand');
+            }
+        }
+
+        if (isset($data['Target Country'])) {
+            if ($one->getTargetCountry() !== $data['Target Country']) {
+                throw new \Exception('Wrong target country');
             }
         }
 

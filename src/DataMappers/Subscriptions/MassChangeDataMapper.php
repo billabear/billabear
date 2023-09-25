@@ -58,6 +58,7 @@ class MassChangeDataMapper
             $entity->setBrandSettings($brand);
         }
 
+        $entity->setTargetCountry($dto->getTargetCountry());
         $entity->setCreatedAt(new \DateTime());
         $entity->setCreatedBy($this->userProvider->getUser());
         $entity->setStatus(MassSubscriptionChangeStatus::CREATED);

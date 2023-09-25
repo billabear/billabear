@@ -45,6 +45,10 @@ class CreateMassChange
     #[SerializedName('target_brand')]
     private $targetBrand;
 
+    #[Assert\Country]
+    #[SerializedName('target_country')]
+    private $targetCountry;
+
     public function getChangeDate()
     {
         return $this->changeDate;
@@ -103,5 +107,15 @@ class CreateMassChange
     public function setTargetBrand($targetBrand): void
     {
         $this->targetBrand = $targetBrand;
+    }
+
+    public function getTargetCountry()
+    {
+        return $this->targetCountry;
+    }
+
+    public function setTargetCountry($targetCountry): void
+    {
+        $this->targetCountry = $targetCountry;
     }
 }
