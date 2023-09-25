@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Controller\App;
+namespace App\Controller\App\Subscriptions;
 
 use App\Controller\ValidationErrorResponseTrait;
 use App\Dto\Request\App\Subscription\ChangeSeats;
