@@ -227,6 +227,31 @@ class MassChangeContext implements Context
     }
 
     /**
+     * @When I view the mass subscription change with the target subscription plan :arg1
+     */
+    public function iViewTheMassSubscriptionChangeWithTheTargetSubscriptionPlan($arg1)
+    {
+        $subscriptionPlan = $this->findSubscriptionPlanByName($arg1);
+
+        $change = $this->massSubscriptionChangeRepository->findOneBy(['targetSubscriptionPlan' => $subscriptionPlan]);
+
+        $this->sendJsonRequest('GET', '/app/subscription/mass-change/'.$change->getId().'/view');
+    }
+
+    /**
+     * @Then I will see the mass subscription change for the target subscription plan :arg1
+     */
+    public function iWillSeeTheMassSubscriptionChangeForTheTargetSubscriptionPlan($arg1)
+    {
+        $subscriptionPlan = $this->findSubscriptionPlanByName($arg1);
+        $data = $this->getJsonContent();
+
+        if ($data['mass_change']['target_plan']['id'] !== (string) $subscriptionPlan->getId()) {
+            throw new \Exception('Wrong target plan');
+        }
+    }
+
+    /**
      * @Then I will see there are :arg1 mass subscriptions changes in the list
      */
     public function iWillSeeThereAreMassSubscriptionsChangesInTheList($arg1)

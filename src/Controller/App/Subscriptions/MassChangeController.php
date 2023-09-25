@@ -20,10 +20,12 @@ use App\DataMappers\Subscriptions\MassChangeDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use App\Dto\Response\App\Subscription\MassChange\CreateView;
+use App\Dto\Response\App\Subscription\MassChange\ViewMassSubscriptionChange;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\MassSubscriptionChangeRepositoryInterface;
 use App\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,5 +97,25 @@ class MassChangeController
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
     ) {
         return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper, 'createdAt');
+    }
+
+    #[Route('/app/subscription/mass-change/{id}/view', name: 'app_app_subscriptions_masschange_viewcange', methods: ['GET'])]
+    public function viewChange(
+        Request $request,
+        SerializerInterface $serializer,
+        MassChangeDataMapper $changeDataMapper,
+        MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
+    ) {
+        try {
+            $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $viewDto = new ViewMassSubscriptionChange();
+        $viewDto->setMassSubscriptionChange($changeDataMapper->createAppDto($entity));
+        $json = $serializer->serialize($viewDto, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }
