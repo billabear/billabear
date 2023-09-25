@@ -13,6 +13,7 @@
 namespace App\Dto\Request\App\Subscription\MassChange;
 
 use App\Validator\Constraints\BrandCodeExists;
+use App\Validator\Constraints\InTheFuture;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -25,6 +26,7 @@ class CreateMassChange
     #[Assert\NotBlank]
     #[SerializedName('change_date')]
     #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
+    #[InTheFuture]
     private $changeDate;
 
     #[SubscriptionPlanExists]
@@ -128,6 +130,11 @@ class CreateMassChange
             $context->buildViolation('must have at least one target criteria')->atPath('targetPlan')->addViolation();
             $context->buildViolation('must have at least one target criteria')->atPath('targetCountry')->addViolation();
             $context->buildViolation('must have at least one target criteria')->atPath('targetBrand')->addViolation();
+        }
+
+        if (!isset($this->newPrice) && !isset($this->newPlan)) {
+            $context->buildViolation('must have at least one new price')->atPath('newPrice')->addViolation();
+            $context->buildViolation('must have at least one new value')->atPath('newPlan')->addViolation();
         }
     }
 }

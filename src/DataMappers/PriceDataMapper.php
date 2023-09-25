@@ -23,6 +23,7 @@ class PriceDataMapper
 {
     public function __construct(
         private ProductRepositoryInterface $productRepository,
+        private ProductDataMapper $productDataMapper,
     ) {
     }
 
@@ -93,6 +94,7 @@ class PriceDataMapper
         $dto->setPublic($price->isPublic());
         $dto->setPaymentProviderDetailsUrl($price->getPaymentProviderDetailsUrl());
         $dto->setDisplayValue((string) $price->getAsMoney());
+        $dto->setProduct($this->productDataMapper->createAppDtoFromProduct($price->getProduct()));
 
         return $dto;
     }

@@ -6,6 +6,8 @@
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.list'}" class="submenu-link"><i class="fa-solid fa-arrows-rotate"></i> {{ $t('app.subscription.menu.subscriptions') }}</router-link></li>
 
+          <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.mass_change.list'}" class="submenu-link"><i class="fa-regular fa-clone"></i> {{ $t('app.subscription.menu.mass_change') }}</router-link></li>
+
         </ul>
       </div>
     </div>

@@ -42,6 +42,9 @@ class MassSubscriptionChange
     #[SerializedName('target_brand')]
     private ?BrandSettings $targetBrandSettings = null;
 
+    #[SerializedName('created_at')]
+    private \DateTime $createdAt;
+
     public function getChangeDate(): \DateTime
     {
         return $this->changeDate;
@@ -120,5 +123,15 @@ class MassSubscriptionChange
     public function setTargetBrandSettings(?BrandSettings $targetBrandSettings): void
     {
         $this->targetBrandSettings = $targetBrandSettings;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }

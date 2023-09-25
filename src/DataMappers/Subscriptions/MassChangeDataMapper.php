@@ -82,6 +82,9 @@ class MassChangeDataMapper
         $dto->setTargetPrice($this->priceDataMapper->createAppDto($entity->getTargetPrice()));
         $dto->setNewPrice($this->priceDataMapper->createAppDto($entity->getNewPrice()));
         $dto->setTargetCountry($entity->getTargetCountry());
+        $dto->setStatus($entity->getStatus()->value);
+        $dto->setChangeDate($entity->getChangeDate());
+        $dto->setCreatedAt($entity->getCreatedAt());
 
         return $dto;
     }

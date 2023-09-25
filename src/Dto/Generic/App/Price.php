@@ -46,6 +46,9 @@ class Price
     #[SerializedName('display_value')]
     protected string $displayValue;
 
+    #[SerializedName('product')]
+    protected ?Product $product = null;
+
     public function hasId(): bool
     {
         return isset($this->id);
@@ -149,5 +152,15 @@ class Price
     public function setDisplayValue(string $displayValue): void
     {
         $this->displayValue = $displayValue;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): void
+    {
+        $this->product = $product;
     }
 }

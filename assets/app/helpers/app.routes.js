@@ -55,7 +55,6 @@ import ExchangeRatesList from "../views/App/Settings/ExchangeRates/ExchangeRates
 import VouchersList from "../views/App/Vouchers/VouchersList.vue";
 import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
 import VouchersView from "../views/App/Vouchers/VouchersView.vue";
-import SubscriptionMassChange from "../views/App/Subscription/SubscriptionMassChange.vue";
 import SubscriptionsOverview from "../views/App/Reports/Subscriptions/SubscriptionsOverview.vue";
 import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
 import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
@@ -71,6 +70,7 @@ import SystemGroup from "../views/App/System/SystemGroup.vue";
 import CheckoutCreate from "../views/App/Checkout/CheckoutCreate.vue";
 import CheckoutView from "../views/App/Checkout/CheckoutView.vue";
 import CheckoutList from "../views/App/Checkout/CheckoutList.vue";
+import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -337,23 +337,7 @@ export const APP_ROUTES = [
         path: 'subscriptions',
         redirect: "subscriptions",
         component: SubscriptionGroup,
-        children: [
-            {
-                name: 'app.subscription.view',
-                path: 'subscription/:subscriptionId',
-                component: SubscriptionView
-            },
-            {
-                name: 'app.subscription.list',
-                path: '',
-                component: SubscriptionList
-            },
-            {
-                name: 'app.subscription.mass_change',
-                path: 'mass-change',
-                component: SubscriptionMassChange,
-            }
-        ]
+        children: AppSubscriptionsRoutes
     },
     {
         name: "app.invoices",
