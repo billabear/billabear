@@ -72,6 +72,8 @@
 
       <div class="mt-3 card-body">
         <h2>{{ $t('app.subscription.mass_change.create.change_date.title') }}</h2>
+        <p>{{ $t('app.subscription.mass_change.create.change_date.help_info') }}</p>
+
         <p class="form-field-error" v-if="errors['changeDate'] != undefined">{{ errors['changeDate'] }}</p>
         <VueDatePicker  class="mt-2" v-model="payload.change_date"  :enable-time-picker="false" ></VueDatePicker>
       </div>

@@ -10,18 +10,8 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Schedule\Messenger\Message;
 
-use App\Entity\MassSubscriptionChange;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
-
-/**
- * @method \App\Entity\MassSubscriptionChange findById($id)
- */
-interface MassSubscriptionChangeRepositoryInterface extends CrudRepositoryInterface
+class MassSubscriptionChange
 {
-    /**
-     * @return MassSubscriptionChange[]
-     */
-    public function findWithinFiveMinutes(\DateTime $dateTime): array;
 }

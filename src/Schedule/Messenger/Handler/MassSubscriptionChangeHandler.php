@@ -10,18 +10,20 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Schedule\Messenger\Handler;
 
-use App\Entity\MassSubscriptionChange;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use App\Background\Subscription\MassChange;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-/**
- * @method \App\Entity\MassSubscriptionChange findById($id)
- */
-interface MassSubscriptionChangeRepositoryInterface extends CrudRepositoryInterface
+#[AsMessageHandler]
+class MassSubscriptionChangeHandler
 {
-    /**
-     * @return MassSubscriptionChange[]
-     */
-    public function findWithinFiveMinutes(\DateTime $dateTime): array;
+    public function __construct(private MassChange $massChange)
+    {
+    }
+
+    public function __invoke(\App\Schedule\Messenger\Message\MassSubscriptionChange $checker)
+    {
+        $this->massChange->execute();
+    }
 }

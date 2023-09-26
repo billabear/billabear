@@ -24,6 +24,7 @@ use App\Repository\Orm\SubscriptionRepository;
 use App\Repository\Orm\SubscriptionSeatModificationRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
+use App\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
@@ -41,16 +42,45 @@ class MainContext implements Context
     use CustomerTrait;
     use SendRequestTrait;
     use SubscriptionTrait;
+    use SubscriptionPlanTrait;
 
     public function __construct(
         private Session $session,
         private SubscriptionRepository $subscriptionRepository,
         private PriceRepository $priceRepository,
-        private SubscriptionPlanRepository $planRepository,
+        private SubscriptionPlanRepository $subscriptionPlanRepository,
         private CustomerRepository $customerRepository,
         private PaymentCardServiceRepository $paymentDetailsRepository,
         private SubscriptionSeatModificationRepository $subscriptionSeatModificationRepository,
     ) {
+    }
+
+    /**
+     * @Then there will be :arg2 subscriptions on :arg1
+     */
+    public function thereWillBeSubscriptionsOn($count, $planName)
+    {
+        $subscriptionPlan = $this->findSubscriptionPlanByName($planName);
+
+        $actualCount = $this->subscriptionRepository->count(['subscriptionPlan' => $subscriptionPlan]);
+
+        if (intval($count) !== $actualCount) {
+            throw new \Exception(sprintf('Expected %d but got %d', $count, $actualCount));
+        }
+    }
+
+    /**
+     * @Then there will be :arg3 subscriptions with the price :arg4 :arg1 per :arg2
+     */
+    public function thereWillBeSubscriptionsWithThePricePer($count, $amount, $currency, $schedule)
+    {
+        $price = $this->priceRepository->findOneBy(['amount' => $amount, 'currency' => $currency, 'schedule' => $schedule]);
+
+        $actualCount = $this->subscriptionRepository->count(['price' => $price]);
+
+        if (intval($count) !== $actualCount) {
+            throw new \Exception(sprintf('Expected %d but got %d', $count, $actualCount));
+        }
     }
 
     /**
@@ -60,7 +90,7 @@ class MainContext implements Context
     {
         $row = current($table->getColumnsHash());
         /** @var SubscriptionPlan $subscriptionPlan */
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
+        $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $row['Subscription Plan']]);
         $customer = $this->getCustomerByEmail($customerEmail);
         /** @var Price $price */
         $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
@@ -280,7 +310,7 @@ class MainContext implements Context
 
         foreach ($rows as $row) {
             /** @var SubscriptionPlan $subscriptionPlan */
-            $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
+            $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $row['Subscription Plan']]);
             $customer = $this->getCustomerByEmail($row['Customer']);
             /** @var Price $price */
             $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
@@ -458,7 +488,7 @@ class MainContext implements Context
         $data = $table->getRowsHash();
 
         /** @var SubscriptionPlan $subscriptionPlan */
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $data['Plan']]);
         /** @var Price $price */
         $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
 
@@ -479,7 +509,7 @@ class MainContext implements Context
         $data = $table->getRowsHash();
 
         /** @var SubscriptionPlan $subscriptionPlan */
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $data['Plan']]);
         /** @var Price $price */
         $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
 
@@ -500,7 +530,7 @@ class MainContext implements Context
         $data = $table->getRowsHash();
 
         /** @var SubscriptionPlan $subscriptionPlan */
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $data['Plan']]);
         /** @var Price $price */
         $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
 
@@ -521,7 +551,7 @@ class MainContext implements Context
         $data = $table->getRowsHash();
 
         /** @var SubscriptionPlan $subscriptionPlan */
-        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $data['Plan']]);
+        $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $data['Plan']]);
         /** @var Price $price */
         $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
 

@@ -12,6 +12,7 @@
 
 namespace App\Tests\Behat\Subscriptions;
 
+use App\Background\Subscription\MassChange;
 use App\Entity\MassSubscriptionChange;
 use App\Enum\MassSubscriptionChangeStatus;
 use App\Repository\Orm\BrandSettingsRepository;
@@ -35,6 +36,7 @@ class MassChangeContext implements Context
         private MassSubscriptionChangeRepository $massSubscriptionChangeRepository,
         private PriceRepository $priceRepository,
         private BrandSettingsRepository $brandSettingsRepository,
+        private MassChange $massChange,
     ) {
     }
 
@@ -197,6 +199,14 @@ class MassChangeContext implements Context
     }
 
     /**
+     * @When I process mass change subscriptions
+     */
+    public function iProcessMassChangeSubscriptions()
+    {
+        $this->massChange->execute();
+    }
+
+    /**
      * @When there are the following mass subscription changes exists:
      */
     public function thereAreTheFollowingMassSubscriptionChangesExists(TableNode $table)
@@ -206,6 +216,31 @@ class MassChangeContext implements Context
             $newPlan = $this->findSubscriptionPlanByName($row['New Subscription Plan']);
 
             $entity = new MassSubscriptionChange();
+
+            if (isset($row['New Price Amount']) || isset($row['New Price Currency']) || isset($row['New Price Schedule'])) {
+                if (isset($row['New Price Amount']) && isset($row['New Price Currency']) && isset($row['New Price Schedule'])) {
+                    $price = $this->priceRepository->findOneBy([
+                        'amount' => $row['New Price Amount'],
+                        'currency' => $row['New Price Currency'],
+                        'schedule' => $row['New Price Schedule'],
+                    ]);
+                    $entity->setNewPrice($price);
+                } else {
+                    throw new \Exception('Not all price data set');
+                }
+            }
+            if (isset($row['Target Price Amount']) || isset($row['Target Price Currency']) || isset($row['Target Price Schedule'])) {
+                if (isset($row['Target Price Amount']) && isset($row['Target Price Currency']) && isset($row['Target Price Schedule'])) {
+                    $price = $this->priceRepository->findOneBy([
+                        'amount' => $row['Target Price Amount'],
+                        'currency' => $row['Target Price Currency'],
+                        'schedule' => $row['Target Price Schedule'],
+                    ]);
+                    $entity->setTargetPrice($price);
+                } else {
+                    throw new \Exception('Not all target price data set');
+                }
+            }
 
             $entity->setTargetSubscriptionPlan($targetPlan);
             $entity->setNewSubscriptionPlan($newPlan);
