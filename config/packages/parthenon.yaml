@@ -13,12 +13,18 @@ parthenon:
     login_route: "parthenon_user_login"
     teams_invites_enabled: false
     self_signup_enabled: false
+
+
   notification:
     enabled: true
     email:
       from_name: 'Parthenon'
       from_address: 'support@example.org'
       provider: symfony
+
+  export:
+    enabled: true
+
   billing:
     enabled: true
     payments:

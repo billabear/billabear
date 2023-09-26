@@ -14,6 +14,9 @@ namespace App\Repository;
 
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
+/**
+ * @method \App\Entity\MassSubscriptionChange findById($id)
+ */
 interface MassSubscriptionChangeRepositoryInterface extends CrudRepositoryInterface
 {
 }

@@ -14,5 +14,6 @@ export const MASS_CHANGE_VIEW_TRANSLATIONS = {
     },
     change_date: {
         title: "Change Date"
-    }
+    },
+    export_button: "Export Customer List"
 }

@@ -131,8 +131,8 @@ export default {
             prices.push(this.prices[i]);
           }
         }
-        return prices;
 
+        return prices;
       }
 
       if (this.payload.target_price !== null && this.payload.target_plan == null){
@@ -143,8 +143,8 @@ export default {
             prices.push(this.prices[i]);
           }
         }
-        return prices;
 
+        return prices;
       }
 
       if (this.payload.target_plan == null) {

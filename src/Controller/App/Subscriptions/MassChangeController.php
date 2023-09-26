@@ -21,11 +21,15 @@ use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use App\Dto\Response\App\Subscription\MassChange\CreateView;
 use App\Dto\Response\App\Subscription\MassChange\ViewMassSubscriptionChange;
+use App\Export\DataProvider\MassSubscriptionChangeCustomersDataProvider;
+use App\Export\Response\ResponseConverter;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\MassSubscriptionChangeRepositoryInterface;
 use App\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Export\Engine\EngineInterface;
+use Parthenon\Export\ExportRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,5 +121,31 @@ class MassChangeController
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/subscription/mass-change/{id}/export', name: 'app_app_subscriptions_masschange_exportchange', methods: ['GET'])]
+    public function exportChange(
+        Request $request,
+        MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
+        EngineInterface $engine,
+    ) {
+        try {
+            $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $exportRequest = new ExportRequest(
+            sprintf('mass_change-%s', $entity->getId()),
+            'csv',
+            MassSubscriptionChangeCustomersDataProvider::class,
+            ['mass_change_id' => (string) $entity->getId()]
+        );
+
+        $exportResponse = $engine->process($exportRequest);
+
+        $responseConverter = new ResponseConverter();
+
+        return $responseConverter->convert($exportResponse);
     }
 }

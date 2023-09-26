@@ -14,6 +14,8 @@ namespace App\Repository;
 
 use App\Entity\BrandSettings;
 use App\Entity\Customer;
+use App\Entity\Price;
+use App\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -155,6 +157,38 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
             ->groupBy('s.paymentSchedule')
             ->where('s.status = :status')
             ->setParameter('status', SubscriptionStatus::ACTIVE);
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->innerJoin('s.customer', 'c')
+            ->where('s.status = :status')
+            ->setParameter(':status', SubscriptionStatus::ACTIVE);
+
+        if ($subscriptionPlan) {
+            $qb->andWhere('s.subscriptionPlan = :subscription_plan')
+                ->setParameter(':subscription_plan', $subscriptionPlan);
+        }
+
+        if ($price) {
+            $qb->andWhere('s.price = :price')
+                ->setParameter(':price', $price);
+        }
+
+        if ($brandSettings) {
+            $qb->andWhere('c.brandSettings = :brand_settings')
+                ->setParameter('brand_settings', $brandSettings);
+        }
+
+        if ($country) {
+            $qb->andWhere('c.billingAddress.country = :country')
+                ->setParameter('country', $country);
+        }
+
         $query = $qb->getQuery();
 
         return $query->getResult();

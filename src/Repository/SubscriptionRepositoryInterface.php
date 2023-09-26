@@ -13,6 +13,8 @@
 namespace App\Repository;
 
 use App\Entity\BrandSettings;
+use App\Entity\Price;
+use App\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\Subscription;
 
 /**
@@ -53,4 +55,9 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getScheduleCounts(): array;
 
     public function getCountOfActiveCustomers(): int;
+
+    /**
+     * @return Subscription[]
+     */
+    public function findMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): array;
 }

@@ -43,19 +43,26 @@
 
         {{  $filters.moment(mass_change.change_date, "LLL") }}
       </div>
+
+      <div class="mt-5">
+        <SubmitButton :in-progress="exportInProgress" @click="processExport">{{ $t('app.subscription.mass_change.view.export_button') }}</SubmitButton>
+      </div>
     </LoadingScreen>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import fileDownload from "js-file-download";
 
 export default {
   name: "MassChangeView",
   data() {
     return {
       ready: false,
-      mass_change: {}
+      exportInProgress: false,
+      mass_change: {},
+      export_id: null,
     }
   },
   mounted() {
@@ -74,6 +81,44 @@ export default {
       this.error = true;
       this.ready = true;
     })
+  },
+  methods: {
+    checkDownloadExport: function () {
+
+    },
+    processExport: function () {
+      this.exportInProgress = true;
+      var subscriptionId = this.$route.params.id
+      axios.get('/app/subscription/mass-change/' + subscriptionId+'/export', { responseType: 'blob' })
+          .then((response) => {
+            const contentType = response.headers['content-type'];
+
+            if (contentType.includes('application/json')) {
+              // Response is JSON
+              return response.data.text();
+            } else {
+              const contentDisposition = response.headers['content-disposition'];
+              var fileDownload = require('js-file-download');
+              const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+              if (matches !== null && matches[1]) {
+                const fileName = matches[1].replace(/['"]/g, '');
+                fileDownload(response.data, fileName);
+                this.exportInProgress = false;
+              }
+            }
+          })
+          .then((responseData) => {
+            if (responseData) {
+              if (typeof responseData === 'string') {
+                const jsonData = JSON.parse(responseData);
+                console.log('Response is JSON:', jsonData);
+              }
+            }
+          })
+          .catch((error) => {
+            console.error('An error occurred:', error);
+          });
+    }
   }
 }
 </script>
