@@ -42,9 +42,15 @@ class RevenueEstimator
             $total = $total->multipliedBy(30);
         }
 
+        $schedule = match ($newPrice->getSchedule()) {
+            'year' => 'ARR',
+            default => 'MRR',
+        };
+
         $estimate = new Estimate();
         $estimate->setAmount($total->getMinorAmount()->toInt());
         $estimate->setCurrency($total->getCurrency());
+        $estimate->setSchedule($schedule);
 
         return $estimate;
     }

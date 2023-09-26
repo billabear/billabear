@@ -15,5 +15,8 @@ export const MASS_CHANGE_CREATE_TRANSLATIONS = {
     change_date: {
         title: "Change Date"
     },
+    estimate: {
+        amount: "This will produce an estimated {amount} {currency} change to the {schedule}",
+    },
     submit_button: "Submit Button",
 }

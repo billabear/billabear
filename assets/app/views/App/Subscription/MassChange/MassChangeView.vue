@@ -44,6 +44,9 @@
         {{  $filters.moment(mass_change.change_date, "LLL") }}
       </div>
 
+      <div class="mt-5 card-body" v-if="estimate !== null">
+        {{ $t('app.subscription.mass_change.view.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
+      </div>
       <div class="mt-5">
         <SubmitButton :in-progress="exportInProgress" @click="processExport">{{ $t('app.subscription.mass_change.view.export_button') }}</SubmitButton>
       </div>
@@ -54,6 +57,7 @@
 <script>
 import axios from "axios";
 import fileDownload from "js-file-download";
+import currency from "currency.js";
 
 export default {
   name: "MassChangeView",
@@ -63,6 +67,7 @@ export default {
       exportInProgress: false,
       mass_change: {},
       export_id: null,
+      estimate: {},
     }
   },
   mounted() {
@@ -70,6 +75,7 @@ export default {
     var subscriptionId = this.$route.params.id
     axios.get('/app/subscription/mass-change/' + subscriptionId+'/view').then(response => {
       this.mass_change = response.data.mass_change;
+      this.estimate = response.data.estimate;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
@@ -83,6 +89,9 @@ export default {
     })
   },
   methods: {
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
     checkDownloadExport: function () {
 
     },

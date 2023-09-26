@@ -136,6 +136,7 @@ class MassChangeController
         SerializerInterface $serializer,
         MassChangeDataMapper $changeDataMapper,
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
+        RevenueEstimator $revenueEstimator,
     ) {
         try {
             $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
@@ -144,6 +145,7 @@ class MassChangeController
         }
 
         $viewDto = new ViewMassSubscriptionChange();
+        $viewDto->setEstimate($revenueEstimator->generateEstimateDto($entity));
         $viewDto->setMassSubscriptionChange($changeDataMapper->createAppDto($entity));
         $json = $serializer->serialize($viewDto, 'json');
 

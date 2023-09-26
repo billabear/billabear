@@ -53,7 +53,7 @@
             {{ $t('app.subscription.mass_change.create.new.plan') }}
           </label>
           <p class="form-field-error" v-if="errors['newPlan'] != undefined">{{ errors['newPlan'] }}</p>
-          <select class="form-field" v-model="payload.new_plan" @change="">
+          <select class="form-field" v-model="payload.new_plan" @change="fetchEstimate">
             <option :value="null"></option>
             <option v-for="subscriptionPlan in newPlans" :value="subscriptionPlan">{{ subscriptionPlan.product.name }} - {{ subscriptionPlan.name }}</option>
           </select>
@@ -76,6 +76,10 @@
         <VueDatePicker  class="mt-2" v-model="payload.change_date"  :enable-time-picker="false" ></VueDatePicker>
       </div>
 
+      <div class="mt-5 card-body" v-if="estimate !== null">
+        {{ $t('app.subscription.mass_change.create.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
+      </div>
+
       <div class="mt-5">
 
         <SubmitButton :in-progress="sending" @click="sendCreate">{{ $t('app.subscription.mass_change.create.submit_button') }}</SubmitButton>
@@ -87,6 +91,7 @@
 <script>
 import axios from "axios";
 import CountrySelect from "../../../../components/app/Forms/CountrySelect.vue";
+import currency from "currency.js";
 
 export default {
   name: "MassChangeCreate",
@@ -99,6 +104,7 @@ export default {
       prices: [],
       plans: [],
       brands: [],
+      estimate: null,
       payload: {
         target_plan: null,
         target_price: null,
@@ -163,11 +169,16 @@ export default {
       this.prices = response.data.prices;
     })
   },
+  watch: {
+    'payload.new_price': function () {
+      this.sendEstimate();
+    }
+  },
   methods: {
-    sendCreate: function () {
-
-      this.errors = {};
-      this.sending = true;
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
+    buildPayload: function () {
       const payload = {};
       if (this.payload.target_plan) {
         payload.target_plan = this.payload.target_plan.id;
@@ -193,6 +204,30 @@ export default {
         payload.target_country = this.payload.target_country;
       }
 
+      return payload;
+    },
+    sendEstimate: function () {
+      const payload = this.buildPayload();
+      this.errors = {}
+      axios.post("/app/subscription/mass-change/estimate", payload).then(response => {
+        this.sending = false;
+        this.estimate = response.data;
+      }).catch(error => {
+
+        if (error.response.data.errors) {
+          this.errors = error.response.data.errors;
+        } else {
+          this.unknown_error = true;
+        }
+        this.sending = false;
+      })
+    },
+    sendCreate: function () {
+
+      this.errors = {};
+      this.sending = true;
+
+      const payload = this.buildPayload();
       if (this.payload.change_date) {
         payload.change_date = this.payload.change_date;
       }

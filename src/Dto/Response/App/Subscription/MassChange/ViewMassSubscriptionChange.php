@@ -19,6 +19,9 @@ class ViewMassSubscriptionChange
     #[SerializedName('mass_change')]
     private MassSubscriptionChange $massSubscriptionChange;
 
+    #[SerializedName('estimate')]
+    private Estimate $estimate;
+
     public function getMassSubscriptionChange(): MassSubscriptionChange
     {
         return $this->massSubscriptionChange;
@@ -27,5 +30,15 @@ class ViewMassSubscriptionChange
     public function setMassSubscriptionChange(MassSubscriptionChange $massSubscriptionChange): void
     {
         $this->massSubscriptionChange = $massSubscriptionChange;
+    }
+
+    public function getEstimate(): Estimate
+    {
+        return $this->estimate;
+    }
+
+    public function setEstimate(Estimate $estimate): void
+    {
+        $this->estimate = $estimate;
     }
 }
