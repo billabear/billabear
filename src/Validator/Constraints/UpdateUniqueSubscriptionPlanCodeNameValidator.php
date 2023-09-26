@@ -26,16 +26,15 @@ class UpdateUniqueSubscriptionPlanCodeNameValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint)
     {
-        if (empty($value)) {
-            return;
-        }
-
         $id = null;
         if ($value instanceof UpdateSubscriptionPlan) {
             $id = $value->getId();
             $value = $value->getCodeName();
         }
 
+        if (empty($value)) {
+            return;
+        }
         try {
             $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value);
         } catch (NoEntityFoundException $exception) {

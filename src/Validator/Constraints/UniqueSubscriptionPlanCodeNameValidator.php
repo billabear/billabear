@@ -25,7 +25,7 @@ class UniqueSubscriptionPlanCodeNameValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint)
     {
-        if (empty($value)) {
+        if (is_null($value) || empty($value)) {
             return;
         }
 
