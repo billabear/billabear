@@ -19,6 +19,7 @@ use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\DataMappers\Subscriptions\MassChangeDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
+use App\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use App\Dto\Response\App\Subscription\MassChange\CreateView;
 use App\Dto\Response\App\Subscription\MassChange\ViewMassSubscriptionChange;
 use App\Export\DataProvider\MassSubscriptionChangeCustomersDataProvider;
@@ -26,6 +27,7 @@ use App\Export\Response\ResponseConverter;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\MassSubscriptionChangeRepositoryInterface;
 use App\Repository\SubscriptionPlanRepositoryInterface;
+use App\Subscription\MassChange\RevenueEstimator;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Export\Engine\EngineInterface;
@@ -88,6 +90,31 @@ class MassChangeController
         $entity = $changeDataMapper->createEntity($dto);
         $massSubscriptionChangeRepository->save($entity);
         $outDto = $changeDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($outDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/subscription/mass-change/estimate', name: 'app_app_subscriptions_masschange_estimate', methods: ['POST'])]
+    public function estimate(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        MassChangeDataMapper $changeDataMapper,
+        RevenueEstimator $revenueEstimator,
+    ) {
+        $dto = $serializer->deserialize($request->getContent(), EstimateMassChange::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $entity = $changeDataMapper->createEntity($dto);
+        $outDto = $revenueEstimator->generateEstimateDto($entity);
+
         $json = $serializer->serialize($outDto, 'json');
 
         return new JsonResponse($json, json: true);

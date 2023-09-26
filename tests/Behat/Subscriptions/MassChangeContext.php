@@ -219,6 +219,83 @@ class MassChangeContext implements Context
     }
 
     /**
+     * @When I estimate the new revenue for a mass subscription change:
+     */
+    public function iEstimateTheNewRevenueForAMassSubscriptionChange(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+        $payload = [];
+
+        if (isset($data['Target Brand'])) {
+            $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $data['Target Brand']]);
+            $payload['target_brand'] = $brand?->getCode();
+        }
+        if (isset($data['Target Country'])) {
+            $payload['target_country'] = $data['Target Country'];
+        }
+
+        if (isset($data['Target Subscription Plan'])) {
+            if ('invalid' == strtolower($data['Target Subscription Plan'])) {
+                $payload['target_plan'] = 'invalid';
+            } else {
+                $subscriptionPlan = $this->findSubscriptionPlanByName($data['Target Subscription Plan']);
+                $payload['target_plan'] = (string) $subscriptionPlan->getId();
+            }
+        }
+
+        if (isset($data['New Subscription Plan'])) {
+            if ('invalid' == strtolower($data['New Subscription Plan'])) {
+                $payload['new_plan'] = 'invalid';
+            } else {
+                $subscriptionPlan = $this->findSubscriptionPlanByName($data['New Subscription Plan']);
+                $payload['new_plan'] = (string) $subscriptionPlan->getId();
+            }
+        }
+
+        if (isset($data['New Price Amount']) || isset($data['New Price Currency']) || isset($data['New Price Schedule'])) {
+            if (isset($data['New Price Amount']) && isset($data['New Price Currency']) && isset($data['New Price Schedule'])) {
+                $price = $this->priceRepository->findOneBy([
+                    'amount' => $data['New Price Amount'],
+                    'currency' => $data['New Price Currency'],
+                    'schedule' => $data['New Price Schedule'],
+                ]);
+                $payload['new_price'] = (string) $price?->getId();
+            } else {
+                throw new \Exception('Not all price data set');
+            }
+        }
+        if (isset($data['Target Price Amount']) || isset($data['Target Price Currency']) || isset($data['Target Price Schedule'])) {
+            if (isset($data['Target Price Amount']) && isset($data['Target Price Currency']) && isset($data['Target Price Schedule'])) {
+                $price = $this->priceRepository->findOneBy([
+                    'amount' => $data['Target Price Amount'],
+                    'currency' => $data['Target Price Currency'],
+                    'schedule' => $data['Target Price Schedule'],
+                ]);
+                $payload['target_price'] = (string) $price?->getId();
+            } else {
+                throw new \Exception('Not all target price data set');
+            }
+        }
+
+        $this->sendJsonRequest('POST', '/app/subscription/mass-change/estimate', $payload);
+    }
+
+    /**
+     * @Then I should be told the new revenue generated would be :arg2 :arg1
+     */
+    public function iShouldBeToldTheNewRevenueGeneratedWouldBe($amount, $currency)
+    {
+        $data = $this->getJsonContent();
+        if ($data['amount'] != intval($amount)) {
+            throw new \Exception(sprintf('Expected %d but got %d', $amount, $data['amount']));
+        }
+
+        if ($data['currency'] != $data['currency']) {
+            throw new \Exception(sprintf('Expected %s but got %s', $currency, $data['currency']));
+        }
+    }
+
+    /**
      * @When I look at the mass subscription change list
      */
     public function iLookAtTheMassSubscriptionChangeList()

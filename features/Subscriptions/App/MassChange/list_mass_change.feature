@@ -67,10 +67,6 @@ Feature: Create Subscription Mass Change
       | Test Plan         | 3300         | USD            | month          | customer.eight@example.org |
       | Test Plan         | 3400         | USD            | month          | customer.nine@example.org |
       | Test Two          | 3400         | GBP            | month          | customer.ten@example.org |
-# 5 at 3000 USD # 7 on Test Plan  # 1 Test Two at 3400 GBP  # 2 Test Plan at 3000 USD
-# 4 at 3300 USD # 4 on Test Two   # 1 Test Two at 3300 USD  # 2 Test Two at 3000 USD
-# 1 at 3400 USD #                 # 1 Test Plan at 3400 USD # 3 Test Plan at 3000 USD
-# 1 at 3400 GBP #                 # 1 Test Plan at 3300 USD #
 
 
   Scenario: Create Mass Change change

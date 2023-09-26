@@ -15,6 +15,7 @@ namespace App\DataMappers\Subscriptions;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
+use App\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use App\Dto\Response\App\Subscription\MassChange\MassSubscriptionChange as AppDto;
 use App\Entity\MassSubscriptionChange as Entity;
 use App\Enum\MassSubscriptionChangeStatus;
@@ -36,12 +37,14 @@ class MassChangeDataMapper
     ) {
     }
 
-    public function createEntity(CreateMassChange $dto): Entity
+    public function createEntity(CreateMassChange|EstimateMassChange $dto): Entity
     {
         $entity = new Entity();
 
-        $changeDate = \DateTime::createFromFormat(DATE_RFC3339_EXTENDED, $dto->getChangeDate());
-        $entity->setChangeDate($changeDate);
+        if ($dto instanceof CreateMassChange) {
+            $changeDate = \DateTime::createFromFormat(DATE_RFC3339_EXTENDED, $dto->getChangeDate());
+            $entity->setChangeDate($changeDate);
+        }
 
         if ($dto->getNewPlan()) {
             $subscriptionPlan = $this->subscriptionPlanRepository->findById($dto->getNewPlan());

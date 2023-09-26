@@ -60,4 +60,6 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
      * @return Subscription[]
      */
     public function findMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): array;
+
+    public function countMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): int;
 }

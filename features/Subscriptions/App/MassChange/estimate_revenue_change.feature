@@ -16,6 +16,8 @@ Feature: Create Subscription Mass Change
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
+      | Product One | 1000   | GBP      | true      | day     | true   |
+      | Product One | 1100   | GBP      | true      | day     | true   |
       | Product One | 3000   | USD      | true      | month    | true   |
       | Product One | 3400   | USD      | true      | month    | true   |
       | Product One | 3300   | USD      | true      | month    | true   |
@@ -67,120 +69,69 @@ Feature: Create Subscription Mass Change
       | Test Plan         | 3300         | USD            | month          | customer.eight@example.org |
       | Test Plan         | 3400         | USD            | month          | customer.nine@example.org |
       | Test Two          | 3400         | GBP            | month          | customer.ten@example.org |
+      | Third Plan        | 1000         | GBP            | day            | customer.ten@example.org |
+# 5 at 3000 USD # 7 on Test Plan  # 1 Test Two at 3400 GBP  # 3 Test Plan at 3000 USD
+# 4 at 3300 USD # 4 on Test Two   # 1 Test Two at 3300 USD  # 2 Test Two at 3000 USD
+# 1 at 3400 USD #                 # 1 Test Plan at 3400 USD # 3 Test Plan at 3300 USD
+# 1 at 3400 GBP #                 # 1 Test Plan at 3300 USD #
 
-  Scenario: Create Mass Change change
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
-      | Target Subscription Plan | Test Plan   |
-      | New Subscription Plan    | Third Plan  |
-      | Date                     | +3 days     |
-    Then there should be a mass subscription change that contains:
-      | Target Subscription Plan | Test Plan   |
-      | New Subscription Plan    | Third Plan  |
-      | Date                     | +3 days     |
 
-  Scenario: Create Mass Change change failed invalid new subscription plan
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
-      | Target Subscription Plan | Test Plan   |
-      | New Subscription Plan    | invalid        |
-      | Date                     | +3 days     |
-    Then there should not be a mass subscription change
 
-  Scenario: Create Mass Change change failed invalid target subscription plan
+  Scenario: Plus 1200
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
-      | Target Subscription Plan | invalid     |
-      | New Subscription Plan    | Test Plan   |
-      | Date                     | +3 days     |
-    Then there should not be a mass subscription change
-
-  Scenario: Create Mass Change change failed no target group
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
-      | New Subscription Plan    | Test Plan   |
-      | Date                     | +3 days     |
-    Then there should not be a mass subscription change
-
-  Scenario: Create Mass Change change - new price
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
+    When I estimate the new revenue for a mass subscription change:
       | Target Subscription Plan | Test Plan   |
-      | New Price Amount         | 3400        |
-      | New Price Currency       | USD         |
-      | New Price Schedule       | month       |
-      | Date                     | +3 days     |
-    Then there should be a mass subscription change that contains:
-      | Target Subscription Plan | Test Plan   |
-      | New Price Amount         | 3400        |
-      | New Price Currency       | USD         |
-      | New Price Schedule       | month       |
-      | Date                     | +3 days     |
-
-  Scenario: Create Mass Change change - target price
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
-      | Target Subscription Plan | Test Plan   |
-      | Target Price Amount      | 3400        |
+      | Target Price Amount      | 3000        |
       | Target Price Currency    | USD         |
       | Target Price Schedule    | month       |
       | New Price Amount         | 3400        |
       | New Price Currency       | USD         |
       | New Price Schedule       | month       |
-      | Date                     | +3 days     |
-    Then there should be a mass subscription change that contains:
-      | Target Subscription Plan | Test Plan   |
-      | Target Price Amount      | 3400        |
-      | Target Price Currency    | USD         |
-      | Target Price Schedule    | month       |
-      | New Price Amount         | 3400        |
-      | New Price Currency       | USD         |
-      | New Price Schedule       | month       |
-      | Date                     | +3 days     |
+    Then I should be told the new revenue generated would be 1200 "USD"
 
-
-  Scenario: Create Mass Change change - target brand
+  Scenario: Plus 2000
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
-      | Target Subscription Plan | Test Plan   |
-      | Target Price Amount      | 3400        |
+    When I estimate the new revenue for a mass subscription change:
+      | Target Price Amount      | 3000        |
       | Target Price Currency    | USD         |
       | Target Price Schedule    | month       |
-      | Target Brand             | Example     |
       | New Price Amount         | 3400        |
       | New Price Currency       | USD         |
       | New Price Schedule       | month       |
-      | Date                     | +3 days     |
-    Then there should be a mass subscription change that contains:
-      | Target Subscription Plan | Test Plan   |
-      | Target Price Amount      | 3400        |
-      | Target Price Currency    | USD         |
-      | Target Price Schedule    | month       |
-      | Target Brand             | Example     |
-      | New Price Amount         | 3400        |
-      | New Price Currency       | USD         |
-      | New Price Schedule       | month       |
-      | Date                     | +3 days     |
+    Then I should be told the new revenue generated would be 2000 "USD"
 
-  Scenario: Create Mass Change change - target country
+  Scenario: Minus 900
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a mass subscription change:
+    When I estimate the new revenue for a mass subscription change:
       | Target Subscription Plan | Test Plan   |
-      | Target Price Amount      | 3400        |
+      | Target Price Amount      | 3300        |
       | Target Price Currency    | USD         |
       | Target Price Schedule    | month       |
-      | Target Country           | US          |
-      | New Price Amount         | 3400        |
+      | New Price Amount         | 3000        |
       | New Price Currency       | USD         |
       | New Price Schedule       | month       |
-      | Date                     | +3 days     |
-    Then there should be a mass subscription change that contains:
-      | Target Subscription Plan | Test Plan   |
-      | Target Price Amount      | 3400        |
-      | Target Price Currency    | USD         |
-      | Target Price Schedule    | month       |
-      | Target Country           | US          |
-      | New Price Amount         | 3400        |
-      | New Price Currency       | USD         |
-      | New Price Schedule       | month       |
-      | Date                     | +3 days     |
+    Then I should be told the new revenue generated would be "-900" "USD"
+
+  Scenario: 3000
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I estimate the new revenue for a mass subscription change:
+      | Target Subscription Plan | Third Plan |
+      | Target Price Amount      | 1000       |
+      | Target Price Currency    | GBP        |
+      | Target Price Schedule    | day        |
+      | New Price Amount         | 1100       |
+      | New Price Currency       | GBP        |
+      | New Price Schedule       | day        |
+    Then I should be told the new revenue generated would be "3000" "GBP"
+
+  Scenario: 0
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I estimate the new revenue for a mass subscription change:
+      | Target Subscription Plan | Test Plan |
+      | Target Price Amount      | 1000      |
+      | Target Price Currency    | GBP       |
+      | Target Price Schedule    | day       |
+      | New Price Amount         | 1100      |
+      | New Price Currency       | GBP       |
+      | New Price Schedule       | day       |
+    Then I should be told the new revenue generated would be "0" "GBP"

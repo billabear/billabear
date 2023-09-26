@@ -164,6 +164,23 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
     public function findMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): array
     {
+        $qb = $this->getMassChangableQueryBuilder($subscriptionPlan, $price, $brandSettings, $country);
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function countMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): int
+    {
+        $qb = $this->getMassChangableQueryBuilder($subscriptionPlan, $price, $brandSettings, $country);
+        $qb->select('COUNT(s.id)');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getMassChangableQueryBuilder(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): \Doctrine\ORM\QueryBuilder
+    {
         $qb = $this->entityRepository->createQueryBuilder('s');
         $qb->innerJoin('s.customer', 'c')
             ->where('s.status = :status')
@@ -189,8 +206,6 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
                 ->setParameter('country', $country);
         }
 
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return $qb;
     }
 }
