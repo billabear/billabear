@@ -65,7 +65,7 @@
           <p class="form-field-error" v-if="errors['newPrice'] != undefined">{{ errors['newPrice'] }}</p>
           <select class="form-field" v-model="payload.new_price" @change="">
             <option :value="null"></option>
-            <option v-for="price in newPrices" :value="price.id">{{ price.display_value }}</option>
+            <option v-for="price in newPrices" :value="price">{{ price.display_value }}</option>
           </select>
         </div>
       </div>
@@ -123,6 +123,18 @@ export default {
       return this.plans;
     },
     newPrices: function () {
+      if (this.payload.new_plan !== null) {
+        var prices = [];
+        const len = this.prices.length;
+        for (let i = 0; i < len; i++) {
+          if (this.prices[i].product.id == this.payload.new_plan.product.id) {
+            prices.push(this.prices[i]);
+          }
+        }
+        return prices;
+
+      }
+
       if (this.payload.target_price !== null && this.payload.target_plan == null){
         var prices = [];
         const len = this.prices.length;
@@ -174,7 +186,7 @@ export default {
       }
 
       if (this.payload.target_brand) {
-        payload.target_brand = this.payload.target_brand.id;
+        payload.target_brand = this.payload.target_brand.code;
       }
 
       if (this.payload.target_country) {
@@ -188,6 +200,7 @@ export default {
       axios.post("/app/subscription/mass-change", payload).then(response => {
 
         this.sending = false;
+        this.$router.push({name: 'app.subscription.mass_change.view', params: {id: response.data.id}})
       }).catch(error => {
 
         if (error.response.data.errors) {

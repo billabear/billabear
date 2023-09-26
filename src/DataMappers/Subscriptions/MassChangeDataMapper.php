@@ -75,6 +75,7 @@ class MassChangeDataMapper
     public function createAppDto(Entity $entity): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $entity->getId());
         $dto->setTargetBrandSettings($this->brandSettingsDataMapper->createAppDto($entity->getBrandSettings()));
         $dto->setTargetPlan($this->subscriptionPlanDataMapper->createAppDto($entity->getTargetSubscriptionPlan()));
         $dto->setNewPlan($this->subscriptionPlanDataMapper->createAppDto($entity->getNewSubscriptionPlan()));

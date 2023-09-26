@@ -50,7 +50,7 @@
             <td>{{ subscription.change_date }}</td>
             <td>{{ subscription.status }}</td>
             <td>{{ subscription.created_at }}</td>
-            <td><router-link :to="{name: 'app.subscription.mass_change.create', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
+            <td><router-link :to="{name: 'app.subscription.mass_change.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">
             <td colspan="4" class="text-center">{{ $t('app.subscription.mass_change.list.no_mass_change') }}</td>

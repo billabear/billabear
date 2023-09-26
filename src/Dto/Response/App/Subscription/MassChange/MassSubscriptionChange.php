@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class MassSubscriptionChange
 {
+    private string $id;
+
     #[SerializedName('change_date')]
     private \DateTime $changeDate;
 
@@ -44,6 +46,16 @@ class MassSubscriptionChange
 
     #[SerializedName('created_at')]
     private \DateTime $createdAt;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getChangeDate(): \DateTime
     {
