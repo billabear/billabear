@@ -15,11 +15,13 @@ namespace App\Dto\Request\App\Subscription\MassChange;
 use App\Validator\Constraints\BrandCodeExists;
 use App\Validator\Constraints\PriceExists;
 use App\Validator\Constraints\SubscriptionPlanExists;
+use App\Validator\Constraints\ValidPriceChange;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[Assert\Callback('validate')]
+#[ValidPriceChange]
 class EstimateMassChange
 {
     #[SubscriptionPlanExists]
