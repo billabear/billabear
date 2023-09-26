@@ -24,7 +24,7 @@
           <p class="form-field-error" v-if="errors['targetPrice'] != undefined">{{ errors['targetPrice'] }}</p>
           <select class="form-field" v-model="payload.target_price" @change="">
             <option :value="null"></option>
-            <option v-for="price in targetPrices" :value="price">{{ price.display_value }}</option>
+            <option v-for="price in targetPrices" :value="price">{{ price.display_value }} / {{ price.schedule }}</option>
           </select>
         </div>
         <div class="mt-5">
@@ -65,7 +65,7 @@
           <p class="form-field-error" v-if="errors['newPrice'] != undefined">{{ errors['newPrice'] }}</p>
           <select class="form-field" v-model="payload.new_price" @change="">
             <option :value="null"></option>
-            <option v-for="price in newPrices" :value="price">{{ price.display_value }}</option>
+            <option v-for="price in newPrices" :value="price">{{ price.display_value }} / {{ price.schedule }}</option>
           </select>
         </div>
       </div>
