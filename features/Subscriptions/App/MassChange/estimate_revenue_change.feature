@@ -75,8 +75,6 @@ Feature: Create Subscription Mass Change
 # 1 at 3400 USD #                 # 1 Test Plan at 3400 USD # 3 Test Plan at 3300 USD
 # 1 at 3400 GBP #                 # 1 Test Plan at 3300 USD #
 
-
-
   Scenario: Plus 1200
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I estimate the new revenue for a mass subscription change:
