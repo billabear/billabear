@@ -1,6 +1,6 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.invoices.list.unpaid_title') }}</h1>
+    <h1 class="mt-5 ml-5 page-title">{{ $t('app.invoices.list.unpaid_title') }}</h1>
 
     <div class="top-button-container">
       <div class="list">
