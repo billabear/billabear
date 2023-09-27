@@ -1,91 +1,92 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.subscription.mass_change.create.title') }}</h1>
+    <h1 class="mt-5 ml-5 page-title">{{ $t('app.subscription.mass_change.create.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="p-5">
+        <div class="mt-3 card-body">
+          <h2>{{ $t('app.subscription.mass_change.create.criteria.title') }}</h2>
 
-      <div class="mt-3 card-body">
-        <h2>{{ $t('app.subscription.mass_change.create.criteria.title') }}</h2>
+          <div class="mt-5">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription.mass_change.create.criteria.plan') }}
+            </label>
+            <p class="form-field-error" v-if="errors['targetPlan'] != undefined">{{ errors['targetPlan'] }}</p>
+            <select class="form-field" v-model="payload.target_plan" @change="">
+              <option :value="null"></option>
+              <option v-for="subscriptionPlan in plans" :value="subscriptionPlan">{{ subscriptionPlan.product.name }} - {{ subscriptionPlan.name }}</option>
+            </select>
+          </div>
+          <div class="mt-5">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription.mass_change.create.criteria.price') }}
+            </label>
+            <p class="form-field-error" v-if="errors['targetPrice'] != undefined">{{ errors['targetPrice'] }}</p>
+            <select class="form-field" v-model="payload.target_price" @change="">
+              <option :value="null"></option>
+              <option v-for="price in targetPrices" :value="price">{{ price.display_value }} / {{ price.schedule }}</option>
+            </select>
+          </div>
+          <div class="mt-5">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription.mass_change.create.criteria.brand') }}
+            </label>
+            <p class="form-field-error" v-if="errors['targetBrand'] != undefined">{{ errors['targetBrand'] }}</p>
+            <select class="form-field" v-model="payload.target_brand" @change="">
+              <option :value="null"></option>
+              <option v-for="brand in brands" :value="brand">{{ brand.name }}</option>
+            </select>
+          </div>
+          <div class="mt-5">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription.mass_change.create.criteria.country') }}
+            </label>
+            <p class="form-field-error" v-if="errors['targetCountry'] != undefined">{{ errors['targetCountry'] }}</p>
+            <CountrySelect v-model="payload.target_country" />
+          </div>
+        </div>
+        <div class="mt-3 card-body">
+          <h2>{{ $t('app.subscription.mass_change.create.new.title') }}</h2>
+
+          <div class="mt-5">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription.mass_change.create.new.plan') }}
+            </label>
+            <p class="form-field-error" v-if="errors['newPlan'] != undefined">{{ errors['newPlan'] }}</p>
+            <select class="form-field" v-model="payload.new_plan" @change="fetchEstimate">
+              <option :value="null"></option>
+              <option v-for="subscriptionPlan in newPlans" :value="subscriptionPlan">{{ subscriptionPlan.product.name }} - {{ subscriptionPlan.name }}</option>
+            </select>
+          </div>
+          <div class="mt-5">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription.mass_change.create.criteria.price') }}
+            </label>
+            <p class="form-field-error" v-if="errors['newPrice'] != undefined">{{ errors['newPrice'] }}</p>
+            <select class="form-field" v-model="payload.new_price" @change="">
+              <option :value="null"></option>
+              <option v-for="price in newPrices" :value="price">{{ price.display_value }} / {{ price.schedule }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-3 card-body">
+          <h2>{{ $t('app.subscription.mass_change.create.change_date.title') }}</h2>
+          <p>{{ $t('app.subscription.mass_change.create.change_date.help_info') }}</p>
+
+          <p class="form-field-error" v-if="errors['changeDate'] != undefined">{{ errors['changeDate'] }}</p>
+          <VueDatePicker  class="mt-2" v-model="payload.change_date"  :enable-time-picker="false" ></VueDatePicker>
+        </div>
+
+        <div class="mt-5 card-body" v-if="estimate !== null">
+          {{ $t('app.subscription.mass_change.create.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
+        </div>
 
         <div class="mt-5">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.subscription.mass_change.create.criteria.plan') }}
-          </label>
-          <p class="form-field-error" v-if="errors['targetPlan'] != undefined">{{ errors['targetPlan'] }}</p>
-          <select class="form-field" v-model="payload.target_plan" @change="">
-            <option :value="null"></option>
-            <option v-for="subscriptionPlan in plans" :value="subscriptionPlan">{{ subscriptionPlan.product.name }} - {{ subscriptionPlan.name }}</option>
-          </select>
-        </div>
-        <div class="mt-5">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.subscription.mass_change.create.criteria.price') }}
-          </label>
-          <p class="form-field-error" v-if="errors['targetPrice'] != undefined">{{ errors['targetPrice'] }}</p>
-          <select class="form-field" v-model="payload.target_price" @change="">
-            <option :value="null"></option>
-            <option v-for="price in targetPrices" :value="price">{{ price.display_value }} / {{ price.schedule }}</option>
-          </select>
-        </div>
-        <div class="mt-5">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.subscription.mass_change.create.criteria.brand') }}
-          </label>
-          <p class="form-field-error" v-if="errors['targetBrand'] != undefined">{{ errors['targetBrand'] }}</p>
-          <select class="form-field" v-model="payload.target_brand" @change="">
-            <option :value="null"></option>
-            <option v-for="brand in brands" :value="brand">{{ brand.name }}</option>
-          </select>
-        </div>
-        <div class="mt-5">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.subscription.mass_change.create.criteria.country') }}
-          </label>
-          <p class="form-field-error" v-if="errors['targetCountry'] != undefined">{{ errors['targetCountry'] }}</p>
-          <CountrySelect v-model="payload.target_country" />
-        </div>
-      </div>
-      <div class="mt-3 card-body">
-        <h2>{{ $t('app.subscription.mass_change.create.new.title') }}</h2>
 
-        <div class="mt-5">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.subscription.mass_change.create.new.plan') }}
-          </label>
-          <p class="form-field-error" v-if="errors['newPlan'] != undefined">{{ errors['newPlan'] }}</p>
-          <select class="form-field" v-model="payload.new_plan" @change="fetchEstimate">
-            <option :value="null"></option>
-            <option v-for="subscriptionPlan in newPlans" :value="subscriptionPlan">{{ subscriptionPlan.product.name }} - {{ subscriptionPlan.name }}</option>
-          </select>
-        </div>
-        <div class="mt-5">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.subscription.mass_change.create.criteria.price') }}
-          </label>
-          <p class="form-field-error" v-if="errors['newPrice'] != undefined">{{ errors['newPrice'] }}</p>
-          <select class="form-field" v-model="payload.new_price" @change="">
-            <option :value="null"></option>
-            <option v-for="price in newPrices" :value="price">{{ price.display_value }} / {{ price.schedule }}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="mt-3 card-body">
-        <h2>{{ $t('app.subscription.mass_change.create.change_date.title') }}</h2>
-        <p>{{ $t('app.subscription.mass_change.create.change_date.help_info') }}</p>
-
-        <p class="form-field-error" v-if="errors['changeDate'] != undefined">{{ errors['changeDate'] }}</p>
-        <VueDatePicker  class="mt-2" v-model="payload.change_date"  :enable-time-picker="false" ></VueDatePicker>
-      </div>
-
-      <div class="mt-5 card-body" v-if="estimate !== null">
-        {{ $t('app.subscription.mass_change.create.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
-      </div>
-
-      <div class="mt-5">
-
-        <SubmitButton :in-progress="sending" @click="sendCreate">{{ $t('app.subscription.mass_change.create.submit_button') }}</SubmitButton>
-      </div>
+          <SubmitButton :in-progress="sending" @click="sendCreate">{{ $t('app.subscription.mass_change.create.submit_button') }}</SubmitButton>
+        </div
+      ></div>
     </LoadingScreen>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.subscription.list.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.subscription.list.title') }}</h1>
 
     <div class="top-button-container">
       <div class="list" v-if="Object.keys(filters).length > 0">

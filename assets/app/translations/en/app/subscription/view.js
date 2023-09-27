@@ -1,6 +1,7 @@
 export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
     title: "View Subscription",
     main: {
+        title: "Subscription Data",
         status: "Status",
         plan: "Plan",
         plan_change: "Change Plan",
@@ -23,7 +24,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         title: "Payments",
         amount: "Amount",
         created_at: "Created At",
-        view: "View"
+        view: "View",
+        no_payments: "There are no payments yet"
     },
     payment_method: {
         title: "Payment Method",

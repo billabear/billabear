@@ -1,54 +1,56 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.subscription.mass_change.view.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.subscription.mass_change.view.title') }}</h1>
     <LoadingScreen :ready="ready">
-      <div class="mt-5 card-body">
-        <h3>{{ $t('app.subscription.mass_change.view.criteria.title') }}</h3>
+      <div class="p-5">
+        <div class="mt-5 card-body">
+          <h3>{{ $t('app.subscription.mass_change.view.criteria.title') }}</h3>
 
 
-        <dl class="detail-list">
-          <div v-if="mass_change.target_plan !== null">
-            <dt>{{ $t('app.subscription.mass_change.view.criteria.plan') }}</dt>
-            <dd>{{ mass_change.target_plan.name }}</dd>
-          </div>
-          <div v-if="mass_change.target_price !== null">
-            <dt>{{ $t('app.subscription.mass_change.view.criteria.price') }}</dt>
-            <dd>{{ mass_change.target_price.display_value }}</dd>
-          </div>
-          <div v-if="mass_change.target_country !== null">
-            <dt>{{ $t('app.subscription.mass_change.view.criteria.country') }}</dt>
-            <dd>{{ mass_change.target_country }}</dd>
-          </div>
-          <div v-if="mass_change.target_brand !== null">
-            <dt>{{ $t('app.subscription.mass_change.view.criteria.brand') }}</dt>
-            <dd>{{ mass_change.target_brand.name }}</dd>
-          </div>
-        </dl>
-      </div>
-      <div class="mt-5 card-body">
-        <h3>{{ $t('app.subscription.mass_change.view.new_values.title') }}</h3>
-        <dl class="detail-list">
-          <div v-if="mass_change.new_plan !== null">
-            <dt>{{ $t('app.subscription.mass_change.view.new_values.plan') }}</dt>
-            <dd>{{ mass_change.new_plan.name }}</dd>
-          </div>
-          <div v-if="mass_change.new_price !== null">
-            <dt>{{ $t('app.subscription.mass_change.view.new_values.price') }}</dt>
-            <dd>{{ mass_change.new_price.display_value }}</dd>
-          </div>
-        </dl>
-      </div>
-      <div class="mt-5 card-body">
-        <h3>{{ $t('app.subscription.mass_change.view.change_date.title') }}</h3>
+          <dl class="detail-list">
+            <div v-if="mass_change.target_plan !== null">
+              <dt>{{ $t('app.subscription.mass_change.view.criteria.plan') }}</dt>
+              <dd>{{ mass_change.target_plan.name }}</dd>
+            </div>
+            <div v-if="mass_change.target_price !== null">
+              <dt>{{ $t('app.subscription.mass_change.view.criteria.price') }}</dt>
+              <dd>{{ mass_change.target_price.display_value }}</dd>
+            </div>
+            <div v-if="mass_change.target_country !== null">
+              <dt>{{ $t('app.subscription.mass_change.view.criteria.country') }}</dt>
+              <dd>{{ mass_change.target_country }}</dd>
+            </div>
+            <div v-if="mass_change.target_brand !== null">
+              <dt>{{ $t('app.subscription.mass_change.view.criteria.brand') }}</dt>
+              <dd>{{ mass_change.target_brand.name }}</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="mt-5 card-body">
+          <h3>{{ $t('app.subscription.mass_change.view.new_values.title') }}</h3>
+          <dl class="detail-list">
+            <div v-if="mass_change.new_plan !== null">
+              <dt>{{ $t('app.subscription.mass_change.view.new_values.plan') }}</dt>
+              <dd>{{ mass_change.new_plan.name }}</dd>
+            </div>
+            <div v-if="mass_change.new_price !== null">
+              <dt>{{ $t('app.subscription.mass_change.view.new_values.price') }}</dt>
+              <dd>{{ mass_change.new_price.display_value }}</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="mt-5 card-body">
+          <h3>{{ $t('app.subscription.mass_change.view.change_date.title') }}</h3>
 
-        {{  $filters.moment(mass_change.change_date, "LLL") }}
-      </div>
+          {{  $filters.moment(mass_change.change_date, "LLL") }}
+        </div>
 
-      <div class="mt-5 card-body" v-if="estimate !== null">
-        {{ $t('app.subscription.mass_change.view.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
-      </div>
-      <div class="mt-5">
-        <SubmitButton :in-progress="exportInProgress" @click="processExport">{{ $t('app.subscription.mass_change.view.export_button') }}</SubmitButton>
+        <div class="mt-5 card-body" v-if="estimate !== null">
+          {{ $t('app.subscription.mass_change.view.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
+        </div>
+        <div class="mt-5">
+          <SubmitButton :in-progress="exportInProgress" @click="processExport">{{ $t('app.subscription.mass_change.view.export_button') }}</SubmitButton>
+        </div>
       </div>
     </LoadingScreen>
   </div>

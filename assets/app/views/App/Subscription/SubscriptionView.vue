@@ -2,9 +2,10 @@
   <div>
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="grid grid-cols-2 gap-3">
-        <div class="mt-5">
-          <h2 class="section-header">{{ $t('app.subscription.view.title') }}</h2>
+        <h1 class="mt-5 ml-5 page-title">{{ $t('app.subscription.view.title') }}</h1>
+        <div class="grid grid-cols-2 gap-3 p-5">
+        <div class="card-body">
+          <h2 class="section-header">{{ $t('app.subscription.view.main.title') }}</h2>
           <dl class="detail-list section-body ">
             <div>
               <dt>{{ $t('app.subscription.view.main.status') }}</dt>
@@ -64,7 +65,7 @@
             </div>
           </dl>
         </div>
-        <div class="mt-5">
+        <div class="card-body">
           <h2 class="section-header">{{ $t('app.subscription.view.pricing.title') }}</h2>
           <dl class="detail-list section-body">
             <div>
@@ -86,7 +87,7 @@
             </RoleOnlyView>
           </dl>
         </div>
-          <div class="mt-5">
+          <div class="card-body">
             <h2 class="section-header">{{ $t('app.subscription.view.payment_method.title') }}</h2>
             <dl class="detail-list section-body" v-if="paymentDetails !== null && paymentDetails !== undefined">
               <div>
@@ -110,11 +111,11 @@
               {{ $t('app.subscription.view.payment_method.invoiced') }}
             </div>
           </div>
-          <div class="mt-5">
+          <div class="card-body">
             <h2 class="section-header">{{ $t('app.subscription.view.payments.title') }}</h2>
             <div class="section-body">
 
-              <table class="table-list">
+              <table class="list-table">
                 <thead>
                 <tr>
                   <th>{{ $t('app.subscription.view.payments.amount') }}</th>
@@ -123,6 +124,9 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr v-if="payments.length == 0">
+                  <td colspan="3" class="text-center">{{ $t('app.subscription.view.payments.no_payments') }}</td>
+                </tr>
                 <tr v-for="payment in payments">
                   <td>{{ currency(payment.amount) }}</td>
                   <td>{{ payment.created_at }}</td>
@@ -133,7 +137,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-5 text-end">
+        <div class="mt-5 mr-5 text-end">
 
           <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
             <button class="btn--secondary mr-2" @click="showChangePaymentMethods" v-if="paymentDetails !== null && paymentDetails !== undefined">
