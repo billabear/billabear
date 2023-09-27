@@ -62,13 +62,6 @@
             </td>
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.settings.user.list.list.email')}}</th>
-            <th>{{ $t('app.settings.user.list.list.role') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
       </div>
       <div class="sm:grid sm:grid-cols-2">
@@ -109,13 +102,6 @@
 
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
-            <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
       </div>
     </LoadingScreen>
