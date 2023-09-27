@@ -1,6 +1,6 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.vouchers.list.title') }}</h1>
+    <h1 class="mt-5 ml-5 page-title">{{ $t('app.vouchers.list.title') }}</h1>
 
     <div class="top-button-container">
       <div class="list" v-if="filters.length > 0">
@@ -63,14 +63,6 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.vouchers.list.list.name') }}</th>
-            <th>{{ $t('app.vouchers.list.list.type')}}</th>
-            <th>{{ $t('app.vouchers.list.list.entry_type') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">

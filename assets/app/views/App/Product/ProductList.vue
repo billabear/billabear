@@ -1,6 +1,6 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.product.list.title') }}</h1>
+    <h1 class="mt-5 ml-5 page-title">{{ $t('app.product.list.title') }}</h1>
 
     <div class="top-button-container">
       <div class="list">
@@ -60,15 +60,9 @@
             </td>
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.product.list.name') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
     </div>
-      <div class="sm:grid sm:grid-cols-2">
+      <div class="sm:grid sm:grid-cols-2 m-5">
 
         <div class="mt-4">
           <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.product.list.prev') }}</button>

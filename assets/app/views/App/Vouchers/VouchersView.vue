@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1>{{ $t('app.vouchers.view.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.vouchers.view.title') }}</h1>
     <LoadingScreen :ready="ready">
-      <div class="mt-5">
+      <div class="p-5">
+      <div class="card-body">
         <dl class="detail-list">
           <div>
             <dt>{{ $t('app.vouchers.view.main.name') }}</dt>
@@ -41,11 +42,11 @@
       </div>
       <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
 
-        <div class="text-end">
+        <div class="text-end mt-5">
           <SubmitButton :in-progress="disableProgess" class="btn--danger" v-if="!voucher.disabled" @click="disable">{{ $t('app.vouchers.view.disable') }}</SubmitButton>
           <SubmitButton :in-progress="enableProgress" class="btn--main" v-else @click="enable">{{ $t('app.vouchers.view.enable') }}</SubmitButton>
         </div>
-      </RoleOnlyView>
+      </RoleOnlyView></div>
     </LoadingScreen>
   </div>
 </template>

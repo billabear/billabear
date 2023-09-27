@@ -1,12 +1,12 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div>
-    <h1 class="page-title">{{ $t('app.vouchers.create.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.vouchers.create.title') }}</h1>
   </div>
   <div v-if="!error">
     <LoadingScreen :ready="ready">
       <form @submit.prevent="send">
-
-      <div class="mt-5">
+      <div class="p-5">
+      <div class="card-body">
 
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
@@ -83,11 +83,12 @@
           <p class="form-field-help">{{ $t('app.vouchers.create.help_info.entry_event') }}</p>
         </div>
 
+      </div>
         <div class="mt-5">
           <SubmitButton :in-progress="inProgress">{{ $t('app.vouchers.create.submit') }}</SubmitButton>
           <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.vouchers.create.success_message') }}</p>
         </div>
-      </div>
+  </div>
       </form>
     </LoadingScreen>
   </div>

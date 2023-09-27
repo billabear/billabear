@@ -1,17 +1,17 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.product.view.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.product.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div v-if="!error">
+      <div v-if="!error" class="p-5">
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
 
-          <div class="mt-3 text-end">
+          <div class="mb-5 text-end">
             <router-link :to="{name: 'app.product.update'}" class="btn--main">{{ $t('app.product.view.update') }}</router-link>
           </div>
         </RoleOnlyView>
 
-        <div class="mt-5">
+        <div class="card-body">
           <h2 class="section-header">{{ $t('app.product.view.main.title') }}</h2>
           <div class="section-body">
 
@@ -77,18 +77,6 @@
               <td colspan="8" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.product.view.price.list.amount') }}</th>
-              <th>{{ $t('app.product.view.price.list.currency') }}</th>
-              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
-              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
-              <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
-              <th>{{ $t('app.product.view.price.list.public') }}</th>
-              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
-              <th></th>
-            </tr>
-            </tfoot>
           </table>
           <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
             <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
@@ -128,15 +116,6 @@
               <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
-              <th></th>
-              <th></th>
-            </tr>
-            </tfoot>
           </table>
           <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
 

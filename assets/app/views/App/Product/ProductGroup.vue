@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="p-5">
+    <div class="">
       <router-view></router-view>
     </div>
   </div>
