@@ -6,9 +6,12 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './app/styles/app.css';
+import './app/styles/flowbite.css';
 import 'vue-final-modal/style.css';
+import 'flowbite';
 
+import './app/styles/app.css';
+import './app/flowbite/constants';
 
 import App from "./app/views/App";
 

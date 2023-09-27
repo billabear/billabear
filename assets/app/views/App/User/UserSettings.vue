@@ -1,19 +1,25 @@
 <template>
-  <LoadingScreen :ready="loading" :loading-message="$t('global.loading')">
+  <div class="p-5">
+
+    <LoadingScreen :ready="loading" :loading-message="$t('global.loading')">
+
       <h1 class="page-title">{{ $t('app.user.settings.title') }}</h1>
 
       <div v-if="alert !== undefined" class="mt-5" :class="{'alert-error': alert.type==='error','alert-success': alert.type==='success'}">
         {{ alert.message }}
       </div>
 
+
+
       <form @submit.prevent="save">
 
-        <div class="mt-5 card-body">
-          <label class="label">{{ $t('app.user.settings.name') }}</label>
+        <div class="card-body">
+
+          <label  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $t('app.user.settings.name') }}</label>
           <input type="text" class="form-field-input" :class="{'form-error': errors.name !== undefined}" v-model="user.name" />
           <span class="error-message" v-if="errors.name" v-for="error in errors.name">{{ error }}</span>
 
-          <label class="label">{{ $t('app.user.settings.email') }}</label>
+          <label  class="block mt-5 mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $t('app.user.settings.email') }}</label>
           <input type="text" class="form-field-input"  :class="{'form-error': errors.email !== undefined}"  v-model="user.email" />
           <span class="error-message" v-if="errors.email" v-for="error in errors.email">{{ error }}</span>
         </div>
@@ -47,7 +53,8 @@
           </SubmitButton>
         </div>
       </form>
-  </LoadingScreen>
+    </LoadingScreen>
+  </div>
 </template>
 
 <script>

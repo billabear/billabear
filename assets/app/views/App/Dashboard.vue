@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-5">
     <h1 class="page-title mb-5">{{ $t('app.reports.dashboard.title') }}</h1>
 
     <LoadingScreen :ready="ready">

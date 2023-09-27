@@ -157,16 +157,17 @@ export const APP_ROUTES = [
             }
         ]
     },
+
+    {
+        name: 'app.user.settings',
+        path: "user",
+        component: UserSettings,
+    },
     {
         name: 'app.settings',
         path: 'settings',
         component: SettingsGroup,
         children: [
-            {
-                name: 'app.user.settings',
-                path: "user",
-                component: UserSettings,
-            },
             {
                 name: "app.user.invite",
                 path: "users/invite",

@@ -1,28 +1,25 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.customer.list.title') }}</h1>
+    <h1 class="page-title ml-5 mt-5">{{ $t('app.customer.list.title') }}</h1>
 
     <div class="top-button-container">
-      <div class="list">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.customer.list.filter.button') }}
-          </button>
+      <Dropdown text="Filters">
+
+        <div class="list_container">
+          <ListGroup>
+            <ListGroupItem v-for="(filter, filterKey) in filters">
+              <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
+            </ListGroupItem>
+          </ListGroup>
         </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
-      </div>
+      </Dropdown>
+
       <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
         <router-link :to="{name: 'app.customer.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.customer.list.create_new') }}</router-link>
       </RoleOnlyView>
     </div>
 
-    <div class="card-body my-5" v-if="active_filters.length > 0">
+    <div class="card-body m-5" v-if="active_filters.length > 0">
       <h2>{{ $t('app.customer.list.filter.title') }}</h2>
       <div v-for="filter in active_filters">
         <div class="px-3 py-1 sm:flex sm:px-6">
@@ -36,7 +33,7 @@
 
     <LoadingScreen :ready="ready">
     <div class="mt-3">
-        <table class="list-table">
+        <table class="crud-list-table">
           <thead>
             <tr>
               <th>{{ $t('app.customer.list.email') }}</th>
@@ -50,7 +47,7 @@
               <td>{{ customer.email }}</td>
               <td>{{ customer.address.country }}</td>
               <td>{{ customer.reference }}</td>
-              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.customer.list.view_btn') }}</router-link></td>
+              <td><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="btn--main">{{ $t('app.customer.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="customers.length === 0">
               <td colspan="4" class="text-center">{{ $t('app.customer.list.no_customers') }}</td>
@@ -63,17 +60,9 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.customer.list.email') }}</th>
-            <th>{{ $t('app.customer.list.country')}}</th>
-            <th>{{ $t('app.customer.list.reference') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
     </div>
-      <div class="sm:grid sm:grid-cols-2">
+      <div class="sm:grid sm:grid-cols-2 m-2">
 
         <div class="mt-4">
           <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.customer.list.prev') }}</button>
@@ -99,10 +88,11 @@
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 
 export default {
   name: "CustomerList.vue",
-  components: {RoleOnlyView, InternalApp},
+  components: {ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,

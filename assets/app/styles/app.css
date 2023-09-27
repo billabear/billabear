@@ -19,6 +19,7 @@
     }
 }
 
+/*
 body {
     @apply bg-cyan-50;
 }
@@ -307,24 +308,7 @@ body {
     @apply rounded-br-xl;
 }
 
-.detail-list {
-}
 
-.detail-list div:nth-child(even) {
-    @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
-}
-
-.detail-list div:nth-child(odd) {
-    @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
-}
-
-.detail-list dt {
-    @apply text-sm font-medium text-gray-500;
-}
-
-.detail-list dd {
-    @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
-}
 
 .list {
     @apply mt-5;
@@ -362,4 +346,139 @@ body {
 
 .section-body {
     @apply p-2 border border-amber-500 rounded-b-xl bg-white;
+}
+*/
+
+
+.sidebar-menu-item {
+    @apply flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700;
+}
+
+.router-link-active {
+    @apply flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700  bg-gray-100 dark:bg-gray-700;
+}
+
+
+.submenu-list-item {
+    @apply inline;
+}
+
+
+.submenu-container {
+    @apply  border-b;
+}
+.submenu-container ul {
+    @apply p-5;
+}
+
+.submenu-link {
+    @apply hover:bg-gray-300 dark:text-gray-100 dark:hover:bg-gray-600 text-black p-3 rounded-lg no-underline;
+}
+
+.submenu-list-item {
+    @apply mt-4 hover:bg-gray-50;
+}
+
+.card-body {
+    @apply p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800;
+}
+
+.btn--main, .list-btn {
+    @apply text-white bg-primary-700 no-underline  hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
+}
+
+.btn--danger {
+    @apply inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900;
+}
+
+.form-field-input {
+    @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500;
+}
+
+.page-title {
+    @apply mb-5 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white;
+}
+
+.form-field {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500;
+}
+
+.form-field-lbl {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white;
+}
+
+.form-field-help {
+    @apply mt-1 mb-1 text-black italic text-sm dark:text-white;
+}
+
+.crud-list-table {
+    @apply min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600;
+}
+
+.crud-list-table thead {
+    @apply bg-gray-100 dark:bg-gray-700;
+}
+
+.crud-list-table thead th {
+    @apply p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400;
+}
+
+.crud-list-table tbody {
+    @apply bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700;
+}
+
+.crud-list-table tbody tr {
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+.crud-list-table tbody td {
+    @apply p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white;
+}
+
+.top-button-container {
+    @apply text-end px-5;
+}
+.section-header {
+    @apply mb-3;
+}
+.detail-list {
+}
+
+.detail-list div:nth-child(even) {
+    @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
+}
+
+.detail-list div:nth-child(odd) {
+    @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
+}
+
+.detail-list dt {
+    @apply text-sm font-medium text-gray-500;
+}
+
+.detail-list dd {
+    @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+}
+
+.list-table {
+    @apply w-full mt-5;
+}
+.list-table thead {
+     @apply bg-gray-100 dark:bg-gray-700;
+ }
+
+.list-table thead th {
+    @apply p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400;
+}
+
+.list-table tbody {
+    @apply bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700;
+}
+
+.list-table tbody tr {
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+.list-table tbody td {
+    @apply p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white;
 }

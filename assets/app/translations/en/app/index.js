@@ -23,6 +23,7 @@ import {VOUCHER_TRANSLATIONS} from "./vouchers";
 import {QUOTE_TRANSLATIONS} from "./quote";
 import {SYSTEM_TRANSLATIONS} from "./system";
 import {CHECKOUT_TRANSLATIONS} from "./checkout";
+import {LAYOUT_TRANSLATIONS} from "./layout";
 
 
 export const APP_TRANSLATIONS = {
@@ -51,4 +52,5 @@ export const APP_TRANSLATIONS = {
     quotes: QUOTE_TRANSLATIONS,
     system: SYSTEM_TRANSLATIONS,
     checkout: CHECKOUT_TRANSLATIONS,
+    layout: LAYOUT_TRANSLATIONS,
 };

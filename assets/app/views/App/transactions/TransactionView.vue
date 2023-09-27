@@ -1,20 +1,19 @@
 <template>
 
-  <div class="flex">
+  <div class="">
 
-    <div class="w-1/5">
+    <div>
       <div class="submenu-container">
-        <div class="submenu-title">{{ $t('app.transactions.menu.title') }}</div>
         <ul>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.payment.list'}" class="submenu-link"><i class="fa-solid fa-money-bill-wave"></i> {{ $t('app.transactions.menu.payments') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.refund.list'}" class="submenu-link"><i class="fa-solid fa-money-bill-transfer"></i> {{ $t('app.transactions.menu.refunds') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.charge_backs.list'}" class="submenu-link"><i class="fa-solid fa-triangle-exclamation"></i> {{ $t('app.transactions.menu.charge_backs') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.checkout.list'}" class="submenu-link"><i class="fa-solid fa-cart-shopping"></i> {{ $t('app.transactions.menu.checkout') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.payment.list'}" class="submenu-link">{{ $t('app.transactions.menu.payments') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.refund.list'}" class="submenu-link">{{ $t('app.transactions.menu.refunds') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.charge_backs.list'}" class="submenu-link">{{ $t('app.transactions.menu.charge_backs') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.checkout.list'}" class="submenu-link">{{ $t('app.transactions.menu.checkout') }}</router-link></li>
         </ul>
       </div>
     </div>
 
-    <div class="w-4/5 m-5">
+    <div class="p-5">
       <router-view></router-view>
     </div>
   </div>
@@ -30,4 +29,11 @@ export default {
 
 <style scoped>
 
+.router-link-active {
+  all: unset;
+  @apply  p-3;
+}
+.router-link-exact-active {
+  @apply bg-gray-100 text-black p-3 rounded-lg dark:text-gray-200 dark:bg-gray-700;
+}
 </style>

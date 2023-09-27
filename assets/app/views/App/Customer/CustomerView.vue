@@ -1,18 +1,19 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.customer.view.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.customer.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
         <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-          <div class="mt-3 text-end">
+          <div class="m-3 text-end">
             <button class="btn--danger mr-3" v-if="customer.status == 'disabled'" @click="enableCustomer">{{ $t('app.customer.view.enable') }}</button>
             <button class="btn--danger mr-3" v-else @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
             <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
           </div>
         </RoleOnlyView>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="mt-5">
+
+        <div class="grid grid-cols-2 gap-3 p-5">
+          <div class="card-body">
             <h2 class="section-header">{{ $t('app.customer.view.main.title') }}</h2>
             <div class="section-body">
               <dl class="detail-list">
@@ -66,7 +67,7 @@
               </dl>
             </div>
           </div>
-          <div class="mt-3">
+          <div class=" card-body">
             <h2 class="section-header">{{ $t('app.customer.view.address.title') }}</h2>
             <div class="section-body">
 
@@ -99,7 +100,7 @@
             </div>
           </div>
 
-        <div class="mt-3">
+        <div class="card-body">
           <div class="grid grid-cols-2">
             <div><h2 class="">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
             <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
@@ -133,21 +134,12 @@
                 <td colspan="6" class="text-center">{{ $t('app.customer.view.subscriptions.no_subscriptions') }}</td>
               </tr>
               </tbody>
-              <tfoot>
-              <tr>
-                <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
-                <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
-                <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
-                <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
-                <th></th>
-              </tr>
-              </tfoot>
             </table>
           </div>
         </div>
 
 
-          <div class="mt-3">
+          <div class="card-body">
             <div class="grid grid-cols-2">
               <div><h2 class="">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
               <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
@@ -187,20 +179,11 @@
                   <td colspan="5" class="text-center">{{$t('app.customer.view.payment_details.no_payment_details') }}</td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>{{ $t('app.customer.view.payment_details.list.last_four') }}</th>
-                  <th>{{ $t('app.customer.view.payment_details.list.expiry_month') }}</th>
-                  <th>{{ $t('app.customer.view.payment_details.list.expiry_year') }}</th>
-                  <th>{{ $t('app.customer.view.payment_details.list.default') }}</th>
-                  <th></th>
-                </tr>
-                </tfoot>
               </table>
             </div>
           </div>
 
-          <div class="mt-3">
+          <div class="card-body">
             <h2 class="">{{ $t('app.customer.view.limits.title') }}</h2>
             <div class="">
 
@@ -220,16 +203,10 @@
                   <td colspan="4" class="text-center">{{ $t('app.customer.view.limits.no_limits') }}</td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>{{ $t('app.customer.view.limits.list.feature') }}</th>
-                  <th>{{ $t('app.customer.view.limits.list.limit') }}</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
           </div>
-          <div class="mt-3">
+          <div class="card-body">
             <h2 class="">{{ $t('app.customer.view.features.title') }}</h2>
             <div class="">
 
@@ -247,15 +224,10 @@
                 <td colspan="4" class="text-center">{{ $t('app.customer.view.features.no_features') }}</td>
               </tr>
               </tbody>
-              <tfoot>
-              <tr>
-                <th>{{ $t('app.customer.view.features.list.feature') }}</th>
-              </tr>
-              </tfoot>
             </table>
             </div>
           </div>
-          <div class="mt-3">
+          <div class="card-body">
             <h2 class="">{{ $t('app.customer.view.payments.title') }}</h2>
             <div class="">
             <table class="list-table">
@@ -280,18 +252,9 @@
                 <td colspan="5" class="text-center">{{$t('app.customer.view.payments.no_payments') }}</td>
               </tr>
               </tbody>
-              <tfoot>
-              <tr>
-                <th>{{ $t('app.customer.view.payments.list.amount') }}</th>
-                <th>{{ $t('app.customer.view.payments.list.currency') }}</th>
-                <th>{{ $t('app.customer.view.payments.list.status') }}</th>
-                <th>{{ $t('app.customer.view.payments.list.created_at') }}</th>
-                <th></th>
-              </tr>
-              </tfoot>
             </table></div>
           </div>
-          <div class="mt-3">
+          <div class="card-body">
             <h2 class="">{{ $t('app.customer.view.refunds.title') }}</h2>
             <div class="">
             <table class="list-table">
@@ -316,18 +279,9 @@
                 <td colspan="5" class="text-center">{{ $t('app.customer.view.refunds.no_refunds') }}</td>
               </tr>
               </tbody>
-              <tfoot>
-              <tr>
-                <th>{{ $t('app.customer.view.refunds.list.amount') }}</th>
-                <th>{{ $t('app.customer.view.refunds.list.currency') }}</th>
-                <th>{{ $t('app.customer.view.refunds.list.created_by') }}</th>
-                <th>{{ $t('app.customer.view.refunds.list.created_at') }}</th>
-                <th></th>
-              </tr>
-              </tfoot>
             </table></div>
           </div>
-          <div class="mt-3">
+          <div class="card-body">
             <div class="grid grid-cols-2">
               <div>
                 <h2 class="">{{ $t('app.customer.view.credit.title') }}</h2>
@@ -360,19 +314,10 @@
                   <td colspan="5" class="text-center">{{ $t('app.customer.view.credit.no_credit') }}</td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>{{ $t('app.customer.view.credit.list.amount') }}</th>
-                  <th>{{ $t('app.customer.view.credit.list.currency') }}</th>
-                  <th>{{ $t('app.customer.view.credit.list.created_by') }}</th>
-                  <th>{{ $t('app.customer.view.credit.list.created_at') }}</th>
-                  <th></th>
-                </tr>
-                </tfoot>
               </table>
             </div>
           </div>
-          <div class="mt-3">
+          <div class="card-body">
             <div class="grid grid-cols-2">
               <div>
                 <h2 class="">{{ $t('app.customer.view.invoices.title') }}</h2>
@@ -410,15 +355,6 @@
                   <td colspan="5" class="text-center">{{ $t('app.customer.view.invoices.no_invoices') }}</td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>{{ $t('app.customer.view.invoices.list.amount') }}</th>
-                  <th>{{ $t('app.customer.view.invoices.list.currency') }}</th>
-                  <th>{{ $t('app.customer.view.invoices.list.status') }}</th>
-                  <th>{{ $t('app.customer.view.invoices.list.created_at') }}</th>
-                  <th></th>
-                </tr>
-                </tfoot>
               </table>
             </div>
           </div>

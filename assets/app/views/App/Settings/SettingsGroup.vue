@@ -1,11 +1,9 @@
 <template>
-  <div class="flex">
-    <div class="w-1/5">
+  <div class="">
+    <div class="">
       <div class="submenu-container">
-        <div class="submenu-title">{{ $t('app.settings.menu.title') }}</div>
         <ul>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.user.settings'}" class="submenu-link">{{ $t('app.settings.menu.user_settings') }}</router-link></li>
-          <RoleOnlyView role="ROLE_ADMIN">
+         <RoleOnlyView role="ROLE_ADMIN">
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.tax_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.tax_settings') }}</router-link></li>
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.import.stripe'}" class="submenu-link">{{ $t('app.settings.menu.stripe') }}</router-link></li>
             <li class="submenu-list-item"><router-link :to="{name: 'app.settings.users.list'}" class="submenu-link">{{ $t('app.settings.menu.users') }}</router-link></li>
@@ -25,7 +23,7 @@
       </div>
     </div>
 
-    <div class="w-4/5 m-5">
+    <div class="mt-1 p-5">
       <router-view></router-view>
     </div>
   </div>
@@ -42,4 +40,11 @@ export default {
 
 <style scoped>
 
+.router-link-active {
+  all: unset;
+  @apply  p-3;
+}
+.router-link-exact-active {
+  @apply bg-gray-100 text-black p-3 rounded-lg dark:text-gray-200 dark:bg-gray-700;
+}
 </style>
