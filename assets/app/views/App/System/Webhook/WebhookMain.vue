@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid grid-cols-2">
+    <div class="mx-5 mt-5 grid grid-cols-2">
       <div>
 
         <h1 class="page-title">{{ $t('app.system.webhooks.main.title') }}</h1>

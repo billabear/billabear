@@ -1,48 +1,51 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.system.webhooks.event.view.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.system.webhooks.event.view.title') }}</h1>
 
     <LoadingScreen :ready="ready" v-if="!error">
-      <div class="mt-5">
-        <h2 class="section-header">{{ $t('app.system.webhooks.event.view.main.title') }}</h2>
-        <div class="section-body">
+      <div class="p-5">
 
-          <dl class="detail-list">
-            <div>
-              <dt>{{ $t('app.system.webhooks.event.view.main.type') }}</dt>
-              <dd>{{ event.type}}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.system.webhooks.event.view.main.created_at') }}</dt>
-              <dd>{{ event.created_at }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.system.webhooks.event.view.main.payload') }}</dt>
-              <dd>{{ event.payload }}</dd>
-            </div>
-          </dl>
+        <div class="card-body">
+          <h2 class="section-header">{{ $t('app.system.webhooks.event.view.main.title') }}</h2>
+          <div class="section-body">
+
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.system.webhooks.event.view.main.type') }}</dt>
+                <dd>{{ event.type}}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.system.webhooks.event.view.main.created_at') }}</dt>
+                <dd>{{ event.created_at }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.system.webhooks.event.view.main.payload') }}</dt>
+                <dd>{{ event.payload }}</dd>
+              </div>
+            </dl>
+          </div>
         </div>
-      </div>
 
-      <div class="mt-5">
-        <h2>{{ $t('app.system.webhooks.event.view.responses.title') }}</h2>
-        <div class="mt-3">
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.system.webhooks.event.view.responses.list.url')}}</th>
-              <th>{{ $t('app.system.webhooks.event.view.responses.list.created_at')}}</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
+        <div class="mt-5">
+          <h2>{{ $t('app.system.webhooks.event.view.responses.title') }}</h2>
+          <div class="mt-3">
+            <table class="list-table">
+              <thead>
+              <tr>
+                <th>{{ $t('app.system.webhooks.event.view.responses.list.url')}}</th>
+                <th>{{ $t('app.system.webhooks.event.view.responses.list.created_at')}}</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
               <tr v-for="response in responses">
                 <td>{{ response.url }}</td>
                 <td>{{ response.created_at }}</td>
                 <td><button @click="showResponse(response)" class="btn--main">{{ $t('app.system.webhooks.event.view.responses.list.view') }}</button></td>
               </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </LoadingScreen>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.system.webhooks.webhook_endpoint.list.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.system.webhooks.webhook_endpoint.list.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="mt-3 text-end">
+      <div class="mr-3 text-end">
         <router-link :to="{name: 'app.system.webhook_endpoints.create'}" class="btn--main"><i class="fa-solid fa-plus"></i>{{ $t('app.system.webhooks.webhook_endpoint.list.add') }}</router-link>
       </div>
       <div class="mt-3">
