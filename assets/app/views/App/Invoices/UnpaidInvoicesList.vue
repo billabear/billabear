@@ -73,16 +73,6 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.invoices.list.email') }}</th>
-            <th>{{ $t('app.invoices.list.total')}}</th>
-            <th>{{ $t('app.invoices.list.currency')}}</th>
-            <th>{{ $t('app.invoices.list.created_at') }}</th>
-            <th></th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">
