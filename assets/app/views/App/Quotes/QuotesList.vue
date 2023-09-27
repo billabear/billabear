@@ -1,6 +1,6 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.quotes.list.title') }}</h1>
+    <h1 class="mt-5 ml-5 page-title">{{ $t('app.quotes.list.title') }}</h1>
 
     <div class="top-button-container">
       <div class="list">
@@ -65,15 +65,6 @@
             </td>
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.quotes.list.email') }}</th>
-            <th>{{ $t('app.quotes.list.total')}}</th>
-            <th>{{ $t('app.quotes.list.currency')}}</th>
-            <th>{{ $t('app.quotes.list.created_at') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
       </div>
       <div class="sm:grid sm:grid-cols-2">

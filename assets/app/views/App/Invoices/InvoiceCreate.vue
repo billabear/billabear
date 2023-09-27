@@ -1,45 +1,46 @@
 <template>
   <div>
-    <h1 class="page-title mb-5">{{ $t('app.invoices.create.title') }}</h1>
+    <h1 class="page-title ml-5 mt-5">{{ $t('app.invoices.create.title') }}</h1>
 
-    <div class="card-body">
+    <div class="p-5">
+      <div class="card-body">
 
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="name">
-          {{ $t('app.invoices.create.customer.fields.customer') }}
-        </label>
-        <p class="form-field-error" v-if="errors.customer != undefined">{{ errors.customer }}</p>
-        <Autocomplete
-            display-key="email"
-            search-key="email"
-            rest-endpoint="/app/customer"
-            v-model="quote.customer"
-            :blur-callback="blurCallback" />
-        <SubmitButton :in-progress="send_create_customer" @click="createCustomer" v-if="create_customer">{{ $t('app.invoices.create.customer.create_customer') }}</SubmitButton>
-        <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.customer') }}</p>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.invoices.create.customer.fields.customer') }}
+          </label>
+          <p class="form-field-error" v-if="errors.customer != undefined">{{ errors.customer }}</p>
+          <Autocomplete
+              display-key="email"
+              search-key="email"
+              rest-endpoint="/app/customer"
+              v-model="quote.customer"
+              :blur-callback="blurCallback" />
+          <SubmitButton :in-progress="send_create_customer" @click="createCustomer" v-if="create_customer">{{ $t('app.invoices.create.customer.create_customer') }}</SubmitButton>
+          <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.customer') }}</p>
+        </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.invoices.create.customer.fields.currency') }}
+          </label>
+          <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
+          <CurrencySelect v-model="quote.currency" />
+          <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.currency') }}</p>
+        </div>
+
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.invoices.create.customer.fields.due_date') }}
+          </label>
+          <p class="form-field-error" v-if="errors.dueDate != undefined">{{ errors.dueDate }}</p>
+          <VueDatePicker  class="mt-2" v-model="quote.due_date" :enable-time-picker="true"></VueDatePicker>
+          <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.due_date') }}</p>
+        </div>
       </div>
 
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="name">
-          {{ $t('app.invoices.create.customer.fields.currency') }}
-        </label>
-        <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
-        <CurrencySelect v-model="quote.currency" />
-        <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.currency') }}</p>
-      </div>
-
-
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="name">
-          {{ $t('app.invoices.create.customer.fields.due_date') }}
-        </label>
-        <p class="form-field-error" v-if="errors.dueDate != undefined">{{ errors.dueDate }}</p>
-        <VueDatePicker  class="mt-2" v-model="quote.due_date" :enable-time-picker="true"></VueDatePicker>
-        <p class="form-field-help">{{ $t('app.invoices.create.customer.help_info.due_date') }}</p>
-      </div>
-    </div>
-
-    <div class="card-body mt-5">
+      <div class="card-body mt-5">
         <div class="grid grid-cols-2">
           <div><h2 class="mb-3">{{ $t('app.invoices.create.subscriptions.title') }}</h2></div>
           <div class="text-right"><button class="btn--main" @click="addSubscriptionPlan">{{ $t('app.invoices.create.subscriptions.add_subscription') }}</button></div>
@@ -54,54 +55,54 @@
           </tr>
           </thead>
           <tbody v-if="quote.subscription_plans.length === 0">
-            <tr>
-              <td colspan="3" class="text-center">{{ $t('app.invoices.create.subscriptions.no_subscriptions') }}</td>
-            </tr>
+          <tr>
+            <td colspan="3" class="text-center">{{ $t('app.invoices.create.subscriptions.no_subscriptions') }}</td>
+          </tr>
           </tbody>
           <tbody v-else>
-            <tr v-for="(plan, key) in quote.subscription_plans">
-              <td>
-                <select class="form-field" v-model="plan.plan">
-                  <option v-for="subscriptionPlan in this.plans" :value="subscriptionPlan">{{ subscriptionPlan.name }}</option>
-                </select>
-              </td>
-              <td>
-                <input type="number" class="form-field" :disabled="plan.plan.per_seat === undefined ||  plan.plan.per_seat !== true" v-model="plan.seat_number" />
-              </td>
-              <td>
+          <tr v-for="(plan, key) in quote.subscription_plans">
+            <td>
+              <select class="form-field" v-model="plan.plan">
+                <option v-for="subscriptionPlan in this.plans" :value="subscriptionPlan">{{ subscriptionPlan.name }}</option>
+              </select>
+            </td>
+            <td>
+              <input type="number" class="form-field" :disabled="plan.plan.per_seat === undefined ||  plan.plan.per_seat !== true" v-model="plan.seat_number" />
+            </td>
+            <td>
 
-                <select class="form-field" v-model="plan.price">
-                  <option v-for="price in getPrices(plan.plan.prices)" :value="price">{{ displayCurrency(price.amount) }}/{{ price.schedule }}</option>
-                </select>
-              </td>
-              <td><button class="btn--danger" @click="deleteSubscription(key)"><i class="fa-solid fa-trash"></i></button> </td>
-            </tr>
+              <select class="form-field" v-model="plan.price">
+                <option v-for="price in getPrices(plan.plan.prices)" :value="price">{{ displayCurrency(price.amount) }}/{{ price.schedule }}</option>
+              </select>
+            </td>
+            <td><button class="btn--danger" @click="deleteSubscription(key)"><i class="fa-solid fa-trash"></i></button> </td>
+          </tr>
           </tbody>
-      </table>
-    </div>
-
-    <div class="card-body mt-5">
-      <div class="grid grid-cols-2">
-        <div><h2 class="mb-3">{{ $t('app.invoices.create.items.title') }}</h2></div>
-        <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.invoices.create.items.add_item') }}</button></div>
+        </table>
       </div>
 
-      <table class="list-table">
-        <thead>
-        <tr>
-          <th>{{ $t('app.invoices.create.items.list.description') }}</th>
-          <th>{{ $t('app.invoices.create.items.list.amount') }}</th>
-          <th>{{ $t('app.invoices.create.items.list.tax_included') }}</th>
-          <th>{{ $t('app.invoices.create.items.list.tax_type') }}</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody v-if="quote.items.length === 0">
+      <div class="card-body mt-5">
+        <div class="grid grid-cols-2">
+          <div><h2 class="mb-3">{{ $t('app.invoices.create.items.title') }}</h2></div>
+          <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.invoices.create.items.add_item') }}</button></div>
+        </div>
+
+        <table class="list-table">
+          <thead>
+          <tr>
+            <th>{{ $t('app.invoices.create.items.list.description') }}</th>
+            <th>{{ $t('app.invoices.create.items.list.amount') }}</th>
+            <th>{{ $t('app.invoices.create.items.list.tax_included') }}</th>
+            <th>{{ $t('app.invoices.create.items.list.tax_type') }}</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody v-if="quote.items.length === 0">
           <tr>
             <td colspan="5" class="text-center">{{ $t('app.invoices.create.items.no_items') }}</td>
           </tr>
-        </tbody>
-        <tbody v-else>
+          </tbody>
+          <tbody v-else>
           <tr v-for="(item, key) in quote.items">
             <td>
 
@@ -123,20 +124,22 @@
             </td>
             <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="alert-error mt-5" v-if="errors.main_error">
+        {{ errors.main_error }}
+      </div>
+
+      <div class="mt-5">
+        <SubmitButton :in-progress="send_quote" class="btn--secondary" @click="createInvoice('invoices')">{{ $t('app.invoices.create.create_invoice') }}</SubmitButton>
+      </div>
+      <div class="mt-1" v-if="success">
+        {{ $t('app.quotes.create.success_message') }}
+      </div>
     </div>
 
-    <div class="alert-error mt-5" v-if="errors.main_error">
-      {{ errors.main_error }}
-    </div>
-
-    <div class="mt-5">
-      <SubmitButton :in-progress="send_quote" class="btn--secondary" @click="createInvoice('invoices')">{{ $t('app.invoices.create.create_invoice') }}</SubmitButton>
-    </div>
-    <div class="mt-1" v-if="success">
-      {{ $t('app.quotes.create.success_message') }}
-    </div>
   </div>
 </template>
 
