@@ -1,6 +1,6 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.checkout.list.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.checkout.list.title') }}</h1>
 
     <div class="top-button-container">
       <div class="list">
@@ -61,13 +61,6 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.checkout.list.list.name') }}</th>
-            <th>{{ $t('app.checkout.list.list.created_at') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.payment.view.title') }}</h1>
+    <h1 class="mt-5 ml-5 page-title">{{ $t('app.payment.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="grid grid-cols-2 gap-3">
-          <div class="mt-5">
+        <div class="grid grid-cols-2 gap-3 p-5">
+          <div class="card-body">
             <h2 class="section-header">{{ $t('app.payment.view.main.title') }}</h2>
             <div class="section-body">
 
@@ -28,7 +28,7 @@
               </dl>
             </div>
           </div>
-          <div class="mt-5">
+          <div class="card-body">
             <h2 class="section-header">{{ $t('app.payment.view.customer.title') }}</h2>
             <div class="section-body">
               <dl class="detail-list">
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="mt-5">
+          <div class="card-body">
             <h2 class="mb-2">{{ $t('app.payment.view.refunds.title') }}</h2>
 
               <table class="list-table">
@@ -78,7 +78,7 @@
                 </tbody>
               </table>
           </div>
-          <div class="mt-5">
+          <div class="card-body">
             <h2 class="mb-2">{{ $t('app.payment.view.subscriptions.title') }}</h2>
 
             <table class="list-table">
@@ -99,7 +99,7 @@
               </tbody>
             </table>
           </div>
-          <div class="mt-5">
+          <div class="card-body">
             <h2 class="mb-2">{{ $t('app.payment.view.receipts.title') }}</h2>
 
               <table class="list-table">
@@ -123,7 +123,7 @@
         </div>
 
         <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-          <div class="text-end mt-4">
+          <div class="text-end m-5">
             <SubmitButton :in-progress="generatingReceipt" button-class="btn--secondary mr-3" @click="generateReceipt">{{ $t('app.payment.view.buttons.generate_receipt') }}</SubmitButton>
             <button class="btn--main" @click="refundSent = false;options.modelValue = true">{{ $t('app.payment.view.buttons.refund') }}</button>
           </div>

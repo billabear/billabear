@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1 class="page-title mb-5">{{ $t('app.checkout.create.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.checkout.create.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="p-5">
       <div class="card-body">
 
         <div class="form-field-ctn">
@@ -164,7 +165,7 @@
       </div>
       <div class="mt-1" v-if="success">
         {{ $t('app.checkout.create.success_message') }}
-      </div>
+      </div></div>
     </LoadingScreen>
   </div>
 </template>

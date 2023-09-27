@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.refund.view.title') }}</h1>
+    <h1 class="ml-5 mt-5 page-title">{{ $t('app.refund.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <div class="grid grid-cols-2 gap-3">
-          <div class="mt-5">
+        <div class="grid grid-cols-2 gap-3 p-5">
+          <div class="card-body">
             <h2 class="section-header">{{ $t('app.refund.view.main.title') }}</h2>
             <div class="section-body">
               <dl class="detail-list">
