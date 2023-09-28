@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="mt-1 p-5">
+    <div class="">
       <router-view></router-view>
     </div>
   </div>

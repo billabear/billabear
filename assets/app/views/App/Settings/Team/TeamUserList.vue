@@ -5,22 +5,9 @@
 
     <div class="top-button-container">
       <div class="list">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-            <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-            <i v-else class="fa-solid fa-caret-up"></i>
-            {{ $t('app.settings.user.list.filter.button') }}
-          </button>
-        </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
+        <router-link :to="{name: 'app.user.invite'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.user.list.invite') }}</router-link>
       </div>
-      <router-link :to="{name: 'app.user.invite'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.user.list.invite') }}</router-link>
     </div>
-
     <div class="card-body my-5" v-if="active_filters.length > 0">
       <h2>{{ $t('app.settings.user.list.filter.title') }}</h2>
       <div v-for="filter in active_filters">

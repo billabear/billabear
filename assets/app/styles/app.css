@@ -395,7 +395,7 @@ body {
 }
 
 .page-title {
-    @apply mb-5 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white;
+    @apply mb-5 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white ml-5 mt-5;
 }
 
 .form-field {
