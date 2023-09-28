@@ -3,20 +3,15 @@
     <h1 class="mt-5 ml-5 page-title">{{ $t('app.vouchers.list.title') }}</h1>
 
     <div class="top-button-container">
-      <div class="list" v-if="filters.length > 0">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.vouchers.list.filter.button') }}
-          </button>
+      <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
+        <div class="list_container">
+          <ListGroup>
+            <ListGroupItem v-for="(filter, filterKey) in filters">
+              <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
+            </ListGroupItem>
+          </ListGroup>
         </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
-      </div>
+      </Dropdown>
       <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
         <router-link :to="{name: 'app.vouchers.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.vouchers.list.create_new') }}</router-link>
       </RoleOnlyView>
@@ -91,10 +86,11 @@
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 
 export default {
   name: "VouchersList.vue",
-  components: {RoleOnlyView, InternalApp},
+  components: {ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,

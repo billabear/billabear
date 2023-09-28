@@ -37,13 +37,6 @@
             </td>
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.system.webhooks.main.list.type') }}</th>
-            <th>{{ $t('app.system.webhooks.main.list.created_at')}}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
       </div>
       <div class="sm:grid sm:grid-cols-2">

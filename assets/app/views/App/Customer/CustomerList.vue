@@ -3,12 +3,11 @@
     <h1 class="page-title ml-5 mt-5">{{ $t('app.customer.list.title') }}</h1>
 
     <div class="top-button-container">
-      <Dropdown text="Filters">
-
+      <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
         <div class="list_container">
           <ListGroup>
             <ListGroupItem v-for="(filter, filterKey) in filters">
-              <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
+              <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
             </ListGroupItem>
           </ListGroup>
         </div>

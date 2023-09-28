@@ -4,18 +4,15 @@
 
     <div class="top-button-container">
       <div class="list">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.payment.list.filter.button') }}
-          </button>
-        </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
+        <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
+          <div class="list_container">
+            <ListGroup>
+              <ListGroupItem v-for="(filter, filterKey) in filters">
+                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
+              </ListGroupItem>
+            </ListGroup>
+          </div>
+        </Dropdown>
       </div>
     </div>
 
@@ -89,10 +86,11 @@
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
 import currency from "currency.js";
+import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 
 export default {
   name: "CustomerList.vue",
-  components: {InternalApp},
+  components: {ListGroupItem, ListGroup, Dropdown, InternalApp},
   data() {
     return {
       ready: false,

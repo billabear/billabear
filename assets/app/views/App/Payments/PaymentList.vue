@@ -4,22 +4,19 @@
 
     <div class="top-button-container">
       <div class="list">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.payment.list.filter.button') }}
-          </button>
-        </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
+        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
+          <div class="list_container">
+            <ListGroup>
+              <ListGroupItem v-for="(filter, filterKey) in filters">
+                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
+              </ListGroupItem>
+            </ListGroup>
+          </div>
+        </Dropdown>
       </div>
     </div>
 
-    <div class="card-body my-5" v-if="active_filters.length > 0">
+    <div class="card-body m-5" v-if="active_filters.length > 0">
       <h2>{{ $t('app.payment.list.filter.title') }}</h2>
       <div v-for="filter in active_filters">
         <div class="px-3 py-1 sm:flex sm:px-6">
@@ -101,10 +98,11 @@ import axios from "axios";
 import InternalApp from "../InternalApp.vue";
 import "currency.js"
 import currency from "currency.js";
+import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 
 export default {
   name: "CustomerList.vue",
-  components: {InternalApp},
+  components: {ListGroupItem, ListGroup, Dropdown, InternalApp},
   data() {
     return {
       ready: false,
@@ -279,18 +277,6 @@ export default {
   @apply mt-5;
   display: inline-block;
 }
-.list_container {
-  text-align: left;
-  transition: height .4s ease;
-  position: absolute;
-  z-index: 1;
-  background: white;
-
-  @apply p-5 rounded-xl	border-slate-50 shadow-xl;
-  float: left;
-  right: 80px;
-}
-.list_container li {padding : 30px;}
 
 .filter_field {
   @apply rounded-lg border-black p-2 bg-slate-50 border;

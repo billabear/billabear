@@ -4,18 +4,15 @@
 
     <div class="top-button-container" v-if="Object.keys(filters).length > 0">
       <div class="list">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.refund.list.filter.button') }}
-          </button>
-        </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
+        <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
+          <div class="list_container">
+            <ListGroup>
+              <ListGroupItem v-for="(filter, filterKey) in filters">
+                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
+              </ListGroupItem>
+            </ListGroup>
+          </div>
+        </Dropdown>
       </div>
     </div>
 
