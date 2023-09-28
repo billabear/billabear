@@ -5,13 +5,13 @@
     <LoadingScreen :ready="ready">
 
       <form @submit.prevent="save">
-        <div class="mt-3 card-body">
+        <div class="m-5 card-body">
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="tax_customers_with_tax_number">
               {{ $t('app.settings.tax_settings.update.fields.tax_customers_with_tax_number') }}
             </label>
             <p class="form-field-error" v-if="errors.taxCustomersWithTaxNumber != undefined">{{ errors.taxCustomersWithTaxNumber }}</p>
-            <input type="checkbox" class="form-field" id="tax_customers_with_tax_number" v-model="tax_settings.tax_customers_with_tax_number"  />
+            <Toggle v-model="tax_settings.tax_customers_with_tax_number" />
             <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.tax_customers_with_tax_number') }}</p>
           </div>
           <div class="form-field-ctn">
@@ -19,12 +19,12 @@
               {{ $t('app.settings.tax_settings.update.fields.eu_business_tax_rules') }}
             </label>
             <p class="form-field-error" v-if="errors.euBusinessTaxRules != undefined">{{ errors.euBusinessTaxRules }}</p>
-            <input type="checkbox" class="form-field" id="eu_business_tax_rules" v-model="tax_settings.eu_business_tax_rules"  />
+            <Toggle v-model="tax_settings.eu_business_tax_rules" />
             <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.eu_business_tax_rules') }}</p>
           </div>
         </div>
 
-      <div class="form-field-submit-ctn">
+      <div class="m-5 form-field-submit-ctn">
         <SubmitButton :in-progress="sending">{{ $t('app.settings.tax_settings.update.submit_btn') }}</SubmitButton>
       </div>
       <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.tax_settings.update.success_message') }}</p>
@@ -35,9 +35,11 @@
 
 <script>
 import axios from "axios";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "TaxSettings",
+  components: {Toggle},
   data() {
     return {
       ready: false,

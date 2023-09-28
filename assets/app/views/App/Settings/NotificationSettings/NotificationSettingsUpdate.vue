@@ -3,14 +3,16 @@
     <h1 class="page-title">{{ $t('app.settings.notification_settings.update.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+
       <form @submit.prevent="save">
-        <div class="mt-3 card-body">
+        <div class="m-5 card-body">
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="send_customer_notifications">
               {{ $t('app.settings.notification_settings.update.fields.send_customer_notifications') }}
             </label>
             <p class="form-field-error" v-if="errors.sendCustomerNotifications != undefined">{{ errors.sendCustomerNotifications }}</p>
-            <input type="checkbox" class="form-field" id="send_customer_notifications" v-model="notificationSettings.send_customer_notifications"  />
+
+            <Toggle v-model="notificationSettings.send_customer_notifications" />
             <p class="form-field-help">{{ $t('app.settings.notification_settings.update.help_info.send_customer_notifications') }}</p>
           </div>
 
@@ -61,7 +63,7 @@
 
         </div>
 
-        <div class="form-field-submit-ctn">
+        <div class="m-tform-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.notification_settings.update.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.notification_settings.update.success_message') }}</p>
@@ -72,9 +74,11 @@
 
 <script>
 import axios from "axios";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "NotificationSettingsUpdate",
+  components: {Toggle},
   data() {
     return {
       sending: false,

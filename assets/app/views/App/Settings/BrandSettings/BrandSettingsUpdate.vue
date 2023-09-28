@@ -4,6 +4,7 @@
     <h1 class="page-title">{{ $t('app.settings.brand_settings.update.title', {name: brand.name}) }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="m-5">
       <form @submit.prevent="save">
         <div class="border-b pb-2 my-3 border-black">
           <a @click="view = 'general'" class="viewLink" :class="{activeView: view === 'general'}">{{ $t('app.settings.brand_settings.update.general') }}</a> |
@@ -165,11 +166,11 @@
             </div>
           </div></div>
         </div>
-        <div class="form-field-submit-ctn">
+        <div class="mt-5 form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.brand_settings.update.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.brand_settings.update.success_message') }}</p>
-      </form>
+      </form></div>
     </LoadingScreen>
   </div>
 </template>

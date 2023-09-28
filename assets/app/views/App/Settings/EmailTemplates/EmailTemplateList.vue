@@ -3,20 +3,6 @@
     <h1 class="page-title">{{ $t('app.settings.email_template.list.title') }}</h1>
 
     <div class="top-button-container">
-      <div class="list">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-              <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-              <i v-else class="fa-solid fa-caret-up"></i>
-              {{ $t('app.settings.email_template.list.filter.button') }}
-          </button>
-        </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
-      </div>
       <router-link :to="{name: 'app.settings.email_template.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.email_template.list.create_new') }}</router-link>
     </div>
 

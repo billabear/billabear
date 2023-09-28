@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>{{ $t('app.settings.api_keys.main.title') }}</h1>
+    <h1 class="page-title">{{ $t('app.settings.api_keys.main.title') }}</h1>
 
-    <div class="my-5 text-end">
+    <div class="m-5 text-end">
       <button class="btn--main" @click="options.modelValue = true">{{ $t('app.settings.api_keys.main.add_new_button') }}</button>
     </div>
 

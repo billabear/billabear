@@ -3,6 +3,7 @@
     <LoadingScreen :ready="ready">
       <h1 class="page-title">{{ $t('app.settings.pdf_template.update.title', {name: template.template.name}) }}</h1>
 
+      <div class="card-body m-5">
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="content">
           {{ $t('app.settings.pdf_template.update.template') }}
@@ -17,7 +18,7 @@
       <div class="mt-5">
         <SubmitButton :in-progress="downloadInProgress" @click="download" button-class="btn--secondary mr-4">{{ $t('app.settings.pdf_template.update.download') }}</SubmitButton>
         <SubmitButton :in-progress="sendingUpdate" @click="save">{{ $t('app.settings.pdf_template.update.save') }}</SubmitButton>
-      </div>
+      </div></div>
       <VueFinalModal
           v-model="options.modelValue"
           :teleport-to="options.teleportTo"

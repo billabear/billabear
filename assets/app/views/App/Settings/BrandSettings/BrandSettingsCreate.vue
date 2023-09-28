@@ -4,6 +4,7 @@
     <h1 class="page-title">{{ $t('app.settings.brand_settings.create.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="m-5">
       <form @submit.prevent="save">
         <div class="mt-3 card-body">
           <div class="form-field-ctn">
@@ -126,11 +127,11 @@
           </div>
         </div>
 
-        <div class="form-field-submit-ctn">
+        <div class="mt-5 form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.brand_settings.create.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.brand_settings.create.success_message') }}</p>
-      </form>
+      </form></div>
     </LoadingScreen>
   </div>
 </template>
