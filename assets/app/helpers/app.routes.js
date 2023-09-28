@@ -167,7 +167,7 @@ export const APP_ROUTES = [
         name: 'app.settings',
         path: 'settings',
         component: SettingsGroup,
-        redirect: {            name: "app.settings.system_settings.update", },
+        redirect: { name: "app.settings.system_settings.update", },
         children: [
             {
                 name: "app.user.invite",
