@@ -41,7 +41,6 @@ Watch the video on youtube.
 * Tax Software Integrations
 * Better Reports
 * Slack/etc integration for internal communications
-* Per Seat billing
 * Metric and Usage Based Billing
 * [And you can add more here](https://github.com/billabear/billabear/discussions/categories/ideas)
 
