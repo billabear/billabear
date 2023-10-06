@@ -24,5 +24,10 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
         active_subscriptions: "Active Subscriptions",
         active_customers: "Active Customers",
         unpaid_invoices: "Unpaid Invoices"
+    },
+    buttons: {
+        daily: "Daily",
+        monthly: "Monthly",
+        yearly: "Yearly"
     }
 };

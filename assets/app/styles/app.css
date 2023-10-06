@@ -486,3 +486,11 @@ body {
 .alert-success {
     @apply bg-green-300 p-3 w-full border font-bold rounded-xl border-green-700 text-green-700;
 }
+
+.chart-button {
+    @apply inline p-2 border bg-white hover:bg-gray-100 cursor-pointer  dark:text-white dark:bg-gray-700 dark:hover:bg-gray-500;
+}
+
+.chart-button-selected {
+    @apply bg-gray-100 dark:bg-gray-500 cursor-not-allowed;
+}

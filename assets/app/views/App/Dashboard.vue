@@ -29,6 +29,17 @@
           </div>
         </div>
       </div>
+      <div class="text-end my-5">
+        <div class="chart-button" @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
+          {{ $t('app.reports.dashboard.buttons.daily') }}
+        </div>
+        <div class="chart-button" @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
+          {{ $t('app.reports.dashboard.buttons.monthly') }}
+        </div>
+        <div class="chart-button" @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
+          {{ $t('app.reports.dashboard.buttons.yearly') }}
+        </div>
+      </div>
       <div class="card-body">
         <div  class="">
           <h2 class="chart-title">{{ $t('app.reports.dashboard.subscription_count.title') }}</h2>
@@ -55,6 +66,7 @@ export default {
       estimated_arr: 0,
       currency: null,
       header: {},
+      viewName: 'monthly',
       subscriptionCountChartSeries: [],
       subscriptionCountChartOptions: {
         title: {
@@ -296,7 +308,7 @@ export default {
   },
   methods: {
     setChartData: function (viewName) {
-
+      this.viewName = viewName;
       const subscriptionCountStats = this.convertStatToChartData(this.responseData.subscription_count[viewName]);
       this.subscriptionCountChartSeries = subscriptionCountStats.values;
       this.subscriptionCountChartOptions.xaxis.categories = subscriptionCountStats.categories;
