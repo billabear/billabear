@@ -69,7 +69,7 @@
                   <dd>{{ invoice.payee_address.post_code }}</dd>
                 </div>
               </dl>
-              <router-link :to="{name: 'app.customer.view', params: {id: invoice.customer.id}}" class="btn--main">{{ $t('app.invoices.view.customer.more_info') }}</router-link>
+              <router-link :to="{name: 'app.customer.view', params: {id: invoice.customer.id}}" class="btn--container">{{ $t('app.invoices.view.customer.more_info') }}</router-link>
             </div>
           </div>
           <div class="card-body">

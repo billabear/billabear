@@ -56,14 +56,6 @@
             </td>
           </tr>
           </tbody>
-            <tfoot>
-            <tr>
-              <th>{{ $t('app.subscription.list.email') }}</th>
-              <th>{{ $t('app.subscription.list.plan')}}</th>
-              <th>{{ $t('app.subscription.list.status') }}</th>
-              <th></th>
-            </tr>
-            </tfoot>
         </table>
       </div>
       <div class="sm:grid sm:grid-cols-2">

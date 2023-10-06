@@ -17,7 +17,7 @@
               </router-link>
             </li>
             <li>
-              <router-link :to="{name: 'app.subscription.list'}" class="sidebar-menu-item">
+              <router-link :to="{name: 'app.subscription'}" class="sidebar-menu-item">
                 <i class="fa-solid fa-repeat"></i>
                 <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.subscriptions') }}</span>
               </router-link>

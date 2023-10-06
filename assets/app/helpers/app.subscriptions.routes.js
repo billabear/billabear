@@ -12,7 +12,7 @@ export const AppSubscriptionsRoutes  = [
     },
     {
         name: 'app.subscription.list',
-        path: '',
+        path: 'list',
         component: SubscriptionList
     },
     {

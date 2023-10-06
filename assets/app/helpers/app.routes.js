@@ -337,7 +337,7 @@ export const APP_ROUTES = [
     {
         name: 'app.subscription',
         path: 'subscriptions',
-        redirect: "subscriptions",
+        redirect: { name: "app.subscription.list", },
         component: SubscriptionGroup,
         children: AppSubscriptionsRoutes
     },
