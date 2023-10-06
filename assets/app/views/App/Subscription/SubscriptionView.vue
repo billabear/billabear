@@ -80,12 +80,12 @@
               <dt>{{ $t('app.subscription.view.pricing.schedule') }}</dt>
               <dd>{{ subscription.price.schedule }}</dd>
             </div>
-            <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-              <div class="mt-2">
-                <button class="btn--main" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
-              </div>
-            </RoleOnlyView>
           </dl>
+          <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+            <div class="mt-2">
+              <button class="btn--container" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
+            </div>
+          </RoleOnlyView>
         </div>
           <div class="card-body">
             <h2 class="section-header">{{ $t('app.subscription.view.payment_method.title') }}</h2>

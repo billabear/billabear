@@ -412,7 +412,7 @@ body {
     @apply text-end px-5;
 }
 .section-header {
-    @apply mb-3;
+    @apply mb-3 dark:text-gray-300;
 }
 .detail-list {
 }
@@ -496,4 +496,13 @@ body {
 }
 .filter_field {
     @apply mr-2 rounded;
+}
+
+.btn--container {
+    @apply w-full text-center items-center px-3 py-2 text-sm font-medium text-center text-black bg-white hover:bg-gray-50 rounded-lg border focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-400 dark:bg-gray-700 dark:hover:bg-gray-500;
+
+}
+
+.detail-list dd {
+    @apply text-white;
 }

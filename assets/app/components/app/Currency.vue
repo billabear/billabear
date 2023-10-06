@@ -1,5 +1,5 @@
 <template>
-  <span v-if="currency != ''">{{ currency }}</span> <span>{{ displayCurrency(amount) }}</span>
+  <span v-if="currency != ''" class=" dark:text-gray-300">{{ currency }}</span> <span class=" dark:text-gray-300">{{ displayCurrency(amount) }}</span>
 </template>
 
 <script>

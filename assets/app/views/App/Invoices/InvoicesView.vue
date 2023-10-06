@@ -110,7 +110,7 @@
           </div>
         </div>
         <div class="">
-          <h2 class="my-3">{{ $t('app.invoices.view.lines.title') }}</h2>
+          <h2 class="my-3  dark:text-gray-300">{{ $t('app.invoices.view.lines.title') }}</h2>
 
           <table class="list-table">
             <thead>
@@ -134,7 +134,7 @@
         </div>
         <div class="my-3 text-end">
           <div class="float-right text-end w-1/5">
-            <h3 class="text-xl">{{ $t('app.invoices.view.total.title') }}</h3>
+            <h3 class="text-xl dark:text-gray-500">{{ $t('app.invoices.view.total.title') }}</h3>
 
             <dl class="total-list">
               <div>
