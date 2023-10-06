@@ -71,6 +71,7 @@ import CheckoutCreate from "../views/App/Checkout/CheckoutCreate.vue";
 import CheckoutView from "../views/App/Checkout/CheckoutView.vue";
 import CheckoutList from "../views/App/Checkout/CheckoutList.vue";
 import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
+import SubscriptionsChurn from "../views/App/Reports/Subscriptions/SubscriptionsChurn.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -80,9 +81,9 @@ export const APP_ROUTES = [
         component: Dashboard,
     },
     {
-        name: "app.report",
+        name: "app.reports",
         path: "reports",
-        redirect: "reports",
+        redirect: {name: "app.report.subscriptions"},
         component: ReportsGroup,
         children: [
             {
@@ -105,6 +106,11 @@ export const APP_ROUTES = [
                 path: 'vat',
                 component: VatOverview,
 
+            },
+            {
+                name: 'app.report.churn',
+                path: 'churn',
+                component: SubscriptionsChurn,
             }
         ]
     },

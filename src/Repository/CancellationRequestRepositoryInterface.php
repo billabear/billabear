@@ -16,4 +16,9 @@ use Parthenon\Common\Repository\RepositoryInterface;
 
 interface CancellationRequestRepositoryInterface extends RepositoryInterface
 {
+    public function getDailyCount(\DateTime $dateTime): array;
+
+    public function getMonthlyCount(\DateTime $dateTime): array;
+
+    public function getYearlyCount(\DateTime $dateTime): array;
 }

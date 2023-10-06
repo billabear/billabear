@@ -208,4 +208,15 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
         return $qb;
     }
+
+    public function findActiveSubscriptionsOnDate(\DateTime $dateTime, int $count): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->where('s.createdAt < :dateTime')
+            ->andWhere('s.active = true')
+            ->setParameter('dateTime', $dateTime)
+            ->setMaxResults($count);
+
+        return $qb->getQuery()->execute();
+    }
 }

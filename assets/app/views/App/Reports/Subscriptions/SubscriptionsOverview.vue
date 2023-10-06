@@ -4,13 +4,13 @@
     <LoadingScreen :ready="ready">
 
       <div class="grid grid-cols-2 gap-5">
-        <div>
+        <div class="card-body">
           <h2 class="section-header">{{ $t('app.reports.subscriptions.overview.plans.title') }}</h2>
           <div class="section-body">
             <apexchart type="pie" width="550" :options="overview.chartOptions" :series="overview.series"></apexchart>
           </div>
         </div>
-        <div>
+        <div class="card-body">
           <h2 class="section-header">{{ $t('app.reports.subscriptions.overview.schedules.title') }}</h2>
           <div class="section-body">
             <apexchart type="pie" width="550" :options="paymentSchedules.chartOptions" :series="paymentSchedules.series"></apexchart>

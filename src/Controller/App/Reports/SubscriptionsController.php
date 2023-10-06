@@ -12,6 +12,7 @@
 
 namespace App\Controller\App\Reports;
 
+use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,18 @@ class SubscriptionsController
         $data = [];
         $data['subscriptions'] = $subscriptionRepository->getPlanCounts();
         $data['schedule'] = $subscriptionRepository->getScheduleCounts();
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/app/reports/subscriptions/churn', name: 'app_app_reports_subscriptions_getchurnreport', methods: ['GET'])]
+    public function getChurnReport(
+        CancellationRequestRepositoryInterface $cancellationRequestRepository,
+    ): Response {
+        $data = [];
+        $data['daily'] = $cancellationRequestRepository->getDailyCount(new \DateTime('-35 days'));
+        $data['monthly'] = $cancellationRequestRepository->getMonthlyCount(new \DateTime('-14 months'));
+        $data['yearly'] = $cancellationRequestRepository->getYearlyCount(new \DateTime('-6 years'));
 
         return new JsonResponse($data);
     }

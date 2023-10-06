@@ -3,5 +3,6 @@ export const REPORTS_MENU_TRANSLATIONS = {
     dashboard: "Dashboard",
     expiring_cards: "Expiring Cards",
     subscriptions: "Subscriptions",
-    vat: "VAT"
+    vat: "VAT",
+    churn: "Subscription Churn"
 }

@@ -40,6 +40,12 @@
                 <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.transactions') }}</span>
               </router-link>
             </li>
+            <li>
+              <router-link :to="{name: 'app.reports'}" class="sidebar-menu-item">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.reports') }}</span>
+              </router-link>
+            </li>
             <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
               <li>
                 <router-link :to="{name: 'app.settings'}" class="sidebar-menu-item">

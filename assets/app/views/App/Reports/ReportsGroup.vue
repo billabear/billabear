@@ -5,10 +5,8 @@
     <div class="">
       <div class="submenu-container">
         <ul>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.report.dashboard'}" class="submenu-link"><i class="fa-solid fa-gauge"></i> {{ $t('app.reports.menu.dashboard') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.expiring_cards.list'}" class="submenu-link"><i class="fa-solid fa-credit-card"></i> {{ $t('app.reports.menu.expiring_cards') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.report.subscriptions'}" class="submenu-link"><i class="fa-solid fa-arrows-rotate"></i>  {{ $t('app.reports.menu.subscriptions') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.report.vat'}" class="submenu-link"><i class="fa-solid fa-coins"></i> {{ $t('app.reports.menu.vat') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.report.subscriptions'}" class="submenu-link">{{ $t('app.reports.menu.subscriptions') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.report.churn'}" class="submenu-link">{{ $t('app.reports.menu.churn') }}</router-link></li>
 
 
         </ul>

@@ -6,6 +6,11 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '13'
     orm:
+        dql:
+            string_functions:
+                DAY: DoctrineExtensions\Query\Postgresql\Day
+                MONTH: DoctrineExtensions\Query\Postgresql\Month
+                YEAR: DoctrineExtensions\Query\Postgresql\Year
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
