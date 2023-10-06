@@ -3,8 +3,8 @@
     <h1 class="mt-5 ml-5 page-title">{{ $t('app.quotes.list.title') }}</h1>
 
     <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
+      <div class="list inline">
+        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
           <div class="list_container">
             <ListGroup>
               <ListGroupItem v-for="(filter, filterKey) in filters">
