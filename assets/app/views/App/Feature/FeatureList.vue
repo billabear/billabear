@@ -57,12 +57,6 @@
               </td>
             </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.feature.list.name') }}</th>
-            <th>{{ $t('app.feature.list.code')}}</th>
-          </tr>
-          </tfoot>
         </table>
     </div>
       <div class="sm:grid sm:grid-cols-2">

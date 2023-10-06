@@ -299,7 +299,7 @@ export const APP_ROUTES = [
             },
             {
                 name: 'app.product.list',
-                path: '',
+                path: 'list',
                 component: ProductList
             },
             {
