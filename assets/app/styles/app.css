@@ -494,3 +494,6 @@ body {
 .chart-button-selected {
     @apply bg-gray-100 dark:bg-gray-500 cursor-not-allowed;
 }
+.filter_field {
+    @apply mr-2 rounded;
+}
