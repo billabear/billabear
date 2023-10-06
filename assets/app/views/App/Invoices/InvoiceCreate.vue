@@ -56,7 +56,7 @@
           </thead>
           <tbody v-if="quote.subscription_plans.length === 0">
           <tr>
-            <td colspan="3" class="text-center">{{ $t('app.invoices.create.subscriptions.no_subscriptions') }}</td>
+            <td colspan="4" class="text-center">{{ $t('app.invoices.create.subscriptions.no_subscriptions') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
