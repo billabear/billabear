@@ -499,7 +499,7 @@ body {
 }
 
 .btn--container {
-    @apply w-full text-center items-center px-3 py-2 text-sm font-medium text-center text-black bg-white hover:bg-gray-50 rounded-lg border focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-400 dark:bg-gray-700 dark:hover:bg-gray-500;
+    @apply inline-block w-full text-center no-underline items-center px-3 py-2 text-sm font-medium text-center text-black bg-white hover:bg-gray-50 rounded-lg border focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-400 dark:bg-gray-700 dark:hover:bg-gray-500;
 
 }
 
