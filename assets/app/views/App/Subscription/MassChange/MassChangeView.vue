@@ -50,6 +50,8 @@
         </div>
         <div class="mt-5">
           <SubmitButton :in-progress="exportInProgress" @click="processExport">{{ $t('app.subscription.mass_change.view.export_button') }}</SubmitButton>
+          <SubmitButton :in-progress="cancelInProgress" @click="cancel" class="ml-5 btn--danger" v-if="mass_change.status == 'created'">{{ $t('app.subscription.mass_change.view.cancel') }}</SubmitButton>
+          <SubmitButton :in-progress="cancelInProgress" @click="uncancel" class="ml-5 btn--secondary" v-if="mass_change.status == 'cancelled'">{{ $t('app.subscription.mass_change.view.uncancel') }}</SubmitButton>
         </div>
       </div>
     </LoadingScreen>
@@ -67,6 +69,7 @@ export default {
     return {
       ready: false,
       exportInProgress: false,
+      cancelInProgress: false,
       mass_change: {},
       export_id: null,
       estimate: {},
@@ -91,6 +94,22 @@ export default {
     })
   },
   methods: {
+    cancel: function () {
+      this.cancelInProgress = true;
+      var subscriptionId = this.$route.params.id
+      axios.post('/app/subscription/mass-change/' + subscriptionId+'/cancel').then(response => {
+        this.cancelInProgress = false;
+        this.mass_change.status = response.data.status;
+      })
+    },
+    uncancel: function () {
+      this.cancelInProgress = true;
+      var subscriptionId = this.$route.params.id
+      axios.post('/app/subscription/mass-change/' + subscriptionId+'/uncancel').then(response => {
+        this.cancelInProgress = false;
+        this.mass_change.status = response.data.status;
+      })
+    },
     currency: function (value) {
       return currency(value, { fromCents: true });
     },

@@ -22,6 +22,7 @@ use App\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use App\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use App\Dto\Response\App\Subscription\MassChange\CreateView;
 use App\Dto\Response\App\Subscription\MassChange\ViewMassSubscriptionChange;
+use App\Enum\MassSubscriptionChangeStatus;
 use App\Export\DataProvider\MassSubscriptionChangeCustomersDataProvider;
 use App\Export\Response\ResponseConverter;
 use App\Repository\BrandSettingsRepositoryInterface;
@@ -176,5 +177,37 @@ class MassChangeController
         $responseConverter = new ResponseConverter();
 
         return $responseConverter->convert($exportResponse);
+    }
+
+    #[Route('/app/subscription/mass-change/{id}/cancel', name: 'app_app_subscriptions_masschange_cancelchange', methods: ['POST'])]
+    public function cancelChange(
+        Request $request,
+        MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
+    ) {
+        try {
+            $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $entity->setStatus(MassSubscriptionChangeStatus::CANCELLED);
+        $massSubscriptionChangeRepository->save($entity);
+
+        return new JsonResponse(['status' => MassSubscriptionChangeStatus::CANCELLED->value]);
+    }
+
+    #[Route('/app/subscription/mass-change/{id}/uncancel', name: 'app_app_subscriptions_masschange_uncancelchange', methods: ['POST'])]
+    public function uncancelChange(
+        Request $request,
+        MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
+    ) {
+        try {
+            $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $entity->setStatus(MassSubscriptionChangeStatus::CREATED);
+        $massSubscriptionChangeRepository->save($entity);
+
+        return new JsonResponse(['status' => MassSubscriptionChangeStatus::CREATED->value]);
     }
 }

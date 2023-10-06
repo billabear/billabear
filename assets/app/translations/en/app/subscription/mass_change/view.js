@@ -18,5 +18,7 @@ export const MASS_CHANGE_VIEW_TRANSLATIONS = {
     estimate: {
         amount: "This will produce an estimated {amount} {currency} change to the {schedule}",
     },
-    export_button: "Export Customer List"
+    export_button: "Export Customer List",
+    cancel: "Cancel",
+    uncancel: "Uncancel"
 }
