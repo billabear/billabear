@@ -391,7 +391,7 @@ export const APP_ROUTES = [
         children: [
             {
                 name: 'app.payment.list',
-                path: '',
+                path: 'payments/list',
                 component: PaymentList
             },
             {
