@@ -63,17 +63,9 @@
             </td>
           </tr>
           </tbody>
-          <tfoot>
-          <tr>
-            <th>{{ $t('app.subscription.mass_change.list.change_date') }}</th>
-            <th>{{ $t('app.subscription.mass_change.list.status') }}</th>
-            <th>{{ $t('app.subscription.mass_change.list.created_at') }}</th>
-            <th></th>
-          </tr>
-          </tfoot>
         </table>
       </div>
-      <div class="sm:grid sm:grid-cols-2">
+      <div class="sm:grid sm:grid-cols-2 m-5">
 
         <div class="mt-4">
           <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.subscription.mass_change.list.prev') }}</button>
