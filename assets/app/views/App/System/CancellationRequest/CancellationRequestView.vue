@@ -34,6 +34,10 @@
               <dt>{{ $t('app.system.cancellation_request.view.details.when') }}</dt>
               <dd>{{ cancellation_request.when }}</dd>
             </div>
+            <div v-if="cancellation_request.when == 'specific-date'">
+              <dt>{{ $t('app.system.cancellation_request.view.details.specific_date') }}</dt>
+              <dd>{{ $filters.moment(cancellation_request.specific_date, 'LL')}}</dd>
+            </div>
             <div>
               <dt>{{ $t('app.system.cancellation_request.view.details.refund_type') }}</dt>
               <dd>{{ cancellation_request.refund_type }}</dd>
