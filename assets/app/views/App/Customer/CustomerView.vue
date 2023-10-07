@@ -102,7 +102,7 @@
 
         <div class="card-body">
           <div class="grid grid-cols-2">
-            <div><h2 class="">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
+            <div><h2  class="section-header">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
             <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
               <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
 
@@ -141,7 +141,7 @@
 
           <div class="card-body">
             <div class="grid grid-cols-2">
-              <div><h2 class="">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
+              <div><h2  class="section-header">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
               <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
                 <div><router-link class="btn--main" :to="{name: 'app.customer.payment_details.add', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_new') }}</router-link></div>
               </RoleOnlyView>
@@ -184,7 +184,7 @@
           </div>
 
           <div class="card-body">
-            <h2 class="">{{ $t('app.customer.view.limits.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.customer.view.limits.title') }}</h2>
             <div class="">
 
               <table class="list-table">
@@ -207,7 +207,7 @@
             </div>
           </div>
           <div class="card-body">
-            <h2 class="">{{ $t('app.customer.view.features.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.customer.view.features.title') }}</h2>
             <div class="">
 
             <table class="list-table">
@@ -228,7 +228,7 @@
             </div>
           </div>
           <div class="card-body">
-            <h2 class="">{{ $t('app.customer.view.payments.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.customer.view.payments.title') }}</h2>
             <div class="">
             <table class="list-table">
               <thead>
@@ -255,7 +255,7 @@
             </table></div>
           </div>
           <div class="card-body">
-            <h2 class="">{{ $t('app.customer.view.refunds.title') }}</h2>
+            <h2 class="section-header">{{ $t('app.customer.view.refunds.title') }}</h2>
             <div class="">
             <table class="list-table">
               <thead>
@@ -284,7 +284,7 @@
           <div class="card-body">
             <div class="grid grid-cols-2">
               <div>
-                <h2 class="">{{ $t('app.customer.view.credit.title') }}</h2>
+                <h2 class="section-header">{{ $t('app.customer.view.credit.title') }}</h2>
               </div>
               <div class="text-end">
                 <router-link :to="{name: 'app.customer.credit.add', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.credit.add_button') }}</router-link>
@@ -320,7 +320,7 @@
           <div class="card-body">
             <div class="grid grid-cols-2">
               <div>
-                <h2 class="">{{ $t('app.customer.view.invoices.title') }}</h2>
+                <h2 class="section-header">{{ $t('app.customer.view.invoices.title') }}</h2>
               </div>
               <div class="text-end">
               </div>
