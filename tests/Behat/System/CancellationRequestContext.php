@@ -116,7 +116,7 @@ class CancellationRequestContext implements Context
         $subscription = $this->getSubscription($customerEmail, $planName);
         $cancellationRequest = $this->cancellationRequestRepository->findOneBy(['subscription' => $subscription]);
 
-        $this->sendJsonRequest('get', '/app/system/cancellation-request/'.$cancellationRequest->getId().'/process');
+        $this->sendJsonRequest('POST', '/app/system/cancellation-request/'.$cancellationRequest->getId().'/process');
     }
 
     /**
