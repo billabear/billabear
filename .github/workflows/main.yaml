@@ -286,9 +286,9 @@ jobs:
         run: |
           vendor/bin/behat -f progress features/Tax
 
-  behat_events:
+  behat_system:
     needs: code_style
-    name: Behat Events
+    name: Behat System
     runs-on: ubuntu-latest
 
     strategy:
@@ -339,7 +339,7 @@ jobs:
 
       - name: Behat
         run: |
-          vendor/bin/behat -f progress features/Events
+          vendor/bin/behat -f progress features/System
 
   behat_invoice:
     needs: code_style
