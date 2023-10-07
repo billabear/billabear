@@ -27,6 +27,10 @@
           <div class="section-header">{{ $t('app.system.cancellation_request.view.details.title') }}</div>
           <dl class="detail-list">
             <div>
+              <dt>{{ $t('app.system.cancellation_request.view.details.state') }}</dt>
+              <dd>{{ cancellation_request.state }}</dd>
+            </div>
+            <div>
               <dt>{{ $t('app.system.cancellation_request.view.details.when') }}</dt>
               <dd>{{ cancellation_request.when }}</dd>
             </div>

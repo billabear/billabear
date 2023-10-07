@@ -8,6 +8,7 @@ export const CANCELLATION_REQUEST_VIEW_TRANSLATION = {
     },
     details: {
         title: "Cancellation Details",
+        state: "State",
         when: "When",
         refund_type: "Refund Type",
         specific_date: "Cancellation Date"
