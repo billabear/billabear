@@ -54,7 +54,7 @@ class CancellationRequest
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column('error', type: 'string', nullable: true)]
+    #[ORM\Column('error', type: 'text', nullable: true)]
     private ?string $error = null;
 
     #[ORM\Column('has_error', type: 'boolean', nullable: true)]

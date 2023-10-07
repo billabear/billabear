@@ -45,6 +45,9 @@
         <div class="section-header">{{ $t('app.system.cancellation_request.view.error.title') }}</div>
         <pre>{{ cancellation_request.error }}</pre>
       </div>
+      <div class="m-5">
+        <SubmitButton :in-progress="sending" class="btn--secondary" @click="callProcess" v-if="cancellation_request.state !== 'completed'">{{ $t('app.system.cancellation_request.view.buttons.process') }}</SubmitButton>
+      </div>
     </LoadingScreen>
   </div>
 </template>
@@ -58,6 +61,7 @@ export default {
     return {
       ready: false,
       cancellation_request: null,
+      sending: false,
     }
   },
   mounted() {
@@ -66,12 +70,22 @@ export default {
       this.cancellation_request = response.data.cancellation_request;
       this.ready = true;
     })
+  },
+  methods: {
+    callProcess: function () {
+      const id = this.$route.params.id;
+      this.sending = true;
+      axios.post('/app/system/cancellation-request/'+id+'/process').then(response => {
+        this.cancellation_request = response.data;
+        this.sending = false;
+      })
+    }
   }
 }
 </script>
 
 <style scoped>
 pre {
-  @apply p-3 rounded bg-gray-50 dark:bg-gray-700 dark:text-white;
+  @apply whitespace-pre-wrap p-3 rounded bg-gray-50 dark:bg-gray-700 dark:text-white;
 }
 </style>

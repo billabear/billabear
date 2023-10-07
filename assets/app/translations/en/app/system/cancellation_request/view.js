@@ -15,5 +15,8 @@ export const CANCELLATION_REQUEST_VIEW_TRANSLATION = {
     },
     error: {
         title: "Error"
+    },
+    buttons: {
+        process: "Re-attempt Process"
     }
 }

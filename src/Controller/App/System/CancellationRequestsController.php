@@ -16,6 +16,7 @@ use App\Controller\App\CrudListTrait;
 use App\DataMappers\CancellationDataMapper;
 use App\Dto\Response\App\System\ViewCancellationRequest;
 use App\Repository\CancellationRequestRepositoryInterface;
+use App\Subscription\CancellationRequestProcessor;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,6 +55,29 @@ class CancellationRequestsController
         $viewDto = new ViewCancellationRequest();
         $viewDto->setCancellationRequest($dto);
         $json = $serializer->serialize($viewDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/system/cancellation-request/{id}/process', name: 'app_app_system_cancellationrequests_processcancellationrequests', methods: ['POST'])]
+    public function processCancellationRequest(
+        Request $request,
+        CancellationRequestRepositoryInterface $cancellationRequestRepository,
+        CancellationDataMapper $dataMapper,
+        SerializerInterface $serializer,
+        CancellationRequestProcessor $cancellationRequestProcessor,
+    ): Response {
+        try {
+            $entity = $cancellationRequestRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $cancellationRequestProcessor->process($entity);
+        $cancellationRequestRepository->save($entity);
+
+        $dto = $dataMapper->createAppDto($entity);
+        $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
     }

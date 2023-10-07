@@ -33,6 +33,7 @@ class CancellationRequestProcessor
     {
         $cancellationRequestStateMachine = $this->cancellationRequestStateMachine;
 
+        $request->setHasError(false);
         try {
             foreach (self::TRANSITIONS as $transition) {
                 if ($cancellationRequestStateMachine->can($request, $transition)) {
@@ -46,6 +47,7 @@ class CancellationRequestProcessor
         } catch (\Throwable $e) {
             $this->getLogger()->info('Cancellation request transition failed', ['transition' => $transition, 'message' => $e->getMessage()]);
             $request->setError($e->getMessage());
+            $request->setHasError(true);
         }
 
         $this->cancellationRequestRepository->save($request);

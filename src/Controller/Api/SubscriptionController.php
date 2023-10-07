@@ -50,11 +50,8 @@ class SubscriptionController
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
 
-    private CancellationDataMapper $cancellationRequestFactory;
-
-    public function __construct()
+    public function __construct(private CancellationDataMapper $cancellationRequestFactory)
     {
-        $this->cancellationRequestFactory = new CancellationDataMapper();
     }
 
     #[Route('/api/v1/customer/{customerId}/subscription', methods: ['GET'])]

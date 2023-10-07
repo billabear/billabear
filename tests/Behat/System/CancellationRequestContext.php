@@ -51,7 +51,7 @@ class CancellationRequestContext implements Context
 
             $cancellationRequest = new CancellationRequest();
             $cancellationRequest->setState($row['State'] ?? 'started');
-            $cancellationRequest->setWhen($row['When'] ?? 'now');
+            $cancellationRequest->setWhen($row['When'] ?? 'instantly');
             $cancellationRequest->setRefundType($row['Refund Type'] ?? 'none');
             $cancellationRequest->setSubscription($subscription);
             $cancellationRequest->setCreatedAt(new \DateTime());
@@ -105,6 +105,29 @@ class CancellationRequestContext implements Context
         $data = $this->getJsonContent();
         if ($data['cancellation_request']['subscription']['customer']['email'] !== $customerEmail) {
             throw new \Exception("Didn't find request");
+        }
+    }
+
+    /**
+     * @When I process the cancellation requests for :arg1 and :arg2
+     */
+    public function iProcessTheCancellationRequestsForAnd($customerEmail, $planName)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+        $cancellationRequest = $this->cancellationRequestRepository->findOneBy(['subscription' => $subscription]);
+
+        $this->sendJsonRequest('get', '/app/system/cancellation-request/'.$cancellationRequest->getId().'/process');
+    }
+
+    /**
+     * @Then the response data for the cancellation request will have the state as :arg1
+     */
+    public function theResponseDataForTheCancellationRequestWillHaveTheStateAs($state)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['state'] != $state) {
+            throw new \Exception(sprintf("The state doesn't match. Expected '%s' but got '%s'", $state, $data['state']));
         }
     }
 }
