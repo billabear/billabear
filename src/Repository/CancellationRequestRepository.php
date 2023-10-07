@@ -12,9 +12,9 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class CancellationRequestRepository extends DoctrineRepository implements CancellationRequestRepositoryInterface
+class CancellationRequestRepository extends DoctrineCrudRepository implements CancellationRequestRepositoryInterface
 {
     public function getDailyCount(\DateTime $dateTime): array
     {

@@ -3,6 +3,8 @@ import WebhookEndpointList from "../views/App/System/Webhook/WebhookEndpoint/Web
 import WebhookEndpointCreate from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointCreate.vue";
 import WebhookEndpointView from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointView.vue";
 import WebhookEventView from "../views/App/System/Webhook/WebhookEvent/WebhookEventView.vue";
+import CancellationRequestList from "../views/App/System/CancellationRequest/CancellationRequestList.vue";
+import CancellationRequestView from "../views/App/System/CancellationRequest/CancellationRequestView.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -30,5 +32,15 @@ export const SYSTEM_ROUTES = [
         name: 'app.system.webhook_event.view',
         path: 'webhook/event/:id/view',
         component: WebhookEventView
-    }
-]
+    },
+    {
+        name: 'app.system.cancellation_request.list',
+        path: 'cancellation-request/list',
+        component: CancellationRequestList
+    },
+    {
+        name: 'app.system.cancellation_request.view',
+        path: 'cancellation-request/:id/view',
+        component: CancellationRequestView
+    },
+];

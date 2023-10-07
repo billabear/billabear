@@ -53,6 +53,7 @@ final class Version20230925181039 extends AbstractMigration
 
         $this->addSql('CREATE TABLE parthenon_export_background_export_requests (id UUID NOT NULL, exported_file VARCHAR(255) DEFAULT NULL, exported_file_path VARCHAR(255) DEFAULT NULL, export_format VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, data_provider_service VARCHAR(255) NOT NULL, data_provider_parameters JSON DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN parthenon_export_background_export_requests.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('ALTER TABLE cancellation_requests ADD has_error BOOLEAN DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -66,5 +67,6 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('ALTER TABLE mass_subscription_change DROP CONSTRAINT FK_A63C0CACB03A8386');
         $this->addSql('DROP TABLE mass_subscription_change');
         $this->addSql('DROP TABLE parthenon_export_background_export_requests');
+        $this->addSql('ALTER TABLE cancellation_requests DROP has_error');
     }
 }

@@ -103,6 +103,10 @@ default:
 
                 # Checkout
                 - App\Tests\Behat\Checkout\MainContext
+
+                # System
+                - App\Tests\Behat\System\CancellationRequestContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

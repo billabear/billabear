@@ -504,5 +504,5 @@ body {
 }
 
 .detail-list dd {
-    @apply text-white;
+    @apply text-black dark:text-white;
 }

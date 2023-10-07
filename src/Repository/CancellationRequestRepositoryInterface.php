@@ -12,9 +12,9 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\RepositoryInterface;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-interface CancellationRequestRepositoryInterface extends RepositoryInterface
+interface CancellationRequestRepositoryInterface extends CrudRepositoryInterface
 {
     public function getDailyCount(\DateTime $dateTime): array;
 
