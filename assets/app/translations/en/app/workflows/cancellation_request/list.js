@@ -13,7 +13,8 @@ export const CANCELLATION_REQUESTS_LIST_TRANSLATION = {
         reference: "Reference",
         external_reference: "External Reference",
         button: "Filters",
-        search: "Filter"
+        search: "Filter",
+        has_error: "Has Error"
     },
     error_message: "An error has occurred"
 };

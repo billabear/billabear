@@ -12,6 +12,7 @@
 
 namespace App\Controller\App\System;
 
+use App\Api\Filters\Workflows\CancellationRequestList;
 use App\Controller\App\CrudListTrait;
 use App\DataMappers\CancellationDataMapper;
 use App\Dto\Response\App\System\ViewCancellationRequest;
@@ -35,7 +36,7 @@ class CancellationRequestsController
         CancellationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
-        return $this->crudList($request, $cancellationRequestRepository, $serializer, $dataMapper);
+        return $this->crudList($request, $cancellationRequestRepository, $serializer, $dataMapper, filterList: new CancellationRequestList());
     }
 
     #[Route('/app/system/cancellation-request/{id}/view', name: 'app_app_system_cancellationrequests_viewcancellationrequests', methods: ['GET'])]

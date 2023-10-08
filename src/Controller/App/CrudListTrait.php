@@ -12,6 +12,7 @@
 
 namespace App\Controller\App;
 
+use App\Api\Filters\AbstractFilterList;
 use App\Api\Filters\PaymentList;
 use App\Dto\Response\App\ListResponse;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 trait CrudListTrait
 {
-    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper, string $defaultSortKey = 'createdAt'): Response
+    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper, string $defaultSortKey = 'createdAt', AbstractFilterList $filterList = null): Response
     {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
@@ -43,8 +44,10 @@ trait CrudListTrait
             ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
-        $filterBuilder = new PaymentList();
-        $filters = $filterBuilder->buildFilters($request);
+        if (null === $filterList) {
+            $filterList = new PaymentList();
+        }
+        $filters = $filterList->buildFilters($request);
 
         if ($lastKey && 'createdAt' === $key) {
             $lastKey = new \DateTime($lastKey);
