@@ -54,8 +54,15 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('CREATE TABLE parthenon_export_background_export_requests (id UUID NOT NULL, exported_file VARCHAR(255) DEFAULT NULL, exported_file_path VARCHAR(255) DEFAULT NULL, export_format VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, data_provider_service VARCHAR(255) NOT NULL, data_provider_parameters JSON DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN parthenon_export_background_export_requests.id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE cancellation_requests ADD has_error BOOLEAN DEFAULT NULL');
+        $this->addSql('update cancellation_requests  set has_error=false where state=\'completed\';');
+        $this->addSql('update cancellation_requests  set has_error=true where state!=\'completed\';');
         $this->addSql('ALTER TABLE cancellation_requests ALTER error TYPE TEXT');
         $this->addSql('ALTER TABLE subscription_creation ADD has_error BOOLEAN DEFAULT NULL');
+        $this->addSql('update subscription_creation  set has_error=false where state=\'completed\';');
+        $this->addSql('update subscription_creation  set has_error=true where state!=\'completed\';');
+        $this->addSql('ALTER TABLE payment_creation ADD has_error BOOLEAN DEFAULT NULL');
+        $this->addSql('update payment_creation  set has_error=false where state=\'completed\';');
+        $this->addSql('update payment_creation  set has_error=true where state!=\'completed\';');
     }
 
     public function down(Schema $schema): void
@@ -72,5 +79,6 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('ALTER TABLE cancellation_requests DROP has_error');
         $this->addSql('ALTER TABLE cancellation_requests ALTER error TYPE VARCHAR(255)');
         $this->addSql('ALTER TABLE subscription_creation DROP has_error');
+        $this->addSql('ALTER TABLE payment_creation DROP has_error');
     }
 }

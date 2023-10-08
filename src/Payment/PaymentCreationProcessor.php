@@ -33,6 +33,7 @@ class PaymentCreationProcessor
     {
         $paymentCreationStateMachine = $this->paymentCreationStateMachine;
 
+        $paymentCreation->setHasError(false);
         try {
             foreach (self::TRANSITIONS as $transition) {
                 if ($paymentCreationStateMachine->can($paymentCreation, $transition)) {
@@ -46,6 +47,7 @@ class PaymentCreationProcessor
         } catch (\Throwable $e) {
             $this->getLogger()->info('Payment creation transition failed', ['transition' => $transition, 'message' => $e->getMessage()]);
             $paymentCreation->setError($e->getMessage());
+            $paymentCreation->setHasError(true);
         }
 
         $this->paymentCreationRepository->save($paymentCreation);

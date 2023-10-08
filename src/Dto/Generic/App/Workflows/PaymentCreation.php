@@ -10,43 +10,33 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Entity;
+namespace App\Dto\Generic\App\Workflows;
 
-use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\PaymentInterface;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
+use App\Dto\Generic\App\Payment;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'payment_creation')]
 class PaymentCreation
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private string $id;
 
-    #[ORM\Column('state', type: 'string')]
     private string $state;
 
-    #[ORM\ManyToOne(targetEntity: PaymentInterface::class)]
-    private PaymentInterface $payment;
+    private Payment $payment;
 
-    #[ORM\Column('created_at', type: 'datetime')]
-    private \DateTimeInterface $createdAt;
+    #[SerializedName('created_at')]
+    private \DateTime $createdAt;
 
-    #[ORM\Column('error', type: 'string', nullable: true)]
-    private ?string $error = null;
+    private ?string $error;
 
-    #[ORM\Column('has_error', type: 'boolean', nullable: true)]
-    private ?bool $hasError = false;
+    #[SerializedName('has_error')]
+    private bool $hasError;
 
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function setId($id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -66,17 +56,17 @@ class PaymentCreation
         return $this->payment;
     }
 
-    public function setPayment(PaymentInterface $payment): void
+    public function setPayment(Payment $payment): void
     {
         $this->payment = $payment;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -91,12 +81,12 @@ class PaymentCreation
         $this->error = $error;
     }
 
-    public function getHasError(): bool
+    public function isHasError(): bool
     {
-        return true === $this->hasError;
+        return $this->hasError;
     }
 
-    public function setHasError(?bool $hasError): void
+    public function setHasError(bool $hasError): void
     {
         $this->hasError = $hasError;
     }

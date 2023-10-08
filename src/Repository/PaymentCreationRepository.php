@@ -12,8 +12,8 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class PaymentCreationRepository extends DoctrineRepository implements PaymentCreationRepositoryInterface
+class PaymentCreationRepository extends DoctrineCrudRepository implements PaymentCreationRepositoryInterface
 {
 }

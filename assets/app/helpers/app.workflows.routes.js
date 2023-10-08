@@ -2,6 +2,8 @@ import CancellationRequestList from "../views/App/Workflows/CancellationRequest/
 import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
 import SubscriptionCreationList from "../views/App/Workflows/SubscriptionCreation/SubscriptionCreationList.vue";
 import SubscriptionCreationView from "../views/App/Workflows/SubscriptionCreation/SubscriptionCreationView.vue";
+import PaymentCreationView from "../views/App/Workflows/PaymentCreation/PaymentCreationView.vue";
+import PaymentCreationList from "../views/App/Workflows/PaymentCreation/PaymentCreationList.vue";
 
 
 export const WORKFLOWS_ROUTES = [
@@ -24,5 +26,15 @@ export const WORKFLOWS_ROUTES = [
         name: 'app.workflows.subscription_creation.view',
         path: 'subscription-creation/:id/view',
         component: SubscriptionCreationView
+    },
+    {
+        name: 'app.workflows.payment_creation.list',
+        path: 'payment-creation/list',
+        component: PaymentCreationList
+    },
+    {
+        name: 'app.workflows.payment_creation.view',
+        path: 'payment-creation/:id/view',
+        component: PaymentCreationView
     },
 ];
