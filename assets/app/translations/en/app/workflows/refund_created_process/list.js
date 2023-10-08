@@ -1,5 +1,5 @@
-export const PAYMENT_CREATION_LIST_TRANSLATION = {
-    title: "Payment Creation",
+export const REFUND_CREATED_PROCESS_LIST_TRANSLATIONS = {
+    title: "Subscription Creation",
     email: "Customer",
     status: "Status",
     plan: "Plan",
@@ -18,4 +18,4 @@ export const PAYMENT_CREATION_LIST_TRANSLATION = {
         has_error: "Has Error"
     },
     error_message: "An error has occurred"
-}
+};

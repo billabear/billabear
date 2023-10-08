@@ -1,0 +1,38 @@
+<?php
+
+/*
+ * Copyright Humbly Arrogant Software Limited 2023.
+ *
+ * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ *
+ * Change Date: 24.08.2026 ( 3 years after 1.1.0 release )
+ *
+ * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ */
+
+namespace App\DataMappers\Workflows;
+
+use App\DataMappers\RefundDataMapper;
+use App\Dto\Generic\App\Workflows\RefundCreatedProcess as AppDto;
+use App\Entity\RefundCreatedProcess as Entity;
+
+class RefundCreatedProcessDataMapper
+{
+    public function __construct(private RefundDataMapper $dataMapper)
+    {
+    }
+
+    public function createAppDto(Entity $entity): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setId((string) $entity->getId());
+        $dto->setState($entity->getState());
+        $dto->setRefund($this->dataMapper->createAppDto($entity->getRefund()));
+        $dto->setCreatedAt($entity->getCreatedAt());
+        $dto->setUpdatedAt($entity->getUpdatedAt());
+        $dto->setError($entity->getError());
+        $dto->setHasError($entity->getHasError());
+
+        return $dto;
+    }
+}

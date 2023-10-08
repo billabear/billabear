@@ -63,6 +63,9 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('ALTER TABLE payment_creation ADD has_error BOOLEAN DEFAULT NULL');
         $this->addSql('update payment_creation  set has_error=false where state=\'completed\';');
         $this->addSql('update payment_creation  set has_error=true where state!=\'completed\';');
+        $this->addSql('ALTER TABLE refund_created_process ADD has_error BOOLEAN DEFAULT NULL');
+        $this->addSql('update refund_created_process  set has_error=false where state=\'completed\';');
+        $this->addSql('update refund_created_process  set has_error=true where state!=\'completed\';');
     }
 
     public function down(Schema $schema): void
@@ -80,5 +83,6 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('ALTER TABLE cancellation_requests ALTER error TYPE VARCHAR(255)');
         $this->addSql('ALTER TABLE subscription_creation DROP has_error');
         $this->addSql('ALTER TABLE payment_creation DROP has_error');
+        $this->addSql('ALTER TABLE refund_created_process DROP has_error');
     }
 }

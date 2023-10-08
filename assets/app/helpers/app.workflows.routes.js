@@ -4,6 +4,8 @@ import SubscriptionCreationList from "../views/App/Workflows/SubscriptionCreatio
 import SubscriptionCreationView from "../views/App/Workflows/SubscriptionCreation/SubscriptionCreationView.vue";
 import PaymentCreationView from "../views/App/Workflows/PaymentCreation/PaymentCreationView.vue";
 import PaymentCreationList from "../views/App/Workflows/PaymentCreation/PaymentCreationList.vue";
+import RefundCreatedProcessList from "../views/App/Workflows/RefundCreatedProcess/RefundCreatedProcessList.vue";
+import RefundCreatedProcessView from "../views/App/Workflows/RefundCreatedProcess/RefundCreatedProcessView.vue";
 
 
 export const WORKFLOWS_ROUTES = [
@@ -36,5 +38,15 @@ export const WORKFLOWS_ROUTES = [
         name: 'app.workflows.payment_creation.view',
         path: 'payment-creation/:id/view',
         component: PaymentCreationView
+    },
+    {
+        name: 'app.workflows.refund_created_process.list',
+        path: 'refund-created-process/list',
+        component: RefundCreatedProcessList
+    },
+    {
+        name: 'app.workflows.refund_created_process.view',
+        path: 'refund-created-process/:id/view',
+        component: RefundCreatedProcessView
     },
 ];

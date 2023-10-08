@@ -12,8 +12,8 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class RefundCreatedProcessRepository extends DoctrineRepository implements RefundCreatedProcessRepositoryInterface
+class RefundCreatedProcessRepository extends DoctrineCrudRepository implements RefundCreatedProcessRepositoryInterface
 {
 }
