@@ -31,12 +31,13 @@ class SubscriptionCreationProcessor
 
     public function process(SubscriptionCreation $request): void
     {
-        $atateMachine = $this->subscriptionCreationStateMachine;
+        $stateMachine = $this->subscriptionCreationStateMachine;
 
+        $request->setHasError(false);
         try {
             foreach (self::TRANSITIONS as $transition) {
-                if ($atateMachine->can($request, $transition)) {
-                    $atateMachine->apply($request, $transition);
+                if ($stateMachine->can($request, $transition)) {
+                    $stateMachine->apply($request, $transition);
 
                     $this->getLogger()->info('Did subscription creation transition', ['transition' => $transition]);
                 } else {
@@ -46,6 +47,7 @@ class SubscriptionCreationProcessor
         } catch (\Throwable $e) {
             $this->getLogger()->info('Subscription Creation transition failed', ['transition' => $transition, 'message' => $e->getMessage()]);
             $request->setError($e->getMessage());
+            $request->setHasError(true);
         }
 
         $this->subscriptionCreationRepository->save($request);

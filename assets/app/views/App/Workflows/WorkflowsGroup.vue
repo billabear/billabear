@@ -5,6 +5,7 @@
       <div class="submenu-container">
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.workflows.cancellation_request.list'}" class="submenu-link">{{ $t('app.workflows.menu.cancellation_requests') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.workflows.subscription_creation.list'}" class="submenu-link">{{ $t('app.workflows.menu.subscription_creation') }}</router-link></li>
         </ul>
       </div>
     </div>

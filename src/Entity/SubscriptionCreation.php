@@ -38,6 +38,9 @@ class SubscriptionCreation
     #[ORM\Column('error', type: 'string', nullable: true)]
     private ?string $error = null;
 
+    #[ORM\Column('has_error', type: 'boolean', nullable: true)]
+    private ?bool $hasError = false;
+
     public function getId()
     {
         return $this->id;
@@ -86,5 +89,15 @@ class SubscriptionCreation
     public function setError(?string $error): void
     {
         $this->error = $error;
+    }
+
+    public function getHasError(): bool
+    {
+        return true === $this->hasError;
+    }
+
+    public function setHasError(?bool $hasError): void
+    {
+        $this->hasError = $hasError;
     }
 }

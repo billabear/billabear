@@ -12,8 +12,8 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\DoctrineRepository;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class SubscriptionCreationRepository extends DoctrineRepository implements SubscriptionCreationRepositoryInterface
+class SubscriptionCreationRepository extends DoctrineCrudRepository implements SubscriptionCreationRepositoryInterface
 {
 }

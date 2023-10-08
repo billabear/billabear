@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Dto\Response\App\System;
+namespace App\Dto\Response\App\Workflows;
 
 use App\Dto\Generic\App\CancellationRequest;
 use Symfony\Component\Serializer\Annotation\SerializedName;

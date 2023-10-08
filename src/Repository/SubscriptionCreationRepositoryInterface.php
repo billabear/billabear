@@ -12,8 +12,8 @@
 
 namespace App\Repository;
 
-use Parthenon\Common\Repository\RepositoryInterface;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-interface SubscriptionCreationRepositoryInterface extends RepositoryInterface
+interface SubscriptionCreationRepositoryInterface extends CrudRepositoryInterface
 {
 }

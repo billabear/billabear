@@ -55,6 +55,7 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN parthenon_export_background_export_requests.id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE cancellation_requests ADD has_error BOOLEAN DEFAULT NULL');
         $this->addSql('ALTER TABLE cancellation_requests ALTER error TYPE TEXT');
+        $this->addSql('ALTER TABLE subscription_creation ADD has_error BOOLEAN DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -70,5 +71,6 @@ final class Version20230925181039 extends AbstractMigration
         $this->addSql('DROP TABLE parthenon_export_background_export_requests');
         $this->addSql('ALTER TABLE cancellation_requests DROP has_error');
         $this->addSql('ALTER TABLE cancellation_requests ALTER error TYPE VARCHAR(255)');
+        $this->addSql('ALTER TABLE subscription_creation DROP has_error');
     }
 }

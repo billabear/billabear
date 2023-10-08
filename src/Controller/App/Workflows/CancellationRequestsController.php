@@ -15,7 +15,7 @@ namespace App\Controller\App\Workflows;
 use App\Api\Filters\Workflows\CancellationRequestList;
 use App\Controller\App\CrudListTrait;
 use App\DataMappers\CancellationDataMapper;
-use App\Dto\Response\App\System\ViewCancellationRequest;
+use App\Dto\Response\App\Workflows\ViewCancellationRequest;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use Parthenon\Common\Exception\NoEntityFoundException;
