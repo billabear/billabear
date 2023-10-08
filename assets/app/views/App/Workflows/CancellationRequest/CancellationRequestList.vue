@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.system.cancellation_request.list.title') }}</h1>
+    <h1 class="page-title">{{ $t('app.workflows.cancellation_request.list.title') }}</h1>
 
 
     <LoadingScreen :ready="ready">
@@ -8,9 +8,9 @@
         <table class="list-table">
           <thead>
           <tr>
-            <th>{{ $t('app.subscription.list.email') }}</th>
-            <th>{{ $t('app.subscription.list.plan')}}</th>
-            <th>{{ $t('app.subscription.list.status') }}</th>
+            <th>{{ $t('app.workflows.cancellation_request.list.email') }}</th>
+            <th>{{ $t('app.workflows.cancellation_request.list.plan')}}</th>
+            <th>{{ $t('app.workflows.cancellation_request.list.status') }}</th>
             <th></th>
           </tr>
           </thead>
@@ -20,16 +20,16 @@
             <td v-if="subscription.subscription.plan !== null && subscription.subscription.plan !== undefined">{{ subscription.subscription.plan.name }}</td>
             <td v-else></td>
             <td>{{ subscription.state }}</td>
-            <td><router-link :to="{name: 'app.system.cancellation_request.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
+            <td><router-link :to="{name: 'app.workflows.cancellation_request.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.workflows.cancellation_request.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.subscription.list.no_subscriptions') }}</td>
+            <td colspan="4" class="text-center">{{ $t('app.workflows.cancellation_request.list.no_subscriptions') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
             <td colspan="4" class="text-center">
-              <LoadingMessage>{{ $t('app.subscription.list.loading') }}</LoadingMessage>
+              <LoadingMessage>{{ $t('app.workflows.cancellation_request.list.loading') }}</LoadingMessage>
             </td>
           </tr>
           </tbody>
@@ -37,9 +37,9 @@
       </div>
       <div class="sm:grid sm:grid-cols-2">
 
-        <div class="mt-4">
-          <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.subscription.list.prev') }}</button>
-          <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.subscription.list.next') }}</button>
+        <div class="m-5">
+          <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.workflows.cancellation_request.list.prev') }}</button>
+          <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.workflows.cancellation_request.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
           <select @change="changePerPage" v-model="per_page">

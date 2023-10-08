@@ -53,6 +53,12 @@
                   <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.settings') }}</span>
                 </router-link>
               </li>
+              <li>
+                <router-link :to="{name: 'app.workflows'}" class="sidebar-menu-item">
+                  <i class="fa-solid fa-route"></i>
+                  <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.workflows') }}</span>
+                </router-link>
+              </li>
             </RoleOnlyView>
             <RoleOnlyView role="ROLE_DEVELOPER">
               <li>

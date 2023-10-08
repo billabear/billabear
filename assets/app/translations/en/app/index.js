@@ -24,7 +24,7 @@ import {QUOTE_TRANSLATIONS} from "./quote";
 import {SYSTEM_TRANSLATIONS} from "./system";
 import {CHECKOUT_TRANSLATIONS} from "./checkout";
 import {LAYOUT_TRANSLATIONS} from "./layout";
-
+import {WORKFLOWS_TRANSLATIONS} from "./workflows";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -53,4 +53,5 @@ export const APP_TRANSLATIONS = {
     system: SYSTEM_TRANSLATIONS,
     checkout: CHECKOUT_TRANSLATIONS,
     layout: LAYOUT_TRANSLATIONS,
+    workflows: WORKFLOWS_TRANSLATIONS,
 };

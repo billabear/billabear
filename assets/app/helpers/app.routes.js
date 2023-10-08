@@ -72,6 +72,8 @@ import CheckoutView from "../views/App/Checkout/CheckoutView.vue";
 import CheckoutList from "../views/App/Checkout/CheckoutList.vue";
 import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
 import SubscriptionsChurn from "../views/App/Reports/Subscriptions/SubscriptionsChurn.vue";
+import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
+import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -119,6 +121,13 @@ export const APP_ROUTES = [
         path: "system",
         component: SystemGroup,
         children: SYSTEM_ROUTES
+    },
+    {
+        name: "app.workflows",
+        path: "workflows",
+        redirect: {name: 'app.workflows.cancellation_request.list'},
+        component: WorkflowsGroup,
+        children: WORKFLOWS_ROUTES
     },
     {
         name: 'app.customer',

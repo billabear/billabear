@@ -8,6 +8,7 @@ export const MENU_TRANSLATIONS = {
         products: "Products",
         invoices: "Invoices",
         system: "System",
-        docs: "Documentation"
+        docs: "Documentation",
+        workflows: "Workflows"
     }
 }

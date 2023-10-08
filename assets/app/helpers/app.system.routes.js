@@ -3,8 +3,8 @@ import WebhookEndpointList from "../views/App/System/Webhook/WebhookEndpoint/Web
 import WebhookEndpointCreate from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointCreate.vue";
 import WebhookEndpointView from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointView.vue";
 import WebhookEventView from "../views/App/System/Webhook/WebhookEvent/WebhookEventView.vue";
-import CancellationRequestList from "../views/App/System/CancellationRequest/CancellationRequestList.vue";
-import CancellationRequestView from "../views/App/System/CancellationRequest/CancellationRequestView.vue";
+import CancellationRequestList from "../views/App/Workflows/CancellationRequest/CancellationRequestList.vue";
+import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
 
 
 export const SYSTEM_ROUTES = [
