@@ -23,7 +23,7 @@
             <td><router-link :to="{name: 'app.workflows.cancellation_request.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.workflows.cancellation_request.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.workflows.cancellation_request.list.no_subscriptions') }}</td>
+            <td colspan="4" class="text-center">{{ $t('app.workflows.cancellation_request.list.no_cancellation_requests') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
