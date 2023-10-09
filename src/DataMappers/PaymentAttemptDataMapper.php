@@ -12,21 +12,25 @@
 
 namespace App\DataMappers;
 
+use App\Dto\Generic\App\PaymentAttempt as AppDto;
 use App\Entity\Invoice;
-use App\Entity\PaymentAttempt;
+use App\Entity\PaymentAttempt as Entity;
 use Obol\Model\Enum\ChargeFailureReasons;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\Payment;
 
 class PaymentAttemptDataMapper
 {
-    public function __construct(private ProviderInterface $provider)
-    {
+    public function __construct(
+        private ProviderInterface $provider,
+        private InvoiceDataMapper $invoiceDataMapper,
+        private CustomerDataMapper $customerDataMapper,
+    ) {
     }
 
-    public function createFromInvoice(Invoice $invoice, ChargeFailureReasons $reason): PaymentAttempt
+    public function createFromInvoice(Invoice $invoice, ChargeFailureReasons $reason): Entity
     {
-        $paymentAttempt = new PaymentAttempt();
+        $paymentAttempt = new Entity();
         $paymentAttempt->setInvoice($invoice);
         $paymentAttempt->setCustomer($invoice->getCustomer());
         $paymentAttempt->setSubscriptions($invoice->getSubscriptions());
@@ -39,9 +43,9 @@ class PaymentAttemptDataMapper
     }
 
     // TODO remove the need for this
-    public function createFromPayment(Payment $payment, ChargeFailureReasons $reason): PaymentAttempt
+    public function createFromPayment(Payment $payment, ChargeFailureReasons $reason): Entity
     {
-        $entity = new PaymentAttempt();
+        $entity = new Entity();
         $entity->setCustomer($payment->getCustomer());
         $entity->setSubscriptions($payment->getSubscriptions());
         $entity->setAmount($payment->getAmount());
@@ -50,5 +54,19 @@ class PaymentAttemptDataMapper
         $entity->setFailureReason($reason->value);
 
         return $entity;
+    }
+
+    public function createAppDto(Entity $entity): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setId((string) $entity->getId());
+        $dto->setInvoice($this->invoiceDataMapper->createAppDto($entity->getInvoice()));
+        $dto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
+        $dto->setCurrency($entity->getCurrency());
+        $dto->setAmount($entity->getAmount());
+        $dto->setFailureReason($entity->getFailureReason());
+        $dto->setCreatedAt($entity->getCreatedAt());
+
+        return $dto;
     }
 }

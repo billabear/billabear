@@ -8,6 +8,7 @@
           <li class="submenu-list-item"><router-link :to="{name: 'app.workflows.subscription_creation.list'}" class="submenu-link">{{ $t('app.workflows.menu.subscription_creation') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.workflows.payment_creation.list'}" class="submenu-link">{{ $t('app.workflows.menu.payment_creation') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.workflows.refund_created_process.list'}" class="submenu-link">{{ $t('app.workflows.menu.refund_created_process') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.workflows.payment_failure_process.list'}" class="submenu-link">{{ $t('app.workflows.menu.payment_failure_process') }}</router-link></li>
         </ul>
       </div>
     </div>

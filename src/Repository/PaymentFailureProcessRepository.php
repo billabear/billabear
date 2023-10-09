@@ -14,9 +14,9 @@ namespace App\Repository;
 
 use App\Entity\PaymentFailureProcess;
 use Doctrine\ORM\NoResultException;
-use Parthenon\Common\Repository\DoctrineRepository;
+use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class PaymentFailureProcessRepository extends DoctrineRepository implements PaymentFailureProcessRepositoryInterface
+class PaymentFailureProcessRepository extends DoctrineCrudRepository implements PaymentFailureProcessRepositoryInterface
 {
     public function findActiveForCustomer(\App\Entity\Customer $customer): ?PaymentFailureProcess
     {

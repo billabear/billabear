@@ -13,9 +13,9 @@
 namespace App\Repository;
 
 use App\Entity\PaymentFailureProcess;
-use Parthenon\Common\Repository\RepositoryInterface;
+use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-interface PaymentFailureProcessRepositoryInterface extends RepositoryInterface
+interface PaymentFailureProcessRepositoryInterface extends CrudRepositoryInterface
 {
     public function findActiveForCustomer(\App\Entity\Customer $customer): ?PaymentFailureProcess;
 

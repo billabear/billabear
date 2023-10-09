@@ -1,5 +1,5 @@
-export const REFUND_CREATED_PROCESS_LIST_TRANSLATIONS = {
-    title: "Refund Created",
+export const PAYMENT_FAILURE_PROCESS_LIST_TRANSLATIONS = {
+    title: "Payment Failure",
     email: "Customer",
     status: "Status",
     plan: "Plan",
@@ -18,4 +18,4 @@ export const REFUND_CREATED_PROCESS_LIST_TRANSLATIONS = {
         has_error: "Has Error"
     },
     error_message: "An error has occurred"
-};
+}
