@@ -407,3 +407,4 @@ services:
     Parthenon\Common\Config\SiteUrlProviderInterface: '@App\Settings\SiteUrlProvider'
 
     Parthenon\Billing\Factory\EntityFactoryInterface: '@App\Factory\EntityFactory'
+    Parthenon\Billing\Subscription\SchedulerInterface: '@App\Subscription\Schedule\SchedulerHandler'
