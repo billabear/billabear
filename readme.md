@@ -12,7 +12,7 @@ BillaBear is a standalone Subscription Management and Billing System that integr
 
 Watch the video on youtube.
 
-[![Watch the video](https://img.youtube.com/vi/cbInyGtqLCs/mqdefault.jpg)](https://youtu.be/cbInyGtqLCs)
+[![Watch the video](https://img.youtube.com/vi/ByRwKryljSE/mqdefault.jpg)](https://youtu.be/ByRwKryljSE)
 
 ## Documentation
 
