@@ -27,5 +27,12 @@ spec:
       name: scheduler
       run_command: bin/console messenger:consume scheduler_main main
       instance_count: 1
+  jobs:
+    - name: migrate
+      kind: POST_DEPLOY
+      git:
+        repo: https://github.com/billabear/billabear.git
+        branch: latest
+      run_command: bin/console d:m:m --no-interaction --allow-no-migration
   databases:
     - name: billabeardb
