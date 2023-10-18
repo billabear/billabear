@@ -35,6 +35,8 @@ Watch the video on youtube.
 * Ability to Migrate away from Stripe Billing
 * Invoice payment type for Enterprise customers
 * Webhooks for events
+* Workflows
+* Churn Reports
 
 ## RoadMap
 
