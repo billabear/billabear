@@ -8,6 +8,8 @@ import RefundCreatedProcessList from "../views/App/Workflows/RefundCreatedProces
 import RefundCreatedProcessView from "../views/App/Workflows/RefundCreatedProcess/RefundCreatedProcessView.vue";
 import PaymentFailureProcessList from "../views/App/Workflows/PaymentFailureProcess/PaymentFailureProcessList.vue";
 import PaymentFailureProcessView from "../views/App/Workflows/PaymentFailureProcess/PaymentFailureProcessView.vue";
+import ChargeBackCreationList from "../views/App/Workflows/ChargeBackCreation/ChargeBackCreationList.vue";
+import ChargeBackCreationView from "../views/App/Workflows/ChargeBackCreation/ChargeBackCreationView.vue";
 
 
 export const WORKFLOWS_ROUTES = [
@@ -40,6 +42,16 @@ export const WORKFLOWS_ROUTES = [
         name: 'app.workflows.payment_creation.view',
         path: 'payment-creation/:id/view',
         component: PaymentCreationView
+    },
+    {
+        name: 'app.workflows.charge_back_creation.list',
+        path: 'charge-back-creation/list',
+        component: ChargeBackCreationList
+    },
+    {
+        name: 'app.workflows.charge_back_creation.view',
+        path: 'charge-back-creation/:id/view',
+        component: ChargeBackCreationView
     },
     {
         name: 'app.workflows.refund_created_process.list',
