@@ -10,10 +10,21 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Dto\Response\App\Workflows;
 
-use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use App\Dto\Generic\App\Workflows\ChargeBackCreation;
 
-class ChargeBackCreationRepository extends DoctrineCrudRepository implements ChargeBackCreationRepositoryInterface
+class ViewChargeBackCreation
 {
+    private ChargeBackCreation $chargeBackCreation;
+
+    public function getChargeBackCreation(): ChargeBackCreation
+    {
+        return $this->chargeBackCreation;
+    }
+
+    public function setChargeBackCreation(ChargeBackCreation $chargeBackCreation): void
+    {
+        $this->chargeBackCreation = $chargeBackCreation;
+    }
 }
