@@ -3,7 +3,7 @@
     <h1 class="page-title">{{ $t('app.product.create.title') }}</h1>
 
     <form @submit.prevent="send">
-    <div class="mt-3 card-body">
+    <div class="m-5 card-body">
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
             {{ $t('app.product.create.name') }}
@@ -34,14 +34,14 @@
       </div>
     </div>
 
-      <div class="form-field-ctn">
+      <div class="form-field-ctn ml-5">
         <p @click="showAdvance = !showAdvance" class="cursor-pointer">
           <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
           <i class="fa-solid fa-caret-down" v-else></i>
           <span class="ml-2">{{ $t('app.product.create.show_advanced') }}</span>
         </p>
       </div>
-    <div class="card-body mt-5" v-if="showAdvance">
+    <div class="card-body mt-5 ml-5" v-if="showAdvance">
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="email">
           {{ $t('app.product.create.external_reference') }}
@@ -53,7 +53,7 @@
 
     </div>
 
-    <div class="form-field-submit-ctn">
+    <div class="form-field-submit-ctn ml-5">
       <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
     </div>
     <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
