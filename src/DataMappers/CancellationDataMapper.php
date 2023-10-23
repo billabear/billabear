@@ -17,6 +17,7 @@ use App\Dto\Generic\App\CancellationRequest as AppDto;
 use App\Dto\Request\Api\Subscription\CancelSubscription as ApiInputDto;
 use App\Dto\Request\App\CancelSubscription as AppInputDto;
 use App\Entity\CancellationRequest as Entity;
+use App\Enum\CancellationType;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 
@@ -43,6 +44,7 @@ class CancellationDataMapper
         $cancellationRequest->setComment($dto->getComment());
         $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
         $cancellationRequest->setState('started');
+        $cancellationRequest->setCancellationType(($dto instanceof AppInputDto) ? CancellationType::COMPANY_REQUEST : CancellationType::CUSTOMER_REQUEST);
 
         return $cancellationRequest;
     }

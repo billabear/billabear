@@ -13,6 +13,7 @@
 namespace App\Command;
 
 use App\Entity\CancellationRequest;
+use App\Enum\CancellationType;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Enum\SubscriptionStatus;
@@ -61,6 +62,7 @@ class DevChurnDataCommand extends Command
                 $cancelRequest->setRefundType('none');
                 $cancelRequest->setState('started');
                 $cancelRequest->setOriginalValidUntil($subscription->getValidUntil());
+                $cancelRequest->setCancellationType(CancellationType::CUSTOMER_REQUEST);
 
                 $this->cancellationRequestRepository->save($cancelRequest);
 

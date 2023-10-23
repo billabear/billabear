@@ -33,11 +33,14 @@ final class Version20231019182549 extends AbstractMigration
         $this->addSql('ALTER TABLE charge_back_creation ADD has_error BOOLEAN DEFAULT NULL');
         $this->addSql('update charge_back_creation set has_error=false where state=\'completed\';');
         $this->addSql('update charge_back_creation set has_error=true where state!=\'completed\';');
+        $this->addSql('ALTER TABLE cancellation_requests ADD cancellation_type VARCHAR(255) DEFAULT NULL');
+        $this->addSql('update cancellation_requests set cancellation_type=\'company_request\'');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE charge_back_creation DROP has_error');
+        $this->addSql('ALTER TABLE cancellation_requests DROP cancellation_type');
     }
 }

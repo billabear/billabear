@@ -12,6 +12,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CancellationType;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\SubscriptionInterface;
@@ -35,6 +36,9 @@ class CancellationRequest
 
     #[ORM\Column('specific_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $specificDate = null;
+
+    #[ORM\Column('cancellation_type', type: 'string', enumType: CancellationType::class, nullable: true)]
+    private ?CancellationType $cancellationType = null;
 
     #[ORM\Column('refund_type', type: 'string')]
     private string $refundType;
@@ -178,5 +182,15 @@ class CancellationRequest
     public function setHasError(?bool $hasError): void
     {
         $this->hasError = $hasError;
+    }
+
+    public function getCancellationType(): ?CancellationType
+    {
+        return $this->cancellationType;
+    }
+
+    public function setCancellationType(?CancellationType $cancellationType): void
+    {
+        $this->cancellationType = $cancellationType;
     }
 }
