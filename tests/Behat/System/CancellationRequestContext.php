@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\System;
 
 use App\Entity\CancellationRequest;
+use App\Enum\CancellationType;
 use App\Repository\Orm\CancellationRequestRepository;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
@@ -56,6 +57,7 @@ class CancellationRequestContext implements Context
             $cancellationRequest->setSubscription($subscription);
             $cancellationRequest->setCreatedAt(new \DateTime());
             $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
+            $cancellationRequest->setCancellationType(CancellationType::COMPANY_REQUEST);
 
             $this->cancellationRequestRepository->getEntityManager()->persist($cancellationRequest);
         }
