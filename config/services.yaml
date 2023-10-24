@@ -400,6 +400,9 @@ services:
     Parthenon\Notification\EmailSenderInterface:
         factory: [ '@App\Notification\Email\EmailSenderFactory', 'create' ]
 
+    Parthenon\Common\Pdf\GeneratorInterface:
+        factory: [ '@App\Pdf\PdfGeneratorFactory', 'create' ]
+
 
     Parthenon\Billing\Config\WebhookConfig:
         factory: [ '@App\Webhook\ConfigFactory', 'createConfig' ]
