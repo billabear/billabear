@@ -1,7 +1,7 @@
 parthenon:
   common:
     pdf:
-      generator: 'wkhtmltopdf'
+      generator: 'mpdf'
       wkhtmltopdf:
         bin: '/usr/bin/wkhtmltopdf'
   user:
