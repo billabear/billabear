@@ -125,6 +125,9 @@ class PaymentAttempt
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return Collection|Subscription[]
+     */
     public function getSubscriptions(): Collection|array
     {
         return $this->subscriptions;

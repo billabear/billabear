@@ -12,14 +12,21 @@
 
 namespace App\Workflow\PaymentFailure;
 
+use App\Entity\CancellationRequest;
 use App\Entity\PaymentFailureProcess;
+use App\Enum\CancellationType;
+use App\Repository\CancellationRequestRepositoryInterface;
+use App\Subscription\CancellationRequestProcessor;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class RetriesFailed implements EventSubscriberInterface
 {
-    public function __construct(private SubscriptionManagerInterface $subscriptionManager)
+    public function __construct(
+        private CancellationRequestRepositoryInterface $cancellationRequestRepository,
+        private CancellationRequestProcessor $requestProcessor,
+        private SubscriptionManagerInterface $subscriptionManager)
     {
     }
 
@@ -28,7 +35,16 @@ class RetriesFailed implements EventSubscriberInterface
         /** @var PaymentFailureProcess $paymentFailureProcess */
         $paymentFailureProcess = $event->getSubject();
         foreach ($paymentFailureProcess->getPaymentAttempt()->getSubscriptions() as $subscription) {
-            $this->subscriptionManager->cancelSubscriptionInstantly($subscription);
+            $requestCancellation = new CancellationRequest();
+            $requestCancellation->setCancellationType(CancellationType::BILLING_RELATED);
+            $requestCancellation->setState('started');
+            $requestCancellation->setRefundType('none');
+            $requestCancellation->setWhen('instantly');
+            $requestCancellation->setOriginalValidUntil($subscription->getValidUntil());
+            $requestCancellation->setCreatedAt(new \DateTime());
+
+            $this->cancellationRequestRepository->save($requestCancellation);
+            $this->requestProcessor->process($requestCancellation);
         }
     }
 
