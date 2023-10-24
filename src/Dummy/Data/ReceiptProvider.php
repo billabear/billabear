@@ -16,6 +16,7 @@ use App\Entity\BrandSettings;
 use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
+use Doctrine\Common\Collections\ArrayCollection;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Entity\ReceiptLine;
 use Parthenon\Common\Address;
@@ -92,6 +93,7 @@ class ReceiptProvider
         $customer->setBillingEmail('max.mustermann@example.org');
         $customer->setBrandSettings(new BrandSettings());
         $customer->getBrandSettings()->setBrandName('Dummy Brand');
+        $customer->getBrandSettings()->setAddress(new Address());
 
         $invoice = new Invoice();
         $invoice->setCreatedAt(new \DateTime('now'));
@@ -104,6 +106,7 @@ class ReceiptProvider
         $lineOne->setSubTotal(8000);
         $lineOne->setTaxTotal(2000);
         $lineOne->setDescription('Example Line One');
+        $lineOne->setTaxCountry('DE');
 
         $lineTwo = new InvoiceLine();
         $lineTwo->setInvoice($invoice);
@@ -112,8 +115,9 @@ class ReceiptProvider
         $lineTwo->setSubTotal(16000);
         $lineTwo->setTaxTotal(4000);
         $lineTwo->setDescription('Example Line Two');
+        $lineTwo->setTaxCountry('DE');
 
-        $invoice->setLines([$lineOne, $lineTwo]);
+        $invoice->setLines(new ArrayCollection([$lineOne, $lineTwo]));
         $invoice->setTotal(30000);
         $invoice->setSubTotal(24000);
         $invoice->setTaxTotal(6000);

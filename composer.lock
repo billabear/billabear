@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f629ad531ce0428ce87e035e43337236",
+    "content-hash": "ff302ecbab9c858c65367ba430b7cf7e",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -249,6 +249,64 @@
                 }
             ],
             "time": "2022-02-21T13:15:14+00:00"
+        },
+        {
+            "name": "docraptor/docraptor",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DocRaptor/docraptor-php.git",
+                "reference": "ad344fd7ed4d8fac2beba88dd95547f6a68d4c8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DocRaptor/docraptor-php/zipball/ad344fd7ed4d8fac2beba88dd95547f6a68d4c8d",
+                "reference": "ad344fd7ed4d8fac2beba88dd95547f6a68d4c8d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/guzzle": "^7.3",
+                "guzzlehttp/psr7": "^1.7 || ^2.0",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.5",
+                "phpunit/phpunit": "^8.0 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DocRaptor\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Expected Behavior",
+                    "homepage": "https://github.com/expectedbehavior"
+                }
+            ],
+            "description": "A native client library for the DocRaptor HTML to PDF/XLS service.",
+            "homepage": "https://github.com/docraptor/docraptor-php",
+            "keywords": [
+                "api",
+                "docraptor",
+                "html",
+                "pdf",
+                "xls",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/DocRaptor/docraptor-php/issues",
+                "source": "https://github.com/DocRaptor/docraptor-php/tree/v4.1.0"
+            },
+            "time": "2023-09-26T20:00:16+00:00"
         },
         {
             "name": "doctrine/annotations",
