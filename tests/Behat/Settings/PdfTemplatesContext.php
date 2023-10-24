@@ -12,7 +12,10 @@
 
 namespace App\Tests\Behat\Settings;
 
+use App\Entity\Settings;
 use App\Entity\Template;
+use App\Enum\PdfGeneratorType;
+use App\Repository\Orm\SettingsRepository;
 use App\Repository\Orm\TemplateRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -23,8 +26,94 @@ class PdfTemplatesContext implements Context
 {
     use SendRequestTrait;
 
-    public function __construct(private Session $session, private TemplateRepository $templateRepository)
+    public function __construct(
+        private Session $session,
+        private TemplateRepository $templateRepository,
+        private SettingsRepository $settingsRepository,
+    ) {
+    }
+
+    /**
+     * @When I set the pdf generator to:
+     */
+    public function iSetThePdfGeneratorTo(TableNode $table)
     {
+        $data = $table->getRowsHash();
+
+        $payload = [
+          'generator' => $data['Generator'],
+        ];
+
+        if (isset($data['Tmp Dir'])) {
+            $payload['tmp_dir'] = $data['Tmp Dir'];
+        }
+
+        if (isset($data['Api Key'])) {
+            $payload['api_key'] = $data['Api Key'];
+        }
+
+        if (isset($data['Bin'])) {
+            $payload['bin'] = $data['Bin'];
+        }
+
+        $this->sendJsonRequest('POST', '/app/settings/pdf-generator', $payload);
+    }
+
+    /**
+     * @Then the pdf generator should be :arg1
+     */
+    public function thePdfGeneratorShouldBe($generator)
+    {
+        /** @var Settings $settings */
+        $settings = $this->settingsRepository->findOneBy([]);
+        $this->settingsRepository->getEntityManager()->refresh($settings);
+
+        $type = PdfGeneratorType::fromName($generator);
+        if ($settings->getSystemSettings()->getPdfGenerator() != $type) {
+            throw new \Exception(sprintf("expected '%s' but got '%s'", $generator, $settings->getSystemSettings()->getPdfGenerator()?->value));
+        }
+    }
+
+    /**
+     * @Then the pdf generator api key should be :arg1
+     */
+    public function thePdfGeneratorApiKeyShouldBe($apiKey)
+    {
+        /** @var Settings $settings */
+        $settings = $this->settingsRepository->findOneBy([]);
+        $this->settingsRepository->getEntityManager()->refresh($settings);
+
+        if ($settings->getSystemSettings()->getPdfApiKey() != $apiKey) {
+            throw new \Exception(sprintf("expected '%s' but got '%s'", $apiKey, $settings->getSystemSettings()->getPdfTmpDir()));
+        }
+    }
+
+    /**
+     * @Then the pdf generator bin should be :arg1
+     */
+    public function thePdfGeneratorBinShouldBe($bin)
+    {
+        /** @var Settings $settings */
+        $settings = $this->settingsRepository->findOneBy([]);
+        $this->settingsRepository->getEntityManager()->refresh($settings);
+
+        if ($settings->getSystemSettings()->getPdfBin() != $bin) {
+            throw new \Exception(sprintf("expected '%s' but got '%s'", $bin, $settings->getSystemSettings()->getPdfTmpDir()));
+        }
+    }
+
+    /**
+     * @Then the pdf generator tmp dir should be :arg1
+     */
+    public function thePdfGeneratorTmpDirShouldBe($tmpDir)
+    {
+        /** @var Settings $settings */
+        $settings = $this->settingsRepository->findOneBy([]);
+        $this->settingsRepository->getEntityManager()->refresh($settings);
+
+        if ($settings->getSystemSettings()->getPdfTmpDir() != $tmpDir) {
+            throw new \Exception(sprintf("expected '%s' but got '%s'", $tmpDir, $settings->getSystemSettings()->getPdfTmpDir()));
+        }
     }
 
     /**

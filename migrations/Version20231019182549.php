@@ -29,18 +29,29 @@ final class Version20231019182549 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        // Charge Back Creation Workflow
         $this->addSql('ALTER TABLE charge_back_creation ADD has_error BOOLEAN DEFAULT NULL');
         $this->addSql('update charge_back_creation set has_error=false where state=\'completed\';');
         $this->addSql('update charge_back_creation set has_error=true where state!=\'completed\';');
+
+        // Cancellation type
         $this->addSql('ALTER TABLE cancellation_requests ADD cancellation_type VARCHAR(255) DEFAULT NULL');
         $this->addSql('update cancellation_requests set cancellation_type=\'company_request\'');
+
+        // PDF Generator Settings
+        $this->addSql('ALTER TABLE settings ADD system_settings_pdf_generator VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE settings ADD system_settings_pdf_tmp_dir VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE settings ADD system_settings_pdf_bin VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE settings ADD system_settings_pdf_api_key VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE charge_back_creation DROP has_error');
         $this->addSql('ALTER TABLE cancellation_requests DROP cancellation_type');
+        $this->addSql('ALTER TABLE settings DROP system_settings_pdf_generator');
+        $this->addSql('ALTER TABLE settings DROP system_settings_pdf_tmp_dir');
+        $this->addSql('ALTER TABLE settings DROP system_settings_pdf_bin');
+        $this->addSql('ALTER TABLE settings DROP system_settings_pdf_api_key');
     }
 }

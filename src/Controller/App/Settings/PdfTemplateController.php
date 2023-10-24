@@ -12,14 +12,19 @@
 
 namespace App\Controller\App\Settings;
 
+use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\Settings\TemplateDataMapper;
+use App\Dto\Request\App\Settings\PdfTemplates\UpdateGeneratorSettings;
 use App\Dto\Request\App\Template\PdfTemplate;
 use App\Dto\Response\App\ListResponse;
+use App\Dto\Response\App\Settings\ReadPdfGeneratorSettings;
 use App\Dto\Response\App\Template\TemplateView;
 use App\Dummy\Data\ReceiptProvider;
 use App\Entity\Template;
+use App\Enum\PdfGeneratorType;
 use App\Pdf\InvoicePdfGenerator;
 use App\Pdf\ReceiptPdfGenerator;
+use App\Repository\SettingsRepositoryInterface;
 use App\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -36,6 +41,8 @@ use Twig\Error\Error;
 #[IsGranted('ROLE_ACCOUNT_MANAGER')]
 class PdfTemplateController
 {
+    use ValidationErrorResponseTrait;
+
     #[Route('/app/settings/template', name: 'app_settings_template_list', methods: ['GET'])]
     public function getTemplateList(
         Request $request,
@@ -195,5 +202,50 @@ class PdfTemplateController
         );
 
         return $response;
+    }
+
+    #[Route('/app/settings/pdf-generator', name: 'app_app_settings_pdftemplate_readgeneratorsettings', methods: ['GET'])]
+    public function readGeneratorSettings(
+        Request $request,
+        SerializerInterface $serializer,
+        SettingsRepositoryInterface $settingsRepository,
+    ) {
+        $settings = $settingsRepository->getDefaultSettings();
+
+        $dto = new ReadPdfGeneratorSettings();
+        $dto->setGenerator($settings->getSystemSettings()->getPdfGenerator()?->value ?? PdfGeneratorType::MPDF->value);
+        $dto->setBin($settings->getSystemSettings()->getPdfBin());
+        $dto->setApiKey($settings->getSystemSettings()->getPdfApiKey());
+        $dto->setTmpDir($settings->getSystemSettings()->getPdfTmpDir());
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/pdf-generator', name: 'app_app_settings_pdftemplate_updategeneratorsettings', methods: ['POST'])]
+    public function updateGeneratorSettings(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        SettingsRepositoryInterface $settingsRepository,
+    ) {
+        $dto = $serializer->deserialize($request->getContent(), UpdateGeneratorSettings::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response instanceof Response) {
+            return $response;
+        }
+        $settings = $settingsRepository->getDefaultSettings();
+
+        $settings->getSystemSettings()->setPdfGenerator(PdfGeneratorType::fromName($dto->getGenerator()));
+        $settings->getSystemSettings()->setPdfBin($dto->getBin());
+        $settings->getSystemSettings()->setPdfApiKey($dto->getApiKey());
+        $settings->getSystemSettings()->setPdfTmpDir($dto->getTmpDir());
+
+        $settingsRepository->save($settings);
+
+        return new JsonResponse(['success' => true]);
     }
 }
