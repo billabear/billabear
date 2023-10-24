@@ -74,6 +74,7 @@ import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
 import SubscriptionsChurn from "../views/App/Reports/Subscriptions/SubscriptionsChurn.vue";
 import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
 import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
+import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGeneratorSettings.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -203,6 +204,11 @@ export const APP_ROUTES = [
                 name: "app.settings.pdf_template.update",
                 path: "templates/update/:id",
                 component: PdfTemplateUpdate
+            },
+            {
+                name: "app.settings.pdf_template.generator",
+                path: "templates/generator",
+                component: PdfGeneratorSettings
             },
             {
                 name: "app.settings.brand_settings.list",

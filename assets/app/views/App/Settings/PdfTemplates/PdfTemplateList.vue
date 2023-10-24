@@ -2,6 +2,10 @@
   <div>
     <h1 class="page-title">{{ $t('app.settings.pdf_template.list.title') }}</h1>
 
+    <div class="text-end">
+      <router-link :to="{'name': 'app.settings.pdf_template.generator'}" class="btn--main">{{ $t('app.settings.pdf_template.list.generator') }}</router-link>
+    </div>
+
     <LoadingScreen :ready="ready">
       <div class="mt-3">
         <table class="list-table">

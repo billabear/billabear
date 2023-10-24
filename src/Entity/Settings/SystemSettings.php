@@ -12,6 +12,7 @@
 
 namespace App\Entity\Settings;
 
+use App\Enum\PdfGeneratorType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
@@ -54,6 +55,18 @@ class SystemSettings
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $updateAvailableDismissed = false;
+
+    #[ORM\Column(type: 'string', nullable: true, enumType: PdfGeneratorType::class)]
+    private ?PdfGeneratorType $pdfGenerator = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $pdfTmpDir = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $pdfBin = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $pdfApiKey = null;
 
     public function getSystemUrl(): ?string
     {
@@ -173,5 +186,45 @@ class SystemSettings
     public function setDefaultInvoiceDueTime(?string $defaultInvoiceDueTime): void
     {
         $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
+    }
+
+    public function getPdfGenerator(): ?PdfGeneratorType
+    {
+        return $this->pdfGenerator;
+    }
+
+    public function setPdfGenerator(?PdfGeneratorType $pdfGenerator): void
+    {
+        $this->pdfGenerator = $pdfGenerator;
+    }
+
+    public function getPdfTmpDir(): ?string
+    {
+        return $this->pdfTmpDir;
+    }
+
+    public function setPdfTmpDir(?string $pdfTmpDir): void
+    {
+        $this->pdfTmpDir = $pdfTmpDir;
+    }
+
+    public function getPdfBin(): ?string
+    {
+        return $this->pdfBin;
+    }
+
+    public function setPdfBin(?string $pdfBin): void
+    {
+        $this->pdfBin = $pdfBin;
+    }
+
+    public function getPdfApiKey(): ?string
+    {
+        return $this->pdfApiKey;
+    }
+
+    public function setPdfApiKey(?string $pdfApiKey): void
+    {
+        $this->pdfApiKey = $pdfApiKey;
     }
 }
