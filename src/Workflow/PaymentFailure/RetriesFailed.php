@@ -37,6 +37,7 @@ class RetriesFailed implements EventSubscriberInterface
         foreach ($paymentFailureProcess->getPaymentAttempt()->getSubscriptions() as $subscription) {
             $requestCancellation = new CancellationRequest();
             $requestCancellation->setCancellationType(CancellationType::BILLING_RELATED);
+            $requestCancellation->setSubscription($subscription);
             $requestCancellation->setState('started');
             $requestCancellation->setRefundType('none');
             $requestCancellation->setWhen('instantly');
