@@ -73,6 +73,7 @@ default:
                 # Stats
                 - App\Tests\Behat\Stats\MainContext
                 - App\Tests\Behat\Stats\SubscriptionsContext
+                - App\Tests\Behat\Stats\FinancialContext
 
                 # Reports
                 - App\Tests\Behat\Reports\ExpiringCards\AppContext
