@@ -68,6 +68,12 @@ You can deploy to DigitalOcean with just a click of the button below and it'll d
 
 Billabear is deployable using docker-compose using the docker-compose.yaml found in https://github.com/billabear/hosting-docker-compose.
 
+```
+git clone git@github.com:billabear/hosting-docker-compose.git
+cd hosting-docker-compose
+docker compose up -d
+```
+
 ### Development
 
 ```
