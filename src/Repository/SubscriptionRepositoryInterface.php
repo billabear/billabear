@@ -67,4 +67,10 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
      * @return Subscription[]
      */
     public function findActiveSubscriptionsOnDate(\DateTime $dateTime, int $count): array;
+
+    public function getAverageLifespan(array $filters = []): float;
+
+    public function getPaymentTotals(array $filters = []): array;
+
+    public function getUniqueCustomerCount(array $filters = []): int;
 }

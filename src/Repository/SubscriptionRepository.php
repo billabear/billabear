@@ -219,4 +219,40 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
         return $qb->getQuery()->execute();
     }
+
+    public function getAverageLifespan(array $filters = []): float
+    {
+        $conn = $this->entityRepository->getEntityManager()->getConnection();
+
+        $stmt = $conn->prepare('SELECT AVG(EXTRACT(EPOCH FROM (COALESCE(s.ended_at , NOW()) - s.started_at))) AS avg_duration FROM "subscription" s');
+        $res = $stmt->executeQuery();
+        $row = $res->fetchAssociative();
+        if (isset($row['avg_duration'])) {
+            $lifespan = $row['avg_duration'] / 60 / 60 / 24 / 365;
+        } else {
+            $lifespan = 0;
+        }
+
+        return round($lifespan, 2);
+    }
+
+    public function getPaymentTotals(array $filters = []): array
+    {
+        $conn = $this->entityRepository->getEntityManager()->getConnection();
+
+        $stmt = $conn->prepare('select sum(s.amount) as amount, s.currency, s.payment_schedule  from "subscription" s group by s.currency, s.payment_schedule');
+        $res = $stmt->executeQuery();
+
+        return $res->fetchAllAssociative();
+    }
+
+    public function getUniqueCustomerCount(array $filters = []): int
+    {
+        $conn = $this->entityRepository->getEntityManager()->getConnection();
+
+        $stmt = $conn->prepare('select count(distinct s.customer_id) as customer_count  from "subscription" s');
+        $res = $stmt->executeQuery();
+
+        return $res->fetchAssociative()['customer_count'] ?? 0;
+    }
 }
