@@ -63,6 +63,7 @@ class FinancialController
         return new JsonResponse([
             'lifetime_value' => $lifeTime->toInt(),
             'lifespan' => $lifespan,
+            'currency' => $currency->getCurrencyCode(),
         ]);
     }
 }

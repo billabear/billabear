@@ -3,6 +3,7 @@ import {REPORT_EXPIRING_CARDS_TRANSLATION} from "./expiring_cards";
 import {REPORTS_MENU_TRANSLATIONS} from "./menu";
 import {REPORT_SUBSCRIPTIONS_TRANSLATIONS} from "./subscriptions";
 import {REPORTS_VAT_TRANSLATIONS} from "./vat";
+import {REPORTS_FINANCIAL_TRANSLATIONS} from "./financial";
 
 export const REPORTS_INDEX_TRANSLATION = {
     dashboard: REPORT_DASHBOARD_TRANSLATIONS,
@@ -10,4 +11,5 @@ export const REPORTS_INDEX_TRANSLATION = {
     menu: REPORTS_MENU_TRANSLATIONS,
     subscriptions: REPORT_SUBSCRIPTIONS_TRANSLATIONS,
     vat: REPORTS_VAT_TRANSLATIONS,
+    financial: REPORTS_FINANCIAL_TRANSLATIONS,
 };
