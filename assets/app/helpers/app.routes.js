@@ -75,6 +75,7 @@ import SubscriptionsChurn from "../views/App/Reports/Subscriptions/Subscriptions
 import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
 import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
 import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGeneratorSettings.vue";
+import LifetimeReport from "../views/App/Reports/Financial/LifetimeReport.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -114,6 +115,11 @@ export const APP_ROUTES = [
                 name: 'app.report.churn',
                 path: 'churn',
                 component: SubscriptionsChurn,
+            },
+            {
+                name: 'app.report.lifetime',
+                path: 'lifetime',
+                component: LifetimeReport,
             }
         ]
     },
