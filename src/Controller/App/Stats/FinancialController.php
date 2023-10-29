@@ -12,6 +12,7 @@
 
 namespace App\Controller\App\Stats;
 
+use App\Api\Filters\Stats\LifetimeValue;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
@@ -20,12 +21,14 @@ use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FinancialController
 {
     #[Route('/app/stats/lifetime', name: 'app_app_stats_financial_lifetimevalue', methods: ['GET'])]
     public function lifetimeValue(
+        Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SettingsRepositoryInterface $settingsRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
@@ -33,9 +36,12 @@ class FinancialController
         $currency = Currency::of($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
 
         $currencyConverter = new CurrencyConverter($exchangeRateProvider);
-        $lifespan = $subscriptionRepository->getAverageLifespan();
-        $customerCount = $subscriptionRepository->getUniqueCustomerCount();
-        $paymentTotals = $subscriptionRepository->getPaymentTotals();
+        $filtersBuilder = new LifetimeValue();
+        $filters = $filtersBuilder->getFilters($request);
+
+        $lifespan = $subscriptionRepository->getAverageLifespan($filters);
+        $customerCount = $subscriptionRepository->getUniqueCustomerCount($filters);
+        $paymentTotals = $subscriptionRepository->getPaymentTotals($filters);
         $total = Money::zero($currency);
         foreach ($paymentTotals as $paymentTotal) {
             $originalFee = Money::ofMinor($paymentTotal['amount'], $paymentTotal['currency']);
