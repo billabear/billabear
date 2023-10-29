@@ -3,34 +3,58 @@
     <h1 class="page-title">{{ $t('app.reports.financial.lifetime.title') }}</h1>
 
 
-    <LoadingScreen :ready="ready">
+    <div class="grid grid-cols-2 gap-5">
+
       <div class="card-body">
-        <dl class="detail-list">
-          <div>
-            <dt>{{ $t('app.reports.financial.lifetime.lifespan') }}</dt>
-            <dd>{{ $t('app.reports.financial.lifetime.lifespan_value', {lifespan: stats.lifespan}) }}</dd>
-          </div>
-          <div>
-            <dt>{{ $t('app.reports.financial.lifetime.lifetime') }}</dt>
-            <dd><Currency :amount="stats.lifetime_value" :currency="stats.currency" /></dd>
-          </div>
-        </dl>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.reports.financial.lifetime.filters.country') }}
+          </label>
+          <p class="form-field-error" v-if="errors.country != undefined">{{ errors.country }}</p>
+          <CountrySelect v-model="filters.country" />
+          <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.country') }}</p>
+        </div>
+        <div class="mt-5">
+          <SubmitButton :in-progress="!ready" @click="sendFilters">{{ $t('app.reports.financial.lifetime.submit') }}</SubmitButton>
+        </div>
       </div>
-    </LoadingScreen>
+
+      <div>
+        <LoadingScreen :ready="ready">
+          <div class="card-body">
+            <dl class="detail-list">
+              <div>
+                <dt>{{ $t('app.reports.financial.lifetime.lifespan') }}</dt>
+                <dd>{{ $t('app.reports.financial.lifetime.lifespan_value', {lifespan: stats.lifespan}) }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.reports.financial.lifetime.lifetime') }}</dt>
+                <dd><Currency :amount="stats.lifetime_value" :currency="stats.currency" /></dd>
+              </div>
+            </dl>
+          </div>
+        </LoadingScreen>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Currency from "../../../../components/app/Currency.vue";
+import CountrySelect from "../../../../components/app/Forms/CountrySelect.vue";
 
 export default {
   name: "LifetimeReport",
-  components: {Currency},
+  components: {CountrySelect, Currency},
   data() {
     return {
       ready: false,
       stats: {},
+      errors: {},
+      filters: {country: null}
     }
   },
   mounted() {
@@ -39,6 +63,21 @@ export default {
       this.ready = true;
 
     })
+  },
+  methods: {
+    sendFilters: function () {
+      this.ready = false;
+      var filtersString = '';
+
+      for (const [key, value] of Object.entries(this.filters)) {
+        filtersString = key+'='+value;
+      }
+
+      axios.get("/app/stats/lifetime?"+filtersString).then(response => {
+        this.stats = response.data;
+        this.ready = true;
+      })
+    }
   }
 }
 </script>

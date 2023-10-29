@@ -224,8 +224,16 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
     {
         $conn = $this->entityRepository->getEntityManager()->getConnection();
 
-        $stmt = $conn->prepare('SELECT AVG(EXTRACT(EPOCH FROM (COALESCE(s.ended_at , NOW()) - s.started_at))) AS avg_duration FROM "subscription" s');
-        $res = $stmt->executeQuery();
+        $sql = 'SELECT AVG(EXTRACT(EPOCH FROM (COALESCE(s.ended_at , NOW()) - s.started_at))) AS avg_duration FROM "subscription" s INNER JOIN "customers" c ON c.id = s.customer_id';
+        $params = [];
+
+        if (isset($filters['country'])) {
+            $sql .= ' WHERE c.billing_address_country = :country';
+            $params['country'] = $filters['country'];
+        }
+
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->executeQuery($params);
         $row = $res->fetchAssociative();
         if (isset($row['avg_duration'])) {
             $lifespan = $row['avg_duration'] / 60 / 60 / 24 / 365;
@@ -240,8 +248,17 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
     {
         $conn = $this->entityRepository->getEntityManager()->getConnection();
 
-        $stmt = $conn->prepare('select sum(s.amount) as amount, s.currency, s.payment_schedule  from "subscription" s group by s.currency, s.payment_schedule');
-        $res = $stmt->executeQuery();
+        $sql = 'select sum(s.amount) as amount, s.currency, s.payment_schedule  from "subscription" s INNER JOIN "customers" c ON c.id = s.customer_id';
+        $params = [];
+
+        if (isset($filters['country'])) {
+            $sql .= ' WHERE c.billing_address_country = :country';
+            $params['country'] = $filters['country'];
+        }
+        $sql .= ' group by s.currency, s.payment_schedule';
+
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->executeQuery($params);
 
         return $res->fetchAllAssociative();
     }
@@ -249,9 +266,16 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
     public function getUniqueCustomerCount(array $filters = []): int
     {
         $conn = $this->entityRepository->getEntityManager()->getConnection();
+        $sql = 'select count(distinct s.customer_id) as customer_count  from "subscription" s INNER JOIN "customers" c ON c.id = s.customer_id';
+        $params = [];
 
-        $stmt = $conn->prepare('select count(distinct s.customer_id) as customer_count  from "subscription" s');
-        $res = $stmt->executeQuery();
+        if (isset($filters['country'])) {
+            $sql .= ' WHERE c.billing_address_country = :country';
+            $params['country'] = $filters['country'];
+        }
+
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->executeQuery($params);
 
         return $res->fetchAssociative()['customer_count'] ?? 0;
     }

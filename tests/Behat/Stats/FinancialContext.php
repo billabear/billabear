@@ -31,7 +31,17 @@ class FinancialContext implements Context
      */
     public function iViewTheLifetimeValue(TableNode $table = null)
     {
-        $this->sendJsonRequest('GET', '/app/stats/lifetime');
+        $filters = [];
+
+        $row = $table?->getRowsHash();
+        if (isset($row['Country'])) {
+            $filters['country'] = $row['Country'];
+        }
+        $filtersString = '';
+        foreach ($filters as $key => $value) {
+            $filtersString .= urlencode($key).'='.urlencode($value).'&';
+        }
+        $this->sendJsonRequest('GET', '/app/stats/lifetime?'.$filtersString);
     }
 
     /**
