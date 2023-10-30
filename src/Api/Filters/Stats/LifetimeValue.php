@@ -28,6 +28,14 @@ class LifetimeValue
             $output['payment_schedule'] = $request->get('payment_schedule');
         }
 
+        if (null !== $request->get('subscription_plan', null)) {
+            $output['subscription_plan'] = $request->get('subscription_plan');
+        }
+
+        if (null !== $request->get('brand', null)) {
+            $output['brand'] = $request->get('brand');
+        }
+
         return $output;
     }
 }
