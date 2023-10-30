@@ -15,7 +15,7 @@ namespace App\Controller\App\Stats;
 use App\Api\Filters\Stats\LifetimeValue;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\SettingsRepositoryInterface;
-use App\Repository\SubscriptionRepositoryInterface;
+use App\Repository\Stats\LifetimeValueStatsRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
@@ -29,7 +29,7 @@ class FinancialController
     #[Route('/app/stats/lifetime', name: 'app_app_stats_financial_lifetimevalue', methods: ['GET'])]
     public function lifetimeValue(
         Request $request,
-        SubscriptionRepositoryInterface $subscriptionRepository,
+        LifetimeValueStatsRepositoryInterface $lifetimeValueStatsRepository,
         SettingsRepositoryInterface $settingsRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
     ) {
@@ -39,9 +39,9 @@ class FinancialController
         $filtersBuilder = new LifetimeValue();
         $filters = $filtersBuilder->getFilters($request);
 
-        $lifespan = $subscriptionRepository->getAverageLifespan($filters);
-        $customerCount = $subscriptionRepository->getUniqueCustomerCount($filters);
-        $paymentTotals = $subscriptionRepository->getPaymentTotals($filters);
+        $lifespan = $lifetimeValueStatsRepository->getAverageLifespan($filters);
+        $customerCount = $lifetimeValueStatsRepository->getUniqueCustomerCount($filters);
+        $paymentTotals = $lifetimeValueStatsRepository->getPaymentTotals($filters);
         $total = Money::zero($currency);
         foreach ($paymentTotals as $paymentTotal) {
             $originalFee = Money::ofMinor($paymentTotal['amount'], $paymentTotal['currency']);

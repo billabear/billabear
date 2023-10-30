@@ -378,6 +378,12 @@ services:
     app.repository.orm.webhook_event:
         class: App\Repository\Orm\WebhookEventRepository
 
+    App\Repository\Stats\LifetimeValueStatsRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.lifetime_value'
+    app.repository.orm.lifetime_value:
+        class: App\Repository\Orm\SubscriptionRepository
+
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
 
