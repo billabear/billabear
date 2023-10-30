@@ -77,3 +77,35 @@ Feature: View Lifetime Value
       | Payment Schedule | month |
     Then I should see a customer average lifespan
     And I should see a customer average lifetime value
+
+  Scenario:
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -17 months |
+      | Test Plan         | 30000        | USD            | year          | customer.two@example.org |  -19 months |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -17 months |
+    When I view the lifetime value:
+      | Subscription Plan | Test Plan |
+    Then I should see a customer average lifespan
+    And I should see a customer average lifetime value
+
+  Scenario:
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -17 months |
+      | Test Plan         | 30000        | USD            | year          | customer.two@example.org |  -19 months |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -17 months |
+    When I view the lifetime value:
+      | Brand | default |
+    Then I should see a customer average lifespan
+    And I should see a customer average lifetime value

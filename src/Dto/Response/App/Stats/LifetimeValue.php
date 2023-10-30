@@ -26,6 +26,10 @@ class LifetimeValue
     #[SerializedName('customer_count')]
     private int $customerCount;
 
+    private array $brands;
+
+    private array $plans;
+
     public function getLifetimeValue(): int
     {
         return $this->lifetimeValue;
@@ -64,5 +68,25 @@ class LifetimeValue
     public function setCustomerCount(int $customerCount): void
     {
         $this->customerCount = $customerCount;
+    }
+
+    public function getBrands(): array
+    {
+        return $this->brands;
+    }
+
+    public function setBrands(array $brands): void
+    {
+        $this->brands = $brands;
+    }
+
+    public function getPlans(): array
+    {
+        return $this->plans;
+    }
+
+    public function setPlans(array $plans): void
+    {
+        $this->plans = $plans;
     }
 }

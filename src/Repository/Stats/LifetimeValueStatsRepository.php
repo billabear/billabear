@@ -74,6 +74,14 @@ class LifetimeValueStatsRepository extends DoctrineRepository implements Lifetim
             $parts[] = 's.payment_schedule = :payment_schedule';
         }
 
+        if (isset($filters['subscription_plan'])) {
+            $parts[] = 's.subscription_plan_id = :subscription_plan';
+        }
+
+        if (isset($filters['brand'])) {
+            $parts[] = 'c.brand_settings_id = :brand';
+        }
+
         if (0 === count($parts)) {
             return $output;
         }

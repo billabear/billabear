@@ -13,10 +13,14 @@
 namespace App\Controller\App\Stats;
 
 use App\Api\Filters\Stats\LifetimeValue;
+use App\DataMappers\Settings\BrandSettingsDataMapper;
+use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Response\App\Stats\LifetimeValue as LifetimeValueDto;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
+use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\Stats\LifetimeValueStatsRepositoryInterface;
+use App\Repository\SubscriptionPlanRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
@@ -32,6 +36,10 @@ class FinancialController
     public function lifetimeValue(
         Request $request,
         LifetimeValueStatsRepositoryInterface $lifetimeValueStatsRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
+        BrandSettingsRepositoryInterface $brandSettingsRepository,
+        BrandSettingsDataMapper $brandSettingsDataMapper,
         SettingsRepositoryInterface $settingsRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
         SerializerInterface $serializer,
@@ -69,11 +77,19 @@ class FinancialController
             $lifeTime = Money::zero($currency)->getMinorAmount();
         }
 
+        $plans = $subscriptionPlanRepository->getAll();
+        $planDtos = array_map([$subscriptionPlanDataMapper, 'createAppDto'], $plans);
+
+        $brands = $brandSettingsRepository->getAll();
+        $brandDtos = array_map([$brandSettingsDataMapper, 'createAppDto'], $brands);
+
         $dto = new LifetimeValueDto();
         $dto->setLifetimeValue($lifeTime->toInt());
         $dto->setLifespan($lifespan);
         $dto->setCurrency($currency->getCurrencyCode());
         $dto->setCustomerCount($customerCount);
+        $dto->setBrands($brandDtos);
+        $dto->setPlans($planDtos);
 
         $json = $serializer->serialize($dto, 'json');
 

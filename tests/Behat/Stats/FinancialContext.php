@@ -12,7 +12,10 @@
 
 namespace App\Tests\Behat\Stats;
 
+use App\Repository\Orm\BrandSettingsRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Tests\Behat\SendRequestTrait;
+use App\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
@@ -20,9 +23,12 @@ use Behat\Mink\Session;
 class FinancialContext implements Context
 {
     use SendRequestTrait;
+    use SubscriptionPlanTrait;
 
     public function __construct(
         private Session $session,
+        private SubscriptionPlanRepository $subscriptionPlanRepository,
+        private BrandSettingsRepository $brandSettingsRepository,
     ) {
     }
 
@@ -40,6 +46,16 @@ class FinancialContext implements Context
 
         if (isset($row['Payment Schedule'])) {
             $filters['payment_schedule'] = $row['Payment Schedule'];
+        }
+
+        if (isset($row['Subscription Plan'])) {
+            $plan = $this->findSubscriptionPlanByName($row['Subscription Plan']);
+            $filters['subscription_plan'] = (string) $plan->getId();
+        }
+
+        if (isset($row['Brand'])) {
+            $brand = $this->brandSettingsRepository->findOneBy(['code' => $row['Brand']]);
+            $filters['brand'] = (string) $brand->getId();
         }
 
         $filtersString = '';

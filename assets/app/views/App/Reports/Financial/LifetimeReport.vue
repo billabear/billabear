@@ -15,6 +15,7 @@
           <CountrySelect v-model="filters.country" />
           <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.country') }}</p>
         </div>
+
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="payment_schedule">
             {{ $t('app.reports.financial.lifetime.filters.payment_schedule') }}
@@ -28,6 +29,32 @@
           </select>
           <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.payment_schedule') }}</p>
         </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="payment_schedule">
+            {{ $t('app.reports.financial.lifetime.filters.subscription_plan') }}
+          </label>
+          <p class="form-field-error" v-if="errors.subscription_plan != undefined">{{ errors.subscription_plan }}</p>
+          <select v-model="filters.subscription_plan" class="form-field">
+            <option :value="null"></option>
+            <option v-for="plan in stats.plans" :value="plan.id">{{plan.name}}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.subscription_plan') }}</p>
+        </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="brand">
+            {{ $t('app.reports.financial.lifetime.filters.brand') }}
+          </label>
+          <p class="form-field-error" v-if="errors.brand != undefined">{{ errors.brand }}</p>
+          <select v-model="filters.brand" class="form-field">
+            <option :value="null"></option>
+            <option v-for="brand in stats.brands" :value="brand.id">{{brand.name}}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.brand') }}</p>
+        </div>
+
+
         <div class="mt-5">
           <SubmitButton :in-progress="!ready" @click="sendFilters">{{ $t('app.reports.financial.lifetime.submit') }}</SubmitButton>
         </div>
