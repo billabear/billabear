@@ -3,6 +3,7 @@ export const REPORT_FINANCIAL_LIFETIME_TRANSLATIONS = {
     lifespan: "Lifespan",
     lifespan_value: "{lifespan} years",
     lifetime: "Lifetime Value",
+    customer_count: "Customer Count",
     filters: {
         country: "Country",
         payment_schedule: "Payment Schedule"

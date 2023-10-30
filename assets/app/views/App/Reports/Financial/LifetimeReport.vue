@@ -38,6 +38,10 @@
           <div class="card-body">
             <dl class="detail-list">
               <div>
+                <dt>{{ $t('app.reports.financial.lifetime.customer_count') }}</dt>
+                <dd>{{ stats.customer_count }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.reports.financial.lifetime.lifespan') }}</dt>
                 <dd>{{ $t('app.reports.financial.lifetime.lifespan_value', {lifespan: stats.lifespan}) }}</dd>
               </div>
