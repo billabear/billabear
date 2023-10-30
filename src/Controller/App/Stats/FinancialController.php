@@ -13,6 +13,7 @@
 namespace App\Controller\App\Stats;
 
 use App\Api\Filters\Stats\LifetimeValue;
+use App\Dto\Response\App\Stats\LifetimeValue as LifetimeValueDto;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\Stats\LifetimeValueStatsRepositoryInterface;
@@ -23,6 +24,7 @@ use Brick\Money\Money;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class FinancialController
 {
@@ -32,6 +34,7 @@ class FinancialController
         LifetimeValueStatsRepositoryInterface $lifetimeValueStatsRepository,
         SettingsRepositoryInterface $settingsRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
+        SerializerInterface $serializer,
     ) {
         $currency = Currency::of($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
 
@@ -66,10 +69,14 @@ class FinancialController
             $lifeTime = Money::zero($currency)->getMinorAmount();
         }
 
-        return new JsonResponse([
-            'lifetime_value' => $lifeTime->toInt(),
-            'lifespan' => $lifespan,
-            'currency' => $currency->getCurrencyCode(),
-        ]);
+        $dto = new LifetimeValueDto();
+        $dto->setLifetimeValue($lifeTime->toInt());
+        $dto->setLifespan($lifespan);
+        $dto->setCurrency($currency->getCurrencyCode());
+        $dto->setCustomerCount($customerCount);
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 }

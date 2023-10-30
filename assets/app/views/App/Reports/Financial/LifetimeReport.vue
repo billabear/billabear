@@ -15,6 +15,19 @@
           <CountrySelect v-model="filters.country" />
           <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.country') }}</p>
         </div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="payment_schedule">
+            {{ $t('app.reports.financial.lifetime.filters.payment_schedule') }}
+          </label>
+          <p class="form-field-error" v-if="errors.payment_schedule != undefined">{{ errors.payment_schedule }}</p>
+          <select v-model="filters.payment_schedule" class="form-field">
+            <option :value="null"></option>
+            <option value="week">{{ $t('app.reports.financial.lifetime.schedules.week') }}</option>
+            <option value="month">{{ $t('app.reports.financial.lifetime.schedules.month') }}</option>
+            <option value="year">{{ $t('app.reports.financial.lifetime.schedules.year') }}</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.reports.financial.lifetime.help_info.payment_schedule') }}</p>
+        </div>
         <div class="mt-5">
           <SubmitButton :in-progress="!ready" @click="sendFilters">{{ $t('app.reports.financial.lifetime.submit') }}</SubmitButton>
         </div>
@@ -45,10 +58,11 @@
 import axios from "axios";
 import Currency from "../../../../components/app/Currency.vue";
 import CountrySelect from "../../../../components/app/Forms/CountrySelect.vue";
+import {Select} from "flowbite-vue";
 
 export default {
   name: "LifetimeReport",
-  components: {CountrySelect, Currency},
+  components: {Select, CountrySelect, Currency},
   data() {
     return {
       ready: false,
@@ -70,6 +84,9 @@ export default {
       var filtersString = '';
 
       for (const [key, value] of Object.entries(this.filters)) {
+        if (value == null || value == "null" || value === undefined) {
+          continue;
+        }
         filtersString = key+'='+value;
       }
 

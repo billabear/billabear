@@ -70,6 +70,10 @@ class LifetimeValueStatsRepository extends DoctrineRepository implements Lifetim
             $parts[] = 'c.billing_address_country = :country';
         }
 
+        if (isset($filters['payment_schedule'])) {
+            $parts[] = 's.payment_schedule = :payment_schedule';
+        }
+
         if (0 === count($parts)) {
             return $output;
         }

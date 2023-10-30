@@ -37,6 +37,11 @@ class FinancialContext implements Context
         if (isset($row['Country'])) {
             $filters['country'] = $row['Country'];
         }
+
+        if (isset($row['Payment Schedule'])) {
+            $filters['payment_schedule'] = $row['Payment Schedule'];
+        }
+
         $filtersString = '';
         foreach ($filters as $key => $value) {
             $filtersString .= urlencode($key).'='.urlencode($value).'&';

@@ -4,10 +4,17 @@ export const REPORT_FINANCIAL_LIFETIME_TRANSLATIONS = {
     lifespan_value: "{lifespan} years",
     lifetime: "Lifetime Value",
     filters: {
-        country: "Country"
+        country: "Country",
+        payment_schedule: "Payment Schedule"
     },
     help_info: {
-        country: "To see the lifetime value of users from this country"
+        country: "To see the lifetime value of users from this country",
+        payment_schedule: "To see the lifetime value of users paying on a payment schedule"
+    },
+    schedules: {
+        week: "Weekly",
+        month: "Monthly",
+        year: "Yearly",
     },
     submit: "Filter"
 }
