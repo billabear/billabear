@@ -24,6 +24,10 @@ class LifetimeValue
             $output['country'] = $request->get('country');
         }
 
+        if (null !== $request->get('payment_schedule', null)) {
+            $output['payment_schedule'] = $request->get('payment_schedule');
+        }
+
         return $output;
     }
 }
