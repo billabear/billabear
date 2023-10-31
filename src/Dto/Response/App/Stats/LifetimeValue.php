@@ -30,6 +30,9 @@ class LifetimeValue
 
     private array $plans;
 
+    #[SerializedName('graph_data')]
+    private array $graphData = [];
+
     public function getLifetimeValue(): int
     {
         return $this->lifetimeValue;
@@ -88,5 +91,15 @@ class LifetimeValue
     public function setPlans(array $plans): void
     {
         $this->plans = $plans;
+    }
+
+    public function getGraphData(): array
+    {
+        return $this->graphData;
+    }
+
+    public function setGraphData(array $graphData): void
+    {
+        $this->graphData = $graphData;
     }
 }
