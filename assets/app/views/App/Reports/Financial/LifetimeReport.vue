@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <div class="m-5">
+    <div class="mt-5 card-body">
       <LoadingScreen :ready="ready">
 
         <apexchart  type="line" :series="chartData" :options="chartOptions" />
