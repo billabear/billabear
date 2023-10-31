@@ -14,6 +14,8 @@ namespace App\Repository\Stats;
 
 interface LifetimeValueStatsRepositoryInterface
 {
+    public function getLifetimeValue(array $filters = []): array;
+
     public function getAverageLifespan(array $filters = []): float;
 
     public function getPaymentTotals(array $filters = []): array;

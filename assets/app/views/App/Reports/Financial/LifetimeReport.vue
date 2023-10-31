@@ -82,6 +82,13 @@
       </div>
     </div>
 
+    <div class="m-5">
+      <LoadingScreen :ready="ready">
+
+        <apexchart  type="line" :series="chartData" :options="chartOptions" />
+      </LoadingScreen>
+    </div>
+
   </div>
 </template>
 
@@ -99,12 +106,32 @@ export default {
       ready: false,
       stats: {},
       errors: {},
-      filters: {country: null}
+      filters: {country: null},
+      chartOptions: {
+        labels: [],
+        xaxis: {
+          type: 'datetime'
+        },
+        yaxis: [{
+          title: {
+            text:  this.$t('app.reports.financial.lifetime.chart.lifetime_values'),
+          },
+
+        }, {
+          opposite: true,
+          title: {
+            text:  this.$t('app.reports.financial.lifetime.chart.customer_counts'),
+          }
+        }]
+      },
+      chartData: [],
     }
   },
   mounted() {
     axios.get("/app/stats/lifetime").then(response => {
       this.stats = response.data;
+      this.chartOptions.labels = response.data.graph_data.labels;
+      this.chartData = this.convertChartData(response.data.graph_data);
       this.ready = true;
 
     })
@@ -123,9 +150,26 @@ export default {
 
       axios.get("/app/stats/lifetime?"+filtersString).then(response => {
         this.stats = response.data;
+        this.chartOptions.labels = response.data.graph_data.labels;
+        this.chartData = this.convertChartData(response.data.graph_data);
         this.ready = true;
       })
-    }
+    },
+    convertChartData: function (input) {
+
+      const lifetimeValues = {
+        name: this.$t('app.reports.financial.lifetime.chart.lifetime_values'),
+        type: 'column',
+        data: input.lifetime_values,
+      }
+      const customerCount = {
+        name: this.$t('app.reports.financial.lifetime.chart.customer_counts'),
+        type: 'line',
+        data: input.customer_counts,
+      }
+
+      return [lifetimeValues, customerCount];
+    },
   }
 }
 </script>

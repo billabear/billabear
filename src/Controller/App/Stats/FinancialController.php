@@ -21,6 +21,7 @@ use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\Stats\LifetimeValueStatsRepositoryInterface;
 use App\Repository\SubscriptionPlanRepositoryInterface;
+use App\Stats\LifeTimeValueCalculation;
 use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
@@ -42,6 +43,7 @@ class FinancialController
         BrandSettingsDataMapper $brandSettingsDataMapper,
         SettingsRepositoryInterface $settingsRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
+        LifeTimeValueCalculation $calculation,
         SerializerInterface $serializer,
     ) {
         $currency = Currency::of($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
@@ -77,6 +79,9 @@ class FinancialController
             $lifeTime = Money::zero($currency)->getMinorAmount();
         }
 
+        $rawData = $lifetimeValueStatsRepository->getLifetimeValue($filters);
+        $graphData = $calculation->processStats($rawData);
+
         $plans = $subscriptionPlanRepository->getAll();
         $planDtos = array_map([$subscriptionPlanDataMapper, 'createAppDto'], $plans);
 
@@ -90,6 +95,7 @@ class FinancialController
         $dto->setCustomerCount($customerCount);
         $dto->setBrands($brandDtos);
         $dto->setPlans($planDtos);
+        $dto->setGraphData($graphData);
 
         $json = $serializer->serialize($dto, 'json');
 

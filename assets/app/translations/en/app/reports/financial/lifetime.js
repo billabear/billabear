@@ -21,5 +21,9 @@ export const REPORT_FINANCIAL_LIFETIME_TRANSLATIONS = {
         month: "Monthly",
         year: "Yearly",
     },
+    chart: {
+        lifetime_values: "Lifetime Value",
+        customer_counts: "Customer Count",
+    },
     submit: "Filter"
 }

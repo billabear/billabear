@@ -16,6 +16,32 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class LifetimeValueStatsRepository extends DoctrineRepository implements LifetimeValueStatsRepositoryInterface
 {
+    public function getLifetimeValue(array $filters = []): array
+    {
+        $conn = $this->entityRepository->getEntityManager()->getConnection();
+        $sql = "SELECT m.month_date, SUM(s.amount) AS amount, s.currency, s.payment_schedule , count(distinct s.customer_id) as customer_count, AVG(EXTRACT(EPOCH FROM (COALESCE(s.ended_at , m.month_date) - s.started_at))) AS avg_duration
+FROM (
+    SELECT generate_series(
+        date_trunc('month', CURRENT_DATE - INTERVAL '11 months'),
+        date_trunc('month', CURRENT_DATE),
+        '1 month'::interval
+    ) AS month_date
+) m
+LEFT JOIN subscription s 
+ON s.started_at <= month_date and (s.ended_at > m.month_date OR s.ended_at IS null)
+left join customers c on c.id = s.customer_id ";
+        $sql .= $this->buildCondition($filters);
+        $sql .= ' 
+GROUP BY m.month_date, s.currency, s.payment_schedule
+ORDER BY m.month_date, s.currency;';
+
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->executeQuery($filters);
+        $rows = $res->fetchAllAssociative();
+
+        return $rows;
+    }
+
     public function getAverageLifespan(array $filters = []): float
     {
         $conn = $this->entityRepository->getEntityManager()->getConnection();
