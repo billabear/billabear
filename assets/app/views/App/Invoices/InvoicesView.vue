@@ -9,6 +9,10 @@
           <div class="alert-error" v-else>{{ $t('app.invoices.view.status.outstanding') }}</div>
         </div>
 
+        <div class="text-end mb-5">
+          <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.view.download') }}</a>
+        </div>
+
         <div class="card-body">
             <h2 class="section-header">{{ $t('app.invoices.view.main.title') }}</h2>
             <div class="section-body">

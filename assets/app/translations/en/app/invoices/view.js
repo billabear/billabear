@@ -60,5 +60,6 @@ export const INVOICES_VIEW_TRANSLATIONS = {
     },
     payment_succeeded: {
         message: "Payment successfully made."
-    }
+    },
+    download: "Download Invoice"
 }
