@@ -204,6 +204,7 @@ class PdfTemplateController
         return $response;
     }
 
+    #[IsGranted('ROLE_DEVELOPER')]
     #[Route('/app/settings/pdf-generator', name: 'app_app_settings_pdftemplate_readgeneratorsettings', methods: ['GET'])]
     public function readGeneratorSettings(
         Request $request,
@@ -223,6 +224,7 @@ class PdfTemplateController
         return new JsonResponse($json, json: true);
     }
 
+    #[IsGranted('ROLE_DEVELOPER')]
     #[Route('/app/settings/pdf-generator', name: 'app_app_settings_pdftemplate_updategeneratorsettings', methods: ['POST'])]
     public function updateGeneratorSettings(
         Request $request,
