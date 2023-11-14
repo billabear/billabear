@@ -15,7 +15,7 @@
                 }}</router-link></dd>
             </div>
           </dl>
-          <router-link :to="{name: 'app.payment.view', params: {subscriptionId: payment_creation.payment.id}}" class="btn--container">{{ $t('app.workflows.payment_creation.view.payment.view') }}</router-link>
+          <router-link :to="{name: 'app.payment.view', params: {id: payment_creation.payment.id}}" class="btn--container">{{ $t('app.workflows.payment_creation.view.payment.view') }}</router-link>
         </div>
 
         <div class="card-body">
