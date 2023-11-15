@@ -14,7 +14,9 @@ namespace App\Repository;
 
 use App\Entity\Customer;
 use App\Entity\Invoice;
+use App\Entity\Subscription;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface InvoiceRepositoryInterface extends CrudRepositoryInterface
 {
@@ -27,4 +29,9 @@ interface InvoiceRepositoryInterface extends CrudRepositoryInterface
      * @return Invoice[]
      */
     public function getOverdueInvoices(): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getLatestForSubscription(Subscription $subscription): Invoice;
 }

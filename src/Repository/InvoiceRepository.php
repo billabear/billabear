@@ -13,6 +13,8 @@
 namespace App\Repository;
 
 use App\Entity\Customer;
+use App\Entity\Invoice;
+use App\Entity\Subscription;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class InvoiceRepository extends DoctrineCrudRepository implements InvoiceRepositoryInterface
@@ -33,5 +35,23 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
         $query->execute();
 
         return $query->getResult();
+    }
+
+    public function getLatestForSubscription(Subscription $subscription): Invoice
+    {
+        $qb = $this->entityRepository->createQueryBuilder('i');
+
+        $qb->where('i.subscriptions IN (:subscription)')
+            ->setParameter(':subscription', $subscription)
+            ->orderBy('i.createdAt')
+            ->setMaxResults(1);
+
+        $query = $qb->getQuery();
+
+        $entity = $query->getResult();
+
+        if (!$entity instanceof Invoice) {
+            throw new \Exception(sprintf("Can't find invoice for subscription '%s'", $subscription->getId()));
+        }
     }
 }
