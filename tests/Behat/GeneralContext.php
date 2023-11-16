@@ -114,6 +114,7 @@ class GeneralContext implements Context
         $em->persist($notValidWarning);
         $em->flush();
         $this->authenticate(null);
+        $this->isStripe(false);
     }
 
     /**

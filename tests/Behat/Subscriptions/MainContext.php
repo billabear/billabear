@@ -336,6 +336,7 @@ class MainContext implements Context
             $subscription->setChildExternalReference('saddsa');
             $subscription->setCreatedAt(new \DateTime($row['Started At'] ?? 'now'));
             $subscription->setUpdatedAt(new \DateTime('now'));
+            $subscription->setStartOfCurrentPeriod(new \DateTime('now'));
             $subscription->setPaymentDetails($paymentDetails);
             $subscription->setValidUntil(new \DateTime($row['Next Charge'] ?? '+1 '.$row['Price Schedule']));
 

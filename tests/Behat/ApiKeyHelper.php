@@ -15,4 +15,6 @@ namespace App\Tests\Behat;
 class ApiKeyHelper
 {
     public static ?string $apiKey;
+
+    public static ?bool $stripe = false;
 }

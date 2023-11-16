@@ -108,6 +108,9 @@ default:
                 # System
                 - App\Tests\Behat\System\CancellationRequestContext
 
+                # Stripe Interopt Layer
+                - App\Tests\Behat\Interopt\Stripe\SubscriptionsContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

@@ -55,6 +55,7 @@ class SubscriptionDataMapper
         } catch (NoEntityFoundException $e) {
         }
         $model->setStatus($this->convertStatus($entity->getStatus()));
+        $model->setMetadata(['plan_name' => $entity->getPlanName()]);
 
         return $model;
     }

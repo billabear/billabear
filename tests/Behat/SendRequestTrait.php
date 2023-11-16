@@ -21,6 +21,11 @@ trait SendRequestTrait
         ApiKeyHelper::$apiKey = $apiKey;
     }
 
+    protected function isStripe(bool $isStripe): void
+    {
+        ApiKeyHelper::$stripe = $isStripe;
+    }
+
     protected function sendJsonRequest(string $method, string $url, array $body = []): void
     {
         $jsonBody = json_encode($body);

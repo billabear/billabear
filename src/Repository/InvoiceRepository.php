@@ -16,6 +16,7 @@ use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\Subscription;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceRepository extends DoctrineCrudRepository implements InvoiceRepositoryInterface
 {
@@ -41,7 +42,7 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
     {
         $qb = $this->entityRepository->createQueryBuilder('i');
 
-        $qb->where('i.subscriptions IN (:subscription)')
+        $qb->where(':subscription MEMBER OF i.subscriptions')
             ->setParameter(':subscription', $subscription)
             ->orderBy('i.createdAt')
             ->setMaxResults(1);
@@ -51,7 +52,7 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
         $entity = $query->getResult();
 
         if (!$entity instanceof Invoice) {
-            throw new \Exception(sprintf("Can't find invoice for subscription '%s'", $subscription->getId()));
+            throw new NoEntityFoundException(sprintf("Can't find invoice for subscription '%s'", $subscription->getId()));
         }
     }
 }
