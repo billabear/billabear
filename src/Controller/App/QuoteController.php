@@ -12,7 +12,6 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\CustomerList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\QuoteDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
@@ -22,6 +21,7 @@ use App\Dto\Request\App\Quote\CreateQuote;
 use App\Dto\Response\App\ListResponse;
 use App\Dto\Response\App\Quote\ReadQuote;
 use App\Entity\Quote;
+use App\Filters\CustomerList;
 use App\Quotes\QuoteCreator;
 use App\Repository\QuoteRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;

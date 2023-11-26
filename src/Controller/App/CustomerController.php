@@ -12,7 +12,6 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\CustomerList;
 use App\Customer\Disabler;
 use App\Customer\ExternalRegisterInterface;
 use App\Customer\LimitsFactory;
@@ -31,6 +30,7 @@ use App\Dto\Response\App\CustomerView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Customer;
 use App\Enum\CustomerStatus;
+use App\Filters\CustomerList;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CreditRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;

@@ -12,10 +12,10 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\ProductList;
 use App\DataMappers\PaymentDataMapper;
 use App\Dto\Request\Api\Payments\RefundPayment;
 use App\Dto\Response\Api\ListResponse;
+use App\Filters\ProductList;
 use Brick\Money\Currency;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\Payment;

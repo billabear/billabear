@@ -12,10 +12,10 @@
 
 namespace App\Controller\App\Workflows;
 
-use App\Api\Filters\Workflows\CancellationRequestList;
 use App\Controller\App\CrudListTrait;
 use App\DataMappers\CancellationDataMapper;
 use App\Dto\Response\App\Workflows\ViewCancellationRequest;
+use App\Filters\Workflows\CancellationRequestList;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use Parthenon\Common\Exception\NoEntityFoundException;

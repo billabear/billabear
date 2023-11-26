@@ -12,9 +12,9 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\ProductList;
 use App\DataMappers\RefundDataMapper;
 use App\Dto\Response\Api\ListResponse;
+use App\Filters\ProductList;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;

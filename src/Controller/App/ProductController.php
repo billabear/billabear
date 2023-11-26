@@ -12,13 +12,13 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\ProductList;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Request\App\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
 use App\Dto\Response\App\ProductView;
+use App\Filters\ProductList;
 use App\Repository\SubscriptionPlanRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;

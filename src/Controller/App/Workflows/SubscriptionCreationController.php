@@ -12,10 +12,10 @@
 
 namespace App\Controller\App\Workflows;
 
-use App\Api\Filters\Workflows\CancellationRequestList;
 use App\Controller\App\CrudListTrait;
 use App\DataMappers\Workflows\SubscriptionCreationDataMapper;
 use App\Dto\Response\App\Workflows\ViewSubscriptionCreation;
+use App\Filters\Workflows\CancellationRequestList;
 use App\Repository\SubscriptionCreationRepositoryInterface;
 use App\Subscription\SubscriptionCreationProcessor;
 use Parthenon\Common\Exception\NoEntityFoundException;

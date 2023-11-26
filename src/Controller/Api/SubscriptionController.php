@@ -12,7 +12,6 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\SubscriptionList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\Database\TransactionManager;
 use App\DataMappers\CancellationDataMapper;
@@ -22,6 +21,7 @@ use App\Dto\Request\Api\Subscription\CreateSubscription;
 use App\Dto\Request\Api\Subscription\UpdatePlan;
 use App\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use App\Dto\Response\Api\ListResponse;
+use App\Filters\SubscriptionList;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\PaymentCardRepositoryInterface;

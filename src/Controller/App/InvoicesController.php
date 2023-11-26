@@ -12,7 +12,6 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\InvoiceList;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\InvoiceDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
@@ -20,6 +19,7 @@ use App\Dto\Response\App\Invoice\ViewInvoice;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\Invoice;
 use App\Event\InvoicePaid;
+use App\Filters\InvoiceList;
 use App\Invoice\ManualInvoiceCreator;
 use App\Payment\InvoiceCharger;
 use App\Pdf\InvoicePdfGenerator;

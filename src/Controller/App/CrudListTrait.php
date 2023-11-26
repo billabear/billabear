@@ -12,9 +12,9 @@
 
 namespace App\Controller\App;
 
-use App\Api\Filters\AbstractFilterList;
-use App\Api\Filters\PaymentList;
 use App\Dto\Response\App\ListResponse;
+use App\Filters\AbstractFilterList;
+use App\Filters\PaymentList;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

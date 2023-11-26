@@ -12,10 +12,10 @@
 
 namespace App\Controller\App\Workflows;
 
-use App\Api\Filters\Workflows\CancellationRequestList;
 use App\Controller\App\CrudListTrait;
 use App\DataMappers\Workflows\RefundCreatedProcessDataMapper;
 use App\Dto\Response\App\Workflows\ViewRefundCreatedProcess;
+use App\Filters\Workflows\CancellationRequestList;
 use App\Repository\RefundCreatedProcessRepositoryInterface;
 use App\Subscription\SubscriptionCreationProcessor;
 use Parthenon\Common\Exception\NoEntityFoundException;

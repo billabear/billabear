@@ -12,10 +12,10 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\ProductList;
 use App\DataMappers\ProductDataMapper;
 use App\Dto\Request\Api\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
+use App\Filters\ProductList;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;

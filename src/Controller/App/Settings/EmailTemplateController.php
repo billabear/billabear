@@ -12,13 +12,13 @@
 
 namespace App\Controller\App\Settings;
 
-use App\Api\Filters\EmailTemplateList;
 use App\DataMappers\Settings\EmailTemplateDataMapper;
 use App\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
 use App\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use App\Dto\Response\App\EmailTemplate\EmailTemplateView;
 use App\Dto\Response\App\ListResponse;
 use App\Entity\EmailTemplate;
+use App\Filters\EmailTemplateList;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\EmailTemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;

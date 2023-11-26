@@ -12,10 +12,10 @@
 
 namespace App\Controller\App\Stats;
 
-use App\Api\Filters\Stats\LifetimeValue;
 use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use App\Dto\Response\App\Stats\LifetimeValue as LifetimeValueDto;
+use App\Filters\Stats\LifetimeValue;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;

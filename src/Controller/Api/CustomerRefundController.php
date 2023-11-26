@@ -12,10 +12,10 @@
 
 namespace App\Controller\Api;
 
-use App\Api\Filters\RefundList;
 use App\DataMappers\RefundDataMapper;
 use App\Dto\Response\Api\ListResponse;
 use App\Entity\Customer;
+use App\Filters\RefundList;
 use App\Repository\CustomerRepositoryInterface;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
