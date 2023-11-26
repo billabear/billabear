@@ -32,7 +32,7 @@ Feature: Subscription List
       | User Count | 10        |
 
 
-  Scenario: Get customer info
+  Scenario:
     Given I have authenticated to the API
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
@@ -45,3 +45,18 @@ Feature: Subscription List
       | Test Two          | 3000         | USD            | month          | customer.one@example.org |
     When I fetch the subscription list from the stripe interopt layer
     Then I will see a subscription in the stripe interopt list for "Test Plan"
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+      | Test Plan         | 3000         | USD            | month          | customer.two@example.org |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org |
+    When I fetch the subscription list from the stripe interopt layer for customer "customer.two@example.org"
+    Then I will see a subscription in the stripe interopt list for "Test Plan"
+    But I will not see a subscription in the stripe interopt list for "Test Two"

@@ -14,6 +14,7 @@ namespace App\Controller\Interopt\Stripe;
 
 use App\DataMappers\Interopt\Stripe\SubscriptionDataMapper;
 use App\Dto\Interopt\Stripe\Models\ListModel;
+use App\Filters\Interopt\Stripe\SubscriptionList;
 use App\Repository\SubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,10 @@ class SubscriptionsController
         $lastId = $request->get('starting_after');
         $limit = $request->get('limit', 25);
 
-        $subscriptions = $subscriptionRepository->getList([], limit: $limit, lastId: $lastId, firstId: $firstId);
+        $filterBuilder = new SubscriptionList();
+        $filters = $filterBuilder->buildFilters($request);
+
+        $subscriptions = $subscriptionRepository->getList($filters, limit: $limit, lastId: $lastId, firstId: $firstId);
 
         $subscriptionModels = array_map([$subscriptionDataMapper, 'createModel'], $subscriptions->getResults());
 

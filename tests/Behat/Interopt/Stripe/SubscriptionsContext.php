@@ -12,6 +12,8 @@
 
 namespace App\Tests\Behat\Interopt\Stripe;
 
+use App\Repository\Orm\CustomerRepository;
+use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
@@ -19,9 +21,11 @@ use Behat\Mink\Session;
 class SubscriptionsContext implements Context
 {
     use SendRequestTrait;
+    use CustomerTrait;
 
     public function __construct(
         private Session $session,
+        private CustomerRepository $customerRepository,
     ) {
     }
 
@@ -52,5 +56,33 @@ class SubscriptionsContext implements Context
         }
 
         throw new \Exception('Could not find subscription');
+    }
+
+    /**
+     * @When I fetch the subscription list from the stripe interopt layer for customer :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForCustomer($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?customer='.$customer->getId());
+    }
+
+    /**
+     * @Then I will not see a subscription in the stripe interopt list for :arg1
+     */
+    public function iWillNotSeeASubscriptionInTheStripeInteroptListFor($planName)
+    {
+        $data = $this->getJsonContent();
+
+        if ('list' !== $data['object']) {
+            throw new \Exception('Expected a list response');
+        }
+
+        foreach ($data['data'] as $subscription) {
+            if ($subscription['metadata']['plan_name'] == $planName) {
+                throw new \Exception('Found subscription');
+            }
+        }
     }
 }
