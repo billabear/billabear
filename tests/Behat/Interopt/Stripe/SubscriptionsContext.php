@@ -13,6 +13,7 @@
 namespace App\Tests\Behat\Interopt\Stripe;
 
 use App\Repository\Orm\CustomerRepository;
+use App\Repository\Orm\PriceRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -26,6 +27,7 @@ class SubscriptionsContext implements Context
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
+        private PriceRepository $priceRepository,
     ) {
     }
 
@@ -83,6 +85,28 @@ class SubscriptionsContext implements Context
             if ($subscription['metadata']['plan_name'] == $planName) {
                 throw new \Exception('Found subscription');
             }
+        }
+    }
+
+    /**
+     * @When I fetch the subscription list from the stripe interopt layer for price :amount :currency :schedule
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForPrice($amount, $currency, $schedule)
+    {
+        $price = $this->priceRepository->findOneBy(['amount' => $amount, 'currency' => $currency, 'schedule' => $schedule]);
+
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?price='.$price->getId());
+    }
+
+    /**
+     * @Then I will see :arg1 results in the stripe interopt list
+     */
+    public function iWillSeeResultsInTheStripeInteroptList($count)
+    {
+        $data = $this->getJsonContent();
+        if (intval($count) !== count($data['data'])) {
+            throw new \Exception(sprintf("Count didn't match. Got %d results", count($data['data'])));
         }
     }
 }

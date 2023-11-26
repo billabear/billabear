@@ -24,6 +24,10 @@ class SubscriptionList extends AbstractFilterList
                 'field' => 'customer',
                 'filter' => ExactChoiceFilter::class,
             ],
+            'price' => [
+                'field' => 'price',
+                'filter' => ExactChoiceFilter::class,
+            ],
         ];
     }
 }
