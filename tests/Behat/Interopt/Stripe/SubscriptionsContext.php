@@ -100,6 +100,39 @@ class SubscriptionsContext implements Context
     }
 
     /**
+     * @When I fetch the subscription list from the stripe interopt layer for created at :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForCreatedAt($arg1)
+    {
+        $dateTime = new \DateTime($arg1);
+
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?created='.$dateTime->getTimestamp());
+    }
+
+    /**
+     * @When I fetch the subscription list from the stripe interopt layer for created at greater than :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForCreatedAtGreaterThan($arg1)
+    {
+        $dateTime = new \DateTime($arg1);
+
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?created[gt]='.$dateTime->getTimestamp());
+    }
+
+    /**
+     * @When I fetch the subscription list from the stripe interopt layer for created at less than :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForCreatedAtLessThan($arg1)
+    {
+        $dateTime = new \DateTime($arg1);
+
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?created[lt]='.$dateTime->getTimestamp());
+    }
+
+    /**
      * @Then I will see :arg1 results in the stripe interopt list
      */
     public function iWillSeeResultsInTheStripeInteroptList($count)

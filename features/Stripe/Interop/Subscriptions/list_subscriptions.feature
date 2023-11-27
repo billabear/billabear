@@ -61,6 +61,7 @@ Feature: Subscription List
     When I fetch the subscription list from the stripe interopt layer for customer "customer.two@example.org"
     Then I will see a subscription in the stripe interopt list for "Test Plan"
     But I will not see a subscription in the stripe interopt list for "Test Two"
+
   Scenario:
     Given I have authenticated to the API
     And the follow customers exist:
@@ -73,4 +74,60 @@ Feature: Subscription List
       | Test Plan         | 3500         | USD            | month          | customer.two@example.org |
       | Test Two          | 3000         | USD            | month          | customer.one@example.org |
     When I fetch the subscription list from the stripe interopt layer for price 3000 "USD" "month"
+    Then I will see 2 results in the stripe interopt list
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+      | Test Plan         | 3500         | USD            | month          | customer.two@example.org |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org |
+    When I fetch the subscription list from the stripe interopt layer for price 3000 "USD" "month"
+    Then I will see 2 results in the stripe interopt list
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -5 days    |
+      | Test Plan         | 3500         | USD            | month          | customer.two@example.org | -2 days    |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -1 days    |
+    When I fetch the subscription list from the stripe interopt layer for created at "-3 days"
+    Then I will see 2 results in the stripe interopt list
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -5 days    |
+      | Test Plan         | 3500         | USD            | month          | customer.two@example.org | -2 days    |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -1 days    |
+    When I fetch the subscription list from the stripe interopt layer for created at greater than "-25 hours"
+    Then I will see 1 results in the stripe interopt list
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -5 days    |
+      | Test Plan         | 3500         | USD            | month          | customer.two@example.org | -2 days    |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -1 days    |
+    When I fetch the subscription list from the stripe interopt layer for created at less than "-25 hours"
     Then I will see 2 results in the stripe interopt list
