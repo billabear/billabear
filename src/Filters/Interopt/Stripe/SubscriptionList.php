@@ -93,6 +93,31 @@ class SubscriptionList extends AbstractFilterList
                 'filter' => LessThanOrEqualFilter::class,
                 'converter' => $timestampConverter,
             ],
+            'current_period_start' => [
+                'field' => 'startOfCurrentPeriod',
+                'filter' => GreaterThanFilter::class,
+                'converter' => $timestampConverter,
+            ],
+            'current_period_start[gt]' => [
+                'field' => 'startOfCurrentPeriod',
+                'filter' => GreaterThanFilter::class,
+                'converter' => $timestampConverter,
+            ],
+            'current_period_start[gte]' => [
+                'field' => 'startOfCurrentPeriod',
+                'filter' => GreaterThanOrEqualFilter::class,
+                'converter' => $timestampConverter,
+            ],
+            'current_period_start[lt]' => [
+                'field' => 'startOfCurrentPeriod',
+                'filter' => LessThanFilter::class,
+                'converter' => $timestampConverter,
+            ],
+            'current_period_start[lte]' => [
+                'field' => 'startOfCurrentPeriod',
+                'filter' => LessThanOrEqualFilter::class,
+                'converter' => $timestampConverter,
+            ],
         ];
     }
 }
