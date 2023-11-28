@@ -177,6 +177,15 @@ class SubscriptionsContext implements Context
     }
 
     /**
+     * @When I fetch the subscription list from the stripe interopt layer for collection type :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForCollectionType($collectionMethod)
+    {
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?collection_method='.$collectionMethod);
+    }
+
+    /**
      * @Then I will see :arg1 results in the stripe interopt list
      */
     public function iWillSeeResultsInTheStripeInteroptList($count)

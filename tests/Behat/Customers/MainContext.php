@@ -343,7 +343,7 @@ class MainContext implements Context
             $customer->setBillingAddress($billingAddress);
             $customer->setExternalCustomerReference($externalCustomerReference);
             $customer->setReference($reference);
-            $customer->setBillingType($row['Billing Type'] ?? Customer::DEFAULT_BILLING_TYPE);
+            $customer->setBillingType(strtolower($row['Billing Type'] ?? Customer::DEFAULT_BILLING_TYPE));
 
             $brand = $row['Brand'] ?? Customer::DEFAULT_BRAND;
             $brandSettings = $this->brandSettingRepository->findOneBy(['code' => $brand]);

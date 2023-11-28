@@ -12,6 +12,7 @@
 
 namespace App\Filters\Interopt\Stripe;
 
+use App\Entity\Customer;
 use App\Filters\AbstractFilterList;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Athena\Filters\GreaterThanFilter;
@@ -117,6 +118,19 @@ class SubscriptionList extends AbstractFilterList
                 'field' => 'startOfCurrentPeriod',
                 'filter' => LessThanOrEqualFilter::class,
                 'converter' => $timestampConverter,
+            ],
+            'collection_method' => [
+                'field' => 'customer.billingType',
+                'filter' => ExactChoiceFilter::class,
+                'converter' => function ($value) {
+                    if ('charge_automatically' === $value) {
+                        return Customer::BILLING_TYPE_CARD;
+                    } elseif ('send_invoice' === $value) {
+                        return Customer::BILLING_TYPE_INVOICE;
+                    } else {
+                        throw new \Exception('Invalid collection method');
+                    }
+                },
             ],
         ];
     }
