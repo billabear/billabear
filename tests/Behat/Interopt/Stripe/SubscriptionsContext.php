@@ -133,6 +133,28 @@ class SubscriptionsContext implements Context
     }
 
     /**
+     * @When I fetch the subscription list from the stripe interopt layer for end of current period :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForEndOfCurrentPeriod($arg1)
+    {
+        $dateTime = new \DateTime($arg1);
+
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?current_period_end='.$dateTime->getTimestamp());
+    }
+
+    /**
+     * @When I fetch the subscription list from the stripe interopt layer for end of current period less than :arg1
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForEndOfCurrentPeriodLessThan($arg1)
+    {
+        $dateTime = new \DateTime($arg1);
+
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?current_period_end[lt]='.$dateTime->getTimestamp());
+    }
+
+    /**
      * @Then I will see :arg1 results in the stripe interopt list
      */
     public function iWillSeeResultsInTheStripeInteroptList($count)
