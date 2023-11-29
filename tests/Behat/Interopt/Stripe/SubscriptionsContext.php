@@ -186,6 +186,24 @@ class SubscriptionsContext implements Context
     }
 
     /**
+     * @When I fetch the subscription list from the stripe interopt layer for active subscriptions
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForActiveSubscriptions()
+    {
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?status=active');
+    }
+
+    /**
+     * @When I fetch the subscription list from the stripe interopt layer for cancelled subscriptions
+     */
+    public function iFetchTheSubscriptionListFromTheStripeInteroptLayerForCancelledSubscriptions()
+    {
+        $this->isStripe(true);
+        $this->sendJsonRequest('GET', '/interopt/stripe/v1/subscriptions?status=canceled');
+    }
+
+    /**
      * @Then I will see :arg1 results in the stripe interopt list
      */
     public function iWillSeeResultsInTheStripeInteroptList($count)

@@ -14,11 +14,13 @@ namespace App\Filters\Interopt\Stripe;
 
 use App\Entity\Customer;
 use App\Filters\AbstractFilterList;
+use Parthenon\Athena\Filters\ContainsFilter;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Athena\Filters\GreaterThanOrEqualFilter;
 use Parthenon\Athena\Filters\LessThanFilter;
 use Parthenon\Athena\Filters\LessThanOrEqualFilter;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class SubscriptionList extends AbstractFilterList
 {
@@ -130,6 +132,20 @@ class SubscriptionList extends AbstractFilterList
                     } else {
                         throw new \Exception('Invalid collection method');
                     }
+                },
+            ],
+            'status' => [
+                'field' => 'status',
+                'filter' => ContainsFilter::class,
+                'converter' => function ($value) {
+                    return match ($value) {
+                        'active','trialing' => SubscriptionStatus::ACTIVE->value,
+                        'past_due','unpaid' => SubscriptionStatus::OVERDUE_PAYMENT_OPEN->value,
+                        'paused' => SubscriptionStatus::PAUSED->value,
+                        'ended', 'canceled' => SubscriptionStatus::CANCELLED->value,
+                        'all' => '%',
+                        default => throw new \Exception('Invalid status'),
+                    };
                 },
             ],
         ];

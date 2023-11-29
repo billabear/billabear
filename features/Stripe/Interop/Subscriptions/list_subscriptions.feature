@@ -230,3 +230,36 @@ Feature: Subscription List
     Then I will see 2 results in the stripe interopt list
     Then I will see a subscription in the stripe interopt list for "Test Plan"
     But I will see a subscription in the stripe interopt list for "Test Two"
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    | Billing Type |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One | card         |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two | invoice      |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At | Status    |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -5 days    | Active    |
+      | Test Plan         | 3500         | USD            | month          | customer.two@example.org | -2 days    | Active    |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -1 days    | Cancelled |
+    When I fetch the subscription list from the stripe interopt layer for active subscriptions
+    Then I will see 2 results in the stripe interopt list
+    Then I will see a subscription in the stripe interopt list for "Test Plan"
+    But I will not see a subscription in the stripe interopt list for "Test Two"
+
+  Scenario:
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    | Billing Type |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One | card         |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two | invoice      |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started At | Status    |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -5 days    | Active    |
+      | Test Plan         | 3500         | USD            | month          | customer.two@example.org | -2 days    | Active    |
+      | Test Two          | 3000         | USD            | month          | customer.one@example.org | -1 days    | Cancelled |
+    When I fetch the subscription list from the stripe interopt layer for cancelled subscriptions
+    Then I will see 1 results in the stripe interopt list
+    Then I will not see a subscription in the stripe interopt list for "Test Plan"
+    But I will see a subscription in the stripe interopt list for "Test Two"
+
