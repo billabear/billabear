@@ -27,19 +27,19 @@
         "parthenon/parthenon": "^2.2.3",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
-        "symfony/console": "6.3.*",
-        "symfony/doctrine-messenger": "6.3.*",
-        "symfony/dotenv": "6.3.*",
+        "symfony/console": "6.4.*",
+        "symfony/doctrine-messenger": "6.4.*",
+        "symfony/dotenv": "6.4.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.3.*",
-        "symfony/intl": "6.3.*",
-        "symfony/mailer": "6.3.*",
-        "symfony/messenger": "6.3.*",
-        "symfony/runtime": "6.3.*",
-        "symfony/scheduler": "6.3.*",
+        "symfony/framework-bundle": "6.4.*",
+        "symfony/intl": "6.4.*",
+        "symfony/mailer": "6.4.*",
+        "symfony/messenger": "6.4.*",
+        "symfony/runtime": "6.4.*",
+        "symfony/scheduler": "6.4.*",
         "symfony/webpack-encore-bundle": "^1.15",
-        "symfony/workflow": "6.3.*",
-        "symfony/yaml": "6.3.*",
+        "symfony/workflow": "6.4.*",
+        "symfony/yaml": "6.4.*",
         "taxjar/taxjar-php": "^2.0",
         "wildbit/postmark-php": "^4.0"
     },
@@ -103,7 +103,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.3.*",
+            "require": "6.4.*",
             "docker": false
         }
     }
