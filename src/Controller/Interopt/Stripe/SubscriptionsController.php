@@ -14,13 +14,20 @@ namespace App\Controller\Interopt\Stripe;
 
 use App\DataMappers\Interopt\Stripe\SubscriptionDataMapper;
 use App\Dto\Interopt\Stripe\Models\ListModel;
+use App\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
 use App\Filters\Interopt\Stripe\SubscriptionList;
+use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
+use App\Subscription\CancellationRequestProcessor;
+use App\User\UserProvider;
+use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionsController
 {
@@ -50,5 +57,57 @@ class SubscriptionsController
         $json = $serializer->serialize($output, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/interopt/stripe/v1/subscriptions/{subscriptionId}', name: 'app_interopt_stripe_subscriptions_cancel', methods: ['DELETE'])]
+    public function cancelSubscription(
+        Request $request,
+        \Parthenon\Billing\Repository\SubscriptionRepositoryInterface $subscriptionRepository,
+        CancellationRequestRepositoryInterface $cancellationRequestRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        CancellationRequestProcessor $cancellationRequestProcessor,
+        \App\DataMappers\CancellationDataMapper $cancellationRequestFactory,
+        UserProvider $userProvider,
+    ): Response {
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            throw new NoEntityFoundException();
+        }
+
+        /** @var CancelSubscription $dto */
+        $dto = $serializer->deserialize($request->getContent(), CancelSubscription::class, 'json');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorOutput = [];
+            foreach ($errors as $error) {
+                $propertyPath = $error->getPropertyPath();
+                $errorOutput[$propertyPath] = $error->getMessage();
+            }
+
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorOutput,
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $cancellationRequest = $cancellationRequestFactory->getCancellationRequestForStripe($subscription, $dto);
+
+        $cancellationRequestRepository->save($cancellationRequest);
+
+        try {
+            $cancellationRequestProcessor->process($cancellationRequest);
+        } catch (\Throwable $exception) {
+            $cancellationRequestRepository->save($cancellationRequest);
+
+            return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
+        }
+
+        $cancellationRequestRepository->save($cancellationRequest);
+
+        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
 }

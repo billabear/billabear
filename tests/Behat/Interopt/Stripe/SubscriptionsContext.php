@@ -14,8 +14,11 @@ namespace App\Tests\Behat\Interopt\Stripe;
 
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
+use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\Orm\SubscriptionRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
+use App\Tests\Behat\Subscriptions\SubscriptionTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 
@@ -23,11 +26,14 @@ class SubscriptionsContext implements Context
 {
     use SendRequestTrait;
     use CustomerTrait;
+    use SubscriptionTrait;
 
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
+        private SubscriptionRepository $subscriptionRepository,
         private PriceRepository $priceRepository,
+        private SubscriptionPlanRepository $planRepository,
     ) {
     }
 
@@ -212,5 +218,15 @@ class SubscriptionsContext implements Context
         if (intval($count) !== count($data['data'])) {
             throw new \Exception(sprintf("Count didn't match. Got %d results", count($data['data'])));
         }
+    }
+
+    /**
+     * @When I cancel via the stripe interopt api the subscription :arg1 for :arg2
+     */
+    public function iCancelViaTheStripeInteroptApiTheSubscriptionFor($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+        $this->isStripe(true);
+        $this->sendJsonRequest('DELETE', '/interopt/stripe/v1/subscriptions/'.$subscription->getId());
     }
 }

@@ -14,6 +14,7 @@ namespace App\DataMappers;
 
 use App\DataMappers\Subscriptions\SubscriptionDataMapper;
 use App\Dto\Generic\App\CancellationRequest as AppDto;
+use App\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
 use App\Dto\Request\Api\Subscription\CancelSubscription as ApiInputDto;
 use App\Dto\Request\App\CancelSubscription as AppInputDto;
 use App\Entity\CancellationRequest as Entity;
@@ -26,6 +27,21 @@ class CancellationDataMapper
     public function __construct(
         private SubscriptionDataMapper $subscriptionDataMapper
     ) {
+    }
+
+    public function getCancellationRequestForStripe(Subscription $subscription, CancelSubscription $cancelSubscription): Entity
+    {
+        $cancellationRequest = new Entity();
+        $cancellationRequest->setSubscription($subscription);
+        $cancellationRequest->setCreatedAt(new \DateTime());
+        $cancellationRequest->setWhen(\App\Dto\Request\Api\Subscription\CancelSubscription::WHEN_END_OF_RUN);
+        $cancellationRequest->setRefundType($cancelSubscription->getProrate() ? \App\Dto\Request\Api\Subscription\CancelSubscription::REFUND_PRORATE : \App\Dto\Request\Api\Subscription\CancelSubscription::REFUND_NONE);
+        $cancellationRequest->setComment($cancelSubscription->getCancellationDetails()?->getComment());
+        $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
+        $cancellationRequest->setState('started');
+        $cancellationRequest->setCancellationType(CancellationType::CUSTOMER_REQUEST);
+
+        return $cancellationRequest;
     }
 
     public function getCancellationRequestEntity(Subscription $subscription, AppInputDto|ApiInputDto $dto, BillingAdminInterface $user = null): Entity

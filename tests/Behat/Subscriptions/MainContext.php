@@ -679,6 +679,18 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the subscription :arg1 for :arg2 will be pending cancel
+     */
+    public function theSubscriptionForWillBePendingCancel($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        if (SubscriptionStatus::PENDING_CANCEL !== $subscription->getStatus()) {
+            throw new \Exception('Not cancelled');
+        }
+    }
+
+    /**
      * @Then the subscription :arg1 for :arg2 will not be cancelled
      */
     public function theSubscriptionForWillNotBeCancelled($planName, $customerEmail)
