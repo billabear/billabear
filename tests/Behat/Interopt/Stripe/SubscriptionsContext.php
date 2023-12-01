@@ -229,4 +229,14 @@ class SubscriptionsContext implements Context
         $this->isStripe(true);
         $this->sendJsonRequest('DELETE', '/interopt/stripe/v1/subscriptions/'.$subscription->getId());
     }
+
+    /**
+     * @When I cancel via the stripe interopt api the subscription :arg1 for :arg2 with prorata cancellation
+     */
+    public function iCancelViaTheStripeInteroptApiTheSubscriptionForWithProrataCancellation($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+        $this->isStripe(true);
+        $this->sendJsonRequest('DELETE', '/interopt/stripe/v1/subscriptions/'.$subscription->getId(), ['prorate' => true]);
+    }
 }

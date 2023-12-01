@@ -34,7 +34,7 @@ class CancellationDataMapper
         $cancellationRequest = new Entity();
         $cancellationRequest->setSubscription($subscription);
         $cancellationRequest->setCreatedAt(new \DateTime());
-        $cancellationRequest->setWhen(\App\Dto\Request\Api\Subscription\CancelSubscription::WHEN_END_OF_RUN);
+        $cancellationRequest->setWhen($cancelSubscription->getProrate() ? \App\Dto\Request\Api\Subscription\CancelSubscription::WHEN_INSTANTLY : \App\Dto\Request\Api\Subscription\CancelSubscription::WHEN_END_OF_RUN);
         $cancellationRequest->setRefundType($cancelSubscription->getProrate() ? \App\Dto\Request\Api\Subscription\CancelSubscription::REFUND_PRORATE : \App\Dto\Request\Api\Subscription\CancelSubscription::REFUND_NONE);
         $cancellationRequest->setComment($cancelSubscription->getCancellationDetails()?->getComment());
         $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
