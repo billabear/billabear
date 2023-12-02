@@ -112,6 +112,6 @@ class SubscriptionsController
         $dto = $subscriptionDataMapper->createModel($subscription);
         $data = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse($data, json: true, status: JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse($data, status: JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }
