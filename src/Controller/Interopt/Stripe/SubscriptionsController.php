@@ -15,12 +15,12 @@ namespace App\Controller\Interopt\Stripe;
 use App\DataMappers\Interopt\Stripe\SubscriptionDataMapper;
 use App\Dto\Interopt\Stripe\Models\ListModel;
 use App\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
+use App\Entity\Subscription;
 use App\Filters\Interopt\Stripe\SubscriptionList;
 use App\Repository\CancellationRequestRepositoryInterface;
 use App\Repository\SubscriptionRepositoryInterface;
 use App\Subscription\CancellationRequestProcessor;
 use App\User\UserProvider;
-use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,6 +68,7 @@ class SubscriptionsController
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
         \App\DataMappers\CancellationDataMapper $cancellationRequestFactory,
+        SubscriptionDataMapper $subscriptionDataMapper,
         UserProvider $userProvider,
     ): Response {
         try {
@@ -108,6 +109,9 @@ class SubscriptionsController
 
         $cancellationRequestRepository->save($cancellationRequest);
 
-        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+        $dto = $subscriptionDataMapper->createModel($subscription);
+        $data = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($data, json: true, status: JsonResponse::HTTP_ACCEPTED);
     }
 }
