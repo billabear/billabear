@@ -25,7 +25,7 @@ class Checkout
     private ?Customer $customer = null;
 
     #[SerializedName('created_by')]
-    private BillingAdmin $createdBy;
+    private ?BillingAdmin $createdBy;
 
     private ?int $total = null;
 
@@ -74,12 +74,12 @@ class Checkout
         $this->customer = $customer;
     }
 
-    public function getCreatedBy(): BillingAdmin
+    public function getCreatedBy(): ?BillingAdmin
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(BillingAdmin $createdBy): void
+    public function setCreatedBy(?BillingAdmin $createdBy): void
     {
         $this->createdBy = $createdBy;
     }

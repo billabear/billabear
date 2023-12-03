@@ -185,6 +185,46 @@ class MainContext implements Context
     }
 
     /**
+     * @When I create the checkout via the API
+     */
+    public function iCreateTheCheckoutViaTheApi()
+    {
+        if (empty($this->subscriptions) && empty($this->items)) {
+            throw new \Exception('No subscriptions or items');
+        }
+
+        $payload = [
+            'name' => $this->name,
+            'customer' => $this->customer?->getId(),
+            'subscriptions' => [],
+            'items' => [],
+            'due_date' => $this->expiresAt?->format(\DATE_RFC3339_EXTENDED),
+            'permanent' => $this->permanent,
+            'brand' => $this->brandSettings?->getCode(),
+        ];
+
+        foreach ($this->subscriptions as $subscription) {
+            $payload['subscriptions'][] = [
+                'plan' => (string) $subscription['plan']->getId(),
+                'price' => (string) $subscription['price']->getId(),
+                'seat_number' => $subscription['seat_number'] ?? null,
+            ];
+        }
+
+        foreach ($this->items as $item) {
+            $payload['items'][] = [
+                'description' => $item['description'],
+                'amount' => $item['amount'],
+                'currency' => $item['currency'],
+                'include_tax' => $item['include_tax'],
+                'tax_type' => $item['tax_type'],
+            ];
+        }
+
+        $this->sendJsonRequest('POST', '/api/v1/checkout', $payload);
+    }
+
+    /**
      * @Then there should be a permanent checkout called :arg1
      */
     public function thereShouldBeAPermanentCheckoutCalled($name)

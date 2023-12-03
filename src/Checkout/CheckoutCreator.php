@@ -12,7 +12,8 @@
 
 namespace App\Checkout;
 
-use App\Dto\Request\App\Checkout\CreateCheckout;
+use App\Dto\Request\Api\Checkout\CreateCheckout as ApiRequest;
+use App\Dto\Request\App\Checkout\CreateCheckout as AppRequest;
 use App\Dto\Request\App\Checkout\CreateCheckoutSubscription;
 use App\Dto\Request\App\Invoice\CreateInvoiceItem;
 use App\Entity\Checkout;
@@ -44,7 +45,7 @@ class CheckoutCreator
     ) {
     }
 
-    public function createCheckout(CreateCheckout $createCheckout): Checkout
+    public function createCheckout(AppRequest|ApiRequest $createCheckout): Checkout
     {
         $checkout = new Checkout();
 
@@ -60,10 +61,12 @@ class CheckoutCreator
             $checkout->setSlug(bin2hex(random_bytes(48)));
         }
 
-        $user = $this->security->getUser();
-        $checkout->setCreatedBy($user);
+        if ($createCheckout instanceof AppRequest) {
+            $user = $this->security->getUser();
+            $checkout->setCreatedBy($user);
+        }
         $checkout->setBrandSettings($this->brandSettingsRepository->getByCode($createCheckout->getBrand()));
-        $checkout->setName($createCheckout->getName());
+        $checkout->setName($createCheckout->getName() ?? 'generated_'.bin2hex(random_bytes(16)));
         $checkout->setPermanent($createCheckout->isPermanent());
         if ($createCheckout->getExpiresAt()) {
             $expiresAt = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $createCheckout->getExpiresAt());
