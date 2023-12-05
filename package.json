@@ -36,7 +36,7 @@
         "@vuepic/vue-datepicker": "^4.3.0",
         "apexcharts": "^3.40.0",
         "autoprefixer": "^10.4.8",
-        "axios": "^0.27.2",
+        "axios": "^1.6.0",
         "axios-mock-adapter": "^1.21.2",
         "currency.js": "^2.0.4",
         "flowbite-vue": "^0.0.17-next.13",
