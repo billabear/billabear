@@ -114,6 +114,8 @@ default:
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
+            kernel:
+                path: src/App/Kernel.php
         Behat\MinkExtension:
             sessions:
                 symfony:
