@@ -10,7 +10,7 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\Invoice;
+namespace App\Workflow\TransitionHandlers\Invoice;
 
 use App\Entity\Processes\InvoiceProcess;
 use App\Invoice\PayLinkGenerator;

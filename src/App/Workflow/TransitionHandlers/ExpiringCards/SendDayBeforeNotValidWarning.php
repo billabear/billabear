@@ -10,20 +10,21 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\ExpiringCards;
+namespace App\Workflow\TransitionHandlers\ExpiringCards;
 
 use App\Entity\Processes\ExpiringCardProcess;
 use App\Enum\VoucherEvent;
-use App\Notification\Email\Data\ExpiringCardEmai;
+use App\Notification\Email\Data\ExpiringCardBeforeChargeNotValid;
 use App\Notification\Email\EmailBuilder;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\VoucherRepositoryInterface;
+use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class SendFirstEmail implements EventSubscriberInterface
+class SendDayBeforeNotValidWarning implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 
@@ -40,16 +41,24 @@ class SendFirstEmail implements EventSubscriberInterface
         /** @var ExpiringCardProcess $process */
         $process = $event->getSubject();
 
-        if (!$process->getCustomer()->getBrandSettings()->getNotificationSettings()->getExpiringCardWarning()) {
-            $this->getLogger()->info('Brand has expiring card warning email disable');
+        if (!$process->getCustomer()->getBrandSettings()->getNotificationSettings()->getExpiringCardDayBefore()) {
+            $this->getLogger()->info('Brand has expiring card warning day before email disable');
 
             return;
         }
 
-        $subscription = $process->getCustomer()->getSubscriptions()->first();
-        $voucher = $this->voucherRepository->getActiveByEvent(VoucherEvent::EXPIRED_CARD_ADDED);
-        $emailData = new ExpiringCardEmai($process->getPaymentCard(), $subscription, $voucher);
+        if (!isset($event->getContext()['subscription'])) {
+            throw new \Exception('Subscription not set');
+        }
 
+        $subscription = $event->getContext()['subscription'];
+
+        if (!$subscription instanceof Subscription) {
+            throw new \Exception('Subscription is not a subscription');
+        }
+
+        $voucher = $this->voucherRepository->getActiveByEvent(VoucherEvent::EXPIRED_CARD_ADDED);
+        $emailData = new ExpiringCardBeforeChargeNotValid($process->getPaymentCard(), $subscription, $voucher);
         $email = $this->builder->build($process->getCustomer(), $emailData);
         $this->emailSender->send($email);
         $this->getLogger()->info('Sent customer notice', ['sender' => get_class($this->emailSender)]);
@@ -58,7 +67,7 @@ class SendFirstEmail implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.expiring_card_process.transition.send_first_email' => ['transition'],
+            'workflow.expiring_card_process.transition.send_day_before_not_valid_email' => ['transition'],
         ];
     }
 }

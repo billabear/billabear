@@ -10,16 +10,14 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\Payment;
+namespace App\Workflow\TransitionHandlers\SubscriptionCancel;
 
-use App\Entity\PaymentCreation;
-use App\Notification\Email\Data\PaymentCreatedEmail;
+use App\Entity\CancellationRequest;
+use App\Entity\Customer;
+use App\Notification\Email\Data\SubscriptionCancelEmail;
 use App\Notification\Email\EmailBuilder;
-use App\Pdf\ReceiptPdfGenerator;
 use App\Repository\SettingsRepositoryInterface;
-use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
-use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -30,19 +28,26 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
 
     public function __construct(
         private SettingsRepositoryInterface $settingsRepository,
-        private ReceiptRepositoryInterface $receiptRepository,
         private EmailSenderInterface $emailSender,
         private EmailBuilder $builder,
-        private ReceiptPdfGenerator $pdfGenerator,
     ) {
     }
 
     public function transition(Event $event)
     {
-        $paymentCreation = $event->getSubject();
+        /** @var CancellationRequest $cancellationRequest */
+        $cancellationRequest = $event->getSubject();
 
-        if (!$paymentCreation instanceof PaymentCreation) {
-            $this->getLogger()->error('Payment creation transition has something other than a PaymentCreated object', ['class' => get_class($paymentCreation)]);
+        if (!$cancellationRequest instanceof CancellationRequest) {
+            $this->getLogger()->error('Cancellation Request transition has something other than a CancellationRequest object');
+
+            return;
+        }
+        /** @var Customer $customer */
+        $customer = $cancellationRequest->getSubscription()->getCustomer();
+
+        if (!$customer->getBrandSettings()->getNotificationSettings()->getSubscriptionCreation()) {
+            $this->getLogger()->info('Brand has subscription cancellation email');
 
             return;
         }
@@ -55,15 +60,9 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
 
             return;
         }
-        $receipt = $this->receiptRepository->getForPayment($paymentCreation->getPayment());
 
-        $emailData = new PaymentCreatedEmail($paymentCreation->getPayment(), $receipt[0]);
-
-        $pdf = $this->pdfGenerator->generate($receipt[0]);
-        $attachment = new Attachment('receipt.pdf', $pdf);
-
-        $email = $this->builder->build($paymentCreation->getPayment()->getCustomer(), $emailData);
-        $email->addAttachment($attachment);
+        $emailData = new SubscriptionCancelEmail($cancellationRequest->getSubscription());
+        $email = $this->builder->build($cancellationRequest->getSubscription()->getCustomer(), $emailData);
         $this->emailSender->send($email);
         $this->getLogger()->info('Sent customer notice', ['sender' => get_class($this->emailSender)]);
     }
@@ -71,7 +70,7 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.payment_creation.transition.send_customer_notice' => ['transition'],
+            'workflow.cancellation_request.transition.send_customer_notice' => ['transition'],
         ];
     }
 }

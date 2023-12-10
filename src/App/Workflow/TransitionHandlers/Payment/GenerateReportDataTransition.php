@@ -10,20 +10,20 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\RefundCreated;
+namespace App\Workflow\TransitionHandlers\Payment;
 
-use App\Entity\RefundCreatedProcess;
-use App\Stats\RefundAmountStats;
+use App\Entity\PaymentCreation;
+use App\Stats\PaymentAmountStats;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class HandleStatsTransition implements EventSubscriberInterface
+class GenerateReportDataTransition implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private RefundAmountStats $amountStats,
+        private PaymentAmountStats $amountStats,
     ) {
     }
 
@@ -31,12 +31,12 @@ class HandleStatsTransition implements EventSubscriberInterface
     {
         $paymentCreation = $event->getSubject();
 
-        if (!$paymentCreation instanceof RefundCreatedProcess) {
-            $this->getLogger()->error('Refund creation transition has something other than a PaymentCreated object', ['class' => get_class($paymentCreation)]);
+        if (!$paymentCreation instanceof PaymentCreation) {
+            $this->getLogger()->error('Payment creation transition has something other than a PaymentCreated object', ['class' => get_class($paymentCreation)]);
 
             return;
         }
-        $this->amountStats->process($paymentCreation->getRefund());
+        $this->amountStats->process($paymentCreation->getPayment());
 
         $this->getLogger()->info('Payment stats generated');
     }
@@ -44,7 +44,7 @@ class HandleStatsTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.refund_created_process.transition.handle_stats' => ['transition'],
+            'workflow.payment_creation.transition.generate_report_data' => ['transition'],
         ];
     }
 }

@@ -10,41 +10,42 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\ChargeBackCreation;
+namespace App\Workflow\TransitionHandlers\SubscriptionCreation;
 
-use App\Entity\ChargeBackCreation;
-use App\Stats\ChargeBackAmountStats;
+use App\Entity\SubscriptionCreation;
+use App\Stats\SubscriptionCreationStats;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class HandleStatsTransition implements EventSubscriberInterface
+class HandleStats implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private ChargeBackAmountStats $amountStats,
+        private SubscriptionCreationStats $creationStats,
     ) {
     }
 
     public function transition(Event $event)
     {
-        $chargeBackCreation = $event->getSubject();
+        $subscriptionCreation = $event->getSubject();
 
-        if (!$chargeBackCreation instanceof ChargeBackCreation) {
-            $this->getLogger()->error('Refund creation transition has something other than a PaymentCreated object', ['class' => get_class($chargeBackCreation)]);
+        if (!$subscriptionCreation instanceof SubscriptionCreation) {
+            $this->getLogger()->error('Subscription creation transition has something other than a SubscriptionCreation object');
 
             return;
         }
-        $this->amountStats->process($chargeBackCreation->getChargeBack());
 
-        $this->getLogger()->info('Payment stats generated');
+        $this->creationStats->handleStats($subscriptionCreation->getSubscription());
+
+        $this->getLogger()->info('Handled stats for subscription');
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.charge_back_creation.transition.handle_stats' => ['transition'],
+            'workflow.subscription_creation.transition.handle_stats' => ['transition'],
         ];
     }
 }

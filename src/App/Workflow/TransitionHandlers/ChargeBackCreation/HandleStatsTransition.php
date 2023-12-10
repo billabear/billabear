@@ -10,42 +10,41 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\SubscriptionCreation;
+namespace App\Workflow\TransitionHandlers\ChargeBackCreation;
 
-use App\Entity\SubscriptionCreation;
-use App\Stats\SubscriptionCreationStats;
+use App\Entity\ChargeBackCreation;
+use App\Stats\ChargeBackAmountStats;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class HandleStats implements EventSubscriberInterface
+class HandleStatsTransition implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionCreationStats $creationStats,
+        private ChargeBackAmountStats $amountStats,
     ) {
     }
 
     public function transition(Event $event)
     {
-        $subscriptionCreation = $event->getSubject();
+        $chargeBackCreation = $event->getSubject();
 
-        if (!$subscriptionCreation instanceof SubscriptionCreation) {
-            $this->getLogger()->error('Subscription creation transition has something other than a SubscriptionCreation object');
+        if (!$chargeBackCreation instanceof ChargeBackCreation) {
+            $this->getLogger()->error('Refund creation transition has something other than a PaymentCreated object', ['class' => get_class($chargeBackCreation)]);
 
             return;
         }
+        $this->amountStats->process($chargeBackCreation->getChargeBack());
 
-        $this->creationStats->handleStats($subscriptionCreation->getSubscription());
-
-        $this->getLogger()->info('Handled stats for subscription');
+        $this->getLogger()->info('Payment stats generated');
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.subscription_creation.transition.handle_stats' => ['transition'],
+            'workflow.charge_back_creation.transition.handle_stats' => ['transition'],
         ];
     }
 }

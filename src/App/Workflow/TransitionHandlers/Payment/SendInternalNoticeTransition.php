@@ -10,31 +10,33 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Workflow\SubscriptionCancel;
+namespace App\Workflow\TransitionHandlers\Payment;
 
-use App\Entity\CancellationRequest;
-use App\Stats\SubscriptionCancellationStats;
+use App\Entity\PaymentCreation;
+use App\Webhook\Outbound\EventDispatcherInterface;
+use App\Webhook\Outbound\Payload\PaymentReceivedPayload;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class HandleStatsTransition implements EventSubscriberInterface
+class SendInternalNoticeTransition implements EventSubscriberInterface
 {
-    public function __construct(private SubscriptionCancellationStats $cancellationStats)
+    public function __construct(private EventDispatcherInterface $eventDisptacher)
     {
     }
 
     public function transition(Event $event)
     {
-        /** @var CancellationRequest $cancellationRequest */
-        $cancellationRequest = $event->getSubject();
-
-        $this->cancellationStats->handleStats($cancellationRequest->getSubscription());
+        /** @var PaymentCreation $paymentCreation */
+        $paymentCreation = $event->getSubject();
+        $payment = $paymentCreation->getPayment();
+        $payload = new PaymentReceivedPayload($payment);
+        $this->eventDisptacher->dispatch($payload);
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancellation_request.transition.handle_stats' => ['transition'],
+            'workflow.payment_creation.transition.send_internal_notice' => ['transition'],
         ];
     }
 }
