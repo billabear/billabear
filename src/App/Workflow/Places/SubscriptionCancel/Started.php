@@ -10,10 +10,25 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Enum;
+namespace App\Workflow\Places\SubscriptionCancel;
 
-enum WorkflowType: string
+use App\Enum\WorkflowType;
+use App\Workflow\Places\PlaceInterface;
+
+class Started implements PlaceInterface
 {
-    case CANCEL_SUBSCRIPTION = 'cancel_subscription';
-    case CREATE_SUBSCRIPTION = 'create_subscription';
+    public function getName(): string
+    {
+        return 'started';
+    }
+
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    public function getWorkflow(): WorkflowType
+    {
+        return WorkflowType::CANCEL_SUBSCRIPTION;
+    }
 }

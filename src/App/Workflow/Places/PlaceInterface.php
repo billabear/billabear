@@ -10,10 +10,17 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Enum;
+namespace App\Workflow\Places;
 
-enum WorkflowType: string
+use App\Enum\WorkflowType;
+
+interface PlaceInterface
 {
-    case CANCEL_SUBSCRIPTION = 'cancel_subscription';
-    case CREATE_SUBSCRIPTION = 'create_subscription';
+    public function getName(): string;
+
+    public function getPriority(): int;
+
+    public function getWorkflow(): WorkflowType;
+
+    public function getToTransitionName(): string;
 }
