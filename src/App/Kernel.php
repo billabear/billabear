@@ -18,6 +18,6 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
-    public const VERSION = '2023.04.03';
-    public const VERSION_ID = '20230403';
+    public const VERSION = '2024.01.01';
+    public const VERSION_ID = '20240101';
 }
