@@ -387,6 +387,12 @@ services:
     app.repository.orm.lifetime_value:
         class: App\Repository\Orm\SubscriptionRepository
 
+    App\Repository\WorkflowTransitionRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.workflow_transition'
+    app.repository.orm.workflow_transition:
+        class: App\Repository\Orm\WorkflowTransitionRepository
+
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
 

@@ -48,6 +48,6 @@ class CheckoutController
         $dto = $checkoutDataMapper->createAppDto($quote);
         $json = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse($json, json: true);
+        return new JsonResponse($json, status: JsonResponse::HTTP_CREATED, json: true);
     }
 }
