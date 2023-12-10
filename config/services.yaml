@@ -22,6 +22,9 @@ services:
             - '../src/App/Dto/'
             - '../src/App/Kernel.php'
 
+    Custom\:
+        resource: '../src/Custom/'
+        
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
