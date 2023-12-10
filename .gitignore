@@ -37,3 +37,5 @@ symfony.lock
 .phpunit.result.cache
 .phpunit.cache
 ###< phpunit/phpunit ###
+
+/src/Custom/
