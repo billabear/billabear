@@ -12,11 +12,13 @@
 
 namespace App\Workflow\TransitionHandlers;
 
+use Symfony\Component\Workflow\Event\Event;
+
 interface DynamicHandlerInterface
 {
     public function getName(): string;
 
     public function getOptions(): array;
 
-    public function execute(array $workflowParameters): void;
+    public function execute(Event $event): void;
 }
