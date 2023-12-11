@@ -31,4 +31,9 @@ class Started implements PlaceInterface
     {
         return WorkflowType::CANCEL_SUBSCRIPTION;
     }
+
+    public function getToTransitionName(): string
+    {
+        return 'started';
+    }
 }

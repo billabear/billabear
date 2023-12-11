@@ -13,8 +13,8 @@
 namespace App\Repository\Orm;
 
 use App\Entity\WorkflowTransition;
+use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class WorkflowTransitionRepository extends CustomServiceRepository
 {
