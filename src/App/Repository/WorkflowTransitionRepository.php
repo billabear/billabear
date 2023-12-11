@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Enum\WorkflowType;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class WorkflowTransitionRepository extends DoctrineRepository implements WorkflowTransitionRepositoryInterface
 {
+    public function findForWorkflow(WorkflowType $workflowType): array
+    {
+        return $this->entityRepository->findBy(['workflow' => $workflowType]);
+    }
 }

@@ -13,13 +13,14 @@
 namespace App\Entity;
 
 use App\Enum\WorkflowType;
+use App\Workflow\Places\PlaceInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'workflow_transition')]
-class WorkflowTransition
+class WorkflowTransition implements PlaceInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -152,5 +153,10 @@ class WorkflowTransition
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getToTransitionName(): string
+    {
+        return sprintf('transition_%s', $this->name);
     }
 }

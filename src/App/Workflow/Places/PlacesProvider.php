@@ -13,13 +13,18 @@
 namespace App\Workflow\Places;
 
 use App\Enum\WorkflowType;
+use App\Repository\WorkflowTransitionRepositoryInterface;
 
-class PlacesManager
+class PlacesProvider
 {
     /**
      * @var PlaceInterface[]
      */
     private $places = [];
+
+    public function __construct(private WorkflowTransitionRepositoryInterface $workflowTransitionRepository)
+    {
+    }
 
     public function addPlace(PlaceInterface $place): void
     {
@@ -28,13 +33,17 @@ class PlacesManager
 
     public function getPlacesForWorkflow(WorkflowType $type)
     {
-        $output = [];
+        $output = $this->workflowTransitionRepository->findForWorkflow($type);
 
         foreach ($this->places as $place) {
             if ($place->getWorkflow() === $type) {
                 $output[] = $place;
             }
         }
+
+        usort($output, function (PlaceInterface $a, PlaceInterface $b) {
+            return $a->getPriority() <=> $b->getPriority();
+        });
 
         return $output;
     }
