@@ -13,35 +13,36 @@
 namespace App\Subscription;
 
 use App\Entity\CancellationRequest;
+use App\Enum\WorkflowType;
 use App\Repository\CancellationRequestRepositoryInterface;
+use App\Workflow\WorkflowBuilder;
 use Parthenon\Common\LoggerAwareTrait;
-use Symfony\Component\Workflow\WorkflowInterface;
 
 class CancellationRequestProcessor
 {
     use LoggerAwareTrait;
 
-    public const TRANSITIONS = ['cancel_subscription', 'issue_refund', 'handle_stats', 'send_customer_notice', 'send_internal_notice'];
+    public const TRANSITIONS = ['cancel_subscription', 'issue_refund', 'handle_stats', 'send_customer_notice', 'send_internal_notice', 'complete'];
 
     public function __construct(
-        private WorkflowInterface $cancellationRequestStateMachine,
+        private WorkflowBuilder $builder,
         private CancellationRequestRepositoryInterface $cancellationRequestRepository,
     ) {
     }
 
     public function process(CancellationRequest $request): void
     {
-        $cancellationRequestStateMachine = $this->cancellationRequestStateMachine;
-
+        $cancellationRequestStateMachine = $this->builder->build(WorkflowType::CANCEL_SUBSCRIPTION);
         $request->setHasError(false);
         try {
             foreach (self::TRANSITIONS as $transition) {
                 if ($cancellationRequestStateMachine->can($request, $transition)) {
                     $cancellationRequestStateMachine->apply($request, $transition);
-
                     $this->getLogger()->info('Did cancellation request transition', ['transition' => $transition]);
                 } else {
                     $this->getLogger()->info("Can't do cancellation request transition", ['transition' => $transition]);
+
+                    return;
                 }
             }
         } catch (\Throwable $e) {

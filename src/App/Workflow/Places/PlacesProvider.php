@@ -31,7 +31,10 @@ class PlacesProvider
         $this->places[] = $place;
     }
 
-    public function getPlacesForWorkflow(WorkflowType $type)
+    /**
+     * @return PlaceInterface[]
+     */
+    public function getPlacesForWorkflow(WorkflowType $type): array
     {
         $output = $this->workflowTransitionRepository->findForWorkflow($type);
 

@@ -42,7 +42,7 @@ class CancelSubscriptionTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancellation_request.transition.cancel_subscription' => ['transition'],
+            'workflow.cancel_subscription.transition.cancel_subscription' => ['transition'],
         ];
     }
 }

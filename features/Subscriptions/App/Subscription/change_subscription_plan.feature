@@ -44,7 +44,7 @@ Feature: Customer Subscription Update Plan
 
 
   Scenario: Update Plan
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
@@ -64,7 +64,7 @@ Feature: Customer Subscription Update Plan
     And the subscription "Better Test Plan" for "customer.one@example.org" will exist
 
   Scenario: Update Plan - Read
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |

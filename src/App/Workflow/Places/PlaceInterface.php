@@ -13,7 +13,9 @@
 namespace App\Workflow\Places;
 
 use App\Enum\WorkflowType;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
+#[AutoconfigureTag('app.workflow.place')]
 interface PlaceInterface
 {
     public function getName(): string;

@@ -24,7 +24,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancellation_request.transition.send_internal_notice' => ['transition'],
+            'workflow.cancel_subscription.transition.send_internal_notice' => ['transition'],
         ];
     }
 }

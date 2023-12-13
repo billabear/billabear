@@ -34,7 +34,7 @@ class HandleStatsTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancellation_request.transition.handle_stats' => ['transition'],
+            'workflow.cancel_subscription.transition.handle_stats' => ['transition'],
         ];
     }
 }

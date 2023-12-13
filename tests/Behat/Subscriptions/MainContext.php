@@ -674,6 +674,7 @@ class MainContext implements Context
         $subscription = $this->getSubscription($customerEmail, $planName);
 
         if (SubscriptionStatus::CANCELLED !== $subscription->getStatus()) {
+            var_dump($this->session->getPage()->getContent());
             throw new \Exception('Not cancelled');
         }
     }

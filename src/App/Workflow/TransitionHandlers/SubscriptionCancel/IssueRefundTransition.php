@@ -48,7 +48,7 @@ class IssueRefundTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancellation_request.transition.issue_refund' => ['transition'],
+            'workflow.cancel_subscription.transition.issue_refund' => ['transition'],
         ];
     }
 }
