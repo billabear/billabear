@@ -21,6 +21,8 @@ use Symfony\Component\Workflow\Event\Event;
 class WebhookHandler implements DynamicHandlerInterface
 {
     public const NAME = 'webhook';
+    public const OPTION_METHOD = 'method';
+    public const OPTION_URL = 'url';
 
     public function __construct(
         private ClientInterface $client,
@@ -37,11 +39,11 @@ class WebhookHandler implements DynamicHandlerInterface
     public function getOptions(): array
     {
         return [
-            'method' => [
+            self::OPTION_METHOD => [
                 'type' => 'string',
                 'required' => true,
             ],
-            'url' => [
+            self::OPTION_URL => [
                 'type' => 'string',
                 'required' => true,
             ],
@@ -64,8 +66,8 @@ class WebhookHandler implements DynamicHandlerInterface
             }
         }
 
-        $method = $options['method'];
-        $url = $options['url'];
+        $method = $options[self::OPTION_METHOD];
+        $url = $options[self::OPTION_URL];
 
         $stream = $this->streamFactory->createStream(json_encode($context['content'] ?? []));
 
