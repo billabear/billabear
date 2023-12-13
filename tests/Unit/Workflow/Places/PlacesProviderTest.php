@@ -5,7 +5,7 @@
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  *
- * Change Date: 09.10.2026 ( 3 years after 2023.4 release )
+ * Change Date: DD.MM.2026 ( 3 years after 2024.1 release )
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -109,8 +109,8 @@ class PlacesProviderTest extends TestCase
         $this->assertContains($placeThree, $places);
     }
 
-    public function testThatReturnsCorrectlySorted(): void {
-
+    public function testThatReturnsCorrectlySorted(): void
+    {
         $entity = new WorkflowTransition();
         $entity->setPriority(125);
 
