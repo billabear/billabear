@@ -5,16 +5,19 @@
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  *
- * Change Date: DD.MM.2026 ( 3 years after 2024.1 release )
+ * Change Date: DD.MM.2027 ( 3 years after 2024.1 release )
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
 namespace App\Workflow;
 
+use App\Entity\WorkflowTransition;
 use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
+use App\Workflow\TransitionHandlers\DynamicHandlerManager;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;
 use Symfony\Component\Workflow\Definition;
@@ -26,9 +29,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class WorkflowBuilder
 {
+    /**
+     * @param EventDispatcherInterface|EventDispatcher $eventDispatcher
+     */
     public function __construct(
         private PlacesProvider $placesProvider,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private DynamicHandlerManager $dynamicHandlerManager,
     ) {
     }
 
@@ -46,6 +53,8 @@ class WorkflowBuilder
             [$this->getPlaceNames($places)[0]],
             new \Symfony\Component\Workflow\Metadata\InMemoryMetadataStore([], [], new \SplObjectStorage())
         );
+
+        $this->addEventHandlers($workflowType, $places);
 
         $workFlow = new StateMachine(
             $definition,
@@ -85,5 +94,18 @@ class WorkflowBuilder
         }
 
         return $output;
+    }
+
+    /**
+     * @param PlaceInterface[] $places
+     */
+    private function addEventHandlers(WorkflowType $workflowType, array $places): void
+    {
+        foreach ($places as $place) {
+            if ($place instanceof WorkflowTransition) {
+                $handler = $this->dynamicHandlerManager->getHandlerByName($place->getHandlerName());
+                $this->eventDispatcher->addListener(sprintf('workflow.%s.transition.%s', $workflowType->value, $place->getToTransitionName()), [$handler, 'execute']);
+            }
+        }
     }
 }
