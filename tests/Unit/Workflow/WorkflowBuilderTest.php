@@ -302,7 +302,6 @@ class WorkflowBuilderTest extends TestCase
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
         $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
-        $handler = $this->createMock(DynamicHandlerInterface::class);
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([]);
 
