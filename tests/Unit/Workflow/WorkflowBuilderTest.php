@@ -113,4 +113,68 @@ class WorkflowBuilderTest extends TestCase
         $this->assertContains($placeClassName, $definition->getPlaces());
         $this->assertContains($placeName, $definition->getPlaces());
     }
+
+    public function testThatWorkflowHasAllTheTransition(): void
+    {
+        $handlerName = 'cool_handler';
+        $placeName = 'a_cool_place';
+        $transitionName = 'transition_a_cool_place';
+
+        $placesProvider = $this->createMock(PlacesProvider::class);
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
+        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $placeEntity = $this->createMock(WorkflowTransition::class);
+
+        $placeEntity->method('getHandlerName')->willReturn($handlerName);
+        $placeEntity->method('getToTransitionName')->willReturn($transitionName);
+        $placeEntity->method('getName')->willReturn($placeName);
+
+        $placeClassName = 'hardcoded_place';
+        $placeClassTransition = 'hardcoded_transition';
+
+        $placeClass = new class($placeClassName, $placeClassTransition) implements PlaceInterface {
+            public function __construct(private string $placeClassName, private string $placeClassTransition)
+            {
+            }
+
+            public function getName(): string
+            {
+                return $this->placeClassName;
+            }
+
+            public function getPriority(): int
+            {
+                return 100;
+            }
+
+            public function getWorkflow(): WorkflowType
+            {
+                return WorkflowType::CANCEL_SUBSCRIPTION;
+            }
+
+            public function getToTransitionName(): string
+            {
+                return $this->placeClassTransition;
+            }
+        };
+
+        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
+        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+
+        $subject = new WorkflowBuilder(
+            $placesProvider,
+            $eventDispatcher,
+            $dynamicHandlerProvider,
+            'prod'
+        );
+        $workflow = $subject->build(WorkflowType::CANCEL_SUBSCRIPTION);
+        $definition = $workflow->getDefinition();
+
+        $this->assertCount(1, $definition->getTransitions());
+        $transition = $definition->getTransitions()[0];
+        $this->assertEquals([$placeName], $transition->getFroms());
+        $this->assertEquals([$placeClassName], $transition->getTos());
+        $this->assertEquals($placeClassTransition, $transition->getName());
+    }
 }
