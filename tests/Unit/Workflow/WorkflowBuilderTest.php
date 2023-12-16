@@ -294,4 +294,24 @@ class WorkflowBuilderTest extends TestCase
         $workflow = $subject->build(WorkflowType::CANCEL_SUBSCRIPTION);
         $this->assertNotInstanceOf(TraceableWorkflow::class, $workflow);
     }
+
+    public function testThrowsExceptionWhenNoPlaces(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $placesProvider = $this->createMock(PlacesProvider::class);
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
+        $handler = $this->createMock(DynamicHandlerInterface::class);
+
+        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([]);
+
+        $subject = new WorkflowBuilder(
+            $placesProvider,
+            $eventDispatcher,
+            $dynamicHandlerProvider,
+            'prod'
+        );
+        $subject->build(WorkflowType::CANCEL_SUBSCRIPTION);
+    }
 }
