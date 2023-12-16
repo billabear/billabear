@@ -17,6 +17,7 @@ use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
 use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;
