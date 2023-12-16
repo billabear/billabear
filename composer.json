@@ -45,14 +45,15 @@
     },
     "require-dev": {
         "behat/behat": "^3.11",
+        "dg/bypass-finals": "^1.5",
+        "fakerphp/faker": "*",
         "friends-of-behat/mink": "^1.10",
         "friends-of-behat/mink-browserkit-driver": "^1.6",
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.3",
         "friendsofphp/php-cs-fixer": "^v3.14.4",
         "phpunit/phpunit": "^10.1",
-        "symfony/web-profiler-bundle": "^6.1",
-        "fakerphp/faker": "*"
+        "symfony/web-profiler-bundle": "^6.1"
     },
     "config": {
         "allow-plugins": {

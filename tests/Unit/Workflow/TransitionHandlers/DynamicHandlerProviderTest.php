@@ -12,6 +12,7 @@
 
 namespace App\Tests\Unit\Workflow\TransitionHandlers;
 
+use App\Entity\WorkflowTransition;
 use App\Exception\Workflow\NoHandlerFoundException;
 use App\Workflow\TransitionHandlers\DynamicHandlerInterface;
 use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
@@ -21,24 +22,26 @@ class DynamicHandlerProviderTest extends TestCase
 {
     public function testReturnsHandler(): void
     {
+        $workflowTransition = new WorkflowTransition();
         $handlerOne = $this->createMock(DynamicHandlerInterface::class);
         $handlerTwo = $this->createMock(DynamicHandlerInterface::class);
 
         $handlerOne->method('getName')->willReturn('one');
+        $handlerOne->expects($this->once())->method('createCloneWithTransition');
         $handlerTwo->method('getName')->willReturn('two');
+        $handlerTwo->expects($this->never())->method('createCloneWithTransition');
 
         $subject = new DynamicHandlerProvider();
         $subject->addHandler($handlerOne);
         $subject->addHandler($handlerTwo);
-
-        $this->assertSame($handlerOne, $subject->createHandler('one'));
-        $this->assertSame($handlerTwo, $subject->createHandler('two'));
+        $subject->createHandler('one', $workflowTransition);
     }
 
     public function testThrowsExceptionWhenNoHandlerIsFound(): void
     {
         $this->expectException(NoHandlerFoundException::class);
 
+        $workflowTransition = new WorkflowTransition();
         $handlerOne = $this->createMock(DynamicHandlerInterface::class);
         $handlerTwo = $this->createMock(DynamicHandlerInterface::class);
 
@@ -49,6 +52,6 @@ class DynamicHandlerProviderTest extends TestCase
         $subject->addHandler($handlerOne);
         $subject->addHandler($handlerTwo);
 
-        $subject->createHandler('three');
+        $subject->createHandler('three', $workflowTransition);
     }
 }
