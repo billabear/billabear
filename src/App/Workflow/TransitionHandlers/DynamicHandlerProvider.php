@@ -12,6 +12,8 @@
 
 namespace App\Workflow\TransitionHandlers;
 
+use App\Exception\Workflow\NoHandlerFoundException;
+
 class DynamicHandlerProvider
 {
     /**
@@ -31,6 +33,6 @@ class DynamicHandlerProvider
                 return $handler;
             }
         }
-        throw new \Exception(sprintf("Can't find handler for %s", $name));
+        throw new NoHandlerFoundException(sprintf("Can't find handler for %s", $name));
     }
 }

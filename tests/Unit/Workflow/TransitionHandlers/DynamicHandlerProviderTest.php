@@ -12,6 +12,7 @@
 
 namespace App\Tests\Unit\Workflow\TransitionHandlers;
 
+use App\Exception\Workflow\NoHandlerFoundException;
 use App\Workflow\TransitionHandlers\DynamicHandlerInterface;
 use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
 use PHPUnit\Framework\TestCase;
@@ -32,5 +33,22 @@ class DynamicHandlerProviderTest extends TestCase
 
         $this->assertSame($handlerOne, $subject->getHandlerByName('one'));
         $this->assertSame($handlerTwo, $subject->getHandlerByName('two'));
+    }
+
+    public function testThrowsExceptionWhenNoHandlerIsFound(): void
+    {
+        $this->expectException(NoHandlerFoundException::class);
+
+        $handlerOne = $this->createMock(DynamicHandlerInterface::class);
+        $handlerTwo = $this->createMock(DynamicHandlerInterface::class);
+
+        $handlerOne->method('getName')->willReturn('one');
+        $handlerTwo->method('getName')->willReturn('two');
+
+        $subject = new DynamicHandlerProvider();
+        $subject->addHandler($handlerOne);
+        $subject->addHandler($handlerTwo);
+
+        $subject->getHandlerByName('three');
     }
 }
