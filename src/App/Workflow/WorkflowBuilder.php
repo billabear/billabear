@@ -16,7 +16,7 @@ use App\Entity\WorkflowTransition;
 use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
-use App\Workflow\TransitionHandlers\DynamicHandlerManager;
+use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;
@@ -35,7 +35,9 @@ class WorkflowBuilder
     public function __construct(
         private PlacesProvider $placesProvider,
         private EventDispatcherInterface $eventDispatcher,
-        private DynamicHandlerManager $dynamicHandlerManager,
+        private DynamicHandlerProvider $dynamicHandlerManager,
+        #[Autowire('%kernel.environment%')]
+        private string $env,
     ) {
     }
 
@@ -64,7 +66,11 @@ class WorkflowBuilder
             null,
         );
 
-        return new TraceableWorkflow($workFlow, new Stopwatch());
+        if ('dev' === $this->env || 'test' === $this->env) {
+            return new TraceableWorkflow($workFlow, new Stopwatch());
+        }
+
+        return $workFlow;
     }
 
     private function getPlaceNames(array $places): array

@@ -12,7 +12,7 @@
 
 namespace App\Workflow\TransitionHandlers;
 
-class DynamicHandlerManager
+class DynamicHandlerProvider
 {
     /**
      * @var DynamicHandlerInterface[]

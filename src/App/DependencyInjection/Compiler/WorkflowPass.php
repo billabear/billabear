@@ -13,7 +13,7 @@
 namespace App\DependencyInjection\Compiler;
 
 use App\Workflow\Places\PlacesProvider;
-use App\Workflow\TransitionHandlers\DynamicHandlerManager;
+use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -38,11 +38,11 @@ class WorkflowPass implements CompilerPassInterface
         }
 
         // always first check if the primary service is defined
-        if (!$container->has(DynamicHandlerManager::class)) {
+        if (!$container->has(DynamicHandlerProvider::class)) {
             return;
         }
 
-        $definition = $container->findDefinition(DynamicHandlerManager::class);
+        $definition = $container->findDefinition(DynamicHandlerProvider::class);
 
         // find all service IDs with the app.mail_transport tag
         $taggedServices = $container->findTaggedServiceIds('app.workflow.handler');
