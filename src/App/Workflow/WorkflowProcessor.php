@@ -38,7 +38,7 @@ class WorkflowProcessor
                 } else {
                     $this->getLogger()->info("Can't do transition for workflow", ['workflow' => $workflowType->value, 'transition' => $transition]);
 
-                    return;
+                    return $subject;
                 }
             }
         } catch (\Throwable $e) {
@@ -48,6 +48,8 @@ class WorkflowProcessor
         }
 
         $repository->save($subject);
+
+        return $subject;
     }
 
     private function getTransitions(WorkflowInterface $workflow): array
