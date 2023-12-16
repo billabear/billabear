@@ -110,7 +110,7 @@ class WorkflowBuilder
     {
         foreach ($places as $place) {
             if ($place instanceof WorkflowTransition) {
-                $handler = $this->dynamicHandlerManager->getHandlerByName($place->getHandlerName());
+                $handler = $this->dynamicHandlerManager->createHandler($place->getHandlerName(), $place);
                 $this->eventDispatcher->addListener(sprintf('workflow.%s.transition.%s', $workflowType->value, $place->getToTransitionName()), [$handler, 'execute']);
             }
         }

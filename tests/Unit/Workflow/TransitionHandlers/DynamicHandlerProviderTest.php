@@ -31,8 +31,8 @@ class DynamicHandlerProviderTest extends TestCase
         $subject->addHandler($handlerOne);
         $subject->addHandler($handlerTwo);
 
-        $this->assertSame($handlerOne, $subject->getHandlerByName('one'));
-        $this->assertSame($handlerTwo, $subject->getHandlerByName('two'));
+        $this->assertSame($handlerOne, $subject->createHandler('one'));
+        $this->assertSame($handlerTwo, $subject->createHandler('two'));
     }
 
     public function testThrowsExceptionWhenNoHandlerIsFound(): void
@@ -49,6 +49,6 @@ class DynamicHandlerProviderTest extends TestCase
         $subject->addHandler($handlerOne);
         $subject->addHandler($handlerTwo);
 
-        $subject->getHandlerByName('three');
+        $subject->createHandler('three');
     }
 }

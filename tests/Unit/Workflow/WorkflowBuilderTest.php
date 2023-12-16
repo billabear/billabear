@@ -40,7 +40,7 @@ class WorkflowBuilderTest extends TestCase
         $placeEntity->method('getToTransitionName')->willReturn($placeName);
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity]);
-        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+        $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $eventDispatcher->expects($this->once())->method('addListener')->with(sprintf('workflow.%s.transition.%s', WorkflowType::CANCEL_SUBSCRIPTION->value, $placeName), [$handler, 'execute']);
 
@@ -99,7 +99,7 @@ class WorkflowBuilderTest extends TestCase
         };
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
-        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+        $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
             $placesProvider,
@@ -161,7 +161,7 @@ class WorkflowBuilderTest extends TestCase
         };
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
-        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+        $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
             $placesProvider,
@@ -225,7 +225,7 @@ class WorkflowBuilderTest extends TestCase
         };
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
-        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+        $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
             $placesProvider,
@@ -283,7 +283,7 @@ class WorkflowBuilderTest extends TestCase
         };
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
-        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+        $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
             $placesProvider,

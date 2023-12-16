@@ -12,6 +12,7 @@
 
 namespace App\Workflow\TransitionHandlers;
 
+use App\Entity\WorkflowTransition;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Workflow\Event\Event;
 
@@ -23,4 +24,12 @@ interface DynamicHandlerInterface
     public function getOptions(): array;
 
     public function execute(Event $event): void;
+
+    /**
+     * Added to allow the handler to have the transition to get the handler options. Otherwise
+     * the only other option is to fetch the workflow transition in the workflow processor and
+     * it makes no sense to fetch the data in two different places. And this allows more overall
+     * flexibility since they'll have access to all the data when executing the handler.
+     */
+    public function createCloneWithTransition(WorkflowTransition $transition): DynamicHandlerInterface;
 }

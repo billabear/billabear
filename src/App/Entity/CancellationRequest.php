@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Enum\CancellationType;
+use App\Workflow\WorkflowProcessInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\SubscriptionInterface;
@@ -20,7 +21,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'cancellation_requests')]
-class CancellationRequest
+class CancellationRequest implements WorkflowProcessInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]

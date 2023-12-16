@@ -12,7 +12,9 @@
 
 namespace App\Workflow\TransitionHandlers;
 
+use App\Entity\WorkflowTransition;
 use App\Exception\Workflow\InvalidHandlerOptionsException;
+use App\Exception\Workflow\WorkflowTransitionNotSetException;
 use Parthenon\Common\Http\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -23,6 +25,7 @@ class WebhookHandler implements DynamicHandlerInterface
     public const NAME = 'webhook';
     public const OPTION_METHOD = 'method';
     public const OPTION_URL = 'url';
+    private WorkflowTransition $workflowTransition;
 
     public function __construct(
         private ClientInterface $client,
@@ -54,10 +57,10 @@ class WebhookHandler implements DynamicHandlerInterface
     {
         $context = $event->getContext();
 
-        if (!isset($context['options'])) {
-            throw new InvalidHandlerOptionsException('No options set');
+        if (!isset($this->workflowTransition)) {
+            throw new WorkflowTransitionNotSetException();
         }
-        $options = $context['options'];
+        $options = $this->workflowTransition->getHandlerOptions();
 
         foreach ($this->getOptions() as $name => $option) {
             $required = $option['required'] ?? false;
@@ -74,5 +77,13 @@ class WebhookHandler implements DynamicHandlerInterface
         $request = $this->requestFactory->createRequest($method, $url);
         $request = $request->withBody($stream);
         $this->client->sendRequest($request);
+    }
+
+    public function createCloneWithTransition(WorkflowTransition $transition): DynamicHandlerInterface
+    {
+        $newHandler = clone $this;
+        $newHandler->workflowTransition = $transition;
+
+        return $newHandler;
     }
 }
