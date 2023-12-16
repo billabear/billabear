@@ -14,6 +14,7 @@ namespace App\Tests\Unit\Workflow;
 
 use App\Entity\WorkflowTransition;
 use App\Enum\WorkflowType;
+use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
 use App\Workflow\TransitionHandlers\DynamicHandlerInterface;
 use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
@@ -48,7 +49,68 @@ class WorkflowBuilderTest extends TestCase
             $dynamicHandlerProvider,
             'prod'
         );
-
         $subject->build(WorkflowType::CANCEL_SUBSCRIPTION);
+    }
+
+    public function testThatWorkflowHasAllThePlaces(): void
+    {
+        $handlerName = 'cool_handler';
+        $placeName = 'a_cool_place';
+        $transitionName = 'transition_a_cool_place';
+
+        $placesProvider = $this->createMock(PlacesProvider::class);
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
+        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $placeEntity = $this->createMock(WorkflowTransition::class);
+
+        $placeEntity->method('getHandlerName')->willReturn($handlerName);
+        $placeEntity->method('getToTransitionName')->willReturn($transitionName);
+        $placeEntity->method('getName')->willReturn($placeName);
+
+        $placeClassName = 'hardcoded_place';
+        $placeClassTransition = 'hardcoded_transition';
+
+        $placeClass = new class($placeClassName, $placeClassTransition) implements PlaceInterface {
+            public function __construct(private string $placeClassName, private string $placeClassTransition)
+            {
+            }
+
+            public function getName(): string
+            {
+                return $this->placeClassName;
+            }
+
+            public function getPriority(): int
+            {
+                return 100;
+            }
+
+            public function getWorkflow(): WorkflowType
+            {
+                return WorkflowType::CANCEL_SUBSCRIPTION;
+            }
+
+            public function getToTransitionName(): string
+            {
+                return $this->placeClassTransition;
+            }
+        };
+
+        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
+        $dynamicHandlerProvider->method('getHandlerByName')->with($handlerName)->willReturn($handler);
+
+        $subject = new WorkflowBuilder(
+            $placesProvider,
+            $eventDispatcher,
+            $dynamicHandlerProvider,
+            'prod'
+        );
+        $workflow = $subject->build(WorkflowType::CANCEL_SUBSCRIPTION);
+        $definition = $workflow->getDefinition();
+
+        $this->assertCount(2, $definition->getPlaces());
+        $this->assertContains($placeClassName, $definition->getPlaces());
+        $this->assertContains($placeName, $definition->getPlaces());
     }
 }
