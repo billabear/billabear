@@ -20,7 +20,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class WebhookHandler implements DynamicHandlerInterface
+class WebhookTransitionHandler implements DynamicTransitionHandlerInterface
 {
     public const NAME = 'webhook';
     public const OPTION_METHOD = 'method';
@@ -79,7 +79,7 @@ class WebhookHandler implements DynamicHandlerInterface
         $this->client->sendRequest($request);
     }
 
-    public function createCloneWithTransition(WorkflowTransition $transition): DynamicHandlerInterface
+    public function createCloneWithTransition(WorkflowTransition $transition): DynamicTransitionHandlerInterface
     {
         $newHandler = clone $this;
         $newHandler->workflowTransition = $transition;

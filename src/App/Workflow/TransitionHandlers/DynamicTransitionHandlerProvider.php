@@ -15,19 +15,19 @@ namespace App\Workflow\TransitionHandlers;
 use App\Entity\WorkflowTransition;
 use App\Exception\Workflow\NoHandlerFoundException;
 
-class DynamicHandlerProvider
+class DynamicTransitionHandlerProvider
 {
     /**
-     * @var DynamicHandlerInterface[]
+     * @var DynamicTransitionHandlerInterface[]
      */
     private array $handlers = [];
 
-    public function addHandler(DynamicHandlerInterface $dynamicHandler)
+    public function addHandler(DynamicTransitionHandlerInterface $dynamicHandler)
     {
         $this->handlers[] = $dynamicHandler;
     }
 
-    public function createHandler(string $name, WorkflowTransition $workflowTransition): DynamicHandlerInterface
+    public function createHandler(string $name, WorkflowTransition $workflowTransition): DynamicTransitionHandlerInterface
     {
         foreach ($this->handlers as $handler) {
             if ($handler->getName() === $name) {
@@ -35,5 +35,13 @@ class DynamicHandlerProvider
             }
         }
         throw new NoHandlerFoundException(sprintf("Can't find handler for %s", $name));
+    }
+
+    /**
+     * @return DynamicTransitionHandlerInterface[]
+     */
+    public function getAll(): array
+    {
+        return $this->handlers;
     }
 }

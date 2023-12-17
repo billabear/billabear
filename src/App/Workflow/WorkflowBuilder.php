@@ -16,7 +16,7 @@ use App\Entity\WorkflowTransition;
 use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
-use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
+use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -36,7 +36,7 @@ class WorkflowBuilder
     public function __construct(
         private PlacesProvider $placesProvider,
         private EventDispatcherInterface $eventDispatcher,
-        private DynamicHandlerProvider $dynamicHandlerManager,
+        private DynamicTransitionHandlerProvider $dynamicHandlerManager,
         #[Autowire('%kernel.environment%')]
         private string $env,
     ) {

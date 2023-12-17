@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Workflow\Event\Event;
 
 #[AutoconfigureTag('app.workflow.handler')]
-interface DynamicHandlerInterface
+interface DynamicTransitionHandlerInterface
 {
     public function getName(): string;
 
@@ -31,5 +31,5 @@ interface DynamicHandlerInterface
      * it makes no sense to fetch the data in two different places. And this allows more overall
      * flexibility since they'll have access to all the data when executing the handler.
      */
-    public function createCloneWithTransition(WorkflowTransition $transition): DynamicHandlerInterface;
+    public function createCloneWithTransition(WorkflowTransition $transition): DynamicTransitionHandlerInterface;
 }

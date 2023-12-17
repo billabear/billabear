@@ -111,6 +111,9 @@ default:
                 # Stripe Interopt Layer
                 - App\Tests\Behat\Interopt\Stripe\SubscriptionsContext
 
+                # Workflow
+                - App\Tests\Behat\Workflow\CancellationRequestContext
+
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

@@ -14,8 +14,8 @@ namespace App\Tests\Unit\Workflow\TransitionHandlers;
 
 use App\Entity\WorkflowTransition;
 use App\Exception\Workflow\NoHandlerFoundException;
-use App\Workflow\TransitionHandlers\DynamicHandlerInterface;
-use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
+use App\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
+use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use PHPUnit\Framework\TestCase;
 
 class DynamicHandlerProviderTest extends TestCase
@@ -23,15 +23,15 @@ class DynamicHandlerProviderTest extends TestCase
     public function testReturnsHandler(): void
     {
         $workflowTransition = new WorkflowTransition();
-        $handlerOne = $this->createMock(DynamicHandlerInterface::class);
-        $handlerTwo = $this->createMock(DynamicHandlerInterface::class);
+        $handlerOne = $this->createMock(DynamicTransitionHandlerInterface::class);
+        $handlerTwo = $this->createMock(DynamicTransitionHandlerInterface::class);
 
         $handlerOne->method('getName')->willReturn('one');
         $handlerOne->expects($this->once())->method('createCloneWithTransition');
         $handlerTwo->method('getName')->willReturn('two');
         $handlerTwo->expects($this->never())->method('createCloneWithTransition');
 
-        $subject = new DynamicHandlerProvider();
+        $subject = new DynamicTransitionHandlerProvider();
         $subject->addHandler($handlerOne);
         $subject->addHandler($handlerTwo);
         $subject->createHandler('one', $workflowTransition);
@@ -42,13 +42,13 @@ class DynamicHandlerProviderTest extends TestCase
         $this->expectException(NoHandlerFoundException::class);
 
         $workflowTransition = new WorkflowTransition();
-        $handlerOne = $this->createMock(DynamicHandlerInterface::class);
-        $handlerTwo = $this->createMock(DynamicHandlerInterface::class);
+        $handlerOne = $this->createMock(DynamicTransitionHandlerInterface::class);
+        $handlerTwo = $this->createMock(DynamicTransitionHandlerInterface::class);
 
         $handlerOne->method('getName')->willReturn('one');
         $handlerTwo->method('getName')->willReturn('two');
 
-        $subject = new DynamicHandlerProvider();
+        $subject = new DynamicTransitionHandlerProvider();
         $subject->addHandler($handlerOne);
         $subject->addHandler($handlerTwo);
 

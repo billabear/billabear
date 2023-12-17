@@ -16,8 +16,8 @@ use App\Entity\WorkflowTransition;
 use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
-use App\Workflow\TransitionHandlers\DynamicHandlerInterface;
-use App\Workflow\TransitionHandlers\DynamicHandlerProvider;
+use App\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
+use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use App\Workflow\WorkflowBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -32,8 +32,8 @@ class WorkflowBuilderTest extends TestCase
 
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
-        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicTransitionHandlerProvider::class);
+        $handler = $this->createMock(DynamicTransitionHandlerInterface::class);
         $placeEntity = $this->createMock(WorkflowTransition::class);
 
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
@@ -61,8 +61,8 @@ class WorkflowBuilderTest extends TestCase
 
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
-        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicTransitionHandlerProvider::class);
+        $handler = $this->createMock(DynamicTransitionHandlerInterface::class);
         $placeEntity = $this->createMock(WorkflowTransition::class);
 
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
@@ -123,8 +123,8 @@ class WorkflowBuilderTest extends TestCase
 
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
-        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicTransitionHandlerProvider::class);
+        $handler = $this->createMock(DynamicTransitionHandlerInterface::class);
         $placeEntity = $this->createMock(WorkflowTransition::class);
 
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
@@ -187,8 +187,8 @@ class WorkflowBuilderTest extends TestCase
 
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
-        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicTransitionHandlerProvider::class);
+        $handler = $this->createMock(DynamicTransitionHandlerInterface::class);
         $placeEntity = $this->createMock(WorkflowTransition::class);
 
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
@@ -245,8 +245,8 @@ class WorkflowBuilderTest extends TestCase
 
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
-        $handler = $this->createMock(DynamicHandlerInterface::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicTransitionHandlerProvider::class);
+        $handler = $this->createMock(DynamicTransitionHandlerInterface::class);
         $placeEntity = $this->createMock(WorkflowTransition::class);
 
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
@@ -301,7 +301,7 @@ class WorkflowBuilderTest extends TestCase
 
         $placesProvider = $this->createMock(PlacesProvider::class);
         $eventDispatcher = $this->createMock(EventDispatcher::class);
-        $dynamicHandlerProvider = $this->createMock(DynamicHandlerProvider::class);
+        $dynamicHandlerProvider = $this->createMock(DynamicTransitionHandlerProvider::class);
 
         $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([]);
 

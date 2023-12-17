@@ -14,7 +14,7 @@ namespace App\Tests\Unit\Workflow\TransitionHandlers;
 
 use App\Entity\WorkflowTransition;
 use App\Exception\Workflow\InvalidHandlerOptionsException;
-use App\Workflow\TransitionHandlers\WebhookHandler;
+use App\Workflow\TransitionHandlers\WebhookTransitionHandler;
 use Parthenon\Common\Http\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -38,7 +38,7 @@ class WebhookHandlerTest extends TestCase
         $event->method('getContext')->willReturn([]);
         $event->method('getTransition')->willReturn($transition);
 
-        $subject = (new WebhookHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
+        $subject = (new WebhookTransitionHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
         $subject->execute($event);
     }
 
@@ -59,7 +59,7 @@ class WebhookHandlerTest extends TestCase
         $event->method('getTransition')->willReturn($transition);
         $transition->method('getHandlerOptions')->willReturn($options);
 
-        $subject = (new WebhookHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
+        $subject = (new WebhookTransitionHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
         $subject->execute($event);
     }
 
@@ -81,7 +81,7 @@ class WebhookHandlerTest extends TestCase
 
         $transition->method('getHandlerOptions')->willReturn($options);
 
-        $subject = (new WebhookHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
+        $subject = (new WebhookTransitionHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
         $subject->execute($event);
     }
 
@@ -112,7 +112,7 @@ class WebhookHandlerTest extends TestCase
 
         $client->expects($this->once())->method('sendRequest')->with($request);
 
-        $subject = (new WebhookHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
+        $subject = (new WebhookTransitionHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
         $subject->execute($event);
     }
 }
