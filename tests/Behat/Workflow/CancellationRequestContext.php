@@ -12,6 +12,9 @@
 
 namespace App\Tests\Behat\Workflow;
 
+use App\Entity\WorkflowTransition;
+use App\Enum\WorkflowType;
+use App\Repository\Orm\WorkflowTransitionRepository;
 use App\Tests\Behat\SendRequestTrait;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\SubscriptionCancel\Completed;
@@ -23,14 +26,17 @@ use App\Workflow\Places\SubscriptionCancel\StatsGenerated;
 use App\Workflow\Places\SubscriptionCancel\SubscriptionCancelled;
 use App\Workflow\TransitionHandlers\WebhookTransitionHandler;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 
 class CancellationRequestContext implements Context
 {
     use SendRequestTrait;
 
-    public function __construct(private Session $session)
-    {
+    public function __construct(
+        private Session $session,
+        private WorkflowTransitionRepository $workflowTransitionRepository,
+    ) {
     }
 
     /**
@@ -66,6 +72,41 @@ class CancellationRequestContext implements Context
         if (sizeof($places) !== count($alreadyFound)) {
             throw new \Exception(sprintf('Found %s instead of %s', json_encode($alreadyFound), json_encode(array_map(function (PlaceInterface $place) { return $place->getName(); }))));
         }
+    }
+
+    /**
+     * @Given there are workflow transitions
+     */
+    public function thereAreWorkflowTransitions(TableNode $table)
+    {
+        foreach ($table->getColumnsHash() as $row) {
+            $entity = new WorkflowTransition();
+            $entity->setName($row['Name']);
+            $entity->setPriority(intval($row['Priority']));
+            $entity->setEnabled(true);
+            $entity->setWorkflow(WorkflowType::fromName($row['Workflow']));
+            $entity->setHandlerName($row['Handler']);
+            $entity->setHandlerOptions(json_decode($row['Options'] ?? '[]'));
+            $entity->setCreatedAt(new \DateTime());
+            $entity->setUpdatedAt(new \DateTime());
+            $this->workflowTransitionRepository->getEntityManager()->persist($entity);
+        }
+        $this->workflowTransitionRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Then I will see the transition :arg1
+     */
+    public function iWillSeeTheTransition($transitionName)
+    {
+        $data = $this->getJsonContent();
+        foreach ($data['places'] as $placeData) {
+            if ($transitionName == $placeData['name']) {
+                return;
+            }
+        }
+
+        throw new \Exception('Did not find transition');
     }
 
     /**

@@ -16,4 +16,22 @@ enum WorkflowType: string
 {
     case CANCEL_SUBSCRIPTION = 'cancel_subscription';
     case CREATE_SUBSCRIPTION = 'create_subscription';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+
+    public static function fromName(?string $name): self
+    {
+        if (!$name) {
+            return self::CANCEL_SUBSCRIPTION;
+        }
+        foreach (self::cases() as $status) {
+            if ($name === $status->value) {
+                return $status;
+            }
+        }
+        throw new \ValueError("$name is not a valid backing value for enum ".self::class);
+    }
 }
