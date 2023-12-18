@@ -13,7 +13,10 @@
 namespace App\DataMappers\Workflows;
 
 use App\Dto\Generic\App\Workflows\Place as AppDto;
+use App\Dto\Request\App\Workflows\CreateTransition;
 use App\Entity\WorkflowTransition;
+use App\Entity\WorkflowTransition as Entity;
+use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 
 class PlaceDataMapper
@@ -33,5 +36,23 @@ class PlaceDataMapper
         }
 
         return $dto;
+    }
+
+    public function createEntity(CreateTransition $createTransition, Entity $entity = null): Entity
+    {
+        if (!$entity) {
+            $entity = new Entity();
+        }
+
+        $entity->setWorkflow(WorkflowType::fromName($createTransition->getWorkflow()));
+        $entity->setName($createTransition->getName());
+        $entity->setHandlerName($createTransition->getHandler());
+        $entity->setHandlerOptions($createTransition->getHandlerOptions());
+        $entity->setPriority($createTransition->getPriority());
+        $entity->setEnabled(true);
+        $entity->setCreatedAt(new \DateTime());
+        $entity->setUpdatedAt(new \DateTime());
+
+        return $entity;
     }
 }

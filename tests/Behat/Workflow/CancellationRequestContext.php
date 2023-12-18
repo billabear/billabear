@@ -124,4 +124,32 @@ class CancellationRequestContext implements Context
 
         throw new \Exception('Handler not found');
     }
+
+    /**
+     * @When I create a workflow transition for :arg1 with:
+     */
+    public function iCreateAWorkflowTransitionForWith($workflowName, TableNode $table)
+    {
+        $data = $table->getRowsHash();
+        $this->sendJsonRequest('POST', '/app/workflow/create-transition', [
+            'workflow' => $workflowName,
+            'name' => $data['Name'],
+            'priority' => intval($data['Priority']),
+            'handler' => $data['Handler'],
+            'handler_options' => json_decode($data['Handler Options']),
+        ]);
+    }
+
+    /**
+     * @Then there should be a transition called :arg1 for :arg2
+     */
+    public function thereShouldBeATransitionCalled($transitionName, $workflowName)
+    {
+        $entity = $this->workflowTransitionRepository->findOneBy(['name' => $transitionName, 'workflow' => WorkflowType::fromName($workflowName)]);
+
+        if (!$entity instanceof WorkflowTransition) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No transition found');
+        }
+    }
 }

@@ -46,10 +46,19 @@ Feature: Edit Cancellation Request process
     Then I will see the hardcoded cancellation request places
     And I will see the dynamic event handler for sending a webhook request
 
-  Scenario: Fetch
+  Scenario: Fetch with dynamic transitions
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And there are workflow transitions
       | Name            | Priority | Workflow           | Handler | Handler Options                                   |
       | transition_name | 10       | cancel_subscription| webhook | {"method": "POST", "url": "https://example.org/"} |
     When I go to the edit cancellation request workflow
     Then I will see the transition "transition_name"
+
+  Scenario: Create transition
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a workflow transition for "cancel_subscription" with:
+      | Name | new_transition |
+      | Priority | 143        |
+      | Handler | webhook |
+      | Handler Options |  {"method": "POST", "url": "https://example.org/"} |
+    Then there should be a transition called "new_transition" for "cancel_subscription"

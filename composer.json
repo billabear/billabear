@@ -41,7 +41,8 @@
         "symfony/workflow": "6.4.*",
         "symfony/yaml": "6.4.*",
         "taxjar/taxjar-php": "^2.0",
-        "wildbit/postmark-php": "^4.0"
+        "wildbit/postmark-php": "^4.0",
+      "ext-http": "*"
     },
     "require-dev": {
         "behat/behat": "^3.11",
