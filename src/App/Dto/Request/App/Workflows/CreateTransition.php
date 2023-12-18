@@ -12,13 +12,12 @@
 
 namespace App\Dto\Request\App\Workflows;
 
-use App\Enum\WorkflowType;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateTransition
 {
-    #[Assert\Choice([WorkflowType::CANCEL_SUBSCRIPTION->value, WorkflowType::CREATE_SUBSCRIPTION->value])]
+    #[Assert\Choice(['cancel_subscription', 'create_subscription'])]
     #[Assert\Type('string')]
     private $workflow;
 
