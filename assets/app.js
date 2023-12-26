@@ -7,6 +7,14 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './app/styles/flowbite.css';
+
+import '@vue-flow/core/dist/style.css';
+import '@vue-flow/core/dist/theme-default.css';
+import '@vue-flow/controls/dist/style.css'
+
+
+
+/* this contains the default theme, these are optional styles */
 import 'vue-final-modal/style.css';
 import 'flowbite';
 
@@ -32,6 +40,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import RoleOnlyView from "./app/components/app/RoleOnlyView.vue";
 
 
+import { VueFlow } from '@vue-flow/core'
+
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS
 };
@@ -52,6 +62,7 @@ app.use(i18n);
 app.use(store);
 app.use(ParthenonMenu);
 app.use(ParthenonUI);
+app.use(VueFlow);
 app.use(VueApexCharts)
 app.use(require('vue-moment-v3'))
 app.use(vfm)

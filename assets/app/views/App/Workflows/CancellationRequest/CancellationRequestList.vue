@@ -4,6 +4,10 @@
 
     <div class="text-end m-5">
 
+      <router-link :to="{name:'app.workflows.cancellation_request.edit'}" class="btn--main btn--secondary mr-5 p-5">
+        {{ $t('app.workflows.cancellation_request.list.edit_button') }}
+      </router-link>
+
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
         <div class="list_container">
           <ListGroup>

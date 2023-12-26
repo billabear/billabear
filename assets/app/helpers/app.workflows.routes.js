@@ -10,6 +10,7 @@ import PaymentFailureProcessList from "../views/App/Workflows/PaymentFailureProc
 import PaymentFailureProcessView from "../views/App/Workflows/PaymentFailureProcess/PaymentFailureProcessView.vue";
 import ChargeBackCreationList from "../views/App/Workflows/ChargeBackCreation/ChargeBackCreationList.vue";
 import ChargeBackCreationView from "../views/App/Workflows/ChargeBackCreation/ChargeBackCreationView.vue";
+import CancellationRequestEdit from "../views/App/Workflows/CancellationRequest/CancellationRequestEdit.vue";
 
 
 export const WORKFLOWS_ROUTES = [
@@ -22,6 +23,11 @@ export const WORKFLOWS_ROUTES = [
         name: 'app.workflows.cancellation_request.view',
         path: 'cancellation-request/:id/view',
         component: CancellationRequestView
+    },
+    {
+        name: 'app.workflows.cancellation_request.edit',
+        path: 'cancellation-request/edit',
+        component: CancellationRequestEdit
     },
     {
         name: 'app.workflows.subscription_creation.list',
