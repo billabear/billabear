@@ -1966,6 +1966,11 @@
     d3-selection "^3.0.0"
     d3-zoom "^3.0.0"
 
+"@vue-flow/node-toolbar@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@vue-flow/node-toolbar/-/node-toolbar-1.1.0.tgz#d28c554789be533ca2bd9ef5cbc342e6016332ea"
+  integrity sha512-6RVDHgY+x8m1cXPaEkqPa/RMR90AC1hPHYBK/QVh8k6lJnFPgwJ9PSiYoC4amsUiDK0mF0Py+PlztLJY1ty+4A==
+
 "@vue-stripe/vue-stripe@^4.4.4":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@vue-stripe/vue-stripe/-/vue-stripe-4.5.0.tgz#2297b3a3f7cc984e7c80f3b7dac75f5e0239a758"

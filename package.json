@@ -33,6 +33,7 @@
         "@vitejs/plugin-vue-jsx": "^3.0.1",
         "@vue-flow/controls": "^1.1.0",
         "@vue-flow/core": "^1.27.1",
+        "@vue-flow/node-toolbar": "^1.1.0",
         "@vue-stripe/vue-stripe": "^4.4.4",
         "@vue/test-utils": "^2.0.2",
         "@vuepic/vue-datepicker": "^4.3.0",
