@@ -199,9 +199,6 @@ body {
 .form-field {
     @apply border border-slate-400 p-2 rounded-lg;
 }
-.error-message {
-    @apply block text-red-500;
-}
 
 .menu-link {
     @apply no-underline text-black hover:text-slate-800 hover:no-underline;
@@ -505,4 +502,7 @@ body {
 
 .detail-list dd {
     @apply text-black dark:text-white;
+}
+.error-message {
+    @apply block text-red-500;
 }
