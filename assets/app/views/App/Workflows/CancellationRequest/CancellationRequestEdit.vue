@@ -63,7 +63,7 @@
         <div v-for="(option, key) in createModalValues.handler.options">
           <dt>{{ key }}</dt>
           <dd>
-            <span class="error-message" v-if="handlerOptionsErrors[key] !== undefined">Is required</span>
+            <span class="error-message" v-if="handlerOptionsErrors[key] !== undefined">{{ $t('app.workflows.cancellation_request.edit.add_place_modal.required') }}</span>
             <input type="text" v-if="option.type === 'string'" v-model="option.value" />
           </dd>
         </div>

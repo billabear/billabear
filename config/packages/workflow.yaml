@@ -60,31 +60,6 @@ framework:
                     from: [first_email_sent, day_before_valid_email_sent, day_before_not_valid_email_sent]
                     to: card_added
 
-        subscription_creation:
-            type: 'state_machine'
-            marking_store:
-                type: 'method'
-                property: 'state'
-            supports:
-                - App\Entity\SubscriptionCreation
-            initial_marking: started
-            places:
-                - started
-                - stats_generated
-                - customer_notice_sent
-                - internal_notice_sent
-                - completed
-            transitions:
-                handle_stats:
-                    from: started
-                    to: stats_generated
-                send_customer_notice:
-                    from: stats_generated
-                    to: customer_notice_sent
-                send_internal_notice:
-                    from: customer_notice_sent
-                    to: completed
-
         charge_back_creation:
             type: 'state_machine'
             marking_store:

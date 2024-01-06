@@ -12,13 +12,14 @@
 
 namespace App\Entity;
 
+use App\Workflow\WorkflowProcessInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\SubscriptionInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'subscription_creation')]
-class SubscriptionCreation
+class SubscriptionCreation implements WorkflowProcessInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]

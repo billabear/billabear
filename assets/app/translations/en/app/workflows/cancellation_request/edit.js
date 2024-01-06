@@ -8,6 +8,7 @@ export const CANCELLATION_REQUESTS_EDIT_TRANSLATION = {
         name: "Name",
         event_handler: "Event Handler",
         handler_options: "Handler Options",
-        add: "Add"
+        add: "Add",
+        required: "Is required",
     }
 }

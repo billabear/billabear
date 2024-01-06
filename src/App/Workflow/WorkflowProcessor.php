@@ -28,7 +28,7 @@ class WorkflowProcessor
 
     public function process(WorkflowProcessInterface $subject, WorkflowType $workflowType, RepositoryInterface $repository): WorkflowProcessInterface
     {
-        $workflow = $this->workflowBuilder->build(WorkflowType::CANCEL_SUBSCRIPTION);
+        $workflow = $this->workflowBuilder->build($workflowType);
         $subject->setHasError(false);
         try {
             foreach ($this->getTransitions($workflow) as $transition) {
