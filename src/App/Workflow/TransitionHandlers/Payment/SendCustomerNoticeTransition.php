@@ -71,7 +71,7 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.payment_creation.transition.send_customer_notice' => ['transition'],
+            'workflow.create_payment.transition.send_customer_notice' => ['transition'],
         ];
     }
 }

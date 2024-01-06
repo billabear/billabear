@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Workflow\Places\PaymentCreated;
+
+use App\Enum\WorkflowType;
+use App\Workflow\Places\PlaceInterface;
+
+class InternalNoticeSent implements PlaceInterface
+{
+    public function getName(): string
+    {
+        return 'internal_notice_sent';
+    }
+
+    public function getPriority(): int
+    {
+        return 1600;
+    }
+
+    public function getWorkflow(): WorkflowType
+    {
+        return WorkflowType::CREATE_PAYMENT;
+    }
+
+    public function getToTransitionName(): string
+    {
+        return 'send_internal_notice';
+    }
+}

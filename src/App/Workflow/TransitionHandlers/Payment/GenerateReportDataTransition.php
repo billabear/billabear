@@ -44,7 +44,7 @@ class GenerateReportDataTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.payment_creation.transition.generate_report_data' => ['transition'],
+            'workflow.create_payment.transition.generate_report_data' => ['transition'],
         ];
     }
 }

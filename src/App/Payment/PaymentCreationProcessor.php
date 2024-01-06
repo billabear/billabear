@@ -13,43 +13,22 @@
 namespace App\Payment;
 
 use App\Entity\PaymentCreation;
+use App\Enum\WorkflowType;
 use App\Repository\PaymentCreationRepositoryInterface;
+use App\Workflow\WorkflowProcessor;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class PaymentCreationProcessor
 {
-    use LoggerAwareTrait;
-
-    public const TRANSITIONS = ['create_receipt', 'generate_report_data', 'send_customer_notice', 'send_internal_notice'];
-
     public function __construct(
-        private WorkflowInterface $paymentCreationStateMachine,
+        private WorkflowProcessor $workflowProcessor,
         private PaymentCreationRepositoryInterface $paymentCreationRepository,
     ) {
     }
 
     public function process(PaymentCreation $paymentCreation): void
     {
-        $paymentCreationStateMachine = $this->paymentCreationStateMachine;
-
-        $paymentCreation->setHasError(false);
-        try {
-            foreach (self::TRANSITIONS as $transition) {
-                if ($paymentCreationStateMachine->can($paymentCreation, $transition)) {
-                    $paymentCreationStateMachine->apply($paymentCreation, $transition);
-
-                    $this->getLogger()->info('Did payment creation transition', ['transition' => $transition]);
-                } else {
-                    $this->getLogger()->info("Can't do payment creation transition", ['transition' => $transition]);
-                }
-            }
-        } catch (\Throwable $e) {
-            $this->getLogger()->info('Payment creation transition failed', ['transition' => $transition, 'message' => $e->getMessage()]);
-            $paymentCreation->setError($e->getMessage());
-            $paymentCreation->setHasError(true);
-        }
-
-        $this->paymentCreationRepository->save($paymentCreation);
+        $this->workflowProcessor->process($paymentCreation, WorkflowType::CREATE_PAYMENT, $this->paymentCreationRepository);
     }
 }

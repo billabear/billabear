@@ -12,6 +12,7 @@ import ChargeBackCreationList from "../views/App/Workflows/ChargeBackCreation/Ch
 import ChargeBackCreationView from "../views/App/Workflows/ChargeBackCreation/ChargeBackCreationView.vue";
 import CancellationRequestEdit from "../views/App/Workflows/CancellationRequest/CancellationRequestEdit.vue";
 import SubscriptionCreationEdit from "../views/App/Workflows/SubscriptionCreation/SubscriptionCreationEdit.vue";
+import PaymentCreationEdit from "../views/App/Workflows/PaymentCreation/PaymentCreationEdit.vue";
 
 
 export const WORKFLOWS_ROUTES = [
@@ -54,6 +55,11 @@ export const WORKFLOWS_ROUTES = [
         name: 'app.workflows.payment_creation.view',
         path: 'payment-creation/:id/view',
         component: PaymentCreationView
+    },
+    {
+        name: 'app.workflows.payment_creation.edit',
+        path: 'payment-creation/edit',
+        component: PaymentCreationEdit
     },
     {
         name: 'app.workflows.charge_back_creation.list',

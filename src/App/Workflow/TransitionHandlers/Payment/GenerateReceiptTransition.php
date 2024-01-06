@@ -47,7 +47,7 @@ class GenerateReceiptTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.payment_creation.transition.create_receipt' => ['transition'],
+            'workflow.create_payment.transition.create_receipt' => ['transition'],
         ];
     }
 }
