@@ -17,7 +17,6 @@ use App\Enum\WorkflowType;
 use App\Repository\SubscriptionCreationRepositoryInterface;
 use App\Workflow\WorkflowProcessor;
 use Parthenon\Common\LoggerAwareTrait;
-use Symfony\Component\Workflow\WorkflowInterface;
 
 class SubscriptionCreationProcessor
 {
