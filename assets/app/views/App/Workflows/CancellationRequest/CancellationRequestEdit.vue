@@ -71,7 +71,7 @@
     </div>
 
     <div class="mt-5">
-      <button class="btn--main" @click="sendCreate">{{ $t('app.workflows.cancellation_request.edit.add_place_modal.add') }}</button>
+      <button class="btn--main" :class="{'btn--disabled' : (createModalValues.name === '' || createModalValues.handler === null)}" @click="sendCreate" :disabled="createModalValues.name === '' || createModalValues.handler === null">{{ $t('app.workflows.cancellation_request.edit.add_place_modal.add') }}</button>
     </div>
   </VueFinalModal>
 </template>
@@ -130,6 +130,8 @@ onEdgeDoubleClick(edge => {
   console.log(edge);
 
   createModalValues = ref({
+    name: '',
+    handler: null,
     target: {
       node: edge.edge.targetNode,
     },
