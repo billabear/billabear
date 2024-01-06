@@ -17,5 +17,6 @@ export const SUBSCRIPTION_CREATION_LIST_TRANSLATIONS = {
         search: "Filter",
         has_error: "Has Error"
     },
-    error_message: "An error has occurred"
+    error_message: "An error has occurred",
+    edit_button: "Edit"
 };
