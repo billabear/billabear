@@ -14,10 +14,16 @@ namespace App\Controller\App\Workflows;
 
 use App\Controller\App\CrudListTrait;
 use App\DataMappers\Workflows\ChargeBackCreationDataMapper;
+use App\DataMappers\Workflows\PlaceDataMapper;
+use App\DataMappers\Workflows\TransitionHandlerDataMapper;
+use App\Dto\Generic\App\Workflows\EditWorkflow;
 use App\Dto\Response\App\Workflows\ViewChargeBackCreation;
+use App\Enum\WorkflowType;
 use App\Filters\Workflows\CancellationRequestList;
 use App\Payment\ChargeBackCreationProcessor;
 use App\Repository\ChargeBackCreationRepositoryInterface;
+use App\Workflow\Places\PlacesProvider;
+use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +34,30 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ChargeBackCreationController
 {
     use CrudListTrait;
+
+    #[Route('/app/workflow/charge-back-creation/edit', methods: ['GET'])]
+    public function viewEdit(
+        Request $request,
+        PlacesProvider $placesProvider,
+        DynamicTransitionHandlerProvider $dynamicHandlerProvider,
+        PlaceDataMapper $placeDataMapper,
+        TransitionHandlerDataMapper $eventHandlerDataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        $places = $placesProvider->getPlacesForWorkflow(WorkflowType::CREATE_CHARGEBACK);
+        $eventHandlers = $dynamicHandlerProvider->getAll();
+
+        $placesDto = array_map([$placeDataMapper, 'createAppDto'], $places);
+        $eventHandlers = array_map([$eventHandlerDataMapper, 'createAppDto'], $eventHandlers);
+
+        $dto = new EditWorkflow();
+        $dto->setPlaces($placesDto);
+        $dto->setTransitionHandlers($eventHandlers);
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
 
     #[Route('/app/system/charge-back-creation/list', name: 'app_app_workflows_chargebackcreation_listchargebackcreation', methods: ['GET'])]
     public function listChargeBackCreation(

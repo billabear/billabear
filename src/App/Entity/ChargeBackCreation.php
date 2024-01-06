@@ -12,13 +12,14 @@
 
 namespace App\Entity;
 
+use App\Workflow\WorkflowProcessInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\ChargeBack;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'charge_back_creation')]
-class ChargeBackCreation
+class ChargeBackCreation implements WorkflowProcessInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]

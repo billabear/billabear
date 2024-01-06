@@ -4,6 +4,10 @@
 
     <div class="text-end m-5">
 
+      <router-link :to="{name:'app.workflows.charge_back_creation.edit'}" class="btn--main btn--secondary mr-5 p-5">
+        {{ $t('app.workflows.charge_back_creation.list.edit_button') }}
+      </router-link>
+
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
         <div class="list_container">
           <ListGroup>
@@ -45,7 +49,7 @@
             <td>{{ subscription.payment.customer.email }}</td>
 
             <td>{{ subscription.state }}</td>
-            <td><router-link :to="{name: 'app.workflows.payment_creation.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.workflows.charge_back_creation.list.view') }}</router-link></td>
+            <td><router-link :to="{name: 'app.workflows.charge_back_creation.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.workflows.charge_back_creation.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">
             <td colspan="4" class="text-center">{{ $t('app.workflows.charge_back_creation.list.no_results') }}</td>
