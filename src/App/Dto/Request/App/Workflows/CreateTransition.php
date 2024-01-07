@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateTransition
 {
-    #[Assert\Choice(['cancel_subscription', 'create_subscription', 'create_payment', 'create_chargeback'])]
+    #[Assert\Choice(['cancel_subscription', 'create_subscription', 'create_payment', 'create_chargeback', 'create_refund'])]
     #[Assert\Type('string')]
     private $workflow;
 

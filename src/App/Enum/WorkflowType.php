@@ -18,6 +18,7 @@ enum WorkflowType: string
     case CREATE_SUBSCRIPTION = 'create_subscription';
     case CREATE_PAYMENT = 'create_payment';
     case CREATE_CHARGEBACK = 'create_chargeback';
+    case CREATE_REFUND = 'create_refund';
 
     public static function values(): array
     {

@@ -14,6 +14,7 @@ import CancellationRequestEdit from "../views/App/Workflows/CancellationRequest/
 import SubscriptionCreationEdit from "../views/App/Workflows/SubscriptionCreation/SubscriptionCreationEdit.vue";
 import PaymentCreationEdit from "../views/App/Workflows/PaymentCreation/PaymentCreationEdit.vue";
 import ChargeBackCreationEdit from "../views/App/Workflows/ChargeBackCreation/ChargeBackCreationEdit.vue";
+import RefundCreatedProcessEdit from "../views/App/Workflows/RefundCreatedProcess/RefundCreatedProcessEdit.vue";
 
 
 export const WORKFLOWS_ROUTES = [
@@ -86,6 +87,11 @@ export const WORKFLOWS_ROUTES = [
         name: 'app.workflows.refund_created_process.view',
         path: 'refund-created-process/:id/view',
         component: RefundCreatedProcessView
+    },
+    {
+        name: 'app.workflows.refund_created_process.edit',
+        path: 'refund-created-process/edit',
+        component: RefundCreatedProcessEdit
     },
     {
         name: 'app.workflows.payment_failure_process.list',

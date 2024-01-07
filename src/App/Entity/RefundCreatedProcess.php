@@ -12,13 +12,14 @@
 
 namespace App\Entity;
 
+use App\Workflow\WorkflowProcessInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\Refund;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'refund_created_process')]
-class RefundCreatedProcess
+class RefundCreatedProcess implements WorkflowProcessInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
