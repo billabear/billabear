@@ -28,11 +28,14 @@ class PlaceDataMapper
         $dto->setPriority($place->getPriority());
 
         if ($place instanceof WorkflowTransition) {
+            $dto->setId((string) $place->getId());
             $dto->setDefault(false);
             $dto->setHandler($place->getHandlerName());
             $dto->setOptions($place->getHandlerOptions());
+            $dto->setEnabled($place->isEnabled());
         } else {
             $dto->setDefault(true);
+            $dto->setEnabled(true);
         }
 
         return $dto;

@@ -10,5 +10,10 @@ export const REFUND_CREATED_PROCESS_EDIT_TRANSLATIONS = {
         handler_options: "Handler Options",
         add: "Add",
         required: "Is required",
+    },
+    edit_place_modal: {
+        title: "Edit Place",
+        disable_button: "Disable",
+        enable_button: "Enable"
     }
 }

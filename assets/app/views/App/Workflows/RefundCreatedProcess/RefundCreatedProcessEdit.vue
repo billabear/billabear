@@ -74,6 +74,17 @@
       <button class="btn--main" :class="{'btn--disabled' : (createModalValues.name === '' || createModalValues.handler === null)}" @click="sendCreate" :disabled="createModalValues.name === '' || createModalValues.handler === null">{{ $t('app.workflows.refund_created_process.edit.add_place_modal.add') }}</button>
     </div>
   </VueFinalModal>
+
+  <VueFinalModal
+      class="flex justify-center items-center"
+      content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+      :modal-id="'place_details'">
+
+    <h3>{{ $t('app.workflows.refund_created_process.edit.edit_place_modal.title') }}</h3>
+
+    <button class="btn--danger" @click="sendDisable(editModalValues.node.data.id)" v-if="editModalValues.node.data.enabled">{{ $t('app.workflows.refund_created_process.edit.edit_place_modal.disable_button') }}</button>
+    <button class="btn--main" @click="sendEnable(editModalValues.node.data.id)" v-else>{{ $t('app.workflows.refund_created_process.edit.edit_place_modal.enable_button') }}</button>
+  </VueFinalModal>
 </template>
 
 <script setup>
@@ -112,31 +123,34 @@ var createModalValues = {
   },
   handler: null,
 };
-
+var editModalValues = ref({
+  node: null
+})
 const {
-  onEdgeClick,
   onEdgeDoubleClick,
-  onEdgeContextMenu,
-  onEdgeMouseEnter,
-  onEdgeMouseLeave,
-  onEdgeMouseMove,
-  onEdgeUpdateStart,
-  onEdgeUpdate,
-  onEdgeUpdateEnd,
+  onNodeDoubleClick,
 } = useVueFlow()
 
-onEdgeDoubleClick(edge => {
+onNodeDoubleClick(event => {
+
+  if (event.node.data.default) {
+    return;
+  }
+  editModalValues = ref({node: event.node})
+  useVfm().open('place_details')
+})
+
+onEdgeDoubleClick(event => {
   useVfm().open('template')
-  console.log(edge);
 
   createModalValues = ref({
     name: '',
     handler: null,
     target: {
-      node: edge.edge.targetNode,
+      node: event.edge.targetNode,
     },
     source: {
-      node: edge.edge.sourceNode,
+      node: event.edge.sourceNode,
     }
   })
 })
@@ -148,11 +162,20 @@ const sync = () => {
     var y = 0;
     for (var i = 0; i < placesRawData.length; i++) {
       const place = placesRawData[i];
+      var className = 'default-workflow-node'
+      if (!place.default) {
+        className = 'custom-workflow-node';
+      }
+
+      if (!place.enabled) {
+        className = className + ' disabled-workflow-node';
+      }
       rawElements.push({
         id: ''+place.priority,
         label: place.name,
         position: { x: 50, y: y },
         special: place.default,
+        class: className,
         data: place,
       })
       y += 100
@@ -175,7 +198,7 @@ const sync = () => {
 
     rawElements.push(...edgesElement);
 
-    flowchartElements = ref(rawElements);
+    flowchartElements.value = rawElements;
     ready.value = true;
   })
 };
@@ -217,10 +240,38 @@ function sendCreate(event) {
   })
 }
 
+function sendEnable(id) {
+  axios.post('/app/workflow/transition/'+id+'/enable').then(response => {
+    if (response.status == 202) {
+      sync();
+      useVfm().close('place_details')
+    }
+  })
+}
+function sendDisable(id) {
+  axios.post('/app/workflow/transition/'+id+'/disable').then(response => {
+    if (response.status == 202) {
+      sync();
+      useVfm().close('place_details')
+    }
+  })
+}
+
 </script>
 
 
 
-<style scoped>
+<style>
+.default-workflow-node {
+  cursor: not-allowed !important;
+  background: red;
+}
+.custom-workflow-node {
+  background: green;
+  color: white;
+}
 
+.disabled-workflow-node {
+  opacity: 0.5;
+}
 </style>

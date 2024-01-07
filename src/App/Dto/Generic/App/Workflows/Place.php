@@ -14,6 +14,8 @@ namespace App\Dto\Generic\App\Workflows;
 
 class Place
 {
+    private ?string $id = null;
+
     private string $name;
 
     private int $priority;
@@ -23,6 +25,18 @@ class Place
     private ?string $handler;
 
     private ?array $options = [];
+
+    private bool $enabled;
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName(): string
     {
@@ -72,5 +86,15 @@ class Place
     public function setOptions(?array $options): void
     {
         $this->options = $options;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

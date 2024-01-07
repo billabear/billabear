@@ -16,6 +16,7 @@ use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\Workflows\PlaceDataMapper;
 use App\Dto\Request\App\Workflows\CreateTransition;
 use App\Repository\WorkflowTransitionRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,5 +51,37 @@ class TransitionController
         $json = $serializer->serialize($outputDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/workflow/transition/{id}/disable', methods: ['POST'])]
+    public function disableTransition(
+        Request $request,
+        WorkflowTransitionRepositoryInterface $workflowTransitionRepository,
+    ): Response {
+        try {
+            $entity = $workflowTransitionRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $entity->setEnabled(false);
+        $workflowTransitionRepository->save($entity);
+
+        return new JsonResponse([], status: JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/app/workflow/transition/{id}/enable', methods: ['POST'])]
+    public function enableTransition(
+        Request $request,
+        WorkflowTransitionRepositoryInterface $workflowTransitionRepository,
+    ): Response {
+        try {
+            $entity = $workflowTransitionRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $entity->setEnabled(true);
+        $workflowTransitionRepository->save($entity);
+
+        return new JsonResponse([], status: JsonResponse::HTTP_ACCEPTED);
     }
 }

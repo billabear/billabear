@@ -15,6 +15,9 @@ namespace App\Repository;
 use App\Enum\WorkflowType;
 use Parthenon\Common\Repository\RepositoryInterface;
 
+/**
+ * @method \App\Entity\WorkflowTransition findById($id)
+ */
 interface WorkflowTransitionRepositoryInterface extends RepositoryInterface
 {
     public function findForWorkflow(WorkflowType $workflowType): array;
