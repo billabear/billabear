@@ -34,6 +34,6 @@ class CustomerNoticeSent implements PlaceInterface
 
     public function getToTransitionName(): string
     {
-        return 'handle_stats';
+        return 'send_customer_notice';
     }
 }
