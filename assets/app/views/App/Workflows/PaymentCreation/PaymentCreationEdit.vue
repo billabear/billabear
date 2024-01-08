@@ -74,6 +74,17 @@
       <button class="btn--main" :class="{'btn--disabled' : (createModalValues.name === '' || createModalValues.handler === null)}" @click="sendCreate" :disabled="createModalValues.name === '' || createModalValues.handler === null">{{ $t('app.workflows.payment_creation.edit.add_place_modal.add') }}</button>
     </div>
   </VueFinalModal>
+
+  <VueFinalModal
+      class="flex justify-center items-center"
+      content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+      :modal-id="'place_details'">
+
+    <h3>{{ $t('app.workflows.payment_creation.edit.edit_place_modal.title') }}</h3>
+
+    <button class="btn--danger" @click="sendDisable(editModalValues.node.data.id)" v-if="editModalValues.node.data.enabled">{{ $t('app.workflows.payment_creation.edit.edit_place_modal.disable_button') }}</button>
+    <button class="btn--main" @click="sendEnable(editModalValues.node.data.id)" v-else>{{ $t('app.workflows.payment_creation.edit.edit_place_modal.enable_button') }}</button>
+  </VueFinalModal>
 </template>
 
 <script setup>
