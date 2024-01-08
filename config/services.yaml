@@ -88,6 +88,12 @@ services:
     app.repository.orm.customer:
         class: App\Repository\Orm\CustomerRepository
 
+    App\Repository\CountryRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.country'
+    app.repository.orm.country:
+        class: App\Repository\Orm\CountryRepository
+
     App\Repository\TemplateRepository:
         arguments:
             $entityRepository: '@app.repository.orm.template'

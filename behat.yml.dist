@@ -92,6 +92,7 @@ default:
                 - App\Tests\Behat\Tax\CustomerContext
                 - App\Tests\Behat\Tax\InvoiceContext
                 - App\Tests\Behat\Tax\ProductContext
+                - App\Tests\Behat\Tax\CountryContext
 
                 # Quoutes
                 - App\Tests\Behat\Quote\AppContext
