@@ -124,17 +124,23 @@ var createModalValues = {
   handler: null,
 };
 
+var editModalValues = ref({
+  node: null
+})
 const {
-  onEdgeClick,
   onEdgeDoubleClick,
-  onEdgeContextMenu,
-  onEdgeMouseEnter,
-  onEdgeMouseLeave,
-  onEdgeMouseMove,
-  onEdgeUpdateStart,
-  onEdgeUpdate,
-  onEdgeUpdateEnd,
+  onNodeDoubleClick,
 } = useVueFlow()
+
+onNodeDoubleClick(event => {
+
+  if (event.node.data.default) {
+    return;
+  }
+  editModalValues = ref({node: event.node})
+  useVfm().open('place_details')
+})
+
 
 onEdgeDoubleClick(edge => {
   useVfm().open('template')
@@ -159,11 +165,20 @@ const sync = () => {
     var y = 0;
     for (var i = 0; i < placesRawData.length; i++) {
       const place = placesRawData[i];
+      var className = 'default-workflow-node'
+      if (!place.default) {
+        className = 'custom-workflow-node';
+      }
+
+      if (!place.enabled) {
+        className = className + ' disabled-workflow-node';
+      }
       rawElements.push({
         id: ''+place.priority,
         label: place.name,
         position: { x: 50, y: y },
         special: place.default,
+        class: className,
         data: place,
       })
       y += 100
@@ -228,6 +243,22 @@ function sendCreate(event) {
   })
 }
 
+function sendEnable(id) {
+  axios.post('/app/workflow/transition/'+id+'/enable').then(response => {
+    if (response.status == 202) {
+      sync();
+      useVfm().close('place_details')
+    }
+  })
+}
+function sendDisable(id) {
+  axios.post('/app/workflow/transition/'+id+'/disable').then(response => {
+    if (response.status == 202) {
+      sync();
+      useVfm().close('place_details')
+    }
+  })
+}
 </script>
 
 
