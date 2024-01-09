@@ -26,6 +26,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CountryController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
+
+    #[Route('/app/countries', name: 'app_country_list', methods: ['GET'])]
+    public function listPayment(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        SerializerInterface $serializer,
+        CountryDataMapper $paymentFactory,
+    ): Response {
+        return $this->crudList($request, $countryRepository, $serializer, $paymentFactory);
+    }
 
     #[Route('/app/country', methods: ['POST'])]
     public function addAction(

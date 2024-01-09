@@ -23,6 +23,7 @@ class CountryDataMapper
         $entity = new Entity();
         $entity->setName($createCountry->getName());
         $entity->setIsoCode($createCountry->getIsoCode());
+        $entity->setCreatedAt(new \DateTime('now'));
 
         return $entity;
     }

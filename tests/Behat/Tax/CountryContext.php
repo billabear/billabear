@@ -52,4 +52,45 @@ class CountryContext implements Context
             throw new \Exception('No Country found');
         }
     }
+
+    /**
+     * @Given that the following countries exist:
+     */
+    public function thatTheFollowingCountriesExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+        foreach ($data as $row) {
+            $country = new Country();
+            $country->setName($row['Name']);
+            $country->setIsoCode($row['ISO Code']);
+            $country->setCreatedAt(new \DateTime());
+
+            $this->countryRepository->getEntityManager()->persist($country);
+        }
+        $this->countryRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the countries list
+     */
+    public function iViewTheCountriesList()
+    {
+        $this->sendJsonRequest('GET', '/app/countries');
+    }
+
+    /**
+     * @Then I will see the country :arg1 in the list
+     */
+    public function iWillSeeTheCountryInTheList($name)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $country) {
+            if ($country['name'] === $name) {
+                return;
+            }
+        }
+
+        throw new \Exception('Not found');
+    }
 }

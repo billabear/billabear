@@ -31,6 +31,9 @@ class Country
     #[ORM\Column(type: 'string')]
     private string $isoCode;
 
+    #[ORM\Column(type: 'datetime')]
+    private \DateTimeInterface $createdAt;
+
     public function getId()
     {
         return $this->id;
@@ -59,5 +62,15 @@ class Country
     public function setIsoCode(string $isoCode): void
     {
         $this->isoCode = $isoCode;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }
