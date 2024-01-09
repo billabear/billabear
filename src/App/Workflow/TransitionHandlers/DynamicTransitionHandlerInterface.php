@@ -24,7 +24,7 @@ interface DynamicTransitionHandlerInterface
     public function getOptions(): array;
 
     /**
-     * On the case of an error where you want to mark the transition as failed throw an instance of 
+     * On the case of an error where you want to mark the transition as failed throw an instance of
      * \Throwable this will automatically be used to mark it as failed and provide error context via
      * the Admin UI.
      *
