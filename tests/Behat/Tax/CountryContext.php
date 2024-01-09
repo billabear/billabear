@@ -36,6 +36,8 @@ class CountryContext implements Context
         $payload = [
             'name' => $data['Name'] ?? null,
             'iso_code' => $data['ISO Code'] ?? null,
+            'threshold' => intval($data['Threshold'] ?? 0),
+            'currency' => $data['Currency'],
         ];
 
         $this->sendJsonRequest('POST', '/app/country', $payload);
@@ -49,6 +51,7 @@ class CountryContext implements Context
         $country = $this->countryRepository->findOneBy(['name' => $arg1, 'isoCode' => $arg2]);
 
         if (!$country instanceof Country) {
+            var_dump($this->getJsonContent());
             throw new \Exception('No Country found');
         }
     }
@@ -63,6 +66,8 @@ class CountryContext implements Context
             $country = new Country();
             $country->setName($row['Name']);
             $country->setIsoCode($row['ISO Code']);
+            $country->setCurrency($row['Currency']);
+            $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
 
             $this->countryRepository->getEntityManager()->persist($country);

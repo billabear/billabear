@@ -18,12 +18,17 @@ use App\Entity\Country as Entity;
 
 class CountryDataMapper
 {
-    public function createEntity(CreateCountry $createCountry): Entity
+    public function createEntity(CreateCountry $createCountry, Entity $entity = null): Entity
     {
-        $entity = new Entity();
+        if (!$entity) {
+            $entity = new Entity();
+            $entity->setCreatedAt(new \DateTime('now'));
+        }
+
         $entity->setName($createCountry->getName());
         $entity->setIsoCode($createCountry->getIsoCode());
-        $entity->setCreatedAt(new \DateTime('now'));
+        $entity->setCurrency($createCountry->getCurrency());
+        $entity->setThreshold($createCountry->getThreshold());
 
         return $entity;
     }
@@ -34,6 +39,8 @@ class CountryDataMapper
         $appDto->setId($entity->getId());
         $appDto->setName($entity->getName());
         $appDto->setIsoCode($entity->getIsoCode());
+        $appDto->setCurrency($entity->getCurrency());
+        $appDto->setThreshold($entity->getThreshold());
 
         return $appDto;
     }

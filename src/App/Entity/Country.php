@@ -31,6 +31,12 @@ class Country
     #[ORM\Column(type: 'string')]
     private string $isoCode;
 
+    #[ORM\Column(type: 'string')]
+    private string $currency;
+
+    #[ORM\Column(type: 'integer')]
+    private int $threshold;
+
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
@@ -62,6 +68,26 @@ class Country
     public function setIsoCode(string $isoCode): void
     {
         $this->isoCode = $isoCode;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getThreshold(): int
+    {
+        return $this->threshold;
+    }
+
+    public function setThreshold(int $threshold): void
+    {
+        $this->threshold = $threshold;
     }
 
     public function getCreatedAt(): \DateTimeInterface

@@ -18,12 +18,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateCountry
 {
     #[Assert\NotBlank]
+    #[Assert\Type('string')]
     private $name;
 
     #[SerializedName('iso_code')]
     #[Assert\NotBlank]
     #[Assert\Country]
     private $isoCode;
+
+    #[Assert\NotBlank]
+    #[Assert\Currency]
+    private $currency;
+
+    #[Assert\Type('integer')]
+    #[Assert\PositiveOrZero]
+    private $threshold;
 
     public function getName()
     {
@@ -43,5 +52,25 @@ class CreateCountry
     public function setIsoCode($isoCode): void
     {
         $this->isoCode = $isoCode;
+    }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getThreshold()
+    {
+        return $this->threshold;
+    }
+
+    public function setThreshold($threshold): void
+    {
+        $this->threshold = $threshold;
     }
 }

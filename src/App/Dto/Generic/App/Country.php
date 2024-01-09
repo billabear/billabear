@@ -23,6 +23,10 @@ class Country
     #[SerializedName('iso_code')]
     private string $isoCode;
 
+    private string $currency;
+
+    private int $threshold;
+
     public function getId(): string
     {
         return $this->id;
@@ -51,5 +55,25 @@ class Country
     public function setIsoCode(string $isoCode): void
     {
         $this->isoCode = $isoCode;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    public function getThreshold(): int
+    {
+        return $this->threshold;
+    }
+
+    public function setThreshold(int $threshold): void
+    {
+        $this->threshold = $threshold;
     }
 }

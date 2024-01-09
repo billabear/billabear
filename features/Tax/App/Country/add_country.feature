@@ -10,6 +10,8 @@ Feature: Add country for tax purposes
   Scenario: Successfully create product
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a country with the following data:
-      | Name     | United Kingdom |
-      | ISO Code | GB             |
+      | Name      | United Kingdom |
+      | ISO Code  | GB             |
+      | Currency  | GBP            |
+      | Threshold | 1000           |
     Then there will be a country called "United Kingdom" with the ISO Code "GB"
