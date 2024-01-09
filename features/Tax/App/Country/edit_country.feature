@@ -1,4 +1,4 @@
-Feature: List countries for tax purposes
+Feature: Edit country for tax purposes
 
   Background:
     Given the following accounts exist:
@@ -14,5 +14,7 @@ Feature: List countries for tax purposes
       | United Kingdom | GB       | 1770      | GBP      |
       | United States  | US       | 0         | USD      |
       | Germany        | DE       | 0         | EUR      |
-    When I view the countries list
-    Then I will see the country "United Kingdom" in the list
+    When I goto the edit country for "United Kingdom"
+    Then I will see that there is a threshold for the country of 1770
+    And I will see the currency is "GBP"
+    And I will see the ISO code is "GB"

@@ -7,7 +7,7 @@ Feature: Add country for tax purposes
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
 
-  Scenario: Successfully create product
+  Scenario: Successfully create country
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a country with the following data:
       | Name      | United Kingdom |

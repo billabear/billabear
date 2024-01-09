@@ -15,7 +15,9 @@ namespace App\Controller\App;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CountryDataMapper;
 use App\Dto\Request\App\Country\CreateCountry;
+use App\Dto\Response\App\Country\CountryView;
 use App\Repository\CountryRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +60,27 @@ class CountryController
         $countryRepository->save($entity);
         $appDto = $dataMapper->createAppDto($entity);
         $json = $serializer->serialize($appDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/country/{id}/view', methods: ['GET'])]
+    public function readCountry(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        CountryDataMapper $dataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            $entity = $countryRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $countryDto = $dataMapper->createAppDto($entity);
+        $view = new CountryView();
+        $view->setCountry($countryDto);
+        $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
     }

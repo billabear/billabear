@@ -98,4 +98,61 @@ class CountryContext implements Context
 
         throw new \Exception('Not found');
     }
+
+    /**
+     * @When I goto the edit country for :arg1
+     */
+    public function iGotoTheEditCountryFor($name)
+    {
+        $country = $this->getCountryByName($name);
+        $this->sendJsonRequest('GET', '/app/country/'.$country->getId().'/view');
+    }
+
+    /**
+     * @Then I will see that there is a threshold for the country of :arg1
+     */
+    public function iWillSeeThatThereIsAThresholdForTheCountryOf($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['country']['threshold'] !== intval($arg1)) {
+            throw new \Exception("Can't see threshold");
+        }
+    }
+
+    /**
+     * @Then I will see the currency is :arg1
+     */
+    public function iWillSeeTheCurrencyIs($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['country']['currency'] !== $arg1) {
+            throw new \Exception("Can't see currency");
+        }
+    }
+
+    /**
+     * @Then I will see the ISO code is :arg1
+     */
+    public function iWillSeeTheIsoCodeIs($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['country']['iso_code'] !== $arg1) {
+            throw new \Exception("Can't see ISO code");
+        }
+    }
+
+    protected function getCountryByName(string $name): Country
+    {
+        $country = $this->countryRepository->findOneBy(['name' => $name]);
+
+        if (!$country) {
+            throw new \Exception("Can't find country");
+        }
+        $this->countryRepository->getEntityManager()->refresh($country);
+
+        return $country;
+    }
 }
