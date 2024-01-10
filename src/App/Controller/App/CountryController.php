@@ -15,6 +15,7 @@ namespace App\Controller\App;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CountryDataMapper;
 use App\Dto\Request\App\Country\CreateCountry;
+use App\Dto\Request\App\Country\UpdateCountry;
 use App\Dto\Response\App\Country\CountryView;
 use App\Repository\CountryRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -81,6 +82,35 @@ class CountryController
         $view = new CountryView();
         $view->setCountry($countryDto);
         $json = $serializer->serialize($view, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/country/{id}/edit', methods: ['POST'])]
+    public function editCountry(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        CountryDataMapper $dataMapper,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
+    ): Response {
+        try {
+            $entity = $countryRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        /** @var UpdateCountry $dto */
+        $dto = $serializer->deserialize($request->getContent(), UpdateCountry::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response instanceof Response) {
+            return $response;
+        }
+        $entity = $dataMapper->createEntity($dto, $entity);
+        $countryRepository->save($entity);
+        $appDto = $dataMapper->createAppDto($entity);
+        $json = $serializer->serialize($appDto, 'json');
 
         return new JsonResponse($json, json: true);
     }

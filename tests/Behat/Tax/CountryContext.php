@@ -44,6 +44,36 @@ class CountryContext implements Context
     }
 
     /**
+     * @When I the edit country for :arg1 with:
+     */
+    public function iTheEditCountryForWith($name, TableNode $table)
+    {
+        $country = $this->getCountryByName($name);
+
+        $data = $table->getRowsHash();
+        $payload = [
+            'name' => $data['Name'] ?? null,
+            'iso_code' => $data['ISO Code'] ?? null,
+            'threshold' => intval($data['Threshold'] ?? 0),
+            'currency' => $data['Currency'],
+        ];
+
+        $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/edit', $payload);
+    }
+
+    /**
+     * @Then there will be a country called :arg1 with the threshold :arg2
+     */
+    public function thereWillBeACountryCalledWithTheThreshold($name, $threshold)
+    {
+        $country = $this->getCountryByName($name);
+
+        if ($country->getThreshold() !== intval($threshold)) {
+            throw new \Exception(sprintf('Got %d but expected %d', $country->getThreshold(), $threshold));
+        }
+    }
+
+    /**
      * @Then there will be a country called :arg1 with the ISO Code :arg2
      */
     public function thereWillBeACountryCalledWithTheIsoCode($arg1, $arg2)

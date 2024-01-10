@@ -14,21 +14,22 @@ namespace App\DataMappers;
 
 use App\Dto\Generic\App\Country as AppDto;
 use App\Dto\Request\App\Country\CreateCountry;
+use App\Dto\Request\App\Country\UpdateCountry;
 use App\Entity\Country as Entity;
 
 class CountryDataMapper
 {
-    public function createEntity(CreateCountry $createCountry, Entity $entity = null): Entity
+    public function createEntity(CreateCountry|UpdateCountry $updateCountry, Entity $entity = null): Entity
     {
         if (!$entity) {
             $entity = new Entity();
             $entity->setCreatedAt(new \DateTime('now'));
         }
 
-        $entity->setName($createCountry->getName());
-        $entity->setIsoCode($createCountry->getIsoCode());
-        $entity->setCurrency($createCountry->getCurrency());
-        $entity->setThreshold($createCountry->getThreshold());
+        $entity->setName($updateCountry->getName());
+        $entity->setIsoCode($updateCountry->getIsoCode());
+        $entity->setCurrency($updateCountry->getCurrency());
+        $entity->setThreshold($updateCountry->getThreshold());
 
         return $entity;
     }
