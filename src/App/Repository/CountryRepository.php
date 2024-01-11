@@ -12,8 +12,20 @@
 
 namespace App\Repository;
 
+use App\Entity\Country;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CountryRepository extends DoctrineCrudRepository implements CountryRepositoryInterface
 {
+    public function getByIsoCode(mixed $value): Country
+    {
+        $country = $this->entityRepository->findOneBy(['isoCode' => $value]);
+
+        if (!$country instanceof Country) {
+            throw new NoEntityFoundException(sprintf('No country found for %s', $value));
+        }
+
+        return $country;
+    }
 }

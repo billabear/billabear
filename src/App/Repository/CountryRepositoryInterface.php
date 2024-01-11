@@ -12,8 +12,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Country;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface CountryRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getByIsoCode(mixed $value): Country;
 }

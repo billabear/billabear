@@ -78,7 +78,6 @@ class MainContext implements Context
         if (!isset($data['errors'])) {
             throw new \Exception('No errors');
         }
-
         if (!isset($data['errors'][$errorKey])) {
             throw new \Exception('No error');
         }

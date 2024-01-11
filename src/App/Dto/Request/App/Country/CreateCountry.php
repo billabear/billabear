@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\Country;
 
+use App\Validator\Constraints\Country\UniqueCountryCode;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,7 @@ class CreateCountry
     #[SerializedName('iso_code')]
     #[Assert\NotBlank]
     #[Assert\Country]
+    #[UniqueCountryCode]
     private $isoCode;
 
     #[Assert\NotBlank]
