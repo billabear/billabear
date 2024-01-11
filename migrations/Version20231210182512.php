@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023.
+ * Copyright Humbly Arrogant Software Limited 2022-2023.
  *
  * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  *
- * Change Date: 09.10.2026 ( 3 years after 2023.4 release )
+ * Change Date: DD.MM.2027 ( 3 years after 2024.1 release )
  *
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
@@ -37,6 +37,8 @@ final class Version20231210182512 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN workflow_transition_rule.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN workflow_transition_rule.workflow_transition_id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE workflow_transition_rule ADD CONSTRAINT FK_A04630361D3B524A FOREIGN KEY (workflow_transition_id) REFERENCES workflow_transition (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE TABLE country (id UUID NOT NULL, name VARCHAR(255) NOT NULL, iso_code VARCHAR(255) NOT NULL, currency VARCHAR(255) NOT NULL, threshold INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN country.id IS \'(DC2Type:uuid)\'');
     }
 
     public function down(Schema $schema): void
@@ -46,5 +48,6 @@ final class Version20231210182512 extends AbstractMigration
         $this->addSql('ALTER TABLE workflow_transition_rule DROP CONSTRAINT FK_A04630361D3B524A');
         $this->addSql('DROP TABLE workflow_transition');
         $this->addSql('DROP TABLE workflow_transition_rule');
+        $this->addSql('DROP TABLE country');
     }
 }

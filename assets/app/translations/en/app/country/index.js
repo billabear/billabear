@@ -1,0 +1,5 @@
+import {COUNTRY_LIST_TRANSLATIONS} from "./list";
+
+export const COUNTRY_TRANSLATIONS = {
+    list: COUNTRY_LIST_TRANSLATIONS,
+};

@@ -5,6 +5,7 @@ import WebhookEndpointView from "../views/App/System/Webhook/WebhookEndpoint/Web
 import WebhookEventView from "../views/App/System/Webhook/WebhookEvent/WebhookEventView.vue";
 import CancellationRequestList from "../views/App/Workflows/CancellationRequest/CancellationRequestList.vue";
 import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
+import CountryList from "../views/App/Country/CountryList.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -43,4 +44,9 @@ export const SYSTEM_ROUTES = [
         path: 'cancellation-request/:id/view',
         component: CancellationRequestView
     },
+    {
+        name: 'app.system.country.list',
+        path: 'country/list',
+        component: CountryList
+    }
 ];
