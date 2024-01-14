@@ -24,6 +24,7 @@ class CountryDataMapper
         if (!$entity) {
             $entity = new Entity();
             $entity->setCreatedAt(new \DateTime('now'));
+            $entity->setEnabled(true);
         }
 
         $entity->setName($updateCountry->getName());

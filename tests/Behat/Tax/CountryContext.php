@@ -99,6 +99,7 @@ class CountryContext implements Context
             $country->setCurrency($row['Currency']);
             $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
+            $country->setEnabled($row['Enabled'] ?? true);
 
             $this->countryRepository->getEntityManager()->persist($country);
         }

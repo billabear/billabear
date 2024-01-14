@@ -75,7 +75,7 @@
     </LoadingScreen>
   </div>
   <div v-else class="error-page">
-    {{ $t('app.payment.list.error_message') }}
+    {{ $t('app.country.list.error_message') }}
   </div>
 </template>
 
