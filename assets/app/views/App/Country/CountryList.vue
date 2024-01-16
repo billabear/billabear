@@ -13,6 +13,9 @@
             </ListGroup>
           </div>
         </Dropdown>
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <router-link :to="{name: 'app.system.country.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.country.list.create_new') }}</router-link>
+        </RoleOnlyView>
       </div>
     </div>
 
@@ -42,7 +45,7 @@
             <tr v-for="country in payments" class="mt-5 cursor-pointer">
               <td>{{ country.name }}</td>
               <td>{{ country.iso_code }}</td>
-              <td><router-link :to="{name: 'app.payment.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
+              <td><router-link :to="{name: 'app.system.country.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
               <td colspan="5" class="text-center">{{ $t('app.country.list.no_countries') }}</td>
@@ -85,10 +88,11 @@ import InternalApp from "../InternalApp.vue";
 import "currency.js"
 import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "CustomerList.vue",
-  components: {ListGroupItem, ListGroup, Dropdown, InternalApp},
+  components: {ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
   data() {
     return {
       ready: false,

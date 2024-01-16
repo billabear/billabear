@@ -6,6 +6,8 @@ import WebhookEventView from "../views/App/System/Webhook/WebhookEvent/WebhookEv
 import CancellationRequestList from "../views/App/Workflows/CancellationRequest/CancellationRequestList.vue";
 import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
 import CountryList from "../views/App/Country/CountryList.vue";
+import CountryCreate from "../views/App/Country/CountryCreate.vue";
+import CountryView from "../views/App/Country/CountryView.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -48,5 +50,15 @@ export const SYSTEM_ROUTES = [
         name: 'app.system.country.list',
         path: 'country/list',
         component: CountryList
+    },
+    {
+        name: 'app.system.country.create',
+        path: 'country/create',
+        component: CountryCreate
+    },
+    {
+        name: 'app.system.country.view',
+        path: 'country/:id/view',
+        component: CountryView
     }
 ];

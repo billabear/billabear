@@ -1,5 +1,7 @@
 import {COUNTRY_LIST_TRANSLATIONS} from "./list";
+import {COUNTRY_CREATE_TRANSLATIONS} from "./create";
 
 export const COUNTRY_TRANSLATIONS = {
     list: COUNTRY_LIST_TRANSLATIONS,
+    create: COUNTRY_CREATE_TRANSLATIONS,
 };
