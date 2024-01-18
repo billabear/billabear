@@ -5,5 +5,6 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         iso_code: "Country Code",
         threshold: "Threshold",
         currency: "Currency"
-    }
+    },
+    edit_button: "Edit"
 }

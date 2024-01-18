@@ -8,6 +8,7 @@ import CancellationRequestView from "../views/App/Workflows/CancellationRequest/
 import CountryList from "../views/App/Country/CountryList.vue";
 import CountryCreate from "../views/App/Country/CountryCreate.vue";
 import CountryView from "../views/App/Country/CountryView.vue";
+import CountryEdit from "../views/App/Country/CountryEdit.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -60,5 +61,10 @@ export const SYSTEM_ROUTES = [
         name: 'app.system.country.view',
         path: 'country/:id/view',
         component: CountryView
+    },
+    {
+        name: 'app.system.country.edit',
+        path: 'country/:id/edit',
+        component: CountryEdit
     }
 ];

@@ -3,6 +3,9 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.country.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="text-end m-5">
+        <router-link :to="{name: 'app.system.country.edit', params: {id: country.id}}" class="btn--main">{{ $t('app.country.view.edit_button') }}</router-link>
+      </div>
       <div>
         <div class="card-body">
           <div class="section-body">

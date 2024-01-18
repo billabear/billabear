@@ -1,9 +1,11 @@
 import {COUNTRY_LIST_TRANSLATIONS} from "./list";
 import {COUNTRY_CREATE_TRANSLATIONS} from "./create";
 import {COUNTRY_VIEW_TRANSLATIONS} from "./view";
+import {COUNTRY_EDIT_TRANSLATIONS} from "./edit";
 
 export const COUNTRY_TRANSLATIONS = {
     list: COUNTRY_LIST_TRANSLATIONS,
     create: COUNTRY_CREATE_TRANSLATIONS,
     view: COUNTRY_VIEW_TRANSLATIONS,
+    edit: COUNTRY_EDIT_TRANSLATIONS,
 };
