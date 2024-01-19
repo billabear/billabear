@@ -49,9 +49,11 @@
 
 <script>
 import axios from "axios";
+import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 
 export default {
   name: "CountryEdit",
+  components: {CurrencySelect},
   data() {
     return {
       ready: false,
