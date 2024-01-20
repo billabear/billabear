@@ -14,10 +14,13 @@ namespace App\Controller\App;
 
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CountryDataMapper;
+use App\DataMappers\CountryTaxRuleDataMapper;
 use App\Dto\Request\App\Country\CreateCountry;
+use App\Dto\Request\App\Country\CreateCountryTaxRule;
 use App\Dto\Request\App\Country\UpdateCountry;
 use App\Dto\Response\App\Country\CountryView;
 use App\Repository\CountryRepositoryInterface;
+use App\Repository\CountryTaxRuleRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +65,7 @@ class CountryController
         $appDto = $dataMapper->createAppDto($entity);
         $json = $serializer->serialize($appDto, 'json');
 
-        return new JsonResponse($json, json: true);
+        return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
     }
 
     #[Route('/app/country/{id}/view', methods: ['GET'])]
@@ -113,5 +116,33 @@ class CountryController
         $json = $serializer->serialize($appDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/country/{id}/tax-rule', methods: ['POST'])]
+    public function createTaxRule(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        CountryTaxRuleDataMapper $countryTaxRuleDataMapper,
+        CountryTaxRuleRepositoryInterface $countryTaxRuleRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        try {
+            $country = $countryRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $createDto = $serializer->deserialize($request->getContent(), CreateCountryTaxRule::class, 'json');
+        $errors = $validator->validate($createDto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $entity = $countryTaxRuleDataMapper->createEntity($createDto, $country);
+        $countryTaxRuleRepository->save($entity);
+
+        return new JsonResponse([], status: Response::HTTP_CREATED);
     }
 }

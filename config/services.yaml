@@ -406,6 +406,12 @@ services:
     app.repository.orm.tax_type:
         class: App\Repository\Orm\TaxTypeRepository
 
+    App\Repository\CountryTaxRuleRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.country_tax_rule'
+    app.repository.orm.country_tax_rule:
+        class: App\Repository\Orm\CountryTaxRuleRepository
+
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
 

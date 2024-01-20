@@ -13,7 +13,11 @@
 namespace App\Tests\Behat\Tax;
 
 use App\Entity\Country;
+use App\Entity\CountryTaxRule;
+use App\Entity\TaxType;
 use App\Repository\Orm\CountryRepository;
+use App\Repository\Orm\CountryTaxRuleRepository;
+use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -23,8 +27,23 @@ class CountryContext implements Context
 {
     use SendRequestTrait;
 
-    public function __construct(private Session $session, private CountryRepository $countryRepository)
+    public function __construct(
+        private Session $session,
+        private CountryRepository $countryRepository,
+        private TaxTypeRepository $taxTypeRepository,
+        private CountryTaxRuleRepository $countryTaxRuleRepository,
+    ) {
+    }
+
+    public function getTaxType(string $name): TaxType
     {
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => $name]);
+
+        if (!$taxType instanceof TaxType) {
+            throw new \Exception(sprintf("No tax type called '%s' found", $name));
+        }
+
+        return $taxType;
     }
 
     /**
@@ -185,5 +204,46 @@ class CountryContext implements Context
         $this->countryRepository->getEntityManager()->refresh($country);
 
         return $country;
+    }
+
+    /**
+     * @When I create a country tax rule with the following data:
+     */
+    public function iCreateACountryTaxRuleWithTheFollowingData(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+
+        $country = $this->getCountryByName($data['Country']);
+        $taxType = $this->getTaxType($data['Tax Type']);
+        $validFrom = new \DateTime($data['Valid From']);
+
+        $payload = [
+            'tax_type' => (string) $taxType->getId(),
+            'tax_rate' => floatval($data['Tax Rate']),
+            'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
+            'default' => boolval($data['Default'] ?? 'true'),
+        ];
+
+        $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/tax-rule', $payload);
+    }
+
+    /**
+     * @Then there should be a tax rule for :arg1 for :arg2 tax type with the tax rate :arg3
+     */
+    public function thereShouldBeATaxRuleForForTaxTypeWithTheTaxRate($country, $taxType, $taxRate)
+    {
+        $country = $this->getCountryByName($country);
+        $taxType = $this->getTaxType($taxType);
+
+        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType]);
+
+        if (!$countryTaxRule instanceof CountryTaxRule) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No tax rule found');
+        }
+
+        if (floatval($taxRate) !== $countryTaxRule->getTaxRate()) {
+            throw new \Exception('Got %f instead of %f', $taxRate, $countryTaxRule->getTaxRate());
+        }
     }
 }
