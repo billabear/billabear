@@ -26,6 +26,7 @@ import {CHECKOUT_TRANSLATIONS} from "./checkout";
 import {LAYOUT_TRANSLATIONS} from "./layout";
 import {WORKFLOWS_TRANSLATIONS} from "./workflows";
 import {COUNTRY_TRANSLATIONS} from "./country";
+import {TAX_TYPE_TRANSLATIONS} from "./tax_type";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -56,4 +57,5 @@ export const APP_TRANSLATIONS = {
     layout: LAYOUT_TRANSLATIONS,
     workflows: WORKFLOWS_TRANSLATIONS,
     country: COUNTRY_TRANSLATIONS,
+    tax_type: TAX_TYPE_TRANSLATIONS,
 };

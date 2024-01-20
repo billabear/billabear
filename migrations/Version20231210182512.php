@@ -39,6 +39,8 @@ final class Version20231210182512 extends AbstractMigration
         $this->addSql('ALTER TABLE workflow_transition_rule ADD CONSTRAINT FK_A04630361D3B524A FOREIGN KEY (workflow_transition_id) REFERENCES workflow_transition (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE TABLE country (id UUID NOT NULL, name VARCHAR(255) NOT NULL, iso_code VARCHAR(255) NOT NULL, currency VARCHAR(255) NOT NULL, threshold INT NOT NULL, revenue_for_tax_year INT DEFAULT NULL, start_of_tax_year TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, enabled BOOLEAN NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN country.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE tax_type (id UUID NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN tax_type.id IS \'(DC2Type:uuid)\'');
     }
 
     public function down(Schema $schema): void
@@ -49,5 +51,6 @@ final class Version20231210182512 extends AbstractMigration
         $this->addSql('DROP TABLE workflow_transition');
         $this->addSql('DROP TABLE workflow_transition_rule');
         $this->addSql('DROP TABLE country');
+        $this->addSql('DROP TABLE tax_type');
     }
 }

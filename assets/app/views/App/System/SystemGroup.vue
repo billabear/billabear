@@ -6,6 +6,7 @@
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.system.webhooks'}" class="submenu-link">{{ $t('app.system.menu.webhooks') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.system.country.list'}" class="submenu-link">{{ $t('app.system.menu.countries') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.system.tax_type.list'}" class="submenu-link">{{ $t('app.system.menu.tax_types') }}</router-link></li>
         </ul>
       </div>
     </div>

@@ -9,6 +9,8 @@ import CountryList from "../views/App/Country/CountryList.vue";
 import CountryCreate from "../views/App/Country/CountryCreate.vue";
 import CountryView from "../views/App/Country/CountryView.vue";
 import CountryEdit from "../views/App/Country/CountryEdit.vue";
+import TaxTypeList from "../views/App/TaxType/TaxTypeList.vue";
+import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -66,5 +68,15 @@ export const SYSTEM_ROUTES = [
         name: 'app.system.country.edit',
         path: 'country/:id/edit',
         component: CountryEdit
+    },
+    {
+        name: 'app.system.tax_type.list',
+        path: 'tax/type/list',
+        component: TaxTypeList
+    },
+    {
+        name: 'app.system.tax_type.create',
+        path: 'tax/type/create',
+        component: TaxTypeCreate
     }
 ];
