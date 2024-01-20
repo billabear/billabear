@@ -400,6 +400,12 @@ services:
     app.repository.orm.workflow_transition:
         class: App\Repository\Orm\WorkflowTransitionRepository
 
+    App\Repository\TaxTypeRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.tax_type'
+    app.repository.orm.tax_type:
+        class: App\Repository\Orm\TaxTypeRepository
+
     App\Customer\ExternalRegisterInterface: '@App\Customer\ObolRegister'
 
 
