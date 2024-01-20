@@ -16,6 +16,7 @@ use App\Entity\TaxType;
 use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 
 class TaxTypeContext implements Context
@@ -46,5 +47,44 @@ class TaxTypeContext implements Context
         if (!$taxType instanceof TaxType) {
             throw new \Exception('Tax type not found');
         }
+    }
+
+    /**
+     * @Given there are the following tax types:
+     */
+    public function thereAreTheFollowingTaxTypes(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+        foreach ($data as $row) {
+            $taxType = new TaxType();
+            $taxType->setName($row['Name']);
+            $this->taxTypeRepository->getEntityManager()->persist($taxType);
+        }
+
+        $this->taxTypeRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I go to the tax types list
+     */
+    public function iGoToTheTaxTypesList()
+    {
+        $this->sendJsonRequest('GET', '/app/tax/type');
+    }
+
+    /**
+     * @Then I will see a tax type in the list called :arg1
+     */
+    public function iWillSeeATaxTypeInTheListCalled($name)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $item) {
+            if ($item['name'] === $name) {
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf("Can't see tax type '%s'", $name));
     }
 }

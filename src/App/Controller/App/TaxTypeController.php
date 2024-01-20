@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TaxTypeController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
 
     #[Route('/app/tax/type', name: 'app_app_create_tax_type', methods: ['POST'])]
     public function createTaxType(
@@ -49,5 +50,15 @@ class TaxTypeController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/tax/type', name: 'app_app_list_tax_type', methods: ['GET'])]
+    public function listTaxTypes(
+        Request $request,
+        TaxTypeDataMapper $taxTypeDataMapper,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        SerializerInterface $serializer,
+    ): Response {
+        return $this->crudList($request, $taxTypeRepository, $serializer, $taxTypeDataMapper, 'name');
     }
 }
