@@ -12,6 +12,7 @@
 
 namespace App\DataMappers;
 
+use App\Dto\Generic\App\CountryTaxRule as AppDto;
 use App\Dto\Request\App\Country\CreateCountryTaxRule;
 use App\Entity\Country;
 use App\Entity\CountryTaxRule as Entity;
@@ -21,6 +22,7 @@ class CountryTaxRuleDataMapper
 {
     public function __construct(
         private TaxTypeRepositoryInterface $taxTypeRepository,
+        private TaxTypeDataMapper $taxTypeDataMapper,
     ) {
     }
 
@@ -38,5 +40,17 @@ class CountryTaxRuleDataMapper
         $entity->setCreatedAt(new \DateTime());
 
         return $entity;
+    }
+
+    public function createAppDto(Entity $countryTaxRule): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setId((string) $countryTaxRule->getId());
+        $dto->setTaxType($this->taxTypeDataMapper->createAppDto($countryTaxRule->getTaxType()));
+        $dto->setTaxRate($countryTaxRule->getTaxRate());
+        $dto->setValidFrom($countryTaxRule->getValidFrom());
+        $dto->setValidUntil($countryTaxRule->getValidUntil());
+
+        return $dto;
     }
 }

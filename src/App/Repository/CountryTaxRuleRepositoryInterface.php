@@ -12,8 +12,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Country;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface CountryTaxRuleRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getForCountry(Country $country): array;
 }

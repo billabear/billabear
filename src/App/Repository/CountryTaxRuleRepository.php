@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Country;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class CountryTaxRuleRepository extends DoctrineCrudRepository implements CountryTaxRuleRepositoryInterface
 {
+    public function getForCountry(Country $country): array
+    {
+        return $this->entityRepository->findBy(['country' => $country]);
+    }
 }

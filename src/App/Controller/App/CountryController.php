@@ -72,6 +72,8 @@ class CountryController
     public function readCountry(
         Request $request,
         CountryRepositoryInterface $countryRepository,
+        CountryTaxRuleRepositoryInterface $countryTaxRuleRepository,
+        CountryTaxRuleDataMapper $countryTaxRuleDataMapper,
         CountryDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
@@ -82,8 +84,13 @@ class CountryController
         }
 
         $countryDto = $dataMapper->createAppDto($entity);
+
+        $countryTaxRules = $countryTaxRuleRepository->getForCountry($entity);
+        $countryTaxRuleDtos = array_map([$countryTaxRuleDataMapper, 'createAppDto'], $countryTaxRules);
+
         $view = new CountryView();
         $view->setCountry($countryDto);
+        $view->setCountryTaxRules($countryTaxRuleDtos);
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
@@ -142,7 +149,9 @@ class CountryController
 
         $entity = $countryTaxRuleDataMapper->createEntity($createDto, $country);
         $countryTaxRuleRepository->save($entity);
+        $appDto = $countryTaxRuleDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($appDto, 'json');
 
-        return new JsonResponse([], status: Response::HTTP_CREATED);
+        return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
     }
 }

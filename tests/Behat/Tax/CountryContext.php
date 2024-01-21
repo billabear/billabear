@@ -151,6 +151,7 @@ class CountryContext implements Context
 
     /**
      * @When I goto the edit country for :arg1
+     * @When I view the country for :arg1
      */
     public function iGotoTheEditCountryFor($name)
     {
@@ -225,6 +226,51 @@ class CountryContext implements Context
         ];
 
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/tax-rule', $payload);
+    }
+
+    /**
+     * @Given the following country tax rules exist:
+     */
+    public function theFollowingCountryTaxRulesExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+
+        foreach ($data as $row) {
+            $country = $this->getCountryByName($row['Country']);
+            $taxType = $this->getTaxType($row['Tax Type']);
+            $validFrom = new \DateTime($row['Valid From'] ?? '-100 days');
+
+            $countryTaxRule = new CountryTaxRule();
+            $countryTaxRule->setCountry($country);
+            $countryTaxRule->setTaxType($taxType);
+            $countryTaxRule->setTaxRate(floatval($row['Tax Rate']));
+            $countryTaxRule->setValidFrom($validFrom);
+            $countryTaxRule->setIsDefault(boolval($row['Default'] ?? 'true'));
+            $countryTaxRule->setCreatedAt(new \DateTime());
+
+            $this->countryTaxRuleRepository->getEntityManager()->persist($countryTaxRule);
+        }
+
+        $this->countryTaxRuleRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Then I should see the tax rule for tax type :arg1 with the tax rate :arg2
+     */
+    public function iShouldSeeTheTaxRuleForTaxTypeWithTheTaxRate($arg1, $arg2)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['country_tax_rules'] as $taxRule) {
+            if ($taxRule['tax_type']['name'] !== $arg1) {
+                continue;
+            }
+            if ($taxRule['tax_rate'] == floatval($arg2)) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find tax rule");
     }
 
     /**

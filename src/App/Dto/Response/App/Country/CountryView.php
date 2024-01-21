@@ -13,10 +13,14 @@
 namespace App\Dto\Response\App\Country;
 
 use App\Dto\Generic\App\Country;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 class CountryView
 {
     private Country $country;
+
+    #[SerializedName('country_tax_rules')]
+    private array $countryTaxRules;
 
     public function getCountry(): Country
     {
@@ -26,5 +30,15 @@ class CountryView
     public function setCountry(Country $country): void
     {
         $this->country = $country;
+    }
+
+    public function getCountryTaxRules(): array
+    {
+        return $this->countryTaxRules;
+    }
+
+    public function setCountryTaxRules(array $countryTaxRules): void
+    {
+        $this->countryTaxRules = $countryTaxRules;
     }
 }
