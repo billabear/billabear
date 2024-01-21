@@ -226,6 +226,11 @@ class CountryContext implements Context
             'country' => (string) $country->getId(),
         ];
 
+        if (isset($data['Valid Until'])) {
+            $validUntil = new \DateTime($data['Valid Until']);
+            $payload['valid_until'] = $validUntil->format(\DATE_RFC3339_EXTENDED);
+        }
+
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/tax-rule', $payload);
     }
 

@@ -46,3 +46,25 @@ Feature: Add Country Tax Rule
       | Valid From | -3 days        |
     Then there should be an error for "validFrom"
 
+  Scenario: Fails to create when overlapping valid times
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Currency |
+      | United Kingdom | GB       | 1770      | GBP      |
+      | United States  | US       | 0         | USD      |
+      | Germany        | DE       | 0         | EUR      |
+    And there are the following tax types:
+      | Name     |
+      | Digital  |
+      | Physical |
+    And the following country tax rules exist:
+      | Country        | Tax Type | Tax Rate | Valid From | Valid Until |
+      | United Kingdom | Digital  | 17.5     | -10 days   | +10 days    |
+    When I create a country tax rule with the following data:
+      | Country     | United Kingdom |
+      | Tax Type    | Digital        |
+      | Tax Rate    | 15             |
+      | Valid From  | -13 days       |
+      | Valid Until | -3 days        |
+    Then there should be an error for "validUntil"
+
