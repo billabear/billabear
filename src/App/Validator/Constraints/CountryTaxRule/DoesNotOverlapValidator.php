@@ -40,7 +40,7 @@ class DoesNotOverlapValidator extends ConstraintValidator
         $validFrom = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $value->getValidFrom());
 
         foreach ($countryTaxRules as $countryTaxRule) {
-            if ($countryTaxRule->getValidFrom() < $validFrom && (null === $countryTaxRule->getValidUntil() || $countryTaxRule->getValidUntil() > $validFrom)) {
+            if ($countryTaxRule->getValidFrom() < $validFrom && (null !== $countryTaxRule->getValidUntil() || $countryTaxRule->getValidUntil() > $validFrom)) {
                 $this->context->buildViolation($constraint->message)->atPath('validFrom')->addViolation();
 
                 return;
@@ -48,7 +48,7 @@ class DoesNotOverlapValidator extends ConstraintValidator
 
             if ($value->getValidUntil()) {
                 $validUntil = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $value->getValidUntil());
-                if ($countryTaxRule->getValidFrom() < $validUntil && (null === $countryTaxRule->getValidUntil() || $countryTaxRule->getValidUntil() > $validUntil)) {
+                if ($countryTaxRule->getValidFrom() < $validUntil && (null !== $countryTaxRule->getValidUntil() || $countryTaxRule->getValidUntil() > $validUntil)) {
                     $this->context->buildViolation($constraint->message)->atPath('validUntil')->addViolation();
 
                     return;

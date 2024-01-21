@@ -13,12 +13,26 @@
 namespace App\Repository;
 
 use App\Entity\Country;
+use App\Entity\CountryTaxRule;
+use App\Entity\TaxType;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CountryTaxRuleRepository extends DoctrineCrudRepository implements CountryTaxRuleRepositoryInterface
 {
     public function getForCountry(Country $country): array
     {
         return $this->entityRepository->findBy(['country' => $country]);
+    }
+
+    public function getOpenEndedForCountryAndTaxType(Country $country, TaxType $taxType): CountryTaxRule
+    {
+        $countryTaxRule = $this->entityRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'validUntil' => null]);
+
+        if (!$countryTaxRule instanceof CountryTaxRule) {
+            throw new NoEntityFoundException();
+        }
+
+        return $countryTaxRule;
     }
 }

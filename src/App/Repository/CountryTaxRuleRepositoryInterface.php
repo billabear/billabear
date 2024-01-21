@@ -12,8 +12,9 @@
 
 namespace App\Repository;
 
-use App\Dto\Generic\App\CountryTaxRule;
 use App\Entity\Country;
+use App\Entity\CountryTaxRule;
+use App\Entity\TaxType;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface CountryTaxRuleRepositoryInterface extends CrudRepositoryInterface
@@ -22,4 +23,6 @@ interface CountryTaxRuleRepositoryInterface extends CrudRepositoryInterface
      * @return CountryTaxRule[]
      */
     public function getForCountry(Country $country): array;
+
+    public function getOpenEndedForCountryAndTaxType(Country $country, TaxType $taxType): CountryTaxRule;
 }

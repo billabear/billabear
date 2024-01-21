@@ -302,4 +302,27 @@ class CountryContext implements Context
             throw new \Exception('Got %f instead of %f', $taxRate, $countryTaxRule->getTaxRate());
         }
     }
+
+    /**
+     * @Then there should be a tax rule for :arg1 for :arg2 tax type with the tax rate :arg4 that is valid until :arg3
+     */
+    public function thereShouldBeATaxRuleForForTaxTypeWithTheTaxRateThatIsValidUntil($country, $taxType, $taxRate, $validUntilStr)
+    {
+        $country = $this->getCountryByName($country);
+        $taxType = $this->getTaxType($taxType);
+
+        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'taxRate' => $taxRate]);
+
+        if (!$countryTaxRule instanceof CountryTaxRule) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No tax rule found');
+        }
+        $this->countryTaxRuleRepository->getEntityManager()->refresh($countryTaxRule);
+
+        $validUntil = new \DateTime($validUntilStr);
+        if ($validUntil->format('Y-m-d') !== $countryTaxRule->getValidUntil()?->format('Y-m-d')) {
+            var_dump($this->getJsonContent());
+            throw new \Exception("Date doesn't match");
+        }
+    }
 }

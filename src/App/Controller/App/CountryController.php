@@ -21,6 +21,7 @@ use App\Dto\Request\App\Country\UpdateCountry;
 use App\Dto\Response\App\Country\CountryView;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\CountryTaxRuleRepositoryInterface;
+use App\Tax\CountryTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,6 +132,7 @@ class CountryController
         CountryRepositoryInterface $countryRepository,
         CountryTaxRuleDataMapper $countryTaxRuleDataMapper,
         CountryTaxRuleRepositoryInterface $countryTaxRuleRepository,
+        CountryTaxRuleTerminator $countryTaxRuleTerminator,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
@@ -148,6 +150,7 @@ class CountryController
         }
 
         $entity = $countryTaxRuleDataMapper->createEntity($createDto, $country);
+        $countryTaxRuleTerminator->terminateOpenTaxRule($entity);
         $countryTaxRuleRepository->save($entity);
         $appDto = $countryTaxRuleDataMapper->createAppDto($entity);
         $json = $serializer->serialize($appDto, 'json');
