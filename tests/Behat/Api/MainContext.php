@@ -76,9 +76,11 @@ class MainContext implements Context
         $data = $this->getJsonContent();
 
         if (!isset($data['errors'])) {
+            var_dump($data);
             throw new \Exception('No errors');
         }
         if (!isset($data['errors'][$errorKey])) {
+            var_dump($data);
             throw new \Exception('No error');
         }
     }

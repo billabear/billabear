@@ -15,6 +15,10 @@ namespace App\Repository;
 use App\Entity\Country;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
+/**
+ * @method Country findById($id)
+ * @method Country getById($id, $includeDeleted = false)
+ */
 interface CountryRepositoryInterface extends CrudRepositoryInterface
 {
     public function getByIsoCode(mixed $value): Country;

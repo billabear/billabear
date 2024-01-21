@@ -12,11 +12,18 @@
 
 namespace App\Dto\Request\App\Country;
 
+use App\Validator\Constraints\Country\CountryExists;
+use App\Validator\Constraints\CountryTaxRule\DoesNotOverlap;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[DoesNotOverlap]
 class CreateCountryTaxRule
 {
+    #[Assert\NotBlank()]
+    #[CountryExists]
+    private $country;
+
     #[SerializedName('tax_type')]
     #[Assert\NotBlank()]
     private $taxType;
@@ -31,8 +38,23 @@ class CreateCountryTaxRule
     private $default;
 
     #[SerializedName('valid_from')]
+    #[Assert\NotBlank()]
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
     private $validFrom;
+
+    #[SerializedName('valid_until')]
+    #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    private $validUntil;
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function setCountry($country): void
+    {
+        $this->country = $country;
+    }
 
     public function getTaxType()
     {
@@ -72,5 +94,15 @@ class CreateCountryTaxRule
     public function setValidFrom($validFrom): void
     {
         $this->validFrom = $validFrom;
+    }
+
+    public function getValidUntil()
+    {
+        return $this->validUntil;
+    }
+
+    public function setValidUntil($validUntil): void
+    {
+        $this->validUntil = $validUntil;
     }
 }

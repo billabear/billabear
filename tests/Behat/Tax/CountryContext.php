@@ -223,6 +223,7 @@ class CountryContext implements Context
             'tax_rate' => floatval($data['Tax Rate']),
             'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
             'default' => boolval($data['Default'] ?? 'true'),
+            'country' => (string) $country->getId(),
         ];
 
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/tax-rule', $payload);
@@ -247,6 +248,10 @@ class CountryContext implements Context
             $countryTaxRule->setValidFrom($validFrom);
             $countryTaxRule->setIsDefault(boolval($row['Default'] ?? 'true'));
             $countryTaxRule->setCreatedAt(new \DateTime());
+
+            if (isset($row['Valid Until'])) {
+                $countryTaxRule->setValidUntil(new \DateTime($row['Valid Until']));
+            }
 
             $this->countryTaxRuleRepository->getEntityManager()->persist($countryTaxRule);
         }

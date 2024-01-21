@@ -10,16 +10,18 @@
  * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
  */
 
-namespace App\Repository;
+namespace App\Validator\Constraints\Country;
 
-use App\Dto\Generic\App\CountryTaxRule;
-use App\Entity\Country;
-use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Symfony\Component\Validator\Constraint;
 
-interface CountryTaxRuleRepositoryInterface extends CrudRepositoryInterface
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+class CountryExists extends Constraint
 {
-    /**
-     * @return CountryTaxRule[]
-     */
-    public function getForCountry(Country $country): array;
+    public const NOT_UNIQUE_ERROR = '23bd9dbf-6b9b-41cd-a99e-4844bcf3077f';
+
+    protected const ERROR_NAMES = [
+        self::NOT_UNIQUE_ERROR => 'NOT_UNIQUE_ERROR',
+    ];
+
+    public $message = 'The country "{{ string }}" does not exist.';
 }
