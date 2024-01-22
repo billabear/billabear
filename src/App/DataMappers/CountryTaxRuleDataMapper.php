@@ -39,6 +39,11 @@ class CountryTaxRuleDataMapper
         $entity->setValidFrom($validFrom);
         $entity->setCreatedAt(new \DateTime());
 
+        if ($countryTaxRule->getValidUntil()) {
+            $validUntil = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $countryTaxRule->getValidUntil());
+            $entity->setValidUntil($validUntil);
+        }
+
         return $entity;
     }
 

@@ -325,4 +325,21 @@ class CountryContext implements Context
             throw new \Exception("Date doesn't match");
         }
     }
+
+    /**
+     * @Then there should be a tax rule for :arg1 for :arg2 tax type with the tax rate :arg3 that is open ended
+     */
+    public function thereShouldBeATaxRuleForForTaxTypeWithTheTaxRateThatIsOpenEnded($country, $taxType, $taxRate)
+    {
+        $country = $this->getCountryByName($country);
+        $taxType = $this->getTaxType($taxType);
+
+        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'taxRate' => $taxRate, 'validUntil' => null]);
+
+        if (!$countryTaxRule instanceof CountryTaxRule) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No tax rule found');
+        }
+        $this->countryTaxRuleRepository->getEntityManager()->refresh($countryTaxRule);
+    }
 }
