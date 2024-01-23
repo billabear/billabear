@@ -13,6 +13,7 @@
 namespace App\Validator\Constraints\CountryTaxRule;
 
 use App\Dto\Request\App\Country\CreateCountryTaxRule;
+use App\Dto\Request\App\Country\UpdateCountryTaxRule;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\CountryTaxRuleRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -28,18 +29,25 @@ class DoesNotOverlapValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint)
     {
-        if (!$value instanceof CreateCountryTaxRule) {
+        if (!$value instanceof CreateCountryTaxRule && !$value instanceof UpdateCountryTaxRule) {
             return;
         }
         if (!$value->getValidFrom()) {
             return;
         }
 
+        $originalRule = null;
+        if ($value instanceof UpdateCountryTaxRule) {
+            $originalRule = $this->countryTaxRuleRepository->findById($value->getId());
+        }
         $country = $this->countryRepository->getById($value->getCountry());
         $countryTaxRules = $this->countryTaxRuleRepository->getForCountry($country);
         $validFrom = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $value->getValidFrom());
 
         foreach ($countryTaxRules as $countryTaxRule) {
+            if (isset($originalRule) && strval($countryTaxRule->getId()) === strval($originalRule->getId())) {
+                continue;
+            }
             if ($countryTaxRule->getValidFrom() < $validFrom && (null !== $countryTaxRule->getValidUntil() || $countryTaxRule->getValidUntil() > $validFrom)) {
                 $this->context->buildViolation($constraint->message)->atPath('validFrom')->addViolation();
 

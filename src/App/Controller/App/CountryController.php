@@ -18,6 +18,7 @@ use App\DataMappers\CountryTaxRuleDataMapper;
 use App\Dto\Request\App\Country\CreateCountry;
 use App\Dto\Request\App\Country\CreateCountryTaxRule;
 use App\Dto\Request\App\Country\UpdateCountry;
+use App\Dto\Request\App\Country\UpdateCountryTaxRule;
 use App\Dto\Response\App\Country\CountryView;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\CountryTaxRuleRepositoryInterface;
@@ -150,6 +151,40 @@ class CountryController
         }
 
         $entity = $countryTaxRuleDataMapper->createEntity($createDto, $country);
+        $countryTaxRuleTerminator->terminateOpenTaxRule($entity);
+        $countryTaxRuleRepository->save($entity);
+        $appDto = $countryTaxRuleDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($appDto, 'json');
+
+        return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/country/{id}/tax-rule/{taxRuleId}/edit', methods: ['POST'])]
+    public function editTaxRule(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        CountryTaxRuleDataMapper $countryTaxRuleDataMapper,
+        CountryTaxRuleRepositoryInterface $countryTaxRuleRepository,
+        CountryTaxRuleTerminator $countryTaxRuleTerminator,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        try {
+            $country = $countryRepository->findById($request->get('id'));
+            $entity = $countryTaxRuleRepository->findById($request->get('taxRuleId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $createDto = $serializer->deserialize($request->getContent(), UpdateCountryTaxRule::class, 'json');
+        $errors = $validator->validate($createDto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $entity = $countryTaxRuleDataMapper->createEntity($createDto, $country, $entity);
         $countryTaxRuleTerminator->terminateOpenTaxRule($entity);
         $countryTaxRuleRepository->save($entity);
         $appDto = $countryTaxRuleDataMapper->createAppDto($entity);

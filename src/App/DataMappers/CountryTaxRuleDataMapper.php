@@ -14,6 +14,7 @@ namespace App\DataMappers;
 
 use App\Dto\Generic\App\CountryTaxRule as AppDto;
 use App\Dto\Request\App\Country\CreateCountryTaxRule;
+use App\Dto\Request\App\Country\UpdateCountryTaxRule;
 use App\Entity\Country;
 use App\Entity\CountryTaxRule as Entity;
 use App\Repository\TaxTypeRepositoryInterface;
@@ -26,18 +27,20 @@ class CountryTaxRuleDataMapper
     ) {
     }
 
-    public function createEntity(CreateCountryTaxRule $countryTaxRule, Country $country): Entity
+    public function createEntity(CreateCountryTaxRule|UpdateCountryTaxRule $countryTaxRule, Country $country, Entity $entity = null): Entity
     {
         $taxType = $this->taxTypeRepository->findById($countryTaxRule->getTaxType());
         $validFrom = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $countryTaxRule->getValidFrom());
 
-        $entity = new Entity();
+        if (null === $entity) {
+            $entity = new Entity();
+            $entity->setCreatedAt(new \DateTime());
+        }
         $entity->setCountry($country);
         $entity->setTaxType($taxType);
         $entity->setTaxRate(floatval($countryTaxRule->getTaxRate()));
         $entity->setIsDefault($countryTaxRule->getDefault());
         $entity->setValidFrom($validFrom);
-        $entity->setCreatedAt(new \DateTime());
 
         if ($countryTaxRule->getValidUntil()) {
             $validUntil = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $countryTaxRule->getValidUntil());
