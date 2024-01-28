@@ -37,6 +37,11 @@ class CreateCountryTaxRule
     #[Assert\Type('boolean')]
     private $default;
 
+    #[SerializedName('in_eu')]
+    #[Assert\NotBlank()]
+    #[Assert\Type('boolean')]
+    private $inEu = false;
+
     #[SerializedName('valid_from')]
     #[Assert\NotBlank()]
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
@@ -104,5 +109,15 @@ class CreateCountryTaxRule
     public function setValidUntil($validUntil): void
     {
         $this->validUntil = $validUntil;
+    }
+
+    public function isInEu(): bool
+    {
+        return $this->inEu;
+    }
+
+    public function setInEu(bool $inEu): void
+    {
+        $this->inEu = $inEu;
     }
 }

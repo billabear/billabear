@@ -44,6 +44,9 @@ class Country
     private ?\DateTime $startOfTaxYear;
 
     #[ORM\Column(type: 'boolean')]
+    private bool $inEu;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $enabled;
 
     #[ORM\Column(type: 'datetime')]
@@ -137,5 +140,15 @@ class Country
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function isInEu(): bool
+    {
+        return $this->inEu;
+    }
+
+    public function setInEu(bool $inEu): void
+    {
+        $this->inEu = $inEu;
     }
 }

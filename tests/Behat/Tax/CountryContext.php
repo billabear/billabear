@@ -119,6 +119,7 @@ class CountryContext implements Context
             $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
             $country->setEnabled($row['Enabled'] ?? true);
+            $country->setInEu($row['In EU'] ?? false);
 
             $this->countryRepository->getEntityManager()->persist($country);
         }
@@ -224,6 +225,7 @@ class CountryContext implements Context
             'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
             'default' => boolval($data['Default'] ?? 'true'),
             'country' => (string) $country->getId(),
+            'in_eu' => boolval($data['In EU'] ?? 'true'),
         ];
 
         if (isset($data['Valid Until'])) {
@@ -308,6 +310,7 @@ class CountryContext implements Context
             'tax_rate' => floatval($data['Tax Rate']),
             'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
             'default' => boolval($data['Default'] ?? 'true'),
+            'in_eu' => boolval($data['In EU'] ?? 'true'),
             'country' => (string) $country->getId(),
         ];
 
