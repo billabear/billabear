@@ -37,6 +37,14 @@
             <input type="number" class="form-field" v-model="country.threshold" />
             <p class="form-field-help">{{ $t('app.country.create.country.help_info.threshold') }}</p>
           </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="in_eu">
+              {{ $t('app.country.create.country.fields.in_eu') }}
+            </label>
+            <p class="form-field-error" v-if="errors.inEu != undefined">{{ errors.inEu }}</p>
+            <input type="checkbox" class="form-field" v-model="country.in_eu" />
+            <p class="form-field-help">{{ $t('app.country.create.country.help_info.in_eu') }}</p>
+          </div>
         </div>
       </div>
       <div class="mt-5 ml-5">
@@ -63,7 +71,8 @@ export default {
         name: null,
         iso_code: null,
         currency: null,
-        threshold: 0
+        threshold: 0,
+        in_eu: false,
       }
     }
   },

@@ -31,6 +31,7 @@ class CountryDataMapper
         $entity->setIsoCode($updateCountry->getIsoCode());
         $entity->setCurrency($updateCountry->getCurrency());
         $entity->setThreshold($updateCountry->getThreshold());
+        $entity->setInEu($updateCountry->getInEu() ?? false);
 
         return $entity;
     }

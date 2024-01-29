@@ -34,6 +34,11 @@ class UpdateCountry
     #[Assert\PositiveOrZero]
     private $threshold;
 
+    #[SerializedName('in_eu')]
+    #[Assert\NotBlank]
+    #[Assert\Type('boolean')]
+    private $inEu;
+
     public function getName()
     {
         return $this->name;
@@ -72,5 +77,15 @@ class UpdateCountry
     public function setThreshold($threshold): void
     {
         $this->threshold = $threshold;
+    }
+
+    public function getInEu()
+    {
+        return $this->inEu;
+    }
+
+    public function setInEu($inEu): void
+    {
+        $this->inEu = $inEu;
     }
 }

@@ -38,6 +38,14 @@
             <input type="number" class="form-field" v-model="country.threshold" />
             <p class="form-field-help">{{ $t('app.country.edit.country.help_info.threshold') }}</p>
           </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="in_eu">
+              {{ $t('app.country.edit.country.fields.in_eu') }}
+            </label>
+            <p class="form-field-error" v-if="errors.inEu != undefined">{{ errors.inEu }}</p>
+            <input type="checkbox" class="form-field" v-model="country.in_eu" />
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.in_eu') }}</p>
+          </div>
         </div>
       </div>
       <div class="mt-5 ml-5">
