@@ -57,6 +57,8 @@ class CountryContext implements Context
             'iso_code' => $data['ISO Code'] ?? null,
             'threshold' => intval($data['Threshold'] ?? 0),
             'currency' => $data['Currency'],
+            'default' => boolval($data['Default'] ?? 'true'),
+            'in_eu' => boolval($data['In EU'] ?? 'true'),
         ];
 
         $this->sendJsonRequest('POST', '/app/country', $payload);
@@ -75,6 +77,7 @@ class CountryContext implements Context
             'iso_code' => $data['ISO Code'] ?? null,
             'threshold' => intval($data['Threshold'] ?? 0),
             'currency' => $data['Currency'],
+            'in_eu' => boolval($data['In EU'] ?? 'true'),
         ];
 
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/edit', $payload);

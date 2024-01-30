@@ -94,4 +94,14 @@ class CreateCountry
     {
         $this->inEu = $inEu;
     }
+
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    public function setDefault($default): void
+    {
+        $this->default = $default;
+    }
 }
