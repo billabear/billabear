@@ -16,4 +16,8 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class TaxTypeRepository extends DoctrineCrudRepository implements TaxTypeRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }

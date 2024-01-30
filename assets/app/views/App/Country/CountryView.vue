@@ -29,27 +29,111 @@
             </dl>
           </div>
         </div>
+        <div>
+
+          <h2 class="page-title">{{ $t('app.country.view.tax_rule.title') }}</h2>
+          <div class="text-end mr-5">
+            <button class="btn--main" @click="openCountryTaxAdd = true">{{ $t('app.country.view.tax_rule.add') }}</button>
+          </div>
+          <table class="list-table">
+            <thead>
+            <tr>
+              <th>{{ $t('app.country.view.tax_rule.rate') }}</th>
+              <th>{{ $t('app.country.view.tax_rule.type')}}</th>
+              <th>{{ $t('app.country.view.tax_rule.start_date') }}</th>
+              <th>{{ $t('app.country.view.tax_rule.end_date') }}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody v-if="tax_rules.length > 0">
+              <tr v-for="rule in tax_rules">
+                <td>{{ rule.tax_rate }}</td>
+                <td>{{ rule.tax_type.name }}</td>
+                <td>{{ rule.valid_from }}</td>
+                <td>{{ rule.valid_until }}</td>
+                <td></td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="6" class="text-center">{{ $t('app.country.view.tax_rule.no_tax_rules') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </LoadingScreen>
+
+    <VueFinalModal
+        v-model="openCountryTaxAdd"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+    >
+      <h3>{{ $t('app.country.view.add_tax_rule.title') }}</h3>
+      <label class="form-field-lbl" for="price">
+        {{ $t('app.country.view.add_tax_rule.tax_rate') }}
+      </label>
+      <p class="form-field-error" v-if="taxRuleErrors.taxRate != undefined">{{ taxRuleErrors.taxRate }}</p>
+      <input type="text" class="form-field" v-model="tax_rule.rate" />
+
+      <label class="form-field-lbl" for="price">
+        {{ $t('app.country.view.add_tax_rule.tax_type') }}
+      </label>
+      <p class="form-field-error" v-if="taxRuleErrors.taxType != undefined">{{ taxRuleErrors.taxType }}</p>
+      <select class="form-field" v-model="tax_rule.type">
+        <option></option>
+        <option v-for="tax_type in tax_types" :value="tax_type">{{ tax_type.name }}</option>
+      </select>
+
+      <label class="form-field-lbl" for="valid_from">
+        {{ $t('app.country.view.add_tax_rule.valid_from') }}
+      </label>
+      <p class="form-field-error" v-if="taxRuleErrors.validFrom != undefined">{{ taxRuleErrors.validFrom }}</p>
+      <VueDatePicker  class="mt-2" v-model="tax_rule.valid_from"  :enable-time-picker="false"></VueDatePicker>
+
+      <label class="form-field-lbl" for="valid_until">
+        {{ $t('app.country.view.add_tax_rule.valid_until') }}
+      </label>
+      <p class="form-field-error" v-if="taxRuleErrors.validUntil != undefined">{{ taxRuleErrors.validUntil }}</p>
+      <VueDatePicker  class="mt-2" v-model="tax_rule.valid_until"  :enable-time-picker="false"></VueDatePicker>
+
+      <SubmitButton :in-progress="creatingTaxRule" @click="createCountryTaxRule" class="btn--main">{{ $t('app.country.view.add_tax_rule.save') }}</SubmitButton>
+    </VueFinalModal>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import currency from "currency.js";
+import {VueFinalModal} from "vue-final-modal";
+import {Button, Select} from "flowbite-vue";
 
 export default {
   name: "CountryView",
+  components: {Button, VueFinalModal},
   data() {
     return {
       ready: false,
-      country: {}
+      country: {},
+      tax_rules: [],
+      tax_types: [],
+      openCountryTaxAdd: false,
+      tax_rule: {
+        rate: 0,
+        type: null,
+        valid_from: null,
+        valid_until: null,
+      },
+      creatingTaxRule: false,
+      taxRuleErrors: {},
     }
   },
   mounted() {
     const id = this.$route.params.id
     axios.get("/app/country/"+id+"/view").then(response => {
       this.country = response.data.country;
+      this.tax_rules = response.data.country_tax_rules;
+      this.tax_types = response.data.tax_types;
       this.ready = true;
     })
   },
@@ -58,6 +142,32 @@ export default {
     currency: function (value) {
       return currency(value, { fromCents: true });
     },
+    createCountryTaxRule: function () {
+      this.taxRuleErrors = {};
+      this.creatingTaxRule = true;
+
+      if (this.tax_rule.type === null) {
+        this.taxRuleErrors.taxType = this.$t('app.country.view.add_tax_rule.select_tax_type')
+        this.creatingTaxRule = true;
+        return;
+      }
+
+      const id = this.$route.params.id
+      const payload = {
+        country: id,
+        tax_rate: this.tax_rule.rate,
+        tax_type: this.tax_rule.type.id,
+        valid_from: this.tax_rule.valid_from,
+        valid_until: this.tax_types.valid_until,
+        default: false,
+      }
+
+      axios.post("/app/country/"+id+"/tax-rule", payload).then(response => {
+        this.tax_rules.push(response.data);
+        this.creatingTaxRule = false;
+        this.openCountryTaxAdd = false;
+      })
+    }
   }
 }
 </script>

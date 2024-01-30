@@ -36,10 +36,14 @@ class CreateCountry
     #[Assert\PositiveOrZero]
     private $threshold;
 
-    #[SerializedName('in_eu')]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank()]
     #[Assert\Type('boolean')]
-    private $inEu;
+    private $default;
+
+    #[SerializedName('in_eu')]
+    #[Assert\NotBlank()]
+    #[Assert\Type('boolean')]
+    private $inEu = false;
 
     public function getName()
     {

@@ -12,8 +12,13 @@
 
 namespace App\Repository;
 
+use App\Entity\TaxType;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface TaxTypeRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return TaxType[]
+     */
+    public function getAll(): array;
 }

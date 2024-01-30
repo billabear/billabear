@@ -15,6 +15,7 @@ namespace App\Controller\App;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CountryDataMapper;
 use App\DataMappers\CountryTaxRuleDataMapper;
+use App\DataMappers\TaxTypeDataMapper;
 use App\Dto\Request\App\Country\CreateCountry;
 use App\Dto\Request\App\Country\CreateCountryTaxRule;
 use App\Dto\Request\App\Country\UpdateCountry;
@@ -22,6 +23,7 @@ use App\Dto\Request\App\Country\UpdateCountryTaxRule;
 use App\Dto\Response\App\Country\CountryView;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\CountryTaxRuleRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use App\Tax\CountryTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -77,6 +79,8 @@ class CountryController
         CountryTaxRuleRepositoryInterface $countryTaxRuleRepository,
         CountryTaxRuleDataMapper $countryTaxRuleDataMapper,
         CountryDataMapper $dataMapper,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer,
     ): Response {
         try {
@@ -90,9 +94,13 @@ class CountryController
         $countryTaxRules = $countryTaxRuleRepository->getForCountry($entity);
         $countryTaxRuleDtos = array_map([$countryTaxRuleDataMapper, 'createAppDto'], $countryTaxRules);
 
+        $taxTypes = $taxTypeRepository->getAll();
+        $taxTypesDtos = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
+
         $view = new CountryView();
         $view->setCountry($countryDto);
         $view->setCountryTaxRules($countryTaxRuleDtos);
+        $view->setTaxTypes($taxTypesDtos);
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);

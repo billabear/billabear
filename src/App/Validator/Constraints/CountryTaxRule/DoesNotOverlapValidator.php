@@ -35,6 +35,9 @@ class DoesNotOverlapValidator extends ConstraintValidator
         if (!$value->getValidFrom()) {
             return;
         }
+        if (!$value->getCountry()) {
+            return;
+        }
 
         $originalRule = null;
         if ($value instanceof UpdateCountryTaxRule) {

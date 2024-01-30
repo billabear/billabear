@@ -22,6 +22,9 @@ class CountryView
     #[SerializedName('country_tax_rules')]
     private array $countryTaxRules;
 
+    #[SerializedName('tax_types')]
+    private array $taxTypes;
+
     public function getCountry(): Country
     {
         return $this->country;
@@ -40,5 +43,15 @@ class CountryView
     public function setCountryTaxRules(array $countryTaxRules): void
     {
         $this->countryTaxRules = $countryTaxRules;
+    }
+
+    public function getTaxTypes(): array
+    {
+        return $this->taxTypes;
+    }
+
+    public function setTaxTypes(array $taxTypes): void
+    {
+        $this->taxTypes = $taxTypes;
     }
 }
