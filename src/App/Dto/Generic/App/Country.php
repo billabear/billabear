@@ -27,6 +27,9 @@ class Country
 
     private int $threshold;
 
+    #[SerializedName('in_eu')]
+    private bool $inEu;
+
     public function getId(): string
     {
         return $this->id;
@@ -75,5 +78,15 @@ class Country
     public function setThreshold(int $threshold): void
     {
         $this->threshold = $threshold;
+    }
+
+    public function isInEu(): bool
+    {
+        return $this->inEu;
+    }
+
+    public function setInEu(bool $inEu): void
+    {
+        $this->inEu = $inEu;
     }
 }

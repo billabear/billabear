@@ -26,6 +26,10 @@
                 <dt>{{ $t('app.country.view.fields.threshold') }}</dt>
                 <dd>{{ currency(country.threshold) }}</dd>
               </div>
+              <div>
+                <dt>{{ $t('app.country.view.fields.in_eu') }}</dt>
+                <dd>{{ country.in_eu }}</dd>
+              </div>
             </dl>
           </div>
         </div>

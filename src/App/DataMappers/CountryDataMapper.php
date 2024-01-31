@@ -44,6 +44,7 @@ class CountryDataMapper
         $appDto->setIsoCode($entity->getIsoCode());
         $appDto->setCurrency($entity->getCurrency());
         $appDto->setThreshold($entity->getThreshold());
+        $appDto->setInEu($entity->isInEu());
 
         return $appDto;
     }
