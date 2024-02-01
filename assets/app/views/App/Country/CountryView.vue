@@ -46,6 +46,7 @@
               <th>{{ $t('app.country.view.tax_rule.type')}}</th>
               <th>{{ $t('app.country.view.tax_rule.start_date') }}</th>
               <th>{{ $t('app.country.view.tax_rule.end_date') }}</th>
+              <th>{{ $t('app.country.view.tax_rule.default') }}</th>
               <th></th>
             </tr>
             </thead>
@@ -55,6 +56,7 @@
                 <td>{{ rule.tax_type.name }}</td>
                 <td>{{ rule.valid_from }}</td>
                 <td>{{ rule.valid_until }}</td>
+                <td>{{ rule.default }}</td>
                 <td></td>
               </tr>
             </tbody>
@@ -101,6 +103,11 @@
       <p class="form-field-error" v-if="taxRuleErrors.validUntil != undefined">{{ taxRuleErrors.validUntil }}</p>
       <VueDatePicker  class="mt-2" v-model="tax_rule.valid_until"  :enable-time-picker="false"></VueDatePicker>
 
+      <label class="form-field-lbl" for="default">
+        {{ $t('app.country.view.add_tax_rule.default') }}
+      </label>
+      <p class="form-field-error" v-if="taxRuleErrors.default != undefined">{{ taxRuleErrors.default }}</p>
+      <input type="checkbox" class="form-field" v-model="tax_rule.default" />
       <SubmitButton :in-progress="creatingTaxRule" @click="createCountryTaxRule" class="btn--main">{{ $t('app.country.view.add_tax_rule.save') }}</SubmitButton>
     </VueFinalModal>
   </div>
@@ -110,11 +117,11 @@
 import axios from "axios";
 import currency from "currency.js";
 import {VueFinalModal} from "vue-final-modal";
-import {Button, Select} from "flowbite-vue";
+import {Button, Input, Select} from "flowbite-vue";
 
 export default {
   name: "CountryView",
-  components: {Button, VueFinalModal},
+  components: {Input, Button, VueFinalModal},
   data() {
     return {
       ready: false,
@@ -127,6 +134,7 @@ export default {
         type: null,
         valid_from: null,
         valid_until: null,
+        default: false,
       },
       creatingTaxRule: false,
       taxRuleErrors: {},
@@ -163,7 +171,7 @@ export default {
         tax_type: this.tax_rule.type.id,
         valid_from: this.tax_rule.valid_from,
         valid_until: this.tax_types.valid_until,
-        default: false,
+        default: this.tax_rule.default,
       }
 
       axios.post("/app/country/"+id+"/tax-rule", payload).then(response => {

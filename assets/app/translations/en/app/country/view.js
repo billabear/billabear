@@ -24,6 +24,7 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         valid_from: "Valid From",
         valid_until: "Valid Until",
         title: "Add Tax Rule",
+        default: "Default tax rule",
         save: "Save",
         select_tax_type: "Select Tax Type"
     }

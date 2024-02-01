@@ -58,6 +58,7 @@ class CountryTaxRuleDataMapper
         $dto->setTaxRate($countryTaxRule->getTaxRate());
         $dto->setValidFrom($countryTaxRule->getValidFrom());
         $dto->setValidUntil($countryTaxRule->getValidUntil());
+        $dto->setIsDefault($countryTaxRule->isIsDefault());
 
         return $dto;
     }
