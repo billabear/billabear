@@ -52,6 +52,8 @@ class CountryTaxRuleDataMapper
             }
 
             $entity->setValidUntil($validUntil);
+        } else {
+            $entity->setValidUntil(null);
         }
 
         return $entity;

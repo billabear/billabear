@@ -143,7 +143,7 @@
         {{ $t('app.country.view.edit_tax_rule.valid_until') }}
       </label>
       <p class="form-field-error" v-if="taxRuleErrors.validUntil != undefined">{{ taxRuleErrors.validUntil }}</p>
-      <VueDatePicker  class="mt-2" v-model="tax_rule.valid_until"  :enable-time-picker="false"></VueDatePicker>
+      <VueDatePicker  class="mt-2" v-model="tax_rule.valid_until" :enable-time-picker="false"></VueDatePicker>
 
       <label class="form-field-lbl" for="default">
         {{ $t('app.country.view.edit_tax_rule.default') }}
@@ -170,6 +170,7 @@ export default {
       country: {},
       tax_rules: [],
       tax_types: [],
+      original_tax_rule: {},
       openCountryTaxAdd: false,
       openCountryTaxEdit: false,
       tax_rule: {
@@ -194,7 +195,8 @@ export default {
   },
   methods: {
     showEdit: function(tax_rule) {
-        this.tax_rule = tax_rule;
+        this.original_tax_rule = tax_rule;
+        this.tax_rule = Object.assign({}, tax_rule);
         this.openCountryTaxEdit = true;
     },
     showCreate: function() {
@@ -254,14 +256,17 @@ export default {
         tax_rate: this.tax_rule.tax_rate,
         tax_type: this.tax_rule.tax_type.id,
         valid_from: this.tax_rule.valid_from,
-        valid_until: this.tax_types.valid_until,
+        valid_until: this.tax_rule.valid_until,
         default: this.tax_rule.default,
+      }
+      for (var key = 0; key < this.tax_rules.length; key++) {
+        if (this.tax_rules[key].id === this.tax_rule.id) {
+          break;
+        }
       }
 
       axios.post("/app/country/"+id+"/tax-rule/"+this.tax_rule.id+"/edit", payload).then(response => {
-        this.tax_rules.push(response.data);
-        this.creatingTaxRule = false;
-        this.openCountryTaxEdit = false;
+        this.tax_rules[key] = response.data;
       })
     },
 

@@ -45,7 +45,7 @@ class UpdateCountryTaxRule
     private $validFrom;
 
     #[SerializedName('valid_until')]
-    #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
     private $validUntil;
 
     public function getId()
