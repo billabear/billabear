@@ -33,21 +33,15 @@ class UpdateCountryTaxRule
 
     #[SerializedName('tax_rate')]
     #[Assert\NotBlank()]
-    #[Assert\Type(['float', 'integer'])]
+    #[Assert\Type('numeric')]
     private $taxRate;
 
-    #[Assert\NotBlank()]
     #[Assert\Type('boolean')]
-    private $default;
-
-    #[SerializedName('in_eu')]
-    #[Assert\NotBlank()]
-    #[Assert\Type('boolean')]
-    private $inEu = false;
+    private $default = false;
 
     #[SerializedName('valid_from')]
     #[Assert\NotBlank()]
-    #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
     private $validFrom;
 
     #[SerializedName('valid_until')]

@@ -16,7 +16,8 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         start_date: "Start Date",
         end_date: "End Date",
         no_tax_rules: "No Tax Rules",
-        add: "Add Tax Rule"
+        add: "Add Tax Rule",
+        edit: "Edit",
     },
     add_tax_rule: {
         tax_rate: "Tax Rate",
@@ -26,6 +27,16 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         title: "Add Tax Rule",
         default: "Default tax rule",
         save: "Save",
+        select_tax_type: "Select Tax Type"
+    },
+    edit_tax_rule: {
+        tax_rate: "Tax Rate",
+        tax_type: "Tax Type",
+        valid_from: "Valid From",
+        valid_until: "Valid Until",
+        title: "Edit Tax Rule",
+        default: "Default tax rule",
+        save: "Update",
         select_tax_type: "Select Tax Type"
     }
 }

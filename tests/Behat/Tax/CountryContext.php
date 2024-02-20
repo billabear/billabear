@@ -313,7 +313,6 @@ class CountryContext implements Context
             'tax_rate' => floatval($data['Tax Rate']),
             'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
             'default' => boolval($data['Default'] ?? 'true'),
-            'in_eu' => boolval($data['In EU'] ?? 'true'),
             'country' => (string) $country->getId(),
         ];
 

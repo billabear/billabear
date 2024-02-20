@@ -31,6 +31,9 @@ class CountryTaxRuleDataMapper
     {
         $taxType = $this->taxTypeRepository->findById($countryTaxRule->getTaxType());
         $validFrom = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $countryTaxRule->getValidFrom());
+        if (!$validFrom) {
+            $validFrom = \DateTime::createFromFormat(\DATE_ATOM, $countryTaxRule->getValidFrom());
+        }
 
         if (null === $entity) {
             $entity = new Entity();
@@ -44,6 +47,10 @@ class CountryTaxRuleDataMapper
 
         if ($countryTaxRule->getValidUntil()) {
             $validUntil = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $countryTaxRule->getValidUntil());
+            if (!$validUntil) {
+                $validUntil = \DateTime::createFromFormat(\DATE_ATOM, $countryTaxRule->getValidUntil());
+            }
+
             $entity->setValidUntil($validUntil);
         }
 
