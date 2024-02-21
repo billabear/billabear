@@ -20,6 +20,10 @@ class CreateTaxType
     #[Assert\Type('string')]
     private $name;
 
+    #[Assert\NotBlank()]
+    #[Assert\Type('boolean')]
+    private $physical;
+
     public function getName()
     {
         return $this->name;
@@ -28,5 +32,15 @@ class CreateTaxType
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    public function getPhysical()
+    {
+        return $this->physical;
+    }
+
+    public function setPhysical($physical): void
+    {
+        $this->physical = $physical;
     }
 }

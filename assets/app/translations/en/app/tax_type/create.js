@@ -3,9 +3,11 @@ export const TAX_TYPE_CREATE_TRANSLATIONS = {
     tax_type: {
         fields: {
             name: "Name",
+            physical: "Physical"
         },
         help_info: {
-            name: "The name for the tax"
+            name: "The name for the tax",
+            physical: "If the tax rule is for physical items"
         }
     },
     create_button: "Create"

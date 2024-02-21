@@ -28,6 +28,9 @@ class TaxType
     #[ORM\Column(type: 'string', nullable: false)]
     private string $name;
 
+    #[ORM\Column(type: 'string', nullable: false)]
+    private bool $physical;
+
     public function getId()
     {
         return $this->id;
@@ -46,5 +49,15 @@ class TaxType
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isPhysical(): bool
+    {
+        return $this->physical;
+    }
+
+    public function setPhysical(bool $physical): void
+    {
+        $this->physical = $physical;
     }
 }

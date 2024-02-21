@@ -18,6 +18,8 @@ class TaxType
 
     private string $name;
 
+    private bool $physical;
+
     public function getId(): string
     {
         return $this->id;
@@ -36,5 +38,15 @@ class TaxType
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isPhysical(): bool
+    {
+        return $this->physical;
+    }
+
+    public function setPhysical(bool $physical): void
+    {
+        $this->physical = $physical;
     }
 }

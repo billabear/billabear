@@ -38,6 +38,20 @@ class TaxTypeContext implements Context
     }
 
     /**
+     * @When I create a tax type with:
+     */
+    public function iCreateATaxTypeWith(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+        $payload = [
+            'name' => $data['Name'],
+            'physical' => boolval($data['Physical'] ?? 'false'),
+        ];
+
+        $this->sendJsonRequest('POST', '/app/tax/type', $payload);
+    }
+
+    /**
      * @Then there will be a tax type with the name :arg1
      */
     public function thereWillBeATaxTypeWithTheName($name)

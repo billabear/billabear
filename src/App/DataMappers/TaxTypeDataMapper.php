@@ -22,6 +22,7 @@ class TaxTypeDataMapper
     {
         $entity = new Entity();
         $entity->setName($createTaxType->getName());
+        $entity->setPhysical($createTaxType->getPhysical());
 
         return $entity;
     }
@@ -31,6 +32,7 @@ class TaxTypeDataMapper
         $dto = new AppDto();
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
+        $dto->setPhysical($entity->isPhysical());
 
         return $dto;
     }

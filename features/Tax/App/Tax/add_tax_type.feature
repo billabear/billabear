@@ -9,5 +9,7 @@ Feature: Add tax type
 
   Scenario: Successfully create tax type
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    When I create a tax type with the name "Digital Services"
+    When I create a tax type with:
+      | Name     | Digital Services |
+      | Physical | False            |
     Then there will be a tax type with the name "Digital Services"

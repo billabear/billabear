@@ -3,6 +3,8 @@ export const TAX_TYPE_LIST_TRANSLATIONS = {
     create_new: "Create New",
     error_message: "An error has occurred",
     list: {
-        name: "Name"
-    }
+        name: "Name",
+        physical: "Physical",
+    },
+    no_tax_types: "There are currently no tax types"
 }
