@@ -18,7 +18,8 @@
             {{ $t('app.tax_type.create.tax_type.fields.physical') }}
           </label>
           <p class="form-field-error" v-if="errors.physical != undefined">{{ errors.physical }}</p>
-          <input type="checkbox" class="form-field" v-model="type.physical" />
+
+          <toggle v-model="type.physical" label="" />
           <p class="form-field-help">{{ $t('app.tax_type.create.tax_type.help_info.physical') }}</p>
         </div>
       </div>
@@ -32,9 +33,10 @@
 
 <script>
 import axios from "axios";
-
+import {Toggle} from "flowbite-vue";
 export default {
   name: "TaxTypeCreate",
+  components: {Toggle},
   data() {
     return {
       errors: {},
