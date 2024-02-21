@@ -72,6 +72,7 @@ class TaxTypeContext implements Context
         foreach ($data as $row) {
             $taxType = new TaxType();
             $taxType->setName($row['Name']);
+            $taxType->setPhysical(boolval($row['Physical'] ?? 'false'));
             $this->taxTypeRepository->getEntityManager()->persist($taxType);
         }
 
@@ -94,6 +95,21 @@ class TaxTypeContext implements Context
         $data = $this->getJsonContent();
 
         foreach ($data['data'] as $item) {
+            if ($item['name'] === $name) {
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf("Can't see tax type '%s'", $name));
+    }
+
+    /**
+     * @Then I will see a tax type in the tax type dropdown called :arg1
+     */
+    public function iWillSeeATaxTypeInTheTaxTypeDropdownCalled($name)
+    {
+        $data = $this->getJsonContent();
+        foreach ($data['tax_types'] as $item) {
             if ($item['name'] === $name) {
                 return;
             }

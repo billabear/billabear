@@ -31,6 +31,14 @@ class AppContext implements Context
     }
 
     /**
+     * @When I go to create a product
+     */
+    public function iGoToCreateAProduct()
+    {
+        $this->sendJsonRequest('GET', '/app/product');
+    }
+
+    /**
      * @When I create a product via the app with the following info
      */
     public function iCreateAProductViaTheAppWithTheFollowingInfo(TableNode $table)

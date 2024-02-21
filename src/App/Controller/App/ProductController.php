@@ -15,11 +15,14 @@ namespace App\Controller\App;
 use App\DataMappers\PriceDataMapper;
 use App\DataMappers\ProductDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
+use App\DataMappers\TaxTypeDataMapper;
 use App\Dto\Request\App\CreateProduct;
 use App\Dto\Response\Api\ListResponse;
+use App\Dto\Response\App\Product\CreateProductView;
 use App\Dto\Response\App\ProductView;
 use App\Filters\ProductList;
 use App\Repository\SubscriptionPlanRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
@@ -36,6 +39,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/product', name: 'app_product_create_view', methods: ['GET'])]
+    public function createProductView(
+        Request $request,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
+        SerializerInterface $serializer,
+    ) {
+        $taxTypes = $taxTypeRepository->getAll();
+        $taxTypesDto = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
+
+        $viewDto = new CreateProductView();
+        $viewDto->setTaxTypes($taxTypesDto);
+
+        $json = $serializer->serialize($viewDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product', name: 'app_product_create', methods: ['POST'])]
     public function createProduct(
