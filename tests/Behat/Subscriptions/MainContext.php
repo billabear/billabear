@@ -266,8 +266,13 @@ class MainContext implements Context
 
         $diff = $subscription->getValidUntil()->diff($now);
         // To handle it's the 31 and next month is billed on the 30th.
-        if (0 == $diff->m && $diff->d < 30) {
-            throw new \Exception('Expires in less than a month');
+        // Or it's January 31 and it's billed on the
+        if (
+            0 == $diff->m
+
+                && $diff->d < (int) $subscription->getValidUntil()->format('t')
+        ) {
+            throw new \Exception(sprintf('Invoice expires in %d days and %d months', $diff->d, $diff->m));
         }
     }
 
