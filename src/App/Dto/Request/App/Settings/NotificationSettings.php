@@ -107,14 +107,14 @@ class NotificationSettings
 
     public function validate(ExecutionContextInterface $context, $payload)
     {
-        if (empty($this->emsp) || \App\Entity\Settings\NotificationSettings::EMSP_SYSTEM === $this->emsp) {
+        if (empty($this->emsp) || Entity::EMSP_SYSTEM === $this->emsp) {
             return;
         }
 
         if (empty($this->emspApiKey)) {
             $context->buildViolation('must have an api key')->atPath('emsp_api_key')->addViolation();
         }
-        if (\App\Entity\Settings\NotificationSettings::EMSP_MAILGUN === $this->emsp) {
+        if (Entity::EMSP_MAILGUN === $this->emsp) {
             if (empty($this->emspApiUrl)) {
                 $context->buildViolation('must have api url')->atPath('emsp_api_url')->addViolation();
             }

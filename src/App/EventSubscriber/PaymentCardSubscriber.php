@@ -32,7 +32,7 @@ class PaymentCardSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            \Parthenon\Billing\Event\PaymentCardAdded::NAME => [
+            PaymentCardAdded::NAME => [
                 'handleNewPayment',
             ],
         ];

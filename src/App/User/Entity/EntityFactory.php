@@ -26,7 +26,7 @@ class EntityFactory extends BaseFactory
         return \App\Entity\ForgotPasswordCode::createForUser($user);
     }
 
-    public function buildInviteCode(UserInterface $user, string $email, string $role = null): InviteCode
+    public function buildInviteCode(UserInterface $user, string $email, ?string $role = null): InviteCode
     {
         return \App\Entity\InviteCode::createForUser($user, $email, $role);
     }

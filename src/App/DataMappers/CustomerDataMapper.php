@@ -32,7 +32,7 @@ class CustomerDataMapper
     {
     }
 
-    public function createCustomerFromObol(ObolCustomer $obolCustomer, Customer $customer = null): Customer
+    public function createCustomerFromObol(ObolCustomer $obolCustomer, ?Customer $customer = null): Customer
     {
         if (!$customer) {
             $customer = new Customer();
@@ -60,7 +60,7 @@ class CustomerDataMapper
         return $customer;
     }
 
-    public function createCustomer(ApiCreate|AppCreate|PublicCreate $createCustomerDto, Customer $customer = null): Customer
+    public function createCustomer(ApiCreate|AppCreate|PublicCreate $createCustomerDto, ?Customer $customer = null): Customer
     {
         $address = new Address();
         $address->setStreetLineOne($createCustomerDto->getAddress()?->getStreetLineOne());

@@ -41,7 +41,7 @@ class InvoiceCharger
     ) {
     }
 
-    public function chargeInvoice(Invoice $invoice, PaymentCard $paymentCard = null, \DateTime $createdAt = null): bool
+    public function chargeInvoice(Invoice $invoice, ?PaymentCard $paymentCard = null, ?\DateTime $createdAt = null): bool
     {
         if (!$paymentCard) {
             $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());

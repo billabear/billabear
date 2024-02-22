@@ -34,8 +34,8 @@ class CancellationDataMapper
         $cancellationRequest = new Entity();
         $cancellationRequest->setSubscription($subscription);
         $cancellationRequest->setCreatedAt(new \DateTime());
-        $cancellationRequest->setWhen($cancelSubscription->getProrate() ? \App\Dto\Request\Api\Subscription\CancelSubscription::WHEN_INSTANTLY : \App\Dto\Request\Api\Subscription\CancelSubscription::WHEN_END_OF_RUN);
-        $cancellationRequest->setRefundType($cancelSubscription->getProrate() ? \App\Dto\Request\Api\Subscription\CancelSubscription::REFUND_PRORATE : \App\Dto\Request\Api\Subscription\CancelSubscription::REFUND_NONE);
+        $cancellationRequest->setWhen($cancelSubscription->getProrate() ? ApiInputDto::WHEN_INSTANTLY : ApiInputDto::WHEN_END_OF_RUN);
+        $cancellationRequest->setRefundType($cancelSubscription->getProrate() ? ApiInputDto::REFUND_PRORATE : ApiInputDto::REFUND_NONE);
         $cancellationRequest->setComment($cancelSubscription->getCancellationDetails()?->getComment());
         $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
         $cancellationRequest->setState('started');
@@ -44,7 +44,7 @@ class CancellationDataMapper
         return $cancellationRequest;
     }
 
-    public function getCancellationRequestEntity(Subscription $subscription, AppInputDto|ApiInputDto $dto, BillingAdminInterface $user = null): Entity
+    public function getCancellationRequestEntity(Subscription $subscription, AppInputDto|ApiInputDto $dto, ?BillingAdminInterface $user = null): Entity
     {
         $cancellationRequest = new Entity();
         $cancellationRequest->setSubscription($subscription);

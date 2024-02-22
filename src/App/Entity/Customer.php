@@ -76,7 +76,7 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'boolean', nullable: true)]
     protected ?bool $disabled = false;
 
-    #[Orm\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
     protected Collection $subscriptions;
 
     #[ORM\Column(name: 'credit_amount', type: 'integer', nullable: true)]

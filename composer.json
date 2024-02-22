@@ -24,7 +24,7 @@
         "mailgun/mailgun-php": "^3.5",
         "mpdf/mpdf": "^8.2",
         "parthenon/obol": "^v0.2.2",
-        "parthenon/parthenon": "dev-main",
+        "parthenon/parthenon": "^2.2.3",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
         "symfony/console": "7.0.*",

@@ -21,7 +21,7 @@ use App\Enum\TaxType;
 
 class ProductDataMapper
 {
-    public function createFromApiCreate(ApiCreate $createProduct, Product $product = null): Product
+    public function createFromApiCreate(ApiCreate $createProduct, ?Product $product = null): Product
     {
         if (!$product) {
             $product = new Product();
@@ -34,7 +34,7 @@ class ProductDataMapper
         return $product;
     }
 
-    public function createFromAppCreate(AppCreate $createProduct, Product $product = null): Product
+    public function createFromAppCreate(AppCreate $createProduct, ?Product $product = null): Product
     {
         if (!$product) {
             $product = new Product();
@@ -74,7 +74,7 @@ class ProductDataMapper
         return $dto;
     }
 
-    public function createFromObol(\Obol\Model\Product $productModel, Product $product = null)
+    public function createFromObol(\Obol\Model\Product $productModel, ?Product $product = null)
     {
         if (!$product) {
             $product = new Product();

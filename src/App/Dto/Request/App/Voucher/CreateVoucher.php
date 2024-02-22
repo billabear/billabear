@@ -42,7 +42,7 @@ class CreateVoucher
     #[Assert\Valid]
     private array $amounts = [];
 
-    #[ASsert\Type('string')]
+    #[Assert\Type('string')]
     private $code;
 
     public function getType()

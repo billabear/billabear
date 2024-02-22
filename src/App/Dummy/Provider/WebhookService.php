@@ -24,7 +24,7 @@ class WebhookService implements WebhookServiceInterface
         return null;
     }
 
-    public function registerWebhook(string $url, array $events, string $description = null): WebhookCreation
+    public function registerWebhook(string $url, array $events, ?string $description = null): WebhookCreation
     {
         $creation = new WebhookCreation();
         $creation->setId('wb_'.bin2hex(random_bytes(4)));

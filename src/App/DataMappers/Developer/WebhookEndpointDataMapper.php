@@ -18,7 +18,7 @@ use App\Entity\WebhookEndpoint as Entity;
 
 class WebhookEndpointDataMapper
 {
-    public function createEntity(CreateWebhookEndpoint $createWebhookEndpoint, Entity $entity = null): Entity
+    public function createEntity(CreateWebhookEndpoint $createWebhookEndpoint, ?Entity $entity = null): Entity
     {
         if (!$entity instanceof Entity) {
             $entity = new Entity();

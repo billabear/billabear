@@ -58,7 +58,7 @@ class Voucher
      */
     private Collection $amounts;
 
-    #[Orm\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'boolean')]

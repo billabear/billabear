@@ -29,7 +29,7 @@ class CreditService implements CreditServiceInterface
         return $output;
     }
 
-    public function getAllForCustomer(string $customerId, int $limit = 10, string $lastId = null): array
+    public function getAllForCustomer(string $customerId, int $limit = 10, ?string $lastId = null): array
     {
         return [];
     }
