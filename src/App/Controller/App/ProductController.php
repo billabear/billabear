@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductController
 {
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
-    #[Route('/app/product', name: 'app_product_create_view', methods: ['GET'])]
+    #[Route('/app/product/create', name: 'app_product_create_view', methods: ['GET'])]
     public function createProductView(
         Request $request,
         TaxTypeRepositoryInterface $taxTypeRepository,
