@@ -35,8 +35,6 @@ class WebhookHandlerTest extends TestCase
         $transition = $this->createMock(WorkflowTransition::class);
 
         $event = $this->createMock(Event::class);
-        $event->method('getContext')->willReturn([]);
-        $event->method('getTransition')->willReturn($transition);
 
         $subject = (new WebhookTransitionHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
         $subject->execute($event);
@@ -56,7 +54,6 @@ class WebhookHandlerTest extends TestCase
         $transition = $this->createMock(WorkflowTransition::class);
 
         $event = $this->createMock(Event::class);
-        $event->method('getTransition')->willReturn($transition);
         $transition->method('getHandlerOptions')->willReturn($options);
 
         $subject = (new WebhookTransitionHandler($client, $requestFactory, $streamFactory))->createCloneWithTransition($transition);
@@ -77,7 +74,6 @@ class WebhookHandlerTest extends TestCase
         $transition = $this->createMock(WorkflowTransition::class);
 
         $event = $this->createMock(Event::class);
-        $event->method('getTransition')->willReturn($transition);
 
         $transition->method('getHandlerOptions')->willReturn($options);
 
@@ -97,8 +93,6 @@ class WebhookHandlerTest extends TestCase
         $transition = $this->createMock(WorkflowTransition::class);
 
         $event = $this->createMock(Event::class);
-        $event->method('getContext')->willReturn([]);
-        $event->method('getTransition')->willReturn($transition);
 
         $transition->method('getHandlerOptions')->willReturn($options);
 

@@ -55,7 +55,10 @@ class WebhookTransitionHandler implements DynamicTransitionHandlerInterface
 
     public function execute(Event $event): void
     {
-        $context = $event->getContext();
+        $context = [];
+        if (method_exists($event, 'getContext')) {
+            $context = $event->getContext();
+        }
 
         if (!isset($this->workflowTransition)) {
             throw new WorkflowTransitionNotSetException();

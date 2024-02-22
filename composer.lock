@@ -2868,16 +2868,16 @@
         },
         {
             "name": "parthenon/parthenon",
-            "version": "v2.2.9",
+            "version": "v2.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "c9aeafb156799b3bb7f6f581fd855ed5d60b1791"
+                "reference": "8f791a59a5749185802a944815005ee4ed37ea3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/c9aeafb156799b3bb7f6f581fd855ed5d60b1791",
-                "reference": "c9aeafb156799b3bb7f6f581fd855ed5d60b1791",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/8f791a59a5749185802a944815005ee4ed37ea3f",
+                "reference": "8f791a59a5749185802a944815005ee4ed37ea3f",
                 "shasum": ""
             },
             "require": {
@@ -2957,9 +2957,9 @@
                 "BUSL-1.1"
             ],
             "support": {
-                "source": "https://github.com/getparthenon/parthenon/tree/v2.2.9"
+                "source": "https://github.com/getparthenon/parthenon/tree/v2.2.10"
             },
-            "time": "2024-02-22T22:06:04+00:00"
+            "time": "2024-02-22T22:34:29+00:00"
         },
         {
             "name": "php-http/client-common",
