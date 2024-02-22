@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b75725e9e6a4e45c7d394eb46271f2bd",
+    "content-hash": "bee7cae7383774858137e6df14e5506d",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -2868,7 +2868,7 @@
         },
         {
             "name": "parthenon/parthenon",
-            "version": "dev-main",
+            "version": "v2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
@@ -2946,7 +2946,6 @@
                 "ramsey/uuid": "^4",
                 "ramsey/uuid-doctrine": "^1.8.1"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -12328,9 +12327,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "parthenon/parthenon": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
