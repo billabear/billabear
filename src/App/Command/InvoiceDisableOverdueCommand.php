@@ -26,7 +26,7 @@ class InvoiceDisableOverdueCommand extends Command
         parent::__construct(null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Start disabling overdue customers');
         $this->disableOverdueInvoices->execute();

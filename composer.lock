@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bee7cae7383774858137e6df14e5506d",
+    "content-hash": "b75725e9e6a4e45c7d394eb46271f2bd",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -1583,16 +1583,16 @@
         },
         {
             "name": "doctrine/sql-formatter",
-            "version": "1.1.3",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/sql-formatter.git",
-                "reference": "25a06c7bf4c6b8218f47928654252863ffc890a5"
+                "reference": "a321d114e0a18e6497f8a2cd6f890e000cc17ecc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/sql-formatter/zipball/25a06c7bf4c6b8218f47928654252863ffc890a5",
-                "reference": "25a06c7bf4c6b8218f47928654252863ffc890a5",
+                "url": "https://api.github.com/repos/doctrine/sql-formatter/zipball/a321d114e0a18e6497f8a2cd6f890e000cc17ecc",
+                "reference": "a321d114e0a18e6497f8a2cd6f890e000cc17ecc",
                 "shasum": ""
             },
             "require": {
@@ -1629,9 +1629,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/sql-formatter/issues",
-                "source": "https://github.com/doctrine/sql-formatter/tree/1.1.3"
+                "source": "https://github.com/doctrine/sql-formatter/tree/1.2.0"
             },
-            "time": "2022-05-23T21:33:49+00:00"
+            "time": "2023-08-16T21:49:04+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -2868,16 +2868,16 @@
         },
         {
             "name": "parthenon/parthenon",
-            "version": "v2.2.7",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "222fded309a9d17ae88ae1b8e174357cb812702b"
+                "reference": "c9aeafb156799b3bb7f6f581fd855ed5d60b1791"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/222fded309a9d17ae88ae1b8e174357cb812702b",
-                "reference": "222fded309a9d17ae88ae1b8e174357cb812702b",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/c9aeafb156799b3bb7f6f581fd855ed5d60b1791",
+                "reference": "c9aeafb156799b3bb7f6f581fd855ed5d60b1791",
                 "shasum": ""
             },
             "require": {
@@ -2946,6 +2946,7 @@
                 "ramsey/uuid": "^4",
                 "ramsey/uuid-doctrine": "^1.8.1"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2957,9 +2958,9 @@
                 "BUSL-1.1"
             ],
             "support": {
-                "source": "https://github.com/getparthenon/parthenon/tree/v2.2.7"
+                "source": "https://github.com/getparthenon/parthenon/tree/v2.2.9"
             },
-            "time": "2024-02-22T18:47:11+00:00"
+            "time": "2024-02-22T22:06:04+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -12327,7 +12328,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "parthenon/parthenon": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -26,7 +26,7 @@ class PaymentsExchangeRatesCommand extends Command
         parent::__construct(null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Start refresh exchange rates process');
         $this->ratesFetchProcess->process();

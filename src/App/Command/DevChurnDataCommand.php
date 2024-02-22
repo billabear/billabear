@@ -39,7 +39,7 @@ class DevChurnDataCommand extends Command
             ->addOption('count', mode: InputOption::VALUE_REQUIRED, description: 'The number of users to add', default: 4);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Generating churn data');
         $count = $input->getOption('count');

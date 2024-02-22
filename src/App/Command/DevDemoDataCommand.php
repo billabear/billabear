@@ -60,7 +60,7 @@ class DevDemoDataCommand extends Command
             ->addOption('products', mode: InputOption::VALUE_OPTIONAL, description: 'If products and features are to be added', default: 'true');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         self::$count = $input->getOption('count');
         self::$date = new \DateTime($input->getOption('date'));

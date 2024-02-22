@@ -26,7 +26,7 @@ class ExpiringCardsDayBeforeCommand extends Command
         parent::__construct(null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Start checking the expiring cards if they are to be charge within the next 24 hours');
         $this->dayBefore->execute();

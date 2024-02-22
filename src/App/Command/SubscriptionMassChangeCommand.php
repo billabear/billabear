@@ -26,7 +26,7 @@ class SubscriptionMassChangeCommand extends Command
         parent::__construct(null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->massChange->execute();
     }

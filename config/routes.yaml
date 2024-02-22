@@ -1,17 +1,17 @@
 controllers:
     resource: ../src/App/Controller/
-    type: annotation
+    type: attribute
 
 kernel:
     resource: ../src/App/Kernel.php
-    type: annotation
+    type: attribute
 
 parthenon_user_controllers:
     prefix: /app
     resource: ../vendor/parthenon/parthenon/src/User/Controller/
-    type: annotation
+    type: attribute
 
 parthenon_payments_controllers:
     prefix: /app
     resource: ../vendor/parthenon/parthenon/src/Payments/Controller/
-    type: annotation
+    type: attribute

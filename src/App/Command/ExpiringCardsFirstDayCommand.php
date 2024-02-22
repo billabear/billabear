@@ -26,7 +26,7 @@ class ExpiringCardsFirstDayCommand extends Command
         parent::__construct(null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Start expiring commands first day command');
         $this->startProcess->execute();

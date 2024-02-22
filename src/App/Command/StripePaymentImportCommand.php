@@ -27,7 +27,7 @@ class StripePaymentImportCommand extends Command
         parent::__construct(null);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Start stripe payment import command');
         $import = new StripeImport();
