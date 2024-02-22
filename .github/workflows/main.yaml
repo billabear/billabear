@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -45,7 +45,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -73,7 +73,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -101,7 +101,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -128,7 +128,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -156,7 +156,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -183,7 +183,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -211,7 +211,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -238,7 +238,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -266,7 +266,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -293,7 +293,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -321,7 +321,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -348,7 +348,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -376,7 +376,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -403,7 +403,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -431,7 +431,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -458,7 +458,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -486,7 +486,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -513,7 +513,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -541,7 +541,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -568,7 +568,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -596,7 +596,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -623,7 +623,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -651,7 +651,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -678,7 +678,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -706,7 +706,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -757,7 +757,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: [ '8.2', '8.3']
         experimental: [false]
 
     services:
@@ -785,7 +785,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
