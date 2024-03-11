@@ -12,25 +12,24 @@
 
 namespace App\Entity;
 
-use App\Enum\TaxType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table('product')]
 class Product extends \Parthenon\Billing\Entity\Product
 {
-    #[ORM\Column(enumType: TaxType::class)]
-    protected TaxType $taxType;
+    #[ORM\ManyToOne(targetEntity: TaxType::class)]
+    protected ?TaxType $taxType = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
     protected ?float $taxRate = null;
 
-    public function getTaxType(): TaxType
+    public function getTaxType(): ?TaxType
     {
         return $this->taxType;
     }
 
-    public function setTaxType(TaxType $taxType): void
+    public function setTaxType(?TaxType $taxType): void
     {
         $this->taxType = $taxType;
     }

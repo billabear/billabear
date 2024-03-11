@@ -14,6 +14,7 @@ namespace App\Tests\Behat\Products;
 
 use App\Enum\TaxType;
 use App\Repository\Orm\ProductRepository;
+use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -27,6 +28,7 @@ class AppContext implements Context
     public function __construct(
         private Session $session,
         private ProductRepository $productRepository,
+        private TaxTypeRepository $taxTypeRepository,
     ) {
     }
 
@@ -49,11 +51,13 @@ class AppContext implements Context
         ];
 
         if (isset($data['Tax Type'])) {
-            $payload['tax_type'] = match ($data['Tax Type']) {
-                'Digital Services' => TaxType::DIGITAL_SERVICES->value,
-                'Physical' => TaxType::PHYSICAL->value,
-                default => TaxType::DIGITAL_GOODS->value,
-            };
+            /** @var \App\Entity\TaxType $taxType */
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $data['Tax Type']]);
+            if (!$taxType instanceof \App\Entity\TaxType) {
+                throw new \Exception('No tax type found');
+            }
+
+            $payload['tax_type'] = (string) $taxType->getId();
         }
 
         if (isset($data['Tax Rate'])) {

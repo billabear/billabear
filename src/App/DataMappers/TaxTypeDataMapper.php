@@ -27,8 +27,12 @@ class TaxTypeDataMapper
         return $entity;
     }
 
-    public function createAppDto(Entity $entity): AppDto
+    public function createAppDto(?Entity $entity): ?AppDto
     {
+        if (!$entity) {
+            return null;
+        }
+
         $dto = new AppDto();
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());

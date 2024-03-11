@@ -12,9 +12,12 @@
 
 namespace App\Dto\Request\App;
 
+use App\Validator\Constraints\ProductHasTax;
+use App\Validator\Constraints\TaxTypeExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ProductHasTax]
 class CreateProduct
 {
     #[Assert\NotBlank()]
@@ -26,7 +29,7 @@ class CreateProduct
 
     #[SerializedName('tax_type')]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Choice(choices: ['digital_goods', 'physical', 'digital_services'])]
+    #[TaxTypeExists]
     private $taxType;
 
     #[SerializedName('tax_rate')]

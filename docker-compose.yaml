@@ -22,7 +22,7 @@ services:
       - billabear
 
   php-fpm:
-    image: getparthenon/ubuntu-php-fpm:8.1
+    image: billabear/ubuntu-php-fpm:8.2
     depends_on:
       - database
     environment:

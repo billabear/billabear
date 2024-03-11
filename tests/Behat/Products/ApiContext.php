@@ -56,6 +56,18 @@ class ApiContext implements Context
     }
 
     /**
+     * @Then there should not be a product with the name :arg1
+     */
+    public function thereShouldNotBeAProductWithTheName($name)
+    {
+        $product = $this->productRepository->findOneBy(['name' => $name]);
+
+        if ($product) {
+            throw new \Exception('Found product');
+        }
+    }
+
+    /**
      * @Given the follow products exist:
      */
     public function theFollowProductsExist(TableNode $table)

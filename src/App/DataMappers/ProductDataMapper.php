@@ -17,10 +17,16 @@ use App\Dto\Generic\App\Product as AppDto;
 use App\Dto\Request\Api\CreateProduct as ApiCreate;
 use App\Dto\Request\App\CreateProduct as AppCreate;
 use App\Entity\Product;
-use App\Enum\TaxType;
+use App\Repository\TaxTypeRepositoryInterface;
 
 class ProductDataMapper
 {
+    public function __construct(
+        private TaxTypeRepositoryInterface $taxTypeRepository,
+        private TaxTypeDataMapper $taxTypeDataMapper,
+    ) {
+    }
+
     public function createFromApiCreate(ApiCreate $createProduct, ?Product $product = null): Product
     {
         if (!$product) {
@@ -29,7 +35,10 @@ class ProductDataMapper
 
         $product->setName($createProduct->getName());
         $product->setExternalReference($createProduct->getExternalReference());
-        $product->setTaxType(TaxType::fromName($createProduct->getTaxType()));
+        if ($createProduct->getTaxType()) {
+            $taxType = $this->taxTypeRepository->findById($createProduct->getTaxType());
+            $product->setTaxType($taxType);
+        }
 
         return $product;
     }
@@ -42,9 +51,13 @@ class ProductDataMapper
 
         $product->setName($createProduct->getName());
         $product->setExternalReference($createProduct->getExternalReference());
-        $product->setTaxType(TaxType::fromName($createProduct->getTaxType()));
         if ($createProduct->getTaxRate()) {
             $product->setTaxRate(floatval($createProduct->getTaxRate()));
+        }
+
+        if ($createProduct->getTaxType()) {
+            $taxType = $this->taxTypeRepository->findById($createProduct->getTaxType());
+            $product->setTaxType($taxType);
         }
 
         return $product;
@@ -56,7 +69,6 @@ class ProductDataMapper
         $dto->setId((string) $product->getId());
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
-        $dto->setTaxType($product->getTaxType()->value);
 
         return $dto;
     }
@@ -68,7 +80,7 @@ class ProductDataMapper
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
         $dto->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
-        $dto->setTaxType($product->getTaxType()->value);
+        $dto->setTaxType($this->taxTypeDataMapper->createAppDto($product->getTaxType()));
         $dto->setTaxRate($product->getTaxRate());
 
         return $dto;

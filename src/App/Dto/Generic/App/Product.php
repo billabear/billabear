@@ -23,7 +23,7 @@ class Product
     protected string $name;
 
     #[SerializedName('tax_type')]
-    protected string $taxType;
+    protected ?TaxType $taxType;
 
     #[SerializedName('external_reference')]
     protected ?string $externalReference = null;
@@ -74,12 +74,12 @@ class Product
         $this->paymentProviderDetailsUrl = $paymentProviderDetailsUrl;
     }
 
-    public function getTaxType(): string
+    public function getTaxType(): ?TaxType
     {
         return $this->taxType;
     }
 
-    public function setTaxType(string $taxType): void
+    public function setTaxType(?TaxType $taxType): void
     {
         $this->taxType = $taxType;
     }
