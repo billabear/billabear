@@ -15,6 +15,7 @@ namespace App\Tests\Behat\Products;
 use App\Entity\Product;
 use App\Enum\TaxType;
 use App\Repository\Orm\ProductRepository;
+use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -25,9 +26,11 @@ class ApiContext implements Context
     use SendRequestTrait;
     use ProductTrait;
 
-    public function __construct(private Session $session, private ProductRepository $productRepository)
-    {
-    }
+    public function __construct(
+        private Session $session,
+        private ProductRepository $productRepository,
+        private TaxTypeRepository $taxTypeRepository,
+    ) { }
 
     /**
      * @When I create a product with the following info
@@ -76,12 +79,11 @@ class ApiContext implements Context
             $product = new Product();
             $product->setName($row['Name']);
             $product->setExternalReference($row['External Reference'] ?? null);
-            $taxType = match ($row['Tax Type'] ?? null) {
-                'Digital Services' => TaxType::DIGITAL_SERVICES,
-                'Physical' => TaxType::PHYSICAL,
-                default => TaxType::DIGITAL_GOODS,
-            };
-            $product->setTaxType($taxType);
+
+            if (isset($row['Tax Type'])) {
+                $taxType = $this->taxTypeRepository->findOneBy(['name' => $row['Tax Type']]);
+                $product->setTaxType($taxType);
+            }
             if (isset($row['Tax Rate']) && !empty($row['Tax Rate'])) {
                 $product->setTaxRate(floatval($row['Tax Rate']));
             }
