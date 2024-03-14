@@ -14,8 +14,8 @@ namespace App\Tax;
 
 use App\Entity\Customer;
 use App\Entity\Product;
+use App\Entity\TaxType;
 use App\Enum\CustomerType;
-use App\Enum\TaxType;
 use App\Exception\NoRateForCountryException;
 use App\Repository\SettingsRepositoryInterface;
 
@@ -33,7 +33,7 @@ class TaxRateProvider implements TaxRateProviderInterface
             return new TaxInfo($product->getTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }
 
-        if ($customer->getDigitalTaxRate() && TaxType::DIGITAL_SERVICES === $taxType) {
+        if ($customer->getDigitalTaxRate() && !$taxType->isPhysical()) {
             return new TaxInfo($customer->getDigitalTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }
         if ($customer->getStandardTaxRate()) {
@@ -49,7 +49,7 @@ class TaxRateProvider implements TaxRateProviderInterface
             try {
                 $customerTaxRate = $this->countryRules->getDigitalVatPercentage($customer->getBrandSettings()->getAddress());
             } catch (NoRateForCountryException $e) {
-                if (TaxType::DIGITAL_SERVICES === $taxType) {
+                if (!$taxType->isPhysical()) {
                     $customerTaxRate = $customer->getBrandSettings()->getDigitalServicesRate();
                 }
                 if (!isset($customerTaxRate)) {

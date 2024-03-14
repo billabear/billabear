@@ -13,7 +13,7 @@
 namespace App\Invoice;
 
 use App\Entity\Customer;
-use App\Enum\TaxType;
+use App\Entity\TaxType;
 use App\Tax\TaxRateProviderInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;

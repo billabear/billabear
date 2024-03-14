@@ -13,7 +13,7 @@
 namespace App\Invoice;
 
 use App\Entity\Customer;
-use App\Enum\TaxType;
+use App\Entity\TaxType;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\Price;
 

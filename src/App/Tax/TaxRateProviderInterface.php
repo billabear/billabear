@@ -14,7 +14,7 @@ namespace App\Tax;
 
 use App\Entity\Customer;
 use App\Entity\Product;
-use App\Enum\TaxType;
+use App\Entity\TaxType;
 
 interface TaxRateProviderInterface
 {
