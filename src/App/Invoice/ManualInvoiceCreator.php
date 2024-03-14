@@ -21,6 +21,7 @@ use App\Enum\TaxType;
 use App\Payment\InvoiceCharger;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\InvoiceRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use App\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -38,6 +39,7 @@ class ManualInvoiceCreator
         private InvoiceCharger $invoiceCharger,
         private DueDateDecider $dateDecider,
         private InvoiceRepositoryInterface $invoiceRepository,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
     }
 
@@ -60,12 +62,13 @@ class ManualInvoiceCreator
         $lines = [];
         /** @var CreateInvoiceItem $item */
         foreach ($createInvoice->getItems() as $item) {
+            $taxType = $this->taxTypeRepository->findById($item->getTaxType());
             $money = Money::ofMinor($item->getAmount(), $item->getCurrency());
             $lineItem = new LineItem();
             $lineItem->setMoney($money);
             $lineItem->setDescription($item->getDescription());
             $lineItem->setIncludeTax($item->getIncludeTax());
-            $lineItem->setTaxType(TaxType::fromName($item->getTaxType()));
+            $lineItem->setTaxType($taxType);
 
             $lines[] = $lineItem;
         }

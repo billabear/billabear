@@ -12,7 +12,7 @@
 
 namespace App\Invoice;
 
-use App\Enum\TaxType;
+use App\Entity\TaxType;
 use Brick\Money\Money;
 
 class LineItem
