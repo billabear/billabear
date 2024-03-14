@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Enum\TaxType;
+use App\Entity\TaxType;
 use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -59,7 +59,7 @@ class CheckoutLine
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(enumType: TaxType::class, nullable: true)]
+    #[ORM\ManyToOne(targetEntity: TaxType::class)]
     protected ?TaxType $taxType = null;
 
     #[ORM\Column(type: 'boolean')]

@@ -12,7 +12,7 @@
 
 namespace App\Entity;
 
-use App\Enum\TaxType;
+use App\Entity\TaxType;
 use Brick\Money\Money;
 
 interface ConvertableToInvoiceLineInterface

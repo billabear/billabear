@@ -25,6 +25,7 @@ use App\Invoice\Pricer;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CheckoutRepositoryInterface;
 use App\Repository\CustomerRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use Brick\Money\Money;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -39,6 +40,7 @@ class CheckoutCreator
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private CheckoutRepositoryInterface $checkoutRepository,
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
         private Pricer $pricer,
         private Security $security,
         private EventDispatcherInterface $eventDispatcher,
@@ -115,7 +117,7 @@ class CheckoutCreator
 
         /** @var CreateInvoiceItem $item */
         foreach ($createCheckout->getItems() as $item) {
-            $taxType = TaxType::fromName($item->getTaxType());
+            $taxType = $this->taxTypeRepository->findById($item->getTaxType());
             $money = Money::ofMinor($item->getAmount(), $item->getCurrency());
 
             $checkoutLine = new CheckoutLine();

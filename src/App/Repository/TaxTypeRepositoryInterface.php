@@ -15,6 +15,9 @@ namespace App\Repository;
 use App\Entity\TaxType;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
+/**
+ * @method TaxType findById($id)
+ */
 interface TaxTypeRepositoryInterface extends CrudRepositoryInterface
 {
     /**
