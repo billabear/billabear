@@ -37,9 +37,9 @@ class SubscriptionFactory
         CustomerInterface $customer,
         SubscriptionPlan|Plan $plan,
         Price|PlanPrice $planPrice,
-        PaymentCard $paymentDetails = null,
+        ?PaymentCard $paymentDetails = null,
         ?int $seatNumbers = 1,
-        bool $hasTrial = null,
+        ?bool $hasTrial = null,
         ?int $trialLengthDays = 0,
     ): Subscription {
         if (null === $seatNumbers) {

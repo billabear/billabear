@@ -18,5 +18,5 @@ use App\Entity\TaxType;
 
 interface TaxRateProviderInterface
 {
-    public function getRateForCustomer(Customer $customer, TaxType $taxType, Product $product = null): TaxInfo;
+    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null): TaxInfo;
 }

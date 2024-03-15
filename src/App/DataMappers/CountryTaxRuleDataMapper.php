@@ -27,7 +27,7 @@ class CountryTaxRuleDataMapper
     ) {
     }
 
-    public function createEntity(CreateCountryTaxRule|UpdateCountryTaxRule $countryTaxRule, Country $country, Entity $entity = null): Entity
+    public function createEntity(CreateCountryTaxRule|UpdateCountryTaxRule $countryTaxRule, Country $country, ?Entity $entity = null): Entity
     {
         $taxType = $this->taxTypeRepository->findById($countryTaxRule->getTaxType());
         $validFrom = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $countryTaxRule->getValidFrom());

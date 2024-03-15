@@ -41,7 +41,7 @@ class PlaceDataMapper
         return $dto;
     }
 
-    public function createEntity(CreateTransition $createTransition, Entity $entity = null): Entity
+    public function createEntity(CreateTransition $createTransition, ?Entity $entity = null): Entity
     {
         if (!$entity) {
             $entity = new Entity();

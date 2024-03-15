@@ -25,7 +25,7 @@ class PaymentFailureProcessor
     ) {
     }
 
-    public function processPaymentFailure(Customer $customer, Invoice $invoice = null): void
+    public function processPaymentFailure(Customer $customer, ?Invoice $invoice = null): void
     {
     }
 }

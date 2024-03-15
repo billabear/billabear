@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 trait CrudListTrait
 {
-    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper, string $defaultSortKey = 'createdAt', AbstractFilterList $filterList = null): Response
+    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper, string $defaultSortKey = 'createdAt', ?AbstractFilterList $filterList = null): Response
     {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
