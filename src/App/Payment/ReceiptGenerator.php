@@ -83,7 +83,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $line->setDescription($subscription->getPlanName());
             $line->setReceipt($receipt);
 
-            $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), TaxType::DIGITAL_GOODS);
+            $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $subscription->getSubscriptionPlan()->getProduct()->getTaxType());
             $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
 
@@ -153,7 +153,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setDescription($subscription->getPlanName());
                 $line->setReceipt($receipt);
 
-                $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), TaxType::DIGITAL_GOODS);
+                $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $subscription->getSubscriptionPlan()->getProduct()->getTaxType());
                 $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
                 $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
                 $line->setVatPercentage($priceInfo->taxInfo->rate);
