@@ -19,7 +19,7 @@ use App\Entity\Country as Entity;
 
 class CountryDataMapper
 {
-    public function createEntity(CreateCountry|UpdateCountry $updateCountry, ?Entity $entity = null): Entity
+    public function createEntity(CreateCountry|UpdateCountry $updateCountry, Entity $entity = null): Entity
     {
         if (!$entity) {
             $entity = new Entity();

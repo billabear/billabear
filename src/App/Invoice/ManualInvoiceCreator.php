@@ -17,7 +17,6 @@ use App\Dto\Request\App\Invoice\CreateInvoiceItem;
 use App\Dto\Request\App\Invoice\CreateInvoiceSubscription;
 use App\Entity\Customer;
 use App\Entity\Invoice;
-use App\Enum\TaxType;
 use App\Payment\InvoiceCharger;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\InvoiceRepositoryInterface;

@@ -12,7 +12,6 @@
 
 namespace App\Entity;
 
-use App\Entity\TaxType;
 use Brick\Money\Money;
 
 interface ConvertableToInvoiceLineInterface

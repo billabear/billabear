@@ -41,7 +41,7 @@ class SubscriptionDataMapper
     ) {
     }
 
-    public function createFromObol(ObolModel $model, ?Entity $subscription = null): Entity
+    public function createFromObol(ObolModel $model, Entity $subscription = null): Entity
     {
         if (!$subscription) {
             $subscription = new Entity();

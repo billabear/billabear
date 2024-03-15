@@ -27,7 +27,7 @@ class TaxRateProvider implements TaxRateProviderInterface
     ) {
     }
 
-    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null): TaxInfo
+    public function getRateForCustomer(Customer $customer, TaxType $taxType, Product $product = null): TaxInfo
     {
         if ($product && null !== $product->getTaxRate()) {
             return new TaxInfo($product->getTaxRate(), $customer->getBillingAddress()->getCountry(), false);

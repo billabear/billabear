@@ -27,7 +27,7 @@ class VoucherService implements VoucherServiceInterface
         return $voucherCreation;
     }
 
-    public function list(int $limit = 10, ?string $lastId = null): array
+    public function list(int $limit = 10, string $lastId = null): array
     {
         // TODO: Implement list() method.
     }

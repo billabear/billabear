@@ -19,7 +19,6 @@ use App\Dto\Request\App\Invoice\CreateInvoiceItem;
 use App\Entity\Checkout;
 use App\Entity\CheckoutLine;
 use App\Entity\Customer;
-use App\Enum\TaxType;
 use App\Event\CheckoutCreated;
 use App\Invoice\Pricer;
 use App\Repository\BrandSettingsRepositoryInterface;

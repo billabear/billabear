@@ -40,7 +40,7 @@ class SubscriptionPlanDataMapper
     ) {
     }
 
-    public function createFromPostSubscriptionPlan(PostSubscriptionPlan|UpdateSubscriptionPlan $dto, ?SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
+    public function createFromPostSubscriptionPlan(PostSubscriptionPlan|UpdateSubscriptionPlan $dto, SubscriptionPlan $subscriptionPlan = null): SubscriptionPlan
     {
         if (!$subscriptionPlan) {
             $subscriptionPlan = new SubscriptionPlan();

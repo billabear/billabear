@@ -44,7 +44,7 @@ class CancellationDataMapper
         return $cancellationRequest;
     }
 
-    public function getCancellationRequestEntity(Subscription $subscription, AppInputDto|ApiInputDto $dto, ?BillingAdminInterface $user = null): Entity
+    public function getCancellationRequestEntity(Subscription $subscription, AppInputDto|ApiInputDto $dto, BillingAdminInterface $user = null): Entity
     {
         $cancellationRequest = new Entity();
         $cancellationRequest->setSubscription($subscription);

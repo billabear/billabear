@@ -38,7 +38,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     /**
      * @param Customer $customer
      */
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
+    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentCard $paymentDetails = null, int $seatNumbers = 1, bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
         if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()) {
             return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);

@@ -51,7 +51,7 @@ class PaymentMethodsDataMapper
         return $dto;
     }
 
-    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
+    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, PaymentCard $entity = null)
     {
         if (!$entity) {
             $entity = new PaymentCard();
