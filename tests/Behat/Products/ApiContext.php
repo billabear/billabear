@@ -80,10 +80,10 @@ class ApiContext implements Context
             $product->setName($row['Name']);
             $product->setExternalReference($row['External Reference'] ?? null);
 
-            if (isset($row['Tax Type'])) {
-                $taxType = $this->taxTypeRepository->findOneBy(['name' => $row['Tax Type']]);
-                $product->setTaxType($taxType);
-            }
+            $taxTypeName = $row['Tax Type'] ?? 'default';
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $taxTypeName]);
+            $product->setTaxType($taxType);
+
             if (isset($row['Tax Rate']) && !empty($row['Tax Rate'])) {
                 $product->setTaxRate(floatval($row['Tax Rate']));
             }

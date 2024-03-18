@@ -15,6 +15,7 @@ namespace App\Tests\Behat;
 use App\Entity\BrandSettings;
 use App\Entity\EmailTemplate;
 use App\Entity\Settings;
+use App\Entity\TaxType;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
@@ -112,6 +113,13 @@ class GeneralContext implements Context
         $notValidWarning->setUseEmspTemplate(false);
 
         $em->persist($notValidWarning);
+
+        $taxType = new TaxType();
+        $taxType->setName('default');
+        $taxType->setPhysical(false);
+
+        $em->persist($taxType);
+
         $em->flush();
         $this->authenticate(null);
         $this->isStripe(false);
