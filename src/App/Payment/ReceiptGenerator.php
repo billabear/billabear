@@ -64,6 +64,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setDescription($payment->getDescription());
                 $line->setReceipt($receipt);
 
+                // TODO find default? Or create Invoice for every payment.
                 $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($payment->getMoneyAmount(), $customer, true, TaxType::DIGITAL_GOODS);
                 $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
                 $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
