@@ -13,8 +13,10 @@
 namespace App\Install\Steps;
 
 use App\Background\Payments\ExchangeRatesFetchProcess;
+use App\Entity\TaxType;
 use App\Kernel;
 use App\Repository\SettingsRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use Http\Discovery\Psr18ClientDiscovery;
 use Nyholm\Psr7\Request;
 use Stripe\Account;
@@ -30,13 +32,39 @@ class DataStep
         private SettingsRepositoryInterface $settingsRepository,
         #[Autowire('%parthenon_billing_payments_obol_config%')]
         private $stripeConfig,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
     }
 
     public function install()
     {
         $this->announceInstall();
+        $this->createTaxTypes();
         $this->ratesFetchProcess->process();
+    }
+
+    private function createTaxTypes(): void
+    {
+        $taxType = new TaxType();
+        $taxType->setName('Digital');
+        $taxType->setPhysical(false);
+        $taxType->setDefault(true);
+
+        $this->taxTypeRepository->save($taxType);
+        $taxType = new TaxType();
+
+        $taxType->setName('Physical');
+        $taxType->setPhysical(true);
+        $taxType->setDefault(false);
+
+        $this->taxTypeRepository->save($taxType);
+
+        $taxType = new TaxType();
+        $taxType->setName('Digital Services');
+        $taxType->setPhysical(false);
+        $taxType->setDefault(false);
+
+        $this->taxTypeRepository->save($taxType);
     }
 
     private function announceInstall()

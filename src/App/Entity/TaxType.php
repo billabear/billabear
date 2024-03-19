@@ -28,8 +28,11 @@ class TaxType
     #[ORM\Column(type: 'string', nullable: false)]
     private string $name;
 
-    #[ORM\Column(type: 'string', nullable: false)]
-    private bool $physical;
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private ?bool $physical;
+
+    #[ORM\Column(name:'is_default', type: 'boolean', nullable: true)]
+    private ?bool $default = null;
 
     public function getId()
     {
@@ -59,5 +62,15 @@ class TaxType
     public function setPhysical(bool $physical): void
     {
         $this->physical = $physical;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->default === true;
+    }
+
+    public function setDefault(bool $default): void
+    {
+        $this->default = $default;
     }
 }

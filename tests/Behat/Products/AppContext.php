@@ -109,11 +109,11 @@ class AppContext implements Context
             'name' => $data['Name'],
         ];
         if (isset($data['Tax Type'])) {
-            $payload['tax_type'] = match ($data['Tax Type']) {
-                'Digital Services' => TaxType::DIGITAL_SERVICES->value,
-                'Physical' => TaxType::PHYSICAL->value,
-                default => TaxType::DIGITAL_GOODS->value,
-            };
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $data['Tax Type']]);
+            $payload['tax_type'] =  (string) $taxType->getId();
+        } else {
+            $taxType = $this->taxTypeRepository->findOneBy(['default' => true]);
+            $payload['tax_type'] =  (string) $taxType->getId();
         }
 
         if (isset($data['Tax Rate'])) {

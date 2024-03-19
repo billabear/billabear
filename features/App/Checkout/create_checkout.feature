@@ -54,6 +54,10 @@ Feature: Create Checkout
     And the follow brands exist:
       | Name    | Code    | Email               |
       | Example | example | example@example.org |
+    And there are the following tax types:
+      | Name     |
+      | Digital  |
+      | Physical |
 
   Scenario: Create Checkout
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

@@ -117,6 +117,7 @@ class GeneralContext implements Context
         $taxType = new TaxType();
         $taxType->setName('default');
         $taxType->setPhysical(false);
+        $taxType->setDefault(true);
 
         $em->persist($taxType);
 
