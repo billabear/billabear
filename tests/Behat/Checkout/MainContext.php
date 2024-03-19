@@ -117,7 +117,7 @@ class MainContext implements Context
      */
     public function iAddAOneOffFeeOfInFor($amount, $currency, $description)
     {
-        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Digital']);
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Digital Goods']);
         $this->items[] = [
             'description' => $description,
             'amount' => $amount,
