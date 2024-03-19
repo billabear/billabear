@@ -18,7 +18,6 @@ use App\Dto\Request\App\Quote\CreateQuoteSubscription;
 use App\Entity\Customer;
 use App\Entity\Quote;
 use App\Entity\QuoteLine;
-use App\Enum\TaxType;
 use App\Event\QuoteCreated;
 use App\Invoice\Pricer;
 use App\Repository\CustomerRepositoryInterface;
