@@ -98,10 +98,10 @@ class InvoiceContext implements Context
         $taxType = null;
         /** @var InvoiceLine $line */
         foreach ($invoice->getLines() as $line) {
-            if (TaxType::DIGITAL_GOODS == $line->getTaxType()) {
+            if ($line->getTaxType()->getName() === 'Digital Goods') {
                 return;
             } else {
-                $taxType = $line->getTaxType()->value;
+                $taxType = $line->getTaxType()->getName();
             }
         }
 
@@ -124,10 +124,10 @@ class InvoiceContext implements Context
         $taxType = null;
         /** @var InvoiceLine $line */
         foreach ($invoice->getLines() as $line) {
-            if (TaxType::PHYSICAL == $line->getTaxType()) {
+            if ($line->getTaxType()->getName() === 'Physical') {
                 return;
             } else {
-                $taxType = $line->getTaxType()->value;
+                $taxType = $line->getTaxType()->getName();
             }
         }
 

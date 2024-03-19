@@ -56,7 +56,7 @@ Feature: Create Checkout
       | Example | example | example@example.org |
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods  |
       | Physical |
 
   Scenario: Create Checkout

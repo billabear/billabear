@@ -39,7 +39,7 @@ class ProductContext implements Context
         /** @var Product $product */
         $product = $this->getProductByName($productName);
 
-        if (TaxType::DIGITAL_GOODS !== $product->getTaxType()) {
+        if ($product->getTaxType()->getName() !== 'Digital Goods') {
             throw new \Exception('Got a different tax type');
         }
     }
@@ -52,7 +52,7 @@ class ProductContext implements Context
         /** @var Product $product */
         $product = $this->getProductByName($productName);
 
-        if (TaxType::DIGITAL_SERVICES !== $product->getTaxType()) {
+        if ($product->getTaxType()->getName() !== 'Digital Services') {
             throw new \Exception('Got a different tax type');
         }
     }
@@ -65,7 +65,7 @@ class ProductContext implements Context
         /** @var Product $product */
         $product = $this->getProductByName($productName);
 
-        if (TaxType::PHYSICAL !== $product->getTaxType()) {
+        if ($product->getTaxType()->getName() !== 'Physical') {
             throw new \Exception('Got a different tax type');
         }
     }

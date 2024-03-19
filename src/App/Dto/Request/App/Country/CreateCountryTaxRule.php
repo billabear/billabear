@@ -42,6 +42,8 @@ class CreateCountryTaxRule
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
     private $validUntil;
 
+    private $default;
+
     public function getCountry()
     {
         return $this->country;
@@ -72,9 +74,9 @@ class CreateCountryTaxRule
         $this->taxRate = $taxRate;
     }
 
-    public function getDefault()
+    public function getDefault(): bool
     {
-        return $this->default;
+        return $this->default === true;
     }
 
     public function setDefault($default): void

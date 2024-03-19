@@ -27,7 +27,7 @@ Feature: Create Product
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods |
       | Physical |
     When I go to create a product
     Then I will see a tax type in the tax type dropdown called "Digital"
@@ -37,11 +37,11 @@ Feature: Create Product
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods  |
       | Physical |
     When I create a product via the app with the following info
       | Name | Product Five |
-      | Tax Type | Digital  |
+      | Tax Type | Digital Goods  |
     Then there should be a product with the name "Product Five"
 
 

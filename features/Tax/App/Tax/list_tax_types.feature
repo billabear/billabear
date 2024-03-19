@@ -11,8 +11,8 @@ Feature: List tax types
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods  |
       | Physical |
     When I go to the tax types list
-    Then I will see a tax type in the list called "Digital"
+    Then I will see a tax type in the list called "Digital Goods"
     And I will see a tax type in the list called "Physical"

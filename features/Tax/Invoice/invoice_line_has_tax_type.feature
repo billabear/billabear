@@ -6,6 +6,11 @@ Feature: Invoices are tax type aware
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And there are the following tax types:
+      | Name             | Physical |
+      | Digital Goods    | False    |
+      | Digital Services | False    |
+      | Physical         | True     |
     And the follow products exist:
       | Name        | External Reference | Tax Type      |
       | Product One | prod_jf9j545       | Digital Goods |
@@ -59,7 +64,6 @@ Feature: Invoices are tax type aware
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.four@example.org" will expire in a week
     And there the latest invoice for "customer.four@example.org" will have tax type for physical goods
-
 
   Scenario: Create without subscriptions and one off item
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

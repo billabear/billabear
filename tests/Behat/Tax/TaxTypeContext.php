@@ -72,7 +72,7 @@ class TaxTypeContext implements Context
         foreach ($data as $row) {
             $taxType = new TaxType();
             $taxType->setName($row['Name']);
-            $taxType->setPhysical(boolval($row['Physical'] ?? 'false'));
+            $taxType->setPhysical('true' === strtolower($row['Physical'] ?? 'false'));
             $this->taxTypeRepository->getEntityManager()->persist($taxType);
         }
 

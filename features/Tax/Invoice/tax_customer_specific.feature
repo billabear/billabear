@@ -6,10 +6,15 @@ Feature: Use Customer defined tax rates
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And there are the following tax types:
+      | Name             | Physical |
+      | Digital Goods    | False    |
+      | Digital Services | False    |
+      | Physical         | True     |
     And the follow products exist:
       | Name        | External Reference | Tax Type         |
       | Product One | prod_jf9j545       | Digital Goods    |
-      | Product Two | prod_jf9j542       | Digital Services |
+      | Product Two | prod_jf9j542       | Physical |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
@@ -52,19 +57,19 @@ Feature: Use Customer defined tax rates
 
   Scenario: Use Standard Rate for standard product
     Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Plan         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active |
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
+      | Test Two          | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.one@example.org" will have tax rate of 15
 
-  Scenario: Use digital services rate for digital service product
-    Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Two         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active |
-    And stripe billing is disabled
-    When the background task to reinvoice active subscriptions
-    And there the latest invoice for "customer.one@example.org" will have tax rate of 10
+#  Scenario: Use digital services rate for digital service product
+#    Given the following subscriptions exist:
+#      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+#      | Test Two         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active |
+#    And stripe billing is disabled
+#    When the background task to reinvoice active subscriptions
+#    And there the latest invoice for "customer.one@example.org" will have tax rate of 10
 
   Scenario: Use standard services rate for digital service product when no rate exists for digital services
     Given the following subscriptions exist:

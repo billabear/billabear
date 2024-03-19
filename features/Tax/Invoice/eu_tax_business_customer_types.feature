@@ -6,10 +6,15 @@ Feature: Handle business tax reverse in europe.
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And there are the following tax types:
+      | Name             | Physical |
+      | Digital Goods    | False    |
+      | Digital Services | False    |
+      | Physical         | True     |
     And the follow products exist:
-      | Name        | External Reference | Tax Type |
-      | Product One | prod_jf9j545       | Physical |
-      | Product Two | prod_jf9j542       | Digital  |
+      | Name        | External Reference | Tax Type      |
+      | Product One | prod_jf9j545       | Physical      |
+      | Product Two | prod_jf9j542       | Digital Goods |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
@@ -40,19 +45,19 @@ Feature: Handle business tax reverse in europe.
       | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | Individual |
       | customer.seven@example.org | US      | cust_mlklfdu       | Customer Three | card         | ref_valid         |            | Business   |
 
-  Scenario: Physicial Goods for a Business with a tax number - Zero tax
+  Scenario: Digital Goods for a Business with a tax number - Zero tax
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
-      | Physical Plan     | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
+      | Digital Plan     | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     And that the tax settings for eu business tax rules is true
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.one@example.org" will have a zero tax rate
 
-  Scenario: Digital Goods for a Business with tax number - Reverse tax
+  Scenario: Physical Goods for a Business with tax number - Reverse tax
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
-      | Digital Plan      | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
+      | Physical Plan      | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     And that the tax settings for eu business tax rules is true
     When the background task to reinvoice active subscriptions

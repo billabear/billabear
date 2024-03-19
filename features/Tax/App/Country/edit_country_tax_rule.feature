@@ -16,16 +16,16 @@ Feature: Edit country tax rule
       | Germany        | DE       | 0         | EUR      |
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods |
       | Physical |
     And the following country tax rules exist:
       | Country       | Tax Type | Tax Rate | Valid From |
-      | United States | Digital  | 17.5     | -10 days   |
-    When I update the country tax rule for "United States" with tax type "Digital" and tax rate "17.5" with the values:
+      | United States | Digital Goods  | 17.5     | -10 days   |
+    When I update the country tax rule for "United States" with tax type "Digital Goods" and tax rate "17.5" with the values:
       | Country     | United States |
-      | Tax Type    | Digital       |
+      | Tax Type    | Digital Goods       |
       | Tax Rate    | 15            |
       | Valid From  | -23 days      |
       | Valid Until | -11 days      |
-    Then there should be a tax rule for "United States" for "Digital" tax type with the tax rate 15
-    And there should not be a tax rule for "United States" for "Digital" tax type with the tax rate 17.5
+    Then there should be a tax rule for "United States" for "Digital Goods" tax type with the tax rate 15
+    And there should not be a tax rule for "United States" for "Digital Goods" tax type with the tax rate 17.5

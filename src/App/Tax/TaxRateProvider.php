@@ -60,7 +60,7 @@ class TaxRateProvider implements TaxRateProviderInterface
         }
         $euBusinessTaxRules = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getEuropeanBusinessTaxRules();
         if ($euBusinessTaxRules && CustomerType::BUSINESS === $customer->getType() && $this->countryRules->inEu($customer->getBillingAddress())) {
-            if (TaxType::PHYSICAL === $taxType) {
+            if (!$taxType->isPhysical()) {
                 return new TaxInfo(0, $customer->getBillingAddress()->getCountry(), false);
             } else {
                 return new TaxInfo($customerTaxRate, $customer->getBillingAddress()->getCountry(), true);

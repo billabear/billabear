@@ -132,7 +132,7 @@ class CreateInvoiceContext implements Context
     public function iWantToInvoiceForABespokeOneOffFeeForAtInIncludingTax($description, $amount, $currency)
     {
         /** @var TaxType $taxType */
-        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Digital']);
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Digital Goods']);
         $this->items[] = [
             'description' => $description,
             'amount' => $amount,

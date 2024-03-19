@@ -9,6 +9,11 @@ Feature: Create Product
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And there are the following tax types:
+      | Name             |
+      | Digital Goods    |
+      | Digital Services |
+      | Physical         |
 
   Scenario: Successfully create product
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

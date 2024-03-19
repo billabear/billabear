@@ -53,7 +53,7 @@ Feature: Create quote
       | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods  |
       | Physical |
 
   Scenario: Create subscriptions

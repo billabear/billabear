@@ -24,10 +24,10 @@ Feature: View country for tax purposes
       | United Kingdom | GB       | 1770      | GBP      |
     And there are the following tax types:
       | Name     |
-      | Digital  |
+      | Digital Goods  |
       | Physical |
     And the following country tax rules exist:
       | Country        | Tax Type | Tax Rate | Valid From |
-      | United Kingdom | Digital  | 17.5     | -10 days   |
+      | United Kingdom | Digital Goods  | 17.5     | -10 days   |
     When I view the country for "United Kingdom"
-    Then I should see the tax rule for tax type "Digital" with the tax rate 17.5
+    Then I should see the tax rule for tax type "Digital Goods" with the tax rate 17.5
