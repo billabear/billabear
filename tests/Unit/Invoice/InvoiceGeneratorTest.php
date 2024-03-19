@@ -38,9 +38,10 @@ class InvoiceGeneratorTest extends TestCase
     public function testCreateInvoiceFromSubscriptions()
     {
         $mockPrice = $this->createMock(Price::class);
+        $taxType = $this->createMock(\App\Entity\TaxType::class);
 
         $product = $this->createMock(Product::class);
-        $product->method('getTaxType')->willReturn(TaxType::DIGITAL_GOODS);
+        $product->method('getTaxType')->willReturn($taxType);
 
         $subscriptionPlan = $this->createMock(SubscriptionPlan::class);
         $subscriptionPlan->method('getProduct')->willReturn($product);

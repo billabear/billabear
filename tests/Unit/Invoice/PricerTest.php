@@ -14,7 +14,6 @@ namespace App\Tests\Unit\Invoice;
 
 use App\Entity\Customer;
 use App\Entity\Product;
-use App\Enum\TaxType;
 use App\Invoice\Pricer;
 use App\Tax\TaxInfo;
 use App\Tax\TaxRateProviderInterface;
@@ -32,12 +31,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(null, 'DE', false));
+        $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(null, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(0, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1199, $priceInfo->total->getMinorAmount()->toInt());
@@ -54,12 +54,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(19.0, 'DE', false));
+        $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(19.0, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(191, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1199, $priceInfo->total->getMinorAmount()->toInt());
@@ -76,12 +77,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(19.0, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(228, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1427, $priceInfo->total->getMinorAmount()->toInt());
@@ -98,12 +100,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(20.0, 'DE', false));
+        $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(20.0, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(2000, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(12000, $priceInfo->total->getMinorAmount()->toInt());
@@ -120,12 +123,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
-        $taxProvider->method('getRateForCustomer')->with($customer, TaxType::DIGITAL_GOODS)->willReturn(new TaxInfo(20.0, 'GB', false));
+        $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(20.0, 'GB', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(2400, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(14400.00, $priceInfo->total->getMinorAmount()->toInt());
@@ -142,12 +146,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(3724, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(22345, $priceInfo->total->getMinorAmount()->toInt());
@@ -164,12 +169,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(4469, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(26814, $priceInfo->total->getMinorAmount()->toInt());
@@ -186,12 +192,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'CH', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(86128, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1234500, $priceInfo->total->getMinorAmount()->toInt());
@@ -208,12 +215,13 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
+        $taxType = new \App\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, TaxType::DIGITAL_GOODS);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
 
         $this->assertEquals(92588, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1327088, $priceInfo->total->getMinorAmount()->toInt());
