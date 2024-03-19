@@ -76,7 +76,7 @@ class CreateCountryTaxRule
 
     public function getDefault(): bool
     {
-        return $this->default === true;
+        return true === $this->default;
     }
 
     public function setDefault($default): void
