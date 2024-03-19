@@ -23,7 +23,9 @@ use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\QuoteRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\Orm\TaxTypeRepository;
 use App\Repository\Orm\UserRepository;
+use App\Repository\TaxTypeRepositoryInterface;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\Quote\QuoteTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -50,6 +52,7 @@ class MainContext implements Context
         private CheckoutSessionRepository $checkoutSessionRepository,
         private UserRepository $userRepository,
         private BrandSettingsRepository $brandSettingsRepository,
+        private TaxTypeRepository $taxTypeRepository,
     ) {
     }
 
@@ -58,6 +61,7 @@ class MainContext implements Context
     private array $subscriptions = [];
     private array $items = [];
     private ?\DateTime $expiresAt = null;
+    private ?\DateTime $dueAt = null;
     private bool $permanent = false;
     private ?BrandSettings $brandSettings = null;
 
@@ -113,12 +117,13 @@ class MainContext implements Context
      */
     public function iAddAOneOffFeeOfInFor($amount, $currency, $description)
     {
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Digital']);
         $this->items[] = [
             'description' => $description,
             'amount' => $amount,
             'currency' => $currency,
             'include_tax' => true,
-            'tax_type' => 'digital_goods',
+            'tax_type' => (string) $taxType->getId(),
         ];
     }
 

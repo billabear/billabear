@@ -76,7 +76,7 @@ class CustomerDataMapper
             $customer->setCreatedAt(new \DateTime('now'));
         }
 
-        $type = match (strtolower($createCustomerDto->getType())) {
+        $type = match (strtolower($createCustomerDto->getType() ?? '')) {
             'business' => CustomerType::BUSINESS,
             default => CustomerType::INDIVIDUAL,
         };

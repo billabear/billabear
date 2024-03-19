@@ -14,10 +14,12 @@ namespace App\Tests\Behat\Invoices;
 
 use App\Entity\Customer;
 use App\Entity\Quote;
+use App\Entity\TaxType;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\PriceRepository;
 use App\Repository\Orm\QuoteRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\Quote\QuoteTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -39,6 +41,7 @@ class CreateInvoiceContext implements Context
         private PriceRepository $priceRepository,
         private SubscriptionPlanRepository $planServiceRepository,
         private QuoteRepository $quoteRepository,
+        private TaxTypeRepository $taxTypeRepository,
     ) {
     }
 
@@ -128,12 +131,14 @@ class CreateInvoiceContext implements Context
      */
     public function iWantToInvoiceForABespokeOneOffFeeForAtInIncludingTax($description, $amount, $currency)
     {
+        /** @var TaxType $taxType */
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Digital']);
         $this->items[] = [
             'description' => $description,
             'amount' => $amount,
             'currency' => $currency,
             'include_tax' => true,
-            'tax_type' => 'digital_goods',
+            'tax_type' => (string) $taxType->getId(),
         ];
     }
 
@@ -142,12 +147,14 @@ class CreateInvoiceContext implements Context
      */
     public function iWantToInvoiceForABespokeOneOffFeeForAtInIncludingTaxPhysical($description, $amount, $currency)
     {
+        /** @var TaxType $taxType */
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => 'Physical']);
         $this->items[] = [
             'description' => $description,
             'amount' => $amount,
             'currency' => $currency,
             'include_tax' => true,
-            'tax_type' => 'physical',
+            'tax_type' => (string) $taxType->getId(),
         ];
     }
 

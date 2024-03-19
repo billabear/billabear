@@ -51,6 +51,10 @@ Feature: Create invoice
       | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         |
       | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
       | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |
+    And there are the following tax types:
+      | Name     |
+      | Digital  |
+      | Physical |
 
   Scenario: Create subscriptions
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

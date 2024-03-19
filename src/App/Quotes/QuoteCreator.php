@@ -23,6 +23,7 @@ use App\Event\QuoteCreated;
 use App\Invoice\Pricer;
 use App\Repository\CustomerRepositoryInterface;
 use App\Repository\QuoteRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use Brick\Money\Money;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -39,6 +40,7 @@ class QuoteCreator
         private Pricer $pricer,
         private Security $security,
         private EventDispatcherInterface $eventDispatcher,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
     }
 
@@ -93,7 +95,7 @@ class QuoteCreator
         /** @var CreateInvoiceItem $item */
         foreach ($createQuote->getItems() as $item) {
             $quoteLine = new QuoteLine();
-            $taxType = TaxType::fromName($item->getTaxType());
+            $taxType = $this->taxTypeRepository->findById($item->getTaxType());
             $money = Money::ofMinor($item->getAmount(), $item->getCurrency());
             $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($money, $customer, $item->getIncludeTax(), $taxType);
 

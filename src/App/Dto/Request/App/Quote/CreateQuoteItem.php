@@ -12,6 +12,7 @@
 
 namespace App\Dto\Request\App\Quote;
 
+use App\Validator\Constraints\TaxTypeExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,7 +34,7 @@ class CreateQuoteItem
 
     #[SerializedName('tax_type')]
     #[Assert\NotBlank()]
-    #[Assert\Choice(choices: ['digital_goods', 'physical', 'digital_services'])]
+    #[TaxTypeExists]
     private $taxType;
 
     public function getDescription()
