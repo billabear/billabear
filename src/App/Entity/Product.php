@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Entity;
@@ -20,6 +19,9 @@ class Product extends \Parthenon\Billing\Entity\Product
 
     #[ORM\Column(type: 'float', nullable: true)]
     protected ?float $taxRate = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    protected ?bool $physical = false;
 
     public function getTaxType(): ?TaxType
     {
@@ -39,5 +41,15 @@ class Product extends \Parthenon\Billing\Entity\Product
     public function setTaxRate(?float $taxRate): void
     {
         $this->taxRate = $taxRate;
+    }
+
+    public function getPhysical(): bool
+    {
+        return true === $this->physical;
+    }
+
+    public function setPhysical(?bool $physical): void
+    {
+        $this->physical = $physical;
     }
 }

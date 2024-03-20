@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Dto\Request\App;
@@ -34,6 +33,9 @@ class CreateProduct
     #[Assert\Type('numeric')]
     #[Assert\PositiveOrZero]
     private $taxRate;
+
+    #[Assert\Type('boolean')]
+    private $physical = false;
 
     public function getName(): string
     {
@@ -73,5 +75,15 @@ class CreateProduct
     public function setTaxRate($taxRate): void
     {
         $this->taxRate = $taxRate;
+    }
+
+    public function isPhysical(): bool
+    {
+        return $this->physical;
+    }
+
+    public function setPhysical(bool $physical): void
+    {
+        $this->physical = $physical;
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Controller;
@@ -19,12 +18,8 @@ use App\Install\Steps\SystemSettingsStep;
 use App\Install\Steps\TemplateStep;
 use App\Repository\SettingsRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
-use Doctrine\DBAL\Exception\TableNotFoundException;
+use Doctrine\DBAL\Exception\TableNotFoundException as DoctrineTableException;
 use Parthenon\User\Creator\UserCreatorInterface;
-use Stripe\Account;
-use Stripe\Exception\ApiErrorException;
-use Stripe\Stripe;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,19 +37,10 @@ class InstallController
     public function installDefault(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
-        #[Autowire('%parthenon_billing_payments_obol_config%')]
-        $stripeConfig, ): Response
-    {
-        try {
-            Stripe::setApiKey($stripeConfig['api_key']);
-            Account::retrieve();
-        } catch (ApiErrorException $e) {
-            return new RedirectResponse('/error/stripe-invalid');
-        }
-
+    ): Response {
         try {
             $settings = $settingsRepository->getDefaultSettings();
-        } catch (TableNotFoundException $exception) {
+        } catch (DoctrineTableException $exception) {
             return new Response($twig->render('index.html.twig'));
         }
 

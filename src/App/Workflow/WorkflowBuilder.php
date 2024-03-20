@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Workflow;
@@ -14,6 +13,7 @@ use App\Enum\WorkflowType;
 use App\Workflow\Places\PlaceInterface;
 use App\Workflow\Places\PlacesProvider;
 use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -25,6 +25,7 @@ use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[Autoconfigure(lazy: true)]
 class WorkflowBuilder
 {
     /**

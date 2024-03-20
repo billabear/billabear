@@ -11,6 +11,17 @@ Feature: Use Customer defined tax rates
       | Digital Goods    | False    |
       | Digital Services | False    |
       | Physical         | True     |
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Currency | In EU |
+      | United Kingdom | GB       | 1770      | GBP      | False |
+      | United States  | US       | 0         | USD      | False |
+      | Germany        | DE       | 0         | EUR      | True  |
+    And the following country tax rules exist:
+      | Country        | Tax Type      | Tax Rate | Valid From |
+      | United States  | Digital Goods | 17.5     | -10 days   |
+      | United Kingdom | Digital Goods | 20       | -10 days   |
+      | Germany        | Digital Goods | 17.5     | -10 days   |
+      | Germany        | Physical      | 10.5     | -10 days   |
     And the follow products exist:
       | Name        | External Reference | Tax Type         |
       | Product One | prod_jf9j545       | Digital Goods    |

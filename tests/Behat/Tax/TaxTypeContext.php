@@ -1,15 +1,17 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Tests\Behat\Tax;
 
+use App\Entity\Country;
+use App\Entity\CountryTaxRule;
 use App\Entity\TaxType;
+use App\Repository\Orm\CountryRepository;
 use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
@@ -23,6 +25,7 @@ class TaxTypeContext implements Context
     public function __construct(
         private Session $session,
         private TaxTypeRepository $taxTypeRepository,
+        private CountryRepository $countryRepository,
     ) {
     }
 
@@ -66,6 +69,8 @@ class TaxTypeContext implements Context
     public function thereAreTheFollowingTaxTypes(TableNode $table)
     {
         $data = $table->getColumnsHash();
+        /** @var Country[] $countries */
+        $countries = $this->countryRepository->findAll();
         foreach ($data as $row) {
             $taxType = new TaxType();
             $taxType->setName($row['Name']);

@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Tests\Behat\Products;
@@ -76,6 +75,7 @@ class ApiContext implements Context
             $product = new Product();
             $product->setName($row['Name']);
             $product->setExternalReference($row['External Reference'] ?? null);
+            $product->setPhysical(strtolower($row['Physical'] ?? 'false') === 'true');
 
             $taxTypeName = $row['Tax Type'] ?? 'default';
             $taxType = $this->taxTypeRepository->findOneBy(['name' => $taxTypeName]);

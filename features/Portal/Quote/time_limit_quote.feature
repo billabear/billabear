@@ -38,12 +38,12 @@ Feature: Quotes have a time limit
     And the follow customers exist:
       | Email                      | Country | External Reference | Reference      | Billing Type |
       | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      |
-      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         |
-      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         |
-      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         |
-      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         |
-      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
-      | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |
+      | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         |
+      | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         |
+      | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         |
+      | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         |
+      | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         |
+      | customer.seven@example.org | GB      | cust_jliujoi       | Customer Six   | invoice      |
 
   Scenario: Create Pay
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

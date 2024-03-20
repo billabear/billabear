@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Tests\Behat\Tax;
@@ -100,7 +99,6 @@ class CountryContext implements Context
         $country = $this->countryRepository->findOneBy(['name' => $arg1, 'isoCode' => $arg2]);
 
         if (!$country instanceof Country) {
-            var_dump($this->getJsonContent());
             throw new \Exception('No Country found');
         }
     }
@@ -112,14 +110,17 @@ class CountryContext implements Context
     {
         $data = $table->getColumnsHash();
         foreach ($data as $row) {
-            $country = new Country();
+            if (!$country = $this->countryRepository->findOneBy(['isoCode' => $row['ISO Code']])) {
+                $country = new Country();
+            }
+
             $country->setName($row['Name']);
             $country->setIsoCode($row['ISO Code']);
             $country->setCurrency($row['Currency']);
             $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
-            $country->setEnabled($row['Enabled'] ?? true);
-            $country->setInEu($row['In EU'] ?? false);
+            $country->setEnabled(strtolower($row['Enabled'] ?? 'true') === 'true');
+            $country->setInEu(strtolower($row['In EU'] ?? 'false') === 'true');
 
             $this->countryRepository->getEntityManager()->persist($country);
         }
@@ -345,7 +346,7 @@ class CountryContext implements Context
         $country = $this->getCountryByName($country);
         $taxType = $this->getTaxType($taxType);
 
-        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType]);
+        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'taxRate' => $taxRate]);
 
         if (!$countryTaxRule instanceof CountryTaxRule) {
             var_dump($this->getJsonContent());
@@ -366,18 +367,20 @@ class CountryContext implements Context
         $country = $this->getCountryByName($country);
         $taxType = $this->getTaxType($taxType);
 
-        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'taxRate' => $taxRate]);
+        $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'taxRate' => floatval($taxRate)]);
+
+        if ($countryTaxRule->getTaxRate() != $taxRate) {
+            throw new \Exception("Wrong tax rate");
+        }
 
         if (!$countryTaxRule instanceof CountryTaxRule) {
-            var_dump($this->getJsonContent());
             throw new \Exception('No tax rule found');
         }
         $this->countryTaxRuleRepository->getEntityManager()->refresh($countryTaxRule);
 
         $validUntil = new \DateTime($validUntilStr);
         if ($validUntil->format('Y-m-d') !== $countryTaxRule->getValidUntil()?->format('Y-m-d')) {
-            var_dump($this->getJsonContent());
-            throw new \Exception("Date doesn't match");
+            throw new \Exception(sprintf("Wrong date - expected %s but got %s", $validUntil->format('Y-m-d'), $countryTaxRule->getValidUntil()?->format('Y-m-d')));
         }
     }
 

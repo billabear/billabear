@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Workflow\TransitionHandlers\ExpiringCards;
@@ -18,9 +17,11 @@ use App\Repository\VoucherRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
+#[Autoconfigure(lazy: true)]
 class SendDayBeforeNotValidWarning implements EventSubscriberInterface
 {
     use LoggerAwareTrait;

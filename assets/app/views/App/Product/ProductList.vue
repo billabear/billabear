@@ -37,12 +37,14 @@
           <thead>
             <tr>
               <th>{{ $t('app.product.list.name') }}</th>
+              <th>{{ $t('app.product.list.physical') }}</th>
               <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="product in products" class="mt-5">
               <td>{{ product.name }}</td>
+              <td>{{ product.physical }}</td>
               <td class="mt-2"><router-link :to="{name: 'app.product.view', params: {id: product.id}}" class="btn--main">View</router-link></td>
             </tr>
             <tr v-if="products.length === 0">

@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Background\Invoice;
@@ -88,6 +87,8 @@ class GenerateNewInvoices
 
             $this->getLogger()->error('An error happened while generating exception', [
                 'exception_message' => $exception->getMessage(),
+                'exception_line' => $exception->getLine(),
+                'exception_file' => $exception->getTraceAsString(),
                 'customer_id' => (string) $customer->getId(),
                 'subscriptions' => array_map(function ($item) {
                     return (string) $item->getId();

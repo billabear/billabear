@@ -1,6 +1,7 @@
 export const PRODUCT_LIST_TRANSLATIONS = {
     title: "Products",
     name: "Name",
+    physical: "Physical",
     no_products: "There are currently no products existing",
     create_new: "Create",
     next: "Next Page",

@@ -80,13 +80,13 @@ Feature: Add Country Tax Rule
       | Digital Goods  |
       | Physical |
     And the following country tax rules exist:
-      | Country       | Tax Type | Tax Rate | Valid From |
+      | Country       | Tax Type      | Tax Rate | Valid From |
       | United States | Digital Goods | 17.5     | -10 days   |
     When I create a country tax rule with the following data:
-      | Country    | United States |
-      | Tax Type   | Digital Goods      |
-      | Tax Rate   | 15            |
-      | Valid From | -3 days       |
+      | Country     | United States |
+      | Tax Type    | Digital Goods |
+      | Tax Rate    | 15            |
+      | Valid From  | -3 days       |
     Then there should be a tax rule for "United States" for "Digital Goods" tax type with the tax rate 17.5 that is valid until "-3 days"
 
   Scenario: Successfully create tax type and sets but does not set valid until on rule with no valid until

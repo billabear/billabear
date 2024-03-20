@@ -13,6 +13,17 @@
             <input type="text" class="form-field-input" id="name" v-model="product.name" />
             <p class="form-field-help">{{ $t('app.product.create.help_info.name') }}</p>
           </div>
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="physical">
+              {{ $t('app.product.create.physical') }}
+            </label>
+            <p class="form-field-error" v-if="errors.physical != undefined">{{ errors.physical }}</p>
+
+            <toggle v-model="product.physical" label="" />
+            <p class="form-field-help">{{ $t('app.product.create.help_info.physical') }}</p>
+          </div>
+
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="tax_rate">
               {{ $t('app.product.create.tax_rate') }}
@@ -56,6 +67,7 @@
           <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
+        <p class="text-green-500 font-weight-bold" v-if="failed">{{ $t('app.product.create.failed_message') }}</p>
       </form>
     </LoadingScreen>
   </div>
@@ -63,9 +75,11 @@
 
 <script>
 import axios from "axios";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "productCreate",
+  components: {Toggle},
   data() {
     return {
       product: {
@@ -75,6 +89,7 @@ export default {
       sendingInProgress: false,
       showAdvance: false,
       success: false,
+      failed: false,
       errors: {
       },
       ready: false,
@@ -82,6 +97,9 @@ export default {
     }
   },
   mounted() {
+    this.success=false;
+    this.failed=false;
+    this.errors = {};
     axios.get('/app/product/create').then(response => {
       this.ready = true;
       this.tax_types = response.data.tax_types;
@@ -98,9 +116,12 @@ export default {
             this.success = true;
           }
       ).catch(error => {
-        this.errors = error.response.data.errors;
+        if (error.response.status != 500) {
+          this.errors = error.response.data.errors;
+        }
         this.sendingInProgress = false;
         this.success = false;
+        this.failed = true;
       })
     }
   }

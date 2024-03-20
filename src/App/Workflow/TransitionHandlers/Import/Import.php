@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Workflow\TransitionHandlers\Import;
@@ -19,9 +18,11 @@ use App\Import\Stripe\RefundImporter;
 use App\Import\Stripe\StatsCruncher;
 use App\Import\Stripe\SubscriptionImporter;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
+#[Autoconfigure(lazy: true)]
 class Import implements EventSubscriberInterface
 {
     use LoggerAwareTrait;

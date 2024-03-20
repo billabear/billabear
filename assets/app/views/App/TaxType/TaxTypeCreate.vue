@@ -12,16 +12,6 @@
           <input type="text" class="form-field" v-model="type.name" />
           <p class="form-field-help">{{ $t('app.tax_type.create.tax_type.help_info.name') }}</p>
         </div>
-
-        <div class="form-field-ctn">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.tax_type.create.tax_type.fields.physical') }}
-          </label>
-          <p class="form-field-error" v-if="errors.physical != undefined">{{ errors.physical }}</p>
-
-          <toggle v-model="type.physical" label="" />
-          <p class="form-field-help">{{ $t('app.tax_type.create.tax_type.help_info.physical') }}</p>
-        </div>
       </div>
     </div>
 

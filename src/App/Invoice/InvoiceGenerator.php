@@ -1,10 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2022-2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
  */
 
 namespace App\Invoice;
@@ -18,6 +17,7 @@ use App\Event\InvoiceCreated;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
+use Brick\Math\RoundingMode;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -186,8 +186,8 @@ class InvoiceGenerator
             $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setDescription('Credit adjustment');
             $lines[] = $line;
-            $total = $total?->plus($amount) ?? $amount;
-            $subTotal = $subTotal?->plus($amount) ?? $amount;
+            $total = $total?->plus($amount, RoundingMode::HALF_CEILING) ?? $amount;
+            $subTotal = $subTotal?->plus($amount, RoundingMode::HALF_CEILING) ?? $amount;
         }
 
         try {
@@ -199,9 +199,9 @@ class InvoiceGenerator
 
             $percentage = $voucherApplication->getVoucher()->getPercentage();
             $percentage /= 100;
-            $amount = $total->multipliedBy($percentage)->negated();
+            $amount = $total->multipliedBy($percentage, RoundingMode::HALF_CEILING)->negated();
 
-            $vatAmount = $vat->multipliedBy($percentage)->negated();
+            $vatAmount = $vat->multipliedBy($percentage, RoundingMode::HALF_CEILING)->negated();
 
             $line->setDescription($voucherApplication->getVoucher()->getName());
             $line->setTaxPercentage($vatAmount->getMinorAmount()->toInt());
@@ -209,9 +209,9 @@ class InvoiceGenerator
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setTaxTotal(0);
 
-            $vat = $vat?->plus($vatAmount);
-            $total = $total->plus($amount);
-            $subTotal = $subTotal->plus($amount);
+            $vat = $vat?->plus($vatAmount, RoundingMode::HALF_CEILING);
+            $total = $total->plus($amount, RoundingMode::HALF_CEILING);
+            $subTotal = $subTotal->plus($amount, RoundingMode::HALF_CEILING);
 
             $lines[] = $line;
             $voucherApplication->setUsed(true);

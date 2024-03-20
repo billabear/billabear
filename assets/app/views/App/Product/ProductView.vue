@@ -20,6 +20,10 @@
                 <dt>{{ $t('app.product.view.main.name') }}</dt>
                 <dd>{{ product.name }}</dd>
               </div>
+              <div>
+                <dt>{{ $t('app.product.view.main.physical') }}</dt>
+                <dd>{{ product.physical }}</dd>
+              </div>
               <div v-if="product.tax_rate">
                 <dt>{{ $t('app.product.view.main.tax_rate') }}</dt>
                 <dd>{{ product.tax_rate }}</dd>

@@ -37,14 +37,12 @@
           <thead>
             <tr>
               <th>{{ $t('app.tax_type.list.list.name') }}</th>
-              <th>{{ $t('app.tax_type.list.list.physical') }}</th>
               <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="tax_type in taxTypes" class="mt-5 cursor-pointer">
               <td>{{ tax_type.name }}</td>
-              <td>{{ tax_type.physical }}</td>
               <td></td>
             </tr>
             <tr v-if="taxTypes.length === 0">

@@ -67,7 +67,7 @@ Feature: Customer Subscription Create APP
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    | Billing Type |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One | invoice      |
-      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two | card         |
+      | customer.two@example.org | GB      | cust_dfugfdu       | Customer Two | card         |
     When I create a subscription via the site for "customer.two@example.org" with the follow:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule |
       | Test Plan         | 3000         | USD            | month          |

@@ -7,7 +7,6 @@
             "email": "iain@humblyarrogant.io"
         }
     ],
-    "license": "BUSL-1.1",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {

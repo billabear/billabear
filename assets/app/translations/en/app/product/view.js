@@ -8,6 +8,7 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
     main: {
         title: "Main Details",
         name: "Name",
+        physical: "Physical",
         external_reference: "External Reference",
         tax_rate: "Tax Rate",
         tax_type: "Tax Type",
