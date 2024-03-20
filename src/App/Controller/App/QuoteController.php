@@ -12,6 +12,7 @@ namespace App\Controller\App;
 use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\QuoteDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
+use App\DataMappers\TaxTypeDataMapper;
 use App\Dto\Request\App\Invoice\CreateInvoice;
 use App\Dto\Request\App\Invoice\ReadQuoteView;
 use App\Dto\Request\App\Quote\CreateQuote;
@@ -21,6 +22,7 @@ use App\Entity\Quote;
 use App\Filters\CustomerList;
 use App\Quotes\QuoteCreator;
 use App\Repository\QuoteRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,12 +63,18 @@ class QuoteController
         SerializerInterface $serializer,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanDataMapper $subscriptionPlanFactory,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
     ) {
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
 
+        $taxTypes = $taxTypeRepository->getAll();
+        $taxTypeDtos = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
+
         $readQuote = new ReadQuoteView();
         $readQuote->setSubscriptionPlans($subscriptionPlanDtos);
+        $readQuote->setTaxTypes($taxTypeDtos);
         $json = $serializer->serialize($readQuote, 'json');
 
         return new JsonResponse($json, json: true);

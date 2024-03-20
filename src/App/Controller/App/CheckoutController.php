@@ -14,11 +14,13 @@ use App\Controller\ValidationErrorResponseTrait;
 use App\DataMappers\CheckoutDataMapper;
 use App\DataMappers\Settings\BrandSettingsDataMapper;
 use App\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
+use App\DataMappers\TaxTypeDataMapper;
 use App\Dto\Request\App\Checkout\CreateCheckout;
 use App\Dto\Response\App\Checkout\ReadCheckout;
 use App\Dto\Response\App\Checkout\ReadCreateCheckoutView;
 use App\Repository\BrandSettingsRepositoryInterface;
 use App\Repository\CheckoutRepositoryInterface;
+use App\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,6 +55,8 @@ class CheckoutController
         SubscriptionPlanDataMapper $subscriptionPlanFactory,
         BrandSettingsRepositoryInterface $brandSettingsRepository,
         BrandSettingsDataMapper $brandSettingsDataMapper,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
     ) {
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
@@ -60,9 +64,13 @@ class CheckoutController
         $brands = $brandSettingsRepository->getAll();
         $brandDtos = array_map([$brandSettingsDataMapper, 'createAppDto'], $brands);
 
+        $taxTypes = $taxTypeRepository->getAll();
+        $taxTypeDtos = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
+
         $readQuote = new ReadCreateCheckoutView();
         $readQuote->setSubscriptionPlans($subscriptionPlanDtos);
         $readQuote->setBrands($brandDtos);
+        $readQuote->setTaxTypes($taxTypeDtos);
         $json = $serializer->serialize($readQuote, 'json');
 
         return new JsonResponse($json, json: true);

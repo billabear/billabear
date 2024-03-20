@@ -18,6 +18,9 @@ class ReadCreateCheckoutView
 
     private array $brands = [];
 
+    #[SerializedName('tax_types')]
+    private array $taxTypes = [];
+
     public function getBrands(): array
     {
         return $this->brands;
@@ -36,5 +39,15 @@ class ReadCreateCheckoutView
     public function setSubscriptionPlans(array $subscriptionPlans): void
     {
         $this->subscriptionPlans = $subscriptionPlans;
+    }
+
+    public function getTaxTypes(): array
+    {
+        return $this->taxTypes;
+    }
+
+    public function setTaxTypes(array $taxTypes): void
+    {
+        $this->taxTypes = $taxTypes;
     }
 }

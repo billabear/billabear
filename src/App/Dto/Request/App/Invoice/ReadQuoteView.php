@@ -16,6 +16,9 @@ class ReadQuoteView
     #[SerializedName('subscription_plans')]
     private array $subscriptionPlans = [];
 
+    #[SerializedName('tax_types')]
+    private array $taxTypes = [];
+
     public function getSubscriptionPlans(): array
     {
         return $this->subscriptionPlans;
@@ -24,5 +27,15 @@ class ReadQuoteView
     public function setSubscriptionPlans(array $subscriptionPlans): void
     {
         $this->subscriptionPlans = $subscriptionPlans;
+    }
+
+    public function getTaxTypes(): array
+    {
+        return $this->taxTypes;
+    }
+
+    public function setTaxTypes(array $taxTypes): void
+    {
+        $this->taxTypes = $taxTypes;
     }
 }
