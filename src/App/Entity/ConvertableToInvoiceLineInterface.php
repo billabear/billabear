@@ -36,7 +36,7 @@ interface ConvertableToInvoiceLineInterface
 
     public function getTaxPercentage(): ?float;
 
-    public function getTaxType(): TaxType;
+    public function getTaxType(): ?TaxType;
 
     public function getSubscriptionPlan(): ?SubscriptionPlan;
 

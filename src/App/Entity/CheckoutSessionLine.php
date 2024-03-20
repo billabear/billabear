@@ -165,7 +165,7 @@ class CheckoutSessionLine implements ConvertableToInvoiceLineInterface
         $this->taxPercentage = $taxPercentage;
     }
 
-    public function getTaxType(): TaxType
+    public function getTaxType(): ?TaxType
     {
         return $this->taxType;
     }

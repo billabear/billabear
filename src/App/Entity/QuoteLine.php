@@ -165,9 +165,9 @@ class QuoteLine implements ConvertableToInvoiceLineInterface
         $this->taxPercentage = $taxPercentage;
     }
 
-    public function getTaxType(): TaxType
+    public function getTaxType(): ?TaxType
     {
-        return $this->taxType ?? TaxType::DIGITAL_GOODS;
+        return $this->taxType;
     }
 
     public function setTaxType(TaxType $taxType): void

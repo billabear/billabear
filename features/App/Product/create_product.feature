@@ -30,15 +30,15 @@ Feature: Create Product
       | Digital Goods |
       | Physical |
     When I go to create a product
-    Then I will see a tax type in the tax type dropdown called "Digital"
+    Then I will see a tax type in the tax type dropdown called "Digital Goods"
     And I will see a tax type in the tax type dropdown called "Physical"
 
   Scenario: Successfully create product using tax type
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And there are the following tax types:
-      | Name     |
+      | Name           |
       | Digital Goods  |
-      | Physical |
+      | Physical       |
     When I create a product via the app with the following info
       | Name | Product Five |
       | Tax Type | Digital Goods  |

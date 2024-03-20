@@ -6,6 +6,11 @@ Feature: Read quote
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And there are the following tax types:
+      | Name             | Physical |
+      | Digital Goods    | False    |
+      | Digital Services | False    |
+      | Physical         | True     |
     And the follow products exist:
       | Name        | External Reference |
       | Product One | prod_jf9j545       |

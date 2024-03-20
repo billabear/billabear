@@ -296,6 +296,11 @@ class MainContext implements Context
             $total += $row['Total'];
             $subTotal += $row['Sub Total'];
             $vatTotal += $row['Vat Total'];
+            $name = 'default';
+            if (isset($row['Tax Type'])) {
+                $name = $row['Tax Type'];
+            }
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $name]);
 
             $checkoutLine = new \App\Entity\CheckoutLine();
             $checkoutLine->setCheckout($checkout);
@@ -305,6 +310,7 @@ class MainContext implements Context
             $checkoutLine->setSubTotal(intval($row['Sub Total']));
             $checkoutLine->setTaxTotal(intval($row['Vat Total']));
             $checkoutLine->setIncludeTax('true' === strtolower($row['Include Tax'] ?? 'false'));
+            $checkoutLine->setTaxType($taxType);
 
             $lines[] = $checkoutLine;
         }
@@ -370,6 +376,11 @@ class MainContext implements Context
             $total += $row['Total'];
             $subTotal += $row['Sub Total'];
             $vatTotal += $row['Vat Total'];
+            $name = 'default';
+            if (isset($row['Tax Type'])) {
+                $name = $row['Tax Type'];
+            }
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $name]);
 
             $checkoutLine = new \App\Entity\CheckoutLine();
             $checkoutLine->setCheckout($checkout);
@@ -379,6 +390,7 @@ class MainContext implements Context
             $checkoutLine->setSubTotal(intval($row['Sub Total']));
             $checkoutLine->setTaxTotal(intval($row['Vat Total']));
             $checkoutLine->setIncludeTax('true' === strtolower($row['Include Tax'] ?? 'false'));
+            $checkoutLine->setTaxType($taxType);
 
             $lines[] = $checkoutLine;
         }
