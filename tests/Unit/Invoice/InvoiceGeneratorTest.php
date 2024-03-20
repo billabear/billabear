@@ -17,7 +17,6 @@ use App\Entity\Customer;
 use App\Entity\Invoice;
 use App\Entity\Product;
 use App\Entity\SubscriptionPlan;
-use App\Enum\TaxType;
 use App\Invoice\DueDateDecider;
 use App\Invoice\InvoiceGenerator;
 use App\Invoice\Number\InvoiceNumberGeneratorInterface;

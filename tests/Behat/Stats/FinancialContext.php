@@ -35,7 +35,7 @@ class FinancialContext implements Context
     /**
      * @When I view the lifetime value:
      */
-    public function iViewTheLifetimeValue(TableNode $table = null)
+    public function iViewTheLifetimeValue(?TableNode $table = null)
     {
         $filters = [];
 

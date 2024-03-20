@@ -12,7 +12,6 @@
 
 namespace App\Tests\Behat\Products;
 
-use App\Enum\TaxType;
 use App\Repository\Orm\ProductRepository;
 use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
@@ -110,10 +109,10 @@ class AppContext implements Context
         ];
         if (isset($data['Tax Type'])) {
             $taxType = $this->taxTypeRepository->findOneBy(['name' => $data['Tax Type']]);
-            $payload['tax_type'] =  (string) $taxType->getId();
+            $payload['tax_type'] = (string) $taxType->getId();
         } else {
             $taxType = $this->taxTypeRepository->findOneBy(['default' => true]);
-            $payload['tax_type'] =  (string) $taxType->getId();
+            $payload['tax_type'] = (string) $taxType->getId();
         }
 
         if (isset($data['Tax Rate'])) {

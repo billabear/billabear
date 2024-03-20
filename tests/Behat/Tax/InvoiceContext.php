@@ -14,7 +14,6 @@ namespace App\Tests\Behat\Tax;
 
 use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
-use App\Enum\TaxType;
 use App\Repository\Orm\CustomerRepository;
 use App\Repository\Orm\InvoiceRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
@@ -98,7 +97,7 @@ class InvoiceContext implements Context
         $taxType = null;
         /** @var InvoiceLine $line */
         foreach ($invoice->getLines() as $line) {
-            if ($line->getTaxType()->getName() === 'Digital Goods') {
+            if ('Digital Goods' === $line->getTaxType()->getName()) {
                 return;
             } else {
                 $taxType = $line->getTaxType()->getName();
@@ -124,7 +123,7 @@ class InvoiceContext implements Context
         $taxType = null;
         /** @var InvoiceLine $line */
         foreach ($invoice->getLines() as $line) {
-            if ($line->getTaxType()->getName() === 'Physical') {
+            if ('Physical' === $line->getTaxType()->getName()) {
                 return;
             } else {
                 $taxType = $line->getTaxType()->getName();

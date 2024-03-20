@@ -13,7 +13,6 @@
 namespace App\Tests\Behat\Tax;
 
 use App\Entity\Product;
-use App\Enum\TaxType;
 use App\Repository\Orm\ProductRepository;
 use App\Tests\Behat\Products\ProductTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -39,7 +38,7 @@ class ProductContext implements Context
         /** @var Product $product */
         $product = $this->getProductByName($productName);
 
-        if ($product->getTaxType()->getName() !== 'Digital Goods') {
+        if ('Digital Goods' !== $product->getTaxType()->getName()) {
             throw new \Exception('Got a different tax type');
         }
     }
@@ -52,7 +51,7 @@ class ProductContext implements Context
         /** @var Product $product */
         $product = $this->getProductByName($productName);
 
-        if ($product->getTaxType()->getName() !== 'Digital Services') {
+        if ('Digital Services' !== $product->getTaxType()->getName()) {
             throw new \Exception('Got a different tax type');
         }
     }
@@ -65,7 +64,7 @@ class ProductContext implements Context
         /** @var Product $product */
         $product = $this->getProductByName($productName);
 
-        if ($product->getTaxType()->getName() !== 'Physical') {
+        if ('Physical' !== $product->getTaxType()->getName()) {
             throw new \Exception('Got a different tax type');
         }
     }

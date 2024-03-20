@@ -25,7 +25,6 @@ use App\Repository\Orm\QuoteRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
 use App\Repository\Orm\TaxTypeRepository;
 use App\Repository\Orm\UserRepository;
-use App\Repository\TaxTypeRepositoryInterface;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\Quote\QuoteTrait;
 use App\Tests\Behat\SendRequestTrait;

@@ -13,7 +13,6 @@
 namespace App\Tests\Behat\Products;
 
 use App\Entity\Product;
-use App\Enum\TaxType;
 use App\Repository\Orm\ProductRepository;
 use App\Repository\Orm\TaxTypeRepository;
 use App\Tests\Behat\SendRequestTrait;
@@ -30,7 +29,8 @@ class ApiContext implements Context
         private Session $session,
         private ProductRepository $productRepository,
         private TaxTypeRepository $taxTypeRepository,
-    ) { }
+    ) {
+    }
 
     /**
      * @When I create a product with the following info
