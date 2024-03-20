@@ -145,9 +145,7 @@
               <td>
                 <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].taxType != undefined">{{ errors.items[key].taxType }}</p>
                 <select class="form-field" id="name" v-model="item.tax_type">
-                  <option value="digital_goods">{{ $t('app.checkout.create.items.tax_types.digital_goods') }}</option>
-                  <option value="digital_services">{{ $t('app.checkout.create.items.tax_types.digital_services') }}</option>
-                  <option value="physical">{{ $t('app.checkout.create.items.tax_types.physical') }}</option>
+                  <option v-for="tax_type in tax_types" v-bind:value="tax_type.id">{{ tax_type.name }}</option>
                 </select>
               </td>
               <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
@@ -198,14 +196,16 @@ export default {
       send_create_customer: false,
       plans: [],
       success: false,
-      ready: false
+      ready: false,
+      tax_types: []
     }
   },
   mounted() {
     axios.get("/app/checkout/create").then(response => {
-      this.ready = true;
       this.plans = response.data.subscription_plans;
       this.brands = response.data.brands;
+      this.tax_types = response.data.tax_types;
+      this.ready = true;
     })
   },
   watch: {
