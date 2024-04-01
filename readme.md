@@ -86,21 +86,9 @@ Then go to http://localhost and follow the install instructions.
 
 ### Is BillaBear Open Source?
 
-No. BillaBear is released under the source-available license Business Source License. You can find it in the license.md. This is the same license as used by Sentry, CoackroachDB, and many more.
+It's available free to use under the Functional Software License that adds restrictions on competing for 2-years. 
 
-After 3-years from the release date of a version, it will then become open-source.
-
-### How does the licensing work?
-
-You're able to use BillaBear for free in non-production environments. Any use of a production Stripe API key would be considered a production environment.
-
-You're able to use BillaBear for free if you're generating less than 5,000 USD a month. Otherwise, a paid license is required.
-
-We sell perpetual licenses for the version that was released on the date of purchase as well as upgrade licenses that allow upgrading to newer versions. If you buy a license and never wish to upgrade then you pay once and never again.
-
-### How much does BillaBear cost?
-
-You can get the pricing information at https://billabear.com/pricing
+There are arguments about if these licenses are open source or not, but generally for most we care can we use it for free and can we modify it. And this is true for BillaBear.
 
 ### Is it possible to get a hosted version?
 
