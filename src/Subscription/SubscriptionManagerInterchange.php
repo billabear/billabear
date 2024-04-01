@@ -1,13 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023.
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
  *
- * Use of this software is governed by the Business Source License included in the LICENSE file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- *
- * Change Date: 09.10.2026 ( 3 years after 2023.4 release )
- *
- * On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE file.
+ * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace App\Subscription;
@@ -38,7 +34,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     /**
      * @param Customer $customer
      */
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, PaymentCard $paymentDetails = null, int $seatNumbers = 1, bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
+    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
         if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()) {
             return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
