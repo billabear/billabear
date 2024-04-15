@@ -119,8 +119,8 @@ class CountryContext implements Context
             $country->setCurrency($row['Currency']);
             $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
-            $country->setEnabled(strtolower($row['Enabled'] ?? 'true') === 'true');
-            $country->setInEu(strtolower($row['In EU'] ?? 'false') === 'true');
+            $country->setEnabled('true' === strtolower($row['Enabled'] ?? 'true'));
+            $country->setInEu('true' === strtolower($row['In EU'] ?? 'false'));
 
             $this->countryRepository->getEntityManager()->persist($country);
         }
@@ -370,7 +370,7 @@ class CountryContext implements Context
         $countryTaxRule = $this->countryTaxRuleRepository->findOneBy(['country' => $country, 'taxType' => $taxType, 'taxRate' => floatval($taxRate)]);
 
         if ($countryTaxRule->getTaxRate() != $taxRate) {
-            throw new \Exception("Wrong tax rate");
+            throw new \Exception('Wrong tax rate');
         }
 
         if (!$countryTaxRule instanceof CountryTaxRule) {
@@ -380,7 +380,7 @@ class CountryContext implements Context
 
         $validUntil = new \DateTime($validUntilStr);
         if ($validUntil->format('Y-m-d') !== $countryTaxRule->getValidUntil()?->format('Y-m-d')) {
-            throw new \Exception(sprintf("Wrong date - expected %s but got %s", $validUntil->format('Y-m-d'), $countryTaxRule->getValidUntil()?->format('Y-m-d')));
+            throw new \Exception(sprintf('Wrong date - expected %s but got %s', $validUntil->format('Y-m-d'), $countryTaxRule->getValidUntil()?->format('Y-m-d')));
         }
     }
 

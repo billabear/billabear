@@ -75,7 +75,7 @@ class ApiContext implements Context
             $product = new Product();
             $product->setName($row['Name']);
             $product->setExternalReference($row['External Reference'] ?? null);
-            $product->setPhysical(strtolower($row['Physical'] ?? 'false') === 'true');
+            $product->setPhysical('true' === strtolower($row['Physical'] ?? 'false'));
 
             $taxTypeName = $row['Tax Type'] ?? 'default';
             $taxType = $this->taxTypeRepository->findOneBy(['name' => $taxTypeName]);

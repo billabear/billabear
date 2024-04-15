@@ -9,7 +9,6 @@
 namespace App\Tests\Behat\Tax;
 
 use App\Entity\Country;
-use App\Entity\CountryTaxRule;
 use App\Entity\TaxType;
 use App\Repository\Orm\CountryRepository;
 use App\Repository\Orm\TaxTypeRepository;
@@ -74,7 +73,6 @@ class TaxTypeContext implements Context
         foreach ($data as $row) {
             $taxType = new TaxType();
             $taxType->setName($row['Name']);
-            $taxType->setPhysical('true' === strtolower($row['Physical'] ?? 'false'));
             $this->taxTypeRepository->getEntityManager()->persist($taxType);
         }
 
