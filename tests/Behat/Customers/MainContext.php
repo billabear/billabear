@@ -359,9 +359,6 @@ class MainContext implements Context
             };
             $customer->setType($type);
 
-            if (isset($row['Digital Tax Rate']) && !empty($row['Digital Tax Rate'])) {
-                $customer->setDigitalTaxRate(floatval($row['Digital Tax Rate']));
-            }
             if (isset($row['Standard Tax Rate']) && !empty($row['Standard Tax Rate'])) {
                 $customer->setStandardTaxRate(floatval($row['Standard Tax Rate']));
             }

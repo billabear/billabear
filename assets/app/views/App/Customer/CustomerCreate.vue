@@ -78,15 +78,6 @@
         </div>
 
         <div class="form-field-ctn">
-          <label class="form-field-lbl" for="digital_tax_rate">
-            {{ $t('app.customer.create.digital_tax_rate') }}
-          </label>
-          <p class="form-field-error" v-if="errors.digitalTaxRate != undefined">{{ errors.digitalTaxRate }}</p>
-          <input type="number" class="form-field-input" id="digital_tax_rate" v-model="customer.digital_tax_rate"  />
-          <p class="form-field-help">{{ $t('app.customer.create.help_info.digital_tax_rate') }}</p>
-        </div>
-
-        <div class="form-field-ctn">
           <label class="form-field-lbl" for="tax_number">
             {{ $t('app.customer.create.standard_tax_rate') }}
           </label>

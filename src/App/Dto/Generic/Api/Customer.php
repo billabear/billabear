@@ -46,9 +46,6 @@ class Customer
     #[SerializedName('tax_number')]
     protected ?string $taxNumber;
 
-    #[SerializedName('digital_tax_rate')]
-    protected ?float $digitalTaxRate;
-
     #[SerializedName('standard_tax_rate')]
     protected ?float $standardTaxRate;
 
@@ -162,16 +159,6 @@ class Customer
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
-    }
-
-    public function getDigitalTaxRate(): ?float
-    {
-        return $this->digitalTaxRate;
-    }
-
-    public function setDigitalTaxRate(?float $digitalTaxRate): void
-    {
-        $this->digitalTaxRate = $digitalTaxRate;
     }
 
     public function getStandardTaxRate(): ?float

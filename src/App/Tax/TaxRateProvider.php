@@ -31,10 +31,6 @@ class TaxRateProvider implements TaxRateProviderInterface
 
         $physical = ($product && $product->getPhysical());
 
-        if ($customer->getDigitalTaxRate() && !$physical) {
-            return new TaxInfo($customer->getDigitalTaxRate(), $customer->getBillingAddress()->getCountry(), false);
-        }
-
         if ($customer->getStandardTaxRate()) {
             return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry(), false);
         }

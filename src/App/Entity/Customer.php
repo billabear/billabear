@@ -90,9 +90,6 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'tax_exempt', type: 'boolean', nullable: true)]
     protected ?bool $taxExempt = false;
 
-    #[ORM\Column(name: 'tax_rate_digital', type: 'float', nullable: true)]
-    protected ?float $digitalTaxRate = 0.0;
-
     #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
     protected ?float $standardTaxRate = 0.0;
 
@@ -360,16 +357,6 @@ class Customer implements CustomerInterface
     public function setTaxExempt(?bool $taxExempt): void
     {
         $this->taxExempt = $taxExempt;
-    }
-
-    public function getDigitalTaxRate(): ?float
-    {
-        return $this->digitalTaxRate;
-    }
-
-    public function setDigitalTaxRate(?float $digitalTaxRate): void
-    {
-        $this->digitalTaxRate = $digitalTaxRate;
     }
 
     public function getStandardTaxRate(): ?float

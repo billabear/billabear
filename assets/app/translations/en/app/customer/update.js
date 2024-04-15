@@ -15,7 +15,6 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     success_message: "Successfully update customer",
     address_title: "Address",
     tax_number: "Tax Number",
-    digital_tax_rate: "Digital Service Tax Rate",
     standard_tax_rate: "Standard Tax Rate",
     locale: "Locale",
     error: {
@@ -41,7 +40,6 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
         billing_type: "How the customer should be billed. Card means payments will be automatic via a card that is registered. Invoice means they receive an invoice and pay manually",
         external_reference: "The reference for the customer that is used by the payment provider. Leave empty unless you're extremely confident you have the correct reference.",
         tax_number: 'The tax number for the customer',
-        digital_tax_rate: "The tax rate to be applied for this customer on digital services as defined by that country",
         standard_tax_rate: "The tax rate to be applied for the customer for everything but digital services",
         type: "If the customer is a business or individual"
     }

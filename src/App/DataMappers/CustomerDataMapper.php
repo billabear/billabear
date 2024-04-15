@@ -86,7 +86,6 @@ class CustomerDataMapper
         $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
         $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
-        $customer->setDigitalTaxRate($createCustomerDto->getDigitalTaxRate());
         $customer->setStandardTaxRate($createCustomerDto->getStandardTaxRate());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
@@ -124,7 +123,6 @@ class CustomerDataMapper
         $dto->setLocale($customer->getLocale());
         $dto->setBillingType($customer->getBillingType());
         $dto->setTaxNumber($customer->getTaxNumber());
-        $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
 
@@ -157,7 +155,6 @@ class CustomerDataMapper
         $dto->setLocale($customer->getLocale());
         $dto->setBillingType($customer->getBillingType());
         $dto->setTaxNumber($customer->getTaxNumber());
-        $dto->setDigitalTaxRate($customer->getDigitalTaxRate());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
 
