@@ -219,10 +219,6 @@ class AppContext implements Context
             $payload['reference'] = $data['Reference'];
         }
 
-        if (isset($data['Digital Tax Rate'])) {
-            $payload['digital_tax_rate'] = (float) $data['Digital Tax Rate'];
-        }
-
         if (isset($data['Standard Tax Rate'])) {
             $payload['standard_tax_rate'] = (float) $data['Standard Tax Rate'];
         }

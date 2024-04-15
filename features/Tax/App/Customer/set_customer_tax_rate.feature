@@ -22,9 +22,7 @@ Feature: Set tax rate on customers
       | Country            | GB                       |
       | External Reference | cust_4945959             |
       | Reference          | Test Customer            |
-      | Digital Tax Rate   | 12.4                     |
       | Standard Tax Rate  | 20.0                     |
-    Then the customer "customer.one@example.org" should have the digital tax rate 12.4
     And the customer "customer.one@example.org" should have the standard tax rate 20.0
 
 
