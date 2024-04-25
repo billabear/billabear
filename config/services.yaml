@@ -41,11 +41,13 @@ services:
     Parthenon\User\Repository\UserRepositoryInterface: '@App\Repository\UserRepository'
     Parthenon\User\Notification\MessageFactory: '@App\User\Notification\MessageFactory'
     Parthenon\Billing\Repository\CustomerRepositoryInterface: '@App\Repository\CustomerRepository'
+    Parthenon\Billing\Repository\PaymentRepositoryInterface: '@App\Repository\PaymentRepository'
     Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@App\Repository\PaymentCardRepository'
     Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@App\Subscription\SubscriptionManagerInterchange'
     Parthenon\Billing\Receipt\ReceiptGeneratorInterface: '@App\Payment\ReceiptGenerator'
-    App\Webhook\Outbound\EventDispatcherInterface: '@App\Webhook\Outbound\Messenger\EventDispatcher'
+    Parthenon\Billing\Obol\PaymentFactoryInterface: '@App\Payment\PaymentFactory'
 
+    App\Webhook\Outbound\EventDispatcherInterface: '@App\Webhook\Outbound\Messenger\EventDispatcher'
 
     parthenon.billing.repository.orm.product_repository_doctrine: '@App\Repository\Orm\ProductRepository'
     parthenon.billing.repository.orm.price_repository_doctrine: '@App\Repository\Orm\PriceRepository'
@@ -400,6 +402,12 @@ services:
             $entityRepository: '@app.repository.orm.workflow_transition'
     app.repository.orm.workflow_transition:
         class: App\Repository\Orm\WorkflowTransitionRepository
+
+    App\Repository\PaymentRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.payment'
+    app.repository.orm.payment:
+        class: App\Repository\Orm\PaymentRepository
 
     App\Repository\TaxTypeRepository:
         arguments:

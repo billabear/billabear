@@ -9,6 +9,7 @@
 namespace App\Tests\Behat\Subscriptions;
 
 use App\Dto\Request\App\Subscription\UpdatePlan;
+use App\Entity\Payment;
 use App\Entity\Subscription;
 use App\Entity\SubscriptionPlan;
 use App\Entity\SubscriptionSeatModification;
@@ -24,7 +25,6 @@ use App\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Enum\PaymentStatus;
@@ -363,6 +363,7 @@ class MainContext implements Context
             $payment->setChargedBack(true);
             $payment->setCreatedAt(new \DateTime('now'));
             $payment->setUpdatedAt(new \DateTime('now'));
+            $payment->setCountry($customer->getCountry());
 
             $payment->setProvider('test_dummy');
 

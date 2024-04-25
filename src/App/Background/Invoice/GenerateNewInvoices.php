@@ -67,8 +67,8 @@ class GenerateNewInvoices
      */
     protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
     {
+        $this->transactionManager->start();
         try {
-            $this->transactionManager->start();
             $this->getLogger()->info('Generating invoice for customer and subscriptions', ['customer_id' => (string) $customer->getId(), 'subscriptions' => array_map(function ($item) {
                 return (string) $item->getId();
             }, $activeSubscriptions)]);

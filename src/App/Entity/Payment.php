@@ -17,6 +17,9 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     #[ORM\ManyToOne(targetEntity: Invoice::class)]
     private ?Invoice $invoice = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $country = null;
+
     public function getInvoice(): ?Invoice
     {
         return $this->invoice;
@@ -25,5 +28,15 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     public function setInvoice(?Invoice $invoice): void
     {
         $this->invoice = $invoice;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
     }
 }
