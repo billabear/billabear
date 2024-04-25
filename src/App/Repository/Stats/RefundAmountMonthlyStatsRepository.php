@@ -24,7 +24,7 @@ class RefundAmountMonthlyStatsRepository extends AbstractAmountRepository implem
             'day' => $day,
             'currency' => $currency->getCurrencyCode(),
             'brandCode' => $brandCode,
-            ]);
+        ]);
 
         if (!$stat instanceof RefundAmountMonthlyStats) {
             $stat = new RefundAmountMonthlyStats();

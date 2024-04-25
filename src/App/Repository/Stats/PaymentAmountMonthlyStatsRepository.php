@@ -24,7 +24,7 @@ class PaymentAmountMonthlyStatsRepository extends AbstractAmountRepository imple
             'day' => $day,
             'currency' => $currency->getCurrencyCode(),
             'brandCode' => $brandCode,
-            ]);
+        ]);
 
         if (!$stat instanceof PaymentAmountMonthlyStats) {
             $stat = new PaymentAmountMonthlyStats();

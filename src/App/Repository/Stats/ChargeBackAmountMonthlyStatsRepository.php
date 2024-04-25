@@ -24,7 +24,7 @@ class ChargeBackAmountMonthlyStatsRepository extends AbstractAmountRepository im
             'day' => $day,
             'currency' => $currency->getCurrencyCode(),
             'brandCode' => $brandCode,
-            ]);
+        ]);
 
         if (!$stat instanceof ChargeBackAmountMonthlyStats) {
             $stat = new ChargeBackAmountMonthlyStats();

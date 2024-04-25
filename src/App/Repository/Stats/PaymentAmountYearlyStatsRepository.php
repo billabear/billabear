@@ -24,7 +24,7 @@ class PaymentAmountYearlyStatsRepository extends AbstractAmountRepository implem
             'day' => $day,
             'currency' => $currency->getCurrencyCode(),
             'brandCode' => $brandCode,
-            ]);
+        ]);
 
         if (!$stat instanceof PaymentAmountYearlyStats) {
             $stat = new PaymentAmountYearlyStats();

@@ -19,12 +19,12 @@ class ChargeBackAmountDailyStatsRepository extends AbstractAmountRepository impl
         $month = $dateTime->format('m');
         $day = $dateTime->format('d');
         $stat = $this->entityRepository->findOneBy([
-                'year' => $year,
-                'month' => $month,
-                'day' => $day,
-                'currency' => $currency->getCurrencyCode(),
-                'brandCode' => $brandCode,
-            ]);
+            'year' => $year,
+            'month' => $month,
+            'day' => $day,
+            'currency' => $currency->getCurrencyCode(),
+            'brandCode' => $brandCode,
+        ]);
 
         if (!$stat instanceof ChargeBackAmountDailyStats) {
             $stat = new ChargeBackAmountDailyStats();

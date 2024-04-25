@@ -59,8 +59,8 @@ class DataProvider
                 'currency' => 'EUR',
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 20],
-                    ],
                 ],
+            ],
             'BE' => [
                 'name' => 'Belgium',
                 'threshold' => 2500000,
