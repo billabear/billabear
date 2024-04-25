@@ -177,9 +177,9 @@ jobs:
           vendor/bin/behat -f progress features/Stripe
 
   behat_app_subscriptions:
-    runs-on: self-hosted
     needs: code_style
     name: Behat Subscriptions
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -232,9 +232,9 @@ jobs:
           vendor/bin/behat -f progress features/Subscriptions
 
   behat_app_user:
-    runs-on: self-hosted
     needs: code_style
     name: Behat User
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -619,7 +619,7 @@ jobs:
   behat_app_app:
     needs: code_style
     name: Behat APP
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
