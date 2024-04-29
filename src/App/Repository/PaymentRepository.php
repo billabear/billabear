@@ -10,4 +10,17 @@ namespace App\Repository;
 
 class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentRepository implements PaymentRepositoryInterface
 {
+    public function getPaymentsAmountForCountrySinceDate(string $countryCode, \DateTime $when): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->select('SUM(p.amount) as amount, p.currency')
+            ->where('p.createdAt > :createdAt')
+            ->andWhere('p.country = :countryCode')
+            ->groupBy('p.currency')
+            ->setParameter('countryCode', $countryCode)
+            ->setParameter('createdAt', $when);
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

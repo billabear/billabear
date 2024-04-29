@@ -14,16 +14,18 @@ use App\Entity\TaxType;
 use App\Enum\CustomerType;
 use App\Exception\NoRateForCountryException;
 use App\Repository\SettingsRepositoryInterface;
+use Brick\Money\Money;
 
 class TaxRateProvider implements TaxRateProviderInterface
 {
     public function __construct(
         private TaxRuleProvider $taxRuleProvider,
         private SettingsRepositoryInterface $settingsRepository,
+        private ThresholdChecker $thresholdChecker,
     ) {
     }
 
-    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null): TaxInfo
+    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo
     {
         if ($product && null !== $product->getTaxRate()) {
             return new TaxInfo($product->getTaxRate(), $customer->getBillingAddress()->getCountry(), false);
@@ -54,6 +56,12 @@ class TaxRateProvider implements TaxRateProviderInterface
                 }
             }
             $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
+        }
+
+        if ($amount) {
+            if (!$this->thresholdChecker->isThresholdReached($customerTaxCountry, $amount)) {
+                $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
+            }
         }
 
         $euBusinessTaxRules = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getEuropeanBusinessTaxRules();

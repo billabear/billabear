@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -146,5 +147,10 @@ class Country
     public function setInEu(bool $inEu): void
     {
         $this->inEu = $inEu;
+    }
+
+    public function getThresholdAsMoney(): Money
+    {
+        return Money::of($this->threshold, $this->currency);
     }
 }

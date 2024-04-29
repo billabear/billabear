@@ -10,4 +10,5 @@ namespace App\Repository;
 
 interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\PaymentRepositoryInterface
 {
+    public function getPaymentsAmountForCountrySinceDate(string $countryCode, \DateTime $when): array;
 }

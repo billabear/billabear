@@ -29,7 +29,7 @@ class Pricer implements PricerInterface
 
         $money = $price->getAsMoney();
         $money = $money->multipliedBy($seatNumber);
-        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, $price->getProduct());
+        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, $price->getProduct(), $price->getAsMoney());
         $rawRate = $taxInfo->rate;
         if ($price->isIncludingTax()) {
             $rate = ($rawRate / 100) + 1;
@@ -53,7 +53,7 @@ class Pricer implements PricerInterface
 
     public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, TaxType $taxType): PriceInfo
     {
-        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType);
+        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, amount: $money);
         $rawRate = $taxInfo->rate;
 
         if ($includeTax) {

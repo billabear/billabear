@@ -11,8 +11,9 @@ namespace App\Tax;
 use App\Entity\Customer;
 use App\Entity\Product;
 use App\Entity\TaxType;
+use Brick\Money\Money;
 
 interface TaxRateProviderInterface
 {
-    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null): TaxInfo;
+    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo;
 }
