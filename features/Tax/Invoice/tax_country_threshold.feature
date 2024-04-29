@@ -56,7 +56,7 @@ Feature: Tax the correct country with threshold
 
   Scenario:
     Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
       | Test Plan         | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
     And that the following countries exist:
       | Name          | ISO Code | Threshold | Currency |

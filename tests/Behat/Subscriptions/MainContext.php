@@ -352,6 +352,7 @@ class MainContext implements Context
             $this->subscriptionRepository->getEntityManager()->persist($subscription);
             $this->subscriptionRepository->getEntityManager()->flush();
 
+            // TODO add ability to create a history of payments
             $payment = new Payment();
             $payment->addSubscription($subscription);
             $payment->setPaymentReference($paymentReference);

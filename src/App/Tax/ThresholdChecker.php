@@ -28,7 +28,8 @@ class ThresholdChecker
 
     public function isThresholdReached(string $countryCode, Money $money): bool
     {
-        $defaultCurrency = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency();
+        $country = $this->countryRepository->getByIsoCode($countryCode);
+        $defaultCurrency = $country->getCurrency();
         $currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
         $money = Money::zero($defaultCurrency);
         $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($countryCode, new \DateTime('-12 months'));
@@ -41,8 +42,6 @@ class ThresholdChecker
 
         $amountToAdd = $currencyConverter->convert($money, $defaultCurrency, RoundingMode::HALF_DOWN);
         $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
-
-        $country = $this->countryRepository->getByIsoCode($countryCode);
 
         return $country->getThresholdAsMoney()->isLessThanOrEqualTo($money);
     }
