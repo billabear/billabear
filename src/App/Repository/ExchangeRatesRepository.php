@@ -13,12 +13,13 @@ use Parthenon\Common\Repository\DoctrineRepository;
 
 class ExchangeRatesRepository extends DoctrineRepository implements ExchangeRatesRepositoryInterface
 {
-    public function getByCode(string $currencyCode): ExchangeRates
+    public function getByCode(string $originalCurrency, string $currencyCode): ExchangeRates
     {
-        $exchangeRate = $this->entityRepository->findOneBy(['currencyCode' => $currencyCode]);
+        $exchangeRate = $this->entityRepository->findOneBy(['originalCurrency' => $originalCurrency, 'currencyCode' => $currencyCode]);
 
         if (!$exchangeRate instanceof ExchangeRates) {
             $exchangeRate = new ExchangeRates();
+            $exchangeRate->setOriginalCurrency($originalCurrency);
             $exchangeRate->setCurrencyCode($currencyCode);
             $exchangeRate->setExchangeRate('1');
             $exchangeRate->setUpdatedAt(new \DateTime('now'));

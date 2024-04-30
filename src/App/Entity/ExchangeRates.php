@@ -25,6 +25,9 @@ class ExchangeRates
     #[ORM\Column(type: 'string', unique: true)]
     private string $currencyCode;
 
+    #[ORM\Column(type: 'string', unique: true)]
+    private string $originalCurrency;
+
     #[ORM\Column(type: 'string')]
     private string $exchangeRate;
 
@@ -49,6 +52,16 @@ class ExchangeRates
     public function setCurrencyCode(string $currencyCode): void
     {
         $this->currencyCode = $currencyCode;
+    }
+
+    public function getOriginalCurrency(): string
+    {
+        return $this->originalCurrency;
+    }
+
+    public function setOriginalCurrency(string $originalCurrency): void
+    {
+        $this->originalCurrency = $originalCurrency;
     }
 
     public function getExchangeRate(): string

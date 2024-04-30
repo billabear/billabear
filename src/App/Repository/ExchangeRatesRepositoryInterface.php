@@ -13,7 +13,7 @@ use Parthenon\Common\Repository\RepositoryInterface;
 
 interface ExchangeRatesRepositoryInterface extends RepositoryInterface
 {
-    public function getByCode(string $currencyCode): ExchangeRates;
+    public function getByCode(string $originalCurrency, string $currencyCode): ExchangeRates;
 
     /**
      * @return ExchangeRates[]

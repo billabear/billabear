@@ -11,6 +11,7 @@ namespace App\Background\Payments;
 use App\Payment\ExchangeRates\ProviderInterface;
 use App\Repository\ExchangeRatesRepositoryInterface;
 use App\Repository\SettingsRepositoryInterface;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class ExchangeRatesFetchProcess
 {
@@ -18,18 +19,29 @@ class ExchangeRatesFetchProcess
         private ProviderInterface $provider,
         private SettingsRepositoryInterface $settingsRepository,
         private ExchangeRatesRepositoryInterface $repository,
+        private PriceRepositoryInterface $priceRepository,
     ) {
     }
 
     public function process(): void
     {
-        $rates = $this->provider->getRates($this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
+        $prices = $this->priceRepository->getAll();
+        $currencies = [];
 
-        foreach ($rates as $currencyCode => $rate) {
-            $exchangeRate = $this->repository->getByCode($currencyCode);
-            $exchangeRate->setExchangeRate((string) $rate);
-            $exchangeRate->setUpdatedAt(new \DateTime('now'));
-            $this->repository->save($exchangeRate);
+        foreach ($prices as $price) {
+            if (!isset($currencies[$price->getCurrency()])) {
+                $currencies[] = $price->getCurrency();
+            }
+        }
+        foreach ($currencies as $originalCurrency) {
+            $rates = $this->provider->getRates($originalCurrency);
+
+            foreach ($rates as $currencyCode => $rate) {
+                $exchangeRate = $this->repository->getByCode($originalCurrency, $currencyCode);
+                $exchangeRate->setExchangeRate((string) $rate);
+                $exchangeRate->setUpdatedAt(new \DateTime('now'));
+                $this->repository->save($exchangeRate);
+            }
         }
     }
 }

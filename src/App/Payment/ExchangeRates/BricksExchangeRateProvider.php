@@ -9,21 +9,17 @@
 namespace App\Payment\ExchangeRates;
 
 use App\Repository\ExchangeRatesRepositoryInterface;
-use App\Repository\SettingsRepositoryInterface;
 use Brick\Money\ExchangeRateProvider;
 
 class BricksExchangeRateProvider implements ExchangeRateProvider
 {
-    public function __construct(private SettingsRepositoryInterface $settingsRepository, private ExchangeRatesRepositoryInterface $exchangeRatesRepository)
+    public function __construct(private ExchangeRatesRepositoryInterface $exchangeRatesRepository)
     {
     }
 
     public function getExchangeRate(string $sourceCurrencyCode, string $targetCurrencyCode)
     {
-        if ($this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency() !== $targetCurrencyCode) {
-            throw new \Exception($targetCurrencyCode.' is an invalid target currency. Expected '.$this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
-        }
-        $exchangeRate = $this->exchangeRatesRepository->getByCode($sourceCurrencyCode);
+        $exchangeRate = $this->exchangeRatesRepository->getByCode($targetCurrencyCode, $sourceCurrencyCode);
 
         return $exchangeRate->getExchangeRate();
     }
