@@ -15,6 +15,7 @@ use App\Repository\SettingsRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class ThresholdChecker
 {
@@ -28,21 +29,25 @@ class ThresholdChecker
 
     public function isThresholdReached(string $countryCode, Money $money): bool
     {
-        $country = $this->countryRepository->getByIsoCode($countryCode);
-        $defaultCurrency = $country->getCurrency();
-        $currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
-        $money = Money::zero($defaultCurrency);
-        $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($countryCode, new \DateTime('-12 months'));
+        try {
+            $country = $this->countryRepository->getByIsoCode($countryCode);
+            $defaultCurrency = $country->getCurrency();
+            $currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
+            $money = Money::zero($defaultCurrency);
+            $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($countryCode, new \DateTime('-12 months'));
 
-        foreach ($amounts as $amountData) {
-            $originalFee = Money::of($amountData['amount'], $amountData['currency']);
-            $amountToAdd = $currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
+            foreach ($amounts as $amountData) {
+                $originalFee = Money::of($amountData['amount'], $amountData['currency']);
+                $amountToAdd = $currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
+                $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
+            }
+
+            $amountToAdd = $currencyConverter->convert($money, $defaultCurrency, RoundingMode::HALF_DOWN);
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
+
+            return $country->getThresholdAsMoney()->isLessThanOrEqualTo($money);
+        } catch (NoEntityFoundException) {
+            return false;
         }
-
-        $amountToAdd = $currencyConverter->convert($money, $defaultCurrency, RoundingMode::HALF_DOWN);
-        $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
-
-        return $country->getThresholdAsMoney()->isLessThanOrEqualTo($money);
     }
 }
