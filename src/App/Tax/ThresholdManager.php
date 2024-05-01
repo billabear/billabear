@@ -12,7 +12,6 @@ use App\Entity\Country;
 use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\PaymentRepositoryInterface;
-use App\Repository\SettingsRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
@@ -27,7 +26,6 @@ class ThresholdManager
         private PaymentRepositoryInterface $paymentRepository,
         private BricksExchangeRateProvider $exchangeRateProvider,
     ) {
-
         $this->currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
     }
 
@@ -58,6 +56,7 @@ class ThresholdManager
             $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
         }
+
         return $money;
     }
 }
