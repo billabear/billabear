@@ -504,6 +504,9 @@ body {
 .error-message {
     @apply block text-red-500;
 }
+.form-field-error {
+    @apply block text-red-500;
+}
 
 .badge--green {
     @apply text-white font-bold bg-green-500 p-1 rounded;
