@@ -13,7 +13,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'exchange_rates')]
-#[ORM\Index(name: 'ex_rates_currency_code_idx', fields: ['currencyCode'])]
+#[ORM\Index(name: 'ex_rates_currency_code_idx', fields: ['currencyCode', 'originalCurrency'])]
 class ExchangeRates
 {
     #[ORM\Id]
@@ -22,10 +22,10 @@ class ExchangeRates
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'string')]
     private string $currencyCode;
 
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'string')]
     private string $originalCurrency;
 
     #[ORM\Column(type: 'string')]
