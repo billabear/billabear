@@ -32,12 +32,10 @@ class CreateCountry
     #[Assert\PositiveOrZero]
     private $threshold;
 
-    #[Assert\NotBlank()]
     #[Assert\Type('boolean')]
     private $default;
 
     #[SerializedName('in_eu')]
-    #[Assert\NotBlank()]
     #[Assert\Type('boolean')]
     private $inEu = false;
 
@@ -83,7 +81,7 @@ class CreateCountry
 
     public function getInEu()
     {
-        return $this->inEu;
+        return true === $this->inEu;
     }
 
     public function setInEu($inEu): void
@@ -93,7 +91,7 @@ class CreateCountry
 
     public function getDefault()
     {
-        return $this->default;
+        return true === $this->default;
     }
 
     public function setDefault($default): void
