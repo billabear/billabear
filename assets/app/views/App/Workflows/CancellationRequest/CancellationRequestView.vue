@@ -82,6 +82,8 @@ export default {
       axios.post('/app/system/cancellation-request/'+id+'/process').then(response => {
         this.cancellation_request = response.data;
         this.sending = false;
+      }).catch(response => {
+        this.sending = false;
       })
     }
   }

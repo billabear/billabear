@@ -66,6 +66,8 @@ export default {
       axios.post('/app/system/payment-failure-process/'+id+'/process').then(response => {
         this.payment_failure_process = response.data;
         this.sending = false;
+      }).catch(response => {
+        this.sending = false;
       })
     }
   }

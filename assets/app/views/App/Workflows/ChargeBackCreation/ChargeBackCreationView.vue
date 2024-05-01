@@ -65,6 +65,8 @@ export default {
       axios.post('/app/system/charge-back-creation/'+id+'/process').then(response => {
         this.charge_back_creation = response.data;
         this.sending = false;
+      }).catch(response => {
+        this.sending = false;
       })
     }
   }

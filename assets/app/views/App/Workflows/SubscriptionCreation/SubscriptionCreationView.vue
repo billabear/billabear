@@ -67,6 +67,8 @@ export default {
       axios.post('/app/system/subscription-creation/'+id+'/process').then(response => {
         this.subscription_creation = response.data;
         this.sending = false;
+      }).catch(response => {
+        this.sending = false;
       })
     }
   }

@@ -66,6 +66,8 @@ export default {
       axios.post('/app/system/refund-created-process/'+id+'/process').then(response => {
         this.refund_created_process = response.data;
         this.sending = false;
+      }).catch(response => {
+        this.sending = false;
       })
     }
   }

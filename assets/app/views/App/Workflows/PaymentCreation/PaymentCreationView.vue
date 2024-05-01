@@ -65,6 +65,8 @@ export default {
       axios.post('/app/system/payment-creation/'+id+'/process').then(response => {
         this.payment_creation = response.data;
         this.sending = false;
+      }).catch(response => {
+        this.sending = false;
       })
     }
   }
