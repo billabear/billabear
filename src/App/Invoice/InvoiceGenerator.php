@@ -15,9 +15,11 @@ use App\Entity\Invoice;
 use App\Entity\InvoiceLine;
 use App\Event\InvoiceCreated;
 use App\Invoice\Number\InvoiceNumberGeneratorProvider;
+use App\Payment\ExchangeRates\BricksExchangeRateProvider;
 use App\Repository\InvoiceRepositoryInterface;
 use App\Repository\VoucherApplicationRepositoryInterface;
 use Brick\Math\RoundingMode;
+use Brick\Money\CurrencyConverter;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -26,6 +28,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceGenerator
 {
+    private CurrencyConverter $currencyConverter;
+
     public function __construct(
         private PricerInterface $pricer,
         private InvoiceNumberGeneratorProvider $invoiceNumberGeneratorProvider,
@@ -34,7 +38,9 @@ class InvoiceGenerator
         private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
         private EventDispatcherInterface $eventDispatcher,
         private DueDateDecider $dateDecider,
+        BricksExchangeRateProvider $exchangeRateProvider,
     ) {
+        $this->currencyConverter = new CurrencyConverter($exchangeRateProvider);
     }
 
     public function generateForCustomerAndUpgrade(
@@ -161,22 +167,30 @@ class InvoiceGenerator
             $line->setInvoice($invoice);
             $line->setTaxTotal(0);
             $line->setTaxPercentage(0);
-            if ($customer->getCreditAsMoney()->isPositive()) {
-                $amount = $customer->getCreditAsMoney()->negated();
+            $credit = $customer->getCreditAsMoney();
+            $description = 'Credit adjustment';
+
+            if ($total->getCurrency() !== $credit->getCurrency()) {
+                $description = ' - converted from '.$credit;
+                $credit = $this->currencyConverter->convert($credit, $total->getCurrency(), RoundingMode::HALF_DOWN);
+            }
+
+            if ($credit->isPositive()) {
+                $amount = $credit->negated();
                 if ($total->plus($amount)->isPositive()) {
                     $this->creditAdjustmentRecorder->createRecord(Credit::TYPE_DEBIT, $customer, $amount->abs());
 
                     $customer->setCreditAmount(null);
                     $customer->setCreditCurrency(null);
                 } else {
-                    $minus = $customer->getCreditAsMoney()->minus($total);
+                    $minus = $credit->minus($total);
                     $amount = $amount->plus($minus);
 
                     $this->creditAdjustmentRecorder->createRecord(Credit::TYPE_DEBIT, $customer, $amount->abs());
                     $customer->addCreditAsMoney($amount);
                 }
             } else {
-                $amount = $customer->getCreditAsMoney()->abs();
+                $amount = $credit->abs();
                 $customer->setCreditAmount(null);
                 $customer->setCreditCurrency(null);
                 $this->creditAdjustmentRecorder->createRecord(Credit::TYPE_CREDIT, $customer, $amount);
@@ -184,7 +198,7 @@ class InvoiceGenerator
 
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setSubTotal($amount->getMinorAmount()->toInt());
-            $line->setDescription('Credit adjustment');
+            $line->setDescription($description);
             $lines[] = $line;
             $total = $total?->plus($amount, RoundingMode::HALF_CEILING) ?? $amount;
             $subTotal = $subTotal?->plus($amount, RoundingMode::HALF_CEILING) ?? $amount;
