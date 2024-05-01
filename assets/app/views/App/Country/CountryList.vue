@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     currency: function (value) {
-        return currency(value, { fromCents: true });
+        return currency(value, { fromCents: true }).format({symbol: ''});;
     },
     syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
