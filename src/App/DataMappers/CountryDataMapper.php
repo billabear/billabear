@@ -12,9 +12,14 @@ use App\Dto\Generic\App\Country as AppDto;
 use App\Dto\Request\App\Country\CreateCountry;
 use App\Dto\Request\App\Country\UpdateCountry;
 use App\Entity\Country as Entity;
+use App\Tax\ThresholdManager;
 
 class CountryDataMapper
 {
+    public function __construct(private ThresholdManager $manager)
+    {
+    }
+
     public function createEntity(CreateCountry|UpdateCountry $updateCountry, ?Entity $entity = null): Entity
     {
         if (!$entity) {
@@ -41,6 +46,9 @@ class CountryDataMapper
         $appDto->setCurrency($entity->getCurrency());
         $appDto->setThreshold($entity->getThreshold());
         $appDto->setInEu($entity->isInEu());
+
+        $amountTransacted = $this->manager->getThreshold($entity);
+        $appDto->setAmountTransacted($amountTransacted->getMinorAmount()->toInt());
 
         return $appDto;
     }

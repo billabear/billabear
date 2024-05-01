@@ -21,7 +21,7 @@ class TaxRateProvider implements TaxRateProviderInterface
     public function __construct(
         private TaxRuleProvider $taxRuleProvider,
         private SettingsRepositoryInterface $settingsRepository,
-        private ThresholdChecker $thresholdChecker,
+        private ThresholdManager $thresholdChecker,
     ) {
     }
 

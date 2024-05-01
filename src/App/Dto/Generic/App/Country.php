@@ -26,6 +26,9 @@ class Country
     #[SerializedName('in_eu')]
     private bool $inEu;
 
+    #[SerializedName('amount_transacted')]
+    private int $amountTransacted;
+
     public function getId(): string
     {
         return $this->id;
@@ -84,5 +87,15 @@ class Country
     public function setInEu(bool $inEu): void
     {
         $this->inEu = $inEu;
+    }
+
+    public function getAmountTransacted(): int
+    {
+        return $this->amountTransacted;
+    }
+
+    public function setAmountTransacted(int $amountTransacted): void
+    {
+        $this->amountTransacted = $amountTransacted;
     }
 }
