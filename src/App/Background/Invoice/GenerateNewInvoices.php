@@ -85,7 +85,7 @@ class GenerateNewInvoices
         } catch (\Throwable $exception) {
             $this->transactionManager->abort();
 
-            $this->getLogger()->error('An error happened while generating exception', [
+            $this->getLogger()->error('An error happened while generating invoice', [
                 'exception_message' => $exception->getMessage(),
                 'exception_line' => $exception->getLine(),
                 'exception_file' => $exception->getTraceAsString(),
