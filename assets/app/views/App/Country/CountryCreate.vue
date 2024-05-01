@@ -31,6 +31,14 @@
           </div>
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="name">
+              {{ $t('app.country.create.country.fields.tax_year') }}
+            </label>
+            <p class="form-field-error" v-if="errors.taxYear != undefined">{{ errors.taxYear }}</p>
+            <VueDatePicker class="mt-2" v-model="country.tax_year" disable-year-select :enable-time-picker="false" :format="'dd/MMM'" model-type="dd/MMM"></VueDatePicker>
+            <p class="form-field-help">{{ $t('app.country.create.country.help_info.tax_year') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="name">
               {{ $t('app.country.create.country.fields.threshold') }}
             </label>
             <p class="form-field-error" v-if="errors.threshold != undefined">{{ errors.threshold }}</p>

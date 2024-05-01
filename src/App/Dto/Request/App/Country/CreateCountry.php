@@ -39,6 +39,9 @@ class CreateCountry
     #[Assert\Type('boolean')]
     private $inEu = false;
 
+    #[SerializedName('start_of_tax_year')]
+    private $startOfTaxYear;
+
     public function getName()
     {
         return $this->name;
@@ -97,5 +100,15 @@ class CreateCountry
     public function setDefault($default): void
     {
         $this->default = $default;
+    }
+
+    public function getStartOfTaxYear()
+    {
+        return $this->startOfTaxYear;
+    }
+
+    public function setStartOfTaxYear($startOfTaxYear): void
+    {
+        $this->startOfTaxYear = $startOfTaxYear;
     }
 }

@@ -5,7 +5,8 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         iso_code: "Country Code",
         threshold: "Threshold",
         currency: "Currency",
-        in_eu: "In Eu"
+        in_eu: "In Eu",
+        start_of_tax_year: "Start Of Tax Year"
     },
     edit_button: "Edit",
     tax_rule: {

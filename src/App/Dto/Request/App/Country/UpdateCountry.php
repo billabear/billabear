@@ -35,6 +35,9 @@ class UpdateCountry
     #[Assert\Type('boolean')]
     private $inEu;
 
+    #[SerializedName('tax_year')]
+    private $taxYear;
+
     public function getName()
     {
         return $this->name;
@@ -83,5 +86,15 @@ class UpdateCountry
     public function setInEu($inEu): void
     {
         $this->inEu = $inEu;
+    }
+
+    public function getTaxYear()
+    {
+        return $this->taxYear;
+    }
+
+    public function setTaxYear($taxYear): void
+    {
+        $this->taxYear = $taxYear;
     }
 }

@@ -34,11 +34,8 @@ class Country
     #[ORM\Column(type: 'integer')]
     private int $threshold;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $revenueForTaxYear;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $startOfTaxYear;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $startOfTaxYear = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $inEu;
@@ -109,22 +106,12 @@ class Country
         $this->createdAt = $createdAt;
     }
 
-    public function getRevenueForTaxYear(): ?int
-    {
-        return $this->revenueForTaxYear;
-    }
-
-    public function setRevenueForTaxYear(?int $revenueForTaxYear): void
-    {
-        $this->revenueForTaxYear = $revenueForTaxYear;
-    }
-
-    public function getStartOfTaxYear(): ?\DateTime
+    public function getStartOfTaxYear(): ?string
     {
         return $this->startOfTaxYear;
     }
 
-    public function setStartOfTaxYear(?\DateTime $startOfTaxYear): void
+    public function setStartOfTaxYear(?string $startOfTaxYear): void
     {
         $this->startOfTaxYear = $startOfTaxYear;
     }

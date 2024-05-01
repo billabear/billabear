@@ -29,6 +29,9 @@ class Country
     #[SerializedName('amount_transacted')]
     private int $amountTransacted;
 
+    #[SerializedName('start_of_tax_year')]
+    private ?string $startOfTaxYear;
+
     public function getId(): string
     {
         return $this->id;
@@ -97,5 +100,15 @@ class Country
     public function setAmountTransacted(int $amountTransacted): void
     {
         $this->amountTransacted = $amountTransacted;
+    }
+
+    public function getStartOfTaxYear(): ?string
+    {
+        return $this->startOfTaxYear;
+    }
+
+    public function setStartOfTaxYear(?string $startOfTaxYear): void
+    {
+        $this->startOfTaxYear = $startOfTaxYear;
     }
 }
