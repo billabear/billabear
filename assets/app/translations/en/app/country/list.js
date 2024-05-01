@@ -5,8 +5,9 @@ export const COUNTRY_LIST_TRANSLATIONS = {
     next: "Next Page",
     prev: "Previous Page",
     list: {
-      name: "Name",
-      iso_code: "Code"
+        name: "Name",
+        iso_code: "Code",
+        tax_threshold: "Tax Threshold"
     },
     view: "View",
     filter: {

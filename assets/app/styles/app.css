@@ -179,13 +179,7 @@ body {
     @apply p-2 border rounded-xl;
 }
 
-.badge--green {
-    @apply text-white font-bold bg-green-500 p-1 rounded;
-}
 
-.badge--red {
-    @apply text-white font-bold bg-red-500 p-1 rounded;
-}
 
 
 .label {
@@ -509,4 +503,12 @@ body {
 }
 .error-message {
     @apply block text-red-500;
+}
+
+.badge--green {
+    @apply text-white font-bold bg-green-500 p-1 rounded;
+}
+
+.badge--red {
+    @apply text-white font-bold bg-red-500 p-1 rounded;
 }

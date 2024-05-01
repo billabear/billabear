@@ -38,6 +38,7 @@
             <tr>
               <th>{{ $t('app.country.list.list.name') }}</th>
               <th>{{ $t('app.country.list.list.iso_code')}}</th>
+              <th>{{ $t('app.country.list.list.tax_threshold')}}</th>
               <th></th>
             </tr>
           </thead>
@@ -45,6 +46,11 @@
             <tr v-for="country in payments" class="mt-5 cursor-pointer">
               <td>{{ country.name }}</td>
               <td>{{ country.iso_code }}</td>
+              <td>
+                <span :class="{'badge--green': country.amount_transacted >= country.threshold, 'badge--red': country.amount_transacted < country.threshold }">
+                  {{ currency(country.amount_transacted) }}/{{ currency(country.threshold) }}
+                </span>
+              </td>
               <td><router-link :to="{name: 'app.system.country.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
