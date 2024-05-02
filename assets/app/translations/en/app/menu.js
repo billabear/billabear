@@ -2,7 +2,7 @@ export const MENU_TRANSLATIONS = {
     main: {
         reports: "Reports",
         subscriptions: "Subscriptions",
-        transactions: "Transactions",
+        finance: "Finance",
         settings: "Settings",
         customers: "Customers",
         products: "Products",

@@ -37,7 +37,7 @@
             <li>
               <router-link :to="{name: 'app.payment.list'}" class="sidebar-menu-item">
                 <i class="fa-solid fa-cash-register"></i>
-                <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.transactions') }}</span>
+                <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.finance') }}</span>
               </router-link>
             </li>
             <li>

@@ -76,6 +76,7 @@ import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
 import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
 import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGeneratorSettings.vue";
 import LifetimeReport from "../views/App/Reports/Financial/LifetimeReport.vue";
+import {AppFinanceRoutes} from "./app.finance.routes";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -411,51 +412,10 @@ export const APP_ROUTES = [
         ]
     },
     {
-        name: 'app.transactions',
-        path: 'transactions',
-        redirect: "transactions",
+        name: 'app.finance',
+        path: 'finance',
+        redirect: "finance",
         component: TransactionView,
-        children: [
-            {
-                name: 'app.payment.list',
-                path: 'payments/list',
-                component: PaymentList
-            },
-            {
-                name: 'app.payment.view',
-                path: 'payments/view/:id',
-                component: PaymentView
-            },
-            {
-                name: 'app.refund.list',
-                path: 'refunds/list',
-                component: RefundList
-            },
-            {
-                name: 'app.refund.view',
-                path: 'refunds/view/:id',
-                component: RefundView
-            },
-            {
-                name: 'app.charge_backs.list',
-                path: 'charge-backs/list',
-                component: ChargeBacksList
-            },
-            {
-                name: 'app.checkout.list',
-                path: 'checkout/list',
-                component: CheckoutList
-            },
-            {
-                name: 'app.checkout.create',
-                path: 'checkout/create',
-                component: CheckoutCreate
-            },
-            {
-                name: 'app.checkout.view',
-                path: 'checkout/view/:id',
-                component: CheckoutView
-            }
-        ]
+        children: AppFinanceRoutes,
     }
 ]

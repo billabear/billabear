@@ -49,34 +49,4 @@ export const SYSTEM_ROUTES = [
         path: 'cancellation-request/:id/view',
         component: CancellationRequestView
     },
-    {
-        name: 'app.system.country.list',
-        path: 'country/list',
-        component: CountryList
-    },
-    {
-        name: 'app.system.country.create',
-        path: 'country/create',
-        component: CountryCreate
-    },
-    {
-        name: 'app.system.country.view',
-        path: 'country/:id/view',
-        component: CountryView
-    },
-    {
-        name: 'app.system.country.edit',
-        path: 'country/:id/edit',
-        component: CountryEdit
-    },
-    {
-        name: 'app.system.tax_type.list',
-        path: 'tax/type/list',
-        component: TaxTypeList
-    },
-    {
-        name: 'app.system.tax_type.create',
-        path: 'tax/type/create',
-        component: TaxTypeCreate
-    }
 ];

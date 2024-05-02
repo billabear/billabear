@@ -27,6 +27,8 @@ import {LAYOUT_TRANSLATIONS} from "./layout";
 import {WORKFLOWS_TRANSLATIONS} from "./workflows";
 import {COUNTRY_TRANSLATIONS} from "./country";
 import {TAX_TYPE_TRANSLATIONS} from "./tax_type";
+import {FINANCE_TRANSLATIONS} from "./finance";
+import {TAX_TRANSLATIONS} from "./tax";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -58,4 +60,6 @@ export const APP_TRANSLATIONS = {
     workflows: WORKFLOWS_TRANSLATIONS,
     country: COUNTRY_TRANSLATIONS,
     tax_type: TAX_TYPE_TRANSLATIONS,
+    finance: FINANCE_TRANSLATIONS,
+    tax: TAX_TRANSLATIONS,
 };
