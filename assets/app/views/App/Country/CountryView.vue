@@ -4,7 +4,7 @@
 
     <LoadingScreen :ready="ready">
       <div class="text-end m-5">
-        <router-link :to="{name: 'app.system.country.edit', params: {id: country.id}}" class="btn--main">{{ $t('app.country.view.edit_button') }}</router-link>
+        <router-link :to="{name: 'app.finance.country.edit', params: {id: country.id}}" class="btn--main">{{ $t('app.country.view.edit_button') }}</router-link>
       </div>
       <div>
         <div class="card-body">

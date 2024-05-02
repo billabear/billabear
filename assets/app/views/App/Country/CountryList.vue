@@ -14,7 +14,7 @@
           </div>
         </Dropdown>
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-          <router-link :to="{name: 'app.system.country.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.country.list.create_new') }}</router-link>
+          <router-link :to="{name: 'app.finance.country.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.country.list.create_new') }}</router-link>
         </RoleOnlyView>
       </div>
     </div>
@@ -51,7 +51,7 @@
                   {{ currency(country.amount_transacted) }}/{{ currency(country.threshold) }}
                 </span>
               </td>
-              <td><router-link :to="{name: 'app.system.country.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
+              <td><router-link :to="{name: 'app.finance.country.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
               <td colspan="5" class="text-center">{{ $t('app.country.list.no_countries') }}</td>

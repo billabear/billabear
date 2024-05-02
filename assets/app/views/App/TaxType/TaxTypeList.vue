@@ -14,7 +14,7 @@
           </div>
         </Dropdown>
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-          <router-link :to="{name: 'app.system.tax_type.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.tax_type.list.create_new') }}</router-link>
+          <router-link :to="{name: 'app.finance.tax_type.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.tax_type.list.create_new') }}</router-link>
         </RoleOnlyView>
       </div>
     </div>

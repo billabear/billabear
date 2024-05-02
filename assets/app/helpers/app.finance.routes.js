@@ -55,32 +55,32 @@ export const AppFinanceRoutes  = [
         component: CheckoutView
     },
     {
-        name: 'app.system.country.list',
+        name: 'app.finance.country.list',
         path: 'country/list',
         component: CountryList
     },
     {
-        name: 'app.system.country.create',
+        name: 'app.finance.country.create',
         path: 'country/create',
         component: CountryCreate
     },
     {
-        name: 'app.system.country.view',
+        name: 'app.finance.country.view',
         path: 'country/:id/view',
         component: CountryView
     },
     {
-        name: 'app.system.country.edit',
+        name: 'app.finance.country.edit',
         path: 'country/:id/edit',
         component: CountryEdit
     },
     {
-        name: 'app.system.tax_type.list',
+        name: 'app.finance.tax_type.list',
         path: 'tax/type/list',
         component: TaxTypeList
     },
     {
-        name: 'app.system.tax_type.create',
+        name: 'app.finance.tax_type.create',
         path: 'tax/type/create',
         component: TaxTypeCreate
     }
