@@ -18,6 +18,7 @@ use App\Repository\Orm\InvoiceRepository;
 use App\Repository\Orm\PaymentAttemptRepository;
 use App\Repository\Orm\PaymentFailureProcessRepository;
 use App\Repository\Orm\SubscriptionPlanRepository;
+use App\Repository\Orm\TaxTypeRepository;
 use App\Repository\SubscriptionRepository;
 use App\Tests\Behat\Customers\CustomerTrait;
 use App\Tests\Behat\SendRequestTrait;
@@ -42,6 +43,7 @@ class AppContext implements Context
         private PaymentFailureProcessRepository $paymentFailureProcessRepository,
         private SubscriptionRepository $subscriptionRepository,
         private SubscriptionPlanRepository $planRepository,
+        private TaxTypeRepository $taxTypeRepository,
     ) {
     }
 
@@ -229,6 +231,7 @@ class AppContext implements Context
             }
         }
 
+        var_dump($data);
         throw new \Exception('No invoice found');
     }
 
@@ -241,7 +244,6 @@ class AppContext implements Context
 
         foreach ($data['data'] as $invoice) {
             if ($invoice['customer']['email'] === $arg1) {
-                var_dump($data);
                 throw new \Exception('Invoice found');
             }
         }
@@ -284,6 +286,11 @@ class AppContext implements Context
         $line->setTaxTotal(2000);
         $line->setDescription('A test line');
         $line->setCurrency('USD');
+        if (isset($row['Tax Type'])) {
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $row['Tax Type']]);
+            $line->setTaxType($taxType);
+        }
+
         $lines = [$line];
 
         $invoice->setCustomer($customer);
