@@ -70,12 +70,13 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/App"
+            "BillaBear\\": "src/BillaBear",
+            "Custom\\": "src/Custom"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "BillaBear\\Tests\\": "tests/"
         }
     },
     "replace": {

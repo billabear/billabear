@@ -6,13 +6,13 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Workflow\Places;
+namespace BillaBear\Tests\Unit\Workflow\Places;
 
-use App\Entity\WorkflowTransition;
-use App\Enum\WorkflowType;
-use App\Repository\WorkflowTransitionRepositoryInterface;
-use App\Workflow\Places\PlaceInterface;
-use App\Workflow\Places\PlacesProvider;
+use BillaBear\Entity\WorkflowTransition;
+use BillaBear\Enum\WorkflowType;
+use BillaBear\Repository\WorkflowTransitionRepositoryInterface;
+use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\Places\PlacesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PlacesProviderTest extends TestCase

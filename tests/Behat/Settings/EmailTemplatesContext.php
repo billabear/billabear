@@ -6,13 +6,13 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Settings;
+namespace BillaBear\Tests\Behat\Settings;
 
-use App\Entity\Customer;
-use App\Entity\EmailTemplate;
-use App\Repository\Orm\BrandSettingsRepository;
-use App\Repository\Orm\EmailTemplateRepository;
-use App\Tests\Behat\SendRequestTrait;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\EmailTemplate;
+use BillaBear\Repository\Orm\BrandSettingsRepository;
+use BillaBear\Repository\Orm\EmailTemplateRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;

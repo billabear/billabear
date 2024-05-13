@@ -6,32 +6,32 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Stats;
+namespace BillaBear\Tests\Behat\Stats;
 
-use App\Entity\Customer;
-use App\Entity\Stats\CachedStats;
-use App\Entity\Stats\ChargeBackAmountDailyStats;
-use App\Entity\Stats\ChargeBackAmountMonthlyStats;
-use App\Entity\Stats\ChargeBackAmountYearlyStats;
-use App\Entity\Stats\PaymentAmountDailyStats;
-use App\Entity\Stats\PaymentAmountMonthlyStats;
-use App\Entity\Stats\PaymentAmountYearlyStats;
-use App\Entity\Stats\RefundAmountDailyStats;
-use App\Entity\Stats\RefundAmountMonthlyStats;
-use App\Entity\Stats\RefundAmountYearlyStats;
-use App\Entity\Stats\SubscriptionCancellationDailyStats;
-use App\Entity\Stats\SubscriptionCancellationMonthlyStats;
-use App\Entity\Stats\SubscriptionCancellationYearlyStats;
-use App\Entity\Stats\SubscriptionCreationDailyStats;
-use App\Entity\Stats\SubscriptionCreationMonthlyStats;
-use App\Entity\Stats\SubscriptionCreationYearlyStats;
-use App\Repository\Orm\CachedStatsRepository;
-use App\Repository\Orm\PaymentAmountDailyStatsRepository;
-use App\Repository\Orm\RefundAmountDailyStatsRepository;
-use App\Repository\Orm\SubscriptionCreationDailyStatsRepository;
-use App\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
-use App\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
-use App\Tests\Behat\SendRequestTrait;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\Stats\CachedStats;
+use BillaBear\Entity\Stats\ChargeBackAmountDailyStats;
+use BillaBear\Entity\Stats\ChargeBackAmountMonthlyStats;
+use BillaBear\Entity\Stats\ChargeBackAmountYearlyStats;
+use BillaBear\Entity\Stats\PaymentAmountDailyStats;
+use BillaBear\Entity\Stats\PaymentAmountMonthlyStats;
+use BillaBear\Entity\Stats\PaymentAmountYearlyStats;
+use BillaBear\Entity\Stats\RefundAmountDailyStats;
+use BillaBear\Entity\Stats\RefundAmountMonthlyStats;
+use BillaBear\Entity\Stats\RefundAmountYearlyStats;
+use BillaBear\Entity\Stats\SubscriptionCancellationDailyStats;
+use BillaBear\Entity\Stats\SubscriptionCancellationMonthlyStats;
+use BillaBear\Entity\Stats\SubscriptionCancellationYearlyStats;
+use BillaBear\Entity\Stats\SubscriptionCreationDailyStats;
+use BillaBear\Entity\Stats\SubscriptionCreationMonthlyStats;
+use BillaBear\Entity\Stats\SubscriptionCreationYearlyStats;
+use BillaBear\Repository\Orm\CachedStatsRepository;
+use BillaBear\Repository\Orm\PaymentAmountDailyStatsRepository;
+use BillaBear\Repository\Orm\RefundAmountDailyStatsRepository;
+use BillaBear\Repository\Orm\SubscriptionCreationDailyStatsRepository;
+use BillaBear\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
+use BillaBear\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 

@@ -6,11 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Workflow\TransitionHandlers;
+namespace BillaBear\Tests\Unit\Workflow\TransitionHandlers;
 
-use App\Entity\WorkflowTransition;
-use App\Exception\Workflow\InvalidHandlerOptionsException;
-use App\Workflow\TransitionHandlers\WebhookTransitionHandler;
+use BillaBear\Entity\WorkflowTransition;
+use BillaBear\Exception\Workflow\InvalidHandlerOptionsException;
+use BillaBear\Workflow\TransitionHandlers\WebhookTransitionHandler;
 use Parthenon\Common\Http\ClientInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestFactoryInterface;

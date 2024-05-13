@@ -6,12 +6,12 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Notification\Email;
+namespace BillaBear\Tests\Unit\Notification\Email;
 
-use App\Entity\Customer;
-use App\Entity\EmailTemplate;
-use App\Notification\Email\EmailTemplateProvider;
-use App\Repository\EmailTemplateRepositoryInterface;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\EmailTemplate;
+use BillaBear\Notification\Email\EmailTemplateProvider;
+use BillaBear\Repository\EmailTemplateRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class EmailTemplateProviderTest extends TestCase

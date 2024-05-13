@@ -6,21 +6,21 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Workflow;
+namespace BillaBear\Tests\Behat\Workflow;
 
-use App\Entity\WorkflowTransition;
-use App\Enum\WorkflowType;
-use App\Repository\Orm\WorkflowTransitionRepository;
-use App\Tests\Behat\SendRequestTrait;
-use App\Workflow\Places\PlaceInterface;
-use App\Workflow\Places\SubscriptionCancel\Completed;
-use App\Workflow\Places\SubscriptionCancel\CustomerNoticeSent;
-use App\Workflow\Places\SubscriptionCancel\InternalNoticeSent;
-use App\Workflow\Places\SubscriptionCancel\RefundIssued;
-use App\Workflow\Places\SubscriptionCancel\Started;
-use App\Workflow\Places\SubscriptionCancel\StatsGenerated;
-use App\Workflow\Places\SubscriptionCancel\SubscriptionCancelled;
-use App\Workflow\TransitionHandlers\WebhookTransitionHandler;
+use BillaBear\Entity\WorkflowTransition;
+use BillaBear\Enum\WorkflowType;
+use BillaBear\Repository\Orm\WorkflowTransitionRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
+use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\Places\SubscriptionCancel\Completed;
+use BillaBear\Workflow\Places\SubscriptionCancel\CustomerNoticeSent;
+use BillaBear\Workflow\Places\SubscriptionCancel\InternalNoticeSent;
+use BillaBear\Workflow\Places\SubscriptionCancel\RefundIssued;
+use BillaBear\Workflow\Places\SubscriptionCancel\Started;
+use BillaBear\Workflow\Places\SubscriptionCancel\StatsGenerated;
+use BillaBear\Workflow\Places\SubscriptionCancel\SubscriptionCancelled;
+use BillaBear\Workflow\TransitionHandlers\WebhookTransitionHandler;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;

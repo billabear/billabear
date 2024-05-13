@@ -2,120 +2,120 @@ default:
     suites:
         default:
             contexts:
-                - App\Tests\Behat\DemoContext
-                - App\Tests\Behat\GeneralContext
-                - App\Tests\Behat\UserContext
+                - BillaBear\Tests\Behat\DemoContext
+                - BillaBear\Tests\Behat\GeneralContext
+                - BillaBear\Tests\Behat\UserContext
 
                 # API
-                - App\Tests\Behat\Api\MainContext
+                - BillaBear\Tests\Behat\Api\MainContext
 
                 # Payments
-                - App\Tests\Behat\Payments\MainContext
-                - App\Tests\Behat\Payments\ApiContext
-                - App\Tests\Behat\Payments\AppContext
+                - BillaBear\Tests\Behat\Payments\MainContext
+                - BillaBear\Tests\Behat\Payments\ApiContext
+                - BillaBear\Tests\Behat\Payments\AppContext
 
                 # Customers
-                - App\Tests\Behat\Customers\MainContext
-                - App\Tests\Behat\Customers\AppContext
+                - BillaBear\Tests\Behat\Customers\MainContext
+                - BillaBear\Tests\Behat\Customers\AppContext
 
                 # Products
-                - App\Tests\Behat\Products\ApiContext
-                - App\Tests\Behat\Products\AppContext
+                - BillaBear\Tests\Behat\Products\ApiContext
+                - BillaBear\Tests\Behat\Products\AppContext
 
                 # Prices
-                - App\Tests\Behat\Prices\ApiContext
-                - App\Tests\Behat\Prices\AppContext
+                - BillaBear\Tests\Behat\Prices\ApiContext
+                - BillaBear\Tests\Behat\Prices\AppContext
 
                 # Features
-                - App\Tests\Behat\Features\AppContext
+                - BillaBear\Tests\Behat\Features\AppContext
 
                 # Subscriptions
-                - App\Tests\Behat\Subscriptions\MainContext
-                - App\Tests\Behat\Subscriptions\ApiContext
-                - App\Tests\Behat\Subscriptions\MassChangeContext
+                - BillaBear\Tests\Behat\Subscriptions\MainContext
+                - BillaBear\Tests\Behat\Subscriptions\ApiContext
+                - BillaBear\Tests\Behat\Subscriptions\MassChangeContext
 
                 # Subscription Plan
-                - App\Tests\Behat\SubscriptionPlan\AppContext
+                - BillaBear\Tests\Behat\SubscriptionPlan\AppContext
 
                 # Payment Details
-                - App\Tests\Behat\PaymentDetails\MainContext
-                - App\Tests\Behat\PaymentDetails\ApiContext
-                - App\Tests\Behat\PaymentDetails\AppContext
+                - BillaBear\Tests\Behat\PaymentDetails\MainContext
+                - BillaBear\Tests\Behat\PaymentDetails\ApiContext
+                - BillaBear\Tests\Behat\PaymentDetails\AppContext
 
                 # Refund
-                - App\Tests\Behat\Refund\ApiContext
-                - App\Tests\Behat\Refund\MainContext
+                - BillaBear\Tests\Behat\Refund\ApiContext
+                - BillaBear\Tests\Behat\Refund\MainContext
 
                 # ChargeBack
-                - App\Tests\Behat\ChargeBacks\AppContext
+                - BillaBear\Tests\Behat\ChargeBacks\AppContext
 
                 # Receipt
-                - App\Tests\Behat\Receipt\AppContext
+                - BillaBear\Tests\Behat\Receipt\AppContext
 
                 # Credit Notes
-                - App\Tests\Behat\CreditNote\AppContext
+                - BillaBear\Tests\Behat\CreditNote\AppContext
 
                 # Invoices
-                - App\Tests\Behat\Invoices\AppContext
-                - App\Tests\Behat\Invoices\CreateInvoiceContext
+                - BillaBear\Tests\Behat\Invoices\AppContext
+                - BillaBear\Tests\Behat\Invoices\CreateInvoiceContext
 
                 # Settings
-                - App\Tests\Behat\Settings\PdfTemplatesContext
-                - App\Tests\Behat\Settings\BrandsContext
-                - App\Tests\Behat\Settings\EmailTemplatesContext
-                - App\Tests\Behat\Settings\NotificationSettingsContext
-                - App\Tests\Behat\Settings\SystemSettingsContext
-                - App\Tests\Behat\Settings\UserManagementContext
-                - App\Tests\Behat\Settings\ApiKeyContext
-                - App\Tests\Behat\Settings\TaxSettingsContext
-                - App\Tests\Behat\Settings\InvoiceSettingsContext
+                - BillaBear\Tests\Behat\Settings\PdfTemplatesContext
+                - BillaBear\Tests\Behat\Settings\BrandsContext
+                - BillaBear\Tests\Behat\Settings\EmailTemplatesContext
+                - BillaBear\Tests\Behat\Settings\NotificationSettingsContext
+                - BillaBear\Tests\Behat\Settings\SystemSettingsContext
+                - BillaBear\Tests\Behat\Settings\UserManagementContext
+                - BillaBear\Tests\Behat\Settings\ApiKeyContext
+                - BillaBear\Tests\Behat\Settings\TaxSettingsContext
+                - BillaBear\Tests\Behat\Settings\InvoiceSettingsContext
 
                 # Stats
-                - App\Tests\Behat\Stats\MainContext
-                - App\Tests\Behat\Stats\SubscriptionsContext
-                - App\Tests\Behat\Stats\FinancialContext
+                - BillaBear\Tests\Behat\Stats\MainContext
+                - BillaBear\Tests\Behat\Stats\SubscriptionsContext
+                - BillaBear\Tests\Behat\Stats\FinancialContext
 
                 # Reports
-                - App\Tests\Behat\Reports\ExpiringCards\AppContext
+                - BillaBear\Tests\Behat\Reports\ExpiringCards\AppContext
 
 
                 # Background Jobs
-                - App\Tests\Behat\Background\ExpiringCards\MainContext
-                - App\Tests\Behat\Background\Invoice\MainContext
-                - App\Tests\Behat\Background\Payments\MainContext
+                - BillaBear\Tests\Behat\Background\ExpiringCards\MainContext
+                - BillaBear\Tests\Behat\Background\Invoice\MainContext
+                - BillaBear\Tests\Behat\Background\Payments\MainContext
 
                 #Vouchers
-                - App\Tests\Behat\Vouchers\AppContext
-                - App\Tests\Behat\Vouchers\ApiContext
+                - BillaBear\Tests\Behat\Vouchers\AppContext
+                - BillaBear\Tests\Behat\Vouchers\ApiContext
 
                 # Tax
-                - App\Tests\Behat\Tax\CustomerContext
-                - App\Tests\Behat\Tax\InvoiceContext
-                - App\Tests\Behat\Tax\ProductContext
-                - App\Tests\Behat\Tax\CountryContext
-                - App\Tests\Behat\Tax\TaxTypeContext
-                - App\Tests\Behat\Tax\ReportContext
+                - BillaBear\Tests\Behat\Tax\CustomerContext
+                - BillaBear\Tests\Behat\Tax\InvoiceContext
+                - BillaBear\Tests\Behat\Tax\ProductContext
+                - BillaBear\Tests\Behat\Tax\CountryContext
+                - BillaBear\Tests\Behat\Tax\TaxTypeContext
+                - BillaBear\Tests\Behat\Tax\ReportContext
 
                 # Quoutes
-                - App\Tests\Behat\Quote\AppContext
+                - BillaBear\Tests\Behat\Quote\AppContext
 
                 # Developer
-                - App\Tests\Behat\Developer\WebhookContext
+                - BillaBear\Tests\Behat\Developer\WebhookContext
 
                 # Public
-                - App\Tests\Behat\Public\InvoiceContext
+                - BillaBear\Tests\Behat\Public\InvoiceContext
 
                 # Checkout
-                - App\Tests\Behat\Checkout\MainContext
+                - BillaBear\Tests\Behat\Checkout\MainContext
 
                 # System
-                - App\Tests\Behat\System\CancellationRequestContext
+                - BillaBear\Tests\Behat\System\CancellationRequestContext
 
                 # Stripe Interopt Layer
-                - App\Tests\Behat\Interopt\Stripe\SubscriptionsContext
+                - BillaBear\Tests\Behat\Interopt\Stripe\SubscriptionsContext
 
                 # Workflow
-                - App\Tests\Behat\Workflow\CancellationRequestContext
+                - BillaBear\Tests\Behat\Workflow\CancellationRequestContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

@@ -6,12 +6,12 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Subscription\Schedule;
+namespace BillaBear\Tests\Unit\Subscription\Schedule;
 
-use App\Subscription\Schedule\MonthScheduler;
-use App\Subscription\Schedule\SchedulerProvider;
-use App\Subscription\Schedule\WeekScheduler;
-use App\Subscription\Schedule\YearScheduler;
+use BillaBear\Subscription\Schedule\MonthScheduler;
+use BillaBear\Subscription\Schedule\SchedulerProvider;
+use BillaBear\Subscription\Schedule\WeekScheduler;
+use BillaBear\Subscription\Schedule\YearScheduler;
 use Parthenon\Billing\Entity\Price;
 use PHPUnit\Framework\TestCase;
 

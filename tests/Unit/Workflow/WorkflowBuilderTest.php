@@ -6,15 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Workflow;
+namespace BillaBear\Tests\Unit\Workflow;
 
-use App\Entity\WorkflowTransition;
-use App\Enum\WorkflowType;
-use App\Workflow\Places\PlaceInterface;
-use App\Workflow\Places\PlacesProvider;
-use App\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
-use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
-use App\Workflow\WorkflowBuilder;
+use BillaBear\Entity\WorkflowTransition;
+use BillaBear\Enum\WorkflowType;
+use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\Places\PlacesProvider;
+use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
+use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
+use BillaBear\Workflow\WorkflowBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;

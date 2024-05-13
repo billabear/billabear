@@ -6,12 +6,12 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Workflow;
+namespace BillaBear\Tests\Unit\Workflow;
 
-use App\Enum\WorkflowType;
-use App\Workflow\WorkflowBuilder;
-use App\Workflow\WorkflowProcessInterface;
-use App\Workflow\WorkflowProcessor;
+use BillaBear\Enum\WorkflowType;
+use BillaBear\Workflow\WorkflowBuilder;
+use BillaBear\Workflow\WorkflowProcessInterface;
+use BillaBear\Workflow\WorkflowProcessor;
 use Parthenon\Common\Repository\RepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Workflow\Definition;

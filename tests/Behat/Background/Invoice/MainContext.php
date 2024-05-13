@@ -6,18 +6,18 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Background\Invoice;
+namespace BillaBear\Tests\Behat\Background\Invoice;
 
-use App\Background\Invoice\DisableOverdueInvoices;
-use App\Background\Invoice\GenerateNewInvoices;
-use App\Background\Invoice\UnpaidInvoices;
-use App\Entity\Invoice;
-use App\Entity\Processes\InvoiceProcess;
-use App\Repository\Orm\CustomerRepository;
-use App\Repository\Orm\InvoiceProcessRepository;
-use App\Repository\Orm\InvoiceRepository;
-use App\Tests\Behat\Customers\CustomerTrait;
 use Behat\Behat\Context\Context;
+use BillaBear\Background\Invoice\DisableOverdueInvoices;
+use BillaBear\Background\Invoice\GenerateNewInvoices;
+use BillaBear\Background\Invoice\UnpaidInvoices;
+use BillaBear\Entity\Invoice;
+use BillaBear\Entity\Processes\InvoiceProcess;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\InvoiceProcessRepository;
+use BillaBear\Repository\Orm\InvoiceRepository;
+use BillaBear\Tests\Behat\Customers\CustomerTrait;
 
 class MainContext implements Context
 {

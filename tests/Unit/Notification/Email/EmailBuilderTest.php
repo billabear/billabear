@@ -6,14 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Notification\Email;
+namespace BillaBear\Tests\Unit\Notification\Email;
 
-use App\Entity\BrandSettings;
-use App\Entity\Customer;
-use App\Entity\EmailTemplate;
-use App\Notification\Email\Data\SubscriptionCreatedEmailData;
-use App\Notification\Email\EmailBuilder;
-use App\Notification\Email\EmailTemplateProvider;
+use BillaBear\Entity\BrandSettings;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\EmailTemplate;
+use BillaBear\Notification\Email\Data\SubscriptionCreatedEmailData;
+use BillaBear\Notification\Email\EmailBuilder;
+use BillaBear\Notification\Email\EmailTemplateProvider;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Template;

@@ -6,18 +6,18 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\System;
+namespace BillaBear\Tests\Behat\System;
 
-use App\Entity\CancellationRequest;
-use App\Enum\CancellationType;
-use App\Repository\Orm\CancellationRequestRepository;
-use App\Repository\Orm\CustomerRepository;
-use App\Repository\Orm\SubscriptionPlanRepository;
-use App\Repository\Orm\SubscriptionRepository;
-use App\Tests\Behat\Customers\CustomerTrait;
-use App\Tests\Behat\SendRequestTrait;
-use App\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
-use App\Tests\Behat\Subscriptions\SubscriptionTrait;
+use BillaBear\Entity\CancellationRequest;
+use BillaBear\Enum\CancellationType;
+use BillaBear\Repository\Orm\CancellationRequestRepository;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\SubscriptionPlanRepository;
+use BillaBear\Repository\Orm\SubscriptionRepository;
+use BillaBear\Tests\Behat\Customers\CustomerTrait;
+use BillaBear\Tests\Behat\SendRequestTrait;
+use BillaBear\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
+use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;

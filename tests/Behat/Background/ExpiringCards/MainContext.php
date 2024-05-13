@@ -6,15 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Background\ExpiringCards;
+namespace BillaBear\Tests\Behat\Background\ExpiringCards;
 
-use App\Background\ExpiringCards\DayBefore;
-use App\Background\ExpiringCards\StartProcess;
-use App\Entity\Processes\ExpiringCardProcess;
-use App\Repository\Orm\CustomerRepository;
-use App\Repository\Orm\ExpiringCardProcessRepository;
-use App\Tests\Behat\Customers\CustomerTrait;
 use Behat\Behat\Context\Context;
+use BillaBear\Background\ExpiringCards\DayBefore;
+use BillaBear\Background\ExpiringCards\StartProcess;
+use BillaBear\Entity\Processes\ExpiringCardProcess;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\ExpiringCardProcessRepository;
+use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Event\PaymentCardAdded;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;

@@ -15,22 +15,22 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         resolve_target_entities:
-            Parthenon\User\Entity\UserInterface: App\Entity\User
-            Parthenon\User\Entity\TeamInterface: App\Entity\User
-            Parthenon\Billing\Entity\CustomerInterface: App\Entity\Customer
-            Parthenon\Billing\Entity\BillingAdminInterface: App\Entity\User
-            Parthenon\Billing\Entity\PaymentInterface: App\Entity\Payment
-            Parthenon\Billing\Entity\ProductInterface: App\Entity\Product
-            Parthenon\Billing\Entity\PriceInterface: App\Entity\Price
-            Parthenon\Billing\Entity\ReceiptInterface: App\Entity\Receipt
-            Parthenon\Billing\Entity\ReceiptLineInterface: App\Entity\ReceiptLine
-            Parthenon\Billing\Entity\SubscriptionInterface: App\Entity\Subscription
-            Parthenon\Billing\Entity\SubscriptionPlanInterface: App\Entity\SubscriptionPlan
+            Parthenon\User\Entity\UserInterface: BillaBear\Entity\User
+            Parthenon\User\Entity\TeamInterface: BillaBear\Entity\User
+            Parthenon\Billing\Entity\CustomerInterface: BillaBear\Entity\Customer
+            Parthenon\Billing\Entity\BillingAdminInterface: BillaBear\Entity\User
+            Parthenon\Billing\Entity\PaymentInterface: BillaBear\Entity\Payment
+            Parthenon\Billing\Entity\ProductInterface: BillaBear\Entity\Product
+            Parthenon\Billing\Entity\PriceInterface: BillaBear\Entity\Price
+            Parthenon\Billing\Entity\ReceiptInterface: BillaBear\Entity\Receipt
+            Parthenon\Billing\Entity\ReceiptLineInterface: BillaBear\Entity\ReceiptLine
+            Parthenon\Billing\Entity\SubscriptionInterface: BillaBear\Entity\Subscription
+            Parthenon\Billing\Entity\SubscriptionPlanInterface: BillaBear\Entity\SubscriptionPlan
         mappings:
             App:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/App/Entity'
-                prefix: 'App\Entity'
+                dir: '%kernel.project_dir%/src/BillaBear/Entity'
+                prefix: 'BillaBear\Entity'
                 alias: App
 
 when@test:

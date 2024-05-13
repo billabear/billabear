@@ -6,16 +6,16 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Developer;
+namespace BillaBear\Tests\Behat\Developer;
 
-use App\Entity\WebhookEndpoint;
-use App\Enum\WebhookEventType;
-use App\Repository\Orm\WebhookEndpointRepository;
-use App\Repository\Orm\WebhookEventRepository;
-use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use BillaBear\Entity\WebhookEndpoint;
+use BillaBear\Enum\WebhookEventType;
+use BillaBear\Repository\Orm\WebhookEndpointRepository;
+use BillaBear\Repository\Orm\WebhookEventRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 
 class WebhookContext implements Context
 {

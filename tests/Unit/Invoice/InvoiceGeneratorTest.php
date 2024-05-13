@@ -6,22 +6,22 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Invoice;
+namespace BillaBear\Tests\Unit\Invoice;
 
-use App\Credit\CreditAdjustmentRecorder;
-use App\Entity\Customer;
-use App\Entity\Invoice;
-use App\Entity\Product;
-use App\Entity\SubscriptionPlan;
-use App\Invoice\DueDateDecider;
-use App\Invoice\InvoiceGenerator;
-use App\Invoice\Number\InvoiceNumberGeneratorInterface;
-use App\Invoice\Number\InvoiceNumberGeneratorProvider;
-use App\Invoice\PriceInfo;
-use App\Invoice\Pricer;
-use App\Repository\InvoiceRepositoryInterface;
-use App\Repository\VoucherApplicationRepositoryInterface;
-use App\Tax\TaxInfo;
+use BillaBear\Credit\CreditAdjustmentRecorder;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\Invoice;
+use BillaBear\Entity\Product;
+use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Invoice\DueDateDecider;
+use BillaBear\Invoice\InvoiceGenerator;
+use BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface;
+use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
+use BillaBear\Invoice\PriceInfo;
+use BillaBear\Invoice\Pricer;
+use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\VoucherApplicationRepositoryInterface;
+use BillaBear\Tax\TaxInfo;
 use Brick\Money\Money;
 use Monolog\Test\TestCase;
 use Parthenon\Billing\Entity\Price;
@@ -33,7 +33,7 @@ class InvoiceGeneratorTest extends TestCase
     public function testCreateInvoiceFromSubscriptions()
     {
         $mockPrice = $this->createMock(Price::class);
-        $taxType = $this->createMock(\App\Entity\TaxType::class);
+        $taxType = $this->createMock(\BillaBear\Entity\TaxType::class);
 
         $product = $this->createMock(Product::class);
         $product->method('getTaxType')->willReturn($taxType);

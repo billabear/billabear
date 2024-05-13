@@ -6,11 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Notification\Email;
+namespace BillaBear\Tests\Unit\Notification\Email;
 
-use App\Entity\Settings;
-use App\Notification\Email\EmailSenderFactory;
-use App\Repository\SettingsRepositoryInterface;
+use BillaBear\Entity\Settings;
+use BillaBear\Notification\Email\EmailSenderFactory;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Notification\Sender\MailgunEmailSender;
 use Parthenon\Notification\Sender\PostmarkEmailSender;
 use Parthenon\Notification\Sender\SendGridEmailSender;

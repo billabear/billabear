@@ -6,13 +6,13 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Customers;
+namespace BillaBear\Tests\Behat\Customers;
 
-use App\Repository\Orm\CustomerRepository;
-use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 
 class AppContext implements Context
 {

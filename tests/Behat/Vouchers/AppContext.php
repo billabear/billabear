@@ -6,15 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Vouchers;
+namespace BillaBear\Tests\Behat\Vouchers;
 
-use App\Entity\Voucher;
-use App\Entity\VoucherAmount;
-use App\Enum\VoucherEntryType;
-use App\Enum\VoucherEvent;
-use App\Enum\VoucherType;
-use App\Repository\Orm\VoucherRepository;
-use App\Tests\Behat\SendRequestTrait;
+use BillaBear\Entity\Voucher;
+use BillaBear\Entity\VoucherAmount;
+use BillaBear\Enum\VoucherEntryType;
+use BillaBear\Enum\VoucherEvent;
+use BillaBear\Enum\VoucherType;
+use BillaBear\Repository\Orm\VoucherRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;

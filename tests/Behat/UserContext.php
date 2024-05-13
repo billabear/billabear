@@ -6,14 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat;
+namespace BillaBear\Tests\Behat;
 
-use App\Entity\ForgotPasswordCode;
-use App\Entity\InviteCode;
-use App\Entity\User;
-use App\Repository\Orm\ForgotPasswordCodeRepository;
-use App\Repository\Orm\InviteCodeRepository;
-use App\Repository\Orm\UserRepository;
+use BillaBear\Entity\ForgotPasswordCode;
+use BillaBear\Entity\InviteCode;
+use BillaBear\Entity\User;
+use BillaBear\Repository\Orm\ForgotPasswordCodeRepository;
+use BillaBear\Repository\Orm\InviteCodeRepository;
+use BillaBear\Repository\Orm\UserRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;

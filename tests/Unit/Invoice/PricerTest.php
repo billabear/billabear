@@ -6,13 +6,13 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Invoice;
+namespace BillaBear\Tests\Unit\Invoice;
 
-use App\Entity\Customer;
-use App\Entity\Product;
-use App\Invoice\Pricer;
-use App\Tax\TaxInfo;
-use App\Tax\TaxRateProviderInterface;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\Product;
+use BillaBear\Invoice\Pricer;
+use BillaBear\Tax\TaxInfo;
+use BillaBear\Tax\TaxRateProviderInterface;
 use Parthenon\Billing\Entity\Price;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(null, 'DE', false));
@@ -50,7 +50,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(19.0, 'DE', false));
@@ -73,7 +73,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(19.0, 'DE', false));
@@ -96,7 +96,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(20.0, 'DE', false));
@@ -119,7 +119,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(20.0, 'GB', false));
@@ -142,7 +142,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB', false));
@@ -165,7 +165,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB', false));
@@ -188,7 +188,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'CH', false));
@@ -211,7 +211,7 @@ class PricerTest extends TestCase
         $price->setProduct(new Product());
 
         $customer = new Customer();
-        $taxType = new \App\Entity\TaxType();
+        $taxType = new \BillaBear\Entity\TaxType();
 
         $taxProvider = $this->createMock(TaxRateProviderInterface::class);
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'DE', false));

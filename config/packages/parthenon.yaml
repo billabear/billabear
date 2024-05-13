@@ -8,8 +8,8 @@ parthenon:
         bin: '/usr/bin/wkhtmltopdf'
   user:
     enabled: true
-    user_class: App\Entity\User
-    team_class: App\Entity\Team
+    user_class: BillaBear\Entity\User
+    team_class: BillaBear\Entity\Team
     user_invites_enabled: true
     teams_enabled: false
     login_route: "parthenon_user_login"

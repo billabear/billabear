@@ -1,9 +1,9 @@
 controllers:
-    resource: ../src/App/Controller/
+    resource: ../src/BillaBear/Controller/
     type: attribute
 
 kernel:
-    resource: ../src/App/Kernel.php
+    resource: ../src/BillaBear/Kernel.php
     type: attribute
 
 parthenon_user_controllers:

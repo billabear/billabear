@@ -6,12 +6,12 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Workflow\TransitionHandlers;
+namespace BillaBear\Tests\Unit\Workflow\TransitionHandlers;
 
-use App\Entity\WorkflowTransition;
-use App\Exception\Workflow\NoHandlerFoundException;
-use App\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
-use App\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
+use BillaBear\Entity\WorkflowTransition;
+use BillaBear\Exception\Workflow\NoHandlerFoundException;
+use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
+use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use PHPUnit\Framework\TestCase;
 
 class DynamicHandlerProviderTest extends TestCase

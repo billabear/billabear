@@ -6,14 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\ChargeBacks;
+namespace BillaBear\Tests\Behat\ChargeBacks;
 
-use App\Repository\Orm\CustomerRepository;
-use App\Repository\Orm\PaymentRepository;
-use App\Tests\Behat\Customers\CustomerTrait;
-use App\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\PaymentRepository;
+use BillaBear\Tests\Behat\Customers\CustomerTrait;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Parthenon\Billing\Entity\ChargeBack;
 use Parthenon\Billing\Enum\ChargeBackReason;
 use Parthenon\Billing\Enum\ChargeBackStatus;

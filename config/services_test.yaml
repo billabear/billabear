@@ -3,14 +3,14 @@ services:
         autowire: true
         autoconfigure: true
 
-    App\Tests\Behat\:
+    BillaBear\Tests\Behat\:
         resource: '../tests/Behat/*'
 
     Parthenon\Notification\EmailSenderInterface: '@Parthenon\Notification\Sender\NullEmailSender'
 
-    App\Customer\ExternalRegisterInterface: '@App\Customer\DummyRegister'
+    BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\DummyRegister'
 
-    Parthenon\Billing\Obol\ProductRegisterInterface: '@App\Dummy\ProductRegister'
-    Parthenon\Billing\Obol\PriceRegisterInterface: '@App\Dummy\ProductRegister'
-    Obol\Provider\ProviderInterface: '@App\Dummy\Provider\Provider'
-    App\Webhook\Outbound\EventDispatcherInterface: '@App\Webhook\Outbound\EventDispatcher'
+    Parthenon\Billing\Obol\ProductRegisterInterface: '@BillaBear\Dummy\ProductRegister'
+    Parthenon\Billing\Obol\PriceRegisterInterface: '@BillaBear\Dummy\ProductRegister'
+    Obol\Provider\ProviderInterface: '@BillaBear\Dummy\Provider\Provider'
+    BillaBear\Webhook\Outbound\EventDispatcherInterface: '@BillaBear\Webhook\Outbound\EventDispatcher'

@@ -6,15 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Interopt\Stripe;
+namespace BillaBear\Tests\Behat\Interopt\Stripe;
 
-use App\Repository\Orm\CustomerRepository;
-use App\Repository\Orm\PriceRepository;
-use App\Repository\Orm\SubscriptionPlanRepository;
-use App\Repository\Orm\SubscriptionRepository;
-use App\Tests\Behat\Customers\CustomerTrait;
-use App\Tests\Behat\SendRequestTrait;
-use App\Tests\Behat\Subscriptions\SubscriptionTrait;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\PriceRepository;
+use BillaBear\Repository\Orm\SubscriptionPlanRepository;
+use BillaBear\Repository\Orm\SubscriptionRepository;
+use BillaBear\Tests\Behat\Customers\CustomerTrait;
+use BillaBear\Tests\Behat\SendRequestTrait;
+use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 

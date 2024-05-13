@@ -6,11 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Products;
+namespace BillaBear\Tests\Behat\Products;
 
-use App\Repository\Orm\ProductRepository;
-use App\Repository\Orm\TaxTypeRepository;
-use App\Tests\Behat\SendRequestTrait;
+use BillaBear\Repository\Orm\ProductRepository;
+use BillaBear\Repository\Orm\TaxTypeRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
@@ -46,9 +46,9 @@ class AppContext implements Context
         ];
 
         if (isset($data['Tax Type'])) {
-            /** @var \App\Entity\TaxType $taxType */
+            /** @var \BillaBear\Entity\TaxType $taxType */
             $taxType = $this->taxTypeRepository->findOneBy(['name' => $data['Tax Type']]);
-            if (!$taxType instanceof \App\Entity\TaxType) {
+            if (!$taxType instanceof \BillaBear\Entity\TaxType) {
                 throw new \Exception('No tax type found');
             }
 

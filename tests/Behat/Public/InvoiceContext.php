@@ -6,11 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Public;
+namespace BillaBear\Tests\Behat\Public;
 
-use App\Entity\Invoice;
-use App\Repository\Orm\InvoiceRepository;
-use App\Tests\Behat\SendRequestTrait;
+use BillaBear\Entity\Invoice;
+use BillaBear\Repository\Orm\InvoiceRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 

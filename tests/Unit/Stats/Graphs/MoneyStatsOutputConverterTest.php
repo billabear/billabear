@@ -6,11 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Unit\Stats\Graphs;
+namespace BillaBear\Tests\Unit\Stats\Graphs;
 
-use App\Entity\Customer;
-use App\Entity\Stats\PaymentAmountDailyStats;
-use App\Stats\Graphs\MoneyStatOutputConverter;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\Stats\PaymentAmountDailyStats;
+use BillaBear\Stats\Graphs\MoneyStatOutputConverter;
 use PHPUnit\Framework\TestCase;
 
 class MoneyStatsOutputConverterTest extends TestCase

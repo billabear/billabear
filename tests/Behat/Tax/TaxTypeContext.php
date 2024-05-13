@@ -6,13 +6,13 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Tax;
+namespace BillaBear\Tests\Behat\Tax;
 
-use App\Entity\Country;
-use App\Entity\TaxType;
-use App\Repository\Orm\CountryRepository;
-use App\Repository\Orm\TaxTypeRepository;
-use App\Tests\Behat\SendRequestTrait;
+use BillaBear\Entity\Country;
+use BillaBear\Entity\TaxType;
+use BillaBear\Repository\Orm\CountryRepository;
+use BillaBear\Repository\Orm\TaxTypeRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;

@@ -12,7 +12,7 @@ security:
         api:
             pattern: ^/api/
             custom_authenticators:
-                - App\Security\ApiKeyAuthenticator
+                - BillaBear\Security\ApiKeyAuthenticator
         main:
             pattern: ^/app/
             stateless: false

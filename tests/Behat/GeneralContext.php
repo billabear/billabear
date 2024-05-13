@@ -6,14 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat;
+namespace BillaBear\Tests\Behat;
 
-use App\Entity\BrandSettings;
-use App\Entity\Country;
-use App\Entity\CountryTaxRule;
-use App\Entity\EmailTemplate;
-use App\Entity\Settings;
-use App\Entity\TaxType;
+use BillaBear\Entity\BrandSettings;
+use BillaBear\Entity\Country;
+use BillaBear\Entity\CountryTaxRule;
+use BillaBear\Entity\EmailTemplate;
+use BillaBear\Entity\Settings;
+use BillaBear\Entity\TaxType;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;

@@ -6,10 +6,10 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace App\Tests\Behat\Quote;
+namespace BillaBear\Tests\Behat\Quote;
 
-use App\Entity\Customer;
-use App\Entity\Quote;
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\Quote;
 
 trait QuoteTrait
 {
