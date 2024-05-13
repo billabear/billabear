@@ -121,7 +121,8 @@ default:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
             kernel:
-                path: src/App/Kernel.php
+                path: src/BillaBear/Kernel.php
+                class: BillaBear\Kernel
         Behat\MinkExtension:
             sessions:
                 symfony:
