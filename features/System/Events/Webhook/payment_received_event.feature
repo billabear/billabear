@@ -6,6 +6,11 @@ Feature: Send payment received event
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And there are the following tax types:
+      | Name             | Physical |
+      | Digital Goods    | False    |
+      | Digital Services | False    |
+      | Physical         | True     |
     And the follow products exist:
       | Name        | External Reference |
       | Product One | prod_jf9j545       |
@@ -49,8 +54,8 @@ Feature: Send payment received event
 
   Scenario:
     Given the following invoices with a payment attempt exist:
-      | Customer                 | Paid |
-      | customer.two@example.org | false |
+      | Customer                 | Paid  | Tax Type      |
+      | customer.two@example.org | false | Digital Goods |
     And the following webhook endpoints exist:
       | Name        | URL                 |
       | Example.org | https://example.org |
