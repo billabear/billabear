@@ -19,6 +19,7 @@ use BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Invoice\PriceInfo;
 use BillaBear\Invoice\Pricer;
+use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use BillaBear\Tax\TaxInfo;
@@ -75,8 +76,9 @@ class InvoiceGeneratorTest extends TestCase
         $eventDispatcher = $this->createMock(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
 
         $dueDateDecider = $this->createMock(DueDateDecider::class);
+        $exchangeRateProvider = $this->createMock(BricksExchangeRateProvider::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider);
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $exchangeRateProvider);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
