@@ -8,7 +8,7 @@
 
 namespace BillaBear\DataMappers;
 
-use BillaBear\Dto\Request\BillaBear\Settings\User\UserUpdate;
+use BillaBear\Dto\Request\App\Settings\User\UserUpdate;
 use BillaBear\Dto\Response\App\Settings\User\User as AppDto;
 use BillaBear\Entity\User;
 

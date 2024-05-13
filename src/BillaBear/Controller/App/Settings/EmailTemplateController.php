@@ -9,8 +9,8 @@
 namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\DataMappers\Settings\EmailTemplateDataMapper;
-use BillaBear\Dto\Request\BillaBear\EmailTemplate\CreateEmailTemplate;
-use BillaBear\Dto\Request\BillaBear\EmailTemplate\UpdateEmailTemplate;
+use BillaBear\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
+use BillaBear\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use BillaBear\Dto\Response\App\EmailTemplate\EmailTemplateView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\EmailTemplate;

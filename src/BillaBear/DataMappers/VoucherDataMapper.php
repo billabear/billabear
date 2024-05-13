@@ -9,7 +9,7 @@
 namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\App\Voucher as AppDto;
-use BillaBear\Dto\Request\BillaBear\Voucher\CreateVoucher;
+use BillaBear\Dto\Request\App\Voucher\CreateVoucher;
 use BillaBear\Entity\Voucher as Entity;
 use BillaBear\Entity\VoucherAmount;
 use BillaBear\Enum\VoucherEntryType;

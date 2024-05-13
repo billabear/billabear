@@ -8,7 +8,7 @@
 
 namespace BillaBear\DataMappers\Settings;
 
-use BillaBear\Dto\Request\BillaBear\Settings\CreateApiKey;
+use BillaBear\Dto\Request\App\Settings\CreateApiKey;
 use BillaBear\Dto\Response\App\Settings\ApiKey as AppDto;
 use BillaBear\Entity\ApiKey as Entity;
 

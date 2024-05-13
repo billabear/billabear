@@ -9,7 +9,7 @@
 namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\DataMappers\Settings\TaxSettingsDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\Tax\TaxSettings;
+use BillaBear\Dto\Request\App\Settings\Tax\TaxSettings;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

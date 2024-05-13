@@ -8,7 +8,7 @@
 
 namespace BillaBear\Validator\Constraints;
 
-use BillaBear\Dto\Request\BillaBear\Product\UpdateSubscriptionPlan;
+use BillaBear\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;

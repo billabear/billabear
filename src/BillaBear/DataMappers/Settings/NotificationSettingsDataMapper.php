@@ -8,7 +8,7 @@
 
 namespace BillaBear\DataMappers\Settings;
 
-use BillaBear\Dto\Request\BillaBear\Settings\NotificationSettings as RequestDto;
+use BillaBear\Dto\Request\App\Settings\NotificationSettings as RequestDto;
 use BillaBear\Dto\Response\App\Settings\NotificationSettings as AppDto;
 use BillaBear\Entity\Settings\NotificationSettings;
 

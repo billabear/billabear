@@ -13,7 +13,7 @@ use BillaBear\Dto\Generic\Api\Customer as CustomerApiDto;
 use BillaBear\Dto\Generic\App\Customer as CustomerAppDto;
 use BillaBear\Dto\Generic\Public\Customer as CustomerPublicDto;
 use BillaBear\Dto\Request\Api\CreateCustomerDto as ApiCreate;
-use BillaBear\Dto\Request\BillaBear\CreateCustomerDto as AppCreate;
+use BillaBear\Dto\Request\App\CreateCustomerDto as AppCreate;
 use BillaBear\Dto\Request\Public\CreateCustomerDto as PublicCreate;
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;

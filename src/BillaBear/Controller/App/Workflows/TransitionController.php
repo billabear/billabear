@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App\Workflows;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Workflows\PlaceDataMapper;
-use BillaBear\Dto\Request\BillaBear\Workflows\CreateTransition;
+use BillaBear\Dto\Request\App\Workflows\CreateTransition;
 use BillaBear\Repository\WorkflowTransitionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;

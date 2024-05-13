@@ -8,8 +8,8 @@
 
 namespace BillaBear\Validator\Constraints;
 
-use BillaBear\Dto\Request\BillaBear\Subscription\MassChange\CreateMassChange;
-use BillaBear\Dto\Request\BillaBear\Subscription\MassChange\EstimateMassChange;
+use BillaBear\Dto\Request\App\Subscription\MassChange\CreateMassChange;
+use BillaBear\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use BillaBear\Entity\Price;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Ramsey\Uuid\Uuid;

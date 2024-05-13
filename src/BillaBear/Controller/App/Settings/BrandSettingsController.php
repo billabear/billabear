@@ -9,8 +9,8 @@
 namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
-use BillaBear\Dto\Request\BillaBear\BrandSettings\CreateBrandSettings;
-use BillaBear\Dto\Request\BillaBear\BrandSettings\EditBrandSettings;
+use BillaBear\Dto\Request\App\BrandSettings\CreateBrandSettings;
+use BillaBear\Dto\Request\App\BrandSettings\EditBrandSettings;
 use BillaBear\Dto\Response\App\BrandSettings\BrandSettingsView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;

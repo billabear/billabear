@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\InvoiceDataMapper;
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoice;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoice;
 use BillaBear\Dto\Response\App\Invoice\ViewInvoice;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Invoice;

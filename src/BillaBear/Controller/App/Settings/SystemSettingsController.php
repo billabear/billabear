@@ -9,7 +9,7 @@
 namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\DataMappers\Settings\SystemSettingsDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\SystemSettings;
+use BillaBear\Dto\Request\App\Settings\SystemSettings;
 use BillaBear\Dto\Response\App\Settings\SystemSettingsView;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

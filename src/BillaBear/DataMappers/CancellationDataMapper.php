@@ -12,7 +12,7 @@ use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\Dto\Generic\App\CancellationRequest as AppDto;
 use BillaBear\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription as ApiInputDto;
-use BillaBear\Dto\Request\BillaBear\CancelSubscription as AppInputDto;
+use BillaBear\Dto\Request\App\CancelSubscription as AppInputDto;
 use BillaBear\Entity\CancellationRequest as Entity;
 use BillaBear\Enum\CancellationType;
 use Parthenon\Billing\Entity\BillingAdminInterface;

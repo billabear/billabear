@@ -8,7 +8,7 @@
 
 namespace BillaBear\Validator\Constraints;
 
-use BillaBear\Dto\Request\BillaBear\EmailTemplate\CreateEmailTemplate;
+use BillaBear\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
 use BillaBear\Repository\EmailTemplateRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

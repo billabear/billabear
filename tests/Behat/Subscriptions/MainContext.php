@@ -8,7 +8,7 @@
 
 namespace BillaBear\Tests\Behat\Subscriptions;
 
-use BillaBear\Dto\Request\BillaBear\Subscription\UpdatePlan;
+use BillaBear\Dto\Request\App\Subscription\UpdatePlan;
 use BillaBear\Entity\Payment;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;

@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\TaxTypeDataMapper;
-use BillaBear\Dto\Request\BillaBear\TaxType\CreateTaxType;
+use BillaBear\Dto\Request\App\TaxType\CreateTaxType;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

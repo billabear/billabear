@@ -9,8 +9,8 @@
 namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\App\CountryTaxRule as AppDto;
-use BillaBear\Dto\Request\BillaBear\Country\CreateCountryTaxRule;
-use BillaBear\Dto\Request\BillaBear\Country\UpdateCountryTaxRule;
+use BillaBear\Dto\Request\App\Country\CreateCountryTaxRule;
+use BillaBear\Dto\Request\App\Country\UpdateCountryTaxRule;
 use BillaBear\Entity\Country;
 use BillaBear\Entity\CountryTaxRule as Entity;
 use BillaBear\Repository\TaxTypeRepositoryInterface;

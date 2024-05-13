@@ -8,7 +8,7 @@
 
 namespace BillaBear\DataMappers\Developer;
 
-use BillaBear\Dto\Request\BillaBear\Developer\Webhook\CreateWebhookEndpoint;
+use BillaBear\Dto\Request\App\Developer\Webhook\CreateWebhookEndpoint;
 use BillaBear\Dto\Response\App\Developer\Webhook\WebhookEndpoint as AppDto;
 use BillaBear\Entity\WebhookEndpoint as Entity;
 

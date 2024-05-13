@@ -8,9 +8,9 @@
 
 namespace BillaBear\Quotes;
 
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoiceItem;
-use BillaBear\Dto\Request\BillaBear\Quote\CreateQuote;
-use BillaBear\Dto\Request\BillaBear\Quote\CreateQuoteSubscription;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoiceItem;
+use BillaBear\Dto\Request\App\Quote\CreateQuote;
+use BillaBear\Dto\Request\App\Quote\CreateQuoteSubscription;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Quote;
 use BillaBear\Entity\QuoteLine;

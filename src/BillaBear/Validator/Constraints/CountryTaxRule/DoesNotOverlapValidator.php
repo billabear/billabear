@@ -8,8 +8,8 @@
 
 namespace BillaBear\Validator\Constraints\CountryTaxRule;
 
-use BillaBear\Dto\Request\BillaBear\Country\CreateCountryTaxRule;
-use BillaBear\Dto\Request\BillaBear\Country\UpdateCountryTaxRule;
+use BillaBear\Dto\Request\App\Country\CreateCountryTaxRule;
+use BillaBear\Dto\Request\App\Country\UpdateCountryTaxRule;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use Symfony\Component\Validator\Constraint;

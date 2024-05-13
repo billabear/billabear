@@ -9,7 +9,7 @@
 namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\App\Feature as AppDto;
-use BillaBear\Dto\Request\BillaBear\PostFeature;
+use BillaBear\Dto\Request\App\PostFeature;
 use Parthenon\Billing\Entity\SubscriptionFeature;
 
 class FeatureDataMapper

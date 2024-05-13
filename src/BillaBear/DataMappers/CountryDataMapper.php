@@ -9,8 +9,8 @@
 namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\App\Country as AppDto;
-use BillaBear\Dto\Request\BillaBear\Country\CreateCountry;
-use BillaBear\Dto\Request\BillaBear\Country\UpdateCountry;
+use BillaBear\Dto\Request\App\Country\CreateCountry;
+use BillaBear\Dto\Request\App\Country\UpdateCountry;
 use BillaBear\Entity\Country as Entity;
 use BillaBear\Tax\ThresholdManager;
 

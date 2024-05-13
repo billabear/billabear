@@ -9,7 +9,7 @@
 namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\App\Credit as AppDto;
-use BillaBear\Dto\Request\BillaBear\CreditAdjustment\CreateCreditAdjustment;
+use BillaBear\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use BillaBear\Entity\Credit as Entity;
 use BillaBear\Entity\Customer;
 use Obol\Model\Credit\BalanceOutput;

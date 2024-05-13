@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\StripeImportDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\RegisterWebhook;
+use BillaBear\Dto\Request\App\Settings\RegisterWebhook;
 use BillaBear\Dto\Response\App\Settings\StripeImportView;
 use BillaBear\Entity\GenericBackgroundTask;
 use BillaBear\Entity\StripeImport;

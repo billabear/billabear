@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\DataMappers\InviteCodeDataMapper;
 use BillaBear\DataMappers\UserDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\User\UserUpdate;
+use BillaBear\Dto\Request\App\Settings\User\UserUpdate;
 use BillaBear\Dto\Response\App\Settings\User\UserListView;
 use BillaBear\Dto\Response\App\Settings\User\UserView;
 use BillaBear\Entity\User;

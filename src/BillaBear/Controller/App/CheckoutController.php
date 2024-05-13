@@ -14,7 +14,7 @@ use BillaBear\DataMappers\CheckoutDataMapper;
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use BillaBear\DataMappers\TaxTypeDataMapper;
-use BillaBear\Dto\Request\BillaBear\Checkout\CreateCheckout;
+use BillaBear\Dto\Request\App\Checkout\CreateCheckout;
 use BillaBear\Dto\Response\App\Checkout\ReadCheckout;
 use BillaBear\Dto\Response\App\Checkout\ReadCreateCheckoutView;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;

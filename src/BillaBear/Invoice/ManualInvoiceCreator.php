@@ -8,9 +8,9 @@
 
 namespace BillaBear\Invoice;
 
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoice;
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoiceItem;
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoiceSubscription;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoice;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoiceItem;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoiceSubscription;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Payment\InvoiceCharger;

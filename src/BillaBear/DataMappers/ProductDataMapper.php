@@ -11,7 +11,7 @@ namespace BillaBear\DataMappers;
 use BillaBear\Dto\Generic\Api\Product as ProductDto;
 use BillaBear\Dto\Generic\App\Product as AppDto;
 use BillaBear\Dto\Request\Api\CreateProduct as ApiCreate;
-use BillaBear\Dto\Request\BillaBear\CreateProduct as AppCreate;
+use BillaBear\Dto\Request\App\CreateProduct as AppCreate;
 use BillaBear\Entity\Product;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 

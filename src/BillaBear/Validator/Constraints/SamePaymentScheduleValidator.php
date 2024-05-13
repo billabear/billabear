@@ -8,7 +8,7 @@
 
 namespace BillaBear\Validator\Constraints;
 
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoiceSubscription;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoiceSubscription;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Symfony\Component\Validator\Constraint;

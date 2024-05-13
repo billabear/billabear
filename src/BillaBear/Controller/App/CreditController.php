@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App;
 
 use BillaBear\Credit\CreditAdjustmentRecorder;
 use BillaBear\DataMappers\CreditDataMapper;
-use BillaBear\Dto\Request\BillaBear\CreditAdjustment\CreateCreditAdjustment;
+use BillaBear\Dto\Request\App\CreditAdjustment\CreateCreditAdjustment;
 use BillaBear\Entity\Customer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\User\UserProvider;

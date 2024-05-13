@@ -9,7 +9,7 @@
 namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\App\TaxType as AppDto;
-use BillaBear\Dto\Request\BillaBear\TaxType\CreateTaxType;
+use BillaBear\Dto\Request\App\TaxType\CreateTaxType;
 use BillaBear\Entity\TaxType as Entity;
 
 class TaxTypeDataMapper

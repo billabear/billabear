@@ -9,7 +9,7 @@
 namespace BillaBear\Controller\App;
 
 use BillaBear\DataMappers\FeatureDataMapper;
-use BillaBear\Dto\Request\BillaBear\PostFeature;
+use BillaBear\Dto\Request\App\PostFeature;
 use BillaBear\Dto\Response\Api\ListResponse;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

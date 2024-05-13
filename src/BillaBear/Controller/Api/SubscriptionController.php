@@ -15,7 +15,7 @@ use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription;
 use BillaBear\Dto\Request\Api\Subscription\CreateSubscription;
 use BillaBear\Dto\Request\Api\Subscription\UpdatePlan;
-use BillaBear\Dto\Request\BillaBear\Subscription\UpdatePaymentMethod;
+use BillaBear\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Filters\SubscriptionList;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;

@@ -8,7 +8,7 @@
 
 namespace BillaBear\Validator\Constraints;
 
-use BillaBear\Dto\Request\BillaBear\CreateProduct;
+use BillaBear\Dto\Request\App\CreateProduct;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

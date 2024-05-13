@@ -9,8 +9,8 @@
 namespace BillaBear\DataMappers\Settings;
 
 use BillaBear\Dto\Generic\Address as AddressDto;
-use BillaBear\Dto\Request\BillaBear\BrandSettings\CreateBrandSettings;
-use BillaBear\Dto\Request\BillaBear\BrandSettings\EditBrandSettings as EditDto;
+use BillaBear\Dto\Request\App\BrandSettings\CreateBrandSettings;
+use BillaBear\Dto\Request\App\BrandSettings\EditBrandSettings as EditDto;
 use BillaBear\Dto\Response\App\BrandSettings\BrandSettings as AppDto;
 use BillaBear\Entity\BrandSettings;
 use Parthenon\Common\Address;

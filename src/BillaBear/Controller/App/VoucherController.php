@@ -11,7 +11,7 @@ namespace BillaBear\Controller\App;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\VoucherAmountDataMapper;
 use BillaBear\DataMappers\VoucherDataMapper;
-use BillaBear\Dto\Request\BillaBear\Voucher\CreateVoucher;
+use BillaBear\Dto\Request\App\Voucher\CreateVoucher;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Dto\Response\App\Vouchers\VoucherView;
 use BillaBear\Entity\Voucher;

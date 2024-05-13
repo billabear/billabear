@@ -8,7 +8,7 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCancel;
 
-use BillaBear\Dto\Request\BillaBear\CancelSubscription;
+use BillaBear\Dto\Request\App\CancelSubscription;
 use BillaBear\Entity\CancellationRequest;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -9,7 +9,7 @@
 namespace BillaBear\DataMappers\Workflows;
 
 use BillaBear\Dto\Generic\App\Workflows\Place as AppDto;
-use BillaBear\Dto\Request\BillaBear\Workflows\CreateTransition;
+use BillaBear\Dto\Request\App\Workflows\CreateTransition;
 use BillaBear\Entity\WorkflowTransition;
 use BillaBear\Entity\WorkflowTransition as Entity;
 use BillaBear\Enum\WorkflowType;

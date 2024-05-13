@@ -9,7 +9,7 @@
 namespace BillaBear\Controller\App\Subscriptions;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
-use BillaBear\Dto\Request\BillaBear\Subscription\ChangeSeats;
+use BillaBear\Dto\Request\App\Subscription\ChangeSeats;
 use BillaBear\Entity\Subscription;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\UpdateAction\SetSeatsFromSubscription;

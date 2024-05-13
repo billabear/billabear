@@ -10,8 +10,8 @@ namespace BillaBear\DataMappers\Subscriptions;
 
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
-use BillaBear\Dto\Request\BillaBear\Subscription\MassChange\CreateMassChange;
-use BillaBear\Dto\Request\BillaBear\Subscription\MassChange\EstimateMassChange;
+use BillaBear\Dto\Request\App\Subscription\MassChange\CreateMassChange;
+use BillaBear\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use BillaBear\Dto\Response\App\Subscription\MassChange\MassSubscriptionChange as AppDto;
 use BillaBear\Entity\MassSubscriptionChange as Entity;
 use BillaBear\Enum\MassSubscriptionChangeStatus;

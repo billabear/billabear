@@ -8,8 +8,8 @@
 
 namespace BillaBear\DataMappers\Settings;
 
-use BillaBear\Dto\Request\BillaBear\EmailTemplate\CreateEmailTemplate;
-use BillaBear\Dto\Request\BillaBear\EmailTemplate\UpdateEmailTemplate;
+use BillaBear\Dto\Request\App\EmailTemplate\CreateEmailTemplate;
+use BillaBear\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use BillaBear\Dto\Response\App\EmailTemplate\EmailTemplate as AppDto;
 use BillaBear\Dto\Response\App\EmailTemplate\FullEmailTemplate as FullAppDto;
 use BillaBear\Entity\EmailTemplate;

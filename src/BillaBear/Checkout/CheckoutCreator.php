@@ -9,9 +9,9 @@
 namespace BillaBear\Checkout;
 
 use BillaBear\Dto\Request\Api\Checkout\CreateCheckout as ApiRequest;
-use BillaBear\Dto\Request\BillaBear\Checkout\CreateCheckout as AppRequest;
-use BillaBear\Dto\Request\BillaBear\Checkout\CreateCheckoutSubscription;
-use BillaBear\Dto\Request\BillaBear\Invoice\CreateInvoiceItem;
+use BillaBear\Dto\Request\App\Checkout\CreateCheckout as AppRequest;
+use BillaBear\Dto\Request\App\Checkout\CreateCheckoutSubscription;
+use BillaBear\Dto\Request\App\Invoice\CreateInvoiceItem;
 use BillaBear\Entity\Checkout;
 use BillaBear\Entity\CheckoutLine;
 use BillaBear\Entity\Customer;

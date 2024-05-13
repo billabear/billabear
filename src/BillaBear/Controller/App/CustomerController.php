@@ -20,7 +20,7 @@ use BillaBear\DataMappers\PaymentMethodsDataMapper;
 use BillaBear\DataMappers\RefundDataMapper;
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
-use BillaBear\Dto\Request\BillaBear\CreateCustomerDto;
+use BillaBear\Dto\Request\App\CreateCustomerDto;
 use BillaBear\Dto\Response\App\Customer\CreateCustomerView;
 use BillaBear\Dto\Response\App\CustomerView;
 use BillaBear\Dto\Response\App\ListResponse;

@@ -13,7 +13,7 @@ use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Developer\WebhookEndpointDataMapper;
 use BillaBear\DataMappers\Developer\WebhookEventDataMapper;
 use BillaBear\DataMappers\Developer\WebhookEventResponseDataMapper;
-use BillaBear\Dto\Request\BillaBear\Developer\Webhook\CreateWebhookEndpoint;
+use BillaBear\Dto\Request\App\Developer\Webhook\CreateWebhookEndpoint;
 use BillaBear\Dto\Response\App\Developer\Webhook\ViewWebhookEndpoint;
 use BillaBear\Dto\Response\App\Developer\Webhook\ViewWebhookEvent;
 use BillaBear\Dto\Response\App\ListResponse;

@@ -9,7 +9,7 @@
 namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\DataMappers\Settings\NotificationSettingsDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\NotificationSettings;
+use BillaBear\Dto\Request\App\Settings\NotificationSettings;
 use BillaBear\Dto\Response\App\Settings\NotificationSettingsView;
 use BillaBear\Repository\SettingsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;

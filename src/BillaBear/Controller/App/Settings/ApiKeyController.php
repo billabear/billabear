@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\ApiKeyDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\CreateApiKey;
+use BillaBear\Dto\Request\App\Settings\CreateApiKey;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\ApiKey;
 use BillaBear\Repository\ApiKeyRepositoryInterface;

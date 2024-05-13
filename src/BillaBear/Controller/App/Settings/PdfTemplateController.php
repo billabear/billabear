@@ -10,8 +10,8 @@ namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\TemplateDataMapper;
-use BillaBear\Dto\Request\BillaBear\Settings\PdfTemplates\UpdateGeneratorSettings;
-use BillaBear\Dto\Request\BillaBear\Template\PdfTemplate;
+use BillaBear\Dto\Request\App\Settings\PdfTemplates\UpdateGeneratorSettings;
+use BillaBear\Dto\Request\App\Template\PdfTemplate;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Dto\Response\App\Settings\ReadPdfGeneratorSettings;
 use BillaBear\Dto\Response\App\Template\TemplateView;
