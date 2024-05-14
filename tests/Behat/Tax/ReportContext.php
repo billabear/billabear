@@ -57,4 +57,20 @@ class ReportContext implements Context
 
         throw new \Exception('No tax item found');
     }
+
+    /**
+     * @Then I will see that the country :arg1 in list of active countries
+     */
+    public function iWillSeeThatTheCountryInListOfActiveCountries($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['active_countries'] as $taxItecountry) {
+            if ($taxItecountry['country']['iso_code'] === $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception('No country found');
+    }
 }

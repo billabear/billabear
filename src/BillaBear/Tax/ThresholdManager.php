@@ -34,7 +34,7 @@ class ThresholdManager
         try {
             $country = $this->countryRepository->getByIsoCode($countryCode);
 
-            $amountTransacted = $this->getThreshold($country);
+            $amountTransacted = $this->getTransactedAmount($country);
 
             $amountToAdd = $this->currencyConverter->convert($money, $country->getCurrency(), RoundingMode::HALF_DOWN);
             $amountTransacted = $amountTransacted->plus($amountToAdd, RoundingMode::HALF_DOWN);
@@ -45,11 +45,14 @@ class ThresholdManager
         }
     }
 
-    public function getThreshold(Country $country): Money
+    public function getTransactedAmount(Country $country, ?\DateTime $when = null): Money
     {
+        if (!$when) {
+            $when = new \DateTime('-12 months');
+        }
         $defaultCurrency = $country->getCurrency();
         $money = Money::zero($defaultCurrency);
-        $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($country->getIsoCode(), new \DateTime('-12 months'));
+        $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($country->getIsoCode(), $when);
 
         foreach ($amounts as $amountData) {
             $originalFee = Money::of($amountData['amount'], $amountData['currency']);

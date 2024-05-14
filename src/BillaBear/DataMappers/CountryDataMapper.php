@@ -49,7 +49,7 @@ class CountryDataMapper
         $appDto->setInEu($entity->isInEu());
         $appDto->setStartOfTaxYear($entity->getStartOfTaxYear());
 
-        $amountTransacted = $this->manager->getThreshold($entity);
+        $amountTransacted = $this->manager->getTransactedAmount($entity);
         $appDto->setAmountTransacted($amountTransacted->getMinorAmount()->toInt());
 
         return $appDto;

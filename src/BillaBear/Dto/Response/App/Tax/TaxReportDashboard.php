@@ -15,6 +15,9 @@ class TaxReportDashboard
     #[SerializedName('latest_tax_items')]
     private array $latestTaxItems = [];
 
+    #[SerializedName('active_countries')]
+    private array $activeCountries = [];
+
     public function getLatestTaxItems(): array
     {
         return $this->latestTaxItems;
@@ -23,5 +26,15 @@ class TaxReportDashboard
     public function setLatestTaxItems(array $latestTaxItems): void
     {
         $this->latestTaxItems = $latestTaxItems;
+    }
+
+    public function getActiveCountries(): array
+    {
+        return $this->activeCountries;
+    }
+
+    public function setActiveCountries(array $activeCountries): void
+    {
+        $this->activeCountries = $activeCountries;
     }
 }

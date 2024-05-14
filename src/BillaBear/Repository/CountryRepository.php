@@ -24,4 +24,9 @@ class CountryRepository extends DoctrineCrudRepository implements CountryReposit
 
         return $country;
     }
+
+    public function getAll()
+    {
+        return $this->entityRepository->findAll();
+    }
 }

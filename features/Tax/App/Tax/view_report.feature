@@ -37,11 +37,11 @@ Feature: View Tax Report
     And the follow customers exist:
       | Email                      | Country | External Reference | Reference      | Billing Type |
       | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      |
-      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         |
-      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         |
-      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         |
-      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         |
-      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
+      | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         |
+      | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         |
+      | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         |
+      | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         |
+      | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         |
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status    |
       | Test Plan         | 1000         | USD            | week           | customer.one@example.org   | +3 Minutes  | Active    |
@@ -65,3 +65,18 @@ Feature: View Tax Report
     Then I will not see a tax item for "customer.two@example.org"
     But I will see a tax item for "customer.one@example.org"
     But I will see a tax item for "customer.four@example.org"
+
+  Scenario:
+    Given the following invoices exist:
+      | Customer                 | Paid  | Tax Type      |
+      | customer.one@example.org | true  | Digital Goods |
+      | customer.five@example.org | true  | Digital Goods |
+      | customer.six@example.org | false | Digital Goods |
+    And there is a payments for:
+      | Subscription Plan | Customer                  | Amount |
+      | Test Plan         | customer.four@example.org | 3500   |
+    And I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And I generate a receipt for the payment for "customer.four@example.org" for 3500
+    When I view the tax report page
+    Then I will see that the country "DE" in list of active countries
+    Then I will see that the country "GB" in list of active countries

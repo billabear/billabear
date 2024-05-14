@@ -35,13 +35,13 @@ class CountryController
     use CrudListTrait;
 
     #[Route('/app/countries', name: 'app_country_list', methods: ['GET'])]
-    public function listPayment(
+    public function listCountries(
         Request $request,
         CountryRepositoryInterface $countryRepository,
         SerializerInterface $serializer,
-        CountryDataMapper $paymentFactory,
+        CountryDataMapper $countryDataMapper,
     ): Response {
-        return $this->crudList($request, $countryRepository, $serializer, $paymentFactory);
+        return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper);
     }
 
     #[Route('/app/country', methods: ['POST'])]

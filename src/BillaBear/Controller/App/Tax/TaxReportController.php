@@ -10,6 +10,7 @@ namespace BillaBear\Controller\App\Tax;
 
 use BillaBear\Dto\Response\App\Tax\TaxReportDashboard;
 use BillaBear\Repository\TaxReportRepositoryInterface;
+use BillaBear\Tax\Report\ActiveCountryProvider;
 use BillaBear\Tax\Report\ReportItemBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +20,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 class TaxReportController
 {
     #[Route('/app/tax/report', name: 'app_app_tax_taxreport_viewlist', methods: ['GET'])]
-    public function viewList(
+    public function viewReport(
         Request $request,
         TaxReportRepositoryInterface $taxReportRepository,
         ReportItemBuilder $reportItemBuilder,
+        ActiveCountryProvider $activeCountryProvider,
         SerializerInterface $serializer,
     ): JsonResponse {
         $lastKey = $request->get('last_key');
@@ -47,6 +49,7 @@ class TaxReportController
 
         $list = new TaxReportDashboard();
         $list->setLatestTaxItems($dtos);
+        $list->setActiveCountries($activeCountryProvider->getActiveCountries());
 
         $json = $serializer->serialize($list, 'json');
 
