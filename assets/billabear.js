@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './app/styles/flowbite.css';
+import './billabear/styles/flowbite.css';
 
 import '@vue-flow/core/dist/style.css';
 import '@vue-flow/core/dist/theme-default.css';
@@ -18,16 +18,16 @@ import '@vue-flow/controls/dist/style.css'
 import 'vue-final-modal/style.css';
 import 'flowbite';
 
-import './app/styles/app.css';
-import './app/flowbite/constants';
+import './billabear/styles/app.css';
+import './billabear/flowbite/constants';
 
-import App from "./app/views/App";
+import App from "./billabear/views/App";
 
-import {router} from "./app/helpers/router"
-import {store} from './app/store'
+import {router} from "./billabear/helpers/router"
+import {store} from './billabear/store'
 import { createApp } from "vue";
 import { createVfm } from 'vue-final-modal'
-import {ENGLISH_TRANSLATIONS} from "./app/translations/en";
+import {ENGLISH_TRANSLATIONS} from "./billabear/translations/en";
 import {createI18n} from "vue-i18n";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -37,7 +37,7 @@ import ParthenonUI from "@parthenon/ui";
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import RoleOnlyView from "./app/components/app/RoleOnlyView.vue";
+import RoleOnlyView from "./billabear/components/app/RoleOnlyView.vue";
 
 
 import { VueFlow } from '@vue-flow/core'
@@ -52,22 +52,22 @@ const i18n = createI18n({
     messages: TRANSLATIONS,
 });
 
-var app = createApp(
+var billabear = createApp(
     App
 );
 
 const vfm = createVfm()
 
-app.use(router);
-app.use(i18n);
-app.use(store);
-app.use(ParthenonMenu);
-app.use(ParthenonUI);
-app.use(VueFlow);
-app.use(VueApexCharts)
-app.use(require('vue-moment-v3'))
-app.use(vfm)
-app.component('RoleOnlyView', RoleOnlyView);
-app.component('VueDatePicker', VueDatePicker);
+billabear.use(router);
+billabear.use(i18n);
+billabear.use(store);
+billabear.use(ParthenonMenu);
+billabear.use(ParthenonUI);
+billabear.use(VueFlow);
+billabear.use(VueApexCharts)
+billabear.use(require('vue-moment-v3'))
+billabear.use(vfm)
+billabear.component('RoleOnlyView', RoleOnlyView);
+billabear.component('VueDatePicker', VueDatePicker);
 
-app.mount('#app');
+billabear.mount('#app');

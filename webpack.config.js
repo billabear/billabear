@@ -17,7 +17,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
-    .addEntry('app', './assets/app.js')
+    .addEntry('billabear', './assets/billabear.js')
     .addEntry('public', './assets/public.js')
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

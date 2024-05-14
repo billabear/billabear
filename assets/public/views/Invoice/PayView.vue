@@ -88,8 +88,8 @@
 <script>
 import axios from "axios";
 import currency from "currency.js";
-import {stripeservice} from "../../../app/services/stripeservice";
-import {billingservice} from "../../../app/services/billingservice";
+import {stripeservice} from "../../../billabear/services/stripeservice";
+import {billingservice} from "../../../billabear/services/billingservice";
 
 export default {
   name: "PayView",

@@ -72,10 +72,10 @@
 
 <script>
 import axios from "axios";
-import {stripeservice} from "../../../app/services/stripeservice";
+import {stripeservice} from "../../../billabear/services/stripeservice";
 import currency from "currency.js";
-import CountrySelect from "../../../app/components/app/Forms/CountrySelect.vue";
-import {billingservice} from "../../../app/services/billingservice";
+import CountrySelect from "../../../billabear/components/app/Forms/CountrySelect.vue";
+import {billingservice} from "../../../billabear/services/billingservice";
 
 export default {
   name: "CheckoutView",
