@@ -1,10 +1,10 @@
 {
     "devDependencies": {
-        "@babel/core": "^7.18.13",
-        "@babel/preset-env": "^7.18.10",
+        "@babel/core": "^7.24.5",
+        "@babel/preset-env": "^7.24.5",
         "@hotwired/stimulus": "^3.0.0",
         "@symfony/stimulus-bridge": "^3.2.0",
-        "@symfony/webpack-encore": "^3.0.0",
+        "@symfony/webpack-encore": "^4.6.1",
         "babel-jest": "^29.0.2",
         "core-js": "^3.23.0",
         "jsdom": "^20.0.0",
@@ -13,7 +13,10 @@
         "sass": "^1.54.5",
         "sass-loader": "^13.0.0",
         "vue-loader": "^17.0.0",
-        "webpack-notifier": "^1.15.0"
+        "webpack": "^5.91.0",
+        "webpack-cli": "^5.1.4",
+        "webpack-notifier": "^1.15.0",
+        "strip-ansi": "^7.1.0"
     },
     "private": true,
     "scripts": {
@@ -36,7 +39,7 @@
         "@vue-flow/node-toolbar": "^1.1.0",
         "@vue-stripe/vue-stripe": "^4.4.4",
         "@vue/test-utils": "^2.0.2",
-        "@vuepic/vue-datepicker": "^8.6.0",
+        "@vuepic/vue-datepicker": "^4.3.0",
         "apexcharts": "^3.40.0",
         "autoprefixer": "^10.4.8",
         "axios": "^1.6.0",
