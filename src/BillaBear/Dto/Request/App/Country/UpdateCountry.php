@@ -37,6 +37,8 @@ class UpdateCountry
 
     #[SerializedName('tax_year')]
     private $taxYear;
+    #[SerializedName('start_of_tax_year')]
+    private $startOfTaxYear;
 
     public function getName()
     {
@@ -96,5 +98,15 @@ class UpdateCountry
     public function setTaxYear($taxYear): void
     {
         $this->taxYear = $taxYear;
+    }
+
+    public function getStartOfTaxYear()
+    {
+        return $this->startOfTaxYear;
+    }
+
+    public function setStartOfTaxYear($startOfTaxYear): void
+    {
+        $this->startOfTaxYear = $startOfTaxYear;
     }
 }
