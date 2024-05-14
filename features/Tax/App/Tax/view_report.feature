@@ -62,6 +62,6 @@ Feature: View Tax Report
     And I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And I generate a receipt for the payment for "customer.four@example.org" for 3500
     When I view the tax report page
-    Then I will not see an invoice for "customer.two@example.org"
-    But I will see an invoice for "customer.one@example.org"
-    But I will see an invoice for "customer.four@example.org"
+    Then I will not see a tax item for "customer.two@example.org"
+    But I will see a tax item for "customer.one@example.org"
+    But I will see a tax item for "customer.four@example.org"

@@ -8,7 +8,7 @@
 
 namespace BillaBear\Controller\App\Tax;
 
-use BillaBear\Dto\Response\App\ListResponse;
+use BillaBear\Dto\Response\App\Tax\TaxReportDashboard;
 use BillaBear\Repository\TaxReportRepositoryInterface;
 use BillaBear\Tax\Report\ReportItemBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,10 +45,8 @@ class TaxReportController
         $rawData = $taxReportRepository->getReportItems($filters, $resultsPerPage, 0);
         $dtos = array_map([$reportItemBuilder, 'buildItem'], iterator_to_array($rawData));
 
-        $list = new ListResponse();
-        $list->setData($dtos);
-        $list->setHasMore(true);
-        $list->setLastKey('fdf');
+        $list = new TaxReportDashboard();
+        $list->setLatestTaxItems($dtos);
 
         $json = $serializer->serialize($list, 'json');
 

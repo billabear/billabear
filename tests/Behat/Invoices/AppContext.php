@@ -8,6 +8,9 @@
 
 namespace BillaBear\Tests\Behat\Invoices;
 
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
@@ -23,9 +26,6 @@ use BillaBear\Repository\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
-use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
 use Obol\Model\Enum\ChargeFailureReasons;
 
 class AppContext implements Context
@@ -231,7 +231,6 @@ class AppContext implements Context
             }
         }
 
-        var_dump($data);
         throw new \Exception('No invoice found');
     }
 
