@@ -39,7 +39,7 @@
         "@vue-flow/node-toolbar": "^1.1.0",
         "@vue-stripe/vue-stripe": "^4.4.4",
         "@vue/test-utils": "^2.0.2",
-        "@vuepic/vue-datepicker": "^4.3.0",
+        "@vuepic/vue-datepicker": "^4.5.1",
         "apexcharts": "^3.40.0",
         "autoprefixer": "^10.4.8",
         "axios": "^1.6.0",
