@@ -34,7 +34,6 @@ class TaxDataCreator
             $country->setIsoCode($countryData['code']);
             $country->setCurrency($countryData['currency']);
             $country->setThreshold($countryData['threshold']);
-            $country->setRevenueForTaxYear(0);
             $country->setInEu($countryData['in_eu']);
             $country->setEnabled(true);
             $country->setCreatedAt(new \DateTime());
@@ -49,7 +48,6 @@ class TaxDataCreator
                     $taxType = new TaxType();
                     $taxType->setName($name);
                     $taxType->setDefault(true);
-                    $taxType->setPhysical(false); // remove
 
                     $this->taxTypeRepository->save($taxType);
                 }
