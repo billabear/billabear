@@ -30,19 +30,17 @@ export default {
       responsive: true,
       data: dataset,
       fills: {
-        defaultFill: 'rgba(169,224,255,0.9)', // Any hex, color name or rgb/rgba value
-        geographyConfig: {
-          highlightBorderWidth: 2,
-          popupTemplate: (geo, data) => {
-            if (!data) { return null; }
-            const pluralizedLabel = data.numberOfThings === 1 ? label.slice(0, -1) : label
-            return ['<div class="hoverinfo dark:bg-gray-800 dark:shadow-gray-850 dark:border-gray-850 dark:text-gray-200">',
-              '<strong>', geo.properties.name, ' </strong>',
-              '<br><strong class="dark:text-indigo-400">', numberFormatter(data.numberOfThings), '</strong> ', pluralizedLabel,
-              '</div>'].join('');
-          }
+        defaultFill: 'rgba(226,244,255,0.9)', // Any hex, color name or rgb/rgba value
+      },
+      geographyConfig: {
+        highlightBorderWidth: 2,
+        popupTemplate: function(geo, data) {
+          return ['<div class="hoverinfo dark:bg-gray-800 dark:shadow-gray-850 dark:border-gray-850 dark:text-gray-200">',
+            '<strong>', geo.properties.name, ' </strong>',
+            '<br><strong class="dark:text-indigo-400">', data.formatted, ' ' , data.label, '</strong> ',
+            '</div>'].join('');
         }
-      }
+      },
     });
     var map = this.map;
     d3.select(window).on('resize', function() {
@@ -64,7 +62,7 @@ export default {
           ])
 
       this.dataset.forEach(function(item){
-        output[item.code] = {numberOfThings: item.value, fillColor: getFillColour(item.value)};
+        output[item.code] = {numberOfThings: item.value, fillColor: getFillColour(item.value), label: item.label, formatted: item.formatted_value};
       });
 
       return output
