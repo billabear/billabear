@@ -4,9 +4,11 @@
 
     <div class="text-end m-5">
 
-      <router-link :to="{name:'app.workflows.payment_creation.edit'}" class="btn--main btn--secondary mr-5 p-5">
-        {{ $t('app.workflows.payment_creation.list.edit_button') }}
-      </router-link>
+      <RoleOnlyView role="ROLE_DEVELOPER">
+        <router-link :to="{name:'app.workflows.payment_creation.edit'}" class="btn--main btn--secondary mr-5 p-5">
+          {{ $t('app.workflows.payment_creation.list.edit_button') }}
+        </router-link>
+      </RoleOnlyView>
 
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
         <div class="list_container">
@@ -86,10 +88,11 @@
 <script>
 import axios from "axios";
 import {Dropdown, Input, ListGroup, ListGroupItem} from "flowbite-vue";
+import RoleOnlyView from "../../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "SubscriptionCreationList",
-  components: {Input, Dropdown, ListGroupItem, ListGroup},
+  components: {RoleOnlyView, Input, Dropdown, ListGroupItem, ListGroup},
   data() {
     return {
       ready: false,

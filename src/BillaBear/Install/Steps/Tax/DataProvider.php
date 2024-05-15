@@ -343,7 +343,7 @@ class DataProvider
                 ],
             ],
 
-            // Down under
+            // Pacfic
 
             'AU' => [
                 'name' => 'Australia',
