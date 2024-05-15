@@ -520,6 +520,124 @@ class DataProvider
 
             // Africa
 
+            'ZA' => [
+                'name' => 'South Africa',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'ZAR',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'LS' => [
+                'name' => 'Lesotho',
+                'threshold' => 85000000,
+                'in_eu' => false,
+                'currency' => 'LSL',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'SZ' => [
+                'name' => 'Swaziland',
+                'threshold' => 50000000,
+                'in_eu' => false,
+                'currency' => 'SZL',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'NA' => [
+                'name' => 'Namibia',
+                'threshold' => 50000000,
+                'in_eu' => false,
+                'currency' => 'NAD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'BW' => [
+                'name' => 'Botswana',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'BWP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 14],
+                ],
+            ],
+            'ZW' => [
+                'name' => 'Zimbabwe',
+                'threshold' => 2500000,
+                'in_eu' => false,
+                'currency' => 'USD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'MG' => [
+                'name' => 'Madagascar',
+                'threshold' => 400000000,
+                'in_eu' => false,
+                'currency' => 'MGA',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 20],
+                ],
+            ],
+            'MZ' => [
+                'name' => 'Mozambique',
+                'threshold' => 250000000,
+                'in_eu' => false,
+                'currency' => 'MGA',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16],
+                ],
+            ],
+            'AO' => [
+                'name' => 'Angola',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'AOA',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 14],
+                ],
+            ],
+            'ZM' => [
+                'name' => 'Zambia',
+                'threshold' => 80000000,
+                'in_eu' => false,
+                'currency' => 'ZMW',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16],
+                ],
+            ],
+            'MW' => [
+                'name' => 'Malawi',
+                'threshold' => 2500000000,
+                'in_eu' => false,
+                'currency' => 'MWK',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16.5],
+                ],
+            ],
+            'GA' => [
+                'name' => 'Gabon',
+                'threshold' => 2500000000,
+                'in_eu' => false,
+                'currency' => 'XAF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'GQ' => [
+                'name' => 'Equatorial Guinea',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'XAF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+
             // Asia
 
             // Pacfic
