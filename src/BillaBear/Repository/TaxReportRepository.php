@@ -50,4 +50,35 @@ where ip.invoice_id is null";
             yield $data;
         }
     }
+
+    public function getTaxCollected(string $countryCode, ?\DateTime $since = null): array
+    {
+        if (!$since) {
+            $since = new \DateTime('-12 months');
+        }
+
+        $sql = 'select il.currency as currency, sum(il.tax_total) as amount
+from invoice i 
+inner join invoice_line il on il.invoice_id =i.id 
+inner join customers c on i.customer_id = c.id
+inner join tax_type tt on tt.id  = il.tax_type_id
+where i.paid = true AND il.tax_country = :countryCode AND i.created_at > :since
+group by il.currency
+union
+select rl.currency as currency, sum(rl.vat_total) as amount
+from receipt r  
+inner join receipt_line rl  on rl.receipt_id =r.id 
+inner join customers c on r.customer_id = c.id
+inner join tax_type tt on tt.id  = rl.tax_type_id
+inner join receipt_payment rp on rp.receipt_id  = r.id 
+inner join payment p ON  rp.payment_id = p.id
+left join invoice_payment ip ON ip.payment_id = p.id
+where ip.invoice_id is null AND rl.tax_country = :countryCode AND r.created_at > :since
+group by rl.currency';
+
+        $query = $this->connection->prepare($sql);
+        $res = $query->executeQuery(['countryCode' => $countryCode, 'since' => $since->format('Y-m-d')]);
+
+        return $res->fetchAllAssociative();
+    }
 }

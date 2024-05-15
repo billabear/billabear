@@ -11,4 +11,6 @@ namespace BillaBear\Repository;
 interface TaxReportRepositoryInterface
 {
     public function getReportItems(array $params = [], ?int $limit = null, ?int $offset = null): iterable;
+
+    public function getTaxCollected(string $countryCode, ?\DateTime $since = null): array;
 }

@@ -24,6 +24,9 @@ class ActiveTaxCountries
     #[SerializedName('threshold_reached')]
     private bool $thresholdReached;
 
+    #[SerializedName('collected_amount')]
+    private int $collectedAmount;
+
     public function getCountry(): Country
     {
         return $this->country;
@@ -62,5 +65,15 @@ class ActiveTaxCountries
     public function setThresholdReached(bool $thresholdReached): void
     {
         $this->thresholdReached = $thresholdReached;
+    }
+
+    public function getCollectedAmount(): int
+    {
+        return $this->collectedAmount;
+    }
+
+    public function setCollectedAmount(int $collectedAmount): void
+    {
+        $this->collectedAmount = $collectedAmount;
     }
 }

@@ -24,7 +24,7 @@ export default {
   mounted() {
     var dataset = this.getDataset();
     this.computedData = dataset;
-    console.log(dataset)
+
     this.map = new Datamap({
       element: document.getElementById('world_map'),
       responsive: true,

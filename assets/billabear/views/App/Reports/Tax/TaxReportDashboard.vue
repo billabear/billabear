@@ -17,6 +17,7 @@
           <div class="my-3 border p-2 hover:bg-gray-100" v-for="country in rawCountryData">
             <div class="country-title">{{ country.country.name }}</div>
             <div class="country-data" v-html="$t('app.reports.tax.countries.transacted_amount', {transacted_amount: displayCurrency(country.transacted_amount), currency: Number().toLocaleString(undefined, {style:'currency', currency:country.country.currency}).slice(0,1)  })"></div>
+            <div class="country-data" v-html="$t('app.reports.tax.countries.collected_amount', {transacted_amount: displayCurrency(country.collected_amount), currency: Number().toLocaleString(undefined, {style:'currency', currency:country.country.currency}).slice(0,1)  })"></div>
             <div class="country-data" v-html="$t(
                 'app.reports.tax.countries.threshold_status',
                 {status: country.threshold_reached ?
@@ -97,6 +98,9 @@ export default {
   },
   methods: {
     displayCurrency: function (value) {
+      if (!value){
+        return '0';
+      }
       return currency(value, { fromCents: true }).format({symbol: ''});
     },
     processExport: function () {

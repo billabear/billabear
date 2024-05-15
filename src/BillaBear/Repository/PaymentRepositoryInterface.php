@@ -8,7 +8,12 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Payment;
+
 interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\PaymentRepositoryInterface
 {
+    /**
+     * @return Payment[]
+     */
     public function getPaymentsAmountForCountrySinceDate(string $countryCode, \DateTime $when): array;
 }

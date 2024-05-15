@@ -10,9 +10,12 @@ namespace BillaBear\Tax\Report;
 
 use BillaBear\DataMappers\CountryDataMapper;
 use BillaBear\Dto\Response\App\Tax\ActiveTaxCountries;
+use BillaBear\Entity\Country;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\CountryRepositoryInterface;
+use BillaBear\Repository\TaxReportRepositoryInterface;
 use BillaBear\Tax\ThresholdManager;
+use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
 
@@ -25,6 +28,7 @@ class ActiveCountryProvider
         private ThresholdManager $thresholdManager,
         private CountryDataMapper $countryDataMapper,
         private BricksExchangeRateProvider $exchangeRateProvider,
+        private TaxReportRepositoryInterface $taxReportRepository,
     ) {
         $this->currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
     }
@@ -48,10 +52,27 @@ class ActiveCountryProvider
             $activeCountry->setTransactedAmount($transactedAmount->getMinorAmount()->toInt());
             $activeCountry->setCountry($this->countryDataMapper->createAppDto($country));
             $activeCountry->setThresholdReached($this->thresholdManager->isThresholdReached($country->getIsoCode(), Money::zero('USD')));
+            $activeCountry->setCollectedAmount($this->getAmountCollected($country, $when));
 
             $output[] = $activeCountry;
         }
 
         return $output;
+    }
+
+    private function getAmountCollected(Country $country, ?\DateTime $when): int
+    {
+        $collectedAmounts = $this->taxReportRepository->getTaxCollected($country->getIsoCode(), $when);
+
+        $defaultCurrency = $country->getCurrency();
+        $money = Money::zero($defaultCurrency);
+
+        foreach ($collectedAmounts as $amountData) {
+            $originalFee = Money::of($amountData['amount'], $amountData['currency']);
+            $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
+            $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
+        }
+
+        return $money->getMinorAmount()->toInt();
     }
 }
