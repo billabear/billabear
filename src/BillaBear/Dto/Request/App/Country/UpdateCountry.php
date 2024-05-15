@@ -31,12 +31,11 @@ class UpdateCountry
     private $threshold;
 
     #[SerializedName('in_eu')]
-    #[Assert\NotBlank]
-    #[Assert\Type('boolean')]
     private $inEu;
 
     #[SerializedName('tax_year')]
     private $taxYear;
+
     #[SerializedName('start_of_tax_year')]
     private $startOfTaxYear;
 
@@ -82,7 +81,7 @@ class UpdateCountry
 
     public function getInEu()
     {
-        return $this->inEu;
+        return true === $this->inEu;
     }
 
     public function setInEu($inEu): void

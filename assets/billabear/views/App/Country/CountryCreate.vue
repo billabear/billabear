@@ -89,7 +89,7 @@ export default {
       this.errors = {};
       this.sending = true;
       axios.post("/app/country", this.country).then(response => {
-        this.$router.push({'name': 'app.system.country.view', params: {id: response.data.id}})
+        this.$router.push({'name': 'app.finance.country.view', params: {id: response.data.id}})
         this.sending = false;
       }).catch(error => {
         this.errors = error.response.data.errors;
