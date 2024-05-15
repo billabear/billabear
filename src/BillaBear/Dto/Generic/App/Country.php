@@ -19,6 +19,9 @@ class Country
     #[SerializedName('iso_code')]
     private string $isoCode;
 
+    #[SerializedName('iso_code_3')]
+    private string $isoCode3;
+
     private string $currency;
 
     private int $threshold;
@@ -110,5 +113,15 @@ class Country
     public function setStartOfTaxYear(?string $startOfTaxYear): void
     {
         $this->startOfTaxYear = $startOfTaxYear;
+    }
+
+    public function getIsoCode3(): string
+    {
+        return $this->isoCode3;
+    }
+
+    public function setIsoCode3(string $isoCode3): void
+    {
+        $this->isoCode3 = $isoCode3;
     }
 }

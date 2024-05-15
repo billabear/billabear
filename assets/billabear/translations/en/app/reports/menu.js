@@ -3,7 +3,7 @@ export const REPORTS_MENU_TRANSLATIONS = {
     dashboard: "Dashboard",
     expiring_cards: "Expiring Cards",
     subscriptions: "Subscriptions",
-    vat: "VAT",
+    tax: "Tax",
     churn: "Subscription Churn",
     lifetime: "Lifetime"
 }

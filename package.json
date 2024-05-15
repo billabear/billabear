@@ -42,6 +42,8 @@
         "axios": "^1.6.0",
         "axios-mock-adapter": "^1.21.2",
         "currency.js": "^2.0.4",
+        "d3": "^7.9.0",
+        "datamaps": "^0.5.9",
         "flowbite-vue": "^0.0.17-next.13",
         "jest": "^29.0.2",
         "js-file-download": "^0.4.12",

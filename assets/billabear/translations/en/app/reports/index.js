@@ -4,6 +4,7 @@ import {REPORTS_MENU_TRANSLATIONS} from "./menu";
 import {REPORT_SUBSCRIPTIONS_TRANSLATIONS} from "./subscriptions";
 import {REPORTS_VAT_TRANSLATIONS} from "./vat";
 import {REPORTS_FINANCIAL_TRANSLATIONS} from "./financial";
+import {REPORTS_TAX_TRANSLATIONS} from "./tax";
 
 export const REPORTS_INDEX_TRANSLATION = {
     dashboard: REPORT_DASHBOARD_TRANSLATIONS,
@@ -12,4 +13,5 @@ export const REPORTS_INDEX_TRANSLATION = {
     subscriptions: REPORT_SUBSCRIPTIONS_TRANSLATIONS,
     vat: REPORTS_VAT_TRANSLATIONS,
     financial: REPORTS_FINANCIAL_TRANSLATIONS,
+    tax: REPORTS_TAX_TRANSLATIONS,
 };

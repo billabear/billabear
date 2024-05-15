@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b75725e9e6a4e45c7d394eb46271f2bd",
+    "content-hash": "cf51cf9b3d46b8f749f6dd607f41cc15",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -9474,6 +9474,56 @@
                 "source": "https://github.com/ActiveCampaign/postmark-php/tree/v4.0.5"
             },
             "time": "2023-02-03T15:00:17+00:00"
+        },
+        {
+            "name": "writecrow/country_code_converter",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/writecrow/country_code_converter.git",
+                "reference": "31a931066e6bfab9939ea448ab509ba6c8377ad7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/writecrow/country_code_converter/zipball/31a931066e6bfab9939ea448ab509ba6c8377ad7",
+                "reference": "31a931066e6bfab9939ea448ab509ba6c8377ad7",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "suggest": {
+                "ext-mbstring": "For best performance",
+                "symfony/polyfill-mbstring": "If you can't install ext-mbstring"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "writecrow\\CountryCodeConverter\\": [
+                        "src/",
+                        "test/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Fullmer",
+                    "email": "mark.writecrow@gmail.com",
+                    "homepage": "https://markfullmer.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Convert country name to codes or vice-versa.",
+            "support": {
+                "email": "mark.writecrow@gmail.com",
+                "issues": "https://github.com/writecrow/country_code_converter/issues",
+                "source": "https://github.com/writecrow/country_code_converter"
+            },
+            "time": "2023-08-23T22:44:05+00:00"
         }
     ],
     "packages-dev": [
@@ -12363,9 +12413,9 @@
     "platform": {
         "php": ">=8.1",
         "ext-ctype": "*",
+        "ext-http": "*",
         "ext-iconv": "*",
-        "ext-pcntl": "*",
-        "ext-http": "*"
+        "ext-pcntl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

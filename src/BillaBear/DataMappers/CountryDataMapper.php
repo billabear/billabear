@@ -13,6 +13,7 @@ use BillaBear\Dto\Request\App\Country\CreateCountry;
 use BillaBear\Dto\Request\App\Country\UpdateCountry;
 use BillaBear\Entity\Country as Entity;
 use BillaBear\Tax\ThresholdManager;
+use writecrow\CountryCodeConverter\CountryCodeConverter;
 
 class CountryDataMapper
 {
@@ -44,6 +45,7 @@ class CountryDataMapper
         $appDto->setId($entity->getId());
         $appDto->setName($entity->getName());
         $appDto->setIsoCode($entity->getIsoCode());
+        $appDto->setIsoCode3(CountryCodeConverter::convert($entity->getIsoCode(), 'three-digit'));
         $appDto->setCurrency($entity->getCurrency());
         $appDto->setThreshold($entity->getThreshold());
         $appDto->setInEu($entity->isInEu());

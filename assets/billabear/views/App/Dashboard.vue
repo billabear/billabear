@@ -47,8 +47,7 @@
             <apexchart ref="analyticsChart" :series="subscriptionCountChartSeries" :options="subscriptionCountChartOptions"  height="400"   />
           </div>
         </div>
-    </div>
-
+      </div>
     </LoadingScreen>
   </div>
 </template>
@@ -56,9 +55,11 @@
 <script>
 import axios from "axios";
 import currency from "currency.js";
+import WorldMap from "../../components/app/Graphs/WorldMap.vue";
 
 export default {
   name: "Dashboard",
+  components: {WorldMap},
   data() {
     return {
       ready: false,

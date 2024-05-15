@@ -1,6 +1,4 @@
 import Dashboard from "../views/App/Dashboard.vue";
-import TeamSettings from "../views/App/TeamSettings.vue";
-import Plan from "../views/App/Plan.vue";
 import UserSettings from "../views/App/User/UserSettings.vue";
 import UserInvite from "../views/App/User/UserInvite.vue";
 import CustomerList from "../views/App/Customer/CustomerList.vue";
@@ -19,12 +17,6 @@ import SubscriptionPlanView from "../views/App/SubscriptionPlan/SubscriptionPlan
 import SubscriptionPlanUpdate from "../views/App/SubscriptionPlan/SubscriptionPlanUpdate.vue";
 import AddPaymentDetails from "../views/App/PaymentDetails/AddPaymentDetails.vue";
 import SubscriptionCreate from "../views/App/Subscription/SubscriptionCreate.vue";
-import SubscriptionView from "../views/App/Subscription/SubscriptionView.vue";
-import SubscriptionList from "../views/App/Subscription/SubscriptionList.vue";
-import PaymentList from "../views/App/Payments/PaymentList.vue";
-import PaymentView from "../views/App/Payments/PaymentView.vue";
-import RefundView from "../views/App/Refund/RefundView.vue";
-import RefundList from "../views/App/Refund/RefundList.vue";
 import TransactionView from "../views/App/transactions/TransactionView.vue";
 import SettingsGroup from "../views/App/Settings/SettingsGroup.vue";
 import SubscriptionGroup from "../views/App/Subscription/SubscriptionGroup.vue";
@@ -39,14 +31,12 @@ import EmailTemplateList from "../views/App/Settings/EmailTemplates/EmailTemplat
 import EmailTemplateCreate from "../views/App/Settings/EmailTemplates/EmailTemplateCreate.vue";
 import EmailTemplateUpdate from "../views/App/Settings/EmailTemplates/EmailTemplateUpdate.vue";
 import NotificationSettingsUpdate from "../views/App/Settings/NotificationSettings/NotificationSettingsUpdate.vue";
-import ChargeBacksList from "../views/App/ChargeBacks/ChargeBacksList.vue";
 import SystemSettingsUpdate from "../views/App/Settings/SystemSettings/SystemSettingsUpdate.vue";
 import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
 import SettingsUserUpdate from "../views/App/Settings/Team/SettingsUserUpdate.vue";
 import StripeImportList from "../views/App/Settings/Stripe/StripeImportList.vue";
 import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
 import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
-import ExpiringCardsList from "../views/App/Reports/ExpiringCards/ExpiringCardsList.vue";
 import CreditCreate from "../views/App/Credit/CreditCreate.vue";
 import InvoicesList from "../views/App/Invoices/InvoicesList.vue";
 import StripeImportView from "../views/App/Settings/Stripe/StripeImportView.vue";
@@ -55,8 +45,6 @@ import ExchangeRatesList from "../views/App/Settings/ExchangeRates/ExchangeRates
 import VouchersList from "../views/App/Vouchers/VouchersList.vue";
 import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
 import VouchersView from "../views/App/Vouchers/VouchersView.vue";
-import SubscriptionsOverview from "../views/App/Reports/Subscriptions/SubscriptionsOverview.vue";
-import VatOverview from "../views/App/Reports/Vat/VatOverview.vue";
 import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
 import InvoiceGroup from "../views/App/Invoices/InvoiceGroup.vue";
 import InvoiceCreate from "../views/App/Invoices/InvoiceCreate.vue";
@@ -64,19 +52,14 @@ import QuotesList from "../views/App/Quotes/QuotesList.vue";
 import QuotesView from "../views/App/Quotes/QuotesView.vue";
 import QuoteCreate from "../views/App/Quotes/QuoteCreate.vue";
 import InvoicesView from "../views/App/Invoices/InvoicesView.vue";
-import DeveloperGroup from "../views/App/System/SystemGroup.vue";
 import {SYSTEM_ROUTES} from "./app.system.routes";
 import SystemGroup from "../views/App/System/SystemGroup.vue";
-import CheckoutCreate from "../views/App/Checkout/CheckoutCreate.vue";
-import CheckoutView from "../views/App/Checkout/CheckoutView.vue";
-import CheckoutList from "../views/App/Checkout/CheckoutList.vue";
 import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
-import SubscriptionsChurn from "../views/App/Reports/Subscriptions/SubscriptionsChurn.vue";
 import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
 import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
 import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGeneratorSettings.vue";
-import LifetimeReport from "../views/App/Reports/Financial/LifetimeReport.vue";
 import {AppFinanceRoutes} from "./app.finance.routes";
+import {REPORT_ROUTES} from "./app.reports.routes";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -90,39 +73,7 @@ export const APP_ROUTES = [
         path: "reports",
         redirect: {name: "app.report.subscriptions"},
         component: ReportsGroup,
-        children: [
-            {
-                name: 'app.report.dashboard',
-                path: '',
-                component: Dashboard
-            },
-            {
-                name: 'app.expiring_cards.list',
-                path: 'expiring-cards',
-                component: ExpiringCardsList
-            },
-            {
-                name: 'app.report.subscriptions',
-                path: 'subscriptions',
-                component: SubscriptionsOverview,
-            },
-            {
-                name: 'app.report.vat',
-                path: 'vat',
-                component: VatOverview,
-
-            },
-            {
-                name: 'app.report.churn',
-                path: 'churn',
-                component: SubscriptionsChurn,
-            },
-            {
-                name: 'app.report.lifetime',
-                path: 'lifetime',
-                component: LifetimeReport,
-            }
-        ]
+        children: REPORT_ROUTES,
     },
     {
         name: "app.system",
