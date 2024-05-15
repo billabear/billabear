@@ -343,6 +343,185 @@ class DataProvider
                 ],
             ],
 
+            // South American
+
+            'MX' => [
+                'name' => 'Mexico',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'MXN',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16],
+                ],
+            ],
+            'GT' => [
+                'name' => 'Guatemala',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'GTQ',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 12],
+                ],
+            ],
+            'NI' => [
+                'name' => 'Nicaragua',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'NIO',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'PA' => [
+                'name' => 'Panama',
+                'threshold' => 3600000,
+                'in_eu' => false,
+                'currency' => 'PAB',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 7],
+                ],
+            ],
+            'PY' => [
+                'name' => 'Paraguay',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'PYG',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                    'Reduce VAT' => ['default' => false, 'rate' => 7],
+                ],
+            ],
+            'PE' => [
+                'name' => 'Peru',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'PEN',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'DO' => [
+                'name' => 'Dominican Republic',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'DOP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'UY' => [
+                'name' => 'Uruguay',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'UYU',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 22],
+                ],
+            ],
+            'VE' => [
+                'name' => 'Venezuela',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'VEF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16],
+                ],
+            ],
+            'CR' => [
+                'name' => 'Costa Rica',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'CRC',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 13],
+                ],
+            ],
+            'CU' => [
+                'name' => 'Cuba',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'CUP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+            'PR' => [
+                'name' => 'Puerto Rico',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'USD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10.5],
+                ],
+            ],
+            'CO' => [
+                'name' => 'Colombia',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'COP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 19],
+                ],
+            ],
+            'EC' => [
+                'name' => 'Ecuador',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'USD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 12],
+                ],
+            ],
+            'BR' => [
+                'name' => 'Brazil',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'BRL',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 12],
+                ],
+            ],
+            'BO' => [
+                'name' => 'Bolivia',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'BOB',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 13],
+                ],
+            ],
+            'CL' => [
+                'name' => 'Chile',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'CLP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 19],
+                ],
+            ],
+            'AR' => [
+                'name' => 'Argentina',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'ARS',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 21],
+                ],
+            ],
+            'SR' => [
+                'name' => 'Suriname',
+                'threshold' => 50000000,
+                'in_eu' => false,
+                'currency' => 'SRD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+
+            // Africa
+
+            // Asia
+
             // Pacfic
 
             'AU' => [
