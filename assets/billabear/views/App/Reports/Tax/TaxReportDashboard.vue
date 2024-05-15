@@ -63,16 +63,12 @@ import axios from "axios";
 import currency from "currency.js";
 import ProgressBar from "../../../../components/app/Graphs/ProgressBar.vue";
 
-import {DataTable} from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
 import fileDownload from "js-file-download";
 import {Button} from "flowbite-vue";
 
-DataTable.use(DataTablesCore);
-
 export default {
   name: "TaxReportDashboard",
-  components: {Button, DataTable, ProgressBar, WorldMap},
+  components: {Button, ProgressBar, WorldMap},
   data() {
     return {
       ready: false,
