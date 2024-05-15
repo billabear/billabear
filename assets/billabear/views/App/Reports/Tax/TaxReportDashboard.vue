@@ -85,7 +85,7 @@ export default {
       this.rawCountryData = response.data.active_countries;
       this.rawTransactionData = response.data.latest_tax_items;
       this.mapData = this.rawCountryData.map(obj => {
-        return {code: obj.country.iso_code_3, value: obj.transacted_amount, formatted_value: this.displayCurrency(obj.transacted_amount), label: obj.country.currency }
+        return {code: obj.country.iso_code_3, value: obj.collected_amount, formatted_value: this.displayCurrency(obj.collected_amount), label: obj.country.currency }
       });
 
       this.ready = true;

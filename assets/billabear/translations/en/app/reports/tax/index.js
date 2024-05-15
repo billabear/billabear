@@ -1,7 +1,7 @@
 export const REPORTS_TAX_TRANSLATIONS = {
     title: "Tax Report",
     map: {
-        title: "Active Countries Overview"
+        title: "Tax Collected For"
     },
     countries: {
         title: "Country Thresholds",
