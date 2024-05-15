@@ -637,6 +637,332 @@ class DataProvider
                     'Standard VAT' => ['default' => true, 'rate' => 15],
                 ],
             ],
+            'CG' => [
+                'name' => 'Republic Of The Congo',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'XAF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'CD' => [
+                'name' => 'Democratic Republic Of The Congo',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'CDF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16],
+                ],
+            ],
+            'RW' => [
+                'name' => 'Rwanda',
+                'threshold' => 500000000,
+                'in_eu' => false,
+                'currency' => 'RWF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'BI' => [
+                'name' => 'Burundi',
+                'threshold' => 10000000,
+                'in_eu' => false,
+                'currency' => 'BIF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'TZ' => [
+                'name' => 'Tanzania',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'TZS',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'UG' => [
+                'name' => 'Uganda',
+                'threshold' => 15000000000,
+                'in_eu' => false,
+                'currency' => 'UGX',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'KE' => [
+                'name' => 'Kenya',
+                'threshold' => 500000000,
+                'in_eu' => false,
+                'currency' => 'UGX',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 16],
+                ],
+            ],
+            'SO' => [
+                'name' => 'Somalia',
+                'threshold' => 5000000,
+                'in_eu' => false,
+                'currency' => 'SOS',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 5],
+                ],
+            ],
+            'CM' => [
+                'name' => 'Cameroon',
+                'threshold' => 500000000,
+                'in_eu' => false,
+                'currency' => 'XAF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 19.25],
+                ],
+            ],
+            'CF' => [
+                'name' => 'Central African Republic',
+                'threshold' => 300000000,
+                'in_eu' => false,
+                'currency' => 'XAF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 19],
+                ],
+            ],
+            'SS' => [
+                'name' => 'South Sudan',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'SSP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'SD' => [
+                'name' => 'Sudan',
+                'threshold' => 10000000,
+                'in_eu' => false,
+                'currency' => 'SDG',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 17],
+                ],
+            ],
+            'ET' => [
+                'name' => 'Ethiopia',
+                'threshold' => 10000000,
+                'in_eu' => false,
+                'currency' => 'SDG',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'DJ' => [
+                'name' => 'Djibouti',
+                'threshold' => 500000000,
+                'in_eu' => false,
+                'currency' => 'DJF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+            'ER' => [
+                'name' => 'Eritrea',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'ERN',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 5],
+                ],
+            ],
+            'MA' => [
+                'name' => 'Morocco',
+                'threshold' => 200000000,
+                'in_eu' => false,
+                'currency' => 'MAD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 20],
+                ],
+            ],
+            'EH' => [
+                'name' => 'Western Sahara',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'MAD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 20],
+                ],
+            ],
+            'MR' => [
+                'name' => 'Mauritius',
+                'threshold' => 600000000,
+                'in_eu' => false,
+                'currency' => 'MRO',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'SN' => [
+                'name' => 'Senegal',
+                'threshold' => 600000000,
+                'in_eu' => false,
+                'currency' => 'MRO',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'GM' => [
+                'name' => 'Gambia',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'GMD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'GW' => [
+                'name' => 'Guinea-Bissau',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'XOF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'GN' => [
+                'name' => 'Guinea',
+                'threshold' => 50000000000,
+                'in_eu' => false,
+                'currency' => 'GNF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'SL' => [
+                'name' => 'Sierra Leone',
+                'threshold' => 50000000,
+                'in_eu' => false,
+                'currency' => 'SLL',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'LR' => [
+                'name' => 'Liberia',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'LRD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+            'GH' => [
+                'name' => 'Ghana',
+                'threshold' => 20000000,
+                'in_eu' => false,
+                'currency' => 'GHS',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 15],
+                ],
+            ],
+            'TG' => [
+                'name' => 'Togo',
+                'threshold' => 20000000,
+                'in_eu' => false,
+                'currency' => 'XOF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'BJ' => [
+                'name' => 'Benin',
+                'threshold' => 5000000000,
+                'in_eu' => false,
+                'currency' => 'XOF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'NG' => [
+                'name' => 'Nigeria',
+                'threshold' => 2500000000,
+                'in_eu' => false,
+                'currency' => 'NGN',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 7.5],
+                ],
+            ],
+            'NE' => [
+                'name' => 'Niger',
+                'threshold' => 5000000000,
+                'in_eu' => false,
+                'currency' => 'XOF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'ML' => [
+                'name' => 'Mali',
+                'threshold' => 5000000000,
+                'in_eu' => false,
+                'currency' => 'XOF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'TD' => [
+                'name' => 'Chad',
+                'threshold' => 50000000000,
+                'in_eu' => false,
+                'currency' => 'XAF',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'DZ' => [
+                'name' => 'Algeria',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'DZD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 19],
+                ],
+            ],
+            'TN' => [
+                'name' => 'Tunisia',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'TND',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 19],
+                ],
+            ],
+            'LY' => [
+                'name' => 'Libya',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'LYD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 0],
+                ],
+            ],
+            'EG' => [
+                'name' => 'Egypt',
+                'threshold' => 50000000,
+                'in_eu' => false,
+                'currency' => 'EGP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 14],
+                ],
+            ],
+
+            // Middle East
+            'IL' => [
+                'name' => 'Israel',
+                'threshold' => 0,
+                'in_eu' => false,
+                'currency' => 'ILS',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 17],
+                ],
+            ],
 
             // Asia
 
