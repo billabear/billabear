@@ -4,7 +4,7 @@ export const REPORTS_TAX_TRANSLATIONS = {
         title: "Active Countries Overview"
     },
     countries: {
-        title: "Countries Info",
+        title: "Countries Thresholds",
         transacted_amount: "<strong>Transacted:</strong> {currency}{transacted_amount}",
         threshold_status: "<strong>Threshold:</strong> {status}",
         threshold_reached: "Reached",
