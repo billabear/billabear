@@ -12,7 +12,7 @@ use BillaBear\Repository\TaxReportRepositoryInterface;
 use Parthenon\Export\DataProvider\DataProviderInterface;
 use Parthenon\Export\ExportRequest;
 
-class ReceivablesDataProvider implements DataProviderInterface
+class TaxReportDataProvider implements DataProviderInterface
 {
     public function __construct(private TaxReportRepositoryInterface $taxReportRepository)
     {

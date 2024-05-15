@@ -36,7 +36,7 @@ class ReportContext implements Context
         $data = $this->getJsonContent();
 
         foreach ($data['latest_tax_items'] as $taxItem) {
-            if ($taxItem['customer']['email'] === $arg1) {
+            if ($taxItem['customer_email'] === $arg1) {
                 throw new \Exception('Tax item found');
             }
         }
@@ -50,7 +50,7 @@ class ReportContext implements Context
         $data = $this->getJsonContent();
 
         foreach ($data['latest_tax_items'] as $taxItem) {
-            if ($taxItem['customer']['email'] === $arg1) {
+            if ($taxItem['customer_email'] === $arg1) {
                 return;
             }
         }

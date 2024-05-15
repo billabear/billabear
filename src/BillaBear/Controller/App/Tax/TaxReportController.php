@@ -9,9 +9,13 @@
 namespace BillaBear\Controller\App\Tax;
 
 use BillaBear\Dto\Response\App\Tax\TaxReportDashboard;
+use BillaBear\Export\DataProvider\TaxReportDataProvider;
+use BillaBear\Export\Response\ResponseConverter;
 use BillaBear\Repository\TaxReportRepositoryInterface;
 use BillaBear\Tax\Report\ActiveCountryProvider;
 use BillaBear\Tax\Report\ReportItemBuilder;
+use Parthenon\Export\Engine\EngineInterface;
+use Parthenon\Export\ExportRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,14 +49,31 @@ class TaxReportController
         $filters = [];
 
         $rawData = $taxReportRepository->getReportItems($filters, $resultsPerPage, 0);
-        $dtos = array_map([$reportItemBuilder, 'buildItem'], iterator_to_array($rawData));
-
         $list = new TaxReportDashboard();
-        $list->setLatestTaxItems($dtos);
+        $list->setLatestTaxItems(iterator_to_array($rawData));
         $list->setActiveCountries($activeCountryProvider->getActiveCountries());
 
         $json = $serializer->serialize($list, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/tax/report/export', name: 'billabear_app_tax_taxreport_exportchange', methods: ['GET'])]
+    public function exportReport(
+        Request $request,
+        EngineInterface $engine,
+    ) {
+        $exportRequest = new ExportRequest(
+            sprintf('tax_report'),
+            'csv',
+            TaxReportDataProvider::class,
+            []
+        );
+
+        $exportResponse = $engine->process($exportRequest);
+
+        $responseConverter = new ResponseConverter();
+
+        return $responseConverter->convert($exportResponse);
     }
 }

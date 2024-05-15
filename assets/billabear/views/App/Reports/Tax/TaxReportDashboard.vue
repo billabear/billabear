@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="overflow-hidden">
     <h1 class="page-title">{{ $t('app.reports.tax.title') }}</h1>
 
     <LoadingScreen :ready="ready">
@@ -14,7 +14,7 @@
 
           <h2 class="report-subtitle">{{ $t('app.reports.tax.countries.title') }}</h2>
 
-          <div class="my-3 border p-2" v-for="country in rawCountryData">
+          <div class="my-3 border p-2 hover:bg-gray-100" v-for="country in rawCountryData">
             <div class="country-title">{{ country.country.name }}</div>
             <div class="country-data" v-html="$t('app.reports.tax.countries.transacted_amount', {transacted_amount: displayCurrency(country.transacted_amount), currency: Number().toLocaleString(undefined, {style:'currency', currency:country.country.currency}).slice(0,1)  })"></div>
             <div class="country-data" v-html="$t(
@@ -28,21 +28,51 @@
           </div>
         </div>
       </div>
+
+      <div class="grid grid-cols-2">
+        <div><h3 class="text-2xl font-bold my-5">{{ $t('app.reports.tax.transactions.title') }}</h3></div>
+        <div class="text-end my-5"><button @click="processExport" class="btn--main">
+          <i class="fa-solid fa-download"></i> {{ $t('app.reports.tax.transactions.download') }}</button>
+        </div>
+      </div>
+      <div class="overflow-hidden rounded-xl border border-gray-300 bg-white p-5" >
+        <div class="overflow-auto">
+          <table>
+            <thead>
+            <tr>
+              <th v-for="column in columns">{{ column}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="row in rawTransactionData">
+              <td v-for="column in columns">{{ row[column] }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
     </LoadingScreen>
   </div>
 
 </template>
 
 <script>
-
 import WorldMap from "../../../../components/app/Graphs/WorldMap.vue";
 import axios from "axios";
 import currency from "currency.js";
 import ProgressBar from "../../../../components/app/Graphs/ProgressBar.vue";
 
+import {DataTable} from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net';
+import fileDownload from "js-file-download";
+import {Button} from "flowbite-vue";
+
+DataTable.use(DataTablesCore);
+
 export default {
   name: "TaxReportDashboard",
-  components: {ProgressBar, WorldMap},
+  components: {Button, DataTable, ProgressBar, WorldMap},
   data() {
     return {
       ready: false,
@@ -50,11 +80,13 @@ export default {
       loaded: true,
       mapData: {},
       rawCountryData: null,
+      rawTransactionData: [],
     }
   },
   mounted() {
     axios.get("/app/tax/report").then(response => {
       this.rawCountryData = response.data.active_countries;
+      this.rawTransactionData = response.data.latest_tax_items;
       this.mapData = this.rawCountryData.map(obj => {
         return {code: obj.country.iso_code_3, value: obj.transacted_amount, formatted_value: this.displayCurrency(obj.transacted_amount), label: obj.country.currency }
       });
@@ -62,11 +94,48 @@ export default {
       this.ready = true;
     })
   },
+  computed: {
+    columns: function () {
+      return Object.keys(this.rawTransactionData[0]);
+    }
+  },
   methods: {
-
     displayCurrency: function (value) {
       return currency(value, { fromCents: true }).format({symbol: ''});
     },
+    processExport: function () {
+      this.exportInProgress = true;
+      var subscriptionId = this.$route.params.id
+      axios.get('/app/tax/report/export', { responseType: 'blob' })
+          .then((response) => {
+            const contentType = response.headers['content-type'];
+
+            if (contentType.includes('application/json')) {
+              // Response is JSON
+              return response.data.text();
+            } else {
+              const contentDisposition = response.headers['content-disposition'];
+              var fileDownload = require('js-file-download');
+              const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+              if (matches !== null && matches[1]) {
+                const fileName = matches[1].replace(/['"]/g, '');
+                fileDownload(response.data, fileName);
+                this.exportInProgress = false;
+              }
+            }
+          })
+          .then((responseData) => {
+            if (responseData) {
+              if (typeof responseData === 'string') {
+                const jsonData = JSON.parse(responseData);
+                console.log('Response is JSON:', jsonData);
+              }
+            }
+          })
+          .catch((error) => {
+            console.error('An error occurred:', error);
+          });
+    }
   }
 }
 </script>
@@ -90,5 +159,6 @@ export default {
 .country-data {
   @apply text-xs;
 }
+
 
 </style>

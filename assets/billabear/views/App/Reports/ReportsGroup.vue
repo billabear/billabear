@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="p-5">
+    <div class="p-5" style="max-width: 85%">
       <router-view></router-view>
     </div>
   </div>
@@ -29,7 +29,11 @@ export default {
 </script>
 
 <style scoped>
-
+.calculated-width {
+  width: -webkit-calc(100% - 100px);
+  width: -moz-calc(100% - 100px);
+  width: calc(100% - 100px);
+}
 .router-link-active {
   all: unset;
   @apply  p-3;
