@@ -5,6 +5,7 @@
       <div class="submenu-container">
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.system.webhooks'}" class="submenu-link">{{ $t('app.system.menu.webhooks') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.system.integrations.list'}" class="submenu-link">{{ $t('app.system.menu.integrations') }}</router-link></li>
         </ul>
       </div>
     </div>

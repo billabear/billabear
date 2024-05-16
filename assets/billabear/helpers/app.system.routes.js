@@ -11,6 +11,8 @@ import CountryView from "../views/App/Country/CountryView.vue";
 import CountryEdit from "../views/App/Country/CountryEdit.vue";
 import TaxTypeList from "../views/App/TaxType/TaxTypeList.vue";
 import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
+import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
+import IntegrationsStripe from "../views/App/System/Integrations/IntegrationsStripe.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -49,4 +51,15 @@ export const SYSTEM_ROUTES = [
         path: 'cancellation-request/:id/view',
         component: CancellationRequestView
     },
+
+    {
+        name: 'app.system.integrations.list',
+        path: 'integrations/list',
+        component: IntegrationsList
+    },
+    {
+        name: 'app.system.integrations.stripe',
+        path: 'integrations/stripe',
+        component: IntegrationsStripe
+    }
 ];
