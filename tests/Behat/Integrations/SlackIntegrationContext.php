@@ -50,6 +50,9 @@ class SlackIntegrationContext implements Context
             var_dump($this->getJsonContent());
             throw new \Exception(sprintf("Unable to find webhook for '%s'", $name));
         }
+        $this->slackWebhookRepository->getEntityManager()->refresh($slackWebhook);
+
+        return $slackWebhook;
     }
 
     /**
@@ -93,5 +96,45 @@ class SlackIntegrationContext implements Context
         }
 
         throw new \Exception(sprintf("Unable to find webhook for '%s'", $name));
+    }
+
+    /**
+     * @When I disable the :arg1 slack webhook
+     */
+    public function iDisableTheSlackWebhook($name)
+    {
+        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        $this->sendJsonRequest('POST', '/app/integrations/slack/webhook/'.$slackWebhook->getId().'/disable');
+    }
+
+    /**
+     * @Then the :arg1 slack webhook is not enabled
+     */
+    public function theSlackWebhookIsNotEnabled($name)
+    {
+        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        if ($slackWebhook->isEnabled()) {
+            throw new \Exception('This is enabled');
+        }
+    }
+
+    /**
+     * @Then the :arg1 slack webhook is enabled
+     */
+    public function theSlackWebhookIsEnabled($name)
+    {
+        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        if (!$slackWebhook->isEnabled()) {
+            throw new \Exception('This is not enabled');
+        }
+    }
+
+    /**
+     * @When I enable the :arg1 slack webhook
+     */
+    public function iEnableTheSlackWebhook($name)
+    {
+        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        $this->sendJsonRequest('POST', '/app/integrations/slack/webhook/'.$slackWebhook->getId().'/enable');
     }
 }

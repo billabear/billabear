@@ -12,7 +12,9 @@ use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Integrations\SlackWebhookDataMapper;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackWebhook;
+use BillaBear\Entity\SlackWebhook;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,5 +61,49 @@ class SlackController
         SlackWebhookDataMapper $factory,
     ): Response {
         return $this->crudList($request, $repository, $serializer, $factory);
+    }
+
+    #[Route('/app/integrations/slack/webhook/{id}/disable', name: 'billabear_app_integrations_slack_disablewebhook', methods: ['POST'])]
+    public function disableWebhook(
+        Request $request,
+        SlackWebhookRepositoryInterface $repository,
+        SlackWebhookDataMapper $mapper,
+        SerializerInterface $serializer,
+    ): JsonResponse {
+        try {
+            /** @var SlackWebhook $slackWebhook */
+            $slackWebhook = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $slackWebhook->setEnabled(false);
+        $repository->save($slackWebhook);
+        $dto = $mapper->createAppDto($slackWebhook);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/app/integrations/slack/webhook/{id}/enable', name: 'billabear_app_integrations_slack_enablewebhook', methods: ['POST'])]
+    public function enableWebhook(
+        Request $request,
+        SlackWebhookRepositoryInterface $repository,
+        SlackWebhookDataMapper $mapper,
+        SerializerInterface $serializer,
+    ): JsonResponse {
+        try {
+            /** @var SlackWebhook $slackWebhook */
+            $slackWebhook = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $slackWebhook->setEnabled(true);
+        $repository->save($slackWebhook);
+        $dto = $mapper->createAppDto($slackWebhook);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 }
