@@ -28,7 +28,7 @@ class SlackWebhookDataMapper
         return $entity;
     }
 
-    public function buildAppDto(Entity $entity): AppDto
+    public function createAppDto(Entity $entity): AppDto
     {
         $dto = new AppDto();
         $dto->setName($entity->getName());

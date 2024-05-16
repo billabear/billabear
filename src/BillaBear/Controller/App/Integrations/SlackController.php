@@ -8,6 +8,7 @@
 
 namespace BillaBear\Controller\App\Integrations;
 
+use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Integrations\SlackWebhookDataMapper;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackWebhook;
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SlackController
 {
     use ValidationErrorResponseTrait;
+    use CrudListTrait;
 
     #[Route('/app/integrations/slack/webhook/create', name: 'billabear_app_integrations_slack_createwebhook', methods: ['POST'])]
     public function createWebhook(
@@ -47,5 +49,15 @@ class SlackController
         $json = $serializer->serialize($entity, 'json');
 
         return new JsonResponse($json, Response::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/integrations/slack/webhook', name: 'billabear_app_integrations_slack_showlist', methods: ['GET'])]
+    public function showList(
+        Request $request,
+        SlackWebhookRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        SlackWebhookDataMapper $factory,
+    ): Response {
+        return $this->crudList($request, $repository, $serializer, $factory);
     }
 }

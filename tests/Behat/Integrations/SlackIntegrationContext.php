@@ -51,4 +51,47 @@ class SlackIntegrationContext implements Context
             throw new \Exception(sprintf("Unable to find webhook for '%s'", $name));
         }
     }
+
+    /**
+     * @Given the following slack webhooks exist:
+     */
+    public function theFollowingSlackWebhooksExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+
+        foreach ($data as $row) {
+            $slackWebhook = new SlackWebhook();
+            $slackWebhook->setName($row['Name']);
+            $slackWebhook->setWebhookUrl($row['Webhook']);
+            $slackWebhook->setEnabled('true' === strtolower($row['Enabled'] ?? 'true'));
+            $slackWebhook->setCreatedAt(new \DateTime());
+
+            $this->slackWebhookRepository->getEntityManager()->persist($slackWebhook);
+        }
+        $this->slackWebhookRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I go to the slack webhook list page
+     */
+    public function iGoToTheSlackWebhookListPage()
+    {
+        $this->sendJsonRequest('GET', '/app/integrations/slack/webhook');
+    }
+
+    /**
+     * @Then I will see a webhook for :arg1
+     */
+    public function iWillSeeAWebhookFor($name)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ($name === $row['name']) {
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf("Unable to find webhook for '%s'", $name));
+    }
 }
