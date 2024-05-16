@@ -260,7 +260,7 @@ export default {
     },
     disableWebhook: function(webhook) {
       this.in_progress = true;
-      axios.post('/app/integrations/slack/webhook/'+webhook.id+'/disable').then(response => {
+      axios.post('/app/integrations/slack/webhook/' + webhook.id + '/disable').then(response => {
         webhook.enabled = response.data.enabled;
         this.in_progress = false;
       }).catch(error => {

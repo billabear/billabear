@@ -12,7 +12,7 @@
         <tbody>
           <tr>
             <td>{{ $t('app.system.integrations.list.slack.name') }}</td>
-            <th><router-link class="btn--main" :to="{name: 'app.system.integrations.slack'}">{{ $t('app.system.integrations.list.slack.button') }}</router-link></th>
+            <th><router-link class="btn--main" :to="{name: 'app.system.integrations.slack.webhook'}">{{ $t('app.system.integrations.list.slack.button') }}</router-link></th>
           </tr>
         </tbody>
       </table>

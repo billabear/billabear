@@ -15,6 +15,8 @@ import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.
 import IntegrationsSlack from "../views/App/System/Integrations/IntegrationsSlack.vue";
 import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
 import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
+import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
+import SlackGroup from "../views/App/System/Integrations/Slack/SlackGroup.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -59,15 +61,23 @@ export const SYSTEM_ROUTES = [
         path: 'integrations/list',
         component: IntegrationsList
     },
+
     {
         name: 'app.system.integrations.slack',
         path: 'integrations/slack',
-        component: SlackWebhookList
-    },
-    {
-        name: 'app.system.integrations.slack.webhook.create',
-        path: 'integrations/slack/webhook/create',
-        component: SlackWebhookCreate
+        redirect: "webhook",
+        component: SlackGroup,
+        children: [
+            {
+                name: 'app.system.integrations.slack.webhook',
+                path: 'webhook',
+                component: SlackWebhookList
+            },
+            {
+                name: 'app.system.integrations.slack.webhook.create',
+                path: 'webhook/create',
+                component: SlackWebhookCreate
 
+            }]
     }
 ];
