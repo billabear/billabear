@@ -62,4 +62,5 @@ export const APP_TRANSLATIONS = {
     tax_type: TAX_TYPE_TRANSLATIONS,
     finance: FINANCE_TRANSLATIONS,
     tax: TAX_TRANSLATIONS,
+    default_error_message: "Something went wrong!"
 };
