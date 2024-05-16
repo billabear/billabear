@@ -10,11 +10,23 @@ namespace BillaBear\Dto\Generic\App\Integrations;
 
 class SlackWebhook
 {
+    private string $id;
+
     private string $name;
 
     private string $webhook;
 
     private bool $enabled;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName(): string
     {

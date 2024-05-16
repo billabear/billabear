@@ -45,8 +45,8 @@
               <td>{{ webhook.name }}</td>
               <td>{{ webhook.webhook }}</td>
               <td>
-                <SubmitButton class="btn--danger" :in-progress="in_progress" v-if="webhook.enabled">{{ $t('app.system.integrations.slack.webhooks.list.disable_btn') }}</SubmitButton>
-                <SubmitButton class="btn--main" :in-progress="in_progress" v-else>{{ $t('app.system.integrations.slack.webhooks.list.enable_btn') }}</SubmitButton>
+                <SubmitButton class="btn--danger" @click="disableWebhook(webhook)" :in-progress="in_progress" v-if="webhook.enabled">{{ $t('app.system.integrations.slack.webhooks.list.disable_btn') }}</SubmitButton>
+                <SubmitButton class="btn--main" @click="enableWebhook(webhook)" :in-progress="in_progress" v-else>{{ $t('app.system.integrations.slack.webhooks.list.enable_btn') }}</SubmitButton>
               </td>
             </tr>
             <tr v-if="invoices.length === 0">
@@ -257,6 +257,24 @@ export default {
         }
       }
       return false;
+    },
+    disableWebhook: function(webhook) {
+      this.in_progress = true;
+      axios.post('/app/integrations/slack/webhook/'+webhook.id+'/disable').then(response => {
+        webhook.enabled = response.data.enabled;
+        this.in_progress = false;
+      }).catch(error => {
+        this.in_progress = false;
+      })
+    },
+    enableWebhook: function(webhook) {
+      this.in_progress = true;
+      axios.post('/app/integrations/slack/webhook/' + webhook.id + '/enable').then(response => {
+        webhook.enabled = response.data.enabled;
+        this.in_progress = false;
+      }).catch(error => {
+        this.in_progress = false;
+      })
     }
   }
 }
