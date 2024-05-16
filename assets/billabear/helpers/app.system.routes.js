@@ -12,7 +12,7 @@ import CountryEdit from "../views/App/Country/CountryEdit.vue";
 import TaxTypeList from "../views/App/TaxType/TaxTypeList.vue";
 import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
 import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
-import IntegrationsStripe from "../views/App/System/Integrations/IntegrationsStripe.vue";
+import IntegrationsSlack from "../views/App/System/Integrations/IntegrationsSlack.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -58,8 +58,8 @@ export const SYSTEM_ROUTES = [
         component: IntegrationsList
     },
     {
-        name: 'app.system.integrations.stripe',
-        path: 'integrations/stripe',
-        component: IntegrationsStripe
+        name: 'app.system.integrations.slack',
+        path: 'integrations/slack',
+        component: IntegrationsSlack
     }
 ];

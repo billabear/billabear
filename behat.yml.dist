@@ -111,6 +111,9 @@ default:
                 # System
                 - BillaBear\Tests\Behat\System\CancellationRequestContext
 
+                # Integrations
+                - BillaBear\Tests\Behat\Integrations\SlackIntegrationContext
+
                 # Stripe Interopt Layer
                 - BillaBear\Tests\Behat\Interopt\Stripe\SubscriptionsContext
 

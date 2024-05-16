@@ -11,8 +11,8 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ $t('app.system.integrations.list.stripe.name') }}</td>
-            <th><router-link class="btn--main" :to="{name: 'app.system.integrations.stripe'}">{{ $t('app.system.integrations.list.stripe.button') }}</router-link></th>
+            <td>{{ $t('app.system.integrations.list.slack.name') }}</td>
+            <th><router-link class="btn--main" :to="{name: 'app.system.integrations.slack'}">{{ $t('app.system.integrations.list.slack.button') }}</router-link></th>
           </tr>
         </tbody>
       </table>

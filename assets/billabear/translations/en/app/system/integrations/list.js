@@ -3,8 +3,9 @@ export const SYSTEM_INTEGRATIONS_LIST_TRANSLATIONS = {
     list: {
         name: "Integration"
     },
-    stripe: {
-        name: "Stripe",
+    slack: {
+        name: "Slack",
         button: "Configure"
-    }
+    },
+
 }

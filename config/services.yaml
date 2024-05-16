@@ -421,6 +421,13 @@ services:
     app.repository.orm.country_tax_rule:
         class: BillaBear\Repository\Orm\CountryTaxRuleRepository
 
+    BillaBear\Repository\SlackWebhookRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.slack_webhook'
+    app.repository.orm.slack_webhook:
+        class: BillaBear\Repository\Orm\SlackWebhookRepository
+
+
     BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\ObolRegister'
 
 
