@@ -515,3 +515,7 @@ body {
 .badge--red {
     @apply text-white font-bold bg-red-500 p-1 rounded;
 }
+
+.form-field-lbl {
+    @apply font-bold;
+}

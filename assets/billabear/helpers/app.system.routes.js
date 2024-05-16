@@ -14,6 +14,7 @@ import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
 import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
 import IntegrationsSlack from "../views/App/System/Integrations/IntegrationsSlack.vue";
 import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
+import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
 
 
 export const SYSTEM_ROUTES = [
@@ -62,5 +63,11 @@ export const SYSTEM_ROUTES = [
         name: 'app.system.integrations.slack',
         path: 'integrations/slack',
         component: SlackWebhookList
+    },
+    {
+        name: 'app.system.integrations.slack.webhook.create',
+        path: 'integrations/slack/webhook/create',
+        component: SlackWebhookCreate
+
     }
 ];

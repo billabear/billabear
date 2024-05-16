@@ -14,6 +14,8 @@
           </div>
         </Dropdown>
       </div>
+      <router-link :to="{name: 'app.system.integrations.slack.webhook.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.system.integrations.slack.webhooks.list.create_new') }}</router-link>
+
     </div>
 
     <div class="card-body m-5" v-if="active_filters.length > 0">
@@ -39,13 +41,16 @@
             </tr>
           </thead>
           <tbody v-if="loaded">
-            <tr v-for="invoice in invoices" class="mt-5">
-              <td>{{ invoice.customer.email }}</td>
-              <td>{{ currency(invoice.total) }}</td>
-              <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="list-btn">{{ $t('app.system.integrations.slack.webhooks.list.view_btn') }}</router-link></td>
+            <tr v-for="webhook in invoices" class="mt-5">
+              <td>{{ webhook.name }}</td>
+              <td>{{ webhook.webhook }}</td>
+              <td>
+                <SubmitButton class="btn--danger" :in-progress="in_progress" v-if="webhook.enabled">{{ $t('app.system.integrations.slack.webhooks.list.disable_btn') }}</SubmitButton>
+                <SubmitButton class="btn--main" :in-progress="in_progress" v-else>{{ $t('app.system.integrations.slack.webhooks.list.enable_btn') }}</SubmitButton>
+              </td>
             </tr>
             <tr v-if="invoices.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.system.integrations.slack.webhooks.list.no_invoices') }}</td>
+              <td colspan="4" class="text-center">{{ $t('app.system.integrations.slack.webhooks.list.no_webhooks') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
@@ -85,10 +90,11 @@ import InternalApp from "../../../InternalApp.vue";
 import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 import ErrorBear from "../../../../../components/app/ErrorBear.vue";
+import RoleOnlyView from "../../../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "InvoiceList.vue",
-  components: {ErrorBear, Dropdown, ListGroupItem, ListGroup, InternalApp},
+  components: {RoleOnlyView, ErrorBear, Dropdown, ListGroupItem, ListGroup, InternalApp},
   data() {
     return {
       ready: false,
@@ -105,7 +111,8 @@ export default {
       active_filters: [],
       per_page: "10",
       filters: {
-      }
+      },
+      in_progress: false,
     }
   },
   mounted() {
