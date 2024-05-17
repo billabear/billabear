@@ -57,6 +57,16 @@ class SlackController
         return new JsonResponse($json, Response::HTTP_CREATED, json: true);
     }
 
+    #[Route('/app/integrations/slack/notification', name: 'billabear_app_integrations_slack_shownotificationlist', methods: ['GET'])]
+    public function showNotificationList(
+        Request $request,
+        SlackNotificationRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        SlackNotificationDataMapper $factory,
+    ): Response {
+        return $this->crudList($request, $repository, $serializer, $factory);
+    }
+
     #[Route('/app/integrations/slack/webhook/create', name: 'billabear_app_integrations_slack_createwebhook', methods: ['POST'])]
     public function createWebhook(
         Request $request,

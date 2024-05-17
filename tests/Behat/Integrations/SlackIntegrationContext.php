@@ -172,4 +172,44 @@ class SlackIntegrationContext implements Context
         }
         $this->slackNotificationRepository->getEntityManager()->refresh($slackNotification);
     }
+
+    /**
+     * @Given the following slack notifications exist:
+     */
+    public function theFollowingSlackNotificationsExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+
+        foreach ($data as $row) {
+            $slackNotification = new SlackNotification();
+            $slackNotification->setSlackWebhook($this->getWebhookByName($row['Webhook']));
+            $slackNotification->setEvent(SlackNotificationEvent::from($row['Event']));
+            $slackNotification->setCreatedAt(new \DateTime());
+            $this->slackNotificationRepository->getEntityManager()->persist($slackNotification);
+        }
+        $this->slackNotificationRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I go to the slack notification list page
+     */
+    public function iGoToTheSlackNotificationListPage()
+    {
+        $this->sendJsonRequest('GET', '/app/integrations/slack/notification');
+    }
+
+    /**
+     * @Then I should see a slack notification in the list for :arg1 and event :arg2
+     */
+    public function iShouldSeeASlackNotificationInTheListForAndEvent($webhookName, $eventName)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ($eventName === $row['event'] && $webhookName === $row['webhook']['name']) {
+                return;
+            }
+        }
+        throw new \Exception("Can't find notification");
+    }
 }
