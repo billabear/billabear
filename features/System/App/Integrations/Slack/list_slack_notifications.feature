@@ -1,5 +1,5 @@
 Feature: List Slack Notification
-  
+
   Background:
     Given the following accounts exist:
       | Name        | Email                   | Password  |

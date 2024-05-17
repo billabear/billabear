@@ -12,4 +12,8 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class SlackWebhookRepository extends DoctrineCrudRepository implements SlackWebhookRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return $this->entityRepository->findAll();
+    }
 }

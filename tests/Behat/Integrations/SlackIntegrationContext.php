@@ -212,4 +212,28 @@ class SlackIntegrationContext implements Context
         }
         throw new \Exception("Can't find notification");
     }
+
+    /**
+     * @When I go create a slack notification
+     */
+    public function iGoCreateASlackNotification()
+    {
+        $this->sendJsonRequest('GET', '/app/integrations/slack/notification/create');
+    }
+
+    /**
+     * @Then I will see the slack webhook :arg1 will be in the list
+     */
+    public function iWillSeeTheSlackWebhookWillBeInTheList($name)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['webhooks'] as $row) {
+            if ($name === $row['name']) {
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf("Unable to find webhook for '%s'", $name));
+    }
 }

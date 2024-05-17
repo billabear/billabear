@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\SlackWebhook;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface SlackWebhookRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return SlackWebhook[]
+     */
+    public function getAll(): array;
 }

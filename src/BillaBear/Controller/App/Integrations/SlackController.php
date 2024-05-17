@@ -14,6 +14,7 @@ use BillaBear\DataMappers\Integrations\SlackNotificationDataMapper;
 use BillaBear\DataMappers\Integrations\SlackWebhookDataMapper;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackNotification;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackWebhook;
+use BillaBear\Dto\Response\App\Integrations\Slack\CreateSlackNotificationView;
 use BillaBear\Entity\SlackWebhook;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
@@ -31,6 +32,21 @@ class SlackController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+
+    #[Route('/app/integrations/slack/notification/create', name: 'billabear_app_integrations_slack_showcreatenotification', methods: ['GET'])]
+    public function showCreateNotification(
+        SlackWebhookRepositoryInterface $repository,
+        SlackWebhookDataMapper $dataMapper,
+        SerializerInterface $serializer,
+    ): JsonResponse {
+        $webhooks = $repository->getAll();
+        $dtos = array_map([$dataMapper, 'createAppDto'], $webhooks);
+        $view = new CreateSlackNotificationView();
+        $view->setWebhooks($dtos);
+        $json = $serializer->serialize($view, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
 
     #[Route('/app/integrations/slack/notification/create', name: 'billabear_app_integrations_slack_createnotification', methods: ['POST'])]
     public function createNotification(
