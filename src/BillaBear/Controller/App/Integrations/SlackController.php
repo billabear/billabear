@@ -10,9 +10,12 @@ namespace BillaBear\Controller\App\Integrations;
 
 use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
+use BillaBear\DataMappers\Integrations\SlackNotificationDataMapper;
 use BillaBear\DataMappers\Integrations\SlackWebhookDataMapper;
+use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackNotification;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackWebhook;
 use BillaBear\Entity\SlackWebhook;
+use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +31,31 @@ class SlackController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+
+    #[Route('/app/integrations/slack/notification/create', name: 'billabear_app_integrations_slack_createnotification', methods: ['POST'])]
+    public function createNotification(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        SlackNotificationRepositoryInterface $notificationRepository,
+        SlackNotificationDataMapper $notificationDataMapper,
+    ): Response {
+        /** @var CreateSlackNotification $createDto */
+        $createDto = $serializer->deserialize($request->getContent(), CreateSlackNotification::class, 'json');
+        $errors = $validator->validate($createDto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $entity = $notificationDataMapper->createEntity($createDto);
+        $notificationRepository->save($entity);
+        $dto = $notificationDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($entity, 'json');
+
+        return new JsonResponse($json, Response::HTTP_CREATED, json: true);
+    }
 
     #[Route('/app/integrations/slack/webhook/create', name: 'billabear_app_integrations_slack_createwebhook', methods: ['POST'])]
     public function createWebhook(
@@ -48,7 +76,8 @@ class SlackController
 
         $entity = $slackWebhookDataMapper->buildEntity($createDto);
         $slackWebhookRepository->save($entity);
-        $json = $serializer->serialize($entity, 'json');
+        $dto = $slackWebhookDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, Response::HTTP_CREATED, json: true);
     }

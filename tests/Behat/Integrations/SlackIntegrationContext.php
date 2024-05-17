@@ -11,7 +11,10 @@ namespace BillaBear\Tests\Behat\Integrations;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use BillaBear\Entity\SlackNotification;
 use BillaBear\Entity\SlackWebhook;
+use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Repository\Orm\SlackNotificationRepository;
 use BillaBear\Repository\Orm\SlackWebhookRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -22,6 +25,7 @@ class SlackIntegrationContext implements Context
     public function __construct(
         private Session $session,
         private SlackWebhookRepository $slackWebhookRepository,
+        private SlackNotificationRepository $slackNotificationRepository,
     ) {
     }
 
@@ -42,7 +46,7 @@ class SlackIntegrationContext implements Context
     /**
      * @Then there will be a slack webhook called :arg1
      */
-    public function thereWillBeASlackWebhookCalled($name)
+    public function getWebhookByName($name)
     {
         $slackWebhook = $this->slackWebhookRepository->findOneBy(['name' => $name]);
 
@@ -103,7 +107,7 @@ class SlackIntegrationContext implements Context
      */
     public function iDisableTheSlackWebhook($name)
     {
-        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        $slackWebhook = $this->getWebhookByName($name);
         $this->sendJsonRequest('POST', '/app/integrations/slack/webhook/'.$slackWebhook->getId().'/disable');
     }
 
@@ -112,7 +116,7 @@ class SlackIntegrationContext implements Context
      */
     public function theSlackWebhookIsNotEnabled($name)
     {
-        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        $slackWebhook = $this->getWebhookByName($name);
         if ($slackWebhook->isEnabled()) {
             throw new \Exception('This is enabled');
         }
@@ -123,7 +127,7 @@ class SlackIntegrationContext implements Context
      */
     public function theSlackWebhookIsEnabled($name)
     {
-        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        $slackWebhook = $this->getWebhookByName($name);
         if (!$slackWebhook->isEnabled()) {
             throw new \Exception('This is not enabled');
         }
@@ -134,7 +138,38 @@ class SlackIntegrationContext implements Context
      */
     public function iEnableTheSlackWebhook($name)
     {
-        $slackWebhook = $this->thereWillBeASlackWebhookCalled($name);
+        $slackWebhook = $this->getWebhookByName($name);
         $this->sendJsonRequest('POST', '/app/integrations/slack/webhook/'.$slackWebhook->getId().'/enable');
+    }
+
+    /**
+     * @When I create a slack notification rule:
+     */
+    public function iCreateASlackNotificationRule(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+
+        $webhook = $this->getWebhookByName($data['Webhook']);
+
+        $payload = [
+            'webhook' => (string) $webhook->getId(),
+            'event' => $data['Event'],
+        ];
+        $this->sendJsonRequest('POST', '/app/integrations/slack/notification/create', $payload);
+    }
+
+    /**
+     * @Then there will be a slack notification rule for the webhook :arg1 and event :arg2
+     */
+    public function thereWillBeASlackNotificationRuleForTheWebhookAndEvent($webhookName, $event)
+    {
+        $webhook = $this->getWebhookByName($webhookName);
+        $webEvent = SlackNotificationEvent::from($event);
+
+        $slackNotification = $this->slackNotificationRepository->findOneBy(['slackWebhook' => $webhook, 'event' => $webEvent]);
+        if (!$slackNotification instanceof SlackNotification) {
+            throw new \Exception('Notification does not exist');
+        }
+        $this->slackNotificationRepository->getEntityManager()->refresh($slackNotification);
     }
 }

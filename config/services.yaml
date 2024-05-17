@@ -427,6 +427,12 @@ services:
     app.repository.orm.slack_webhook:
         class: BillaBear\Repository\Orm\SlackWebhookRepository
 
+    BillaBear\Repository\SlackNotificationRepository:
+        arguments:
+            $entityRepository: '@app.repository.orm.slack_notification'
+    app.repository.orm.slack_notification:
+        class: BillaBear\Repository\Orm\SlackNotificationRepository
+
 
     BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\ObolRegister'
 
