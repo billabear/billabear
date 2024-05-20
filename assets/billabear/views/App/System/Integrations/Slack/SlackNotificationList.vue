@@ -48,7 +48,7 @@
                 </td>
           </tr>
           <tr v-if="notifications.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.system.integrations.slack.notifications.list.no_webhooks') }}</td>
+            <td colspan="4" class="text-center">{{ $t('app.system.integrations.slack.notifications.list.no_notificationss') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
