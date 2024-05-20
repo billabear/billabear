@@ -17,7 +17,15 @@ use Parthenon\Common\Repository\RepositoryInterface;
  */
 interface WorkflowTransitionRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * @return WorkflowTransition[]
+     */
     public function findForWorkflow(WorkflowType $workflowType): array;
+
+    /**
+     * @return WorkflowTransition[]
+     */
+    public function findEnabledForWorkflow(WorkflowType $workflowType): array;
 
     public function delete(WorkflowTransition $transition): void;
 }

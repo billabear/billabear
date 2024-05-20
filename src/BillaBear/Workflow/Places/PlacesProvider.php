@@ -46,4 +46,24 @@ class PlacesProvider
 
         return $output;
     }
+
+    /**
+     * @return PlaceInterface[]
+     */
+    public function getEnabledPlacesForWorkflow(WorkflowType $type): array
+    {
+        $output = $this->workflowTransitionRepository->findEnabledForWorkflow($type);
+
+        foreach ($this->places as $place) {
+            if ($place->getWorkflow() === $type) {
+                $output[] = $place;
+            }
+        }
+
+        usort($output, function (PlaceInterface $a, PlaceInterface $b) {
+            return $a->getPriority() <=> $b->getPriority();
+        });
+
+        return $output;
+    }
 }

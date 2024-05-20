@@ -34,8 +34,9 @@ class WorkflowBuilderTest extends TestCase
 
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
         $placeEntity->method('getToTransitionName')->willReturn($placeName);
+        $placeEntity->method('isEnabled')->willReturn(true);
 
-        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity]);
+        $placesProvider->method('getEnabledPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity]);
         $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $eventDispatcher->expects($this->once())->method('addListener')->with(sprintf('workflow.%s.transition.%s', WorkflowType::CANCEL_SUBSCRIPTION->value, $placeName), [$handler, 'execute']);
@@ -64,6 +65,7 @@ class WorkflowBuilderTest extends TestCase
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
         $placeEntity->method('getToTransitionName')->willReturn($transitionName);
         $placeEntity->method('getName')->willReturn($placeName);
+        $placeEntity->method('isEnabled')->willReturn(true);
 
         $placeClassName = 'hardcoded_place';
         $placeClassTransition = 'hardcoded_transition';
@@ -92,9 +94,14 @@ class WorkflowBuilderTest extends TestCase
             {
                 return $this->placeClassTransition;
             }
+
+            public function isEnabled(): bool
+            {
+                return true;
+            }
         };
 
-        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
+        $placesProvider->method('getEnabledPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
         $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
@@ -126,6 +133,7 @@ class WorkflowBuilderTest extends TestCase
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
         $placeEntity->method('getToTransitionName')->willReturn($transitionName);
         $placeEntity->method('getName')->willReturn($placeName);
+        $placeEntity->method('isEnabled')->willReturn(true);
 
         $placeClassName = 'hardcoded_place';
         $placeClassTransition = 'hardcoded_transition';
@@ -154,9 +162,14 @@ class WorkflowBuilderTest extends TestCase
             {
                 return $this->placeClassTransition;
             }
+
+            public function isEnabled(): bool
+            {
+                return true;
+            }
         };
 
-        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
+        $placesProvider->method('getEnabledPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
         $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
@@ -190,6 +203,7 @@ class WorkflowBuilderTest extends TestCase
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
         $placeEntity->method('getToTransitionName')->willReturn($transitionName);
         $placeEntity->method('getName')->willReturn($placeName);
+        $placeEntity->method('isEnabled')->willReturn(true);
 
         $placeClassName = 'hardcoded_place';
         $placeClassTransition = 'hardcoded_transition';
@@ -218,9 +232,14 @@ class WorkflowBuilderTest extends TestCase
             {
                 return $this->placeClassTransition;
             }
+
+            public function isEnabled(): bool
+            {
+                return true;
+            }
         };
 
-        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
+        $placesProvider->method('getEnabledPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
         $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(
@@ -248,6 +267,7 @@ class WorkflowBuilderTest extends TestCase
         $placeEntity->method('getHandlerName')->willReturn($handlerName);
         $placeEntity->method('getToTransitionName')->willReturn($transitionName);
         $placeEntity->method('getName')->willReturn($placeName);
+        $placeEntity->method('isEnabled')->willReturn(true);
 
         $placeClassName = 'hardcoded_place';
         $placeClassTransition = 'hardcoded_transition';
@@ -276,9 +296,14 @@ class WorkflowBuilderTest extends TestCase
             {
                 return $this->placeClassTransition;
             }
+
+            public function isEnabled(): bool
+            {
+                return true;
+            }
         };
 
-        $placesProvider->method('getPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
+        $placesProvider->method('getEnabledPlacesForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$placeEntity, $placeClass]);
         $dynamicHandlerProvider->method('createHandler')->with($handlerName)->willReturn($handler);
 
         $subject = new WorkflowBuilder(

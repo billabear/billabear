@@ -45,7 +45,7 @@ class WorkflowBuilder
 
     public function build(WorkflowType $workflowType): WorkflowInterface
     {
-        $places = $this->placesProvider->getPlacesForWorkflow($workflowType);
+        $places = $this->placesProvider->getEnabledPlacesForWorkflow($workflowType);
 
         if (0 === sizeof($places)) {
             throw new \RuntimeException(sprintf("There are no places for workflow '%s'", $workflowType->value));
@@ -77,11 +77,7 @@ class WorkflowBuilder
 
     private function getPlaceNames(array $places): array
     {
-        $output = array_filter($places, function (PlaceInterface $place) {
-            return $place->isEnabled();
-        });
-
-        return array_map(function (PlaceInterface $place) { return $place->getName(); }, $output);
+        return array_map(function (PlaceInterface $place) { return $place->getName(); }, $places);
     }
 
     /**
@@ -117,7 +113,7 @@ class WorkflowBuilder
     private function addEventHandlers(WorkflowType $workflowType, array $places): void
     {
         foreach ($places as $place) {
-            if ($place instanceof WorkflowTransition && $place->isEnabled()) {
+            if ($place instanceof WorkflowTransition) {
                 $handler = $this->dynamicHandlerManager->createHandler($place->getHandlerName(), $place);
                 $this->eventDispatcher->addListener(sprintf('workflow.%s.transition.%s', $workflowType->value, $place->getToTransitionName()), [$handler, 'execute']);
             }

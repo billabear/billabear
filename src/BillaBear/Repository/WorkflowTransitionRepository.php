@@ -19,6 +19,11 @@ class WorkflowTransitionRepository extends DoctrineRepository implements Workflo
         return $this->entityRepository->findBy(['workflow' => $workflowType]);
     }
 
+    public function findEnabledForWorkflow(WorkflowType $workflowType): array
+    {
+        return $this->entityRepository->findBy(['workflow' => $workflowType, 'enabled' => true]);
+    }
+
     public function delete(WorkflowTransition $transition): void
     {
         $this->entityRepository->getEntityManager()->remove($transition);
