@@ -5,5 +5,8 @@ export const TRANSACTIONS_MENU_TRANSACTIONS = {
     charge_backs: "Charge Backs",
     invoices: "Invoices",
     unpaid_invoices: "Unpaid Invoices",
-    checkout: "Checkout"
+    checkout: "Checkout",
+    countries: "Countries",
+    tax_types: "Tax Types",
+    tax_types: "Tax Types",
 };
