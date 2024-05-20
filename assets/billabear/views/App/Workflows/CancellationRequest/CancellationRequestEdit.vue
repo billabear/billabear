@@ -4,7 +4,7 @@
   </div>
   <LoadingScreen :ready="ready">
     <div style="height: 1000px; width: 500px">
-      <VueFlow :nodes="flowchartElements" :nodes-draggable="false" fit-view-on-init>
+      <VueFlow :nodes="flowchartElements" :nodes-draggable="false" fit-view-on-init  @nodes-change="onChange" @edges-change="onChange" >
         <Controls />
       </VueFlow>
     </div>
@@ -129,8 +129,14 @@ var editModalValues = ref({
 const {
   onEdgeDoubleClick,
   onNodeDoubleClick,
+  applyNodeChanges,
+  applyEdgeChanges
 } = useVueFlow()
-
+const onChange = (changes) => {
+  // apply changes manually
+  applyNodeChanges(changes)
+  applyEdgeChanges(changes)
+}
 onNodeDoubleClick(event => {
 
   if (event.node.data.default) {
@@ -199,7 +205,7 @@ const sync = () => {
 
     rawElements.push(...edgesElement);
 
-    flowchartElements = ref(rawElements);
+    flowchartElements.value = rawElements;
     ready.value = true;
   })
 };
