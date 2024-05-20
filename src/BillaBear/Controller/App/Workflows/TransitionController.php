@@ -67,6 +67,21 @@ class TransitionController
         return new JsonResponse([], status: JsonResponse::HTTP_ACCEPTED);
     }
 
+    #[Route('/app/workflow/transition/{id}/delete', methods: ['POST'])]
+    public function deleteTransition(
+        Request $request,
+        WorkflowTransitionRepositoryInterface $workflowTransitionRepository,
+    ): Response {
+        try {
+            $entity = $workflowTransitionRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $workflowTransitionRepository->delete($entity);
+
+        return new JsonResponse([], status: JsonResponse::HTTP_ACCEPTED);
+    }
+
     #[Route('/app/workflow/transition/{id}/enable', methods: ['POST'])]
     public function enableTransition(
         Request $request,

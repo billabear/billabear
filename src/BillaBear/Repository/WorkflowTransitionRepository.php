@@ -8,6 +8,7 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\WorkflowTransition;
 use BillaBear\Enum\WorkflowType;
 use Parthenon\Common\Repository\DoctrineRepository;
 
@@ -16,5 +17,11 @@ class WorkflowTransitionRepository extends DoctrineRepository implements Workflo
     public function findForWorkflow(WorkflowType $workflowType): array
     {
         return $this->entityRepository->findBy(['workflow' => $workflowType]);
+    }
+
+    public function delete(WorkflowTransition $transition): void
+    {
+        $this->entityRepository->getEntityManager()->remove($transition);
+        $this->entityRepository->getEntityManager()->flush();
     }
 }

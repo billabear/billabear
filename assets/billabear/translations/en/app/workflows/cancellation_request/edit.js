@@ -13,6 +13,8 @@ export const CANCELLATION_REQUESTS_EDIT_TRANSLATION = {
     },
     edit_place_modal: {
         title: "Edit Place",
+        delete_button: "Delete Place",
+        enable_button: "Enable",
         disable_button: "Disable"
     }
 }

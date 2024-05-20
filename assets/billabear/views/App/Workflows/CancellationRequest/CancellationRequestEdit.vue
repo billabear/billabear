@@ -81,8 +81,8 @@
       :modal-id="'place_details'">
 
     <h3>{{ $t('app.workflows.cancellation_request.edit.edit_place_modal.title') }}</h3>
-
-    <button class="btn--danger" @click="sendDisable(editModalValues.node.data.id)" v-if="editModalValues.node.data.enabled">{{ $t('app.workflows.cancellation_request.edit.edit_place_modal.disable_button') }}</button>
+    <button class="btn--danger mr-2" @click="sendDelete(editModalValues.node.data.id)"><i class="fa-solid fa-trash"></i> {{ $t('app.workflows.cancellation_request.edit.edit_place_modal.delete_button') }}</button>
+    <button class="btn--main" @click="sendDisable(editModalValues.node.data.id)" v-if="editModalValues.node.data.enabled">{{ $t('app.workflows.cancellation_request.edit.edit_place_modal.disable_button') }}</button>
     <button class="btn--main" @click="sendEnable(editModalValues.node.data.id)" v-else>{{ $t('app.workflows.cancellation_request.edit.edit_place_modal.enable_button') }}</button>
   </VueFinalModal>
 </template>
@@ -251,6 +251,14 @@ function sendEnable(id) {
 }
 function sendDisable(id) {
   axios.post('/app/workflow/transition/'+id+'/disable').then(response => {
+    if (response.status == 202) {
+      sync();
+      useVfm().close('place_details')
+    }
+  })
+}
+function sendDelete(id) {
+  axios.post('/app/workflow/transition/'+id+'/delete').then(response => {
     if (response.status == 202) {
       sync();
       useVfm().close('place_details')

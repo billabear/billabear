@@ -8,6 +8,7 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\WorkflowTransition;
 use BillaBear\Enum\WorkflowType;
 use Parthenon\Common\Repository\RepositoryInterface;
 
@@ -17,4 +18,6 @@ use Parthenon\Common\Repository\RepositoryInterface;
 interface WorkflowTransitionRepositoryInterface extends RepositoryInterface
 {
     public function findForWorkflow(WorkflowType $workflowType): array;
+
+    public function delete(WorkflowTransition $transition): void;
 }
