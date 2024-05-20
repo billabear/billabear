@@ -32,4 +32,9 @@ class ReceiptGenerated implements PlaceInterface
     {
         return 'create_receipt';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

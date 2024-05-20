@@ -32,4 +32,9 @@ class CustomerNoticeSent implements PlaceInterface
     {
         return 'send_customer_notice';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

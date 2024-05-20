@@ -87,6 +87,9 @@ class WorkflowBuilder
         $output = [];
         $from = null;
         foreach ($places as $place) {
+            if (!$place->isEnabled()) {
+                continue;
+            }
             if ($from instanceof PlaceInterface) {
                 $output[] = new Transition(
                     $place->getToTransitionName(),

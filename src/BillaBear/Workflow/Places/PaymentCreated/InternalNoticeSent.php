@@ -32,4 +32,9 @@ class InternalNoticeSent implements PlaceInterface
     {
         return 'send_internal_notice';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

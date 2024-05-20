@@ -21,4 +21,6 @@ interface PlaceInterface
     public function getWorkflow(): WorkflowType;
 
     public function getToTransitionName(): string;
+
+    public function isEnabled(): bool;
 }

@@ -32,4 +32,9 @@ class ReportInputsGenerated implements PlaceInterface
     {
         return 'generate_report_data';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

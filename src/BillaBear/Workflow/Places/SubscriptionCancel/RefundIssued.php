@@ -32,4 +32,9 @@ class RefundIssued implements PlaceInterface
     {
         return 'issue_refund';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

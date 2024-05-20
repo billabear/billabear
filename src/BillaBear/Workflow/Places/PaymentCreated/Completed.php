@@ -32,4 +32,9 @@ class Completed implements PlaceInterface
     {
         return 'completed';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

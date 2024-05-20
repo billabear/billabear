@@ -32,4 +32,9 @@ class StatsGenerated implements PlaceInterface
     {
         return 'handle_stats';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

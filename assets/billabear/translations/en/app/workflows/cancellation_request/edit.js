@@ -10,5 +10,9 @@ export const CANCELLATION_REQUESTS_EDIT_TRANSLATION = {
         handler_options: "Handler Options",
         add: "Add",
         required: "Is required",
+    },
+    edit_place_modal: {
+        title: "Edit Place",
+        disable_button: "Disable"
     }
 }

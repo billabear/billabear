@@ -32,4 +32,9 @@ class SubscriptionCancelled implements PlaceInterface
     {
         return 'cancel_subscription';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }

@@ -32,4 +32,9 @@ class Started implements PlaceInterface
     {
         return 'started';
     }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }
