@@ -8,6 +8,9 @@
         <router-link :to="{name:'app.workflows.subscription_creation.edit'}" class="btn--main btn--secondary mr-5 p-5">
           {{ $t('app.workflows.subscription_creation.list.edit_button') }}
         </router-link>
+        <SubmitButton :in-progress="bulk_in_progress" class="btn--main mr-5" @click="bulk">
+          {{ $t('app.workflows.subscription_creation.list.bulk_button') }}
+        </SubmitButton>
       </RoleOnlyView>
 
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
@@ -110,6 +113,7 @@ export default {
       show_filter_menu: false,
       active_filters: ['has_error'],
       per_page: "10",
+      bulk_in_progress: false,
       filters: {
         has_error: {
           label: 'app.workflows.cancellation_request.list.filter.has_error',
@@ -132,6 +136,15 @@ export default {
     }
   },
   methods: {
+    bulk: function () {
+      this.bulk_in_progress=true;
+      axios.post('/app/system/subscription-creation/bulk').then(response => {
+
+        this.bulk_in_progress=false;
+      }).catch(error => {
+        this.bulk_in_progress=false;
+      })
+    },
     syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {

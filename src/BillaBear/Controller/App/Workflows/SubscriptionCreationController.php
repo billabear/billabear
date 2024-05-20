@@ -18,12 +18,14 @@ use BillaBear\Enum\WorkflowType;
 use BillaBear\Filters\Workflows\CancellationRequestList;
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
 use BillaBear\Subscription\SubscriptionCreationProcessor;
+use BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -65,6 +67,14 @@ class SubscriptionCreationController
         SerializerInterface $serializer,
     ): Response {
         return $this->crudList($request, $subscriptionCreationRepository, $serializer, $dataMapper, filterList: new CancellationRequestList());
+    }
+
+    #[Route('/app/system/subscription-creation/bulk', name: 'billabear_app_workflows_subscriptioncreation_bulkprocessfailed', methods: ['POST'])]
+    public function bulkProcessFailed(MessageBusInterface $messageBus): JsonResponse
+    {
+        $messageBus->dispatch(new ReprocessFailedSubscriptionCreated());
+
+        return new JsonResponse(null, JsonResponse::HTTP_OK);
     }
 
     #[Route('/app/system/subscription-creation/{id}/view', name: 'app_app_workflows_subscriptioncreation_viewsubscriptioncreation', methods: ['GET'])]

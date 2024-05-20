@@ -13,6 +13,7 @@ framework:
             # Route your messages to the transports
             'BillaBear\Webhook\Outbound\Messenger\EventMessage': main
             'BillaBear\Workflow\Messenger\Messages\ReprocessFailedCancellationRequests': main
+            'BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated': main
 
 # when@test:
 #    framework:

@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\SubscriptionCreation;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface SubscriptionCreationRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return \Generator|SubscriptionCreation[]
+     */
+    public function getFailedCreations(): \Generator;
 }

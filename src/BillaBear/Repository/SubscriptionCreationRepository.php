@@ -12,4 +12,16 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class SubscriptionCreationRepository extends DoctrineCrudRepository implements SubscriptionCreationRepositoryInterface
 {
+    public function getFailedCreations(): \Generator
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('sc');
+        $queryBuilder->select('sc');
+        $queryBuilder->where('sc.hasError = true');
+        $query = $queryBuilder->getQuery();
+
+        $query->execute();
+        foreach ($query->toIterable() as $result) {
+            yield $result;
+        }
+    }
 }
