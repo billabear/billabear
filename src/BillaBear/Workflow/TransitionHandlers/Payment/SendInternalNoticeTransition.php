@@ -9,6 +9,10 @@
 namespace BillaBear\Workflow\TransitionHandlers\Payment;
 
 use BillaBear\Entity\PaymentCreation;
+use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\Data\PaymentProcessed;
+use BillaBear\Notification\Slack\NotificationSender;
+use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\PaymentReceivedPayload;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -16,7 +20,10 @@ use Symfony\Component\Workflow\Event\Event;
 
 class SendInternalNoticeTransition implements EventSubscriberInterface
 {
-    public function __construct(private EventDispatcherInterface $eventDisptacher)
+    public function __construct(
+        private SlackNotificationRepositoryInterface $slackNotificationRepository,
+        private NotificationSender $notificationSender,
+        private EventDispatcherInterface $eventDisptacher)
     {
     }
 
@@ -27,12 +34,19 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
         $payment = $paymentCreation->getPayment();
         $payload = new PaymentReceivedPayload($payment);
         $this->eventDisptacher->dispatch($payload);
+
+        $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::SUBSCRIPTION_CANCELLED);
+        $notificationMessage = new PaymentProcessed($payment);
+
+        foreach ($notifications as $notification) {
+            $this->notificationSender->sendNotification($notification->getSlackWebhook(), $notificationMessage);
+        }
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.create_payment.transition.send_internal_notice' => ['transition'],
+            'workflow.payment_failure_process.transition.send_internal_notice' => ['transition'],
         ];
     }
 }

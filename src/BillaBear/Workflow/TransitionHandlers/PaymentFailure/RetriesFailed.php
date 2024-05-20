@@ -13,7 +13,6 @@ use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Enum\CancellationType;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
-use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -24,8 +23,7 @@ class RetriesFailed implements EventSubscriberInterface
     public function __construct(
         private CancellationRequestRepositoryInterface $cancellationRequestRepository,
         private CancellationRequestProcessor $requestProcessor,
-        private SubscriptionManagerInterface $subscriptionManager)
-    {
+    ) {
     }
 
     public function transition(Event $event)

@@ -6,40 +6,34 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCancel;
+namespace BillaBear\Workflow\TransitionHandlers\PaymentFailure;
 
-use BillaBear\Entity\CancellationRequest;
+use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Enum\SlackNotificationEvent;
-use BillaBear\Notification\Slack\Data\SubscriptionCancelled;
+use BillaBear\Notification\Slack\Data\PaymentFailure;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class SendInternalNoticeTransition implements EventSubscriberInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private SlackNotificationRepositoryInterface $slackNotificationRepository,
         private NotificationSender $notificationSender,
-    ) {
+        private EventDispatcherInterface $eventDisptacher)
+    {
     }
 
     public function transition(Event $event)
     {
-        $cancellationRequest = $event->getSubject();
+        /** @var PaymentFailureProcess $paymentFailureProcess */
+        $paymentFailureProcess = $event->getSubject();
+        $paymentAttempt = $paymentFailureProcess->getPaymentAttempt();
 
-        if (!$cancellationRequest instanceof CancellationRequest) {
-            $this->getLogger()->error('Cancellation Request transition has something other than a CancellationRequest object');
-
-            return;
-        }
-
-        $subscription = $cancellationRequest->getSubscription();
         $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::SUBSCRIPTION_CANCELLED);
-        $notificationMessage = new SubscriptionCancelled($subscription);
+        $notificationMessage = new PaymentFailure($paymentAttempt);
 
         foreach ($notifications as $notification) {
             $this->notificationSender->sendNotification($notification->getSlackWebhook(), $notificationMessage);
@@ -49,7 +43,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.cancel_subscription.transition.send_internal_notice' => ['transition'],
+            'workflow.create_payment.transition.send_internal_notice' => ['transition'],
         ];
     }
 }
