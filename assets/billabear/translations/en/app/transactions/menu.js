@@ -8,5 +8,4 @@ export const TRANSACTIONS_MENU_TRANSACTIONS = {
     checkout: "Checkout",
     countries: "Countries",
     tax_types: "Tax Types",
-    tax_types: "Tax Types",
 };
