@@ -39,6 +39,11 @@ class CreationHandler
         $this->customerRepository->save($customer);
 
         $this->eventProcessor->dispatch(new CustomerCreatedPayload($customer));
+        $this->handleSlackNotifications($customer);
+    }
+
+    public function handleSlackNotifications(Customer $customer): void
+    {
         $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::CUSTOMER_CREATED);
         $notificationMessage = new CustomerCreated($customer);
         foreach ($notifications as $notification) {
