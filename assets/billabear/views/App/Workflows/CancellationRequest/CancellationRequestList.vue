@@ -8,9 +8,9 @@
         <router-link :to="{name:'app.workflows.cancellation_request.edit'}" class="btn--main btn--secondary mr-2 p-5">
           {{ $t('app.workflows.cancellation_request.list.edit_button') }}
         </router-link>
-        <button class="btn--main mr-5" @click="bulk">
+        <SubmitButton :in-progress="bulk_in_progress" class="btn--main mr-5" @click="bulk">
           {{ $t('app.workflows.cancellation_request.list.bulk_button') }}
-        </button>
+        </SubmitButton>
       </RoleOnlyView>
 
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
@@ -113,6 +113,7 @@ export default {
       show_filter_menu: false,
       active_filters: ['has_error'],
       per_page: "10",
+      bulk_in_progress: false,
       filters: {
         has_error: {
           label: 'app.workflows.cancellation_request.list.filter.has_error',
@@ -136,8 +137,12 @@ export default {
   },
   methods: {
     bulk: function () {
+      this.bulk_in_progress=true;
         axios.post('/app/system/cancellation-request/bulk').then(response => {
 
+          this.bulk_in_progress=false;
+        }).catch(error => {
+          this.bulk_in_progress=false;
         })
     },
     syncQueryToFilters: function () {
