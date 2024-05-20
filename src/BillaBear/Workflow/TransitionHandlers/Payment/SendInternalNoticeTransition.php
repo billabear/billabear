@@ -46,7 +46,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.payment_failure_process.transition.send_internal_notice' => ['transition'],
+            'workflow.create_payment.transition.send_internal_notice' => ['transition'],
         ];
     }
 }
