@@ -9,7 +9,6 @@
 namespace BillaBear\Controller\Api;
 
 use BillaBear\Customer\CreationHandler;
-use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Customer\LimitsFactory;
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\Dto\Request\Api\CreateCustomerDto;
@@ -18,7 +17,6 @@ use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Stats\CustomerCreationStats;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -40,9 +38,6 @@ class CustomerController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CustomerDataMapper $customerFactory,
-        ExternalRegisterInterface $externalRegister,
-        CustomerRepositoryInterface $customerRepository,
-        CustomerCreationStats $customerCreationStats,
         CreationHandler $creationHandler,
     ): Response {
         $this->getLogger()->info('Start create customer API request');
@@ -65,21 +60,14 @@ class CustomerController
 
         $customer = $customerFactory->createCustomer($dto);
 
-        if (!$customer->hasExternalsCustomerReference()) {
-            try {
-                $this->getLogger()->info('Registering customer with payment provider');
-                $externalRegister->register($customer);
-            } catch (ProviderFailureException $e) {
-                $this->getLogger()->error('Got an error from payment provider', ['exception_message' => $e->getPrevious()->getMessage()]);
+        try {
+            $creationHandler->handleCreation($customer);
+        } catch (ProviderFailureException $e) {
+            $this->getLogger()->error('Got an error from payment provider', ['exception_message' => $e->getPrevious()->getMessage()]);
 
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
+            return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
         }
         $this->getLogger()->info('Customer creation complete');
-        $customerRepository->save($customer);
-        $customerCreationStats->handleStats($customer);
-
-        $creationHandler->handleCreation($customer);
 
         $dto = $customerFactory->createApiDto($customer);
         $jsonResponse = $serializer->serialize($dto, 'json');

@@ -129,7 +129,6 @@ class CustomerController
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
-        EventDispatcherInterface $eventProcessor,
         CreationHandler $creationHandler,
     ): Response {
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
@@ -154,11 +153,6 @@ class CustomerController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_CONFLICT);
         }
 
-        if (!$customer->hasExternalsCustomerReference()) {
-            $externalRegister->register($customer);
-        }
-        $customerRepository->save($customer);
-        $customerCreationStats->handleStats($customer);
         $dto = $customerFactory->createAppDto($customer);
         $json = $serializer->serialize($dto, 'json');
 
