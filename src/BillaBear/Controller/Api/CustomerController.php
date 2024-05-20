@@ -8,6 +8,7 @@
 
 namespace BillaBear\Controller\Api;
 
+use BillaBear\Customer\CreationHandler;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Customer\LimitsFactory;
 use BillaBear\DataMappers\CustomerDataMapper;
@@ -18,8 +19,6 @@ use BillaBear\Enum\CustomerStatus;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
-use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -44,7 +43,7 @@ class CustomerController
         ExternalRegisterInterface $externalRegister,
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
-        EventDispatcherInterface $eventProcessor,
+        CreationHandler $creationHandler,
     ): Response {
         $this->getLogger()->info('Start create customer API request');
 
@@ -80,7 +79,7 @@ class CustomerController
         $customerRepository->save($customer);
         $customerCreationStats->handleStats($customer);
 
-        $eventProcessor->dispatch(new CustomerCreatedPayload($customer));
+        $creationHandler->handleCreation($customer);
 
         $dto = $customerFactory->createApiDto($customer);
         $jsonResponse = $serializer->serialize($dto, 'json');

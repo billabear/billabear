@@ -8,6 +8,7 @@
 
 namespace BillaBear\Controller\App;
 
+use BillaBear\Customer\CreationHandler;
 use BillaBear\Customer\Disabler;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Customer\LimitsFactory;
@@ -34,7 +35,6 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\EventDispatcherInterface;
-use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
@@ -130,6 +130,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         CustomerCreationStats $customerCreationStats,
         EventDispatcherInterface $eventProcessor,
+        CreationHandler $creationHandler,
     ): Response {
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
@@ -161,7 +162,7 @@ class CustomerController
         $dto = $customerFactory->createAppDto($customer);
         $json = $serializer->serialize($dto, 'json');
 
-        $eventProcessor->dispatch(new CustomerCreatedPayload($customer));
+        $creationHandler->handleCreation($customer);
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }

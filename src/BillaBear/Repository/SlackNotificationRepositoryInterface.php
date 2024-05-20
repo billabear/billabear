@@ -8,8 +8,14 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\SlackNotification;
+use BillaBear\Enum\SlackNotificationEvent;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface SlackNotificationRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return SlackNotification[]
+     */
+    public function findActiveForEvent(SlackNotificationEvent $event): array;
 }

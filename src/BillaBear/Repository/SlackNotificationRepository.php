@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Enum\SlackNotificationEvent;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class SlackNotificationRepository extends DoctrineCrudRepository implements SlackNotificationRepositoryInterface
 {
+    public function findActiveForEvent(SlackNotificationEvent $event): array
+    {
+        return $this->entityRepository->findBy(['event' => $event]);
+    }
 }
