@@ -26,6 +26,7 @@ class WorkflowProcessor
     {
         $workflow = $this->workflowBuilder->build($workflowType);
         $subject->setHasError(false);
+        $subject->setError(null);
         try {
             foreach ($this->getTransitions($workflow) as $transition) {
                 if ($workflow->can($subject, $transition)) {

@@ -13,6 +13,7 @@ use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -28,6 +29,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 #[Autoconfigure(lazy: true)]
 class WorkflowBuilder
 {
+    use LoggerAwareTrait;
+
     /**
      * @param EventDispatcherInterface|EventDispatcher $eventDispatcher
      */
@@ -74,7 +77,11 @@ class WorkflowBuilder
 
     private function getPlaceNames(array $places): array
     {
-        return array_map(function (PlaceInterface $place) { return $place->getName(); }, $places);
+        $output = array_filter($places, function (PlaceInterface $place) {
+            return $place->isEnabled();
+        });
+
+        return array_map(function (PlaceInterface $place) { return $place->getName(); }, $output);
     }
 
     /**
@@ -110,7 +117,7 @@ class WorkflowBuilder
     private function addEventHandlers(WorkflowType $workflowType, array $places): void
     {
         foreach ($places as $place) {
-            if ($place instanceof WorkflowTransition) {
+            if ($place instanceof WorkflowTransition && $place->isEnabled()) {
                 $handler = $this->dynamicHandlerManager->createHandler($place->getHandlerName(), $place);
                 $this->eventDispatcher->addListener(sprintf('workflow.%s.transition.%s', $workflowType->value, $place->getToTransitionName()), [$handler, 'execute']);
             }
