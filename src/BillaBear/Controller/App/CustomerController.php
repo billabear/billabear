@@ -153,10 +153,10 @@ class CustomerController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_CONFLICT);
         }
 
+        $creationHandler->handleCreation($customer);
+
         $dto = $customerFactory->createAppDto($customer);
         $json = $serializer->serialize($dto, 'json');
-
-        $creationHandler->handleCreation($customer);
 
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
