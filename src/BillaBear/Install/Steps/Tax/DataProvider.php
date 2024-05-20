@@ -967,11 +967,110 @@ class DataProvider
             // Asia
 
             // Pacfic
+            'JP' => [
+                'name' => 'Japan',
+                'threshold' => 1000000000,
+                'in_eu' => false,
+                'currency' => 'JPY',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+            'CN' => [
+                'name' => 'China',
+                'threshold' => 3000000,
+                'in_eu' => false,
+                'currency' => 'CNY',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 13],
+                ],
+            ],
+            'IN' => [
+                'name' => 'India',
+                'threshold' => 200000000,
+                'in_eu' => false,
+                'currency' => 'INR',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 18],
+                ],
+            ],
+            'PK' => [
+                'name' => 'Pakistan',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'PKR',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 17],
+                ],
+            ],
+            'PH' => [
+                'name' => 'Philippines',
+                'threshold' => 300000000,
+                'in_eu' => false,
+                'currency' => 'PHP',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 12],
+                ],
+            ],
+            'ID' => [
+                'name' => 'Indonesia',
+                'threshold' => 480000000000,
+                'in_eu' => false,
+                'currency' => 'IDR',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+            'MY' => [
+                'name' => 'Malaysia',
+                'threshold' => 50000000,
+                'in_eu' => false,
+                'currency' => 'MYR',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
+            'TH' => [
+                'name' => 'Thailand',
+                'threshold' => 180000000,
+                'in_eu' => false,
+                'currency' => 'THB',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 7],
+                ],
+            ],
+            'TW' => [
+                'name' => 'Taiwan',
+                'threshold' => 48000000,
+                'in_eu' => false,
+                'currency' => 'TWD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 5],
+                ],
+            ],
+            'SG' => [
+                'name' => 'Singapore',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'SGD',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 7],
+                ],
+            ],
+            'KR' => [
+                'name' => 'South Korea',
+                'threshold' => 100000000,
+                'in_eu' => false,
+                'currency' => 'KRW',
+                'rates' => [
+                    'Standard VAT' => ['default' => true, 'rate' => 10],
+                ],
+            ],
 
             'AU' => [
                 'name' => 'Australia',
                 'threshold' => 7500000,
-                'in_eu' => true,
+                'in_eu' => false,
                 'currency' => 'AUD',
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 18],
