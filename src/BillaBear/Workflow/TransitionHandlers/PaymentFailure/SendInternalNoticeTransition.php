@@ -32,7 +32,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
         $paymentFailureProcess = $event->getSubject();
         $paymentAttempt = $paymentFailureProcess->getPaymentAttempt();
 
-        $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::SUBSCRIPTION_CANCELLED);
+        $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::PAYMENT_FAILED);
         $notificationMessage = new PaymentFailure($paymentAttempt);
 
         foreach ($notifications as $notification) {
