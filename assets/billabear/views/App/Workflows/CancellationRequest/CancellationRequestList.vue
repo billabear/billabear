@@ -5,9 +5,12 @@
     <div class="text-end m-5">
 
       <RoleOnlyView role="ROLE_DEVELOPER">
-        <router-link :to="{name:'app.workflows.cancellation_request.edit'}" class="btn--main btn--secondary mr-5 p-5">
+        <router-link :to="{name:'app.workflows.cancellation_request.edit'}" class="btn--main btn--secondary mr-2 p-5">
           {{ $t('app.workflows.cancellation_request.list.edit_button') }}
         </router-link>
+        <button class="btn--main mr-5" @click="bulk">
+          {{ $t('app.workflows.cancellation_request.list.bulk_button') }}
+        </button>
       </RoleOnlyView>
 
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
@@ -89,12 +92,12 @@
 
 <script>
 import axios from "axios";
-import {Dropdown, Input, ListGroup, ListGroupItem} from "flowbite-vue";
+import {Button, Dropdown, Input, ListGroup, ListGroupItem} from "flowbite-vue";
 import RoleOnlyView from "../../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "CancellationRequestList",
-  components: {RoleOnlyView, Input, Dropdown, ListGroupItem, ListGroup},
+  components: {Button, RoleOnlyView, Input, Dropdown, ListGroupItem, ListGroup},
   data() {
     return {
       ready: false,
@@ -132,6 +135,11 @@ export default {
     }
   },
   methods: {
+    bulk: function () {
+        axios.post('/app/system/cancellation-request/bulk').then(response => {
+
+        })
+    },
     syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {

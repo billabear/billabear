@@ -8,6 +8,7 @@ export const CANCELLATION_REQUESTS_LIST_TRANSLATION = {
     prev: "Previous Page",
     view: "View",
     edit_button: "Edit",
+    bulk_button: "Bulk Reprocess",
     filter: {
         title: "Filters",
         email: "Email",

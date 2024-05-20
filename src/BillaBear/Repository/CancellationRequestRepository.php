@@ -56,4 +56,17 @@ class CancellationRequestRepository extends DoctrineCrudRepository implements Ca
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getFailedProcesses(): \Generator
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('cr');
+        $queryBuilder->select('cr');
+        $queryBuilder->where('cr.hasError = true');
+        $query = $queryBuilder->getQuery();
+
+        $query->execute();
+        foreach ($query->toIterable() as $result) {
+            yield $result;
+        }
+    }
 }

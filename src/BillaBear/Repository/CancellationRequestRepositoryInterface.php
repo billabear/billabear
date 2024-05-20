@@ -8,6 +8,7 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\CancellationRequest;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface CancellationRequestRepositoryInterface extends CrudRepositoryInterface
@@ -17,4 +18,9 @@ interface CancellationRequestRepositoryInterface extends CrudRepositoryInterface
     public function getMonthlyCount(\DateTime $dateTime): array;
 
     public function getYearlyCount(\DateTime $dateTime): array;
+
+    /**
+     * @return \Generator|CancellationRequest[]
+     */
+    public function getFailedProcesses(): \Generator;
 }
