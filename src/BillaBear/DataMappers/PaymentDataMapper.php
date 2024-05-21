@@ -12,11 +12,14 @@ use BillaBear\Dto\Generic\Api\Payment as ApiDto;
 use BillaBear\Dto\Generic\App\Payment as AppDto;
 use BillaBear\Entity\Customer;
 use Parthenon\Billing\Entity\Payment;
+use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 
 class PaymentDataMapper
 {
     public function __construct(
-        private CustomerDataMapper $customerFactory
+        private CustomerDataMapper $customerFactory,
+        private ReceiptDataMapper $receiptDataMapper,
+        private ReceiptRepositoryInterface $receiptRepository,
     ) {
     }
 
@@ -48,6 +51,13 @@ class PaymentDataMapper
         $dto->setCurrency($payment->getCurrency());
         $dto->setExternalReference($payment->getPaymentReference());
         $dto->setCreatedAt($payment->getCreatedAt());
+
+        $receipts = $this->receiptRepository->getForPayment($payment);
+        $receiptDtos = [];
+        foreach ($receipts as $receipt) {
+            $receiptDtos[] = $this->receiptDataMapper->createApiDto($receipt);
+        }
+        $dto->setReceipts($receiptDtos);
 
         $customer = $payment->getCustomer();
         if ($customer instanceof Customer) {

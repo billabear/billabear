@@ -28,6 +28,8 @@ class Payment
     #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
 
+    private array $receipts = [];
+
     public function getId(): string
     {
         return $this->id;
@@ -96,5 +98,15 @@ class Payment
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getReceipts(): array
+    {
+        return $this->receipts;
+    }
+
+    public function setReceipts(array $receipts): void
+    {
+        $this->receipts = $receipts;
     }
 }
