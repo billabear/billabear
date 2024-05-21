@@ -41,7 +41,6 @@
         </div>
 
         <div class="mt-5">
-          <SubmitButton :in-progress="downloadInProgress" @click="download" button-class="btn--secondary mr-4">{{ $t('app.settings.pdf_template.create.download') }}</SubmitButton>
           <SubmitButton :in-progress="sendingInProgress" @click="save">{{ $t('app.settings.pdf_template.create.save') }}</SubmitButton>
         </div></div>
       <VueFinalModal
