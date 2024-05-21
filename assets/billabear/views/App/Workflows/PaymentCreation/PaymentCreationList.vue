@@ -8,6 +8,9 @@
         <router-link :to="{name:'app.workflows.payment_creation.edit'}" class="btn--main btn--secondary mr-5 p-5">
           {{ $t('app.workflows.payment_creation.list.edit_button') }}
         </router-link>
+        <SubmitButton :in-progress="bulk_in_progress" class="btn--main mr-5" @click="bulk">
+          {{ $t('app.workflows.cancellation_request.list.bulk_button') }}
+        </SubmitButton>
       </RoleOnlyView>
 
       <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
@@ -130,6 +133,15 @@ export default {
     }
   },
   methods: {
+    bulk: function () {
+      this.bulk_in_progress=true;
+      axios.post('/app/system/payment-creation/bulk').then(response => {
+
+        this.bulk_in_progress=false;
+      }).catch(error => {
+        this.bulk_in_progress=false;
+      })
+    },
     syncQueryToFilters: function () {
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {

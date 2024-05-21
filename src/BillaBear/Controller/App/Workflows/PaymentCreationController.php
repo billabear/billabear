@@ -18,12 +18,14 @@ use BillaBear\Enum\WorkflowType;
 use BillaBear\Filters\Workflows\CancellationRequestList;
 use BillaBear\Payment\PaymentCreationProcessor;
 use BillaBear\Repository\PaymentCreationRepositoryInterface;
+use BillaBear\Workflow\Messenger\Messages\ReprocessFailedPaymentCreation;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -55,6 +57,14 @@ class PaymentCreationController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/system/payment-creation/bulk', name: 'billabear_app_workflows_paymentcreation_bulkprocessfailed', methods: ['POST'])]
+    public function bulkProcessFailed(MessageBusInterface $messageBus): JsonResponse
+    {
+        $messageBus->dispatch(new ReprocessFailedPaymentCreation());
+
+        return new JsonResponse(null, JsonResponse::HTTP_OK);
     }
 
     #[Route('/app/system/payment-creation/list', name: 'app_app_workflows_paymentcreation_listpaymentcreation', methods: ['GET'])]

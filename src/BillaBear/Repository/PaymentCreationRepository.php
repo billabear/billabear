@@ -12,4 +12,16 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class PaymentCreationRepository extends DoctrineCrudRepository implements PaymentCreationRepositoryInterface
 {
+    public function getFailedProcesses(): \Generator
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('pc');
+        $queryBuilder->select('pc');
+        $queryBuilder->where('pc.hasError = true');
+        $query = $queryBuilder->getQuery();
+
+        $query->execute();
+        foreach ($query->toIterable() as $result) {
+            yield $result;
+        }
+    }
 }

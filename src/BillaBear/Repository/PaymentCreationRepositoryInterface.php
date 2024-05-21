@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\PaymentCreation;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface PaymentCreationRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return \Generator|PaymentCreation[]
+     */
+    public function getFailedProcesses(): \Generator;
 }

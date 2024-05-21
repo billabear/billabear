@@ -14,6 +14,7 @@ framework:
             'BillaBear\Webhook\Outbound\Messenger\EventMessage': main
             'BillaBear\Workflow\Messenger\Messages\ReprocessFailedCancellationRequests': main
             'BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated': main
+            'BillaBear\Workflow\Messenger\Messages\ReprocessFailedPaymentCreation': main
 
 # when@test:
 #    framework:
