@@ -8,6 +8,9 @@
 
 namespace BillaBear\Tests\Behat\Tax;
 
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use BillaBear\Entity\Country;
 use BillaBear\Entity\CountryTaxRule;
 use BillaBear\Entity\TaxType;
@@ -15,9 +18,6 @@ use BillaBear\Repository\Orm\CountryRepository;
 use BillaBear\Repository\Orm\CountryTaxRuleRepository;
 use BillaBear\Repository\Orm\TaxTypeRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
 
 class CountryContext implements Context
 {
@@ -74,6 +74,7 @@ class CountryContext implements Context
             'threshold' => intval($data['Threshold'] ?? 0),
             'currency' => $data['Currency'],
             'in_eu' => boolval($data['In EU'] ?? 'true'),
+            'enabled' => boolval($data['Enabled'] ?? 'true'),
         ];
 
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/edit', $payload);

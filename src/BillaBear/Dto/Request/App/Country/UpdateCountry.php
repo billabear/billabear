@@ -39,6 +39,9 @@ class UpdateCountry
     #[SerializedName('start_of_tax_year')]
     private $startOfTaxYear;
 
+    #[Assert\Type('boolean')]
+    private $enabled;
+
     public function getName()
     {
         return $this->name;
@@ -107,5 +110,15 @@ class UpdateCountry
     public function setStartOfTaxYear($startOfTaxYear): void
     {
         $this->startOfTaxYear = $startOfTaxYear;
+    }
+
+    public function isEnabled(): bool
+    {
+        return true === $this->enabled;
+    }
+
+    public function setEnabled($enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

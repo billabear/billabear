@@ -139,3 +139,15 @@ Feature: Customer Creation
       | Type               | Individual           |
     Then there should be a customer for "customer@example.org"
     And the customer "customer@example.org" should be a individual customer
+
+  Scenario: Error when country is not enabled
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Currency | Enabled |
+      | United Kingdom | GB       | 1770      | GBP      | true    |
+      | United States  | US       | 0         | USD      | true    |
+      | Germany        | DE       | 0         | EUR      | false   |
+    When I create a customer via the app with the following info
+      | Email   | customer@example.org |
+      | Country | DE                   |
+    Then there should be an error for "address.country"

@@ -15,6 +15,10 @@
                 <dd>{{ country.name }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.country.view.fields.enabled') }}</dt>
+                <dd>{{ country.enabled }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.country.view.fields.iso_code') }}</dt>
                 <dd>{{ country.iso_code }}</dd>
               </div>

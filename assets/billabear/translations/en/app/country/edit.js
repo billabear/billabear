@@ -7,7 +7,8 @@ export const COUNTRY_EDIT_TRANSLATIONS = {
             currency: "Currency",
             threshold: "Threshold",
             in_eu: "In the EU?",
-            tax_year: "Start of Tax Year"
+            tax_year: "Start of Tax Year",
+            enabled: "Enabled"
         },
         help_info: {
             name: "The name of the country",
@@ -15,7 +16,8 @@ export const COUNTRY_EDIT_TRANSLATIONS = {
             currency: "The reporting currency for the country",
             threshold: "The tax threshold for the country",
             in_eu: "Is the country within the EU",
-            tax_year: "The date for the start of the tax year for the country"
+            tax_year: "The date for the start of the tax year for the country",
+            enabled: "If the country is enabled for customer sign ups"
         }
     },
     update_button: "Update"

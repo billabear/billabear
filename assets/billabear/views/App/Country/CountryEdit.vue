@@ -13,7 +13,16 @@
             </label>
             <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
             <input type="text" class="form-field" v-model="country.name" />
-            <p class="form-field-help">{{ $t('app.country.create.country.help_info.name') }}</p>
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.name') }}</p>
+          </div>
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.country.edit.country.fields.enabled') }}
+            </label>
+            <p class="form-field-error" v-if="errors.enabled != undefined">{{ errors.enabled }}</p>
+            <Toggle v-model="country.enabled" />
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.enabled') }}</p>
           </div>
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="name">
@@ -66,10 +75,11 @@
 <script>
 import axios from "axios";
 import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "CountryEdit",
-  components: {CurrencySelect},
+  components: {Toggle, CurrencySelect},
   data() {
     return {
       ready: false,

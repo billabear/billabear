@@ -8,6 +8,7 @@
 
 namespace BillaBear\Dto\Generic;
 
+use BillaBear\Validator\Constraints\Country\CountryIsEnabled;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +31,7 @@ class Address
 
     #[SerializedName('country')]
     #[Assert\Country]
+    #[CountryIsEnabled]
     private ?string $country = null;
 
     #[SerializedName('postcode')]

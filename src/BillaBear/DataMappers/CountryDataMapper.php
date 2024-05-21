@@ -35,6 +35,7 @@ class CountryDataMapper
         $entity->setThreshold($updateCountry->getThreshold());
         $entity->setInEu($updateCountry->getInEu() ?? false);
         $entity->setStartOfTaxYear($updateCountry->getStartOfTaxYear());
+        $entity->setEnabled($updateCountry->isEnabled());
 
         return $entity;
     }
@@ -50,6 +51,7 @@ class CountryDataMapper
         $appDto->setThreshold($entity->getThreshold());
         $appDto->setInEu($entity->isInEu());
         $appDto->setStartOfTaxYear($entity->getStartOfTaxYear());
+        $appDto->setEnabled($entity->isEnabled());
 
         $amountTransacted = $this->manager->getTransactedAmount($entity);
         $appDto->setAmountTransacted($amountTransacted->getMinorAmount()->toInt());

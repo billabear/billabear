@@ -16,6 +16,8 @@ class Country
 
     private string $name;
 
+    private bool $enabled;
+
     #[SerializedName('iso_code')]
     private string $isoCode;
 
@@ -43,6 +45,16 @@ class Country
     public function setId(string $id): void
     {
         $this->id = $id;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 
     public function getName(): string

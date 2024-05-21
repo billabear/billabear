@@ -6,7 +6,8 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         threshold: "Threshold",
         currency: "Currency",
         in_eu: "In Eu",
-        start_of_tax_year: "Start Of Tax Year"
+        start_of_tax_year: "Start Of Tax Year",
+        enabled: "Enabled",
     },
     edit_button: "Edit",
     tax_rule: {
