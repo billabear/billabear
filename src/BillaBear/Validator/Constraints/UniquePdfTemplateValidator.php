@@ -10,7 +10,6 @@ namespace BillaBear\Validator\Constraints;
 
 use BillaBear\Dto\Request\App\Template\CreatePdfTemplate;
 use BillaBear\Repository\TemplateRepositoryInterface;
-use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -33,10 +32,9 @@ class UniquePdfTemplateValidator extends ConstraintValidator
         if (!$value->getType() || !$value->getLocale() || !$value->getBrand()) {
             return;
         }
+        $emailTemplate = $this->repository->getByNameAndLocaleAndBrand($value->getType(), $value->getLocale(), $value->getBrand());
 
-        try {
-            $emailTemplate = $this->repository->getByNameAndLocaleAndBrand($value->getType(), $value->getLocale(), $value->getBrand());
-        } catch (NoEntityFoundException) {
+        if (!$emailTemplate) {
             return;
         }
 

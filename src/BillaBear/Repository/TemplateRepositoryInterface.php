@@ -17,5 +17,5 @@ interface TemplateRepositoryInterface extends RepositoryInterface
 
     public function getByNameAndBrand(string $name, string $brand): Template;
 
-    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): Template;
+    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): ?Template;
 }

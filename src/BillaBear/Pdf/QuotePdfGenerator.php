@@ -15,7 +15,6 @@ use BillaBear\Entity\QuoteLine;
 use BillaBear\Entity\Template;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Address;
-use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Pdf\GeneratorInterface;
 use Twig\Environment;
 
@@ -35,10 +34,18 @@ class QuotePdfGenerator
         if (!$customer instanceof Customer) {
             throw new \LogicException('Invalid customer type');
         }
-        try {
-            $template = $this->templateRepository->getByNameAndBrand(Template::NAME_QUOTE, $customer->getBrand());
-        } catch (NoEntityFoundException $exception) {
-            $template = $this->templateRepository->getByNameAndBrand(Template::NAME_QUOTE, Customer::DEFAULT_BRAND);
+        $template = $this->templateRepository->getByNameAndLocaleAndBrand(Template::NAME_QUOTE, $customer->getLocale(), $customer->getBrand());
+
+        if (!$template) {
+            $template = $this->templateRepository->getByNameAndLocaleAndBrand(Template::NAME_QUOTE, $customer->getLocale(), Customer::DEFAULT_BRAND);
+        }
+
+        if (!$template) {
+            $template = $this->templateRepository->getByNameAndLocaleAndBrand(Template::NAME_QUOTE, Customer::DEFAULT_LOCALE, Customer::DEFAULT_BRAND);
+        }
+
+        if (!$template) {
+            throw new \Exception('Unable to find pdf template');
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());

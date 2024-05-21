@@ -15,7 +15,6 @@ use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\Template;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Address;
-use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Pdf\GeneratorInterface;
 use Twig\Environment;
 
@@ -35,10 +34,19 @@ class InvoicePdfGenerator
         if (!$customer instanceof Customer) {
             throw new \LogicException('Invalid customer type');
         }
-        try {
-            $template = $this->templateRepository->getByNameAndBrand(Template::NAME_INVOICE, $customer->getBrand());
-        } catch (NoEntityFoundException $exception) {
-            $template = $this->templateRepository->getByNameAndBrand(Template::NAME_INVOICE, Customer::DEFAULT_BRAND);
+
+        $template = $this->templateRepository->getByNameAndLocaleAndBrand(Template::NAME_INVOICE, $customer->getLocale(), $customer->getBrand());
+
+        if (!$template) {
+            $template = $this->templateRepository->getByNameAndLocaleAndBrand(Template::NAME_INVOICE, $customer->getLocale(), Customer::DEFAULT_BRAND);
+        }
+
+        if (!$template) {
+            $template = $this->templateRepository->getByNameAndLocaleAndBrand(Template::NAME_INVOICE, Customer::DEFAULT_LOCALE, Customer::DEFAULT_BRAND);
+        }
+
+        if (!$template) {
+            throw new \Exception('Unable to find pdf template');
         }
 
         $twigTemplate = $this->twig->createTemplate($template->getContent());
