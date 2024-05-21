@@ -12,12 +12,15 @@ use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Entity\Invoice;
 use BillaBear\Payment\InvoiceCharger;
+use BillaBear\Pdf\InvoicePdfGenerator;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -63,5 +66,33 @@ class InvoiceController
         $invoiceCharger->chargeInvoice($invoice);
 
         return new JsonResponse(['paid' => $invoice->isPaid()], JsonResponse::HTTP_OK);
+    }
+
+    #[Route('/api/v1/invoice/{id}/download', name: 'billabear_api_invoice_downloadinvoice', methods: ['GET'])]
+    public function downloadInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoicePdfGenerator $generator,
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+        $pdf = $generator->generate($invoice);
+        $tmpFile = tempnam('/tmp', 'pdf');
+        file_put_contents($tmpFile, $pdf);
+
+        $response = new BinaryFileResponse($tmpFile);
+        $filename = sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber());
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
     }
 }

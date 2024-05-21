@@ -99,7 +99,7 @@ class InvoicePdfGenerator
             'tax_total' => $invoiceLine->getTaxTotal(),
             'tax_percentage' => $invoiceLine->getTaxPercentage(),
             'description' => $invoiceLine->getDescription(),
-            'tax_type' => $invoiceLine->getTaxType()->value,
+            'tax_type' => $invoiceLine->getTaxType()->getName(),
             'tax_country' => $invoiceLine->getTaxCountry(),
         ];
     }

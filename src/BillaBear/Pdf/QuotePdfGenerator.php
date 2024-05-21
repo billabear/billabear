@@ -94,7 +94,7 @@ class QuotePdfGenerator
             'tax_total' => $quoteLine->getTaxTotal(),
             'tax_percentage' => $quoteLine->getTaxPercentage(),
             'description' => $quoteLine->getDescription(),
-            'tax_type' => $quoteLine->getTaxType()->value,
+            'tax_type' => $quoteLine->getTaxType()->getName(),
         ];
     }
 
