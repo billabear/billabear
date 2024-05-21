@@ -81,14 +81,6 @@
         </LoadingScreen>
       </div>
     </div>
-
-    <div class="mt-5 card-body">
-      <LoadingScreen :ready="ready">
-
-        <apexchart  type="line" :series="chartData" :options="chartOptions" />
-      </LoadingScreen>
-    </div>
-
   </div>
 </template>
 
