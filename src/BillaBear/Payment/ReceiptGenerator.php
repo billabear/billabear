@@ -8,6 +8,7 @@
 
 namespace BillaBear\Payment;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Invoice\PricerInterface;
 use Brick\Math\RoundingMode;
@@ -37,6 +38,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $vatTotal = null;
         $subTotalTotal = null;
         $lines = [];
+        /** @var Customer $customer */
         $customer = $payment->getCustomer();
 
         if ($payment->getInvoice()) {
@@ -106,6 +108,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setCreatedAt(new \DateTime());
         $receipt->setVatPercentage($line->getVatPercentage());
         $receipt->setPayeeAddress($customer->getBillingAddress());
+        $receipt->setBillerAddress($customer->getBrandSettings()->getAddress());
 
         return $receipt;
     }

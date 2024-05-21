@@ -54,6 +54,7 @@ services:
     parthenon.billing.repository.orm.subscription_repository_doctrine: '@BillaBear\Repository\Orm\SubscriptionRepository'
     parthenon.billing.repository.orm.subscription_plan_repository_doctrine: '@BillaBear\Repository\Orm\SubscriptionPlanRepository'
     parthenon.billing.repository.orm.payment_repository_doctrine: '@BillaBear\Repository\Orm\PaymentRepository'
+    parthenon.billing.repository.orm.receipt_repository_doctrine: '@BillaBear\Repository\Orm\ReceiptRepository'
 
     BillaBear\Repository\UserRepository:
         arguments:

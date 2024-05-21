@@ -64,7 +64,7 @@ class ReceiptPdfGenerator
         return [
             'customer' => $this->getCustomerData($customer),
             'brand' => $this->getBrandData($customer->getBrandSettings()),
-            'receipt' => $this->getInvoiceData($receipt),
+            'receipt' => $this->getReceiptData($receipt),
         ];
     }
 
@@ -76,7 +76,7 @@ class ReceiptPdfGenerator
         ];
     }
 
-    private function getInvoiceData(Receipt $receipt): array
+    private function getReceiptData(Receipt $receipt): array
     {
         return [
             'id' => (string) $receipt->getId(),
@@ -86,7 +86,7 @@ class ReceiptPdfGenerator
             'sub_total' => $receipt->getSubTotal(),
             'tax_total' => $receipt->getVatTotal(),
             'currency' => $receipt->getCurrency(),
-            'lines' => array_map([$this, 'getReceiptLine'], $receipt->getLines()),
+            'lines' => array_map([$this, 'getReceiptLine'], $receipt->getLines()->toArray()),
             'biller_address' => $this->getAddress($receipt->getBillerAddress()),
             'payee_address' => $this->getAddress($receipt->getPayeeAddress()),
             'created_at' => $receipt->getCreatedAt()->format(\DATE_ATOM),

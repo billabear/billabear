@@ -8,11 +8,22 @@
 
 namespace BillaBear\DataMappers;
 
+use BillaBear\Dto\Generic\Api\Receipt as ApiDto;
 use BillaBear\Dto\Generic\App\Receipt as AppDto;
 use Parthenon\Billing\Entity\Receipt;
 
 class ReceiptDataMapper
 {
+    public function createApiDto(Receipt $receipt): ApiDto
+    {
+        $dto = new ApiDto();
+        $dto->setId((string) $receipt->getId());
+        $dto->setValid($receipt->isValid());
+        $dto->setCreatedAt($receipt->getCreatedAt());
+
+        return $dto;
+    }
+
     public function createAppDto(Receipt $receipt): AppDto
     {
         $dto = new AppDto();
