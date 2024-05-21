@@ -219,6 +219,15 @@ class AppContext implements Context
     }
 
     /**
+     * @When I view the invoice list for :arg1
+     */
+    public function iViewTheInvoiceListFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/invoices');
+    }
+
+    /**
      * @Then I will see an invoice for :arg1
      */
     public function iWillSeeAnInvoiceFor($arg1)

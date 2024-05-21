@@ -8,6 +8,8 @@
 
 namespace BillaBear\DataMappers;
 
+use BillaBear\Dto\Generic\Api\Invoice as ApiDto;
+use BillaBear\Dto\Generic\Api\InvoiceLine as ApiInvoiceLine;
 use BillaBear\Dto\Generic\App\Invoice as AppDto;
 use BillaBear\Dto\Generic\App\InvoiceLine as MainInvoiceLine;
 use BillaBear\Dto\Generic\App\InvoiceQuickView as AppQuickViewDto;
@@ -61,6 +63,42 @@ class InvoiceDataMapper
         $lines = [];
         foreach ($invoice->getLines() as $line) {
             $lineDto = new MainInvoiceLine();
+            $lineDto->setDescription($line->getDescription());
+            $lineDto->setTaxRate($line->getTaxPercentage());
+            $lineDto->setCurrency($line->getCurrency());
+            $lineDto->setTaxTotal($line->getTaxTotal());
+            $lineDto->setSubTotal($line->getSubTotal());
+            $lineDto->setTotal($line->getTotal());
+
+            $lines[] = $lineDto;
+        }
+        $dto->setLines($lines);
+
+        return $dto;
+    }
+
+    public function createApiDto(Entity $invoice): ApiDto
+    {
+        $dto = new ApiDto();
+        $dto->setId((string) $invoice->getId());
+        $dto->setNumber($invoice->getInvoiceNumber());
+        $dto->setCustomer($this->customerFactory->createApiDto($invoice->getCustomer()));
+        $dto->setCreatedAt($invoice->getCreatedAt());
+        $dto->setAmountDue($invoice->getAmountDue());
+        $dto->setPaidAt($invoice->getPaidAt());
+        $dto->setCurrency($invoice->getCurrency());
+        $dto->setIsPaid($invoice->isPaid());
+        $dto->setTaxTotal($invoice->getTaxTotal());
+        $dto->setSubTotal($invoice->getSubTotal());
+        $dto->setTotal($invoice->getTotal());
+        $dto->setBillerAddress($this->addressDataMapper->createDto($invoice->getBillerAddress()));
+        $dto->setPayeeAddress($this->addressDataMapper->createDto($invoice->getPayeeAddress()));
+        $dto->setPayLink($this->payLinkGenerator->generatePayLink($invoice));
+        $dto->setDueDate($invoice->getDueAt());
+
+        $lines = [];
+        foreach ($invoice->getLines() as $line) {
+            $lineDto = new ApiInvoiceLine();
             $lineDto->setDescription($line->getDescription());
             $lineDto->setTaxRate($line->getTaxPercentage());
             $lineDto->setCurrency($line->getCurrency());
