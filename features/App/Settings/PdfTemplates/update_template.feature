@@ -13,7 +13,7 @@ Feature: Templates View
   Scenario: List templates
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the following pdf templates exist:
-      | Name    | Brand   | Content         |
+      | Type    | Brand   | Template Body   |
       | receipt | default | A receipt body  |
       | invoice | default | An invoice body |
     When I update the pdf template for "receipt" in brand "default" with:

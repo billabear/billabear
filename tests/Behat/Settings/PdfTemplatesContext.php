@@ -199,7 +199,7 @@ class PdfTemplatesContext implements Context
     {
         $template = $this->getTemplate($templateName, $customerGroup);
 
-        $this->sendJsonRequest('GET', '/app/settings/template/'.$template->getId());
+        $this->sendJsonRequest('GET', '/app/settings/template/'.$template->getId().'/view');
     }
 
     /**
@@ -234,7 +234,7 @@ class PdfTemplatesContext implements Context
     {
         $template = $this->getTemplate($templateName, $customerGroup);
 
-        $this->sendJsonRequest('POST', '/app/settings/template/'.$template->getId(), ['content' => $table->getRowsHash()['Content']]);
+        $this->sendJsonRequest('POST', '/app/settings/template/'.$template->getId().'/update', ['content' => $table->getRowsHash()['Content']]);
     }
 
     /**

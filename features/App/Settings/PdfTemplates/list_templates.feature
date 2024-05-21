@@ -13,8 +13,8 @@ Feature: Templates list
   Scenario: List templates
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the following pdf templates exist:
-      | Name    | Brand   | Content         |
-      | receipt | default | A receipt body  |
-      | invoice | default | An invoice body |
+      | Type    | Brand   | Template Body   | Locale |
+      | receipt | default | A receipt body  | en     |
+      | invoice | default | An invoice body | en     |
     When I go to the pdf templates
     Then I will see the pdf template for "invoice"
