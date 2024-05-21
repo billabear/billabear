@@ -119,6 +119,18 @@ class AppContext implements Context
     }
 
     /**
+     * @When charge the invoice for :arg1 via API
+     */
+    public function chargeTheInvoiceForViaApi($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        $this->sendJsonRequest('POST', '/api/v1/invoice/'.$invoice->getId().'/charge');
+    }
+
+    /**
      * @When I mark the invoice for :arg1 as paid
      */
     public function iMarkTheInvoiceForAsPaid($customerEmail)

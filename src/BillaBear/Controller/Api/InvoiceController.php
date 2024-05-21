@@ -10,6 +10,8 @@ namespace BillaBear\Controller\Api;
 
 use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\Dto\Response\Api\ListResponse;
+use BillaBear\Entity\Invoice;
+use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -43,5 +45,23 @@ class InvoiceController
         $json = $serializer->serialize($listView, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/api/v1/invoice/{id}/charge', name: 'billabear_api_invoice_chargeinvoice', methods: ['POST'])]
+    public function chargeInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoiceCharger $invoiceCharger
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $invoiceCharger->chargeInvoice($invoice);
+
+        return new JsonResponse(['paid' => $invoice->isPaid()], JsonResponse::HTTP_OK);
     }
 }
