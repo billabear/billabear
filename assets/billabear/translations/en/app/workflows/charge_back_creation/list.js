@@ -18,5 +18,6 @@ export const CHARGE_BACK_CREATION_LIST_TRANSLATION = {
         has_error: "Has Error"
     },
     error_message: "An error has occurred",
-    edit_button: "Edit"
+    edit_button: "Edit",
+    bulk_button: "Bulk Reprocess"
 }

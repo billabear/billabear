@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\ChargeBackCreation;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface ChargeBackCreationRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return \Generator|ChargeBackCreation[]
+     */
+    public function getFailedProcesses(): \Generator;
 }
