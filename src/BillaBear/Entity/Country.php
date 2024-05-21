@@ -31,7 +31,7 @@ class Country
     #[ORM\Column(type: 'string')]
     private string $currency;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'bigint')]
     private int $threshold;
 
     #[ORM\Column(type: 'string', nullable: true)]
