@@ -40,6 +40,9 @@ class Template
     #[ORM\Column(name: 'brand', type: 'string', nullable: false)]
     private string $brand;
 
+    #[ORM\Column(type: 'string', nullable: false)]
+    private string $locale;
+
     public function getId()
     {
         return $this->id;
@@ -78,5 +81,15 @@ class Template
     public function setBrand(string $brand): void
     {
         $this->brand = $brand;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
     }
 }

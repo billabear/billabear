@@ -14,7 +14,9 @@ class Template
 
     private string $name;
 
-    private string $group;
+    private string $locale;
+
+    private string $brand;
 
     public function getId()
     {
@@ -36,13 +38,23 @@ class Template
         $this->name = $name;
     }
 
-    public function getGroup()
+    public function getBrand()
     {
-        return $this->group;
+        return $this->brand;
     }
 
-    public function setGroup($group): void
+    public function setBrand($brand): void
     {
-        $this->group = $group;
+        $this->brand = $brand;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
     }
 }

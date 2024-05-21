@@ -60,6 +60,7 @@ import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
 import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGeneratorSettings.vue";
 import {AppFinanceRoutes} from "./app.finance.routes";
 import {REPORT_ROUTES} from "./app.reports.routes";
+import PdfTemplateCreate from "../views/App/Settings/PdfTemplates/PdfTemplateCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -157,6 +158,11 @@ export const APP_ROUTES = [
                 name: "app.settings.tax_settings.update",
                 path: "tax-settings",
                 component: TaxSettings
+            },
+            {
+                name: "app.settings.pdf_template.create",
+                path: "templates/create",
+                component: PdfTemplateCreate
             },
             {
                 name: "app.settings.pdf_template.update",

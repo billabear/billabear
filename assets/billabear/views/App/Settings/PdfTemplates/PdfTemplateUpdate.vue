@@ -74,7 +74,7 @@ export default {
   mounted() {
     const templateId = this.$route.params.id;
     this.origin = window.location.hostname;
-    axios.get('/app/settings/template/'+templateId).then(response => {
+    axios.get('/app/settings/template/'+templateId+'/view').then(response => {
       this.template = response.data;
       this.ready = true;
     }).catch(error => {
@@ -107,7 +107,7 @@ export default {
     save: function () {
       const templateId = this.$route.params.id;
       this.sendingUpdate = true;
-      axios.post('/app/settings/template/'+templateId, {content: this.template.content}).then(response => {
+      axios.post('/app/settings/template/'+templateId+'/update', {content: this.template.content}).then(response => {
         this.sendingUpdate = false;
       })
     }

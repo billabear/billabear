@@ -9,17 +9,21 @@
 namespace BillaBear\Controller\App\Settings;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
+use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Settings\TemplateDataMapper;
 use BillaBear\Dto\Request\App\Settings\PdfTemplates\UpdateGeneratorSettings;
+use BillaBear\Dto\Request\App\Template\CreatePdfTemplate;
 use BillaBear\Dto\Request\App\Template\PdfTemplate;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Dto\Response\App\Settings\ReadPdfGeneratorSettings;
+use BillaBear\Dto\Response\App\Template\CreateTemplateView;
 use BillaBear\Dto\Response\App\Template\TemplateView;
 use BillaBear\Dummy\Data\ReceiptProvider;
 use BillaBear\Entity\Template;
 use BillaBear\Enum\PdfGeneratorType;
 use BillaBear\Pdf\InvoicePdfGenerator;
 use BillaBear\Pdf\ReceiptPdfGenerator;
+use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -60,7 +64,7 @@ class PdfTemplateController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/settings/template/{id}', name: 'app_settings_template_view', methods: ['GET'])]
+    #[Route('/app/settings/template/{id}/view', name: 'app_settings_template_view', methods: ['GET'])]
     public function getTemplate(
         Request $request,
         TemplateRepositoryInterface $templateRepository,
@@ -83,7 +87,47 @@ class PdfTemplateController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/settings/template/{id}', name: 'app_settings_template_update', methods: ['POST'])]
+    #[Route('/app/settings/template/create', name: 'billabear_app_settings_pdftemplate_readcreatetemplate', methods: ['GET'])]
+    public function readCreateTemplate(
+        Request $request,
+        BrandSettingsRepositoryInterface $settingsRepository,
+        BrandSettingsDataMapper $brandSettingsDataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        $brands = $settingsRepository->getAll();
+        $brandDtos = array_map([$brandSettingsDataMapper, 'createAppDto'], $brands);
+
+        $view = new CreateTemplateView();
+        $view->setBrands($brandDtos);
+        $json = $serializer->serialize($view, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/template/create', name: 'billabear_app_settings_pdftemplate_writecreatetemplate', methods: ['POST'])]
+    public function writeCreateTemplate(
+        Request $request,
+        TemplateRepositoryInterface $templateRepository,
+        TemplateDataMapper $templateDataMapper,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        /** @var CreatePdfTemplate $createTemplate */
+        $createTemplate = $serializer->deserialize($request->getContent(), CreatePdfTemplate::class, 'json');
+        $errors = $validator->validate($createTemplate);
+        $response = $this->handleErrors($errors);
+        if ($response instanceof Response) {
+            return $response;
+        }
+        $entity = $templateDataMapper->createEntity($createTemplate);
+        $templateRepository->save($entity);
+        $appDto = $templateDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($appDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/template/{id}/update', name: 'app_settings_template_update', methods: ['POST'])]
     public function updateTemplate(
         Request $request,
         TemplateRepositoryInterface $templateRepository,

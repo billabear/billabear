@@ -8,15 +8,15 @@
 
 namespace BillaBear\Tests\Behat\Settings;
 
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\Template;
 use BillaBear\Enum\PdfGeneratorType;
 use BillaBear\Repository\Orm\SettingsRepository;
 use BillaBear\Repository\Orm\TemplateRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
 
 class PdfTemplatesContext implements Context
 {
@@ -37,7 +37,7 @@ class PdfTemplatesContext implements Context
         $data = $table->getRowsHash();
 
         $payload = [
-          'generator' => $data['Generator'],
+            'generator' => $data['Generator'],
         ];
 
         if (isset($data['Tmp Dir'])) {
@@ -119,9 +119,10 @@ class PdfTemplatesContext implements Context
     {
         foreach ($table->getColumnsHash() as $row) {
             $template = new Template();
-            $template->setName($row['Name']);
+            $template->setName($row['Type']);
             $template->setBrand($row['Brand'] ?? 'default');
-            $template->setContent($row['Content']);
+            $template->setContent($row['Template Body']);
+            $template->setLocale($row['Locale'] ?? 'en');
             $this->templateRepository->getEntityManager()->persist($template);
         }
         $this->templateRepository->getEntityManager()->flush();
@@ -133,6 +134,46 @@ class PdfTemplatesContext implements Context
     public function iGoToThePdfTemplates()
     {
         $this->sendJsonRequest('GET', '/app/settings/template');
+    }
+
+    /**
+     * @When I create a pdf template:
+     */
+    public function iCreateAPdfTemplate(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+        $payload = [
+            'locale' => $data['Locale'],
+            'type' => $data['Type'],
+            'template' => $data['Template Body'],
+            'brand' => $data['Brand'] ?? 'default',
+        ];
+
+        $this->sendJsonRequest('POST', '/app/settings/template/create', $payload);
+    }
+
+    /**
+     * @Then there will be an pdf template for :arg1 with locale :arg2
+     */
+    public function thereWillBeAnPdfTemplateForWithLocale($name, $locale)
+    {
+        $template = $this->templateRepository->findOneBy(['name' => $name, 'locale' => $locale]);
+
+        if (!$template instanceof Template) {
+            throw new \Exception("No template found for $name $locale");
+        }
+    }
+
+    /**
+     * @Then there will not be an pdf template for :arg1 with locale :arg2
+     */
+    public function thereWillNotBeAnPdfTemplateForWithLocale($name, $locale)
+    {
+        $template = $this->templateRepository->findOneBy(['name' => $name, 'locale' => $locale]);
+
+        if ($template instanceof Template) {
+            throw new \Exception("No template found for $name $locale");
+        }
     }
 
     /**

@@ -29,4 +29,15 @@ class TemplateRepository extends DoctrineRepository implements TemplateRepositor
 
         return $template;
     }
+
+    public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): Template
+    {
+        $template = $this->entityRepository->findOneBy(['name' => $name, 'brand' => $brand, 'locale' => $locale]);
+
+        if (!$template instanceof Template) {
+            throw new NoEntityFoundException(sprintf("Can't find a template for name '%s' and brand '%s' and locale '%s'", $name, $brand, $locale));
+        }
+
+        return $template;
+    }
 }
