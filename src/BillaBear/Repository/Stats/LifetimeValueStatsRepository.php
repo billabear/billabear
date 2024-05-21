@@ -23,7 +23,7 @@ FROM (
         '1 month'::interval
     ) AS month_date
 ) m
-LEFT JOIN subscription s 
+INNER JOIN subscription s 
 ON s.started_at <= month_date and (s.ended_at > m.month_date OR s.ended_at IS null)
 left join customers c on c.id = s.customer_id ";
         $sql .= $this->buildCondition($filters);
