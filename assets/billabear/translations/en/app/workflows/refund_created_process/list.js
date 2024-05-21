@@ -18,5 +18,6 @@ export const REFUND_CREATED_PROCESS_LIST_TRANSLATIONS = {
         has_error: "Has Error"
     },
     error_message: "An error has occurred",
-    edit_button: "Edit"
+    edit_button: "Edit",
+    bulk_button: "Bulk Reprocess",
 };

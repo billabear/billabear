@@ -18,12 +18,14 @@ use BillaBear\Enum\WorkflowType;
 use BillaBear\Filters\Workflows\CancellationRequestList;
 use BillaBear\Repository\RefundCreatedProcessRepositoryInterface;
 use BillaBear\Subscription\SubscriptionCreationProcessor;
+use BillaBear\Workflow\Messenger\Messages\ReprocessFailedRefundCreation;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -55,6 +57,14 @@ class RefundCreatedProcessController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/system/refund-created-process/bulk', name: 'billabear_app_workflows_refundcreatedprocess_bulkprocessfailed', methods: ['POST'])]
+    public function bulkProcessFailed(MessageBusInterface $messageBus): JsonResponse
+    {
+        $messageBus->dispatch(new ReprocessFailedRefundCreation());
+
+        return new JsonResponse(null, JsonResponse::HTTP_OK);
     }
 
     #[Route('/app/system/refund-created-process/list', name: 'app_app_workflows_refundcreatedprocess_listrefundcreatedprocess', methods: ['GET'])]

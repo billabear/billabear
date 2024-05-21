@@ -9,7 +9,7 @@
           {{ $t('app.workflows.payment_creation.list.edit_button') }}
         </router-link>
         <SubmitButton :in-progress="bulk_in_progress" class="btn--main mr-5" @click="bulk">
-          {{ $t('app.workflows.cancellation_request.list.bulk_button') }}
+          {{ $t('app.workflows.payment_creation.list.bulk_button') }}
         </SubmitButton>
       </RoleOnlyView>
 
@@ -107,6 +107,7 @@ export default {
       first_key: null,
       previous_last_key: null,
       next_page_in_progress: false,
+      bulk_in_progress: false,
       show_back: false,
       show_filter_menu: false,
       active_filters: ['has_error'],

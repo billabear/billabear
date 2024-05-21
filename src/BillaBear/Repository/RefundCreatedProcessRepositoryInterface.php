@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\RefundCreatedProcess;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface RefundCreatedProcessRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return \Generator|RefundCreatedProcess[]
+     */
+    public function getFailedProcesses(): \Generator;
 }

@@ -12,4 +12,16 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class RefundCreatedProcessRepository extends DoctrineCrudRepository implements RefundCreatedProcessRepositoryInterface
 {
+    public function getFailedProcesses(): \Generator
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('rc');
+        $queryBuilder->select('rc');
+        $queryBuilder->where('rc.hasError = true');
+        $query = $queryBuilder->getQuery();
+
+        $query->execute();
+        foreach ($query->toIterable() as $result) {
+            yield $result;
+        }
+    }
 }
