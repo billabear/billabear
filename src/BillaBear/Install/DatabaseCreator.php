@@ -22,14 +22,16 @@ class DatabaseCreator
     ) {
     }
 
-    public function createDbSchema()
+    public function createDbSchema(?TenantInterface $tenant = null)
     {
         $em = $this->entityManager;
         $metaData = $em->getMetadataFactory()->getAllMetadata();
 
         $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
         $tool->createSchema($metaData);
-        $tenant = $this->getTenant();
+        if (!$tenant) {
+            $tenant = $this->getTenant();
+        }
         $migrationsHandler = new MigrationsHandler($this->managerRegistry, $this->kernelProjectDir.'/migrations', 'default');
         $migrationsHandler->handleMigrations($tenant);
     }

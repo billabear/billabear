@@ -31,6 +31,7 @@ class TemplateStep
         $template = new Template();
         $template->setBrand(Customer::DEFAULT_BRAND);
         $template->setName(Template::NAME_INVOICE);
+        $template->setLocale(Customer::DEFAULT_LOCALE);
         $template->setContent('<!DOCTYPE html>
 <html>
     <head>
@@ -238,6 +239,7 @@ SOFTWARE. #}
         $template = new Template();
         $template->setBrand(Customer::DEFAULT_BRAND);
         $template->setName(Template::NAME_QUOTE);
+        $template->setLocale(Customer::DEFAULT_LOCALE);
         $template->setContent('<!DOCTYPE html>
 <html>
     <head>
@@ -416,6 +418,7 @@ SOFTWARE. #}
         $template = new Template();
         $template->setBrand(Customer::DEFAULT_BRAND);
         $template->setName(Template::NAME_RECEIPT);
+        $template->setLocale(Customer::DEFAULT_LOCALE);
         $template->setContent('<!DOCTYPE html>
 <html>
     <head>
