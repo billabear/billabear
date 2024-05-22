@@ -1,0 +1,469 @@
+parameters:
+
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    bind:
+      $kernelProjectDir: '%kernel.project_dir%'
+
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  BillaBear\:
+    resource: '../../../src/BillaBear/'
+    exclude:
+      - '../../../src/BillaBear/DependencyInjection/'
+      - '../../../src/BillaBear/Entity/'
+      - '../../../src/BillaBear/Dto/'
+      - '../../../src/BillaBear/Kernel.php'
+
+  Custom\:
+    resource: '../../../src/Custom/'
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  # as action arguments even if you don't extend any base controller class
+  BillaBear\Controller\:
+    resource: '../../../src/BillaBear/Controller/'
+    tags: ['controller.service_arguments']
+
+
+  #####
+  ## Parthenon user services
+  #####
+  Parthenon\User\Factory\EntityFactory: '@BillaBear\User\Entity\EntityFactory'
+  Parthenon\User\Repository\UserRepositoryInterface: '@BillaBear\Repository\UserRepository'
+  Parthenon\User\Notification\MessageFactory: '@BillaBear\User\Notification\MessageFactory'
+  Parthenon\Billing\Repository\CustomerRepositoryInterface: '@BillaBear\Repository\CustomerRepository'
+  Parthenon\Billing\Repository\PaymentRepositoryInterface: '@BillaBear\Repository\PaymentRepository'
+  Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@BillaBear\Repository\PaymentCardRepository'
+  Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@BillaBear\Subscription\SubscriptionManagerInterchange'
+  Parthenon\Billing\Receipt\ReceiptGeneratorInterface: '@BillaBear\Payment\ReceiptGenerator'
+  Parthenon\Billing\Obol\PaymentFactoryInterface: '@BillaBear\Payment\PaymentFactory'
+
+  BillaBear\Webhook\Outbound\EventDispatcherInterface: '@BillaBear\Webhook\Outbound\Messenger\EventDispatcher'
+
+  parthenon.billing.repository.orm.product_repository_doctrine: '@BillaBear\Repository\Orm\ProductRepository'
+  parthenon.billing.repository.orm.price_repository_doctrine: '@BillaBear\Repository\Orm\PriceRepository'
+  parthenon.billing.repository.orm.subscription_repository_doctrine: '@BillaBear\Repository\Orm\SubscriptionRepository'
+  parthenon.billing.repository.orm.subscription_plan_repository_doctrine: '@BillaBear\Repository\Orm\SubscriptionPlanRepository'
+  parthenon.billing.repository.orm.payment_repository_doctrine: '@BillaBear\Repository\Orm\PaymentRepository'
+  parthenon.billing.repository.orm.receipt_repository_doctrine: '@BillaBear\Repository\Orm\ReceiptRepository'
+
+  Obol\Provider\ProviderInterface:
+    class: Obol\Provider\ProviderInterface
+    factory: [ '@BillaBear\Payment\Provider\ProviderFactory', 'create' ]
+
+  BillaBear\Repository\UserRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.user'
+  app.repository.orm.user:
+    class: BillaBear\Repository\Orm\UserRepository
+
+  parthenon.user.repository.forgot_password_code_repository:
+    class: Parthenon\User\Repository\ForgotPasswordCodeRepository
+    arguments:
+      - '@BillaBear\Repository\Orm\ForgotPasswordCodeRepository'
+
+  Parthenon\User\Repository\InviteCodeRepositoryInterface: '@BillaBear\Repository\InviteCodeRepository'
+  BillaBear\Repository\InviteCodeRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.invite_code'
+  app.repository.orm.invite_code: '@BillaBear\Repository\Orm\InviteCodeRepository'
+  parthenon.user.repository.orm.invite_code_repository_doctrine: '@BillaBear\Repository\Orm\InviteCodeRepository'
+
+  BillaBear\Repository\SubscriptionRepository:
+    arguments:
+      $entityRepository: '@Parthenon\Billing\Repository\Orm\SubscriptionServiceRepository'
+
+  BillaBear\Repository\SubscriptionPlanRepository:
+    arguments:
+      $entityRepository: '@parthenon.billing.repository.orm.subscription_plan_repository_doctrine'
+
+  BillaBear\Repository\PaymentCardRepository:
+    arguments:
+      $entityRepository: '@Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository'
+
+  BillaBear\Repository\CustomerRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.customer'
+  app.repository.orm.customer:
+    class: BillaBear\Repository\Orm\CustomerRepository
+
+  BillaBear\Repository\CountryRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.country'
+  app.repository.orm.country:
+    class: BillaBear\Repository\Orm\CountryRepository
+
+  BillaBear\Repository\TemplateRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.template'
+  app.repository.orm.template:
+    class: BillaBear\Repository\Orm\TemplateRepository
+
+  BillaBear\Repository\EmailTemplateRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.email_template'
+  app.repository.orm.email_template:
+    class: BillaBear\Repository\Orm\EmailTemplateRepository
+
+  BillaBear\Repository\CancellationRequestRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.cancellation_request'
+  app.repository.orm.cancellation_request:
+    class: BillaBear\Repository\Orm\CancellationRequestRepository
+
+  BillaBear\Repository\PaymentCreationRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment_creation'
+  app.repository.orm.payment_creation:
+    class: BillaBear\Repository\Orm\PaymentCreationRepository
+
+  BillaBear\Repository\BrandSettingsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.brand_settings'
+  app.repository.orm.brand_settings:
+    class: BillaBear\Repository\Orm\BrandSettingsRepository
+
+  BillaBear\Repository\SettingsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.settings'
+  app.repository.orm.settings:
+    class: BillaBear\Repository\Orm\SettingsRepository
+
+  BillaBear\Repository\QuoteRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.quote'
+  app.repository.orm.quote:
+    class: BillaBear\Repository\Orm\QuoteRepository
+
+  BillaBear\Repository\PaymentFailureProcessRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment_failure_process'
+  app.repository.orm.payment_failure_process:
+    class: BillaBear\Repository\Orm\PaymentFailureProcessRepository
+
+
+  BillaBear\Repository\StripeImportRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.stripe_import'
+  app.repository.orm.stripe_import:
+    class: BillaBear\Repository\Orm\StripeImportRepository
+
+  BillaBear\Repository\RefundCreatedProcessRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.refund_created_process'
+  app.repository.orm.refund_created_process:
+    class: BillaBear\Repository\Orm\RefundCreatedProcessRepository
+
+  BillaBear\Repository\SubscriptionSeatModificationRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_seat_modification'
+  app.repository.orm.subscription_seat_modification:
+    class: BillaBear\Repository\Orm\SubscriptionSeatModificationRepository
+
+  BillaBear\Repository\ApiKeyRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.api_key'
+  app.repository.orm.api_key:
+    class: BillaBear\Repository\Orm\ApiKeyRepository
+
+  BillaBear\Repository\SubscriptionCreationRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_creation'
+  app.repository.orm.subscription_creation:
+    class: BillaBear\Repository\Orm\SubscriptionCreationRepository
+
+  BillaBear\Repository\Stats\SubscriptionCreationDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_daily_stats'
+  app.repository.orm.subscription_daily_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCreationDailyStatsRepository
+  BillaBear\Repository\Stats\SubscriptionCreationMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_weekly_stats'
+  app.repository.orm.subscription_weekly_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCreationMonthlyStatsRepository
+  BillaBear\Repository\Stats\SubscriptionCreationYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_yearly_stats'
+  app.repository.orm.subscription_yearly_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCreationYearlyStatsRepository
+
+  BillaBear\Repository\Stats\CustomerCreationDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.customer_daily_stats'
+  app.repository.orm.customer_daily_stats:
+    class: BillaBear\Repository\Orm\CustomerCreationDailyStatsRepository
+  BillaBear\Repository\Stats\CustomerCreationMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.customer_weekly_stats'
+  app.repository.orm.customer_weekly_stats:
+    class: BillaBear\Repository\Orm\CustomerCreationMonthlyStatsRepository
+  BillaBear\Repository\Stats\CustomerCreationYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.customer_yearly_stats'
+  app.repository.orm.customer_yearly_stats:
+    class: BillaBear\Repository\Orm\CustomerCreationYearlyStatsRepository
+
+  BillaBear\Repository\Stats\SubscriptionCountDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_count_daily_stats'
+  app.repository.orm.subscription_count_daily_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCountDailyStatsRepository
+  BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_count_weekly_stats'
+  app.repository.orm.subscription_count_weekly_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCountMonthlyStatsRepository
+  BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_count_yearly_stats'
+  app.repository.orm.subscription_count_yearly_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCountYearlyStatsRepository
+
+  BillaBear\Repository\Stats\SubscriptionCancellationDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_cancellation_daily_stats'
+  app.repository.orm.subscription_cancellation_daily_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCancellationDailyStatsRepository
+  BillaBear\Repository\Stats\SubscriptionCancellationMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_cancellation_weekly_stats'
+  app.repository.orm.subscription_cancellation_weekly_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCancellationMonthlyStatsRepository
+  BillaBear\Repository\Stats\SubscriptionCancellationYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_cancellation_yearly_stats'
+  app.repository.orm.subscription_cancellation_yearly_stats:
+    class: BillaBear\Repository\Orm\SubscriptionCancellationYearlyStatsRepository
+
+  BillaBear\Repository\Stats\CachedStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.cached_stats'
+  app.repository.orm.cached_stats:
+    class: BillaBear\Repository\Orm\CachedStatsRepository
+
+  BillaBear\Repository\Stats\PaymentAmountDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment_amount_daily_stats'
+  app.repository.orm.payment_amount_daily_stats:
+    class: BillaBear\Repository\Orm\PaymentAmountDailyStatsRepository
+
+  BillaBear\Repository\Stats\PaymentAmountMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment_amount_weekly_stats'
+  app.repository.orm.payment_amount_weekly_stats:
+    class: BillaBear\Repository\Orm\PaymentAmountMonthlyStatsRepository
+  BillaBear\Repository\Stats\PaymentAmountYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment_amount_yearly_stats'
+  app.repository.orm.payment_amount_yearly_stats:
+    class: BillaBear\Repository\Orm\PaymentAmountYearlyStatsRepository
+
+  BillaBear\Repository\Stats\RefundAmountDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.refund_amount_daily_stats'
+  app.repository.orm.refund_amount_daily_stats:
+    class: BillaBear\Repository\Orm\RefundAmountDailyStatsRepository
+
+  BillaBear\Repository\Stats\RefundAmountMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.refund_amount_weekly_stats'
+  app.repository.orm.refund_amount_weekly_stats:
+    class: BillaBear\Repository\Orm\RefundAmountMonthlyStatsRepository
+  BillaBear\Repository\Stats\RefundAmountYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.refund_amount_yearly_stats'
+  app.repository.orm.refund_amount_yearly_stats:
+    class: BillaBear\Repository\Orm\RefundAmountYearlyStatsRepository
+
+  BillaBear\Repository\Stats\ChargeBackAmountDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.charge_back_amount_daily_stats'
+  app.repository.orm.charge_back_amount_daily_stats:
+    class: BillaBear\Repository\Orm\ChargeBackAmountDailyStatsRepository
+  BillaBear\Repository\Stats\ChargeBackAmountMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.charge_back_amount_weekly_stats'
+  app.repository.orm.charge_back_amount_weekly_stats:
+    class: BillaBear\Repository\Orm\ChargeBackAmountMonthlyStatsRepository
+  BillaBear\Repository\Stats\ChargeBackAmountYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.charge_back_amount_yearly_stats'
+  app.repository.orm.charge_back_amount_yearly_stats:
+    class: BillaBear\Repository\Orm\ChargeBackAmountYearlyStatsRepository
+
+  BillaBear\Repository\ChargeBackCreationRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.charge_back_creation'
+  app.repository.orm.charge_back_creation:
+    class: BillaBear\Repository\Orm\ChargeBackCreationRepository
+
+
+  BillaBear\Repository\Processes\ExpiringCardProcessRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.expiring_cards_process'
+  app.repository.orm.expiring_cards_process:
+    class: BillaBear\Repository\Orm\ExpiringCardProcessRepository
+
+  BillaBear\Repository\Processes\InvoiceProcessRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.invoice_process'
+  app.repository.orm.invoice_process:
+    class: BillaBear\Repository\Orm\InvoiceProcessRepository
+
+  BillaBear\Repository\InvoiceRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.invoice'
+  app.repository.orm.invoice:
+    class: BillaBear\Repository\Orm\InvoiceRepository
+
+  BillaBear\Repository\VatReportInvoiceRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.invoice'
+
+  BillaBear\Repository\CreditRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.credit'
+  app.repository.orm.credit:
+    class: BillaBear\Repository\Orm\CreditRepository
+
+  BillaBear\Repository\GenericBackgroundTaskRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.generic_background_task'
+  app.repository.orm.generic_background_task:
+    class: BillaBear\Repository\Orm\GenericBackgroundTaskRepository
+
+  BillaBear\Repository\PaymentAttemptRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment_attempt'
+  app.repository.orm.payment_attempt:
+    class: BillaBear\Repository\Orm\PaymentAttemptRepository
+
+  BillaBear\Repository\ExchangeRatesRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.exchange_rates'
+  app.repository.orm.exchange_rates:
+    class: BillaBear\Repository\Orm\ExchangeRatesRepository
+
+  BillaBear\Repository\VoucherRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.voucher'
+  app.repository.orm.voucher:
+    class: BillaBear\Repository\Orm\VoucherRepository
+
+  BillaBear\Repository\VoucherApplicationRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.voucher_application'
+  app.repository.orm.voucher_application:
+    class: BillaBear\Repository\Orm\VoucherApplicationRepository
+
+  BillaBear\Repository\CheckoutRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.checkout'
+  app.repository.orm.checkout:
+    class: BillaBear\Repository\Orm\CheckoutRepository
+
+  BillaBear\Repository\CheckoutSessionRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.checkout_session'
+  app.repository.orm.checkout_session:
+    class: BillaBear\Repository\Orm\CheckoutSessionRepository
+
+  BillaBear\Repository\MassSubscriptionChangeRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.mass_subscription_change'
+  app.repository.orm.mass_subscription_change:
+    class: BillaBear\Repository\Orm\MassSubscriptionChangeRepository
+
+  BillaBear\Repository\WebhookEndpointRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.webhook_endpoint'
+  app.repository.orm.webhook_endpoint:
+    class: BillaBear\Repository\Orm\WebhookEndpointRepository
+
+  BillaBear\Repository\WebhookEventRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.webhook_event'
+  app.repository.orm.webhook_event:
+    class: BillaBear\Repository\Orm\WebhookEventRepository
+
+  BillaBear\Repository\Stats\LifetimeValueStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.lifetime_value'
+  app.repository.orm.lifetime_value:
+    class: BillaBear\Repository\Orm\SubscriptionRepository
+
+  BillaBear\Repository\WorkflowTransitionRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.workflow_transition'
+  app.repository.orm.workflow_transition:
+    class: BillaBear\Repository\Orm\WorkflowTransitionRepository
+
+  BillaBear\Repository\PaymentRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.payment'
+  app.repository.orm.payment:
+    class: BillaBear\Repository\Orm\PaymentRepository
+
+  BillaBear\Repository\TaxTypeRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.tax_type'
+  app.repository.orm.tax_type:
+    class: BillaBear\Repository\Orm\TaxTypeRepository
+
+  BillaBear\Repository\CountryTaxRuleRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.country_tax_rule'
+  app.repository.orm.country_tax_rule:
+    class: BillaBear\Repository\Orm\CountryTaxRuleRepository
+
+  BillaBear\Repository\SlackWebhookRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.slack_webhook'
+  app.repository.orm.slack_webhook:
+    class: BillaBear\Repository\Orm\SlackWebhookRepository
+
+  BillaBear\Repository\SlackNotificationRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.slack_notification'
+  app.repository.orm.slack_notification:
+    class: BillaBear\Repository\Orm\SlackNotificationRepository
+
+
+  BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\ObolRegister'
+
+
+  BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface:
+    class: BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider
+    factory: [ '@BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider', 'getGenerator' ]
+
+
+  tax_provider_factory:
+    class: BillaBear\Tax\TaxRateProvider
+    factory: [ '@BillaBear\Tax\TaxRateProviderFactory', 'getTaxRateProvider' ]
+
+  # add more service definitions when explicit configuration is needed
+  # please note that last definitions always *replace* previous ones
+
+
+  #######################
+  ### Parthenon Overrides
+  #######################
+  Parthenon\Notification\EmailSenderInterface:
+    factory: [ '@BillaBear\Notification\Email\EmailSenderFactory', 'create' ]
+
+  Parthenon\Common\Pdf\GeneratorInterface:
+    factory: [ '@BillaBear\Pdf\PdfGeneratorFactory', 'create' ]
+
+
+  Parthenon\Billing\Config\WebhookConfig:
+    factory: [ '@BillaBear\Webhook\ConfigFactory', 'createConfig' ]
+
+  Parthenon\Common\Config\SiteUrlProviderInterface: '@BillaBear\Settings\SiteUrlProvider'
+
+  Parthenon\Billing\Factory\EntityFactoryInterface: '@BillaBear\Factory\EntityFactory'
+  Parthenon\Billing\Subscription\SchedulerInterface: '@BillaBear\Subscription\Schedule\SchedulerHandler'
