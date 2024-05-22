@@ -11,6 +11,7 @@ namespace BillaBear\Controller\App\Settings;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\StripeImportDataMapper;
 use BillaBear\Dto\Request\App\Settings\RegisterWebhook;
+use BillaBear\Dto\Request\App\Settings\Stripe\SendConfig;
 use BillaBear\Dto\Response\App\Settings\StripeImportView;
 use BillaBear\Entity\GenericBackgroundTask;
 use BillaBear\Entity\StripeImport;
@@ -21,6 +22,7 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\StripeImportRepositoryInterface;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,6 +57,28 @@ class StripeController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
+    #[Route('/app/settings/stripe/set-config', name: 'billabear_app_settings_stripe_sendconfig', methods: ['POST'])]
+    public function sendConfig(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        SettingsRepositoryInterface $settingsRepository,
+    ) {
+        $dto = $serializer->deserialize($request->getContent(), SendConfig::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getSystemSettings()->setStripePrivateKey($dto->getPrivateKey());
+        $settings->getSystemSettings()->setStripePublicKey($dto->getPublicKey());
+        $settingsRepository->save($settings);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
     #[Route('/app/settings/stripe/enable-billing', name: 'app_app_settings_stripe_enablestripebilling', methods: ['POST'])]
     public function enableStripeBilling(
         Request $request,
@@ -74,13 +98,18 @@ class StripeController
         StripeImportDataMapper $importFactory,
         SerializerInterface $serializer,
         SettingsRepositoryInterface $settingsRepository,
+        #[Autowire('%parthenon_billing_payments_obol_config%')]
+        $obolConfig,
     ): Response {
         $imports = $stripeImportRepository->getAll();
         $importDtos = array_map([$importFactory, 'createAppDto'], $imports);
         $viewDto = new StripeImportView();
         $viewDto->setStripeImports($importDtos);
+        $viewDto->setHasObolConfig(isset($obolConfig['api_key']) && !empty($obolConfig['api_key']));
         $viewDto->setUseStripeBilling($settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling());
         $viewDto->setWebhookUrl($settingsRepository->getDefaultSettings()->getSystemSettings()->getWebhookUrl());
+        $viewDto->setStripePrivateKey($settingsRepository->getDefaultSettings()->getSystemSettings()->getStripePrivateKey());
+        $viewDto->setStripePublicKey($settingsRepository->getDefaultSettings()->getSystemSettings()->getStripePublicKey());
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);

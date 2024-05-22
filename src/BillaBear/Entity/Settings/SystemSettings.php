@@ -64,6 +64,12 @@ class SystemSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $pdfApiKey = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $stripePublicKey = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $stripePrivateKey = null;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -222,5 +228,25 @@ class SystemSettings
     public function setPdfApiKey(?string $pdfApiKey): void
     {
         $this->pdfApiKey = $pdfApiKey;
+    }
+
+    public function getStripePublicKey(): ?string
+    {
+        return $this->stripePublicKey;
+    }
+
+    public function setStripePublicKey(?string $stripePublicKey): void
+    {
+        $this->stripePublicKey = $stripePublicKey;
+    }
+
+    public function getStripePrivateKey(): ?string
+    {
+        return $this->stripePrivateKey;
+    }
+
+    public function setStripePrivateKey(?string $stripePrivateKey): void
+    {
+        $this->stripePrivateKey = $stripePrivateKey;
     }
 }

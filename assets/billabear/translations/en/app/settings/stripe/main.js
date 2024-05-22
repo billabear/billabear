@@ -1,5 +1,7 @@
 export const SETTINGS_STRIPE_IMPORT_MAIN_TRANSLATIONS = {
     title: "Stripe Import",
+    edit_config: "Edit Config",
+    hide_config: "Hide Config",
     start_button: "Start Import Button",
     already_in_progress: "Import already in progress",
     list: {
@@ -31,5 +33,17 @@ export const SETTINGS_STRIPE_IMPORT_MAIN_TRANSLATIONS = {
         help_info: {
             url: "A https URL that is publically available for webhook calls."
         }
+    },
+    stripe_config: {
+        title: "Stripe API Keys",
+        description: "In order to use Stripe you need to configure the API keys.",
+        stripe_private_key: "Private Key",
+        help_info: {
+            stripe_private_key: "The API key to be used to authenticate backend requests",
+            stripe_public_key: "The API key to be used to authenticate frontend requests.",
+        },
+        stripe_public_key: "Public Key",
+        submit_button: "Submit",
+        error: "Unable to confirm Stripe API Keys.",
     }
 }

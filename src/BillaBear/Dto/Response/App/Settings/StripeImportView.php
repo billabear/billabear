@@ -21,6 +21,15 @@ class StripeImportView
     #[SerializedName('webhook_url')]
     private ?string $webhookUrl;
 
+    #[SerializedName('has_obol_config')]
+    private bool $hasObolConfig;
+
+    #[SerializedName('stripe_public_key')]
+    private ?string $stripePublicKey;
+
+    #[SerializedName('stripe_private_key')]
+    private ?string $stripePrivateKey;
+
     public function getStripeImports(): array
     {
         return $this->stripeImports;
@@ -49,5 +58,35 @@ class StripeImportView
     public function setWebhookUrl(?string $webhookUrl): void
     {
         $this->webhookUrl = $webhookUrl;
+    }
+
+    public function isHasObolConfig(): bool
+    {
+        return $this->hasObolConfig;
+    }
+
+    public function setHasObolConfig(bool $hasObolConfig): void
+    {
+        $this->hasObolConfig = $hasObolConfig;
+    }
+
+    public function getStripePublicKey(): ?string
+    {
+        return $this->stripePublicKey;
+    }
+
+    public function setStripePublicKey(?string $stripePublicKey): void
+    {
+        $this->stripePublicKey = $stripePublicKey;
+    }
+
+    public function getStripePrivateKey(): ?string
+    {
+        return $this->stripePrivateKey;
+    }
+
+    public function setStripePrivateKey(?string $stripePrivateKey): void
+    {
+        $this->stripePrivateKey = $stripePrivateKey;
     }
 }
