@@ -12,6 +12,11 @@ import CountryView from "../views/App/Country/CountryView.vue";
 import CountryEdit from "../views/App/Country/CountryEdit.vue";
 import TaxTypeList from "../views/App/TaxType/TaxTypeList.vue";
 import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
+import EconomicAreaCreate from "../views/App/EconomicArea/EconomicAreaCreate.vue";
+import EconomicAreaList from "../views/App/EconomicArea/EconomicAreaList.vue";
+import EconomicAreaView from "../views/App/EconomicArea/EconomicAreaView.vue";
+import EconomicAreaMemberCreate from "../views/App/EconomicArea/EconomicAreaMemberCreate.vue";
+import EconomicAreaMemberEdit from "../views/App/EconomicArea/EconomicAreaMemberEdit.vue";
 
 export const AppFinanceRoutes  = [
     {
@@ -53,6 +58,31 @@ export const AppFinanceRoutes  = [
         name: 'app.checkout.view',
         path: 'checkout/view/:id',
         component: CheckoutView
+    },
+    {
+        name: 'app.finance.economic_area.list',
+        path: 'economic-area/list',
+        component: EconomicAreaList
+    },
+    {
+        name: 'app.finance.economic_area.create',
+        path: 'economic-area/create',
+        component: EconomicAreaCreate
+    },
+    {
+        name: 'app.finance.economic_area.view',
+        path: 'economic-area/:id/view',
+        component: EconomicAreaView
+    },
+    {
+        name: 'app.finance.economic_area.member.create',
+        path: 'economic-area/:id/member/create',
+        component: EconomicAreaMemberCreate
+    },
+    {
+        name: 'app.finance.economic_area.member.edit',
+        path: 'economic-area/:id/member/:memberId/edit',
+        component: EconomicAreaMemberEdit
     },
     {
         name: 'app.finance.country.list',

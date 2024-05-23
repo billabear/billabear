@@ -9,6 +9,8 @@
           <li class="submenu-list-item"><router-link :to="{name: 'app.refund.list'}" class="submenu-link">{{ $t('app.transactions.menu.refunds') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.charge_backs.list'}" class="submenu-link">{{ $t('app.transactions.menu.charge_backs') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.checkout.list'}" class="submenu-link">{{ $t('app.transactions.menu.checkout') }}</router-link></li>
+
+          <li class="submenu-list-item"><router-link :to="{name: 'app.finance.economic_area.list'}" class="submenu-link">{{ $t('app.transactions.menu.economic_areas') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.finance.country.list'}" class="submenu-link">{{ $t('app.transactions.menu.countries') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.finance.tax_type.list'}" class="submenu-link">{{ $t('app.transactions.menu.tax_types') }}</router-link></li>
         </ul>

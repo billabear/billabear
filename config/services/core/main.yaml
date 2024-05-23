@@ -302,6 +302,17 @@ services:
   app.repository.orm.charge_back_creation:
     class: BillaBear\Repository\Orm\ChargeBackCreationRepository
 
+  BillaBear\Repository\EconomicAreaRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.economic_area'
+  app.repository.orm.economic_area:
+    class: BillaBear\Repository\Orm\EconomicAreaRepository
+
+  BillaBear\Repository\EconomicAreaMembershipRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.economic_area_membership'
+  app.repository.orm.economic_area_membership:
+    class: BillaBear\Repository\Orm\EconomicAreaMembershipRepository
 
   BillaBear\Repository\Processes\ExpiringCardProcessRepository:
     arguments:

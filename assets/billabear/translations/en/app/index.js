@@ -29,6 +29,7 @@ import {COUNTRY_TRANSLATIONS} from "./country";
 import {TAX_TYPE_TRANSLATIONS} from "./tax_type";
 import {FINANCE_TRANSLATIONS} from "./finance";
 import {TAX_TRANSLATIONS} from "./tax";
+import {ECONOMIC_TRANSLATIONS} from "./economic_area";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -62,5 +63,6 @@ export const APP_TRANSLATIONS = {
     tax_type: TAX_TYPE_TRANSLATIONS,
     finance: FINANCE_TRANSLATIONS,
     tax: TAX_TRANSLATIONS,
+    economic_area: ECONOMIC_TRANSLATIONS,
     default_error_message: "Something went wrong!"
 };

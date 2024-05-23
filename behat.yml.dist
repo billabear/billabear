@@ -95,6 +95,7 @@ default:
                 - BillaBear\Tests\Behat\Tax\CountryContext
                 - BillaBear\Tests\Behat\Tax\TaxTypeContext
                 - BillaBear\Tests\Behat\Tax\ReportContext
+                - BillaBear\Tests\Behat\Tax\EconomicAreaContext
 
                 # Quoutes
                 - BillaBear\Tests\Behat\Quote\AppContext
