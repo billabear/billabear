@@ -41,6 +41,7 @@ class PaymentFactory implements PaymentFactoryInterface
         if (isset($customer)) {
             $payment->setCustomer($customer);
             $payment->setCountry($customer->getCountry());
+            $payment->setState($customer->getBillingAddress()->getRegion());
         }
         $payment->setCompleted(true);
         $payment->setCreatedAt(new \DateTime('now'));

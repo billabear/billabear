@@ -75,6 +75,7 @@ class QuoteCreator
             $quoteLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $quoteLine->setTaxPercentage($priceInfo->taxInfo->rate);
             $quoteLine->setTaxCountry($priceInfo->taxInfo->country);
+            $quoteLine->setTaxState($priceInfo->taxInfo->state);
             $quoteLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $quoteLine->setIncludeTax($price->isIncludingTax());
             $quoteLine->setCurrency($price->getCurrency());
@@ -103,6 +104,7 @@ class QuoteCreator
             $quoteLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $quoteLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $quoteLine->setTaxPercentage($priceInfo->taxInfo->rate);
+            $quoteLine->setTaxState($priceInfo->taxInfo->state);
             $quoteLine->setTaxCountry($priceInfo->taxInfo->country);
             $quoteLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $quoteLine->setCurrency($item->getCurrency());

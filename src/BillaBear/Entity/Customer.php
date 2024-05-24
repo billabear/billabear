@@ -91,7 +91,7 @@ class Customer implements CustomerInterface
     protected ?bool $taxExempt = false;
 
     #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
-    protected ?float $standardTaxRate = 0.0;
+    protected ?float $standardTaxRate = null;
 
     #[ORM\Column(enumType: CustomerType::class)]
     protected CustomerType $type;
@@ -369,6 +369,11 @@ class Customer implements CustomerInterface
         $this->standardTaxRate = $standardTaxRate;
     }
 
+    public function hasStandardTaxRate(): bool
+    {
+        return isset($this->standardTaxRate);
+    }
+
     public function getType(): CustomerType
     {
         return $this->type;
@@ -377,5 +382,9 @@ class Customer implements CustomerInterface
     public function setType(CustomerType $type): void
     {
         $this->type = $type;
+    }
+
+    public function isBusiness(): bool
+    {
     }
 }

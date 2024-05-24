@@ -333,6 +333,7 @@ class MainContext implements Context
 
             $billingAddress = new Address();
             $billingAddress->setCountry($row['Country']);
+            $billingAddress->setRegion($row['State'] ?? null);
 
             $customer = new Customer();
             $customer->setBillingEmail($row['Email']);

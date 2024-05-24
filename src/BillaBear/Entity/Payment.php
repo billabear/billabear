@@ -20,6 +20,9 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $country = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $state = null;
+
     public function getInvoice(): ?Invoice
     {
         return $this->invoice;
@@ -38,5 +41,15 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     public function setCountry(?string $country): void
     {
         $this->country = $country;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
     }
 }

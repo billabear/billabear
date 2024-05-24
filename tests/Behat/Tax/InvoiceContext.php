@@ -8,12 +8,12 @@
 
 namespace BillaBear\Tests\Behat\Tax;
 
+use Behat\Behat\Context\Context;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
-use Behat\Behat\Context\Context;
 
 class InvoiceContext implements Context
 {
@@ -52,7 +52,31 @@ class InvoiceContext implements Context
     }
 
     /**
-     * @When there the latest invoice for :arg1 will have tax rate of :arg2
+     * @Then there the latest invoice for :arg1 will have tax state of :arg2
+     */
+    public function thereTheLatestInvoiceForWillHaveTaxStateOf($customerEmail, $expectedState)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if ($line->getTaxState() == $expectedState) {
+                return;
+            }
+        }
+
+        throw new \Exception('Did not get state');
+    }
+
+    /**
+     * @Then there the latest invoice for :arg1 will have tax rate of :arg2
      */
     public function thereTheLatestInvoiceForWillHaveTaxRateOf($customerEmail, $expectedRate)
     {

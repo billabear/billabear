@@ -42,6 +42,8 @@ interface ConvertableToInvoiceLineInterface
 
     public function getTaxCountry(): ?string;
 
+    public function getTaxState(): ?string;
+
     public function isReverseCharge(): bool;
 
     public function getSeatNumber(): ?int;

@@ -63,6 +63,9 @@ class CheckoutLine
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $taxCountry;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $taxState = null;
+
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $reverseCharge = false;
 
@@ -209,6 +212,16 @@ class CheckoutLine
     public function setTaxCountry(?string $taxCountry): void
     {
         $this->taxCountry = $taxCountry;
+    }
+
+    public function getTaxState(): ?string
+    {
+        return $this->taxState;
+    }
+
+    public function setTaxState(?string $taxState): void
+    {
+        $this->taxState = $taxState;
     }
 
     public function isReverseCharge(): bool

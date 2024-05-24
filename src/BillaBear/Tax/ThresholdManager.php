@@ -9,6 +9,7 @@
 namespace BillaBear\Tax;
 
 use BillaBear\Entity\Country;
+use BillaBear\Entity\State;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
@@ -53,6 +54,40 @@ class ThresholdManager
         $defaultCurrency = $country->getCurrency();
         $money = Money::zero($defaultCurrency);
         $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($country->getIsoCode(), $when);
+
+        foreach ($amounts as $amountData) {
+            $originalFee = Money::of($amountData['amount'], $amountData['currency']);
+            $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
+            $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
+        }
+
+        return $money;
+    }
+
+    public function isThresholdReachedForState(string $countryCode, State $state, Money $money): bool
+    {
+        try {
+            $country = $this->countryRepository->getByIsoCode($countryCode);
+
+            $amountTransacted = $this->getTransactedAmountForState($country, $state);
+
+            $amountToAdd = $this->currencyConverter->convert($money, $country->getCurrency(), RoundingMode::HALF_DOWN);
+            $amountTransacted = $amountTransacted->plus($amountToAdd, RoundingMode::HALF_DOWN);
+
+            return $country->getThresholdAsMoney()->isLessThanOrEqualTo($amountTransacted);
+        } catch (NoEntityFoundException) {
+            return false;
+        }
+    }
+
+    public function getTransactedAmountForState(Country $country, State $state, ?\DateTime $when = null): Money
+    {
+        if (!$when) {
+            $when = new \DateTime('-12 months');
+        }
+        $defaultCurrency = $country->getCurrency();
+        $money = Money::zero($defaultCurrency);
+        $amounts = $this->paymentRepository->getPaymentsAmountForStateSinceDate($country->getIsoCode(), $state->getName(), $when);
 
         foreach ($amounts as $amountData) {
             $originalFee = Money::of($amountData['amount'], $amountData['currency']);

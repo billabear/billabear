@@ -29,4 +29,15 @@ class CountryRepository extends DoctrineCrudRepository implements CountryReposit
     {
         return $this->entityRepository->findAll();
     }
+
+    public function hasWithIsoCode(mixed $value): bool
+    {
+        try {
+            $this->getByIsoCode($value);
+        } catch (NoEntityFoundException) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -17,6 +17,8 @@ use Parthenon\Athena\Repository\CrudRepositoryInterface;
  */
 interface CountryRepositoryInterface extends CrudRepositoryInterface
 {
+    public function hasWithIsoCode(mixed $value): bool;
+
     public function getByIsoCode(mixed $value): Country;
 
     /**

@@ -79,6 +79,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setVatPercentage($priceInfo->taxInfo->rate);
                 $line->setTaxType($taxType);
                 $line->setTaxCountry($priceInfo->taxInfo->country);
+                $line->setTaxState($priceInfo->taxInfo->state);
                 $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
 
                 $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());

@@ -9,6 +9,8 @@
 namespace BillaBear\Entity;
 
 use Brick\Money\Money;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -45,6 +47,9 @@ class Country
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
+
+    #[ORM\OneToMany(mappedBy: 'country', targetEntity: State::class)]
+    private array|Collection $states;
 
     public function getId()
     {
@@ -139,5 +144,19 @@ class Country
     public function getThresholdAsMoney(): Money
     {
         return Money::of($this->threshold, $this->currency);
+    }
+
+    public function getStates(): Collection
+    {
+        if (is_array($this->states)) {
+            return new ArrayCollection($this->states);
+        }
+
+        return $this->states;
+    }
+
+    public function setStates(Collection|array $states): void
+    {
+        $this->states = $states;
     }
 }

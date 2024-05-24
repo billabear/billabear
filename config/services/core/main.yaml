@@ -421,6 +421,12 @@ services:
   app.repository.orm.country_tax_rule:
     class: BillaBear\Repository\Orm\CountryTaxRuleRepository
 
+  BillaBear\Repository\StateTaxRuleRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.state_tax_rule'
+  app.repository.orm.state_tax_rule:
+    class: BillaBear\Repository\Orm\StateTaxRuleRepository
+
   BillaBear\Repository\SlackWebhookRepository:
     arguments:
       $entityRepository: '@app.repository.orm.slack_webhook'

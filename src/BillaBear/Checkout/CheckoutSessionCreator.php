@@ -55,6 +55,7 @@ class CheckoutSessionCreator
             $checkoutSessionLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $checkoutSessionLine->setTaxPercentage($priceInfo->taxInfo->rate);
             $checkoutSessionLine->setTaxCountry($priceInfo->taxInfo->country);
+            $checkoutSessionLine->setTaxState($priceInfo->taxInfo->state);
             $checkoutSessionLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
 
             $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);

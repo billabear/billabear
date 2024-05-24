@@ -10,12 +10,8 @@ namespace BillaBear\Tax;
 
 class TaxRateProviderFactory
 {
-    public function __construct(private CountryRules $countryRules)
-    {
-    }
-
     public function getTaxRateProvider(): TaxRateProviderInterface
     {
-        return new TaxRateProvider($this->countryRules);
+        return new TaxRateProvider();
     }
 }

@@ -9,9 +9,9 @@
 namespace BillaBear\Invoice;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Price;
 use BillaBear\Entity\TaxType;
 use Brick\Money\Money;
-use Parthenon\Billing\Entity\Price;
 
 interface PricerInterface
 {

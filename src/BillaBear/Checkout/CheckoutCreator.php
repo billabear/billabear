@@ -94,6 +94,7 @@ class CheckoutCreator
                 $checkoutLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
                 $checkoutLine->setTaxPercentage($priceInfo->taxInfo->rate);
                 $checkoutLine->setTaxCountry($priceInfo->taxInfo->country);
+                $checkoutLine->setTaxState($priceInfo->taxInfo->state);
                 $checkoutLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
                 $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
                 $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
@@ -127,6 +128,7 @@ class CheckoutCreator
                 $checkoutLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
                 $checkoutLine->setTaxPercentage($priceInfo->taxInfo->rate);
                 $checkoutLine->setTaxCountry($priceInfo->taxInfo->country);
+                $checkoutLine->setTaxState($priceInfo->taxInfo->state);
                 $checkoutLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
 
                 $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);

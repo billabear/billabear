@@ -13,9 +13,12 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Country;
 use BillaBear\Entity\CountryTaxRule;
+use BillaBear\Entity\State;
+use BillaBear\Entity\StateTaxRule;
 use BillaBear\Entity\TaxType;
 use BillaBear\Repository\Orm\CountryRepository;
 use BillaBear\Repository\Orm\CountryTaxRuleRepository;
+use BillaBear\Repository\Orm\StateRepository;
 use BillaBear\Repository\Orm\TaxTypeRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -26,6 +29,7 @@ class CountryContext implements Context
     public function __construct(
         private Session $session,
         private CountryRepository $countryRepository,
+        private StateRepository $stateRepository,
         private TaxTypeRepository $taxTypeRepository,
         private CountryTaxRuleRepository $countryTaxRuleRepository,
     ) {
@@ -114,9 +118,8 @@ class CountryContext implements Context
             if (!$country = $this->countryRepository->findOneBy(['isoCode' => $row['ISO Code']])) {
                 $country = new Country();
             }
-
             $country->setName($row['Name']);
-            $country->setIsoCode($row['ISO Code']);
+            $country->setIsoCode(trim($row['ISO Code']));
             $country->setCurrency($row['Currency']);
             $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
@@ -126,6 +129,50 @@ class CountryContext implements Context
             $this->countryRepository->getEntityManager()->persist($country);
         }
         $this->countryRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the following states exist:
+     */
+    public function theFollowingStatesExist(TableNode $table)
+    {
+        $rows = $table->getColumnsHash();
+
+        foreach ($rows as $row) {
+            $country = $this->getCountryByName($row['Country']);
+
+            $state = new State();
+            $state->setCountry($country);
+            $state->setName($row['Name']);
+            $state->setCode($row['Code']);
+            $state->setThreshold(intval($row['Threshold'] ?? 0));
+            $this->stateRepository->getEntityManager()->persist($state);
+        }
+
+        $this->stateRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the following state tax rules exist:
+     */
+    public function theFollowingStateTaxRulesExist(TableNode $table)
+    {
+        $rows = $table->getColumnsHash();
+
+        foreach ($rows as $row) {
+            $country = $this->getCountryByName($row['Country']);
+            $state = $this->getStateByCountryAndName($country, $row['State']);
+
+            $rule = new StateTaxRule();
+            $rule->setState($state);
+            $rule->setTaxRate(floatval($row['Tax Rate']));
+            $rule->setCreatedAt(new \DateTime());
+            $rule->setTaxType($this->getTaxType($row['Tax Type']));
+            $rule->setValidFrom(new \DateTime($row['Valid From']));
+            $rule->setIsDefault(boolval($row['Is Default'] ?? 'true'));
+            $this->stateRepository->getEntityManager()->persist($rule);
+        }
+        $this->stateRepository->getEntityManager()->flush();
     }
 
     /**
@@ -208,6 +255,18 @@ class CountryContext implements Context
         $this->countryRepository->getEntityManager()->refresh($country);
 
         return $country;
+    }
+
+    protected function getStateByCountryAndName(Country $country, string $name): State
+    {
+        $state = $this->stateRepository->findOneBy(['country' => $country, 'name' => $name]);
+
+        if (!$state) {
+            throw new \Exception("Can't find state");
+        }
+        $this->stateRepository->getEntityManager()->refresh($state);
+
+        return $state;
     }
 
     /**

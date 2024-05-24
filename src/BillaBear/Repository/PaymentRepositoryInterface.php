@@ -16,4 +16,9 @@ interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\Payme
      * @return Payment[]
      */
     public function getPaymentsAmountForCountrySinceDate(string $countryCode, \DateTime $when): array;
+
+    /**
+     * @return Payment[]
+     */
+    public function getPaymentsAmountForStateSinceDate(string $countryCode, string $state, \DateTime $when): array;
 }

@@ -23,4 +23,20 @@ class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentReposit
 
         return $query->getResult();
     }
+
+    public function getPaymentsAmountForStateSinceDate(string $countryCode, string $state, \DateTime $when): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->select('SUM(p.amount) as amount, p.currency')
+            ->where('p.createdAt > :createdAt')
+            ->andWhere('p.country = :countryCode')
+            ->andWhere('p.state = :state')
+            ->groupBy('p.currency')
+            ->setParameter('countryCode', $countryCode)
+            ->setParameter('state', $state)
+            ->setParameter('createdAt', $when);
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

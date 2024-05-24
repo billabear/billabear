@@ -63,6 +63,9 @@ class QuoteLine implements ConvertableToInvoiceLineInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $taxCountry;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $taxState = null;
+
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $reverseCharge = false;
 
@@ -229,5 +232,15 @@ class QuoteLine implements ConvertableToInvoiceLineInterface
     public function setSeatNumber(?int $seatNumber): void
     {
         $this->seatNumber = $seatNumber;
+    }
+
+    public function getTaxState(): ?string
+    {
+        return $this->taxState;
+    }
+
+    public function setTaxState(?string $taxState): void
+    {
+        $this->taxState = $taxState;
     }
 }

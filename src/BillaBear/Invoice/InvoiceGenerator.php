@@ -75,6 +75,7 @@ class InvoiceGenerator
         $line->setTaxPercentage($priceInfo->taxInfo->rate);
         $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
         $line->setTaxCountry($priceInfo->taxInfo->country);
+        $line->setTaxState($priceInfo->taxInfo->state);
         $line->setTaxType($newPlan->getProduct()->getTaxType());
         $lines[] = $line;
 
@@ -126,6 +127,7 @@ class InvoiceGenerator
             $line->setTaxPercentage($priceInfo->taxInfo->rate);
             $line->setTaxType($taxType);
             $line->setTaxCountry($priceInfo->taxInfo->country);
+            $line->setTaxState($priceInfo->taxInfo->state);
             $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $lines[] = $line;
         }
@@ -149,6 +151,7 @@ class InvoiceGenerator
             $line->setTaxPercentage($priceInfo->taxInfo->rate);
             $line->setTaxType($lineItem->getTaxType());
             $line->setTaxCountry($priceInfo->taxInfo->country);
+            $line->setTaxState($priceInfo->taxInfo->state);
             $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $lines[] = $line;
         }
