@@ -7,6 +7,5 @@ export const TRANSACTIONS_MENU_TRANSACTIONS = {
     unpaid_invoices: "Unpaid Invoices",
     checkout: "Checkout",
     countries: "Countries",
-    economic_areas: "Economic Areas",
     tax_types: "Tax Types",
 };

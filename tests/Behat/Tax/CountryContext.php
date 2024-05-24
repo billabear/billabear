@@ -16,21 +16,18 @@ use BillaBear\Entity\CountryTaxRule;
 use BillaBear\Entity\TaxType;
 use BillaBear\Repository\Orm\CountryRepository;
 use BillaBear\Repository\Orm\CountryTaxRuleRepository;
-use BillaBear\Repository\Orm\EconomicAreaRepository;
 use BillaBear\Repository\Orm\TaxTypeRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
 class CountryContext implements Context
 {
     use SendRequestTrait;
-    use CountryTrait;
 
     public function __construct(
         private Session $session,
         private CountryRepository $countryRepository,
         private TaxTypeRepository $taxTypeRepository,
         private CountryTaxRuleRepository $countryTaxRuleRepository,
-        private EconomicAreaRepository $economicAreaRepository,
     ) {
     }
 
@@ -199,6 +196,18 @@ class CountryContext implements Context
         if ($data['country']['iso_code'] !== $arg1) {
             throw new \Exception("Can't see ISO code");
         }
+    }
+
+    protected function getCountryByName(string $name): Country
+    {
+        $country = $this->countryRepository->findOneBy(['name' => $name]);
+
+        if (!$country) {
+            throw new \Exception("Can't find country");
+        }
+        $this->countryRepository->getEntityManager()->refresh($country);
+
+        return $country;
     }
 
     /**
