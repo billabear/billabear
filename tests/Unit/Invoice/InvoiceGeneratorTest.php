@@ -11,7 +11,9 @@ namespace BillaBear\Tests\Unit\Invoice;
 use BillaBear\Credit\CreditAdjustmentRecorder;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
+use BillaBear\Entity\Price;
 use BillaBear\Entity\Product;
+use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Invoice\DueDateDecider;
 use BillaBear\Invoice\InvoiceGenerator;
@@ -25,8 +27,6 @@ use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use BillaBear\Tax\TaxInfo;
 use Brick\Money\Money;
 use Monolog\Test\TestCase;
-use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceGeneratorTest extends TestCase
