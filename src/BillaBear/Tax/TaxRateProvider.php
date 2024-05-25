@@ -11,75 +11,99 @@ namespace BillaBear\Tax;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Product;
 use BillaBear\Entity\TaxType;
-use BillaBear\Enum\CustomerType;
-use BillaBear\Exception\NoRateForCountryException;
+use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Brick\Money\Money;
+use Parthenon\Common\Address;
 
 class TaxRateProvider implements TaxRateProviderInterface
 {
     public function __construct(
+        private CountryRepositoryInterface $countryRepository,
         private TaxRuleProvider $taxRuleProvider,
+        private ThresholdManager $thresholdManager,
         private SettingsRepositoryInterface $settingsRepository,
-        private ThresholdManager $thresholdChecker,
     ) {
     }
 
     public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo
     {
-        if ($product && null !== $product->getTaxRate()) {
-            return new TaxInfo($product->getTaxRate(), $customer->getBillingAddress()->getCountry(), false, $customer->getBillingAddress()->getRegion());
+        $customerCountry = $customer->getCountry();
+        if ($customer->hasStandardTaxRate()) {
+            return new TaxInfo($customer->getStandardTaxRate(), $customerCountry, false);
         }
 
+        $brand = $customer->getBrandSettings();
+        $brandCountry = $brand->getAddress()->getCountry();
         $physical = ($product && $product->getPhysical());
 
-        if ($customer->getStandardTaxRate()) {
-            return new TaxInfo($customer->getStandardTaxRate(), $customer->getBillingAddress()->getCountry(), false, $customer->getBillingAddress()->getRegion());
+        if ($product && $product->getTaxRate()) {
+            return new TaxInfo($product->getTaxRate(), $brandCountry, false);
+        }
+
+        if ($brand->getTaxRate()) {
+            return new TaxInfo($brand->getTaxRate(), $brandCountry, false);
+        }
+
+        if (!$this->countryRepository->hasWithIsoCode($customerCountry)) {
+            return $this->buildTaxInfo($taxType, $brand->getAddress());
+        }
+
+        $customerCountry = $this->countryRepository->getByIsoCode($customer->getCountry());
+        $taxAddress = $customer->getBillingAddress();
+
+        if ($this->areBothPartiesInTheEU($customer->getBillingAddress(), $brand->getAddress())) {
+            $reverseCharge = false;
+
+            if ($customer->isBusiness() && $customer->getTaxNumber()) {
+                if ($physical) {
+                    $reverseCharge = true;
+                } else {
+                    return new TaxInfo(0, $taxAddress->getCountry(), false);
+                }
+            }
+            if (!$this->thresholdManager->isThresholdReached($taxAddress->getCountry(), $amount)) {
+                $taxAddress = $brand->getAddress();
+            }
+
+            return $this->buildTaxInfo($taxType, $taxAddress, $reverseCharge);
         }
 
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
 
-        try {
-            $taxRule = $this->taxRuleProvider->getCountryRule($taxType, $customer->getBillingAddress());
-            $customerTaxRate = $taxRule->getTaxRate();
-            $customerTaxCountry = $customer->getBillingAddress()->getCountry();
-            $customerTaxState = $customer->getBillingAddress()->getRegion();
-        } catch (NoRateForCountryException $e) {
-            try {
-                $taxRule = $this->taxRuleProvider->getCountryRule($taxType, $customer->getBillingAddress());
-                $customerTaxRate = $taxRule->getTaxRate();
-            } catch (NoRateForCountryException $e) {
-                if (!$physical) {
-                    $customerTaxRate = $customer->getBrandSettings()->getDigitalServicesRate();
-                }
-                if (!isset($customerTaxRate)) {
-                    $customerTaxRate = $customer->getBrandSettings()->getTaxRate();
-                }
-            }
-            $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
-            $customerTaxState = $customer->getBrandSettings()->getAddress()->getRegion();
-        }
-
-        if ($amount) {
-            if (!$this->thresholdChecker->isThresholdReached($customerTaxCountry, $amount)) {
-                $customerTaxCountry = $customer->getBrandSettings()->getAddress()->getCountry();
-                $customerTaxState = $customer->getBrandSettings()->getAddress()->getRegion();
-            }
-        }
-
-        $euBusinessTaxRules = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getEuropeanBusinessTaxRules();
-        if ($euBusinessTaxRules && CustomerType::BUSINESS === $customer->getType() && (isset($taxRule) && $taxRule->getCountry()->isInEu())) {
-            if (!$physical) {
-                return new TaxInfo(0, $customer->getBillingAddress()->getCountry(), false, $customer->getBillingAddress()->getRegion());
-            } else {
-                return new TaxInfo($customerTaxRate, $customer->getBillingAddress()->getCountry(), true, $customer->getBillingAddress()->getRegion());
-            }
-        }
-
         if (!$taxCustomersWithTaxNumbers && $customer->getTaxNumber()) {
-            return new TaxInfo(null, $customerTaxCountry, false, $customerTaxState);
+            return new TaxInfo(0, $customer->getBillingAddress()->getCountry(), false);
         }
 
-        return new TaxInfo($customerTaxRate, $customerTaxCountry, false, $customerTaxState);
+        if (!$this->thresholdManager->isThresholdReached($taxAddress->getCountry(), $amount)) {
+            $taxAddress = $brand->getAddress();
+        }
+
+        return $this->buildTaxInfo($taxType, $taxAddress);
+    }
+
+    public function areBothPartiesInTheEU(Address $customerAddress, Address $brandAddress): bool
+    {
+        $customerCountry = $this->countryRepository->getByIsoCode($customerAddress->getCountry());
+        $brandCountry = $this->countryRepository->getByIsoCode($brandAddress->getCountry());
+
+        return $customerCountry->isInEu() && $brandCountry->isInEu();
+    }
+
+    public function buildTaxInfo(TaxType $taxType, Address $address, bool $reverseCharge = false): TaxInfo
+    {
+        $countryCode = $address->getCountry();
+        $countryTax = $this->taxRuleProvider->getCountryRule($taxType, $address);
+        $stateTax = $this->taxRuleProvider->getStateRule($taxType, $address);
+
+        $state = null;
+        $taxRate = $countryTax->getTaxRate();
+
+        if ($stateTax) {
+            $state = ucwords($address->getRegion());
+            $taxRate += $stateTax->getTaxRate();
+        }
+
+        return new TaxInfo($taxRate, $countryCode, $reverseCharge, $state);
     }
 }

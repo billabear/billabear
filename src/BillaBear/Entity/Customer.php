@@ -386,5 +386,6 @@ class Customer implements CustomerInterface
 
     public function isBusiness(): bool
     {
+        return CustomerType::BUSINESS === $this->type;
     }
 }

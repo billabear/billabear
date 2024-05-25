@@ -11,13 +11,13 @@ namespace BillaBear\Invoice;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\TaxType;
-use BillaBear\Tax\UeberTaxRateProvider;
+use BillaBear\Tax\TaxRateProvider;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 
 class Pricer implements PricerInterface
 {
-    public function __construct(private UeberTaxRateProvider $taxRateProvider)
+    public function __construct(private TaxRateProvider $taxRateProvider)
     {
     }
 

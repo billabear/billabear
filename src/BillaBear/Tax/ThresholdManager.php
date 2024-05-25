@@ -30,8 +30,11 @@ class ThresholdManager
         $this->currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
     }
 
-    public function isThresholdReached(string $countryCode, Money $money): bool
+    public function isThresholdReached(string $countryCode, ?Money $money): bool
     {
+        if (!$money) {
+            return false;
+        }
         try {
             $country = $this->countryRepository->getByIsoCode($countryCode);
 
@@ -56,7 +59,7 @@ class ThresholdManager
         $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($country->getIsoCode(), $when);
 
         foreach ($amounts as $amountData) {
-            $originalFee = Money::of($amountData['amount'], $amountData['currency']);
+            $originalFee = Money::ofMinor($amountData['amount'], $amountData['currency']);
             $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
         }
@@ -64,8 +67,12 @@ class ThresholdManager
         return $money;
     }
 
-    public function isThresholdReachedForState(string $countryCode, State $state, Money $money): bool
+    public function isThresholdReachedForState(string $countryCode, State $state, ?Money $money): bool
     {
+        if (!$money) {
+            return false;
+        }
+
         try {
             $country = $this->countryRepository->getByIsoCode($countryCode);
 
@@ -90,7 +97,7 @@ class ThresholdManager
         $amounts = $this->paymentRepository->getPaymentsAmountForStateSinceDate($country->getIsoCode(), $state->getName(), $when);
 
         foreach ($amounts as $amountData) {
-            $originalFee = Money::of($amountData['amount'], $amountData['currency']);
+            $originalFee = Money::ofMinor($amountData['amount'], $amountData['currency']);
             $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
         }

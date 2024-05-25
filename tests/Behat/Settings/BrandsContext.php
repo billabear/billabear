@@ -8,12 +8,12 @@
 
 namespace BillaBear\Tests\Behat\Settings;
 
-use BillaBear\Entity\BrandSettings;
-use BillaBear\Repository\Orm\BrandSettingsRepository;
-use BillaBear\Tests\Behat\SendRequestTrait;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use BillaBear\Entity\BrandSettings;
+use BillaBear\Repository\Orm\BrandSettingsRepository;
+use BillaBear\Tests\Behat\SendRequestTrait;
 use Parthenon\Common\Address;
 
 class BrandsContext implements Context

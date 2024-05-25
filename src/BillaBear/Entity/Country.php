@@ -143,7 +143,7 @@ class Country
 
     public function getThresholdAsMoney(): Money
     {
-        return Money::of($this->threshold, $this->currency);
+        return Money::ofMinor($this->threshold, $this->currency);
     }
 
     public function getStates(): Collection

@@ -6,14 +6,14 @@ Feature: View Tax Report
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
-    And the follow products exist:
-      | Name        | External Reference |
-      | Product One | prod_jf9j545       |
-      | Product Two | prod_jf9j542       |
     And there are the following tax types:
-      | Name     |
+      | Name           |
       | Digital Goods  |
-      | Physical |
+      | Physical       |
+    And the follow products exist:
+      | Name        | External Reference | Tax Type      |
+      | Product One | prod_jf9j545       | Digital Goods |
+      | Product Two | prod_jf9j542       | Digital Goods |
     And that the following countries exist:
       | Name           | ISO Code | Threshold | Currency |
       | United States  | US       | 0         | USD      |
@@ -78,10 +78,10 @@ Feature: View Tax Report
 
   Scenario:
     Given the following invoices exist:
-      | Customer                 | Paid  | Tax Type      |
-      | customer.one@example.org | true  | Digital Goods |
+      | Customer                  | Paid  | Tax Type      |
+      | customer.one@example.org  | true  | Digital Goods |
       | customer.five@example.org | true  | Digital Goods |
-      | customer.six@example.org | false | Digital Goods |
+      | customer.six@example.org  | false | Digital Goods |
     And there is a payments for:
       | Subscription Plan | Customer                  | Amount |
       | Test Plan         | customer.four@example.org | 3500   |
