@@ -26,4 +26,6 @@ interface CountryTaxRuleRepositoryInterface extends CrudRepositoryInterface
      * @return CountryTaxRule[]
      */
     public function getForCountryAndTaxType(Country $country, TaxType $taxType): array;
+
+    public function getDefaultForCountryAndTaxType(Country $country): ?CountryTaxRule;
 }

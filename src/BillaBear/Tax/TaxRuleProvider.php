@@ -41,18 +41,16 @@ class TaxRuleProvider
             throw new NoRateForCountryException(sprintf('No country entity found for %s', $address->getCountry()), previous: $entityFoundException);
         }
         $rules = $this->countryTaxRuleRepository->getForCountryAndTaxType($country, $taxType);
-        $default = null;
+
         foreach ($rules as $rule) {
-            if ($rule->isIsDefault()) {
-                $default = $rule;
-            }
             if ($rule->isValidForDateTime($when)) {
                 return $rule;
             }
         }
+        $default = $this->countryTaxRuleRepository->getDefaultForCountryAndTaxType($country, $taxType);
 
         if ($default) {
-            return $rule;
+            return $default;
         }
 
         throw new NoRateForCountryException(sprintf("No tax rate for '%s' found", $address->getCountry()));
@@ -100,18 +98,16 @@ class TaxRuleProvider
         }
 
         $rules = $this->stateTaxRuleRepository->getForCountryStateAndTaxType($country, $state, $taxType);
-        $default = null;
+
         foreach ($rules as $rule) {
-            if ($rule->isIsDefault()) {
-                $default = $rule;
-            }
             if ($rule->isValidForDateTime($when)) {
                 return $rule;
             }
         }
+        $default = $this->stateTaxRuleRepository->getDefaultForCountryStateAndTaxType($country, $state, $taxType);
 
         if ($default) {
-            return $rule;
+            return $default;
         }
 
         return null;

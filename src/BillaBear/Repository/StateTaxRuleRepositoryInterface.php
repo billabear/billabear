@@ -21,4 +21,6 @@ interface StateTaxRuleRepositoryInterface extends CrudRepositoryInterface
     public function getOpenEndedForCountryStateAndTaxType(Country $country, State $state, TaxType $taxType): StateTaxRule;
 
     public function getForCountryStateAndTaxType(Country $country, State $state, TaxType $taxType);
+
+    public function getDefaultForCountryStateAndTaxType(Country $country, State $state): ?StateTaxRule;
 }

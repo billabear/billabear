@@ -36,4 +36,9 @@ class CountryTaxRuleRepository extends DoctrineCrudRepository implements Country
     {
         return $this->entityRepository->findBy(['country' => $country, 'taxType' => $taxType]);
     }
+
+    public function getDefaultForCountryAndTaxType(Country $country): ?CountryTaxRule
+    {
+        return $this->entityRepository->findOneBy(['country' => $country, 'isDefault' => true]);
+    }
 }

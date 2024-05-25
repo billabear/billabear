@@ -38,4 +38,9 @@ class StateTaxRuleRepository extends DoctrineCrudRepository implements StateTaxR
     {
         return $this->entityRepository->findBy(['state' => $state, 'taxType' => $taxType]);
     }
+
+    public function getDefaultForCountryStateAndTaxType(Country $country, State $state): ?StateTaxRule
+    {
+        return $this->entityRepository->findOneBy(['state' => $state, 'isDefault' => true]);
+    }
 }
