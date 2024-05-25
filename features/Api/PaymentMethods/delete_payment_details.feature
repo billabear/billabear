@@ -4,12 +4,7 @@ Feature: Payment Details Delete
   I need to be able to delete payment details
 
   Background:
-    Given the following accounts exist:
-      | Name        | Email                   | Password  |
-      | Sally Brown | sally.brown@example.org | AF@k3P@ss |
-      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
-      | Sally Braun | sally.braun@example.org | AF@k3Pass |
-    And the follow customers exist:
+    Given the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
@@ -22,3 +17,4 @@ Feature: Payment Details Delete
     Given I have authenticated to the API
     When I delete the payment methods "Card One" for "customer.one@example.org"
     Then the payment details "Card One" for "customer.one@example.org" should be deleted
+    Then the payment details "Card Two" for "customer.one@example.org" should not be deleted

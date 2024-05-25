@@ -8,7 +8,6 @@ Feature: Customer Enable APP
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
-      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
     And customer "customer.one@example.org" is disabled
     When I enable the customer info via the API for "customer.one@example.org"
     Then the customer "customer.one@example.org" is enabled

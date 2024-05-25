@@ -8,11 +8,11 @@
 
 namespace BillaBear\Tests\Behat\PaymentDetails;
 
+use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 
 class MainContext implements Context
@@ -38,6 +38,19 @@ class MainContext implements Context
 
         if (!$paymentDetails->isDeleted()) {
             throw new \Exception('Is not deleted');
+        }
+    }
+
+    /**
+     * @Then the payment details :arg1 for :arg2 should not be deleted
+     */
+    public function thePaymentDetailsForShouldNotBeDeleted($name, $email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
+
+        if ($paymentDetails->isDeleted()) {
+            throw new \Exception('Is deleted');
         }
     }
 
