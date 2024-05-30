@@ -178,6 +178,7 @@ class CountryContext implements Context
             $state->setName($row['Name']);
             $state->setCode($row['Code']);
             $state->setThreshold(intval($row['Threshold'] ?? 0));
+            $state->setHasNexus(boolval($row['Has Nexus'] ?? 'false'));
             $this->stateRepository->getEntityManager()->persist($state);
         }
 
@@ -376,6 +377,22 @@ class CountryContext implements Context
         }
 
         throw new \Exception("Can't find tax rule");
+    }
+
+    /**
+     * @Then I should see the state :arg1 in the list of states
+     */
+    public function iShouldSeeTheStateInTheListOfStates($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['states'] as $state) {
+            if ($state['name'] === $arg1) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find state");
     }
 
     /**

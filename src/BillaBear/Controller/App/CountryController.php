@@ -11,6 +11,7 @@ namespace BillaBear\Controller\App;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\CountryDataMapper;
 use BillaBear\DataMappers\CountryTaxRuleDataMapper;
+use BillaBear\DataMappers\Tax\StateDataMapper;
 use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateCountry;
 use BillaBear\Dto\Request\App\Country\CreateCountryTaxRule;
@@ -78,6 +79,7 @@ class CountryController
         TaxTypeRepositoryInterface $taxTypeRepository,
         TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer,
+        StateDataMapper $stateDataMapper,
     ): Response {
         try {
             $entity = $countryRepository->findById($request->get('id'));
@@ -93,10 +95,13 @@ class CountryController
         $taxTypes = $taxTypeRepository->getAll();
         $taxTypesDtos = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
 
+        $stateDtos = array_map([$stateDataMapper, 'createAppDto'], $entity->getStates()->toArray());
+
         $view = new CountryView();
         $view->setCountry($countryDto);
         $view->setCountryTaxRules($countryTaxRuleDtos);
         $view->setTaxTypes($taxTypesDtos);
+        $view->setStates($stateDtos);
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);

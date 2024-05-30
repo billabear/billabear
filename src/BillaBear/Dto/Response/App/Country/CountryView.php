@@ -21,6 +21,18 @@ class CountryView
     #[SerializedName('tax_types')]
     private array $taxTypes;
 
+    private array $states;
+
+    public function getStates(): array
+    {
+        return $this->states;
+    }
+
+    public function setStates(array $states): void
+    {
+        $this->states = $states;
+    }
+
     public function getCountry(): Country
     {
         return $this->country;
