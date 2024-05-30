@@ -56,7 +56,7 @@ class TaxRuleProvider
         throw new NoRateForCountryException(sprintf("No tax rate for '%s' found", $address->getCountry()));
     }
 
-    public function getStateRule(TaxType $taxType, Address $address, ?\DateTime $when = null): ?StateTaxRule
+    public function getStateRule(TaxType $taxType, Address $address, ?Money $amount, ?\DateTime $when = null): ?StateTaxRule
     {
         if (!$address->getRegion()) {
             return null;
@@ -81,9 +81,11 @@ class TaxRuleProvider
         foreach ($country->getStates() as $state) {
             if (strtolower($state->getName()) === $stateName) {
                 $foundState = $state;
+                break;
             }
             if (strtolower($state->getCode()) === $stateName) {
                 $foundState = $state;
+                break;
             }
         }
 
@@ -91,9 +93,7 @@ class TaxRuleProvider
             return null;
         }
 
-        $threshold = Money::of($foundState->getThreshold(), $country->getCurrency());
-
-        if (!$this->thresholdManager->isThresholdReachedForState($country->getIsoCode(), $foundState, $threshold)) {
+        if (!$this->thresholdManager->isThresholdReachedForState($country->getIsoCode(), $foundState, $amount) && !$foundState->hasNexus()) {
             return null;
         }
 

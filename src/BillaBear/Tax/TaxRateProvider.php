@@ -66,7 +66,7 @@ class TaxRateProvider implements TaxRateProviderInterface
                 $taxAddress = $brand->getAddress();
             }
 
-            return $this->buildTaxInfo($taxType, $taxAddress, $reverseCharge);
+            return $this->buildTaxInfo($taxType, $taxAddress, $amount, $reverseCharge);
         }
 
         $taxCustomersWithTaxNumbers = $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getTaxCustomersWithTaxNumbers();
@@ -79,7 +79,7 @@ class TaxRateProvider implements TaxRateProviderInterface
             $taxAddress = $brand->getAddress();
         }
 
-        return $this->buildTaxInfo($taxType, $taxAddress);
+        return $this->buildTaxInfo($taxType, $taxAddress, $amount);
     }
 
     public function areBothPartiesInTheEU(Address $customerAddress, Address $brandAddress): bool
@@ -90,11 +90,11 @@ class TaxRateProvider implements TaxRateProviderInterface
         return $customerCountry->isInEu() && $brandCountry->isInEu();
     }
 
-    public function buildTaxInfo(TaxType $taxType, Address $address, bool $reverseCharge = false): TaxInfo
+    public function buildTaxInfo(TaxType $taxType, Address $address, Money $amount, bool $reverseCharge = false): TaxInfo
     {
         $countryCode = $address->getCountry();
         $countryTax = $this->taxRuleProvider->getCountryRule($taxType, $address);
-        $stateTax = $this->taxRuleProvider->getStateRule($taxType, $address);
+        $stateTax = $this->taxRuleProvider->getStateRule($taxType, $address, $amount);
 
         $state = null;
         $taxRate = $countryTax->getTaxRate();

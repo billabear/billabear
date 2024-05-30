@@ -81,7 +81,9 @@ class ThresholdManager
             $amountToAdd = $this->currencyConverter->convert($money, $country->getCurrency(), RoundingMode::HALF_DOWN);
             $amountTransacted = $amountTransacted->plus($amountToAdd, RoundingMode::HALF_DOWN);
 
-            return $country->getThresholdAsMoney()->isLessThanOrEqualTo($amountTransacted);
+            $stateThreshold = Money::ofMinor($state->getThreshold(), $country->getCurrency());
+
+            return $stateThreshold->isLessThanOrEqualTo($amountTransacted);
         } catch (NoEntityFoundException) {
             return false;
         }

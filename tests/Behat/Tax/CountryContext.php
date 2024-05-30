@@ -178,7 +178,7 @@ class CountryContext implements Context
             $state->setName($row['Name']);
             $state->setCode($row['Code']);
             $state->setThreshold(intval($row['Threshold'] ?? 0));
-            $state->setHasNexus(boolval($row['Has Nexus'] ?? 'false'));
+            $state->setHasNexus('true' === strtolower($row['Has Nexus'] ?? 'false'));
             $this->stateRepository->getEntityManager()->persist($state);
         }
 

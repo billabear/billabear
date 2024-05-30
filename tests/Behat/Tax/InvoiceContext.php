@@ -180,6 +180,50 @@ class InvoiceContext implements Context
     }
 
     /**
+     * @Then there the latest invoice for :arg1 will not have tax country of :arg2
+     */
+    public function thereTheLatestInvoiceForWillNotHaveTaxCountryOf($customerEmail, $expectedCountry)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if ($line->getTaxCountry() == $expectedCountry) {
+                throw new \Exception('Found country');
+            }
+        }
+    }
+
+    /**
+     * @Then there the latest invoice for :arg1 will not have tax state of :arg2
+     */
+    public function thereTheLatestInvoiceForWillNotHaveTaxStateOf($customerEmail, $expectedState)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $rate = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            if ($line->getTaxState() == $expectedState) {
+                throw new \Exception('Found state');
+            }
+        }
+    }
+
+    /**
      * @When there the latest invoice for :arg1 will have a reverse charge
      */
     public function thereTheLatestInvoiceForWillHaveAReverseCharge($customerEmail)
