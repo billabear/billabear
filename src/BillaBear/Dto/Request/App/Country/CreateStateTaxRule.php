@@ -8,20 +8,22 @@
 
 namespace BillaBear\Dto\Request\App\Country;
 
-use BillaBear\Validator\Constraints\Country\StateExists;
-use BillaBear\Validator\Constraints\CountryTaxRule\DoesNotOverlap;
+use BillaBear\Validator\Constraints\Country\CountryExists;
+use BillaBear\Validator\Constraints\State\StateExists;
+use BillaBear\Validator\Constraints\StateTaxRule\DoesNotOverlap;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[DoesNotOverlap]
-class UpdateCountryTaxRule
+class CreateStateTaxRule
 {
     #[Assert\NotBlank()]
-    private $id;
+    #[CountryExists]
+    private $country;
 
     #[Assert\NotBlank()]
     #[StateExists]
-    private $country;
+    private $state;
 
     #[SerializedName('tax_type')]
     #[Assert\NotBlank()]
@@ -29,30 +31,19 @@ class UpdateCountryTaxRule
 
     #[SerializedName('tax_rate')]
     #[Assert\NotBlank()]
-    #[Assert\Type('numeric')]
+    #[Assert\Type(['float', 'integer'])]
     private $taxRate;
-
-    #[Assert\Type('boolean')]
-    private $default = false;
 
     #[SerializedName('valid_from')]
     #[Assert\NotBlank()]
-    #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
+    #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
     private $validFrom;
 
     #[SerializedName('valid_until')]
-    #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
+    #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
     private $validUntil;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
+    private $default;
 
     public function getCountry()
     {
@@ -84,9 +75,9 @@ class UpdateCountryTaxRule
         $this->taxRate = $taxRate;
     }
 
-    public function getDefault()
+    public function isDefault(): bool
     {
-        return $this->default;
+        return true === $this->default;
     }
 
     public function setDefault($default): void
@@ -114,13 +105,13 @@ class UpdateCountryTaxRule
         $this->validUntil = $validUntil;
     }
 
-    public function isInEu(): bool
+    public function getState()
     {
-        return $this->inEu;
+        return $this->state;
     }
 
-    public function setInEu(bool $inEu): void
+    public function setState($state): void
     {
-        $this->inEu = $inEu;
+        $this->state = $state;
     }
 }

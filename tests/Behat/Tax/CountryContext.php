@@ -19,6 +19,7 @@ use BillaBear\Entity\TaxType;
 use BillaBear\Repository\Orm\CountryRepository;
 use BillaBear\Repository\Orm\CountryTaxRuleRepository;
 use BillaBear\Repository\Orm\StateRepository;
+use BillaBear\Repository\Orm\StateTaxRuleRepository;
 use BillaBear\Repository\Orm\TaxTypeRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -32,6 +33,7 @@ class CountryContext implements Context
         private StateRepository $stateRepository,
         private TaxTypeRepository $taxTypeRepository,
         private CountryTaxRuleRepository $countryTaxRuleRepository,
+        private StateTaxRuleRepository $stateTaxRuleRepository,
     ) {
     }
 
@@ -202,6 +204,11 @@ class CountryContext implements Context
             $rule->setCreatedAt(new \DateTime());
             $rule->setTaxType($this->getTaxType($row['Tax Type']));
             $rule->setValidFrom(new \DateTime($row['Valid From']));
+
+            if (isset($row['Valid Until'])) {
+                $rule->setValidUntil(new \DateTime($row['Valid Until']));
+            }
+
             $rule->setIsDefault(boolval($row['Is Default'] ?? 'true'));
             $this->stateRepository->getEntityManager()->persist($rule);
         }
@@ -300,6 +307,88 @@ class CountryContext implements Context
         $this->stateRepository->getEntityManager()->refresh($state);
 
         return $state;
+    }
+
+    /**
+     * @When I create a state tax rule with the following data:
+     */
+    public function iCreateAStateTaxRuleWithTheFollowingData(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+
+        $country = $this->getCountryByName($data['Country']);
+        $state = $this->getStateByCountryAndName($country, $data['State']);
+        $taxType = $this->getTaxType($data['Tax Type']);
+        $validFrom = new \DateTime($data['Valid From']);
+
+        $payload = [
+            'tax_type' => (string) $taxType->getId(),
+            'tax_rate' => floatval($data['Tax Rate']),
+            'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
+            'default' => boolval($data['Default'] ?? 'true'),
+            'country' => (string) $country->getId(),
+            'state' => (string) $state->getId(),
+        ];
+
+        if (isset($data['Valid Until'])) {
+            $validUntil = new \DateTime($data['Valid Until']);
+            $payload['valid_until'] = $validUntil->format(\DATE_RFC3339_EXTENDED);
+        }
+
+        $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/state/'.$state->getId().'/tax-rule', $payload);
+    }
+
+    /**
+     * @Then there should be a state tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4
+     */
+    public function thereShouldBeAStateTaxRuleForAndForTaxTypeWithTheTaxRate($countryName, $stateName, $taxType, $rate)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->getStateByCountryAndName($country, $stateName);
+        $taxType = $this->getTaxType($taxType);
+
+        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $rate]);
+
+        if (!$stateTaxRule instanceof StateTaxRule) {
+            throw new \Exception("Can't find state tax rule");
+        }
+    }
+
+    /**
+     * @Then there should be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg5 that is valid until :arg4
+     */
+    public function thereShouldBeATaxRuleForAndForTaxTypeWithTheTaxRateThatIsValidUntil($countryName, $stateName, $taxType, $rate, $validUntilStr)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->getStateByCountryAndName($country, $stateName);
+        $taxType = $this->getTaxType($taxType);
+
+        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $rate]);
+
+        if (!$stateTaxRule instanceof StateTaxRule) {
+            throw new \Exception("Can't find state tax rule");
+        }
+        $this->stateRepository->getEntityManager()->refresh($stateTaxRule);
+        $validUntil = new \DateTime($validUntilStr);
+        if ($validUntil->format('Y-m-d') !== $stateTaxRule->getValidUntil()?->format('Y-m-d')) {
+            throw new \Exception(sprintf('Wrong date - expected %s but got %s', $validUntil->format('Y-m-d'), $stateTaxRule->getValidUntil()?->format('Y-m-d')));
+        }
+    }
+
+    /**
+     * @Then there should be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4 that is open ended
+     */
+    public function thereShouldBeATaxRuleForAndForTaxTypeWithTheTaxRateThatIsOpenEnded($countryName, $stateName, $taxType, $rate)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->getStateByCountryAndName($country, $stateName);
+        $taxType = $this->getTaxType($taxType);
+
+        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $rate, 'validUntil' => null]);
+
+        if (!$stateTaxRule instanceof StateTaxRule) {
+            throw new \Exception("Can't find state tax rule");
+        }
     }
 
     /**

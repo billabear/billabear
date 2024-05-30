@@ -8,12 +8,12 @@
 
 namespace BillaBear\Dto\Request\App\Country;
 
-use BillaBear\Validator\Constraints\Country\CountryExists;
+use BillaBear\Validator\Constraints\Country\StateExists;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateState
 {
-    #[CountryExists]
+    #[StateExists]
     private $country;
 
     #[Assert\NotBlank()]

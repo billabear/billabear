@@ -8,7 +8,7 @@
 
 namespace BillaBear\Dto\Request\App\Country;
 
-use BillaBear\Validator\Constraints\Country\CountryExists;
+use BillaBear\Validator\Constraints\Country\StateExists;
 use BillaBear\Validator\Constraints\CountryTaxRule\DoesNotOverlap;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateCountryTaxRule
 {
     #[Assert\NotBlank()]
-    #[CountryExists]
+    #[StateExists]
     private $country;
 
     #[SerializedName('tax_type')]

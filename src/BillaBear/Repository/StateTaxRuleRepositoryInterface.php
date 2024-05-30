@@ -8,7 +8,6 @@
 
 namespace BillaBear\Repository;
 
-use BillaBear\Entity\Country;
 use BillaBear\Entity\State;
 use BillaBear\Entity\StateTaxRule;
 use BillaBear\Entity\TaxType;
@@ -16,11 +15,11 @@ use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface StateTaxRuleRepositoryInterface extends CrudRepositoryInterface
 {
-    public function getForCountry(Country $country, State $state): array;
+    public function getForState(State $state): array;
 
-    public function getOpenEndedForCountryStateAndTaxType(Country $country, State $state, TaxType $taxType): StateTaxRule;
+    public function getOpenEndedForCountryStateAndTaxType(State $state, TaxType $taxType): StateTaxRule;
 
-    public function getForCountryStateAndTaxType(Country $country, State $state, TaxType $taxType);
+    public function getForCountryStateAndTaxType(State $state, TaxType $taxType);
 
-    public function getDefaultForCountryStateAndTaxType(Country $country, State $state): ?StateTaxRule;
+    public function getDefaultForCountryStateAndTaxType(State $state): ?StateTaxRule;
 }
