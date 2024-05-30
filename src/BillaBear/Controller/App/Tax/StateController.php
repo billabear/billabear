@@ -13,6 +13,7 @@ use BillaBear\DataMappers\Tax\StateDataMapper;
 use BillaBear\DataMappers\Tax\StateTaxRuleDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateState;
 use BillaBear\Dto\Request\App\Country\CreateStateTaxRule;
+use BillaBear\Dto\Request\App\Country\UpdateStateTaxRule;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\StateRepositoryInterface;
 use BillaBear\Repository\StateTaxRuleRepositoryInterface;
@@ -28,6 +29,41 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StateController
 {
     use ValidationErrorResponseTrait;
+
+    #[Route('/app/country/{id}/state/{stateId}/tax-rule/{taxRuleId}', methods: ['POST'])]
+    public function updateStateTaxRule(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        StateRepositoryInterface $stateRepository,
+        StateTaxRuleDataMapper $stateTaxRuleDataMapper,
+        StateTaxRuleRepositoryInterface $stateTaxRuleRepository,
+        StateTaxRuleTerminator $stateTaxRuleTerminator,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
+    ): Response {
+        try {
+            $country = $countryRepository->findById($request->get('id'));
+            $state = $stateRepository->findById($request->get('stateId'));
+            $entity = $stateTaxRuleRepository->findById($request->get('taxRuleId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $createDto = $serializer->deserialize($request->getContent(), UpdateStateTaxRule::class, 'json');
+        $errors = $validator->validate($createDto);
+        $response = $this->handleErrors($errors);
+        if ($response instanceof Response) {
+            return $response;
+        }
+
+        $entity = $stateTaxRuleDataMapper->createEntity($createDto, $entity);
+        $stateTaxRuleRepository->save($entity);
+        $stateTaxRuleTerminator->terminateOpenTaxRule($entity);
+        $dto = $stateTaxRuleDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
 
     #[Route('/app/country/{id}/state/{stateId}/tax-rule', methods: ['POST'])]
     public function createStateTax(

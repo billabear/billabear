@@ -11,6 +11,7 @@ namespace BillaBear\DataMappers\Tax;
 use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Generic\App\StateTaxRule as AppDto;
 use BillaBear\Dto\Request\App\Country\CreateStateTaxRule;
+use BillaBear\Dto\Request\App\Country\UpdateStateTaxRule;
 use BillaBear\Entity\StateTaxRule as Entity;
 use BillaBear\Repository\StateRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
@@ -24,7 +25,7 @@ class StateTaxRuleDataMapper
     ) {
     }
 
-    public function createEntity(CreateStateTaxRule $createStateTaxRule, ?Entity $entity = null): Entity
+    public function createEntity(CreateStateTaxRule|UpdateStateTaxRule $createStateTaxRule, ?Entity $entity = null): Entity
     {
         $taxType = $this->taxTypeRepository->findById($createStateTaxRule->getTaxType());
         $validFrom = \DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $createStateTaxRule->getValidFrom());

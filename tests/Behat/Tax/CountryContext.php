@@ -216,6 +216,75 @@ class CountryContext implements Context
     }
 
     /**
+     * @When I update the state tax rule for :arg1 and :arg2 with tax type :arg3 and tax rate :arg4 with the values:
+     */
+    public function iUpdateTheStateTaxRuleForAndWithTaxTypeAndTaxRateWithTheValues($countryName, $stateName, $taxType, $taxRate, TableNode $table)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->getStateByCountryAndName($country, $stateName);
+        $taxType = $this->getTaxType($taxType);
+
+        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $taxRate]);
+
+        if (!$stateTaxRule instanceof StateTaxRule) {
+            throw new \Exception("Can't find tax rule");
+        }
+
+        $data = $table->getRowsHash();
+        $validFrom = new \DateTime($data['Valid From']);
+
+        $payload = [
+            'id' => (string) $stateTaxRule->getId(),
+            'tax_type' => (string) $taxType->getId(),
+            'tax_rate' => floatval($data['Tax Rate']),
+            'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
+            'default' => boolval($data['Default'] ?? 'true'),
+            'country' => (string) $country->getId(),
+            'state' => (string) $state->getId(),
+        ];
+
+        if (isset($data['Valid Until'])) {
+            $validUntil = new \DateTime($data['Valid Until']);
+            $payload['valid_until'] = $validUntil->format(\DATE_RFC3339_EXTENDED);
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/country/%s/state/%s/tax-rule/%s', $country->getId(), $state->getId(), $stateTaxRule->getId()), $payload);
+    }
+
+    /**
+     * @Then there should be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4
+     */
+    public function thereShouldBeATaxRuleForAndForTaxTypeWithTheTaxRate($countryName, $stateName, $taxType, $taxRate)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->getStateByCountryAndName($country, $stateName);
+        $taxType = $this->getTaxType($taxType);
+
+        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $taxRate]);
+
+        if (!$stateTaxRule instanceof StateTaxRule) {
+            var_dump($this->getJsonContent());
+            throw new \Exception("Can't find tax rule");
+        }
+    }
+
+    /**
+     * @Then there should not be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4
+     */
+    public function thereShouldNotBeATaxRuleForAndForTaxTypeWithTheTaxRate($countryName, $stateName, $taxType, $taxRate)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->getStateByCountryAndName($country, $stateName);
+        $taxType = $this->getTaxType($taxType);
+
+        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $taxRate]);
+
+        if ($stateTaxRule instanceof StateTaxRule) {
+            throw new \Exception('Found find tax rule');
+        }
+    }
+
+    /**
      * @When I view the countries list
      */
     public function iViewTheCountriesList()

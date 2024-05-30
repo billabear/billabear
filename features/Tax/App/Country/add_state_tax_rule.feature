@@ -108,12 +108,12 @@ Feature: Add State Tax Rule
       | Name          |
       | Digital Goods |
       | Physical      |
-    And the following country tax rules exist:
-      | Country       | Tax Type      | Tax Rate | Valid From |
-      | United States | Digital Goods | 17.5     | -10 days   |
     And the following state tax rules exist:
       | Country       | State | Tax Rate | Tax Type      | Valid From |
       | United States | Texas | 17.5     | Digital Goods | -10 days   |
+    And the following country tax rules exist:
+      | Country       | Tax Type      | Tax Rate | Valid From |
+      | United States | Digital Goods | 17.5     | -10 days   |
     When I create a state tax rule with the following data:
       | Country    | United States |
       | State      | Texas         |

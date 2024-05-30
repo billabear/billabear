@@ -9,12 +9,13 @@
 namespace BillaBear\Dto\Request\App\Country;
 
 use BillaBear\Validator\Constraints\Country\CountryExists;
-use BillaBear\Validator\Constraints\CountryTaxRule\DoesNotOverlap;
+use BillaBear\Validator\Constraints\State\StateExists;
+use BillaBear\Validator\Constraints\StateTaxRule\DoesNotOverlap;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[DoesNotOverlap]
-class UpdateCountryTaxRule
+class UpdateStateTaxRule
 {
     #[Assert\NotBlank()]
     private $id;
@@ -22,6 +23,10 @@ class UpdateCountryTaxRule
     #[Assert\NotBlank()]
     #[CountryExists]
     private $country;
+
+    #[Assert\NotBlank()]
+    #[StateExists]
+    private $state;
 
     #[SerializedName('tax_type')]
     #[Assert\NotBlank()]
@@ -84,9 +89,9 @@ class UpdateCountryTaxRule
         $this->taxRate = $taxRate;
     }
 
-    public function getDefault()
+    public function isDefault()
     {
-        return $this->default;
+        return true === $this->default;
     }
 
     public function setDefault($default): void
@@ -114,13 +119,13 @@ class UpdateCountryTaxRule
         $this->validUntil = $validUntil;
     }
 
-    public function isInEu(): bool
+    public function getState()
     {
-        return $this->inEu;
+        return $this->state;
     }
 
-    public function setInEu(bool $inEu): void
+    public function setState($state): void
     {
-        $this->inEu = $inEu;
+        $this->state = $state;
     }
 }
