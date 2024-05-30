@@ -47,6 +47,38 @@ class CountryContext implements Context
     }
 
     /**
+     * @When I create a state with the following data
+     */
+    public function iCreateAStateWithTheFollowingData(TableNode $table)
+    {
+        $data = $table->getRowsHash();
+        $country = $this->getCountryByName($data['Country']);
+        $payload = [
+            'name' => $data['Name'],
+            'code' => $data['Code'],
+            'threshold' => intval($data['Threshold']),
+            'has_nexus' => boolval($data['Has Nexus'] ?? 'false'),
+            'country' => (string) $country->getId(),
+        ];
+
+        $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/state', $payload);
+    }
+
+    /**
+     * @Then there will be a state :arg1 in the country :arg2
+     */
+    public function thereWillBeAStateInTheCountry($stateName, $countryName)
+    {
+        $country = $this->getCountryByName($countryName);
+        $state = $this->stateRepository->findOneBy(['name' => $stateName, 'country' => $country]);
+
+        if (!$state instanceof State) {
+            var_dump($this->getJsonContent());
+            throw new \Exception("Can't find state");
+        }
+    }
+
+    /**
      * @When I create a country with the following data:
      */
     public function iCreateACountryWithTheFollowingData(TableNode $table)

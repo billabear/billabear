@@ -97,6 +97,12 @@ services:
   app.repository.orm.country:
     class: BillaBear\Repository\Orm\CountryRepository
 
+  BillaBear\Repository\StateRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.state'
+  app.repository.orm.state:
+    class: BillaBear\Repository\Orm\StateRepository
+
   BillaBear\Repository\TemplateRepository:
     arguments:
       $entityRepository: '@app.repository.orm.template'

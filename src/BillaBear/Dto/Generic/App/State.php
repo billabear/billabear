@@ -6,42 +6,31 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Entity;
+namespace BillaBear\Dto\Generic\App;
 
-use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'state')]
 class State
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
+    private string $id;
 
-    #[ORM\Column(type: 'string')]
     private string $name;
 
-    #[ORM\Column(type: 'string')]
     private string $code;
 
-    #[ORM\Column(type: 'bigint')]
     private int $threshold;
 
-    #[ORM\ManyToOne(targetEntity: Country::class)]
-    private Country $country;
-
-    #[ORM\Column(type: 'boolean')]
+    #[SerializedName('has_nexus')]
     private bool $hasNexus;
 
-    public function getId()
+    private Country $country;
+
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function setId($id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -76,6 +65,16 @@ class State
         $this->threshold = $threshold;
     }
 
+    public function isHasNexus(): bool
+    {
+        return $this->hasNexus;
+    }
+
+    public function setHasNexus(bool $hasNexus): void
+    {
+        $this->hasNexus = $hasNexus;
+    }
+
     public function getCountry(): Country
     {
         return $this->country;
@@ -84,15 +83,5 @@ class State
     public function setCountry(Country $country): void
     {
         $this->country = $country;
-    }
-
-    public function hasNexus(): bool
-    {
-        return $this->hasNexus;
-    }
-
-    public function setHasNexus(bool $hasNexus): void
-    {
-        $this->hasNexus = $hasNexus;
     }
 }
