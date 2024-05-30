@@ -20,6 +20,7 @@ class DataProvider
                 'in_eu' => false,
                 'currency' => 'USD',
                 'rates' => [],
+                'states' => [],
             ],
             'CA' => [
                 'name' => 'Canada',
@@ -28,6 +29,71 @@ class DataProvider
                 'currency' => 'CAD',
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 5],
+                ],
+                'states' => [
+                    'QC' => [
+                        'name' => 'Quebec',
+                        'threshold' => 3000000,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 9.975],
+                        ],
+                    ],
+                    'BC' => [
+                        'name' => 'British Colombia',
+                        'threshold' => 1000000,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 7],
+                        ],
+                    ],
+                    'SK' => [
+                        'name' => 'Saskatchewan',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
+                        ],
+                    ],
+                    'MB' => [
+                        'name' => 'Manitoba',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 7],
+                        ],
+                    ],
+                    'ON' => [
+                        'name' => 'Ontario',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 8],
+                        ],
+                    ],
+                    'NB' => [
+                        'name' => 'New Brunswick',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 10],
+                        ],
+                    ],
+                    'NL' => [
+                        'name' => 'Newfoundland and Labrador',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 10],
+                        ],
+                    ],
+                    'NS' => [
+                        'name' => 'Nova Scotia',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 10],
+                        ],
+                    ],
+                    'PE' => [
+                        'name' => 'Prince Edward Island',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 10],
+                        ],
+                    ],
                 ],
             ],
 
@@ -40,16 +106,6 @@ class DataProvider
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 20],
                 ],
-            ],
-
-            // EU or EEA
-
-            'EU' => [
-                'name' => 'EU One Stop Shop',
-                'threshold' => 1000000,
-                'in_eu' => false,
-                'currency' => 'GBP',
-                'rates' => [],
             ],
 
             'AT' => [
