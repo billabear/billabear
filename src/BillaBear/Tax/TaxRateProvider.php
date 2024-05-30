@@ -46,7 +46,7 @@ class TaxRateProvider implements TaxRateProviderInterface
         }
 
         if (!$this->countryRepository->hasWithIsoCode($customerCountry)) {
-            return $this->buildTaxInfo($taxType, $brand->getAddress());
+            return $this->buildTaxInfo($taxType, $brand->getAddress(), $amount);
         }
 
         $customerCountry = $this->countryRepository->getByIsoCode($customer->getCountry());

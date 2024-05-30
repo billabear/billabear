@@ -97,14 +97,14 @@ class TaxRuleProvider
             return null;
         }
 
-        $rules = $this->stateTaxRuleRepository->getForCountryStateAndTaxType($country, $state, $taxType);
+        $rules = $this->stateTaxRuleRepository->getForCountryStateAndTaxType($state, $taxType);
 
         foreach ($rules as $rule) {
             if ($rule->isValidForDateTime($when)) {
                 return $rule;
             }
         }
-        $default = $this->stateTaxRuleRepository->getDefaultForCountryStateAndTaxType($country, $state, $taxType);
+        $default = $this->stateTaxRuleRepository->getDefaultForCountryStateAndTaxType($state, $taxType);
 
         if ($default) {
             return $default;

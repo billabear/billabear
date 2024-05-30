@@ -1,4 +1,4 @@
-Feature: Edit country tax rule
+Feature: Edit state tax rule
 
   Background:
     Given the following accounts exist:
