@@ -248,7 +248,7 @@ class CountryContext implements Context
             $payload['valid_until'] = $validUntil->format(\DATE_RFC3339_EXTENDED);
         }
 
-        $this->sendJsonRequest('POST', sprintf('/app/country/%s/state/%s/tax-rule/%s', $country->getId(), $state->getId(), $stateTaxRule->getId()), $payload);
+        $this->sendJsonRequest('POST', sprintf('/app/country/%s/state/%s/tax-rule/%s/edit', $country->getId(), $state->getId(), $stateTaxRule->getId()), $payload);
     }
 
     /**
