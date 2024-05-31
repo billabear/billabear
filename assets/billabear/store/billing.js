@@ -1,4 +1,3 @@
-import {teamservice} from "../services/teamservice";
 import {billingservice} from "../services/billingservice";
 
 const state = {

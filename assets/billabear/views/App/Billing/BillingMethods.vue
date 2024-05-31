@@ -36,6 +36,7 @@
 <script>
 import StripeTokenForm from "../../../components/app/Billing/Stripe/StripeTokenForm.vue";
 import {mapActions, mapState} from "vuex";
+
 export default {
   name: "BillingMethods",
   components: {StripeTokenForm},

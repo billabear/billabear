@@ -90,14 +90,12 @@
 <script setup>
 
 import axios from "axios";
-import {VueFlow, useVueFlow} from "@vue-flow/core";
-import {ref, onMounted} from "vue";
+import {useVueFlow, VueFlow} from "@vue-flow/core";
+import {onMounted, ref} from "vue";
 import {Controls} from "@vue-flow/controls";
-import { useI18n} from "vue-i18n";
-import { NodeToolbar } from '@vue-flow/node-toolbar'
-import {VueFinalModal, useVfm} from "vue-final-modal";
+import {useI18n} from "vue-i18n";
+import {useVfm, VueFinalModal} from "vue-final-modal";
 import {Button, Input, Select} from "flowbite-vue";
-import {useRouter} from "vue-router";
 
 var flowchartElements = ref([]);
 var placesRawData = [];

@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import {createStore} from 'vuex';
 import {userStore} from "./user";
 import {teamStore} from "./team";
 import {billingStore} from "./billing";

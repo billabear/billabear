@@ -1,5 +1,5 @@
-import { router } from "../helpers/router";
-import { userservice } from "../services/userservice";
+import {router} from "../helpers/router";
+import {userservice} from "../services/userservice";
 
 const rawUserData = localStorage.getItem('user');
 var userData;

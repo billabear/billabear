@@ -46,7 +46,7 @@
 import DarkMode from "../DarkMode.vue";
 import RoleOnlyView from "../RoleOnlyView.vue";
 import AppLogo from "../AppLogo.vue";
-import {Dropdown, ListGroupItem, ListGroup} from "flowbite-vue";
+import {Dropdown, ListGroupItem} from "flowbite-vue";
 
 export default {
   name: "Topbar",

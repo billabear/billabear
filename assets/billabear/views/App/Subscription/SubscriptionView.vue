@@ -355,7 +355,7 @@
 
 <script>
 import axios from "axios";
-import {useModal, VueFinalModal} from "vue-final-modal";
+import {VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 

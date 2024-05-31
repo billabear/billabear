@@ -62,9 +62,7 @@
 </template>
 
 <script>
-import { planservice } from "../../services/planservice";
-import { stripeservice } from "../../services/stripeservice";
-import { transactoncloudservice } from "../../services/transactioncloudservice";
+import {planservice} from "../../services/planservice";
 
 export default {
   name: "Plan.vue",

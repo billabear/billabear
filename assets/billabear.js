@@ -13,7 +13,6 @@ import '@vue-flow/core/dist/theme-default.css';
 import '@vue-flow/controls/dist/style.css'
 
 
-
 /* this contains the default theme, these are optional styles */
 import 'vue-final-modal/style.css';
 import 'flowbite';
@@ -25,8 +24,8 @@ import App from "./billabear/views/App";
 
 import {router} from "./billabear/helpers/router"
 import {store} from './billabear/store'
-import { createApp } from "vue";
-import { createVfm } from 'vue-final-modal'
+import {createApp} from "vue";
+import {createVfm} from 'vue-final-modal'
 import {ENGLISH_TRANSLATIONS} from "./billabear/translations/en";
 import {createI18n} from "vue-i18n";
 import VueApexCharts from "vue3-apexcharts";
@@ -40,7 +39,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import RoleOnlyView from "./billabear/components/app/RoleOnlyView.vue";
 
 
-import { VueFlow } from '@vue-flow/core'
+import {VueFlow} from '@vue-flow/core'
 
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS

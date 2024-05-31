@@ -24,6 +24,7 @@
 <script>
 import axios from "axios";
 import {Toggle} from "flowbite-vue";
+
 export default {
   name: "TaxTypeCreate",
   components: {Toggle},

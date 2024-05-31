@@ -1,4 +1,3 @@
-import {LOGIN_TRANSLATIONS} from "./en/public/login";
 import {GLOBAL_TRANSLATIONS} from "./en/global";
 import {PUBLIC_TRANSLATIONS} from "./en/public";
 import {APP_TRANSLATIONS} from "./en/app";

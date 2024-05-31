@@ -205,7 +205,7 @@
 import axios from "axios";
 import currency from "currency.js";
 import {VueFinalModal} from "vue-final-modal";
-import {Button, Input, Select} from "flowbite-vue";
+import {Button, Input} from "flowbite-vue";
 import Currency from "../../../components/app/Currency.vue";
 
 export default {

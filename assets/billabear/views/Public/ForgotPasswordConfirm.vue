@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import {userservice} from "../../services/userservice";
 import PublicLogo from "../../components/public/PublicLogo.vue";
 

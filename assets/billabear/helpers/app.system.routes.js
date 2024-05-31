@@ -5,17 +5,9 @@ import WebhookEndpointView from "../views/App/System/Webhook/WebhookEndpoint/Web
 import WebhookEventView from "../views/App/System/Webhook/WebhookEvent/WebhookEventView.vue";
 import CancellationRequestList from "../views/App/Workflows/CancellationRequest/CancellationRequestList.vue";
 import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
-import CountryList from "../views/App/Country/CountryList.vue";
-import CountryCreate from "../views/App/Country/CountryCreate.vue";
-import CountryView from "../views/App/Country/CountryView.vue";
-import CountryEdit from "../views/App/Country/CountryEdit.vue";
-import TaxTypeList from "../views/App/TaxType/TaxTypeList.vue";
-import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
 import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
-import IntegrationsSlack from "../views/App/System/Integrations/IntegrationsSlack.vue";
 import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
 import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
-import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
 import SlackGroup from "../views/App/System/Integrations/Slack/SlackGroup.vue";
 import SlackNotificationList from "../views/App/System/Integrations/Slack/SlackNotificationList.vue";
 import SlackNotificationCreate from "../views/App/System/Integrations/Slack/SlackNotificationCreate.vue";

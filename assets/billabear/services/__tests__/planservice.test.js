@@ -1,9 +1,8 @@
-
 import {planservice} from "../planservice";
 
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import {afterEach, beforeAll, describe, expect, it} from 'vitest'
 
 // This sets the mock adapter on the default instance
 var mock = new MockAdapter(axios);

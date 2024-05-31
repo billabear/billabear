@@ -63,8 +63,6 @@ import WorldMap from "../../../../components/app/Graphs/WorldMap.vue";
 import axios from "axios";
 import currency from "currency.js";
 import ProgressBar from "../../../../components/app/Graphs/ProgressBar.vue";
-
-import fileDownload from "js-file-download";
 import {Button} from "flowbite-vue";
 
 export default {
