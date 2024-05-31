@@ -31,16 +31,16 @@ class FrontendController
     public function home(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
-
         Profiler $profiler,
     ) {
-        $profiler->purge();
-        $profiler->disable();
         try {
             $settings = $settingsRepository->getDefaultSettings();
         } catch (TableNotFoundException $exception) {
             return new RedirectResponse('/install');
         } catch (NoTenantFoundException $e) {
+            $profiler->purge();
+            $profiler->disable();
+
             return new Response($twig->render('not_found.html.twig'));
         }
 

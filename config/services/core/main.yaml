@@ -29,6 +29,8 @@ services:
     tags: ['controller.service_arguments']
 
 
+  Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
+
   #####
   ## Parthenon user services
   #####
