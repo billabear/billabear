@@ -93,6 +93,9 @@ export default {
   },
   computed: {
     columns: function () {
+      if (this.rawTransactionData.length == 0) {
+        return ['total'];
+      }
       return Object.keys(this.rawTransactionData[0]);
     }
   },
