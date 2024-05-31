@@ -11,7 +11,9 @@ namespace BillaBear\Controller;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Parthenon\MultiTenancy\Exception\NoTenantFoundException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,19 +31,25 @@ class FrontendController
     #[Route('/site/{vueRouting}', name: 'app_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/app/plan', name: 'app_plan', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function home(
+        Request $request,
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
         Profiler $profiler,
-    ) {
+        LoggerInterface $logger,
+    ): Response {
+        $logger->info('A request was made to the frontend controller');
         try {
             $settings = $settingsRepository->getDefaultSettings();
         } catch (TableNotFoundException $exception) {
+            $logger->info('Redirected to install page');
+
             return new RedirectResponse('/install');
         } catch (NoTenantFoundException $e) {
             // Disable the profiler because if we don't we'll
             // just get another tenant exception from the profiler in dev mode.
             $profiler->purge();
             $profiler->disable();
+            $logger->warning('No tenant was found', ['hostname' => $request->getHost()]);
 
             return new Response($twig->render('not_found.html.twig'));
         }
@@ -52,8 +60,11 @@ class FrontendController
     #[Route('/error/stripe', name: 'app_site_error', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/error/stripe-invalid', name: 'app_site_error_invalid', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     public function stripeError(
-        Environment $twig, )
-    {
+        Environment $twig,
+        LoggerInterface $logger,
+    ): Response {
+        $logger->warning('A user has ended up on the stripe error page');
+
         return new Response($twig->render('index.html.twig'));
     }
 }
