@@ -38,6 +38,8 @@ class FrontendController
         } catch (TableNotFoundException $exception) {
             return new RedirectResponse('/install');
         } catch (NoTenantFoundException $e) {
+            // Disable the profiler because if we don't we'll
+            // just get another tenant exception from the profiler in dev mode.
             $profiler->purge();
             $profiler->disable();
 
