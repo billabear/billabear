@@ -8,7 +8,6 @@
 
 namespace BillaBear\Repository;
 
-use BillaBear\Entity\CheckoutSession;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 /**
