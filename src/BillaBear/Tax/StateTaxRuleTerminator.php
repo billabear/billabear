@@ -26,6 +26,10 @@ class StateTaxRuleTerminator
         try {
             $openEndedTaxRule = $this->stateTaxRuleRepository->getOpenEndedForCountryStateAndTaxType($stateTaxRule->getState(), $stateTaxRule->getTaxType());
 
+            if ($stateTaxRule->getId() == $openEndedTaxRule->getId()) {
+                return;
+            }
+
             $date = clone $stateTaxRule->getValidFrom();
             if (null !== $stateTaxRule->getValidUntil() && $stateTaxRule->getValidUntil() < $openEndedTaxRule->getValidFrom()) {
                 $this->getLogger()->info('New state tax rule expires before the current open ended rule');

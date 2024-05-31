@@ -74,7 +74,7 @@ class TaxDataCreator
                 $state = new State();
                 $state->setCountry($country);
                 $state->setName($data['name']);
-                $state->setName($code);
+                $state->setCode($code);
                 $state->setThreshold($data['threshold']);
                 $state->setHasNexus(false);
 
@@ -96,7 +96,7 @@ class TaxDataCreator
                     $stateTaxRule->setState($state);
                     $stateTaxRule->setTaxType($taxType);
                     $stateTaxRule->setTaxRate($rate['rate']);
-                    $stateTaxRule->setIsDefault($data['default']);
+                    $stateTaxRule->setIsDefault($rate['default']);
                     $stateTaxRule->setCreatedAt(new \DateTime());
                     $stateTaxRule->setValidFrom(new \DateTime());
 

@@ -43,9 +43,11 @@
         </div>
         <div>
 
-          <h2 class="page-title">{{ $t('app.country.view.tax_rule.title') }}</h2>
-          <div class="text-end mr-5">
-            <button class="btn--main" @click="showCreate">{{ $t('app.country.view.tax_rule.add') }}</button>
+          <div class="grid grid-cols-2">
+            <h2 class="page-title">{{ $t('app.country.view.tax_rule.title') }}</h2>
+            <div class="text-end mt-5 mr-5">
+              <button class="btn--main" @click="showCreate">{{ $t('app.country.view.tax_rule.add') }}</button>
+            </div>
           </div>
           <table class="list-table">
             <thead>
@@ -75,6 +77,42 @@
             </tbody>
           </table>
         </div>
+
+
+        <div class="grid grid-cols-2">
+          <h2 class="page-title">{{ $t('app.country.view.states.title') }}</h2>
+          <div class="text-end mt-5 mr-5">
+            <button class="btn--main" @click="">{{ $t('app.country.view.states.add') }}</button>
+          </div>
+        </div>
+
+
+        <table class="list-table">
+          <thead>
+          <tr>
+            <th>{{ $t('app.country.view.states.name') }}</th>
+            <th>{{ $t('app.country.view.states.code') }}</th>
+            <th>{{ $t('app.country.view.states.has_nexus') }}</th>
+            <th>{{ $t('app.country.view.states.threshold') }}</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody v-if="states.length > 0">
+            <tr v-for="state in states">
+              <td>{{state.name}}</td>
+              <td>{{state.code}}</td>
+              <td>{{state.has_nexus}}</td>
+              <td><Currency :amount="state.threshold" :currency="country.currency" /></td>
+              <td><router-link class="btn--main" :to="{name: 'app.finance.state.view', params: {countryId: country.id, id: state.id}}">{{ $t('app.country.view.states.view') }}</router-link></td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <Td colspan="6" class="text-center">{{ $t('app.country.view.states.no_states') }}</Td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
     </LoadingScreen>
 
@@ -168,16 +206,18 @@ import axios from "axios";
 import currency from "currency.js";
 import {VueFinalModal} from "vue-final-modal";
 import {Button, Input, Select} from "flowbite-vue";
+import Currency from "../../../components/app/Currency.vue";
 
 export default {
   name: "CountryView",
-  components: {Input, Button, VueFinalModal},
+  components: {Currency, Input, Button, VueFinalModal},
   data() {
     return {
       ready: false,
       country: {},
       tax_rules: [],
       tax_types: [],
+      states: [],
       original_tax_rule: {},
       openCountryTaxAdd: false,
       openCountryTaxEdit: false,
@@ -190,6 +230,7 @@ export default {
       },
       creatingTaxRule: false,
       taxRuleErrors: {},
+      original_tax_rule: {},
     }
   },
   mounted() {
@@ -198,6 +239,7 @@ export default {
       this.country = response.data.country;
       this.tax_rules = response.data.country_tax_rules;
       this.tax_types = response.data.tax_types;
+      this.states = response.data.states;
       this.ready = true;
     })
   },

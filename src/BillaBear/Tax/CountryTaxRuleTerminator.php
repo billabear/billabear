@@ -25,6 +25,11 @@ class CountryTaxRuleTerminator
     {
         try {
             $openEndedTaxRule = $this->countryTaxRuleRepository->getOpenEndedForCountryAndTaxType($countryTaxRule->getCountry(), $countryTaxRule->getTaxType());
+
+            if ($countryTaxRule->getId() == $openEndedTaxRule->getId()) {
+                return;
+            }
+
             $date = clone $countryTaxRule->getValidFrom();
             if (null !== $countryTaxRule->getValidUntil() && $countryTaxRule->getValidUntil() < $openEndedTaxRule->getValidFrom()) {
                 $this->getLogger()->info('New country tax rule expires before the current open ended rule');

@@ -1,15 +1,10 @@
-export const COUNTRY_VIEW_TRANSLATIONS = {
-    title: "View Country",
+export const STATE_VIEW_TRANSLATIONS = {
+    title: "View State",
     fields: {
         name: "Name",
-        iso_code: "Country Code",
+        code: "Code",
         threshold: "Threshold",
-        currency: "Currency",
-        in_eu: "In Eu",
-        start_of_tax_year: "Start Of Tax Year",
-        enabled: "Enabled",
     },
-    edit_button: "Edit",
     tax_rule: {
         title: "Tax Rules",
         rate: "Tax Rate",
@@ -41,14 +36,4 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         save: "Update",
         select_tax_type: "Select Tax Type"
     },
-    states: {
-        title: "States",
-        add: "Add New State",
-        name: "Name",
-        code: "Code",
-        has_nexus: "Has Nexus?",
-        threshold: "Threshold",
-        view: "View",
-        no_states: "There are no states"
-    }
 }

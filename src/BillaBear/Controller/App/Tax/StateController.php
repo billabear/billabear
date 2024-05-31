@@ -11,12 +11,15 @@ namespace BillaBear\Controller\App\Tax;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Tax\StateDataMapper;
 use BillaBear\DataMappers\Tax\StateTaxRuleDataMapper;
+use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateState;
 use BillaBear\Dto\Request\App\Country\CreateStateTaxRule;
 use BillaBear\Dto\Request\App\Country\UpdateStateTaxRule;
+use BillaBear\Dto\Response\App\Tax\StateView;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\StateRepositoryInterface;
 use BillaBear\Repository\StateTaxRuleRepositoryInterface;
+use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Tax\StateTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +33,7 @@ class StateController
 {
     use ValidationErrorResponseTrait;
 
-    #[Route('/app/country/{id}/state/{stateId}/tax-rule/{taxRuleId}', methods: ['POST'])]
+    #[Route('/app/country/{id}/state/{stateId}/tax-rule/{taxRuleId}/edit', methods: ['POST'])]
     public function updateStateTaxRule(
         Request $request,
         CountryRepositoryInterface $countryRepository,
@@ -128,5 +131,38 @@ class StateController
         $json = $serializer->serialize($appDto, 'json');
 
         return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/app/country/{id}/state/{stateId}/view', methods: ['GET'])]
+    public function readState(
+        Request $request,
+        StateRepositoryInterface $stateRepository,
+        StateDataMapper $stateDataMapper,
+        StateTaxRuleRepositoryInterface $stateTaxRuleRepository,
+        StateTaxRuleDataMapper $stateTaxRuleDataMapper,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
+        SerializerInterface $serializer
+    ): Response {
+        try {
+            $entity = $stateRepository->findById($request->get('stateId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $taxRules = $stateTaxRuleRepository->getForState($entity);
+        $taxRulesDto = array_map([$stateTaxRuleDataMapper, 'createAppDto'], $taxRules);
+
+        $taxTypes = $taxTypeRepository->getAll();
+        $taxTypesDto = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
+
+        $dto = $stateDataMapper->createAppDto($entity);
+        $view = new StateView();
+        $view->setState($dto);
+        $view->setTaxRules($taxRulesDto);
+        $view->setTaxTypes($taxTypesDto);
+        $json = $serializer->serialize($view, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 }
