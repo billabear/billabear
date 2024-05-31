@@ -27,6 +27,7 @@
         "parthenon/parthenon": "dev-main",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
+        "rollbar/rollbar": "^4",
         "symfony/console": "7.0.*",
         "symfony/doctrine-messenger": "7.0.*",
         "symfony/dotenv": "7.0.*",
