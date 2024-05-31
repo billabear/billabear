@@ -10,8 +10,10 @@ namespace BillaBear\Controller;
 
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Parthenon\MultiTenancy\Exception\NoTenantFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
@@ -29,11 +31,17 @@ class FrontendController
     public function home(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
+
+        Profiler $profiler,
     ) {
+        $profiler->purge();
+        $profiler->disable();
         try {
             $settings = $settingsRepository->getDefaultSettings();
         } catch (TableNotFoundException $exception) {
             return new RedirectResponse('/install');
+        } catch (NoTenantFoundException $e) {
+            return new Response($twig->render('not_found.html.twig'));
         }
 
         return new Response($twig->render('index.html.twig'));
