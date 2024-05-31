@@ -1,0 +1,9 @@
+services:
+
+  Rollbar\RollbarLogger:
+    class: Rollbar\RollbarLogger
+    factory: [ '@BillaBear\Logger\Error\RollbarFactory', 'create' ]
+    lazy: true # Lazy to avoid errors when it's not enabled
+
+  BillaBear\Logger\Error\RollbarHandler: ~
+

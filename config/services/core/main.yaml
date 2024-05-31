@@ -1,4 +1,6 @@
-parameters:
+imports:
+  - { resource: 'parameters.yaml' }
+  - { resource: 'third_party.yaml' }
 
 services:
   # default configuration for services in *this* file
