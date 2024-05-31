@@ -724,7 +724,7 @@ class DataProvider
                 'name' => 'Venezuela',
                 'threshold' => 0,
                 'in_eu' => false,
-                'currency' => 'VEF',
+                'currency' => 'USD',
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 16],
                 ],
@@ -1094,18 +1094,18 @@ class DataProvider
             ],
             'MR' => [
                 'name' => 'Mauritius',
-                'threshold' => 600000000,
+                'threshold' => 15200000,
                 'in_eu' => false,
-                'currency' => 'MRO',
+                'currency' => 'USD',
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 15],
                 ],
             ],
             'SN' => [
                 'name' => 'Senegal',
-                'threshold' => 600000000,
+                'threshold' => 15200000,
                 'in_eu' => false,
-                'currency' => 'MRO',
+                'currency' => 'USD',
                 'rates' => [
                     'Standard VAT' => ['default' => true, 'rate' => 18],
                 ],

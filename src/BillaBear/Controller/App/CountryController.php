@@ -42,7 +42,7 @@ class CountryController
         SerializerInterface $serializer,
         CountryDataMapper $countryDataMapper,
     ): Response {
-        return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper);
+        return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper, 'id');
     }
 
     #[Route('/app/country', methods: ['POST'])]
