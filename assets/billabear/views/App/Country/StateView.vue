@@ -238,7 +238,7 @@ export default {
       this.creatingTaxRule = true;
 
       if (this.tax_rule.type === null) {
-        this.taxRuleErrors.taxType = this.$t('app.country.view.add_tax_rule.select_tax_type')
+        this.taxRuleErrors.taxType = this.$t('app.state.view.add_tax_rule.select_tax_type')
         this.creatingTaxRule = true;
         return;
       }
