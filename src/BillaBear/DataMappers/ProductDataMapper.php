@@ -14,15 +14,12 @@ use BillaBear\Dto\Request\Api\CreateProduct as ApiCreate;
 use BillaBear\Dto\Request\App\CreateProduct as AppCreate;
 use BillaBear\Entity\Product;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
-use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class ProductDataMapper
 {
     public function __construct(
         private TaxTypeRepositoryInterface $taxTypeRepository,
         private TaxTypeDataMapper $taxTypeDataMapper,
-        private PriceRepositoryInterface $priceRepository,
-        private PriceDataMapper $priceDataMapper,
     ) {
     }
 
