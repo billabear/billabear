@@ -24,6 +24,8 @@ class Product
     #[SerializedName('external_reference')]
     protected ?string $externalReference = null;
 
+    protected array $prices = [];
+
     public function getId(): string
     {
         return $this->id;
@@ -62,5 +64,15 @@ class Product
     public function setTaxType(string $taxType): void
     {
         $this->taxType = $taxType;
+    }
+
+    public function getPrices(): array
+    {
+        return $this->prices;
+    }
+
+    public function setPrices(array $prices): void
+    {
+        $this->prices = $prices;
     }
 }

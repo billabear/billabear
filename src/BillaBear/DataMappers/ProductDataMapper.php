@@ -14,12 +14,15 @@ use BillaBear\Dto\Request\Api\CreateProduct as ApiCreate;
 use BillaBear\Dto\Request\App\CreateProduct as AppCreate;
 use BillaBear\Entity\Product;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
+use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class ProductDataMapper
 {
     public function __construct(
         private TaxTypeRepositoryInterface $taxTypeRepository,
         private TaxTypeDataMapper $taxTypeDataMapper,
+        private PriceRepositoryInterface $priceRepository,
+        private PriceDataMapper $priceDataMapper,
     ) {
     }
 
@@ -67,6 +70,10 @@ class ProductDataMapper
         $dto->setId((string) $product->getId());
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
+
+        $prices = $this->priceRepository->getAllForProduct($product);
+        $priceDtos = array_map([$this->priceDataMapper, 'createApiDto'], $prices);
+        $dto->setPrices($priceDtos);
 
         return $dto;
     }
