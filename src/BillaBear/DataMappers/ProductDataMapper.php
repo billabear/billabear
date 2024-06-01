@@ -71,10 +71,6 @@ class ProductDataMapper
         $dto->setName($product->getName());
         $dto->setExternalReference($product->getExternalReference());
 
-        $prices = $this->priceRepository->getAllForProduct($product);
-        $priceDtos = array_map([$this->priceDataMapper, 'createApiDto'], $prices);
-        $dto->setPrices($priceDtos);
-
         return $dto;
     }
 
