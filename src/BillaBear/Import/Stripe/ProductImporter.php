@@ -10,10 +10,10 @@ namespace BillaBear\Import\Stripe;
 
 use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\Entity\StripeImport;
+use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\StripeImportRepositoryInterface;
 use Obol\Model\Product;
 use Obol\Provider\ProviderInterface;
-use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;

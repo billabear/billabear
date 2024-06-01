@@ -42,6 +42,7 @@ class CustomerDataMapper
         $customer->setPaymentProviderDetailsUrl($obolCustomer->getUrl());
         $customer->setReference($obolCustomer->getDescription());
         $customer->setCreatedAt($obolCustomer->getCreatedAt());
+        $customer->setType(CustomerType::BUSINESS);
 
         $address = new Address();
         $address->setStreetLineTwo($obolCustomer->getAddress()->getStreetLineOne());

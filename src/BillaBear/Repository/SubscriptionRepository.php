@@ -127,7 +127,7 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         $subscription = $this->entityRepository->findOneBy([], ['createdAt' => 'ASC']);
 
         if (!$subscription instanceof Subscription) {
-            throw new NoEntityFoundException("Can't any any subscription");
+            throw new NoEntityFoundException("Can't find any subscription");
         }
 
         return $subscription;

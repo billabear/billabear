@@ -13,6 +13,7 @@ use BillaBear\Repository\Stats\SubscriptionCountDailyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class CreateSubscriptionCountStats
 {
@@ -27,58 +28,61 @@ class CreateSubscriptionCountStats
 
     public function generate()
     {
-        $oldestSubscription = $this->subscriptionRepository->getOldestSubscription();
-        $now = new \DateTime('now');
-
-        $startDate = clone $oldestSubscription->getCreatedAt();
-        if ($startDate instanceof \DateTimeImmutable) {
-            $startDate = \DateTime::createFromImmutable($startDate);
-        }
-        $brands = $this->brandSettingsRepository->getAll();
-
-        foreach ($brands as $brand) {
-            while ($startDate < $now) {
-                $endDate = clone $startDate;
-                $endDate->modify('+1 day');
-
-                $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
-                $dayStat = $this->subscriptionCountDailyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
-                $dayStat->setCount($dayStatCount);
-                $this->subscriptionCountDailyStatsRepository->save($dayStat);
-                $startDate = $endDate;
-            }
-            $startDate = clone $oldestSubscription->getCreatedAt();
-            if ($startDate instanceof \DateTimeImmutable) {
-                $startDate = \DateTime::createFromImmutable($startDate);
-            }
-
-            while ($startDate < $now) {
-                $startDate->modify('first day of this month');
-                $endDate = clone $startDate;
-                $endDate->modify('+1 month');
-
-                $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
-                $dayStat = $this->subscriptionCountMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
-                $dayStat->setCount($dayStatCount);
-                $this->subscriptionCountMonthlyStatsRepository->save($dayStat);
-                $startDate = $endDate;
-            }
+        try {
+            $oldestSubscription = $this->subscriptionRepository->getOldestSubscription();
+            $now = new \DateTime('now');
 
             $startDate = clone $oldestSubscription->getCreatedAt();
             if ($startDate instanceof \DateTimeImmutable) {
                 $startDate = \DateTime::createFromImmutable($startDate);
             }
-            while ($startDate < $now) {
-                $startDate->modify('first day of this year');
-                $endDate = clone $startDate;
-                $endDate->modify('+1 year');
+            $brands = $this->brandSettingsRepository->getAll();
 
-                $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
-                $dayStat = $this->subscriptionCountYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
-                $dayStat->setCount($dayStatCount);
-                $this->subscriptionCountYearlyStatsRepository->save($dayStat);
-                $startDate = $endDate;
+            foreach ($brands as $brand) {
+                while ($startDate < $now) {
+                    $endDate = clone $startDate;
+                    $endDate->modify('+1 day');
+
+                    $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
+                    $dayStat = $this->subscriptionCountDailyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                    $dayStat->setCount($dayStatCount);
+                    $this->subscriptionCountDailyStatsRepository->save($dayStat);
+                    $startDate = $endDate;
+                }
+                $startDate = clone $oldestSubscription->getCreatedAt();
+                if ($startDate instanceof \DateTimeImmutable) {
+                    $startDate = \DateTime::createFromImmutable($startDate);
+                }
+
+                while ($startDate < $now) {
+                    $startDate->modify('first day of this month');
+                    $endDate = clone $startDate;
+                    $endDate->modify('+1 month');
+
+                    $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
+                    $dayStat = $this->subscriptionCountMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                    $dayStat->setCount($dayStatCount);
+                    $this->subscriptionCountMonthlyStatsRepository->save($dayStat);
+                    $startDate = $endDate;
+                }
+
+                $startDate = clone $oldestSubscription->getCreatedAt();
+                if ($startDate instanceof \DateTimeImmutable) {
+                    $startDate = \DateTime::createFromImmutable($startDate);
+                }
+                while ($startDate < $now) {
+                    $startDate->modify('first day of this year');
+                    $endDate = clone $startDate;
+                    $endDate->modify('+1 year');
+
+                    $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
+                    $dayStat = $this->subscriptionCountYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                    $dayStat->setCount($dayStatCount);
+                    $this->subscriptionCountYearlyStatsRepository->save($dayStat);
+                    $startDate = $endDate;
+                }
             }
+        } catch (NoEntityFoundException) {
         }
     }
 }
