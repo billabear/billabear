@@ -18,6 +18,8 @@ class RollbarFactory
         private readonly string $apiKey,
         #[Autowire('%rollbar.env%')]
         private readonly string $env,
+        #[Autowire('%rollbar.commit_hash%')]
+        private readonly string $gitHash,
     ) {
     }
 
@@ -26,6 +28,8 @@ class RollbarFactory
         $config = [
             'access_token' => $this->apiKey,
             'environment' => $this->env,
+            'code_version' => $this->gitHash,
+            'root' => dirname(dirname(dirname(dirname(dirname(__FILE__))))),
         ];
 
         return new RollbarLogger($config);

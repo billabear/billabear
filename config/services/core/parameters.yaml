@@ -2,3 +2,4 @@ parameters:
   rollbar.enabled: '%env(bool:ROLLBAR_ENABLED)%'
   rollbar.api_key: '%env(string:ROLLBAR_API_KEY)%'
   rollbar.env: '%env(APP_ENV)%'
+  rollbar.commit_hash: '%env(string:GIT_HASH)%'
