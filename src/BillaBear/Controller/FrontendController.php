@@ -35,7 +35,6 @@ class FrontendController
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
         LoggerInterface $logger,
-        Profiler $profiler,
     ): Response {
         $logger->info('A request was made to the frontend controller');
         try {
