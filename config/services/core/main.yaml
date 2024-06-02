@@ -31,7 +31,6 @@ services:
     tags: ['controller.service_arguments']
 
 
-  Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
   #####
   ## Parthenon user services
@@ -483,3 +482,7 @@ services:
 
   Parthenon\Billing\Factory\EntityFactoryInterface: '@BillaBear\Factory\EntityFactory'
   Parthenon\Billing\Subscription\SchedulerInterface: '@BillaBear\Subscription\Schedule\SchedulerHandler'
+
+when@dev:
+  services:
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
