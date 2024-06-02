@@ -13,7 +13,7 @@ spec:
   services:
     - environment_slug: php
       git:
-        branch: latest
+        branch: main
         repo_clone_url: https://github.com/billabear/billabear.git
       name: billabearweb
       build_command: yarn build
@@ -22,9 +22,10 @@ spec:
   workers:
     - environment_slug: php
       git:
-        branch: latest
+        branch: main
         repo_clone_url: https://github.com/billabear/billabear.git
       name: scheduler
+      build_command: bin/console messenger:setup-transports
       run_command: bin/console messenger:consume scheduler_main main
       instance_count: 1
   databases:
