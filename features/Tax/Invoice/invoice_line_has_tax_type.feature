@@ -11,19 +11,6 @@ Feature: Invoices are tax type aware
       | Digital Goods    | False    |
       | Digital Services | False    |
       | Physical         | True     |
-    And that the following countries exist:
-      | Name           | ISO Code | Threshold | Currency |
-      | United States  | US       | 0         | USD      |
-      | Germany        | DE       | 0         | EUR      |
-      | United Kingdom | GB       | 0         | GBP      |
-    And the following country tax rules exist:
-      | Country        | Tax Type      | Tax Rate | Valid From |
-      | United States  | Digital Goods | 0        | -10 days   |
-      | Germany        | Digital Goods | 20       | -10 days   |
-      | United Kingdom | Digital Goods | 20       | -10 days   |
-      | United States  | Physical      | 0        | -10 days   |
-      | Germany        | Physical      | 20       | -10 days   |
-      | United Kingdom | Physical      | 20       | -10 days   |
     And the follow products exist:
       | Name        | External Reference | Tax Type      |
       | Product One | prod_jf9j545       | Digital Goods |

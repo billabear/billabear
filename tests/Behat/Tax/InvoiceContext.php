@@ -1,9 +1,7 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Tax;
@@ -52,31 +50,7 @@ class InvoiceContext implements Context
     }
 
     /**
-     * @Then there the latest invoice for :arg1 will have tax state of :arg2
-     */
-    public function thereTheLatestInvoiceForWillHaveTaxStateOf($customerEmail, $expectedState)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
-
-        if (!$invoice instanceof Invoice) {
-            throw new \Exception('No invoice found');
-        }
-
-        $rate = null;
-        /** @var InvoiceLine $line */
-        foreach ($invoice->getLines() as $line) {
-            if ($line->getTaxState() == $expectedState) {
-                return;
-            }
-        }
-
-        throw new \Exception('Did not get state');
-    }
-
-    /**
-     * @Then there the latest invoice for :arg1 will have tax rate of :arg2
+     * @When there the latest invoice for :arg1 will have tax rate of :arg2
      */
     public function thereTheLatestInvoiceForWillHaveTaxRateOf($customerEmail, $expectedRate)
     {
@@ -177,50 +151,6 @@ class InvoiceContext implements Context
         }
 
         throw new \Exception('Got country - '.$rate);
-    }
-
-    /**
-     * @Then there the latest invoice for :arg1 will not have tax country of :arg2
-     */
-    public function thereTheLatestInvoiceForWillNotHaveTaxCountryOf($customerEmail, $expectedCountry)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
-
-        if (!$invoice instanceof Invoice) {
-            throw new \Exception('No invoice found');
-        }
-
-        $rate = null;
-        /** @var InvoiceLine $line */
-        foreach ($invoice->getLines() as $line) {
-            if ($line->getTaxCountry() == $expectedCountry) {
-                throw new \Exception('Found country');
-            }
-        }
-    }
-
-    /**
-     * @Then there the latest invoice for :arg1 will not have tax state of :arg2
-     */
-    public function thereTheLatestInvoiceForWillNotHaveTaxStateOf($customerEmail, $expectedState)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
-
-        if (!$invoice instanceof Invoice) {
-            throw new \Exception('No invoice found');
-        }
-
-        $rate = null;
-        /** @var InvoiceLine $line */
-        foreach ($invoice->getLines() as $line) {
-            if ($line->getTaxState() == $expectedState) {
-                throw new \Exception('Found state');
-            }
-        }
     }
 
     /**

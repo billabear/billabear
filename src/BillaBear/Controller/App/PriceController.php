@@ -140,4 +140,42 @@ class PriceController
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/product/{id}/price/{priceId}/private', name: 'app_product_price_private', methods: ['POST'])]
+    public function privatePrice(
+        Request $request,
+        PriceRepositoryInterface $priceRepository,
+    ) {
+        try {
+            /** @var Price $price */
+            $price = $priceRepository->findById($request->get('priceId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $price->setPublic(false);
+        $priceRepository->save($price);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/product/{id}/price/{priceId}/public', name: 'app_product_price_public', methods: ['POST'])]
+    public function publicPrice(
+        Request $request,
+        PriceRepositoryInterface $priceRepository,
+    ) {
+        try {
+            /** @var Price $price */
+            $price = $priceRepository->findById($request->get('priceId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $price->setPublic(true);
+        $priceRepository->save($price);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
 }

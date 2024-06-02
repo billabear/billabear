@@ -1,13 +1,13 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Refund;
 
+use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PaymentRepository;
 use BillaBear\Repository\Orm\PriceRepository;
@@ -16,8 +16,6 @@ use BillaBear\Repository\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
-use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
 use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Entity\Refund;
 use Parthenon\Billing\Enum\RefundStatus;

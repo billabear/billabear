@@ -6,9 +6,6 @@ Feature: Handle business tax reverse in europe.
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
-    And the follow brands exist:
-      | Name    | Code                    | Email               | Country |
-      | Example | example                 | example@example.org | DE      |
     And there are the following tax types:
       | Name             | Physical |
       | Digital Goods    | False    |
@@ -51,14 +48,14 @@ Feature: Handle business tax reverse in europe.
       | Per Seat   | False    |
       | User Count | 10       |
     And the follow customers exist:
-      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Type       | Brand   |
-      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              | FJDKSLfjdf | Business   | example |
-      | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     | Individual | example |
-      | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         | ref_valid         |            | Business   | example |
-      | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         | ref_fails         | 35435 43   | Individual | example |
-      | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      | Individual | example |
-      | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | Individual | example |
-      | customer.seven@example.org | US      | cust_mlklfdu       | Customer Three | card         | ref_valid         |            | Business   | example |
+      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Type       |
+      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              | FJDKSLfjdf | Business   |
+      | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     | Individual |
+      | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         | ref_valid         |            | Business   |
+      | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         | ref_fails         | 35435 43   | Individual |
+      | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      | Individual |
+      | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | Individual |
+      | customer.seven@example.org | US      | cust_mlklfdu       | Customer Three | card         | ref_valid         |            | Business   |
 
   Scenario: Digital Goods for a Business with a tax number - Zero tax
     Given the following subscriptions exist:
@@ -99,8 +96,8 @@ Feature: Handle business tax reverse in europe.
   Scenario: Digital Goods for a Business with tax number - Reverse tax - EU tax rules disabled
     Given the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status |
-      | Digital Plan      | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
+      | Digital Plan      | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | Active |
     And that the tax settings for eu business tax rules is false
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
-    And there the latest invoice for "customer.seven@example.org" will not have a reverse charge
+    And there the latest invoice for "customer.one@example.org" will not have a reverse charge

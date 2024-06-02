@@ -1,19 +1,17 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Payments;
 
+use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PaymentRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
 
 class ApiContext implements Context
 {
@@ -72,8 +70,8 @@ class ApiContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
         $payload = [
-          'amount' => (int) $refundAmount,
-          'currency' => null,
+            'amount' => (int) $refundAmount,
+            'currency' => null,
         ];
         $payment = $this->paymentRepository->findOneBy(['customer' => $customer, 'amount' => $paymentAmount]);
 

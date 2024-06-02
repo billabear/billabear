@@ -1,22 +1,20 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Subscriptions;
 
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
 use BillaBear\Repository\Orm\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;

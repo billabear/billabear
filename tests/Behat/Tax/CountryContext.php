@@ -1,9 +1,7 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Tax;
@@ -13,13 +11,9 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Country;
 use BillaBear\Entity\CountryTaxRule;
-use BillaBear\Entity\State;
-use BillaBear\Entity\StateTaxRule;
 use BillaBear\Entity\TaxType;
 use BillaBear\Repository\Orm\CountryRepository;
 use BillaBear\Repository\Orm\CountryTaxRuleRepository;
-use BillaBear\Repository\Orm\StateRepository;
-use BillaBear\Repository\Orm\StateTaxRuleRepository;
 use BillaBear\Repository\Orm\TaxTypeRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -30,10 +24,8 @@ class CountryContext implements Context
     public function __construct(
         private Session $session,
         private CountryRepository $countryRepository,
-        private StateRepository $stateRepository,
         private TaxTypeRepository $taxTypeRepository,
         private CountryTaxRuleRepository $countryTaxRuleRepository,
-        private StateTaxRuleRepository $stateTaxRuleRepository,
     ) {
     }
 
@@ -46,38 +38,6 @@ class CountryContext implements Context
         }
 
         return $taxType;
-    }
-
-    /**
-     * @When I create a state with the following data
-     */
-    public function iCreateAStateWithTheFollowingData(TableNode $table)
-    {
-        $data = $table->getRowsHash();
-        $country = $this->getCountryByName($data['Country']);
-        $payload = [
-            'name' => $data['Name'],
-            'code' => $data['Code'],
-            'threshold' => intval($data['Threshold']),
-            'has_nexus' => boolval($data['Has Nexus'] ?? 'false'),
-            'country' => (string) $country->getId(),
-        ];
-
-        $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/state', $payload);
-    }
-
-    /**
-     * @Then there will be a state :arg1 in the country :arg2
-     */
-    public function thereWillBeAStateInTheCountry($stateName, $countryName)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->stateRepository->findOneBy(['name' => $stateName, 'country' => $country]);
-
-        if (!$state instanceof State) {
-            var_dump($this->getJsonContent());
-            throw new \Exception("Can't find state");
-        }
     }
 
     /**
@@ -152,8 +112,9 @@ class CountryContext implements Context
             if (!$country = $this->countryRepository->findOneBy(['isoCode' => $row['ISO Code']])) {
                 $country = new Country();
             }
+
             $country->setName($row['Name']);
-            $country->setIsoCode(trim($row['ISO Code']));
+            $country->setIsoCode($row['ISO Code']);
             $country->setCurrency($row['Currency']);
             $country->setThreshold(intval($row['Threshold']));
             $country->setCreatedAt(new \DateTime());
@@ -163,125 +124,6 @@ class CountryContext implements Context
             $this->countryRepository->getEntityManager()->persist($country);
         }
         $this->countryRepository->getEntityManager()->flush();
-    }
-
-    /**
-     * @Given the following states exist:
-     */
-    public function theFollowingStatesExist(TableNode $table)
-    {
-        $rows = $table->getColumnsHash();
-
-        foreach ($rows as $row) {
-            $country = $this->getCountryByName($row['Country']);
-
-            $state = new State();
-            $state->setCountry($country);
-            $state->setName($row['Name']);
-            $state->setCode($row['Code']);
-            $state->setThreshold(intval($row['Threshold'] ?? 0));
-            $state->setHasNexus('true' === strtolower($row['Has Nexus'] ?? 'false'));
-            $this->stateRepository->getEntityManager()->persist($state);
-        }
-
-        $this->stateRepository->getEntityManager()->flush();
-    }
-
-    /**
-     * @Given the following state tax rules exist:
-     */
-    public function theFollowingStateTaxRulesExist(TableNode $table)
-    {
-        $rows = $table->getColumnsHash();
-
-        foreach ($rows as $row) {
-            $country = $this->getCountryByName($row['Country']);
-            $state = $this->getStateByCountryAndName($country, $row['State']);
-
-            $rule = new StateTaxRule();
-            $rule->setState($state);
-            $rule->setTaxRate(floatval($row['Tax Rate']));
-            $rule->setCreatedAt(new \DateTime());
-            $rule->setTaxType($this->getTaxType($row['Tax Type']));
-            $rule->setValidFrom(new \DateTime($row['Valid From']));
-
-            if (isset($row['Valid Until'])) {
-                $rule->setValidUntil(new \DateTime($row['Valid Until']));
-            }
-
-            $rule->setIsDefault(boolval($row['Is Default'] ?? 'true'));
-            $this->stateRepository->getEntityManager()->persist($rule);
-        }
-        $this->stateRepository->getEntityManager()->flush();
-    }
-
-    /**
-     * @When I update the state tax rule for :arg1 and :arg2 with tax type :arg3 and tax rate :arg4 with the values:
-     */
-    public function iUpdateTheStateTaxRuleForAndWithTaxTypeAndTaxRateWithTheValues($countryName, $stateName, $taxType, $taxRate, TableNode $table)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->getStateByCountryAndName($country, $stateName);
-        $taxType = $this->getTaxType($taxType);
-
-        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $taxRate]);
-
-        if (!$stateTaxRule instanceof StateTaxRule) {
-            throw new \Exception("Can't find tax rule");
-        }
-
-        $data = $table->getRowsHash();
-        $validFrom = new \DateTime($data['Valid From']);
-
-        $payload = [
-            'id' => (string) $stateTaxRule->getId(),
-            'tax_type' => (string) $taxType->getId(),
-            'tax_rate' => floatval($data['Tax Rate']),
-            'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
-            'default' => boolval($data['Default'] ?? 'true'),
-            'country' => (string) $country->getId(),
-            'state' => (string) $state->getId(),
-        ];
-
-        if (isset($data['Valid Until'])) {
-            $validUntil = new \DateTime($data['Valid Until']);
-            $payload['valid_until'] = $validUntil->format(\DATE_RFC3339_EXTENDED);
-        }
-
-        $this->sendJsonRequest('POST', sprintf('/app/country/%s/state/%s/tax-rule/%s/edit', $country->getId(), $state->getId(), $stateTaxRule->getId()), $payload);
-    }
-
-    /**
-     * @Then there should be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4
-     */
-    public function thereShouldBeATaxRuleForAndForTaxTypeWithTheTaxRate($countryName, $stateName, $taxType, $taxRate)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->getStateByCountryAndName($country, $stateName);
-        $taxType = $this->getTaxType($taxType);
-
-        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $taxRate]);
-
-        if (!$stateTaxRule instanceof StateTaxRule) {
-            var_dump($this->getJsonContent());
-            throw new \Exception("Can't find tax rule");
-        }
-    }
-
-    /**
-     * @Then there should not be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4
-     */
-    public function thereShouldNotBeATaxRuleForAndForTaxTypeWithTheTaxRate($countryName, $stateName, $taxType, $taxRate)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->getStateByCountryAndName($country, $stateName);
-        $taxType = $this->getTaxType($taxType);
-
-        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $taxRate]);
-
-        if ($stateTaxRule instanceof StateTaxRule) {
-            throw new \Exception('Found find tax rule');
-        }
     }
 
     /**
@@ -366,100 +208,6 @@ class CountryContext implements Context
         return $country;
     }
 
-    protected function getStateByCountryAndName(Country $country, string $name): State
-    {
-        $state = $this->stateRepository->findOneBy(['country' => $country, 'name' => $name]);
-
-        if (!$state) {
-            throw new \Exception("Can't find state");
-        }
-        $this->stateRepository->getEntityManager()->refresh($state);
-
-        return $state;
-    }
-
-    /**
-     * @When I create a state tax rule with the following data:
-     */
-    public function iCreateAStateTaxRuleWithTheFollowingData(TableNode $table)
-    {
-        $data = $table->getRowsHash();
-
-        $country = $this->getCountryByName($data['Country']);
-        $state = $this->getStateByCountryAndName($country, $data['State']);
-        $taxType = $this->getTaxType($data['Tax Type']);
-        $validFrom = new \DateTime($data['Valid From']);
-
-        $payload = [
-            'tax_type' => (string) $taxType->getId(),
-            'tax_rate' => floatval($data['Tax Rate']),
-            'valid_from' => $validFrom->format(\DATE_RFC3339_EXTENDED),
-            'default' => boolval($data['Default'] ?? 'true'),
-            'country' => (string) $country->getId(),
-            'state' => (string) $state->getId(),
-        ];
-
-        if (isset($data['Valid Until'])) {
-            $validUntil = new \DateTime($data['Valid Until']);
-            $payload['valid_until'] = $validUntil->format(\DATE_RFC3339_EXTENDED);
-        }
-
-        $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/state/'.$state->getId().'/tax-rule', $payload);
-    }
-
-    /**
-     * @Then there should be a state tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4
-     */
-    public function thereShouldBeAStateTaxRuleForAndForTaxTypeWithTheTaxRate($countryName, $stateName, $taxType, $rate)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->getStateByCountryAndName($country, $stateName);
-        $taxType = $this->getTaxType($taxType);
-
-        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $rate]);
-
-        if (!$stateTaxRule instanceof StateTaxRule) {
-            throw new \Exception("Can't find state tax rule");
-        }
-    }
-
-    /**
-     * @Then there should be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg5 that is valid until :arg4
-     */
-    public function thereShouldBeATaxRuleForAndForTaxTypeWithTheTaxRateThatIsValidUntil($countryName, $stateName, $taxType, $rate, $validUntilStr)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->getStateByCountryAndName($country, $stateName);
-        $taxType = $this->getTaxType($taxType);
-
-        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $rate]);
-
-        if (!$stateTaxRule instanceof StateTaxRule) {
-            throw new \Exception("Can't find state tax rule");
-        }
-        $this->stateRepository->getEntityManager()->refresh($stateTaxRule);
-        $validUntil = new \DateTime($validUntilStr);
-        if ($validUntil->format('Y-m-d') !== $stateTaxRule->getValidUntil()?->format('Y-m-d')) {
-            throw new \Exception(sprintf('Wrong date - expected %s but got %s', $validUntil->format('Y-m-d'), $stateTaxRule->getValidUntil()?->format('Y-m-d')));
-        }
-    }
-
-    /**
-     * @Then there should be a tax rule for :arg1 and :arg2 for :arg3 tax type with the tax rate :arg4 that is open ended
-     */
-    public function thereShouldBeATaxRuleForAndForTaxTypeWithTheTaxRateThatIsOpenEnded($countryName, $stateName, $taxType, $rate)
-    {
-        $country = $this->getCountryByName($countryName);
-        $state = $this->getStateByCountryAndName($country, $stateName);
-        $taxType = $this->getTaxType($taxType);
-
-        $stateTaxRule = $this->stateTaxRuleRepository->findOneBy(['state' => $state, 'taxType' => $taxType, 'taxRate' => $rate, 'validUntil' => null]);
-
-        if (!$stateTaxRule instanceof StateTaxRule) {
-            throw new \Exception("Can't find state tax rule");
-        }
-    }
-
     /**
      * @When I create a country tax rule with the following data:
      */
@@ -535,22 +283,6 @@ class CountryContext implements Context
         }
 
         throw new \Exception("Can't find tax rule");
-    }
-
-    /**
-     * @Then I should see the state :arg1 in the list of states
-     */
-    public function iShouldSeeTheStateInTheListOfStates($arg1)
-    {
-        $data = $this->getJsonContent();
-
-        foreach ($data['states'] as $state) {
-            if ($state['name'] === $arg1) {
-                return;
-            }
-        }
-
-        throw new \Exception("Can't find state");
     }
 
     /**

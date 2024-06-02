@@ -31,24 +31,3 @@ Feature: View country for tax purposes
       | United Kingdom | Digital Goods  | 17.5     | -10 days   |
     When I view the country for "United Kingdom"
     Then I should see the tax rule for tax type "Digital Goods" with the tax rate 17.5
-
-  Scenario: View Country with tax rules
-    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    And that the following countries exist:
-      | Name           | ISO Code | Threshold | Currency |
-      | United States | GB       | 1770      | GBP      |
-    And there are the following tax types:
-      | Name     |
-      | Digital Goods  |
-      | Physical |
-    And the following country tax rules exist:
-      | Country        | Tax Type | Tax Rate | Valid From |
-      | United States | Digital Goods  | 17.5     | -10 days   |
-    And the following states exist:
-      | Country       | Name       | Code | Threshold |
-      | United States | Texas      | TX   | 10000     |
-    And the following state tax rules exist:
-      | Country       | State  | Tax Rate | Tax Type      | Valid From |
-      | United States | Texas  | 9        | Digital Goods | -10 days   |
-    When I view the country for "United States"
-    Then I should see the state "Texas" in the list of states

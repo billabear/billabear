@@ -22,6 +22,8 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
         title: "Prices",
         create: "Create New Price",
         no_prices: "There are currently no prices",
+        hide: "Make price private",
+        show: "Make price public",
         list: {
             amount: "Amount",
             currency: "Currency",

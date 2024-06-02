@@ -1,20 +1,20 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Prices;
 
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
+use BillaBear\Background\Generic\GenericTasks;
+use BillaBear\Entity\Price;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\ProductRepository;
 use BillaBear\Tests\Behat\Products\ProductTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Session;
 
 class AppContext implements Context
 {
@@ -24,7 +24,7 @@ class AppContext implements Context
     public function __construct(
         private Session $session,
         private ProductRepository $productRepository,
-        private PriceRepository $priceRepository,
+        private PriceRepository $priceRepository, private readonly GenericTasks $genericTasks,
     ) {
     }
 
@@ -56,5 +56,62 @@ class AppContext implements Context
         $price = $this->priceRepository->findOneBy(['product' => $product, 'amount' => $amount, 'schedule' => $schedule]);
 
         $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/price/'.$price->getId().'/delete');
+    }
+
+    /**
+     * @When I use the APP to make a price from :arg1 for :arg3 per :arg2 private
+     */
+    public function iUseTheAppToMakeAPriceFromForPerPrivate($productName, $amount, $schedule)
+    {
+        $product = $this->getProductByName($productName);
+
+        $price = $this->priceRepository->findOneBy(['product' => $product, 'amount' => $amount, 'schedule' => $schedule]);
+
+        $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/price/'.$price->getId().'/private');
+    }
+
+    /**
+     * @Then the price for :arg1 with the amount :arg2 should be private
+     */
+    public function thePriceForWithTheAmountShouldBePrivate($productName, $amount)
+    {
+        $product = $this->getProductByName($productName);
+
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['product' => $product, 'amount' => $amount]);
+        $this->priceRepository->getEntityManager()->refresh($price);
+
+        if ($price->isPublic()) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('Price is not private');
+        }
+    }
+
+    /**
+     * @When I use the APP to make a price from :arg1 for :arg3 per :arg2 public
+     */
+    public function iUseTheAppToMakeAPriceFromForPerPublic($productName, $amount, $schedule)
+    {
+        $product = $this->getProductByName($productName);
+
+        $price = $this->priceRepository->findOneBy(['product' => $product, 'amount' => $amount, 'schedule' => $schedule]);
+
+        $this->sendJsonRequest('POST', '/app/product/'.$product->getId().'/price/'.$price->getId().'/public');
+    }
+
+    /**
+     * @Then the price for :arg1 with the amount :arg2 should be public
+     */
+    public function thePriceForWithTheAmountShouldBePublic($productName, $amount)
+    {
+        $product = $this->getProductByName($productName);
+
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['product' => $product, 'amount' => $amount]);
+        $this->priceRepository->getEntityManager()->refresh($price);
+
+        if (!$price->isPublic()) {
+            throw new \Exception('Price is private');
+        }
     }
 }

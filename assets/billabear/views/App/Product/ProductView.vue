@@ -73,7 +73,9 @@
               </td>
               <td>
                 <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-                  <button class="btn--danger" @click="deletePrice(price, key)"><i class="fa-solid fa-trash"></i></button>
+                  <button class="btn--main" :title="$t('app.product.view.price.show')" @click="showPrice(price, key)" v-if="!price.public"><i class="fa-solid fa-eye"></i></button>
+                  <button class="btn--main" :title="$t('app.product.view.price.hide')" @click="hidePrice(price, key)" v-else><i class="fa-solid fa-eye-slash"></i></button>
+                  <button class="ml-2 btn--danger" @click="deletePrice(price, key)"><i class="fa-solid fa-trash"></i></button>
                 </RoleOnlyView>
               </td>
             </tr>
@@ -117,7 +119,7 @@
               </td>
             </tr>
             <tr v-if="subscriptionPlans.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
+              <td colspan="5" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
             </tr>
             </tbody>
           </table>
@@ -188,6 +190,24 @@ export default {
       axios.post('/app/product/'+productId+'/price/'+price.id+'/delete').then(response => {
 
         this.prices.splice(key,1)
+      }).catch(error => {
+        alert(this.$t("app.product.view.error_delete"))
+      })
+    },
+    showPrice: function (price, key) {
+      var productId = this.$route.params.id
+      axios.post('/app/product/'+productId+'/price/'+price.id+'/public').then(response => {
+
+        price.public = true;
+      }).catch(error => {
+        alert(this.$t("app.product.view.error_delete"))
+      })
+    },
+    hidePrice: function (price, key) {
+      var productId = this.$route.params.id
+      axios.post('/app/product/'+productId+'/price/'+price.id+'/private').then(response => {
+
+        price.public = false;
       }).catch(error => {
         alert(this.$t("app.product.view.error_delete"))
       })

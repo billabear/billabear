@@ -1,13 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
- *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Copyright all rights reserved. No public license given.
  */
 
 namespace BillaBear\Tests\Behat\Invoices;
 
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Mink\Session;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Quote;
 use BillaBear\Entity\TaxType;
@@ -20,9 +21,6 @@ use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\Quote\QuoteTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
-use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Mink\Session;
 
 class CreateInvoiceContext implements Context
 {
