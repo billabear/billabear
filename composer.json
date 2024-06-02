@@ -12,7 +12,6 @@
     "require": {
         "php": ">=8.1",
         "ext-ctype": "*",
-        "ext-http": "*",
         "ext-iconv": "*",
         "ext-pcntl": "*",
         "beberlei/doctrineextensions": "^1.3",
