@@ -15,6 +15,6 @@ class SubscriptionPlanRepository extends BaseRepository implements SubscriptionP
 {
     public function getNonDeletedForProduct(Product $product): array
     {
-        return $this->entityRepository->findBy(['product' => $product, 'deleted' => false]);
+        return $this->entityRepository->findBy(['product' => $product, 'isDeleted' => false]);
     }
 }
