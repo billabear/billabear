@@ -30,6 +30,8 @@ class Product
     #[SerializedName('tax_rate')]
     protected ?float $taxRate = null;
 
+    protected ?bool $physical;
+
     public function getId(): string
     {
         return $this->id;
@@ -88,5 +90,15 @@ class Product
     public function setTaxRate(?float $taxRate): void
     {
         $this->taxRate = $taxRate;
+    }
+
+    public function getPhysical(): ?bool
+    {
+        return $this->physical;
+    }
+
+    public function setPhysical(?bool $physical): void
+    {
+        $this->physical = $physical;
     }
 }

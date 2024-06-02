@@ -80,6 +80,7 @@ class ProductDataMapper
         $dto->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
         $dto->setTaxType($this->taxTypeDataMapper->createAppDto($product->getTaxType()));
         $dto->setTaxRate($product->getTaxRate());
+        $dto->setPhysical($product->getPhysical());
 
         return $dto;
     }
