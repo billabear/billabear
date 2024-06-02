@@ -25,7 +25,7 @@ spec:
         branch: main
         repo_clone_url: https://github.com/billabear/billabear.git
       name: scheduler
-      run_command: bin/console messenger:setup-transports && bin/console messenger:consume scheduler_main main
+      run_command: bin/console messenger:consume scheduler_main main
       instance_count: 1
   databases:
     - name: billabeardb
