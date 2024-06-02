@@ -19,7 +19,7 @@ class SubscriptionPlanController
 {
     use CrudListTrait;
 
-    #[Route('/api/v1/subscription/plans', name: 'api_v1_subscription_plan_list', methods: ['GET'])]
+    #[Route('/api/v1/subscription/plans', name: 'api_v1_subscription_plan_list', methods: ['GET'], priority: 99)]
     public function listCountries(
         Request $request,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
