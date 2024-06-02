@@ -19,7 +19,7 @@ use Parthenon\Athena\Entity\DeletableInterface;
 class SubscriptionPlan extends \Parthenon\Billing\Entity\SubscriptionPlan implements DeletableInterface
 {
     #[ORM\Column(type: 'boolean')]
-    protected bool $deleted = false;
+    protected bool $isDeleted = false;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     protected ?\DateTimeInterface $deletedAt = null;
@@ -31,13 +31,13 @@ class SubscriptionPlan extends \Parthenon\Billing\Entity\SubscriptionPlan implem
 
     public function isDeleted(): bool
     {
-        return $this->deleted;
+        return $this->isDeleted;
     }
 
     public function markAsDeleted(): DeletableInterface
     {
         $this->deletedAt = new \DateTime('now');
-        $this->deleted = true;
+        $this->isDeleted = true;
 
         return $this;
     }
@@ -45,7 +45,7 @@ class SubscriptionPlan extends \Parthenon\Billing\Entity\SubscriptionPlan implem
     public function unmarkAsDeleted(): DeletableInterface
     {
         $this->deletedAt = null;
-        $this->deleted = false;
+        $this->isDeleted = false;
 
         return $this;
     }
