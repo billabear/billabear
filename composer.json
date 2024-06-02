@@ -42,7 +42,8 @@
         "symfony/yaml": "7.0.*",
         "taxjar/taxjar-php": "^2.0",
         "wildbit/postmark-php": "^4.0",
-        "writecrow/country_code_converter": "^1.2"
+        "writecrow/country_code_converter": "^1.2",
+        "symfony/web-profiler-bundle": "^7.0"
     },
     "require-dev": {
         "behat/behat": "^3.11",
@@ -53,8 +54,7 @@
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.3",
         "friendsofphp/php-cs-fixer": "^v3.14.4",
-        "phpunit/phpunit": "^10.1",
-        "symfony/web-profiler-bundle": "^7.0"
+        "phpunit/phpunit": "^10.1"
     },
     "config": {
         "allow-plugins": {
