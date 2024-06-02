@@ -48,3 +48,6 @@ when@prod:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: info
                 channels: ["!event", "!deprecation"]
+            rollbar:
+                type: service
+                id: BillaBear\Logger\Error\RollbarHandler
