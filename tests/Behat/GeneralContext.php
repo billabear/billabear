@@ -10,8 +10,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
 use BillaBear\Entity\BrandSettings;
-use BillaBear\Entity\Country;
-use BillaBear\Entity\CountryTaxRule;
 use BillaBear\Entity\EmailTemplate;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\TaxType;
@@ -115,82 +113,6 @@ class GeneralContext implements Context
         $taxType->setDefault(true);
 
         $em->persist($taxType);
-
-        $country = new Country();
-        $country->setName('USA');
-        $country->setIsoCode('US');
-        $country->setCurrency('USD');
-        $country->setInEu(false);
-        $country->setEnabled(true);
-        $country->setCreatedAt(new \DateTime());
-        $country->setThreshold(0);
-        $em->persist($country);
-
-        $countryTaxRule = new CountryTaxRule();
-        $countryTaxRule->setCountry($country);
-        $countryTaxRule->setTaxType($taxType);
-        $countryTaxRule->setTaxRate(10.3);
-        $countryTaxRule->setCreatedAt(new \DateTime());
-        $countryTaxRule->setValidFrom(new \DateTime('-1 year'));
-        $countryTaxRule->setIsDefault(true);
-        $em->persist($countryTaxRule);
-
-        $country = new Country();
-        $country->setName('Germany');
-        $country->setIsoCode('DE');
-        $country->setCurrency('EUR');
-        $country->setInEu(true);
-        $country->setEnabled(true);
-        $country->setCreatedAt(new \DateTime());
-        $country->setThreshold(0);
-        $em->persist($country);
-
-        $countryTaxRule = new CountryTaxRule();
-        $countryTaxRule->setCountry($country);
-        $countryTaxRule->setTaxType($taxType);
-        $countryTaxRule->setTaxRate(10.3);
-        $countryTaxRule->setCreatedAt(new \DateTime());
-        $countryTaxRule->setValidFrom(new \DateTime('-1 year'));
-        $countryTaxRule->setIsDefault(true);
-        $em->persist($countryTaxRule);
-
-        $country = new Country();
-        $country->setName('France');
-        $country->setIsoCode('FR');
-        $country->setCurrency('EUR');
-        $country->setInEu(true);
-        $country->setEnabled(true);
-        $country->setCreatedAt(new \DateTime());
-        $country->setThreshold(0);
-        $em->persist($country);
-
-        $countryTaxRule = new CountryTaxRule();
-        $countryTaxRule->setCountry($country);
-        $countryTaxRule->setTaxType($taxType);
-        $countryTaxRule->setTaxRate(10.3);
-        $countryTaxRule->setCreatedAt(new \DateTime());
-        $countryTaxRule->setValidFrom(new \DateTime('-1 year'));
-        $countryTaxRule->setIsDefault(true);
-        $em->persist($countryTaxRule);
-
-        $country = new Country();
-        $country->setName('United Kingdom');
-        $country->setIsoCode('GB');
-        $country->setCurrency('GBP');
-        $country->setInEu(false);
-        $country->setEnabled(true);
-        $country->setCreatedAt(new \DateTime());
-        $country->setThreshold(0);
-        $em->persist($country);
-
-        $countryTaxRule = new CountryTaxRule();
-        $countryTaxRule->setCountry($country);
-        $countryTaxRule->setTaxType($taxType);
-        $countryTaxRule->setTaxRate(20);
-        $countryTaxRule->setCreatedAt(new \DateTime());
-        $countryTaxRule->setValidFrom(new \DateTime('-1 year'));
-        $countryTaxRule->setIsDefault(true);
-        $em->persist($countryTaxRule);
 
         $em->flush();
 

@@ -73,6 +73,22 @@ class AppContext implements Context
     }
 
     /**
+     * @Then the product :arg1 should have the tax type :arg2
+     */
+    public function theProductShouldHaveTheTaxType($name, $arg2)
+    {
+        $product = $this->getProductByName($name);
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => $arg2]);
+        if (!$taxType instanceof \BillaBear\Entity\TaxType) {
+            throw new \Exception('No tax type found');
+        }
+
+        if ($product->getTaxType()->getId() != $taxType->getId()) {
+            throw new \Exception("Tax type doesn't match");
+        }
+    }
+
+    /**
      * @When I use the APP to list product
      */
     public function iUseTheAppToListProduct()

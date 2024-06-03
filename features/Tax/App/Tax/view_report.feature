@@ -6,14 +6,24 @@ Feature: View Tax Report
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
-    And the follow products exist:
-      | Name        | External Reference |
-      | Product One | prod_jf9j545       |
-      | Product Two | prod_jf9j542       |
     And there are the following tax types:
-      | Name     |
+      | Name           |
       | Digital Goods  |
-      | Physical |
+      | Physical       |
+    And the follow products exist:
+      | Name        | External Reference | Tax Type      |
+      | Product One | prod_jf9j545       | Digital Goods |
+      | Product Two | prod_jf9j542       | Digital Goods |
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Currency |
+      | United States  | US       | 0         | USD      |
+      | Germany        | DE       | 0         | EUR      |
+      | United Kingdom | GB       | 0         | GBP      |
+    And the following country tax rules exist:
+      | Country        | Tax Type      | Tax Rate | Valid From |
+      | United States  | Digital Goods | 0        | -10 days   |
+      | Germany        | Digital Goods | 20       | -10 days   |
+      | United Kingdom | Digital Goods | 20       | -10 days   |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
@@ -68,10 +78,10 @@ Feature: View Tax Report
 
   Scenario:
     Given the following invoices exist:
-      | Customer                 | Paid  | Tax Type      |
-      | customer.one@example.org | true  | Digital Goods |
+      | Customer                  | Paid  | Tax Type      |
+      | customer.one@example.org  | true  | Digital Goods |
       | customer.five@example.org | true  | Digital Goods |
-      | customer.six@example.org | false | Digital Goods |
+      | customer.six@example.org  | false | Digital Goods |
     And there is a payments for:
       | Subscription Plan | Customer                  | Amount |
       | Test Plan         | customer.four@example.org | 3500   |

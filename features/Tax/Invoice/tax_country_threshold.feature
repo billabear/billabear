@@ -6,13 +6,25 @@ Feature: Tax the correct country with threshold
       | Sally Brown | sally.brown@example.org | AF@k3P@ss |
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
+    And that the tax settings for tax customers with tax number is true
+    And the follow brands exist:
+      | Name    | Code                    | Email               | Country |
+      | Example | example                 | example@example.org | GB      |
+    And there are the following tax types:
+      | Name             | Physical |
+      | Digital Goods    | False    |
+      | Digital Services | False    |
+      | Physical         | True     |
     And that the following countries exist:
       | Name           | ISO Code | Threshold | Currency |
       | United Kingdom | GB       | 1770      | GBP      |
+    And the following country tax rules exist:
+      | Country        | Tax Type       | Tax Rate | Valid From |
+      | United Kingdom | Digital Goods  | 20       | -10 days   |
     And the follow products exist:
-      | Name        | External Reference |
-      | Product One | prod_jf9j545       |
-      | Product Two | prod_jf9j542       |
+      | Name        | External Reference | Tax Type      |
+      | Product One | prod_jf9j545       | Digital Goods |
+      | Product Two | prod_jf9j542       | Digital Goods |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
@@ -34,14 +46,14 @@ Feature: Tax the correct country with threshold
       | Per Seat   | False    |
       | User Count | 10       |
     And the follow customers exist:
-      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Digital Tax Rate | Standard Tax Rate |
-      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              | FJDKSLfjdf | 10               | 15                |
-      | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     |                  |                   |
-      | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         | ref_valid         | gfdgsfd    |                  |                   |
-      | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         | ref_fails         | 35435 43   |                  |                   |
-      | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      |                  |                   |
-      | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     |                  |                   |
-      | customer.seven@example.org | US      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     |                  |                   |
+      | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Brand   |
+      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      | null              | FJDKSLfjdf | example |
+      | customer.two@example.org   | GB      | cust_dfugfdu       | Customer Two   | card         | ref_valid         | ssdfds     | example |
+      | customer.three@example.org | GB      | cust_mlklfdu       | Customer Three | card         | ref_valid         | gfdgsfd    | example |
+      | customer.four@example.org  | GB      | cust_dkkoadu       | Customer Four  | card         | ref_fails         | 35435 43   | example |
+      | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      | example |
+      | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | example |
+      | customer.seven@example.org | US      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | example |
 
   Scenario:
     Given the following subscriptions exist:
@@ -50,6 +62,9 @@ Feature: Tax the correct country with threshold
     And that the following countries exist:
       | Name          | ISO Code | Threshold | Currency |
       | United States | US       | 0         | USD      |
+    And the following country tax rules exist:
+      | Country       | Tax Type       | Tax Rate | Valid From |
+      | United States | Digital Goods  | 17.5     | -10 days   |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.seven@example.org" will have tax country of "US"
@@ -60,7 +75,10 @@ Feature: Tax the correct country with threshold
       | Test Plan         | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
     And that the following countries exist:
       | Name          | ISO Code | Threshold | Currency |
-      | United States | US       | 10000     | USD      |
+      | United States | US       | 1000000   | USD      |
+    And the following country tax rules exist:
+      | Country       | Tax Type       | Tax Rate | Valid From |
+      | United States | Digital Goods  | 17.5     | -10 days   |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.seven@example.org" will have tax country of "GB"

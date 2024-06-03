@@ -30,7 +30,7 @@
               </div>
               <div>
                 <dt>{{ $t('app.product.view.main.tax_type') }}</dt>
-                <dd>{{ product.tax_type.name }}</dd>
+                <dd><span v-if="product.tax_type">{{ product.tax_type.name }}</span></dd>
               </div>
               <div>
                 <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
