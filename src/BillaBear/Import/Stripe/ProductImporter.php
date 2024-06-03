@@ -12,6 +12,7 @@ use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\Entity\StripeImport;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\StripeImportRepositoryInterface;
+use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Obol\Model\Product;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -28,6 +29,7 @@ class ProductImporter
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private StripeImportRepositoryInterface $stripeImportRepository,
         private ProductDataMapper $productFactory,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
     }
 
@@ -36,6 +38,7 @@ class ProductImporter
         $provider = $this->provider;
         $limit = 25;
         $lastId = $save ? $stripeImport->getLastId() : null;
+        $defaultTaxType = $this->taxTypeRepository->getDefault();
         do {
             $productList = $provider->products()->list($limit, $lastId);
             /** @var Product $productModel */

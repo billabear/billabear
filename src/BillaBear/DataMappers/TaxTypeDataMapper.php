@@ -31,6 +31,7 @@ class TaxTypeDataMapper
         $dto = new AppDto();
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
+        $dto->setDefault($entity->isDefault());
 
         return $dto;
     }

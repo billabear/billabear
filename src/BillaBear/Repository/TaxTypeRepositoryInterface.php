@@ -22,4 +22,8 @@ interface TaxTypeRepositoryInterface extends CrudRepositoryInterface
     public function getAll(): array;
 
     public function getByName(string $name): TaxType;
+
+    public function removeDefault(): void;
+
+    public function getDefault(): TaxType;
 }

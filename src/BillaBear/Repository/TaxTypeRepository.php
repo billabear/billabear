@@ -29,4 +29,22 @@ class TaxTypeRepository extends DoctrineCrudRepository implements TaxTypeReposit
 
         return $taxType;
     }
+
+    public function getDefault(): TaxType
+    {
+        $taxType = $this->entityRepository->findOneBy(['default' => true]);
+
+        if (!$taxType instanceof TaxType) {
+            throw new NoEntityFoundException(sprintf('No default tax type'));
+        }
+
+        return $taxType;
+    }
+
+    public function removeDefault(): void
+    {
+        $queryBuilder = $this->entityRepository->createQueryBuilder('t');
+        $queryBuilder->update(TaxType::class, 't')->set('t.default', 'false');
+        $queryBuilder->getQuery()->execute();
+    }
 }

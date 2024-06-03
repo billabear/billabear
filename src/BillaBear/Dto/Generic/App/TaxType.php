@@ -14,6 +14,8 @@ class TaxType
 
     private string $name;
 
+    private bool $default;
+
     public function getId(): string
     {
         return $this->id;
@@ -32,5 +34,15 @@ class TaxType
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->default;
+    }
+
+    public function setDefault(bool $default): void
+    {
+        $this->default = $default;
     }
 }

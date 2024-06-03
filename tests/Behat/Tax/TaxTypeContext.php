@@ -78,6 +78,52 @@ class TaxTypeContext implements Context
     }
 
     /**
+     * @When I make the tax type :arg1 default
+     */
+    public function iMakeTheTaxTypeDefault($taxName)
+    {
+        $taxType = $this->getTaxTypeByName($taxName);
+
+        $this->sendJsonRequest('POST', '/app/tax/type/'.$taxType->getId().'/default');
+    }
+
+    protected function getTaxTypeByName(string $name): TaxType
+    {
+        $taxType = $this->taxTypeRepository->findOneBy(['name' => $name]);
+
+        if (!$taxType instanceof TaxType) {
+            throw new \Exception('Tax type not found');
+        }
+        $this->taxTypeRepository->getEntityManager()->refresh($taxType);
+
+        return $taxType;
+    }
+
+    /**
+     * @Then the tax type :arg1 is default
+     */
+    public function theTaxTypeIsDefault($taxName)
+    {
+        $taxType = $this->getTaxTypeByName($taxName);
+
+        if (!$taxType->isDefault()) {
+            throw new \Exception('Tax type is not default');
+        }
+    }
+
+    /**
+     * @Then the tax type :arg1 is not default
+     */
+    public function theTaxTypeIsNotDefault($taxName)
+    {
+        $taxType = $this->getTaxTypeByName($taxName);
+
+        if ($taxType->isDefault()) {
+            throw new \Exception('Tax type is default');
+        }
+    }
+
+    /**
      * @When I go to the tax types list
      */
     public function iGoToTheTaxTypesList()

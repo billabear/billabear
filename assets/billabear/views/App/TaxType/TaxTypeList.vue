@@ -37,13 +37,16 @@
           <thead>
             <tr>
               <th>{{ $t('app.tax_type.list.list.name') }}</th>
-              <th></th>
+              <th>{{ $t('app.tax_type.list.list.default') }}</th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="tax_type in taxTypes" class="mt-5 cursor-pointer">
               <td>{{ tax_type.name }}</td>
-              <td></td>
+              <td>
+                <span v-if="tax_type.default">{{ $t('app.tax_type.list.list.is_default') }}</span>
+                <SubmitButton class="btn--main" :in-progress="sendingDefault" @click="makeDefault(tax_type.id)" v-else>{{ $t('app.tax_type.list.list.make_default') }}</SubmitButton>
+              </td>
             </tr>
             <tr v-if="taxTypes.length === 0">
               <td colspan="5" class="text-center">{{ $t('app.tax_type.list.no_tax_types') }}</td>
@@ -107,7 +110,8 @@ export default {
       active_filters: [],
       per_page: "10",
       filters: {
-      }
+      },
+      sendingDefault: false,
     }
   },
   mounted() {
@@ -120,6 +124,13 @@ export default {
     }
   },
   methods: {
+    makeDefault: function (taxTypeId){
+      this.sendingDefault = true;
+      axios.post('/app/tax/type/'+taxTypeId+'/default').then(response => {
+        this.taxTypes = response.data.data;
+        this.sendingDefault =false;
+      })
+    },
     currency: function (value) {
         return currency(value, { fromCents: true });
     },

@@ -12,6 +12,7 @@ use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\TaxType\CreateTaxType;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,6 +56,26 @@ class TaxTypeController
         TaxTypeRepositoryInterface $taxTypeRepository,
         SerializerInterface $serializer,
     ): Response {
+        return $this->crudList($request, $taxTypeRepository, $serializer, $taxTypeDataMapper, 'name');
+    }
+
+    #[Route('/app/tax/type/{id}/default', name: 'app_app_create_tax_type_default', methods: ['POST'])]
+    public function defaultTaxType(
+        Request $request,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
+        SerializerInterface $serializer,
+    ) {
+        try {
+            $entity = $taxTypeRepository->findById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
+        }
+
+        $entity->setDefault(true);
+        $taxTypeRepository->removeDefault();
+        $taxTypeRepository->save($entity);
+
         return $this->crudList($request, $taxTypeRepository, $serializer, $taxTypeDataMapper, 'name');
     }
 }
