@@ -9,7 +9,6 @@ namespace BillaBear\Tests\Behat\Prices;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use BillaBear\Background\Generic\GenericTasks;
 use BillaBear\Entity\Price;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\ProductRepository;
@@ -24,7 +23,7 @@ class AppContext implements Context
     public function __construct(
         private Session $session,
         private ProductRepository $productRepository,
-        private PriceRepository $priceRepository, private readonly GenericTasks $genericTasks,
+        private PriceRepository $priceRepository,
     ) {
     }
 

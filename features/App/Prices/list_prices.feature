@@ -1,4 +1,7 @@
-Feature: Delete price
+Feature: View prices
+  In order to ensure the price data is correct for a product
+  As an APP user
+  I need to be able to view the prices for a product
 
   Background:
     Given the following accounts exist:

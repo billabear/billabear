@@ -4,12 +4,7 @@ Feature: Payment List Read APP
   I need to be see all the payments
 
   Background:
-    Given the following accounts exist:
-      | Name        | Email                   | Password  |
-      | Sally Brown | sally.brown@example.org | AF@k3P@ss |
-      | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
-      | Sally Braun | sally.braun@example.org | AF@k3Pass |
-    And the follow products exist:
+    Given the follow products exist:
       | Name        | External Reference |
       | Product One | prod_jf9j545       |
       | Product Two | prod_jf9j542       |

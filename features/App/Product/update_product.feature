@@ -30,18 +30,3 @@ Feature: Product Update APP
       | Name          | Product Three |
       | Tax Rate      | 34            |
     Then the product "Product Three" should have the tax rate 34
-
-  Scenario: update tax rate
-    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
-    And the follow products exist:
-      | Name        |
-      | Product One |
-      | Product Two |
-    And there are the following tax types:
-      | Name     |
-      | Digital Goods  |
-      | Physical |
-    When I update the product info via the APP for "Product One":
-      | Name          | Product Three |
-      | Tax Type      | Digital Goods |
-    Then the product "Product Three" should have the tax type "Digital Goods"

@@ -40,6 +40,19 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the payment details :arg1 for :arg2 should not be deleted
+     */
+    public function thePaymentDetailsForShouldNotBeDeleted($name, $email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
+
+        if ($paymentDetails->isDeleted()) {
+            throw new \Exception('Is deleted');
+        }
+    }
+
+    /**
      * @Then I will see the payment details in the list with the last four :arg1
      */
     public function iWillSeeThePaymentDetailsInTheListWithTheLastFour($lastFour)
