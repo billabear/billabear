@@ -27,9 +27,7 @@
             </label>
             <p class="form-field-error" v-if="errors.taxType != undefined">{{ errors.taxType }}</p>
             <select class="form-field" id="name" v-model="product.tax_type">
-              <option value="digital_goods">{{ $t('app.product.create.tax_types.digital_goods') }}</option>
-              <option value="digital_services">{{ $t('app.product.create.tax_types.digital_services') }}</option>
-              <option value="physical">{{ $t('app.product.create.tax_types.physical') }}</option>
+              <option v-for="tax_type in tax_types" :value="tax_type.id">{{ tax_type.name }}</option>
             </select>
             <p class="form-field-help">{{ $t('app.product.create.help_info.tax_type') }}</p>
           </div>
@@ -78,13 +76,15 @@ export default {
       showAdvance: false,
       success: false,
       errors: {
-      }
+      },
+      tax_types: []
     }
   },
   mounted() {
     var productId = this.$route.params.id
-    axios.get('/app/product/'+productId).then(response => {
+    axios.get('/app/product/'+productId+'/update').then(response => {
       this.product = response.data.product;
+      this.tax_types = response.data.tax_types;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

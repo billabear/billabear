@@ -15,6 +15,7 @@ use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\CreateProduct;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Dto\Response\App\Product\CreateProductView;
+use BillaBear\Dto\Response\App\Product\UpdateProductView;
 use BillaBear\Dto\Response\App\ProductView;
 use BillaBear\Filters\ProductList;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
@@ -171,6 +172,33 @@ class ProductController
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
+    }
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/product/{id}/update', name: 'app_product_update_view', methods: ['GET'])]
+    public function viewUpdateProduct(
+        Request $request,
+        ProductRepositoryInterface $productRepository,
+        ProductDataMapper $dataMapper,
+        TaxTypeRepositoryInterface $taxTypeRepository,
+        TaxTypeDataMapper $taxTypeDataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        try {
+            $product = $productRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $taxTypes = $taxTypeRepository->getAll();
+        $taxTypeDtos = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
+        $view = new UpdateProductView();
+        $view->setProduct($dataMapper->createAppDtoFromProduct($product));
+        $view->setTaxTypes($taxTypeDtos);
+
+        $json = $serializer->serialize($view, 'json');
+
+        return new JsonResponse($json, json: true);
     }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
