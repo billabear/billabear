@@ -5,12 +5,12 @@
     <LoadingScreen :ready="ready">
       <div v-if="!error">
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-          <div class="mt-3 text-end">
+          <div class="mt-3 mr-5 text-end">
             <router-link :to="{name: 'app.subscription_plan.update', params: {productId: product_id, subscriptionPlanId: subscription_plan.id}}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
           </div>
         </RoleOnlyView>
 
-        <div class="mt-5">
+        <div class="m-5 card-body">
           <h2 class="section-header">{{ $t('app.subscription_plan.view.main.title') }}</h2>
           <div class="section-body">
             <dl class="detail-list">
@@ -103,6 +103,9 @@
                 <td>{{ limit.feature.name }}</td>
                 <td>{{ limit.limit }}</td>
               </tr>
+              <tr v-if="subscription_plan.limits.length === 0">
+                <td>{{ $t('app.subscription_plan.view.features.list.no_limits') }}</td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -118,6 +121,9 @@
               <tbody>
               <tr v-for="feature in subscription_plan.features" class="mt-5">
                 <td>{{ feature.name }}</td>
+              </tr>
+              <tr v-if="subscription_plan.features.length === 0">
+                <td>{{ $t('app.subscription_plan.view.features.list.no_features') }}</td>
               </tr>
               </tbody>
             </table>

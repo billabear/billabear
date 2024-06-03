@@ -21,12 +21,14 @@ export const SUBSCRIPTION_PLAN_VIEW_TRANSLATIONS = {
         list: {
             feature: "Feature",
             limit: "Limit",
+            no_limits: "No limits"
         }
     },
     features: {
         title: "Features",
         list: {
-            feature: "Feature"
+            feature: "Feature",
+            no_features: "No features"
         }
     },
     price: {

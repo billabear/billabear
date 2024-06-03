@@ -3,7 +3,7 @@
     <h1 class="page-title">{{ $t('app.subscription_plan.update.title') }}</h1>
 
     <form @submit.prevent="send">
-    <div class="mt-3 card-body">
+    <div class="m-5 card-body">
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="name">
           {{ $t('app.subscription_plan.update.fields.name') }}
@@ -77,7 +77,7 @@
     </div>
 
 
-      <div class="mt-3 card-body">
+      <div class="m-5 card-body">
         <h2>{{ $t('app.subscription_plan.update.features.title') }}</h2>
 
         <div v-for="(feature, key) in subscription_plan.features">
@@ -90,7 +90,7 @@
         <button @click.prevent="subscription_plan.features.push({})"  class="mt-5 btn--main">{{ $t('app.subscription_plan.update.features.add_feature') }}</button>
       </div>
 
-      <div class="mt-3 card-body">
+      <div class="m-5 card-body">
         <h2>{{ $t('app.subscription_plan.update.limits.title') }}</h2>
 
         <div v-for="(limit, key) in subscription_plan.limits">
@@ -105,7 +105,7 @@
       </div>
 
 
-      <div class="mt-3 card-body">
+      <div class="m-5 card-body">
         <h2>{{ $t('app.subscription_plan.update.prices.title') }}</h2>
 
         <div v-for="(price, key) in subscription_plan.prices">
@@ -118,7 +118,7 @@
         <button @click.prevent="subscription_plan.prices.push({})" class="mt-5 btn--main">{{ $t('app.subscription_plan.update.prices.add_price') }}</button>
       </div>
 
-    <div class="form-field-submit-ctn">
+    <div class="ml-5 form-field-submit-ctn">
       <SubmitButton :in-progress="sendingInProgress">{{ $t('app.subscription_plan.update.submit_btn') }}</SubmitButton>
     </div>
     <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.subscription_plan.update.success_message') }}</p>
