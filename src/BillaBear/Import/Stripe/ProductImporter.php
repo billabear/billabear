@@ -49,7 +49,7 @@ class ProductImporter
                     $product = null;
                 }
                 $product = $this->productFactory->createFromObol($productModel, $product);
-
+                $product->setTaxType($defaultTaxType);
                 $this->productRepository->save($product);
 
                 $subscriptionPlan = new SubscriptionPlan();

@@ -47,14 +47,16 @@ class TaxDataCreator
             $this->countryRepository->save($country);
 
             $rates = $countryData['rates'] ?? [];
+            $hasDefaultTaxRate = false;
             foreach ($rates as $name => $data) {
                 try {
                     $taxType = $this->taxTypeRepository->getByName($name);
                 } catch (NoEntityFoundException) {
                     $taxType = new TaxType();
                     $taxType->setName($name);
-                    $taxType->setDefault(true);
-
+                    // Note the !$
+                    $taxType->setDefault(!$hasDefaultTaxRate);
+                    $hasDefaultTaxRate = true;
                     $this->taxTypeRepository->save($taxType);
                 }
 
