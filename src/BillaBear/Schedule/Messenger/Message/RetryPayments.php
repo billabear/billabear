@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class RetryPayments
+class RetryPayments implements ScheduleMessageInterface
 {
 }

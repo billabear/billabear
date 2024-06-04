@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class StripeImport
+class StripeImport implements ScheduleMessageInterface
 {
 }

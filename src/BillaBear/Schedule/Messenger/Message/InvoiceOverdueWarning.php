@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class InvoiceOverdueWarning
+class InvoiceOverdueWarning implements ScheduleMessageInterface
 {
 }

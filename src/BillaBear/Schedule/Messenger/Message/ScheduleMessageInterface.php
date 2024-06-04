@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class GenericTasks implements ScheduleMessageInterface
+interface ScheduleMessageInterface
 {
 }

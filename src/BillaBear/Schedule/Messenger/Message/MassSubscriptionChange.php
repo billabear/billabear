@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class MassSubscriptionChange
+class MassSubscriptionChange implements ScheduleMessageInterface
 {
 }

@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class ExpiredCardsFirstOfMonth
+class ExpiredCardsFirstOfMonth implements ScheduleMessageInterface
 {
 }

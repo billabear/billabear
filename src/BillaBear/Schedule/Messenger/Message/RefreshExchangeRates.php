@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class RefreshExchangeRates
+class RefreshExchangeRates implements ScheduleMessageInterface
 {
 }

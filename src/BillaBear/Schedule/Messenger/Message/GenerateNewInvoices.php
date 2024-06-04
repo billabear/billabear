@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class GenerateNewInvoices
+class GenerateNewInvoices implements ScheduleMessageInterface
 {
 }

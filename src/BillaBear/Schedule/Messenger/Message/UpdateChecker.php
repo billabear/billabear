@@ -8,6 +8,6 @@
 
 namespace BillaBear\Schedule\Messenger\Message;
 
-class UpdateChecker
+class UpdateChecker implements ScheduleMessageInterface
 {
 }
