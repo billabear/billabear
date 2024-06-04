@@ -112,7 +112,7 @@ class WebhookController
         SerializerInterface $serializer,
         WebhookEndpointDataMapper $factory,
     ): Response {
-        $this->getLogger()->info('Received app request to view webhook'.['webhook_id' => $request->get('id')]);
+        $this->getLogger()->info('Received app request to view webhook', ['webhook_id' => $request->get('id')]);
         try {
             $webhookEndpoint = $repository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
