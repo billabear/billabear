@@ -19,10 +19,11 @@ use BillaBear\Entity\SlackWebhook;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,6 +33,7 @@ class SlackController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/integrations/slack/notification/create', name: 'billabear_app_integrations_slack_showcreatenotification', methods: ['GET'])]
     public function showCreateNotification(
@@ -39,6 +41,7 @@ class SlackController
         SlackWebhookDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): JsonResponse {
+        $this->getLogger()->info('Received app request to show create slack notification');
         $webhooks = $repository->getAll();
         $dtos = array_map([$dataMapper, 'createAppDto'], $webhooks);
         $view = new CreateSlackNotificationView();
@@ -56,6 +59,7 @@ class SlackController
         SlackNotificationRepositoryInterface $notificationRepository,
         SlackNotificationDataMapper $notificationDataMapper,
     ): Response {
+        $this->getLogger()->info('Received app request to create slack notification');
         /** @var CreateSlackNotification $createDto */
         $createDto = $serializer->deserialize($request->getContent(), CreateSlackNotification::class, 'json');
         $errors = $validator->validate($createDto);
@@ -80,6 +84,8 @@ class SlackController
         SerializerInterface $serializer,
         SlackNotificationDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received app request to show slack notification list');
+
         return $this->crudList($request, $repository, $serializer, $factory);
     }
 
@@ -91,6 +97,7 @@ class SlackController
         SlackWebhookRepositoryInterface $slackWebhookRepository,
         SlackWebhookDataMapper $slackWebhookDataMapper,
     ): Response {
+        $this->getLogger()->info('Received app request to create slack webhook');
         /** @var CreateSlackWebhook $createDto */
         $createDto = $serializer->deserialize($request->getContent(), CreateSlackWebhook::class, 'json');
         $errors = $validator->validate($createDto);
@@ -115,6 +122,8 @@ class SlackController
         SerializerInterface $serializer,
         SlackWebhookDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received app request to show slack webhook list');
+
         return $this->crudList($request, $repository, $serializer, $factory);
     }
 
@@ -125,6 +134,7 @@ class SlackController
         SlackWebhookDataMapper $mapper,
         SerializerInterface $serializer,
     ): JsonResponse {
+        $this->getLogger()->info('Received app request to disable slack webhook', ['slack_webhook_id' => $request->get('id')]);
         try {
             /** @var SlackWebhook $slackWebhook */
             $slackWebhook = $repository->findById($request->get('id'));
@@ -147,6 +157,7 @@ class SlackController
         SlackWebhookDataMapper $mapper,
         SerializerInterface $serializer,
     ): JsonResponse {
+        $this->getLogger()->info('Received app request to enable slack webhook', ['slack_webhook_id' => $request->get('id')]);
         try {
             /** @var SlackWebhook $slackWebhook */
             $slackWebhook = $repository->findById($request->get('id'));

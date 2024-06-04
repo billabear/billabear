@@ -17,15 +17,18 @@ use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/product', name: 'api_v1.0_product_create', methods: ['POST'])]
     public function createProduct(
         Request $request,
@@ -35,6 +38,8 @@ class ProductController
         ProductRegisterInterface $productRegister,
         ProductRepositoryInterface $productRepository,
     ): Response {
+        $this->getLogger()->info('Received request to create product');
+
         $dto = $serializer->deserialize($request->getContent(), CreateProduct::class, 'json');
         $errors = $validator->validate($dto);
 
@@ -72,6 +77,7 @@ class ProductController
         SerializerInterface $serializer,
         ProductDataMapper $productFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list all product');
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
@@ -115,6 +121,7 @@ class ProductController
         SerializerInterface $serializer,
         ProductDataMapper $productFactory,
     ): Response {
+        $this->getLogger()->info('Received request to view product', ['product_id' => $request->get('id')]);
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
@@ -135,6 +142,7 @@ class ProductController
         ValidatorInterface $validator,
         ProductDataMapper $productFactory,
     ): Response {
+        $this->getLogger()->info('Received request to update product', ['product_id' => $request->get('id')]);
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));

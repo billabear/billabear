@@ -19,15 +19,18 @@ use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/payment', name: 'api_v1.0_payment_list', methods: ['GET'])]
     public function listPayment(
         Request $request,
@@ -35,6 +38,7 @@ class PaymentController
         SerializerInterface $serializer,
         PaymentDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request for list of all payments');
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
@@ -79,6 +83,7 @@ class PaymentController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to refund payment', ['payment_id' => $request->get('id')]);
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->findById($request->get('id'));

@@ -16,16 +16,19 @@ use BillaBear\Pdf\InvoicePdfGenerator;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class InvoiceController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/customer/{customerId}/invoices', name: 'billabear_api_invoice_getinvoicesforcustomer', methods: ['GET'])]
     public function getInvoicesForCustomer(
         Request $request,
@@ -34,6 +37,8 @@ class InvoiceController
         InvoiceDataMapper $invoiceDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received API request for customer invoices', ['customer_id' => $request->get('customerId')]);
+
         try {
             $customer = $customerRepository->getById($request->get('customerId'));
         } catch (NoEntityFoundException $e) {
@@ -56,6 +61,7 @@ class InvoiceController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceCharger $invoiceCharger
     ): Response {
+        $this->getLogger()->info('Received an API request to charge invoice', ['invoice_id' => $request->get('id')]);
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
@@ -74,6 +80,7 @@ class InvoiceController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoicePdfGenerator $generator,
     ): Response {
+        $this->getLogger()->info('Received an API request to download invoice', ['invoice_id' => $request->get('id')]);
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));

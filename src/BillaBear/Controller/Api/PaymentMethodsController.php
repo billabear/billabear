@@ -20,15 +20,18 @@ use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
 use Parthenon\Billing\PaymentMethod\DeleterInterface;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentMethodsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/customer/{customerId}/payment-methods/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
         Request $request,
@@ -36,6 +39,7 @@ class PaymentMethodsController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to start frontend payment token', ['customer_id' => $request->get('customerId')]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
@@ -60,6 +64,7 @@ class PaymentMethodsController
         ValidatorInterface $validator,
         PaymentMethodsDataMapper $paymentDetailsFactory,
     ): Response {
+        $this->getLogger()->info('Received request to finish frontend payment token', ['customer_id' => $request->get('customerId')]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
@@ -97,6 +102,10 @@ class PaymentMethodsController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
+        $this->getLogger()->info('Received request to make payment details default', [
+            'customer_id' => $request->get('customerId'),
+            'payment_details_id' => $request->get('paymentDetailsId'),
+        ]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
@@ -123,6 +132,10 @@ class PaymentMethodsController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
+        $this->getLogger()->info('Received request to delete payment details', [
+            'customer_id' => $request->get('customerId'),
+            'payment_details_id' => $request->get('paymentDetailsId'),
+        ]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
@@ -150,6 +163,9 @@ class PaymentMethodsController
         PaymentMethodsDataMapper $paymentMethodsFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list customer payment methods', [
+            'customer_id' => $request->get('customerId'),
+        ]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));

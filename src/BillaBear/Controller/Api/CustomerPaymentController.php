@@ -16,14 +16,17 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CustomerPaymentController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/customer/{id}/payment', name: 'api_v1.0_customer_payment_list', methods: ['GET'])]
     public function listPayment(
         Request $request,
@@ -32,6 +35,7 @@ class CustomerPaymentController
         SerializerInterface $serializer,
         PaymentDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received a request for a list for payments for customer', ['customer_id' => $request->get('id')]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));

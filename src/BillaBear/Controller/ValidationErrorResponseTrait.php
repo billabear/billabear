@@ -21,6 +21,7 @@ trait ValidationErrorResponseTrait
                 $propertyPath = $error->getPropertyPath();
                 $errorOutput[$propertyPath] = $error->getMessage();
             }
+            $this->logger?->info('Errors found in request');
 
             return new JsonResponse([
                 'errors' => $errorOutput,

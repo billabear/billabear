@@ -16,14 +16,17 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CustomerRefundController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/customer/{id}/refund', name: 'api_v1.0_customer_refund_list', methods: ['GET'])]
     public function listRefund(
         Request $request,
@@ -32,6 +35,8 @@ class CustomerRefundController
         SerializerInterface $serializer,
         RefundDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received API request for list refunds for customer', ['customer_id' => $request->get('id')]);
+
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));

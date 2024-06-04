@@ -13,15 +13,18 @@ use BillaBear\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ReceiptController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/receipt/{id}/download', name: 'billabear_api_receipt_downloadreceipt', methods: ['GET'])]
     public function downloadReceipt(
         Request $request,
@@ -30,6 +33,7 @@ class ReceiptController
         ReceiptPdfGenerator $generator,
         ReceiptProvider $provider,
     ): Response {
+        $this->getLogger()->info('Received request to download receipt', ['receipt_id' => $request->get('id')]);
         try {
             /** @var Receipt $receipt */
             $receipt = $receiptRepository->getById($request->get('id'));

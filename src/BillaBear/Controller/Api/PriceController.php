@@ -18,15 +18,18 @@ use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceController
 {
+    use LoggerAwareTrait;
+
     #[Route('/api/v1/product/{id}/price', name: 'api_v1.0_product_price_create', methods: ['POST'])]
     public function createPrice(
         Request $request,
@@ -37,6 +40,9 @@ class PriceController
         PriceDataMapper $priceFactory,
         PriceRegisterInterface $priceRegister,
     ) {
+        $this->getLogger()->info('Received request to create price for product', [
+            'product_id' => $request->get('id'),
+        ]);
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
@@ -85,6 +91,9 @@ class PriceController
         SerializerInterface $serializer,
         PriceDataMapper $priceFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list prices for product', [
+            'product_id' => $request->get('id'),
+        ]);
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 

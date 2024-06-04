@@ -12,16 +12,18 @@ use BillaBear\Checkout\CheckoutCreator;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\CheckoutDataMapper;
 use BillaBear\Dto\Request\Api\Checkout\CreateCheckout;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CheckoutController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/api/v1/checkout', name: 'app_api_checkout_createcheckout', methods: ['POST'])]
     public function createCheckout(
@@ -31,6 +33,7 @@ class CheckoutController
         ValidatorInterface $validator,
         CheckoutDataMapper $checkoutDataMapper,
     ): Response {
+        $this->getLogger()->info('Received an API request to create a checkout');
         /** @var CreateCheckout $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateCheckout::class, 'json');
         $errors = $validator->validate($dto);

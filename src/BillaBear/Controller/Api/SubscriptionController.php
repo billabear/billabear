@@ -37,7 +37,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -58,6 +58,7 @@ class SubscriptionController
         SubscriptionDataMapper $subscriptionFactory,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to list customer subscriptions', ['customer_id' => $request->get('id')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
         } catch (NoEntityFoundException $exception) {
@@ -91,6 +92,7 @@ class SubscriptionController
         TransactionManager $transactionManager,
         FrontendAddProcessorInterface $frontendAddProcessor,
     ): Response {
+        $this->getLogger()->info('Received request to create a customer subscriptions', ['customer_id' => $request->get('id')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
         } catch (NoEntityFoundException $exception) {
@@ -168,6 +170,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionDataMapper $subscriptionFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list all subscriptions');
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -214,6 +217,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionDataMapper $subscriptionFactory,
     ): Response {
+        $this->getLogger()->info('Received request to view subscriptions', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -236,6 +240,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to cancel subscriptions', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -284,6 +289,7 @@ class SubscriptionController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
+        $this->getLogger()->info('Received request to update payment method for subscriptions', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -324,6 +330,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to change subscription plan', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));

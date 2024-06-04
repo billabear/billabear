@@ -16,16 +16,18 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\UpdateAction\AddSeatToSubscription;
 use BillaBear\Subscription\UpdateAction\RemoveSeatFromSubscription;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionSeatsController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/api/v1/subscription/{id}/seats/add', name: 'app_api_subscriptionseats_addseat', methods: ['POST'])]
     public function addSeat(
@@ -35,6 +37,7 @@ class SubscriptionSeatsController
         AddSeatToSubscription $addSeatToSubscription,
         ValidatorInterface $validator,
     ) {
+        $this->getLogger()->info('Received API request to add seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
@@ -63,6 +66,7 @@ class SubscriptionSeatsController
         RemoveSeatFromSubscription $removeSeatFromSubscription,
         ValidatorInterface $validator,
     ) {
+        $this->getLogger()->info('Received API request to remove seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));

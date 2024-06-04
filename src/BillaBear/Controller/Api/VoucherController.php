@@ -14,15 +14,17 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\VoucherRepositoryInterface;
 use BillaBear\Voucher\VoucherApplier;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class VoucherController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/api/v1/customer/{id}/voucher', name: 'app_api_voucher_applycode', methods: ['POST'])]
     public function applyCode(
@@ -33,6 +35,7 @@ class VoucherController
         CustomerRepositoryInterface $customerRepository,
         VoucherApplier $applier,
     ) {
+        $this->getLogger()->info('Received API request apply voucher to customer', ['customer_id' => $request->get('id')]);
         try {
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {

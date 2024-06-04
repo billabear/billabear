@@ -21,10 +21,11 @@ use BillaBear\Entity\WebhookEvent;
 use BillaBear\Repository\WebhookEndpointRepositoryInterface;
 use BillaBear\Repository\WebhookEventRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,6 +33,7 @@ class WebhookController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/developer/webhook', name: 'app_app_developer_webhook_createwebhook', methods: ['POST'])]
     public function createWebhook(
@@ -41,6 +43,7 @@ class WebhookController
         WebhookEndpointDataMapper $webhookEndpointDataMapper,
         WebhookEndpointRepositoryInterface $repository,
     ): Response {
+        $this->getLogger()->info('Received app request to create webhook');
         $dto = $serializer->deserialize($request->getContent(), CreateWebhookEndpoint::class, 'json');
         $errors = $validator->validate($dto);
         $errorResponse = $this->handleErrors($errors);
@@ -64,6 +67,7 @@ class WebhookController
         SerializerInterface $serializer,
         WebhookEndpointDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received app request to list webhooks');
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -108,6 +112,7 @@ class WebhookController
         SerializerInterface $serializer,
         WebhookEndpointDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received app request to view webhook'.['webhook_id' => $request->get('id')]);
         try {
             $webhookEndpoint = $repository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -131,6 +136,8 @@ class WebhookController
         SerializerInterface $serializer,
         WebhookEventDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received app request to list webhook event');
+
         return $this->crudList($request, $repository, $serializer, $factory);
     }
 
@@ -142,6 +149,7 @@ class WebhookController
         WebhookEventDataMapper $factory,
         WebhookEventResponseDataMapper $responseDataMapper,
     ): Response {
+        $this->getLogger()->info('Received app request to view webhook event', ['webhook_event_id' => $request->get('id')]);
         try {
             /** @var WebhookEvent $event */
             $event = $repository->findById($request->get('id'));
