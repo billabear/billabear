@@ -147,10 +147,10 @@ class SubscriptionController
             $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
             $transactionManager->finish();
         } catch (PaymentFailureException $e) {
-            $this->getLogger()->warning('Payment failure during creation', ['exception_message' => $e->getMessage(), 'exception_file' => $e->getFile(), 'exception_line' => $e->getLine()]);
+            $this->getLogger()->warning('Payment failure during creation', ['reason' => $e->getReason()->value]);
             $transactionManager->abort();
 
-            return new JsonResponse([], JsonResponse::HTTP_PAYMENT_REQUIRED);
+            return new JsonResponse(['reason' => $e->getReason()->value], JsonResponse::HTTP_PAYMENT_REQUIRED);
         } catch (\Throwable $e) {
             $this->getLogger()->error('Error while creating subscription', ['exception_message' => $e->getMessage(), 'exception_file' => $e->getFile(), 'exception_line' => $e->getLine()]);
             $transactionManager->abort();
