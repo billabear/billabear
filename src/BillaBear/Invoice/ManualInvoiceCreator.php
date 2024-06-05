@@ -23,9 +23,12 @@ use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
 class ManualInvoiceCreator
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
@@ -33,7 +36,6 @@ class ManualInvoiceCreator
         private SubscriptionFactory $subscriptionManager,
         private InvoiceGenerator $invoiceGenerator,
         private InvoiceCharger $invoiceCharger,
-        private DueDateDecider $dateDecider,
         private InvoiceRepositoryInterface $invoiceRepository,
         private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
@@ -79,7 +81,11 @@ class ManualInvoiceCreator
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
             try {
                 $this->invoiceCharger->chargeInvoice($invoice);
-            } catch (PaymentFailureException) {
+            } catch (PaymentFailureException $e) {
+                $this->getLogger()->warning(
+                    'Attempted to charge manually created invoice failed',
+                    ['reason' => $e->getReason()->value]
+                );
             }
         }
 

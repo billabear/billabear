@@ -30,11 +30,14 @@ use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private SubscriptionFactory $subscriptionFactory,
         private PaymentCardRepositoryInterface $paymentDetailsRepository,
@@ -125,7 +128,11 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
                     try {
                         $this->invoiceCharger->chargeInvoice($invoice);
-                    } catch (PaymentFailureException) {
+                    } catch (PaymentFailureException $e) {
+                        $this->getLogger()->warning(
+                            'Failed to make payment charge when changing subscription price',
+                            ['reason' => $e->getReason()->value]
+                        );
                     }
                 }
 
@@ -157,7 +164,11 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
                     try {
                         $this->invoiceCharger->chargeInvoice($invoice);
-                    } catch (PaymentFailureException) {
+                    } catch (PaymentFailureException $e) {
+                        $this->getLogger()->warning(
+                            'Failed to make payment charge when changing subscription plan',
+                            ['reason' => $e->getReason()->value]
+                        );
                     }
                 }
 
