@@ -13,6 +13,8 @@ use BillaBear\Entity\Payment;
 use BillaBear\Event\InvoicePaid;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Obol\Exception\PaymentFailureException;
+use Obol\Exception\ProviderFailureException;
 use Obol\Model\Charge;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -21,10 +23,13 @@ use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceCharger
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private ProviderInterface $provider,
         private PaymentCardRepositoryInterface $paymentCardRepository,
@@ -49,10 +54,22 @@ class InvoiceCharger
         $charge->setAmount($invoice->getTotalMoney());
         $charge->setBillingDetails($billingDetails);
 
-        $response = $this->provider->payments()->chargeCardOnFile($charge);
+        try {
+            $response = $this->provider->payments()->chargeCardOnFile($charge);
+        } catch (PaymentFailureException $exception) {
+            $this->getLogger()->warning('Failed to charge invoice', ['reason' => $exception->getReason()->value, 'invoice_id' => $invoice->getId()]);
+            $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $exception->getReason());
 
-        if (!$response->isSuccessful()) {
-            $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $response);
+            return false;
+        } catch (ProviderFailureException $exception) {
+            $this->getLogger()->warning('Failed to charge invoice', [
+                'exception_message' => $exception->getMessage(),
+                'exception_file' => $exception->getFile(),
+                'exception_line' => $exception->getLine(),
+                'invoice_id' => $invoice->getId(),
+            ]);
+
+            $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $exception->getMessage());
 
             return false;
         }
@@ -76,6 +93,8 @@ class InvoiceCharger
         $invoice->setPayments(new ArrayCollection([$payment]));
         $invoice->setPaid(true);
         $this->invoiceRepository->save($invoice);
+
+        $this->getLogger()->info('Invoice has successfully been charged', ['invoice_id' => $invoice->getId()]);
 
         $this->eventDispatcher->dispatch(new InvoicePaid($invoice), InvoicePaid::NAME);
         $this->eventDispatcher->dispatch(new PaymentCreated($payment, true), PaymentCreated::NAME);

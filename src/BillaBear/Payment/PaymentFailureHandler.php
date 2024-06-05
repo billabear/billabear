@@ -14,7 +14,7 @@ use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Event\PaymentFailed;
 use BillaBear\Repository\PaymentAttemptRepositoryInterface;
 use BillaBear\Repository\PaymentFailureProcessRepositoryInterface;
-use Obol\Model\ChargeCardResponse;
+use Obol\Model\Enum\ChargeFailureReasons;
 use Obol\Model\Events\ChargeFailed;
 use Parthenon\Billing\Entity\Payment;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,9 +31,9 @@ class PaymentFailureHandler
     ) {
     }
 
-    public function handleInvoiceAndResponse(Invoice $invoice, ChargeCardResponse $cardResponse): void
+    public function handleInvoiceAndResponse(Invoice $invoice, ChargeFailureReasons|string $chargeFailureReasons): void
     {
-        $paymentAttempt = $this->paymentAttemptFactory->createFromInvoice($invoice, $cardResponse->getChargeFailure()->getReason());
+        $paymentAttempt = $this->paymentAttemptFactory->createFromInvoice($invoice, $chargeFailureReasons);
         $this->paymentAttemptRepository->save($paymentAttempt);
 
         $this->process($paymentAttempt);

@@ -12,19 +12,17 @@ use BillaBear\Dto\Generic\App\PaymentAttempt as AppDto;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\PaymentAttempt as Entity;
 use Obol\Model\Enum\ChargeFailureReasons;
-use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\Payment;
 
 class PaymentAttemptDataMapper
 {
     public function __construct(
-        private ProviderInterface $provider,
         private InvoiceDataMapper $invoiceDataMapper,
         private CustomerDataMapper $customerDataMapper,
     ) {
     }
 
-    public function createFromInvoice(Invoice $invoice, ChargeFailureReasons $reason): Entity
+    public function createFromInvoice(Invoice $invoice, ChargeFailureReasons|string $reason): Entity
     {
         $paymentAttempt = new Entity();
         $paymentAttempt->setInvoice($invoice);
@@ -33,7 +31,7 @@ class PaymentAttemptDataMapper
         $paymentAttempt->setAmount($invoice->getAmountDue());
         $paymentAttempt->setCurrency($invoice->getCurrency());
         $paymentAttempt->setCreatedAt(new \DateTime());
-        $paymentAttempt->setFailureReason($reason->value);
+        $paymentAttempt->setFailureReason($reason instanceof ChargeFailureReasons ? $reason->value : $reason);
 
         return $paymentAttempt;
     }
