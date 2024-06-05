@@ -58,12 +58,12 @@ class InvoiceCharger
         try {
             $response = $this->provider->payments()->chargeCardOnFile($charge);
         } catch (PaymentFailureException $exception) {
-            $this->getLogger()->warning('Failed to charge invoice', ['reason' => $exception->getReason()->value, 'invoice_id' => $invoice->getId()]);
+            $this->getLogger()->warning('Failed to charge invoice with payment failure', ['reason' => $exception->getReason()->value, 'invoice_id' => $invoice->getId()]);
             $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $exception->getReason());
 
             throw $exception;
         } catch (ProviderFailureException $exception) {
-            $this->getLogger()->warning('Failed to charge invoice', [
+            $this->getLogger()->warning('Failed to charge invoice with general payment provider failure', [
                 'exception_message' => $exception->getMessage(),
                 'exception_file' => $exception->getFile(),
                 'exception_line' => $exception->getLine(),

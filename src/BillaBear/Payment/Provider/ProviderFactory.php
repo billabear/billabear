@@ -11,6 +11,7 @@ namespace BillaBear\Payment\Provider;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Obol\Factory;
 use Obol\Provider\ProviderInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class ProviderFactory
@@ -19,6 +20,7 @@ class ProviderFactory
         #[Autowire('%parthenon_billing_payments_obol_config%')]
         private array $obolConfig,
         private SettingsRepositoryInterface $obolSettingsRepository,
+        private LoggerInterface $obolLogger,
     ) {
     }
 
