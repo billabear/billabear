@@ -1,6 +1,7 @@
 monolog:
     channels:
-        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists\
+        - obol
 
 when@dev:
     monolog:
