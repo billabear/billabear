@@ -134,6 +134,8 @@ class SubscriptionController
             try {
                 $paymentDetails = $paymentDetailsRepository->getDefaultPaymentCardForCustomer($customer);
             } catch (NoEntityFoundException $e) {
+                $this->getLogger()->info('No default payment method found');
+
                 return new JsonResponse(['error' => 'No default payment method'], JsonResponse::HTTP_NOT_ACCEPTABLE);
             }
         }

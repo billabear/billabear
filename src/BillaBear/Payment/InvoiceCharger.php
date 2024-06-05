@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Obol\Exception\PaymentFailureException;
 use Obol\Exception\ProviderFailureException;
 use Obol\Model\Charge;
+use Obol\Model\Enum\ChargeFailureReasons;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Event\PaymentCreated;
@@ -60,7 +61,7 @@ class InvoiceCharger
             $this->getLogger()->warning('Failed to charge invoice', ['reason' => $exception->getReason()->value, 'invoice_id' => $invoice->getId()]);
             $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $exception->getReason());
 
-            return false;
+            throw $exception;
         } catch (ProviderFailureException $exception) {
             $this->getLogger()->warning('Failed to charge invoice', [
                 'exception_message' => $exception->getMessage(),
@@ -71,7 +72,7 @@ class InvoiceCharger
 
             $this->paymentFailureHandler->handleInvoiceAndResponse($invoice, $exception->getMessage());
 
-            return false;
+            throw new PaymentFailureException(ChargeFailureReasons::GENERAL_DECLINE, $exception);
         }
 
         /** @var Payment $payment */
