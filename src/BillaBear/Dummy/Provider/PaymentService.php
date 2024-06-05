@@ -15,7 +15,6 @@ use Obol\Model\CardFile;
 use Obol\Model\CardOnFileResponse;
 use Obol\Model\Charge;
 use Obol\Model\ChargeCardResponse;
-use Obol\Model\ChargeFailure;
 use Obol\Model\Enum\ChargeFailureReasons;
 use Obol\Model\FrontendCardProcess;
 use Obol\Model\PaymentDetails;
@@ -29,7 +28,7 @@ class PaymentService implements PaymentServiceInterface
     public function startSubscription(Subscription $subscription): SubscriptionCreationResponse
     {
         if ('ref_fails' === $subscription->getBillingDetails()->getStoredPaymentReference()) {
-            throw new PaymentFailureException('Dummy failure');
+            throw new PaymentFailureException(ChargeFailureReasons::LACK_OF_FUNDS);
         }
         $paymentDetails = new PaymentDetails();
         $paymentDetails->setAmount($subscription->getTotalCost());
@@ -77,12 +76,7 @@ class PaymentService implements PaymentServiceInterface
     public function chargeCardOnFile(Charge $cardFile): ChargeCardResponse
     {
         if ('ref_fails' === $cardFile->getBillingDetails()->getStoredPaymentReference()) {
-            $chargeCardResponse = new ChargeCardResponse();
-            $chargeCardResponse->setSuccessful(false);
-            $chargeCardResponse->setChargeFailure(new ChargeFailure());
-            $chargeCardResponse->getChargeFailure()->setReason(ChargeFailureReasons::LACK_OF_FUNDS);
-
-            return $chargeCardResponse;
+            throw new PaymentFailureException(ChargeFailureReasons::LACK_OF_FUNDS);
         }
 
         $paymentDetails = new PaymentDetails();
