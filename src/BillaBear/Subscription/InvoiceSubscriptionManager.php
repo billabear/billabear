@@ -14,6 +14,7 @@ use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Security\ApiUser;
 use Obol\Exception\PaymentFailureException;
+use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -56,7 +57,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
             if (!$this->invoiceCharger->chargeInvoice($invoice)) {
-                throw new PaymentFailureException();
+                throw new PaymentFailureException(ChargeFailureReasons::GENERAL_DECLINE);
             }
         }
 
