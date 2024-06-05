@@ -35,6 +35,6 @@ class ProviderFactory
             $config = $this->obolConfig;
         }
 
-        return Factory::create($config);
+        return Factory::create($config, $this->obolLogger);
     }
 }
