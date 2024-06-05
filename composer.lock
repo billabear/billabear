@@ -2830,12 +2830,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/obol.git",
-                "reference": "7e494e7ac0d9eb81c26f64debbd8c816effcdfac"
+                "reference": "c2c0b41a54f6cb91023856a1e8e1bf5e66dff495"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/obol/zipball/7e494e7ac0d9eb81c26f64debbd8c816effcdfac",
-                "reference": "7e494e7ac0d9eb81c26f64debbd8c816effcdfac",
+                "url": "https://api.github.com/repos/getparthenon/obol/zipball/c2c0b41a54f6cb91023856a1e8e1bf5e66dff495",
+                "reference": "c2c0b41a54f6cb91023856a1e8e1bf5e66dff495",
                 "shasum": ""
             },
             "require": {
@@ -2870,9 +2870,9 @@
             "description": "A PHP 8.1+ Payment Gateway Abstraction library",
             "support": {
                 "issues": "https://github.com/getparthenon/obol/issues",
-                "source": "https://github.com/getparthenon/obol/tree/v0.2.5"
+                "source": "https://github.com/getparthenon/obol/tree/main"
             },
-            "time": "2024-06-05T17:28:28+00:00"
+            "time": "2024-06-05T20:31:35+00:00"
         },
         {
             "name": "parthenon/parthenon",
@@ -2880,12 +2880,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/getparthenon/parthenon.git",
-                "reference": "cb88bc2174be804c6e1b7272188b23be1db3a422"
+                "reference": "ca991ccc2215fc83ac77e298a672c0b78602af9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/cb88bc2174be804c6e1b7272188b23be1db3a422",
-                "reference": "cb88bc2174be804c6e1b7272188b23be1db3a422",
+                "url": "https://api.github.com/repos/getparthenon/parthenon/zipball/ca991ccc2215fc83ac77e298a672c0b78602af9b",
+                "reference": "ca991ccc2215fc83ac77e298a672c0b78602af9b",
                 "shasum": ""
             },
             "require": {
@@ -2968,7 +2968,7 @@
             "support": {
                 "source": "https://github.com/getparthenon/parthenon/tree/main"
             },
-            "time": "2024-06-05T19:06:12+00:00"
+            "time": "2024-06-05T20:31:31+00:00"
         },
         {
             "name": "php-http/client-common",
