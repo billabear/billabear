@@ -17,6 +17,7 @@ use BillaBear\Entity\Quote;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Quotes\QuoteConverter;
 use BillaBear\Repository\QuoteRepositoryInterface;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
@@ -94,13 +95,19 @@ class QuoteController
         $paymentCard = $addCardByTokenDriver->createPaymentDetailsFromToken($quote->getCustomer(), $processPay->getToken());
         $invoice = $quoteConverter->convertToInvoice($quote);
         $quoteRepository->save($quote);
-        $success = $invoiceCharger->chargeInvoice($invoice, $paymentCard);
-        if ($success) {
+
+        $success = true;
+        $failureReason = false;
+        try {
+            $invoiceCharger->chargeInvoice($invoice, $paymentCard);
             foreach ($invoice->getSubscriptions() as $subscription) {
                 $eventDispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
             }
+        } catch (PaymentFailureException $exception) {
+            $success = false;
+            $failureReason = $exception->getReason()->value;
         }
 
-        return new JsonResponse(['success' => $success]);
+        return new JsonResponse(['success' => $success, 'failure_reason' => $failureReason]);
     }
 }

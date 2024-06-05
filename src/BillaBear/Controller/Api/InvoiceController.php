@@ -15,6 +15,7 @@ use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Pdf\InvoicePdfGenerator;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -69,9 +70,16 @@ class InvoiceController
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $invoiceCharger->chargeInvoice($invoice);
+        $failureReason = null;
+        $statusCode = JsonResponse::HTTP_OK;
+        try {
+            $invoiceCharger->chargeInvoice($invoice);
+        } catch (PaymentFailureException $e) {
+            $failureReason = $e->getReason()->value;
+            $statusCode = JsonResponse::HTTP_PAYMENT_REQUIRED;
+        }
 
-        return new JsonResponse(['paid' => $invoice->isPaid()], JsonResponse::HTTP_OK);
+        return new JsonResponse(['paid' => $invoice->isPaid(), 'failure_reason' => $failureReason], $statusCode);
     }
 
     #[Route('/api/v1/invoice/{id}/download', name: 'billabear_api_invoice_downloadinvoice', methods: ['GET'])]

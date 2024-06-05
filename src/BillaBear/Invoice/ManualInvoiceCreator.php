@@ -19,6 +19,7 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -76,7 +77,10 @@ class ManualInvoiceCreator
         }
 
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
-            $this->invoiceCharger->chargeInvoice($invoice);
+            try {
+                $this->invoiceCharger->chargeInvoice($invoice);
+            } catch (PaymentFailureException) {
+            }
         }
 
         return $invoice;

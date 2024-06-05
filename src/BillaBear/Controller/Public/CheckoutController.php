@@ -23,6 +23,7 @@ use BillaBear\Quotes\QuoteConverter;
 use BillaBear\Repository\CheckoutRepositoryInterface;
 use BillaBear\Repository\CheckoutSessionRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
@@ -138,8 +139,12 @@ class CheckoutController
         $paymentCard = $addCardByTokenDriver->createPaymentDetailsFromToken($checkoutSession->getCustomer(), $inputDto->getToken());
         $invoice = $quoteConverter->convertToInvoice($checkoutSession);
         $checkoutSessionRepository->save($checkoutSession);
-        $success = $invoiceCharger->chargeInvoice($invoice, $paymentCard);
-        if ($success) {
+
+        $success = true;
+        $failureReason = null;
+
+        try {
+            $invoiceCharger->chargeInvoice($invoice, $paymentCard);
             foreach ($invoice->getSubscriptions() as $subscription) {
                 $eventDispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
             }
@@ -148,8 +153,11 @@ class CheckoutController
                 $checkout->setValid(false);
                 $checkoutRepository->save($checkout);
             }
+        } catch (PaymentFailureException $e) {
+            $success = false;
+            $failureReason = $e->getReason()->value;
         }
 
-        return new JsonResponse(['success' => $success]);
+        return new JsonResponse(['success' => $success, 'failure_reason' => $failureReason]);
     }
 }

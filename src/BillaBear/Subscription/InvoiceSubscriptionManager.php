@@ -14,7 +14,6 @@ use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Security\ApiUser;
 use Obol\Exception\PaymentFailureException;
-use Obol\Model\Enum\ChargeFailureReasons;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -56,9 +55,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
         if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
-            if (!$this->invoiceCharger->chargeInvoice($invoice)) {
-                throw new PaymentFailureException(ChargeFailureReasons::GENERAL_DECLINE);
-            }
+            $this->invoiceCharger->chargeInvoice($invoice);
         }
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
@@ -126,7 +123,10 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                 $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $subscription->getSubscriptionPlan(), $subscription->getSubscriptionPlan(), $oldPrice, $price);
 
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
-                    $this->invoiceCharger->chargeInvoice($invoice);
+                    try {
+                        $this->invoiceCharger->chargeInvoice($invoice);
+                    } catch (PaymentFailureException) {
+                    }
                 }
 
                 $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
@@ -155,7 +155,10 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                 $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price);
 
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
-                    $this->invoiceCharger->chargeInvoice($invoice);
+                    try {
+                        $this->invoiceCharger->chargeInvoice($invoice);
+                    } catch (PaymentFailureException) {
+                    }
                 }
 
                 $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);

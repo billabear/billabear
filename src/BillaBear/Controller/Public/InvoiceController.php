@@ -16,6 +16,7 @@ use BillaBear\Dto\Response\Portal\Invoice\ViewPay;
 use BillaBear\Entity\Invoice;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -83,8 +84,15 @@ class InvoiceController
             return $errorResponse;
         }
         $paymentCard = $addCardByTokenDriver->createPaymentDetailsFromToken($invoice->getCustomer(), $processPay->getToken());
-        $success = $invoiceCharger->chargeInvoice($invoice, $paymentCard);
+        $success = true;
+        $failureReason = null;
+        try {
+            $invoiceCharger->chargeInvoice($invoice, $paymentCard);
+        } catch (PaymentFailureException $exception) {
+            $success = false;
+            $failureReason = $exception->getReason()->value;
+        }
 
-        return new JsonResponse(['success' => $success]);
+        return new JsonResponse(['success' => $success, 'failure_reason' => $failureReason]);
     }
 }

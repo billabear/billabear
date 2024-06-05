@@ -15,6 +15,7 @@ use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\Subscription;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -66,7 +67,10 @@ class InvoiceCreation
                     $this->schedulerProvider->getScheduler($subscription->getPrice())->scheduleNextDueDate($subscription);
                     $subscription->setUpdatedAt(new \DateTime('now'));
                     $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($subscription->getCustomer(), [$subscription]);
-                    $this->invoiceCharger->chargeInvoice($invoice, createdAt: $subscription->getStartOfCurrentPeriod());
+                    try {
+                        $this->invoiceCharger->chargeInvoice($invoice, createdAt: $subscription->getStartOfCurrentPeriod());
+                    } catch (PaymentFailureException) {
+                    }
                 } while ($subscription->getValidUntil() < $now);
             }
         } while (!empty($data));

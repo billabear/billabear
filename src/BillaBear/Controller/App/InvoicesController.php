@@ -20,6 +20,7 @@ use BillaBear\Invoice\ManualInvoiceCreator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Pdf\InvoicePdfGenerator;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Athena\Filters\BoolFilter;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -143,9 +144,14 @@ class InvoicesController
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $invoiceCharger->chargeInvoice($invoice);
+        $failureReason = null;
+        try {
+            $invoiceCharger->chargeInvoice($invoice);
+        } catch (PaymentFailureException $exception) {
+            $failureReason = $exception->getReason()->value;
+        }
 
-        return new JsonResponse(['paid' => $invoice->isPaid()]);
+        return new JsonResponse(['paid' => $invoice->isPaid(), 'failure_reason' => $failureReason]);
     }
 
     #[Route('/app/invoice/{id}/view', name: 'app_invoice_view', methods: ['GET'])]

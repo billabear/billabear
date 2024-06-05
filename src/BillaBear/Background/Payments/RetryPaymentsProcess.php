@@ -10,6 +10,7 @@ namespace BillaBear\Background\Payments;
 
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\PaymentFailureProcessRepositoryInterface;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Common\LoggerAwareTrait;
 
 class RetryPaymentsProcess
@@ -37,7 +38,10 @@ class RetryPaymentsProcess
                 continue;
             }
 
-            $this->invoiceCharger->chargeInvoice($invoice);
+            try {
+                $this->invoiceCharger->chargeInvoice($invoice);
+            } catch (PaymentFailureException) {
+            }
         }
 
         $this->getLogger()->info('Finished payment retries');
