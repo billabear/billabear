@@ -15,6 +15,7 @@ use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
+use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Common\LoggerAwareTrait;
 
@@ -80,7 +81,11 @@ class GenerateNewInvoices
             $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
             $this->transactionManager->finish();
             if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
-                $this->invoiceCharger->chargeInvoice($invoice);
+                try {
+                    $this->invoiceCharger->chargeInvoice($invoice);
+                } catch (PaymentFailureException $e) {
+                    $this->getLogger()->info('Tried to charge invoice for customer', ['failure_reason' => $e->getReason()->value]);
+                }
             }
         } catch (\Throwable $exception) {
             $this->transactionManager->abort();
