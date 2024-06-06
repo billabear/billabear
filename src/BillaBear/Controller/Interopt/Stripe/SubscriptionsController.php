@@ -18,15 +18,18 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\User\UserProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/interopt/stripe/v1/subscriptions', name: 'app_interopt_stripe_subscriptions_list', methods: ['GET'])]
     public function listAction(
         Request $request,
@@ -34,6 +37,8 @@ class SubscriptionsController
         SubscriptionDataMapper $subscriptionDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Interopt stripe layer list subscriptions');
+
         $firstId = $request->get('ending_before');
         $lastId = $request->get('starting_after');
         $limit = $request->get('limit', 25);
@@ -67,6 +72,8 @@ class SubscriptionsController
         SubscriptionDataMapper $subscriptionDataMapper,
         UserProvider $userProvider,
     ): Response {
+        $this->getLogger()->info('Interopt stripe layer cancel subscriptions');
+
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
