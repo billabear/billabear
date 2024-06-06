@@ -22,13 +22,16 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class FinancialController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/stats/lifetime', name: 'app_app_stats_financial_lifetimevalue', methods: ['GET'])]
     public function lifetimeValue(
         Request $request,
@@ -42,6 +45,8 @@ class FinancialController
         LifeTimeValueCalculation $calculation,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to view lifetime value report');
+
         $currency = Currency::of($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
 
         $currencyConverter = new CurrencyConverter($exchangeRateProvider);
