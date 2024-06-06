@@ -27,12 +27,13 @@ use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Subscription\MassChange\RevenueEstimator;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Export\Engine\EngineInterface;
 use Parthenon\Export\ExportRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,11 +42,11 @@ class MassChangeController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/subscription/mass-change/create', name: 'app_app_subscriptions_masschange_createchangeread', methods: ['GET'])]
     public function createChangeRead(
-        Request $request,
         SerializerInterface $serializer,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
@@ -54,6 +55,8 @@ class MassChangeController
         BrandSettingsRepositoryInterface $brandSettingsRepository,
         BrandSettingsDataMapper $brandSettingsDataMapper,
     ) {
+        $this->getLogger()->info('Received request to read create mass subscription change');
+
         $prices = $priceRepository->getAll();
         $plans = $subscriptionPlanRepository->getAll();
         $brands = $brandSettingsRepository->getAll();
@@ -76,6 +79,8 @@ class MassChangeController
         MassChangeDataMapper $changeDataMapper,
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
     ) {
+        $this->getLogger()->info('Received request to write create mass subscription change');
+
         $dto = $serializer->deserialize($request->getContent(), CreateMassChange::class, 'json');
         $errors = $validator->validate($dto);
         $errorResponse = $this->handleErrors($errors);
@@ -101,6 +106,7 @@ class MassChangeController
         MassChangeDataMapper $changeDataMapper,
         RevenueEstimator $revenueEstimator,
     ) {
+        $this->getLogger()->info('Received request to read create mass subscription estimate');
         $dto = $serializer->deserialize($request->getContent(), EstimateMassChange::class, 'json');
         $errors = $validator->validate($dto);
         $errorResponse = $this->handleErrors($errors);
@@ -124,6 +130,8 @@ class MassChangeController
         MassChangeDataMapper $changeDataMapper,
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
     ) {
+        $this->getLogger()->info('Received request to list mass subscriptions');
+
         return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper, 'createdAt');
     }
 
@@ -135,6 +143,8 @@ class MassChangeController
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
         RevenueEstimator $revenueEstimator,
     ) {
+        $this->getLogger()->info('Received request to view mass subscriptions', ['mass_change_id' => $request->get('id')]);
+
         try {
             $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -155,6 +165,8 @@ class MassChangeController
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
         EngineInterface $engine,
     ) {
+        $this->getLogger()->info('Received request to export mass subscriptions affected users', ['mass_change_id' => $request->get('id')]);
+
         try {
             $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -180,6 +192,8 @@ class MassChangeController
         Request $request,
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
     ) {
+        $this->getLogger()->info('Received request to cancel mass subscriptions', ['mass_change_id' => $request->get('id')]);
+
         try {
             $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -196,6 +210,7 @@ class MassChangeController
         Request $request,
         MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
     ) {
+        $this->getLogger()->info('Received request to uncancel mass subscriptions', ['mass_change_id' => $request->get('id')]);
         try {
             $entity = $massSubscriptionChangeRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {

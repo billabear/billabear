@@ -23,16 +23,19 @@ use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionPlanController
 {
+    use LoggerAwareTrait;
+
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/plan-creation', name: 'app_product_plan_create_info', methods: ['get'])]
     public function planCreationInfo(
@@ -44,6 +47,8 @@ class SubscriptionPlanController
         PriceDataMapper $priceFactory,
         SerializerInterface $serializer
     ): Response {
+        $this->getLogger()->info('Received request to read create plan', ['product_id' => $request->get('id')]);
+
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
@@ -76,6 +81,8 @@ class SubscriptionPlanController
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {
+        $this->getLogger()->info('Received request to write create plan', ['product_id' => $request->get('id')]);
+
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
@@ -115,6 +122,7 @@ class SubscriptionPlanController
         SerializerInterface $serializer,
         SubscriptionPlanDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to write create plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
         try {
             $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -137,6 +145,8 @@ class SubscriptionPlanController
         SerializerInterface $serializer,
         SubscriptionPlanDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to delete plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
+
         try {
             /** @var SubscriptionPlan $subscriptionPlan */
             $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));
@@ -163,6 +173,8 @@ class SubscriptionPlanController
         PriceRepositoryInterface $priceRepository,
         PriceDataMapper $priceFactory,
     ): Response {
+        $this->getLogger()->info('Received request to read update plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
+
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('productId'));
@@ -201,6 +213,8 @@ class SubscriptionPlanController
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
     ) {
+        $this->getLogger()->info('Received request to write update plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
+
         try {
             /** @var SubscriptionPlan $subscriptionPlan */
             $subscriptionPlan = $subscriptionPlanRepository->getById($request->get('id'));

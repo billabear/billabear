@@ -43,10 +43,11 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -55,6 +56,7 @@ class SubscriptionController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_view', methods: ['GET'])]
@@ -69,6 +71,8 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionRepositoryInterface $subscriptionRepository,
     ): Response {
+        $this->getLogger()->info('Received a request to view create subscription');
+
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
         } catch (NoEntityFoundException $exception) {
@@ -125,6 +129,8 @@ class SubscriptionController
         SubscriptionDataMapper $subscriptionFactory,
         TransactionManager $transactionManager,
     ): Response {
+        $this->getLogger()->info('Received a request to write create subscription');
+
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
         } catch (NoEntityFoundException $exception) {
@@ -174,6 +180,8 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionDataMapper $subscriptionFactory,
     ): Response {
+        $this->getLogger()->info('Received a request to list subscription');
+
         return $this->crudList($request, $subscriptionRepository, $serializer, $subscriptionFactory, 'updatedAt');
     }
 
@@ -189,6 +197,8 @@ class SubscriptionController
         PaymentRepositoryInterface $paymentRepository,
         PaymentDataMapper $paymentFactory,
     ): Response {
+        $this->getLogger()->info('Received a request to view subscription', ['subscription_id' => $request->get('id')]);
+
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -225,6 +235,7 @@ class SubscriptionController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
+        $this->getLogger()->info('Received a request to update subscription payment details', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -267,6 +278,8 @@ class SubscriptionController
         \BillaBear\DataMappers\CancellationDataMapper $cancellationRequestFactory,
         UserProvider $userProvider,
     ): Response {
+        $this->getLogger()->info('Received a request to cancel subscription', ['subscription_id' => $request->get('id')]);
+
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -319,6 +332,8 @@ class SubscriptionController
         PriceDataMapper $priceFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received a request to read change price of subscription', ['subscription_id' => $request->get('id')]);
+
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -356,6 +371,7 @@ class SubscriptionController
         PriceRepositoryInterface $priceRepository,
         SubscriptionManagerInterface $subscriptionManager
     ): Response {
+        $this->getLogger()->info('Received a request to write change price of subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -390,6 +406,7 @@ class SubscriptionController
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received a request to read change subscription plan', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -427,6 +444,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received a request to write change subscription plan', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
