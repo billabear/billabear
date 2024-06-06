@@ -1,6 +1,9 @@
 export const SETTINGS_API_KEYS_MAIN_TRANSLATIONS = {
     title: "API Keys",
     add_new_button: "Create New API Key",
+    info: {
+        api_base_url: "API Base URL",
+    },
     list: {
         name: "Name",
         key: "Key",

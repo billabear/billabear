@@ -6,6 +6,16 @@
       <button class="btn--main" @click="options.modelValue = true">{{ $t('app.settings.api_keys.main.add_new_button') }}</button>
     </div>
 
+    <div class="m-5 card-body">
+
+      <dl class="detail-list section-body ">
+        <div>
+          <dt>{{ $t('app.settings.api_keys.main.info.api_base_url') }}</dt>
+          <dd>{{ apiUrl }}</dd>
+        </div>
+      </dl>
+    </div>
+
     <LoadingScreen :ready="ready">
 
       <table class="list-table">
@@ -81,6 +91,7 @@ export default {
   data() {
     return {
       ready: false,
+      apiUrl: '',
       apiKeys: [],
       errors: {},
       sendingInProgress: false,
@@ -104,6 +115,7 @@ export default {
     }
   },
   mounted() {
+    this.apiUrl = window.location.origin + "/api/v1";
     axios.get('/app/settings/api-key').then(response => {
       this.apiKeys = response.data.data;
       this.ready = true;
