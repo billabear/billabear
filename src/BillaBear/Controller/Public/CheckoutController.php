@@ -23,6 +23,7 @@ use BillaBear\Quotes\QuoteConverter;
 use BillaBear\Repository\CheckoutRepositoryInterface;
 use BillaBear\Repository\CheckoutSessionRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Event\SubscriptionCreated;
@@ -31,7 +32,7 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CheckoutController
@@ -70,6 +71,7 @@ class CheckoutController
         CheckoutRepositoryInterface $checkoutRepository,
         FrontendAddProcessorInterface $addCardByTokenDriver,
         ExternalRegisterInterface $externalRegister,
+        SettingsRepositoryInterface $settingsRepository,
         FrontendConfig $config,
         CheckoutSessionCreator $checkoutSessionCreator,
     ) {
@@ -100,9 +102,12 @@ class CheckoutController
         $amounts->setSubTotal($checkoutSession->getSubTotal());
         $amounts->setCurrency($checkoutSession->getCurrency());
 
+        $defaultSettings = $settingsRepository->getDefaultSettings();
+        $apiKey = empty($config->getApiInfo()) ? $defaultSettings->getSystemSettings()->getStripePublicKey() : $config->getApiInfo();
+
         $stripe = new StripeInfo();
         $stripe->setToken($addCardByTokenDriver->startTokenProcess($customer));
-        $stripe->setKey($config->getApiInfo());
+        $stripe->setKey($apiKey);
         $viewDto = new CustomerCreation();
         $viewDto->setStripe($stripe);
         $viewDto->setCheckoutSession($amounts);

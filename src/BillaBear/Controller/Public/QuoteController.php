@@ -17,6 +17,7 @@ use BillaBear\Entity\Quote;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Quotes\QuoteConverter;
 use BillaBear\Repository\QuoteRepositoryInterface;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Event\SubscriptionCreated;
@@ -26,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -42,6 +43,7 @@ class QuoteController
         SerializerInterface $serializer,
         FrontendAddProcessorInterface $addCardByTokenDriver,
         FrontendConfig $config,
+        SettingsRepositoryInterface $settingsRepository,
     ): Response {
         try {
             /** @var Quote $quote */
@@ -50,9 +52,12 @@ class QuoteController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $defaultSettings = $settingsRepository->getDefaultSettings();
+        $apiKey = empty($config->getApiInfo()) ? $defaultSettings->getSystemSettings()->getStripePublicKey() : $config->getApiInfo();
+
         $stripe = new StripeInfo();
         $stripe->setToken($addCardByTokenDriver->startTokenProcess($quote->getCustomer()));
-        $stripe->setKey($config->getApiInfo());
+        $stripe->setKey($apiKey);
         $viewDto = new ViewPay();
         $viewDto->setStripe($stripe);
         $viewDto->setQuote($quoteDataMapper->createPublicDto($quote));
@@ -67,7 +72,6 @@ class QuoteController
         Request $request,
         QuoteRepositoryInterface $quoteRepository,
         FrontendAddProcessorInterface $addCardByTokenDriver,
-        FrontendConfig $config,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         InvoiceCharger $invoiceCharger,

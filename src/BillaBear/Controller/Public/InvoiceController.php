@@ -16,6 +16,7 @@ use BillaBear\Dto\Response\Portal\Invoice\ViewPay;
 use BillaBear\Entity\Invoice;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
@@ -23,7 +24,7 @@ use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -39,6 +40,7 @@ class InvoiceController
         SerializerInterface $serializer,
         FrontendAddProcessorInterface $addCardByTokenDriver,
         FrontendConfig $config,
+        SettingsRepositoryInterface $settingsRepository,
     ): Response {
         try {
             /** @var Invoice $invoice */
@@ -47,9 +49,12 @@ class InvoiceController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $defaultSettings = $settingsRepository->getDefaultSettings();
+        $apiKey = empty($config->getApiInfo()) ? $defaultSettings->getSystemSettings()->getStripePublicKey() : $config->getApiInfo();
+
         $stripe = new StripeInfo();
         $stripe->setToken($addCardByTokenDriver->startTokenProcess($invoice->getCustomer()));
-        $stripe->setKey($config->getApiInfo());
+        $stripe->setKey($apiKey);
         $viewDto = new ViewPay();
         $viewDto->setStripe($stripe);
         $viewDto->setInvoice($invoiceDataMapper->createPublicDto($invoice));
@@ -64,7 +69,6 @@ class InvoiceController
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
         FrontendAddProcessorInterface $addCardByTokenDriver,
-        FrontendConfig $config,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         InvoiceCharger $invoiceCharger,
