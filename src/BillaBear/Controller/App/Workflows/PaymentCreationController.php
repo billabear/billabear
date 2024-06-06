@@ -22,17 +22,19 @@ use BillaBear\Workflow\Messenger\Messages\ReprocessFailedPaymentCreation;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PaymentCreationController
 {
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[IsGranted('ROLE_DEVELOPER')]
     #[Route('/app/workflow/payment-creation/edit', methods: ['GET'])]
@@ -44,6 +46,8 @@ class PaymentCreationController
         TransitionHandlerDataMapper $eventHandlerDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view payment creation workflow');
+
         $places = $placesProvider->getPlacesForWorkflow(WorkflowType::CREATE_PAYMENT);
         $eventHandlers = $dynamicHandlerProvider->getAll();
 
@@ -62,6 +66,7 @@ class PaymentCreationController
     #[Route('/app/system/payment-creation/bulk', name: 'billabear_app_workflows_paymentcreation_bulkprocessfailed', methods: ['POST'])]
     public function bulkProcessFailed(MessageBusInterface $messageBus): JsonResponse
     {
+        $this->getLogger()->info('Received request to start bulk process of payment creation');
         $messageBus->dispatch(new ReprocessFailedPaymentCreation());
 
         return new JsonResponse(null, JsonResponse::HTTP_OK);
@@ -74,6 +79,8 @@ class PaymentCreationController
         PaymentCreationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list payment creation');
+
         return $this->crudList($request, $paymentCreationRepository, $serializer, $dataMapper, filterList: new CancellationRequestList());
     }
 
@@ -84,6 +91,8 @@ class PaymentCreationController
         PaymentCreationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view payment creation', ['payment_creation_id' => $request->get('id')]);
+
         try {
             $entity = $paymentCreationRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -106,6 +115,8 @@ class PaymentCreationController
         SerializerInterface $serializer,
         PaymentCreationProcessor $paymentCreationProcessor,
     ): Response {
+        $this->getLogger()->info('Received request to process payment creation', ['payment_creation_id' => $request->get('id')]);
+
         try {
             $entity = $paymentCreationRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {

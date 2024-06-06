@@ -22,17 +22,19 @@ use BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class SubscriptionCreationController
 {
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[IsGranted('ROLE_DEVELOPER')]
     #[Route('/app/workflow/subscription-creation/edit', methods: ['GET'])]
@@ -44,6 +46,8 @@ class SubscriptionCreationController
         TransitionHandlerDataMapper $eventHandlerDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view subscription creation workflow');
+
         $places = $placesProvider->getPlacesForWorkflow(WorkflowType::CREATE_SUBSCRIPTION);
         $eventHandlers = $dynamicHandlerProvider->getAll();
 
@@ -66,12 +70,16 @@ class SubscriptionCreationController
         SubscriptionCreationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view list subscription creation');
+
         return $this->crudList($request, $subscriptionCreationRepository, $serializer, $dataMapper, filterList: new CancellationRequestList());
     }
 
     #[Route('/app/system/subscription-creation/bulk', name: 'billabear_app_workflows_subscriptioncreation_bulkprocessfailed', methods: ['POST'])]
     public function bulkProcessFailed(MessageBusInterface $messageBus): JsonResponse
     {
+        $this->getLogger()->info('Received request to start bulk process subscription creation workflow');
+
         $messageBus->dispatch(new ReprocessFailedSubscriptionCreated());
 
         return new JsonResponse(null, JsonResponse::HTTP_OK);
@@ -84,6 +92,8 @@ class SubscriptionCreationController
         SubscriptionCreationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view subscription creation', ['subscription_creation_id' => $request->get('id')]);
+
         try {
             $entity = $subscriptionCreationRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -106,6 +116,8 @@ class SubscriptionCreationController
         SerializerInterface $serializer,
         SubscriptionCreationProcessor $subscriptionCreationProcessor,
     ): Response {
+        $this->getLogger()->info('Received request to process subscription creation', ['subscription_creation_id' => $request->get('id')]);
+
         try {
             $entity = $subscriptionCreationRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {

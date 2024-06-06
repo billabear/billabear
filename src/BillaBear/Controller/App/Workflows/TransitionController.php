@@ -13,6 +13,7 @@ use BillaBear\DataMappers\Workflows\PlaceDataMapper;
 use BillaBear\Dto\Request\App\Workflows\CreateTransition;
 use BillaBear\Repository\WorkflowTransitionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TransitionController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/workflow/create-transition', methods: ['POST'])]
     public function createTransition(
@@ -34,6 +36,8 @@ class TransitionController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to create transition');
+
         /** @var CreateTransition $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateTransition::class, 'json');
         $errors = $validator->validate($dto);
@@ -56,6 +60,8 @@ class TransitionController
         Request $request,
         WorkflowTransitionRepositoryInterface $workflowTransitionRepository,
     ): Response {
+        $this->getLogger()->info('Received request to disable transition', ['transition_id' => $request->get('id')]);
+
         try {
             $entity = $workflowTransitionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -72,6 +78,7 @@ class TransitionController
         Request $request,
         WorkflowTransitionRepositoryInterface $workflowTransitionRepository,
     ): Response {
+        $this->getLogger()->info('Received request to delete transition', ['transition_id' => $request->get('id')]);
         try {
             $entity = $workflowTransitionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -87,6 +94,8 @@ class TransitionController
         Request $request,
         WorkflowTransitionRepositoryInterface $workflowTransitionRepository,
     ): Response {
+        $this->getLogger()->info('Received request to enable transition', ['transition_id' => $request->get('id')]);
+
         try {
             $entity = $workflowTransitionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {

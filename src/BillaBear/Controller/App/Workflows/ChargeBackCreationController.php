@@ -22,17 +22,19 @@ use BillaBear\Workflow\Messenger\Messages\ReprocessFailedPaymentCreation;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ChargeBackCreationController
 {
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[IsGranted('ROLE_DEVELOPER')]
     #[Route('/app/workflow/charge-back-creation/edit', methods: ['GET'])]
@@ -44,6 +46,7 @@ class ChargeBackCreationController
         TransitionHandlerDataMapper $eventHandlerDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view charge back creation workflow');
         $places = $placesProvider->getPlacesForWorkflow(WorkflowType::CREATE_CHARGEBACK);
         $eventHandlers = $dynamicHandlerProvider->getAll();
 
@@ -62,6 +65,7 @@ class ChargeBackCreationController
     #[Route('/app/system/charge-back-creation/bulk', name: 'billabear_app_workflows_chargebackcreation_bulkprocessfailed', methods: ['POST'])]
     public function bulkProcessFailed(MessageBusInterface $messageBus): JsonResponse
     {
+        $this->getLogger()->info('Received request to start bulk process charge back creation');
         $messageBus->dispatch(new ReprocessFailedPaymentCreation());
 
         return new JsonResponse(null, JsonResponse::HTTP_OK);
@@ -74,6 +78,8 @@ class ChargeBackCreationController
         ChargeBackCreationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list charge back creation');
+
         return $this->crudList($request, $chargeBackCreationRepository, $serializer, $dataMapper, filterList: new CancellationRequestList());
     }
 
@@ -84,6 +90,7 @@ class ChargeBackCreationController
         ChargeBackCreationDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view charge back creation', ['charge_back_id' => $request->attributes->get('id')]);
         try {
             $entity = $chargeBackCreationRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -106,6 +113,7 @@ class ChargeBackCreationController
         SerializerInterface $serializer,
         ChargeBackCreationProcessor $chargeBackCreationProcessor,
     ): Response {
+        $this->getLogger()->info('Received request to process charge back creation', ['charge_back_id' => $request->get('id')]);
         try {
             $entity = $chargeBackCreationRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {

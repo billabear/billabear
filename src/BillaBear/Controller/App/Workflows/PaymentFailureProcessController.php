@@ -13,15 +13,17 @@ use BillaBear\DataMappers\Workflows\PaymentFailureProcessDataMapper;
 use BillaBear\Dto\Response\App\Workflows\ViewPaymentFailureProcess;
 use BillaBear\Repository\PaymentFailureProcessRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PaymentFailureProcessController
 {
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/system/payment-failure-process/list', name: 'app_app_workflows_paymentfailureprocess_listpaymentfailureprocess', methods: ['GET'])]
     public function listPaymentFailureProcess(
@@ -30,6 +32,8 @@ class PaymentFailureProcessController
         PaymentFailureProcessDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list payment failure process');
+
         return $this->crudList($request, $paymentFailureProcessRepository, $serializer, $dataMapper);
     }
 
@@ -40,6 +44,8 @@ class PaymentFailureProcessController
         PaymentFailureProcessDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view payment failure process', ['payment_failure_process_id' => $request->get('id')]);
+
         try {
             $entity = $paymentFailureProcessRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -61,6 +67,8 @@ class PaymentFailureProcessController
         PaymentFailureProcessDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to process payment failure process', ['payment_failure_process_id' => $request->get('id')]);
+
         try {
             $entity = $paymentFailureProcessRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
