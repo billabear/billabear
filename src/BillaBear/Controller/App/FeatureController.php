@@ -12,16 +12,19 @@ use BillaBear\DataMappers\FeatureDataMapper;
 use BillaBear\Dto\Request\App\PostFeature;
 use BillaBear\Dto\Response\Api\ListResponse;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FeatureController
 {
+    use LoggerAwareTrait;
+
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/feature', name: 'app_feature_create', methods: ['POST'])]
     public function createFeature(
@@ -31,6 +34,8 @@ class FeatureController
         FeatureDataMapper $featureFactory,
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
     ): Response {
+        $this->getLogger()->info('Received request to create feature');
+
         $dto = $serializer->deserialize($request->getContent(), PostFeature::class, 'json');
         $errors = $validator->validate($dto);
 
@@ -61,6 +66,7 @@ class FeatureController
         SerializerInterface $serializer,
         FeatureDataMapper $featureFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list features');
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 

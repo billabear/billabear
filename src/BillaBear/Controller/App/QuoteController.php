@@ -24,16 +24,18 @@ use BillaBear\Repository\QuoteRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuoteController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/quotes/{id}/view', name: 'app_app_quote_readquote', methods: ['GET'])]
     public function readQuote(
@@ -42,6 +44,8 @@ class QuoteController
         QuoteDataMapper $quoteDataMapper,
         QuoteRepositoryInterface $quoteRepository,
     ): Response {
+        $this->getLogger()->info('Received request to read quote', ['quote_id' => $request->get('id')]);
+
         try {
             /** @var Quote $quote */
             $quote = $quoteRepository->getById($request->get('id'));
@@ -65,6 +69,8 @@ class QuoteController
         TaxTypeRepositoryInterface $taxTypeRepository,
         TaxTypeDataMapper $taxTypeDataMapper,
     ) {
+        $this->getLogger()->info('Received request to read create quote');
+
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
 
@@ -87,6 +93,8 @@ class QuoteController
         ValidatorInterface $validator,
         QuoteDataMapper $quoteDataMapper,
     ): Response {
+        $this->getLogger()->info('Received request to write create quote');
+
         /** @var CreateInvoice $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateQuote::class, 'json');
         $errors = $validator->validate($dto);
@@ -110,6 +118,8 @@ class QuoteController
         SerializerInterface $serializer,
         QuoteDataMapper $quoteDataMapper,
     ): Response {
+        $this->getLogger()->info('Received request to list quotes');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);

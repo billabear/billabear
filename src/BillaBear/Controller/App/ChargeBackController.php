@@ -12,14 +12,17 @@ use BillaBear\DataMappers\ChargeBackDataMapper;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Filters\ChargeBackList;
 use Parthenon\Billing\Repository\ChargeBackRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ChargeBackController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/charge-backs', name: 'app_app_chargeback_list', methods: ['GET'])]
     public function listChargeBack(
         Request $request,
@@ -27,6 +30,8 @@ class ChargeBackController
         SerializerInterface $serializer,
         ChargeBackDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to list charge backs');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);

@@ -16,15 +16,18 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\User\UserProvider;
 use Brick\Money\Money;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreditController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/customer/{id}/credit', name: 'app_customer_credit_create', methods: ['POST'])]
     public function createCredit(
         Request $request,
@@ -35,6 +38,8 @@ class CreditController
         UserProvider $userProvider,
         CreditAdjustmentRecorder $creditAdjustmentRecorder
     ): Response {
+        $this->getLogger()->info('Received request to create customer credit', ['customer_id' => $request->get('id')]);
+
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));

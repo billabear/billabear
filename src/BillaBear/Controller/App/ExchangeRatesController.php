@@ -9,15 +9,20 @@
 namespace BillaBear\Controller\App;
 
 use BillaBear\Repository\ExchangeRatesRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ExchangeRatesController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/exchange-rates', name: 'app_app_exchangerates_getexchangerates')]
     public function getExchangeRates(
         ExchangeRatesRepositoryInterface $exchangeRatesRepository
     ) {
+        $this->getLogger()->info('Received request to see exchange rates');
+
         $output = [];
         $rates = $exchangeRatesRepository->getAll();
         foreach ($rates as $rate) {

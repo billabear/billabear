@@ -44,7 +44,7 @@ use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -60,6 +60,8 @@ class CustomerController
         SerializerInterface $serializer,
         CustomerDataMapper $customerFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list customers');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -108,6 +110,8 @@ class CustomerController
         BrandSettingsDataMapper $brandSettingsFactory,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to read create customer');
+
         $brandSettings = $settingsRepository->getAll();
         $brandDtos = array_map([$brandSettingsFactory, 'createAppDto'], $brandSettings);
 
@@ -131,6 +135,8 @@ class CustomerController
         CustomerCreationStats $customerCreationStats,
         CreationHandler $creationHandler,
     ): Response {
+        $this->getLogger()->info('Received request to write create customer');
+
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
 
@@ -168,6 +174,8 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         Disabler $disabler,
     ) {
+        $this->getLogger()->info('Received request to disable customer', ['customer_id' => $request->get('id')]);
+
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
@@ -187,6 +195,8 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         EventDispatcherInterface $eventProcessor,
     ) {
+        $this->getLogger()->info('Received request to enable customer', ['customer_id' => $request->get('id')]);
+
         $this->getLogger()->info('Starting customer enable APP request');
 
         try {
@@ -225,6 +235,8 @@ class CustomerController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceDataMapper $invoiceDataMapper,
     ): Response {
+        $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
+
         try {
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -276,6 +288,8 @@ class CustomerController
         CustomerDataMapper $customerFactory,
         ObolRegister $obolRegister,
     ): Response {
+        $this->getLogger()->info('Received request to update customer', ['customer_id' => $request->get('id')]);
+
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));

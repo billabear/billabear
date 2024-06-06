@@ -21,13 +21,16 @@ use BillaBear\Stats\Graphs\RefundAmountStatsProvider;
 use BillaBear\Stats\Graphs\SubscriptionCancellationStatsProvider;
 use BillaBear\Stats\Graphs\SubscriptionCountStatsProvider;
 use BillaBear\Stats\Graphs\SubscriptionCreationStatsProvider;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class StatsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/stats', name: 'app_app_stats_returnstats', methods: ['GET'])]
     public function returnStats(
         PaymentAmountStatsProvider $paymentAmountStatsProvider,
@@ -42,6 +45,8 @@ class StatsController
         SettingsRepositoryInterface $settingsRepository,
         UnpaidInvoiceStatsProvider $invoiceStatsProvider,
     ): Response {
+        $this->getLogger()->info('Received request for dashboard stats');
+
         $headerStats = new MainDashboardHeader();
         $headerStats->setActiveSubscriptions($subscriptionRepository->getCountActive());
         $headerStats->setActiveCustomers($subscriptionRepository->getCountOfActiveCustomers());

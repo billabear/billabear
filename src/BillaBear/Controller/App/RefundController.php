@@ -14,14 +14,17 @@ use BillaBear\Dto\Response\App\RefundView;
 use BillaBear\Filters\RefundList;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class RefundController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/refund', name: 'app_refund_list', methods: ['GET'])]
     public function listPayment(
         Request $request,
@@ -29,6 +32,8 @@ class RefundController
         SerializerInterface $serializer,
         RefundDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to list payment');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -76,6 +81,8 @@ class RefundController
         RefundDataMapper $factory,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to refund', ['refund_id' => $request->get('id')]);
+
         try {
             $refund = $repository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {

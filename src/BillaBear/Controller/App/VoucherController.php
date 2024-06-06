@@ -20,10 +20,11 @@ use BillaBear\User\UserProvider;
 use BillaBear\Voucher\VoucherRegister;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,6 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class VoucherController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/voucher', name: 'app_app_voucher_listvoucher', methods: ['GET'])]
     public function listVoucher(
@@ -39,6 +41,8 @@ class VoucherController
         VoucherDataMapper $voucherFactory,
         VoucherRepositoryInterface $voucherRepository
     ): Response {
+        $this->getLogger()->info('Received request to list vouchers');
+
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
@@ -75,10 +79,12 @@ class VoucherController
     }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
-    #[Route('//app/voucher/create')]
+    #[Route('/app/voucher/create')]
     public function createVoucherData(
         PriceRepositoryInterface $priceRepository,
     ): Response {
+        $this->getLogger()->info('Received request to read create voucher');
+
         $prices = $priceRepository->getAll();
 
         $currencies = [];
@@ -106,6 +112,8 @@ class VoucherController
         UserProvider $userProvider,
         VoucherRegister $voucherRegister
     ) {
+        $this->getLogger()->info('Received request to write create voucher');
+
         $createVoucher = $serializer->deserialize($request->getContent(), CreateVoucher::class, 'json');
         $errors = $validator->validate($createVoucher);
         $errorResponse = $this->handleErrors($errors);
@@ -130,6 +138,8 @@ class VoucherController
         Request $request,
         VoucherRepositoryInterface $voucherRepository,
     ): Response {
+        $this->getLogger()->info('Received request to disable voucher', ['voucher_id' => $request->get('id')]);
+
         try {
             /** @var Voucher $voucher */
             $voucher = $voucherRepository->getById($request->get('id'));
@@ -148,6 +158,8 @@ class VoucherController
         Request $request,
         VoucherRepositoryInterface $voucherRepository,
     ): Response {
+        $this->getLogger()->info('Received request to enable voucher', ['voucher_id' => $request->get('id')]);
+
         try {
             /** @var Voucher $voucher */
             $voucher = $voucherRepository->getById($request->get('id'));
@@ -168,6 +180,8 @@ class VoucherController
         VoucherAmountDataMapper $voucherAmountFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view voucher', ['voucher_id' => $request->get('id')]);
+
         try {
             /** @var Voucher $voucher */
             $voucher = $voucherRepository->getById($request->get('id'));

@@ -22,10 +22,11 @@ use BillaBear\Repository\CheckoutRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -34,6 +35,7 @@ class CheckoutController
 {
     use CrudListTrait;
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/checkout', name: 'app_app_checkout_listcheckout', methods: ['GET'])]
     public function listCheckout(
@@ -42,6 +44,8 @@ class CheckoutController
         SerializerInterface $serializer,
         CheckoutDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to list checkout');
+
         return $this->crudList($request, $repository, $serializer, $factory);
     }
 
@@ -57,6 +61,7 @@ class CheckoutController
         TaxTypeRepositoryInterface $taxTypeRepository,
         TaxTypeDataMapper $taxTypeDataMapper,
     ) {
+        $this->getLogger()->info('Received request to read create checkout');
         $subscriptionPlans = $subscriptionPlanRepository->getAll();
         $subscriptionPlanDtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
 
@@ -84,6 +89,7 @@ class CheckoutController
         ValidatorInterface $validator,
         CheckoutDataMapper $checkoutDataMapper,
     ): Response {
+        $this->getLogger()->info('Received request to write create checkout');
         /** @var CreateCheckout $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateCheckout::class, 'json');
         $errors = $validator->validate($dto);
@@ -107,6 +113,8 @@ class CheckoutController
         CheckoutDataMapper $checkoutDataMapper,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to read checkout', ['checkout_id' => $request->get('id')]);
+
         try {
             $checkout = $checkoutRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {

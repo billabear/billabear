@@ -11,17 +11,22 @@ namespace BillaBear\Controller\App;
 use BillaBear\Entity\Customer;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/system/data', name: 'app_system_data', methods: ['GET'])]
     public function getSystemData(
         SettingsRepositoryInterface $repository,
         BrandSettingsRepositoryInterface $brandSettingsRepository,
     ): Response {
+        $this->getLogger()->info('Received request for system data');
+
         $defaultBrand = $brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
 
         $json = [

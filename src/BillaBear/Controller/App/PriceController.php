@@ -18,16 +18,19 @@ use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceController
 {
+    use LoggerAwareTrait;
+
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/price', name: 'app_product_price_create', methods: ['POST'])]
     public function createPrice(
@@ -39,6 +42,8 @@ class PriceController
         PriceDataMapper $priceFactory,
         PriceRegisterInterface $priceRegister,
     ) {
+        $this->getLogger()->info('Received request to create price', ['product_id' => $request->get('id')]);
+
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
@@ -87,6 +92,8 @@ class PriceController
         SerializerInterface $serializer,
         PriceDataMapper $priceFactory,
     ): Response {
+        $this->getLogger()->info('Received request to lsit prices');
+
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
@@ -128,6 +135,8 @@ class PriceController
         Request $request,
         PriceRepositoryInterface $priceRepository,
     ) {
+        $this->getLogger()->info('Received request to delete price', ['product_id' => $request->get('id'), 'price_id' => $request->get('priceId')]);
+
         try {
             /** @var Price $price */
             $price = $priceRepository->findById($request->get('priceId'));
@@ -147,6 +156,11 @@ class PriceController
         Request $request,
         PriceRepositoryInterface $priceRepository,
     ) {
+        $this->getLogger()->info('Received request to make price private', [
+            'product_id' => $request->get('id'),
+            'price_id' => $request->get('priceId'),
+        ]);
+
         try {
             /** @var Price $price */
             $price = $priceRepository->findById($request->get('priceId'));
@@ -166,6 +180,11 @@ class PriceController
         Request $request,
         PriceRepositoryInterface $priceRepository,
     ) {
+        $this->getLogger()->info('Received request to make price public', [
+            'product_id' => $request->get('id'),
+            'price_id' => $request->get('priceId'),
+        ]);
+
         try {
             /** @var Price $price */
             $price = $priceRepository->findById($request->get('priceId'));

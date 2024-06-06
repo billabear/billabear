@@ -23,6 +23,7 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Athena\Filters\BoolFilter;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +39,7 @@ class InvoicesController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/invoices', name: 'app_invoices_list', methods: ['GET'])]
     public function listInvoice(
@@ -46,6 +48,8 @@ class InvoicesController
         SerializerInterface $serializer,
         InvoiceDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to list invoices');
+
         return $this->crudList($request, $repository, $serializer, $factory);
     }
 
@@ -56,6 +60,8 @@ class InvoicesController
         SerializerInterface $serializer,
         InvoiceDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to list unpaid invoices');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -108,6 +114,8 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoicePdfGenerator $generator,
     ): Response {
+        $this->getLogger()->info('Received request to download invoice', ['invoice_id' => $request->get('id')]);
+
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
@@ -137,6 +145,8 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceCharger $invoiceCharger
     ): Response {
+        $this->getLogger()->info('Received request to charge invoice', ['invoice_id' => $request->get('id')]);
+
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
@@ -161,6 +171,8 @@ class InvoicesController
         InvoiceDataMapper $invoiceDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view invoice', ['invoice_id' => $request->get('id')]);
+
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
@@ -184,6 +196,8 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         EventDispatcherInterface $eventDispatcher,
     ): Response {
+        $this->getLogger()->info('Received request to mark invoice as paid', ['invoice_id' => $request->get('id')]);
+
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
@@ -208,6 +222,8 @@ class InvoicesController
         InvoiceDataMapper $invoiceFactory,
         ManualInvoiceCreator $manualInvoiceCreator,
     ): Response {
+        $this->getLogger()->info('Received request to create invoice');
+
         /** @var CreateInvoice $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateInvoice::class, 'json');
         $errors = $validator->validate($dto);

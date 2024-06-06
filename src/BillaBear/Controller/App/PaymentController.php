@@ -29,10 +29,11 @@ use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,6 +42,7 @@ class PaymentController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/payments', name: 'app_payment_list', methods: ['GET'])]
     public function listPayment(
@@ -49,6 +51,8 @@ class PaymentController
         SerializerInterface $serializer,
         PaymentDataMapper $paymentFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list payments');
+
         return $this->crudList($request, $paymentRepository, $serializer, $paymentFactory);
     }
 
@@ -65,6 +69,8 @@ class PaymentController
         ReceiptDataMapper $receiptFactory,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to view payment', ['payment_id' => $request->get('id')]);
+
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->getById($request->get('id'));
@@ -102,6 +108,8 @@ class PaymentController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ) {
+        $this->getLogger()->info('Received request to assign payment to customer', ['payment_id' => $request->get('id')]);
+
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->findById($request->get('id'));
@@ -139,6 +147,8 @@ class PaymentController
         UserProvider $userProvider,
         ValidatorInterface $validator,
     ) {
+        $this->getLogger()->info('Received request to view payment', ['payment_id' => $request->get('id')]);
+
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->findById($request->get('id'));

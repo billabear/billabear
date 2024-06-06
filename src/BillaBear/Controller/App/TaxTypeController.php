@@ -13,6 +13,7 @@ use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\TaxType\CreateTaxType;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ class TaxTypeController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/tax/type', name: 'app_app_create_tax_type', methods: ['POST'])]
     public function createTaxType(
@@ -33,6 +35,8 @@ class TaxTypeController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to create tax type');
+
         $createDto = $serializer->deserialize($request->getContent(), CreateTaxType::class, 'json');
         $errors = $validator->validate($createDto);
         $errorResponse = $this->handleErrors($errors);
@@ -56,6 +60,8 @@ class TaxTypeController
         TaxTypeRepositoryInterface $taxTypeRepository,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list tax types');
+
         return $this->crudList($request, $taxTypeRepository, $serializer, $taxTypeDataMapper, 'name');
     }
 
@@ -66,6 +72,8 @@ class TaxTypeController
         TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to read tax type', ['tax_type_id' => $request->get('id')]);
+
         try {
             $entity = $taxTypeRepository->findById($request->get('id'));
         } catch (NoEntityFoundException) {

@@ -26,16 +26,19 @@ use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
+    use LoggerAwareTrait;
+
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/create', name: 'app_product_create_view', methods: ['GET'])]
     public function createProductView(
@@ -44,6 +47,8 @@ class ProductController
         TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to create product');
+
         $taxTypes = $taxTypeRepository->getAll();
         $taxTypesDto = array_map([$taxTypeDataMapper, 'createAppDto'], $taxTypes);
 
@@ -65,6 +70,8 @@ class ProductController
         ProductRegisterInterface $productRegister,
         ProductRepositoryInterface $productRepository,
     ): Response {
+        $this->getLogger()->info('Received request to create product');
+
         $dto = $serializer->deserialize($request->getContent(), CreateProduct::class, 'json');
         $errors = $validator->validate($dto);
 
@@ -102,6 +109,8 @@ class ProductController
         SerializerInterface $serializer,
         ProductDataMapper $productFactory,
     ): Response {
+        $this->getLogger()->info('Received request to list products');
+
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
 
@@ -149,6 +158,8 @@ class ProductController
         PriceDataMapper $priceFactory,
         SubscriptionPlanDataMapper $subscriptionPlanFactory,
     ): Response {
+        $this->getLogger()->info('Received request to view product', ['product_id' => $request->get('id')]);
+
         try {
             $product = $productRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -184,6 +195,8 @@ class ProductController
         TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to read update products', ['product_id' => $request->get('id')]);
+
         try {
             $product = $productRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -210,6 +223,8 @@ class ProductController
         ValidatorInterface $validator,
         ProductDataMapper $productFactory,
     ): Response {
+        $this->getLogger()->info('Received request to write update products', ['product_id' => $request->get('id')]);
+
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
