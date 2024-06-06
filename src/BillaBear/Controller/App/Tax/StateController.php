@@ -22,6 +22,7 @@ use BillaBear\Repository\StateTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Tax\StateTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StateController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/country/{id}/state/{stateId}/tax-rule/{taxRuleId}/edit', methods: ['POST'])]
     public function updateStateTaxRule(
@@ -44,6 +46,11 @@ class StateController
         SerializerInterface $serializer,
         ValidatorInterface $validator
     ): Response {
+        $this->getLogger()->info('Received request to update state tax rule', [
+            'country_id' => $request->get('id'),
+            'state_id' => $request->get('stateId'),
+        ]);
+
         try {
             $country = $countryRepository->findById($request->get('id'));
             $state = $stateRepository->findById($request->get('stateId'));
@@ -79,6 +86,11 @@ class StateController
         SerializerInterface $serializer,
         ValidatorInterface $validator
     ): Response {
+        $this->getLogger()->info('Received request to create state tax rule', [
+            'country_id' => $request->get('id'),
+            'state_id' => $request->get('stateId'),
+        ]);
+
         try {
             $country = $countryRepository->findById($request->get('id'));
             $state = $stateRepository->findById($request->get('stateId'));
@@ -111,6 +123,8 @@ class StateController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to create state', ['country_id' => $request->get('id')]);
+
         try {
             $country = $countryRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -144,6 +158,10 @@ class StateController
         TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer
     ): Response {
+        $this->getLogger()->info('Received request to read state', [
+            'country_id' => $request->get('id'),
+            'state_id' => $request->get('stateId'),
+        ]);
         try {
             $entity = $stateRepository->findById($request->get('stateId'));
         } catch (NoEntityFoundException) {

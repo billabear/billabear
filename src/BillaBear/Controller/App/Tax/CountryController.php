@@ -24,6 +24,7 @@ use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Tax\CountryTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,7 @@ class CountryController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/countries', name: 'app_country_list', methods: ['GET'])]
     public function listCountries(
@@ -43,6 +45,8 @@ class CountryController
         SerializerInterface $serializer,
         CountryDataMapper $countryDataMapper,
     ): Response {
+        $this->getLogger()->info('Received request to list countries');
+
         return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper, 'id');
     }
 
@@ -54,6 +58,8 @@ class CountryController
         SerializerInterface $serializer,
         ValidatorInterface $validator
     ): Response {
+        $this->getLogger()->info('Received request to add country');
+
         /** @var CreateCountry $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateCountry::class, 'json');
         $errors = $validator->validate($dto);
@@ -82,6 +88,8 @@ class CountryController
         SerializerInterface $serializer,
         StateDataMapper $stateDataMapper,
     ): Response {
+        $this->getLogger()->info('Received request to read country', ['country_id' => $request->get('id')]);
+
         try {
             $entity = $countryRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -116,6 +124,8 @@ class CountryController
         SerializerInterface $serializer,
         ValidatorInterface $validator
     ): Response {
+        $this->getLogger()->info('Received request to edit country', ['country_id' => $request->get('id')]);
+
         try {
             $entity = $countryRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -147,6 +157,7 @@ class CountryController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to create country tax rule', ['country_id' => $request->get('id')]);
         try {
             $country = $countryRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
@@ -179,6 +190,7 @@ class CountryController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to update country tax rule', ['country_id' => $request->get('id')]);
         try {
             $country = $countryRepository->findById($request->get('id'));
             $entity = $countryTaxRuleRepository->findById($request->get('taxRuleId'));
