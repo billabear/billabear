@@ -84,9 +84,10 @@
 
                   <p class="form-field-help">{{ $t('app.settings.stripe.main.webhook.help_info.url') }}</p>
                 </div>
-                <SubmitButton :in-progress="sendingWebhookRequest" class="btn--danger" v-else @click="deregisterWebhook">{{ $t('app.settings.stripe.main.webhook.deregister_webhook') }}</SubmitButton>
-
-
+                <div v-else>
+                  <p class="mb-3">{{ webhook_url }}</p>
+                  <SubmitButton :in-progress="sendingWebhookRequest" class="btn--danger" @click="deregisterWebhook">{{ $t('app.settings.stripe.main.webhook.deregister_webhook') }}</SubmitButton>
+                </div>
               </div>
             </div>
           </div>
