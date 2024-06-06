@@ -12,10 +12,11 @@ use BillaBear\DataMappers\Settings\SystemSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\SystemSettings;
 use BillaBear\Dto\Response\App\Settings\SystemSettingsView;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,13 +24,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_DEVELOPER')]
 class SystemSettingsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/settings/system', name: 'app_app_settings_systemsettings_readsettings', methods: ['GET'])]
     public function readSettings(
-        Request $request,
         SettingsRepositoryInterface $settingsRepository,
         SerializerInterface $serializer,
         SystemSettingsDataMapper $systemSettingsFactory,
     ): Response {
+        $this->getLogger()->info('Received request to read settings');
+
         $systemSettingsDto = $systemSettingsFactory->createAppDto($settingsRepository->getDefaultSettings()->getSystemSettings());
         $dto = new SystemSettingsView();
         $dto->setSystemSettings($systemSettingsDto);
@@ -48,6 +52,7 @@ class SystemSettingsController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to update settings');
         $requestDto = $serializer->deserialize($request->getContent(), SystemSettings::class, 'json');
         $errors = $validator->validate($requestDto);
 
@@ -78,6 +83,7 @@ class SystemSettingsController
     public function dismissUpdate(
         SettingsRepositoryInterface $repository,
     ) {
+        $this->getLogger()->info('Request to dismiss that an update is available');
         $settings = $repository->getDefaultSettings();
         $settings->getSystemSettings()->setUpdateAvailableDismissed(true);
         $repository->save($settings);

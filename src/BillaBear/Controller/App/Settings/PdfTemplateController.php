@@ -27,12 +27,13 @@ use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,6 +43,7 @@ use Twig\Error\Error;
 class PdfTemplateController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/settings/template', name: 'app_settings_template_list', methods: ['GET'])]
     public function getTemplateList(
@@ -50,6 +52,7 @@ class PdfTemplateController
         TemplateDataMapper $factory,
         SerializerInterface $serializer
     ): Response {
+        $this->getLogger()->info('Received request to read notification settings');
         $templates = $templateRepository->getByBrand($request->get('brand', 'default'));
         $dtos = array_map([$factory, 'createAppDto'], $templates);
 
@@ -71,6 +74,7 @@ class PdfTemplateController
         TemplateDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to read template', ['pdf_template_id' => $request->get('id')]);
         try {
             /** @var Template $template */
             $template = $templateRepository->findById($request->get('id'));
@@ -94,6 +98,7 @@ class PdfTemplateController
         BrandSettingsDataMapper $brandSettingsDataMapper,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to read create template');
         $brands = $settingsRepository->getAll();
         $brandDtos = array_map([$brandSettingsDataMapper, 'createAppDto'], $brands);
 
@@ -112,6 +117,7 @@ class PdfTemplateController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to write create template');
         /** @var CreatePdfTemplate $createTemplate */
         $createTemplate = $serializer->deserialize($request->getContent(), CreatePdfTemplate::class, 'json');
         $errors = $validator->validate($createTemplate);
@@ -135,6 +141,7 @@ class PdfTemplateController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to update template', ['pdf_template' => $request->get('id')]);
         try {
             /** @var Template $template */
             $template = $templateRepository->findById($request->get('id'));
@@ -177,6 +184,7 @@ class PdfTemplateController
         ReceiptPdfGenerator $generator,
         ReceiptProvider $provider,
     ): Response {
+        $this->getLogger()->info('Received request to download receipt template', ['pdf_template' => $request->get('id')]);
         try {
             /** @var Template $template */
             $template = $templateRepository->findById($request->get('id'));
@@ -214,6 +222,7 @@ class PdfTemplateController
         InvoicePdfGenerator $generator,
         ReceiptProvider $provider,
     ): Response {
+        $this->getLogger()->info('Received request to download invoice template', ['pdf_template' => $request->get('id')]);
         try {
             /** @var Template $template */
             $template = $templateRepository->findById($request->get('id'));
@@ -251,6 +260,8 @@ class PdfTemplateController
         SerializerInterface $serializer,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Received request to read pdf generator settings');
+
         $settings = $settingsRepository->getDefaultSettings();
 
         $dto = new ReadPdfGeneratorSettings();
@@ -272,6 +283,7 @@ class PdfTemplateController
         ValidatorInterface $validator,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Received request to update pdf generator settings');
         $dto = $serializer->deserialize($request->getContent(), UpdateGeneratorSettings::class, 'json');
         $errors = $validator->validate($dto);
         $response = $this->handleErrors($errors);

@@ -18,10 +18,11 @@ use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\InviteCodeRepositoryInterface;
 use BillaBear\Repository\UserRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ADMIN')]
 class UserController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/settings/user', name: 'site_settings_users_list', methods: ['GET'])]
     public function readUserList(
         Request $request,
@@ -38,6 +41,8 @@ class UserController
         SerializerInterface $serializer,
         UserDataMapper $factory,
     ): Response {
+        $this->getLogger()->info('Received request to list users');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -87,6 +92,8 @@ class UserController
         SerializerInterface $serializer,
         UserDataMapper $userFactory,
     ): Response {
+        $this->getLogger()->info('Received request to view user', ['user_id' => $request->get('id')]);
+
         try {
             $user = $userRepository->getById($request->get('id'), true);
         } catch (NoEntityFoundException $e) {
@@ -110,6 +117,8 @@ class UserController
         ValidatorInterface $validator,
         UserDataMapper $userFactory,
     ): Response {
+        $this->getLogger()->info('Received request to update user', ['user_id' => $request->get('id')]);
+
         try {
             $user = $userRepository->getById($request->get('id'), true);
         } catch (NoEntityFoundException $e) {

@@ -12,10 +12,11 @@ use BillaBear\DataMappers\Settings\NotificationSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\NotificationSettings;
 use BillaBear\Dto\Response\App\Settings\NotificationSettingsView;
 use BillaBear\Repository\SettingsRepository;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,12 +24,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_DEVELOPER')]
 class NotificationSettingsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/settings/notification-settings', name: 'app_app_settings_notificationsettings_readsettings', methods: ['GET'])]
     public function readSettings(
         SettingsRepository $settingsRepository,
         NotificationSettingsDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to read notification settings');
+
         $settings = $settingsRepository->getDefaultSettings();
         $notificationSettings = $factory->createAppDto($settings->getNotificationSettings());
 
@@ -48,6 +53,7 @@ class NotificationSettingsController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to update notification settings');
         $requestDto = $serializer->deserialize($request->getContent(), NotificationSettings::class, 'json');
         $errors = $validator->validate($requestDto);
 

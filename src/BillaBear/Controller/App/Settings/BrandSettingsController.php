@@ -15,10 +15,11 @@ use BillaBear\Dto\Response\App\BrandSettings\BrandSettingsView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,6 +27,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ACCOUNT_MANAGER')]
 class BrandSettingsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/settings/brand', name: 'app_settings_brand_list', methods: ['GET'])]
     public function listBrandSettings(
         Request $request,
@@ -33,6 +36,8 @@ class BrandSettingsController
         BrandSettingsDataMapper $brandFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list brand settings');
+
         $brands = $brandSettingRepository->getAll();
 
         $dtos = array_map([$brandFactory, 'createAppDto'], $brands);
@@ -55,6 +60,8 @@ class BrandSettingsController
         BrandSettingsDataMapper $brandSettingsFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view brand settings', ['brand_settings_id' => $request->get('id')]);
+
         try {
             $brandSettings = $brandSettingRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -77,6 +84,8 @@ class BrandSettingsController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to edit brand settings', ['brand_settings_id' => $request->get('id')]);
+
         try {
             $brandSettings = $brandSettingRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -118,6 +127,8 @@ class BrandSettingsController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to create brand settings');
+
         /** @var CreateBrandSettings $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateBrandSettings::class, 'json');
         $errors = $validator->validate($dto);

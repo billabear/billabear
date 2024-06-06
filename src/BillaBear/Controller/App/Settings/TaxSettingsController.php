@@ -11,21 +11,26 @@ namespace BillaBear\Controller\App\Settings;
 use BillaBear\DataMappers\Settings\TaxSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\Tax\TaxSettings;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 class TaxSettingsController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/settings/tax', name: 'app_app_settings_taxsettings_readsettings', methods: ['GET'])]
     public function readSettings(
         SerializerInterface $serializer,
         TaxSettingsDataMapper $taxSettingsFactory,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Received request to read tax settings');
+
         $settings = $settingsRepository->getDefaultSettings();
         $taxSettings = $settings->getTaxSettings();
         $outputDto = $taxSettingsFactory->createAppDto($taxSettings);
@@ -41,6 +46,8 @@ class TaxSettingsController
         TaxSettingsDataMapper $taxSettingsFactory,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Received request to set tax settings');
+
         /** @var TaxSettings $dto */
         $dto = $serializer->deserialize($request->getContent(), TaxSettings::class, 'json');
         $taxSettings = $taxSettingsFactory->createEntity($dto);

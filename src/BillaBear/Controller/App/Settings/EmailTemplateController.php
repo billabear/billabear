@@ -18,10 +18,11 @@ use BillaBear\Filters\EmailTemplateList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\EmailTemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,11 +30,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ACCOUNT_MANAGER')]
 class EmailTemplateController
 {
+    use LoggerAwareTrait;
+
     #[Route('/app/settings/email-template/create', name: 'app_app_settings_emailtemplate_create_read', methods: ['GET'])]
     public function createRead(
         BrandSettingsRepositoryInterface $brandSettingRepository,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view create email template');
+
         $brands = $brandSettingRepository->getAll();
         $brandData = [];
 
@@ -58,6 +63,8 @@ class EmailTemplateController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to create email template');
+
         /** @var CreateEmailTemplate $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateEmailTemplate::class, 'json');
         $errors = $validator->validate($dto);
@@ -92,6 +99,8 @@ class EmailTemplateController
         EmailTemplateDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to list email template');
+
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $resultsPerPage = (int) $request->get('per_page', 10);
@@ -139,6 +148,7 @@ class EmailTemplateController
         EmailTemplateDataMapper $factory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to view email template', ['email_template_id' => $request->get('id')]);
         try {
             $template = $repository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -160,6 +170,7 @@ class EmailTemplateController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
+        $this->getLogger()->info('Received request to update email template', ['email_template_id' => $request->get('id')]);
         try {
             $template = $repository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {

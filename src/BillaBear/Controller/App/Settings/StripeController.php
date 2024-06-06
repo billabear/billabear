@@ -22,11 +22,12 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\StripeImportRepositoryInterface;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -35,6 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StripeController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/app/settings/stripe/disable-billing', name: 'app_app_settings_stripe_disablestripebilling', methods: ['POST'])]
     public function disableStripeBilling(
@@ -42,6 +44,7 @@ class StripeController
         GenericBackgroundTaskRepositoryInterface $genericBackgroundTaskRepository,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Request to disable Stripe Billing');
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getSystemSettings()->setUseStripeBilling(false);
         $settingsRepository->save($settings);
@@ -64,6 +67,7 @@ class StripeController
         ValidatorInterface $validator,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Request to set Stripe config');
         $dto = $serializer->deserialize($request->getContent(), SendConfig::class, 'json');
         $errors = $validator->validate($dto);
         $errorResponse = $this->handleErrors($errors);
@@ -84,6 +88,7 @@ class StripeController
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->getLogger()->info('Request to enable Stripe billing');
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getSystemSettings()->setUseStripeBilling(true);
         $settingsRepository->save($settings);
@@ -101,6 +106,8 @@ class StripeController
         #[Autowire('%parthenon_billing_payments_obol_config%')]
         $obolConfig,
     ): Response {
+        $this->getLogger()->info('Request to view stripe import list');
+
         $imports = $stripeImportRepository->getAll();
         $importDtos = array_map([$importFactory, 'createAppDto'], $imports);
         $viewDto = new StripeImportView();
@@ -122,6 +129,7 @@ class StripeController
         SerializerInterface $serializer,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
+        $this->getLogger()->info('Request to start stripe import');
         $stripeImport = $stripeImportRepository->findActive();
 
         if ($stripeImport) {
@@ -150,6 +158,7 @@ class StripeController
     public function dismissStripeImports(
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
+        $this->getLogger()->info('Request to dismiss stripe import');
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getOnboardingSettings()->setHasStripeImports(true);
         $settingsRepository->save($settings);
@@ -164,6 +173,8 @@ class StripeController
         StripeImportDataMapper $importFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Request to view stripe import', ['stripe_import_id' => $request->get('id')]);
+
         try {
             $stripeImport = $stripeImportRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
@@ -184,6 +195,7 @@ class StripeController
         ProviderInterface $provider,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
+        $this->getLogger()->info('Request to register stripe webhook');
         /** @var RegisterWebhook $dto */
         $dto = $serializer->deserialize($request->getContent(), RegisterWebhook::class, 'json');
         $errors = $validator->validate($dto);
@@ -212,6 +224,7 @@ class StripeController
         ProviderInterface $provider,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
+        $this->getLogger()->info('Request to deregister stripe webhook');
         $settings = $settingsRepository->getDefaultSettings();
 
         if (null === $settings->getSystemSettings()->getWebhookExternalReference()) {

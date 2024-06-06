@@ -8,6 +8,7 @@
 
 namespace BillaBear\Controller\App\Settings;
 
+use BillaBear\Background\Generic\GenericTasks;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\ApiKeyDataMapper;
 use BillaBear\Dto\Request\App\Settings\CreateApiKey;
@@ -15,10 +16,11 @@ use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\ApiKey;
 use BillaBear\Repository\ApiKeyRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,7 +28,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_DEVELOPER')]
 class ApiKeyController
 {
+    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private readonly GenericTasks $genericTasks)
+    {
+    }
 
     #[Route('/app/settings/api-key', name: 'app_app_settings_apikey_showlist', methods: ['GET'])]
     public function showList(
@@ -34,6 +41,8 @@ class ApiKeyController
         ApiKeyDataMapper $apiKeyFactory,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to show list of api keys');
+
         $apiKeys = $apiKeyRepository->getAll();
         $dtos = array_map([$apiKeyFactory, 'createAppDto'], $apiKeys);
         $view = new ListResponse();
@@ -52,6 +61,8 @@ class ApiKeyController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): Response {
+        $this->getLogger()->info('Received request to create api key');
+
         /** @var CreateApiKey $createDto */
         $createDto = $serializer->deserialize($request->getContent(), CreateApiKey::class, 'json');
         $errors = $validator->validate($createDto);
@@ -73,6 +84,8 @@ class ApiKeyController
         Request $request,
         ApiKeyRepositoryInterface $apiKeyRepository,
     ): Response {
+        $this->getLogger()->info('Received request to disable api key', ['api_key_id' => $request->get('id')]);
+
         try {
             /** @var ApiKey $apiKey */
             $apiKey = $apiKeyRepository->findById($request->get('id'));
