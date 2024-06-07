@@ -44,11 +44,11 @@ class InvoiceController
         FrontendConfig $config,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
-        $this->getLogger()->info('Received request to read pay for invoice', ['invoice_id' => $request->get('slug')]);
+        $this->getLogger()->info('Received request to read pay for invoice', ['invoice_id' => $request->get('id')]);
 
         try {
             /** @var Invoice $invoice */
-            $invoice = $invoiceRepository->findById($request->get('hash'));
+            $invoice = $invoiceRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
@@ -81,7 +81,7 @@ class InvoiceController
 
         try {
             /** @var Invoice $invoice */
-            $invoice = $invoiceRepository->findById($request->get('hash'));
+            $invoice = $invoiceRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }

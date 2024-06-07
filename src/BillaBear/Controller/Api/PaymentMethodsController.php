@@ -113,7 +113,7 @@ class PaymentMethodsController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $defaultPaymentManager->makePaymentDetailsDefault($customer, $paymentDetails);
+        $defaultPaymentManager->makePaymentDetailsDefault($paymentDetails->getCustomer(), $paymentDetails);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
