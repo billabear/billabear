@@ -24,7 +24,7 @@ trait CrudListTrait
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $key = $request->get('key', $defaultSortKey);
-        $resultsPerPage = (int) $request->get('per_page', 10);
+        $resultsPerPage = (int) $request->get('limit', 10);
 
         if ($resultsPerPage < 1) {
             return new JsonResponse([
