@@ -49,6 +49,29 @@ class ApiContext implements Context
     }
 
     /**
+     * @When I view the payment methods :arg1 for :arg2
+     */
+    public function iViewThePaymentMethodsFor($name, $email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $paymentDetails = $this->findPaymentMethod($customer, $name);
+
+        $this->sendJsonRequest('GET', '/api/v1/payment-methods/'.$paymentDetails->getId());
+    }
+
+    /**
+     * @Then there should be the last should be :arg1
+     */
+    public function thereShouldBeTheLastShouldBe($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['last_four'] != $arg1) {
+            throw new \Exception('Last four should be the same');
+        }
+    }
+
+    /**
      * @When I fetch the payment details via API for customer :arg1
      */
     public function iFetchThePaymentDetailsViaApiForCustomer($email)

@@ -95,7 +95,8 @@ class PaymentMethodsController
         return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}/default', name: 'api_v1.0_payment_details_default', methods: ['POST'])]
+    #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}/default', name: 'api_v1_customer_payment_details_default', methods: ['POST'])]
+    #[Route('/api/v1/payment-methods/{paymentDetailsId}/default', name: 'api_v1_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -103,16 +104,8 @@ class PaymentMethodsController
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
         $this->getLogger()->info('Received request to make payment details default', [
-            'customer_id' => $request->get('customerId'),
             'payment_details_id' => $request->get('paymentDetailsId'),
         ]);
-        try {
-            /** @var Customer $customer */
-            $customer = $customerRepository->getById($request->get('customerId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
-        }
-
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
@@ -123,6 +116,28 @@ class PaymentMethodsController
         $defaultPaymentManager->makePaymentDetailsDefault($customer, $paymentDetails);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/api/v1/payment-methods/{paymentDetailsId}', name: 'api_v1_payment_details_view', methods: ['GET'])]
+    public function viewPaymentDetails(
+        Request $request,
+        PaymentCardRepositoryInterface $paymentDetailsRepository,
+        PaymentMethodsDataMapper $paymentMethodsDataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        $this->getLogger()->info('Received request to make payment details default', [
+            'payment_details_id' => $request->get('paymentDetailsId'),
+        ]);
+        try {
+            /** @var PaymentCard $paymentDetails */
+            $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $dto = $paymentMethodsDataMapper->createApiDto($paymentDetails);
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_OK, [], true);
     }
 
     #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}', name: 'api_v1_customer_payment_details_delete', methods: ['DELETE'])]
