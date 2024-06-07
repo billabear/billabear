@@ -10,14 +10,17 @@ namespace BillaBear\Controller\Public;
 
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 class FrontController
 {
+    use LoggerAwareTrait;
+
     #[Route('/portal/{vueRouting}', name: 'public_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/portal/pay/{hash}', name: 'portal_pay_invoice', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/portal/quote/{hash}', name: 'portal_pay_quote', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
@@ -27,6 +30,8 @@ class FrontController
         SettingsRepositoryInterface $settingsRepository,
         #[Autowire(env: 'STRIPE_PRIVATE_API_KEY')] $privateApiKey,
     ) {
+        $this->getLogger()->info('Received request to handle public site');
+
         if (empty($privateApiKey)) {
             return new RedirectResponse('/error/stripe');
         }
@@ -34,7 +39,7 @@ class FrontController
         try {
             $settings = $settingsRepository->getDefaultSettings();
         } catch (TableNotFoundException $exception) {
-            return new RedirectResponse('/install');
+            return new RedirectResponse('/error/stripe');
         }
 
         return new Response($twig->render('public.html.twig'));

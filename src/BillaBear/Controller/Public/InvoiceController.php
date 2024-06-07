@@ -21,6 +21,7 @@ use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,8 +32,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class InvoiceController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
-    #[Route('/public/invoice/{hash}/pay', name: 'app_public_invoice_readpay', methods: ['GET'])]
+    #[Route('/public/invoice/{id}/pay', name: 'app_public_invoice_readpay', methods: ['GET'])]
     public function readPay(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
@@ -42,6 +44,8 @@ class InvoiceController
         FrontendConfig $config,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
+        $this->getLogger()->info('Received request to read pay for invoice', ['invoice_id' => $request->get('slug')]);
+
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->findById($request->get('hash'));
@@ -64,7 +68,7 @@ class InvoiceController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/public/invoice/{hash}/pay', name: 'app_public_invoice_processpay', methods: ['POST'])]
+    #[Route('/public/invoice/{id}/pay', name: 'app_public_invoice_processpay', methods: ['POST'])]
     public function processPay(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
@@ -73,6 +77,8 @@ class InvoiceController
         ValidatorInterface $validator,
         InvoiceCharger $invoiceCharger,
     ): Response {
+        $this->getLogger()->info('Received request to read pay for invoice', ['invoice_id' => $request->get('id')]);
+
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->findById($request->get('hash'));

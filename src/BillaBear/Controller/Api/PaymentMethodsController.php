@@ -125,7 +125,8 @@ class PaymentMethodsController
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
 
-    #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}', name: 'api_v1.0_payment_details_delete', methods: ['DELETE'])]
+    #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}', name: 'api_v1_customer_payment_details_delete', methods: ['DELETE'])]
+    #[Route('/api/v1/payment-methods/{paymentDetailsId}', name: 'api_v1_payment_details_delete', methods: ['DELETE'])]
     public function deletePaymentDetails(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -133,15 +134,8 @@ class PaymentMethodsController
         DeleterInterface $deleter,
     ): Response {
         $this->getLogger()->info('Received request to delete payment details', [
-            'customer_id' => $request->get('customerId'),
             'payment_details_id' => $request->get('paymentDetailsId'),
         ]);
-        try {
-            /** @var Customer $customer */
-            $customer = $customerRepository->getById($request->get('customerId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
-        }
 
         try {
             /** @var PaymentCard $paymentDetails */

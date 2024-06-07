@@ -23,6 +23,7 @@ use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class QuoteController
 {
     use ValidationErrorResponseTrait;
+    use LoggerAwareTrait;
 
     #[Route('/public/quote/{hash}/pay', name: 'app_public_quote_readpay', methods: ['GET'])]
     public function readPay(

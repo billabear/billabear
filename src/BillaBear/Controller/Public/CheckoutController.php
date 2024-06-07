@@ -29,6 +29,7 @@ use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CheckoutController
 {
+    use LoggerAwareTrait;
+
     #[Route('/public/checkout/{slug}/view', name: 'app_public_checkout_readcheckout', methods: ['GET'])]
     public function readCheckout(
         Request $request,
@@ -44,6 +47,8 @@ class CheckoutController
         CheckoutDataMapper $checkoutDataMapper,
         SerializerInterface $serializer,
     ) {
+        $this->getLogger()->info('Received request to read checkout', ['checkout_slug' => $request->get('slug')]);
+
         try {
             $checkout = $checkoutRepository->findBySlug($request->get('slug'));
         } catch (NoEntityFoundException $e) {
@@ -75,6 +80,8 @@ class CheckoutController
         FrontendConfig $config,
         CheckoutSessionCreator $checkoutSessionCreator,
     ) {
+        $this->getLogger()->info('Received request to create customer checkout', ['checkout_slug' => $request->get('slug')]);
+
         try {
             $checkout = $checkoutRepository->findBySlug($request->get('slug'));
         } catch (NoEntityFoundException $e) {
@@ -128,6 +135,8 @@ class CheckoutController
         InvoiceCharger $invoiceCharger,
         EventDispatcherInterface $eventDispatcher,
     ) {
+        $this->getLogger()->info('Received request to create payment checkout', ['checkout_slug' => $request->get('slug')]);
+
         try {
             $checkout = $checkoutRepository->findBySlug($request->get('slug'));
         } catch (NoEntityFoundException $e) {
