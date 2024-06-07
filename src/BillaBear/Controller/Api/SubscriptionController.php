@@ -58,7 +58,7 @@ class SubscriptionController
         SubscriptionDataMapper $subscriptionFactory,
         SerializerInterface $serializer,
     ) {
-        $this->getLogger()->info('Received request to list customer subscriptions', ['customer_id' => $request->get('id')]);
+        $this->getLogger()->info('Received request to list customer subscriptions', ['customer_id' => $request->get('customerId')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
         } catch (NoEntityFoundException $exception) {
@@ -92,7 +92,7 @@ class SubscriptionController
         TransactionManager $transactionManager,
         FrontendAddProcessorInterface $frontendAddProcessor,
     ): Response {
-        $this->getLogger()->info('Received request to create a customer subscriptions', ['customer_id' => $request->get('id')]);
+        $this->getLogger()->info('Received request to create a customer subscriptions', ['customer_id' => $request->get('customerId')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
         } catch (NoEntityFoundException $exception) {
@@ -291,7 +291,7 @@ class SubscriptionController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
-        $this->getLogger()->info('Received request to update payment method for subscriptions', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received request to update payment method for subscriptions', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -332,7 +332,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
-        $this->getLogger()->info('Received request to change subscription plan', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received request to change subscription plan', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
