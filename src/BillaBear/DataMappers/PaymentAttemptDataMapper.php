@@ -54,7 +54,9 @@ class PaymentAttemptDataMapper
     {
         $dto = new AppDto();
         $dto->setId((string) $entity->getId());
-        $dto->setInvoice($this->invoiceDataMapper->createAppDto($entity->getInvoice()));
+        if ($entity->getInvoice()) {
+            $dto->setInvoice($this->invoiceDataMapper->createAppDto($entity->getInvoice()));
+        }
         $dto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
         $dto->setCurrency($entity->getCurrency());
         $dto->setAmount($entity->getAmount());
