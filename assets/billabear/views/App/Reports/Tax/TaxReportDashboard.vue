@@ -82,7 +82,9 @@ export default {
     axios.get("/app/tax/report").then(response => {
       this.rawCountryData = response.data.active_countries;
       this.rawTransactionData = response.data.latest_tax_items;
-      this.mapData = this.rawCountryData.map(obj => {
+      this.mapData = this.rawCountryData.filter(obj => {
+        return (ob.collected_amount > 0);
+      }).map(obj => {
         return {code: obj.country.iso_code_3, value: obj.collected_amount, formatted_value: this.displayCurrency(obj.collected_amount), label: obj.country.currency }
       });
 
