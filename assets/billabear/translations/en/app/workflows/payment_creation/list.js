@@ -17,6 +17,7 @@ export const PAYMENT_CREATION_LIST_TRANSLATION = {
         search: "Filter",
         has_error: "Has Error"
     },
+    bulk_button: "Bulk Reprocess",
     error_message: "An error has occurred",
     edit_button: "Edit"
 }

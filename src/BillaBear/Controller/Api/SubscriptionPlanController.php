@@ -28,7 +28,7 @@ class SubscriptionPlanController
         SerializerInterface $serializer,
         SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
     ): Response {
-        $this->getLogger()->info('Received request to view all subscriptions');
+        $this->getLogger()->info('Received request to view all subscriptions plans');
 
         return $this->crudList($request, $subscriptionPlanRepository, $serializer, $subscriptionPlanDataMapper, 'id');
     }

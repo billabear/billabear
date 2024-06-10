@@ -10,7 +10,6 @@ namespace BillaBear\Event;
 
 use BillaBear\Entity\PaymentAttempt;
 use BillaBear\Entity\PaymentFailureProcess;
-use Parthenon\Billing\Entity\Payment;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class PaymentFailed extends Event
@@ -21,7 +20,7 @@ class PaymentFailed extends Event
     {
     }
 
-    public function getPaymentAttempt(): Payment
+    public function getPaymentAttempt(): PaymentAttempt
     {
         return $this->paymentAttempt;
     }

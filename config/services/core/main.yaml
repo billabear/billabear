@@ -17,6 +17,7 @@ services:
     exclude:
       - '../../../src/BillaBear/DependencyInjection/'
       - '../../../src/BillaBear/Entity/'
+      - '../../../src/BillaBear/Event/'
       - '../../../src/BillaBear/Dto/'
       - '../../../src/BillaBear/Kernel.php'
 
