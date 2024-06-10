@@ -40,5 +40,6 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
         tax_number: 'The tax number for the customer',
         standard_tax_rate: "The tax rate to be applied for the customer for everything but digital services",
         type: "If the customer is a business or individual",
-    }
+    },
+    failed_message: "Unable to successfully create customer",
 }

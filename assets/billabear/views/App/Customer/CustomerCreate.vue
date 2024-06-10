@@ -2,6 +2,10 @@
   <div>
     <h1 class="page-title">{{ $t('app.customer.create.title') }}</h1>
 
+    <div class="alert-error" v-if="failed">
+      {{ $t('app.customer.create.failed_message') }}
+    </div>
+
     <form @submit.prevent="send">
     <div class="mt-3 card-body">
         <div class="form-field-ctn">
@@ -194,6 +198,7 @@ export default {
       sendingInProgress: false,
       showAdvance: false,
       success: false,
+      failed: false,
       errors: {
       }
     }
@@ -207,6 +212,7 @@ export default {
     send: function () {
       this.sendingInProgress = true;
       this.success = false;
+      this.failed = false;
       this.errors = {};
       // Make sure empty strings aren't sent
       if (this.customer.digital_tax_rate == "") {
@@ -220,11 +226,17 @@ export default {
           response => {
             this.sendingInProgress = false;
             this.success = true;
+
+            var id = response.data.id;
+            this.$router.push({name: 'app.customer.view', params: {id: id}})
           }
       ).catch(error => {
-        this.errors = error.response.data.errors;
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.errors = error.response.data.errors;
+        }
         this.sendingInProgress = false;
         this.success = false;
+        this.failed = true;
       })
     }
   }
