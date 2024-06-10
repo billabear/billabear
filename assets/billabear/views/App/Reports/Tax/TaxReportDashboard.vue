@@ -85,7 +85,7 @@ export default {
       this.mapData = this.rawCountryData.map(obj => {
         return {code: obj.country.iso_code_3, value: obj.collected_amount, formatted_value: this.displayCurrency(obj.collected_amount), label: obj.country.currency }
       }).filter(obj => {
-        return (ob.value > 0);
+        return (obj.value > 0);
       });
 
       this.ready = true;
