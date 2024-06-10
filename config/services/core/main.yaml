@@ -19,6 +19,7 @@ services:
       - '../../../src/BillaBear/Entity/'
       - '../../../src/BillaBear/Event/'
       - '../../../src/BillaBear/Dto/'
+      - '../../../src/BillaBear/Webhook/Outbound/Payload'
       - '../../../src/BillaBear/Kernel.php'
 
   Custom\:
