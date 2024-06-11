@@ -21,7 +21,9 @@ use Parthenon\Billing\Plan\Plan;
 use Parthenon\Billing\Plan\PlanPrice;
 use Parthenon\Billing\Subscription\SubscriptionManager;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
+#[Lazy]
 class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 {
     private bool $stripeBillingEnabled = false;

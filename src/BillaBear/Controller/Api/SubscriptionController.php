@@ -396,6 +396,6 @@ class SubscriptionController
 
         $subscriptionRepository->save($subscription);
 
-        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }
 }
