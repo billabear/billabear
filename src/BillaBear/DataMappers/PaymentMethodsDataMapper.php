@@ -29,6 +29,7 @@ class PaymentMethodsDataMapper
         $dto->setExpiryYear($paymentDetails->getExpiryYear());
         $dto->setLastFour($paymentDetails->getLastFour());
         $dto->setDefault($paymentDetails->isDefaultPaymentOption());
+        $dto->setCreatedAt($paymentDetails->getCreatedAt());
 
         return $dto;
     }
@@ -43,6 +44,7 @@ class PaymentMethodsDataMapper
         $dto->setExpiryYear($paymentDetails->getExpiryYear());
         $dto->setLastFour($paymentDetails->getLastFour());
         $dto->setDefault($paymentDetails->isDefaultPaymentOption());
+        $dto->setCreatedAt($paymentDetails->getCreatedAt());
 
         return $dto;
     }
