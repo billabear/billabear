@@ -18,7 +18,7 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
 {
     public function getAllForCustomer(Customer $customer): array
     {
-        return $this->entityRepository->findBy(['customer' => $customer]);
+        return $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC']);
     }
 
     public function getOverdueInvoices(): array

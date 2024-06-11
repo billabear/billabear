@@ -90,7 +90,7 @@
                 </div>
                 <div>
                   <dt>{{ $t('app.customer.view.address.post_code') }}</dt>
-                  <dd>{{ customer.address.post_code }}</dd>
+                  <dd>{{ customer.address.postcode }}</dd>
                 </div>
               </dl>
             </div>
