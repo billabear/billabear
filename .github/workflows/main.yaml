@@ -36,10 +36,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create all the databases
-        run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
-        env:
-          PGPASSWORD: apppassword
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -92,10 +88,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create all the databases
-        run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
-        env:
-          PGPASSWORD: apppassword
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -147,10 +139,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create all the databases
-        run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
-        env:
-          PGPASSWORD: apppassword
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -202,10 +190,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create all the databases
-        run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
-        env:
-          PGPASSWORD: apppassword
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -257,10 +241,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create all the databases
-        run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
-        env:
-          PGPASSWORD: apppassword
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
