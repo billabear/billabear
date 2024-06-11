@@ -19,6 +19,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'invoice')]
+#[ORM\Index(name: 'paid_idx', columns: ['paid'])]
 class Invoice
 {
     #[ORM\Id]
