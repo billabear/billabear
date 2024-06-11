@@ -40,9 +40,7 @@ Watch the video on youtube.
 
 ## RoadMap
 
-* Tax Software Integrations
 * Better Reports
-* Slack/etc integration for internal communications
 * Metric and Usage Based Billing
 * [And you can add more here](https://github.com/billabear/billabear/discussions/categories/ideas)
 
