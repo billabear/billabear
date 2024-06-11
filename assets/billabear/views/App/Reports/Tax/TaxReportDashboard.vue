@@ -14,7 +14,7 @@
 
           <h2 class="report-subtitle">{{ $t('app.reports.tax.countries.title') }}</h2>
 
-          <div class="my-3 border p-2 hover:bg-gray-100" v-for="country in rawCountryData">
+          <div class="my-3 border p-2 hover:bg-gray-100  dark:border-gray-700 dark:bg-gray-800" v-for="country in rawCountryData">
             <div class="country-title">{{ country.country.name }}</div>
             <div class="country-data" v-html="$t('app.reports.tax.countries.transacted_amount', {transacted_amount: displayCurrency(country.transacted_amount), currency: Number().toLocaleString(undefined, {style:'currency', currency:country.country.currency}).slice(0,1)  })"></div>
             <div class="country-data" v-html="$t('app.reports.tax.countries.collected_amount', {collected_amount: displayCurrency(country.collected_amount), currency: Number().toLocaleString(undefined, {style:'currency', currency:country.country.currency}).slice(0,1)  })"></div>
@@ -31,12 +31,12 @@
       </div>
 
       <div class="grid grid-cols-2">
-        <div><h3 class="text-2xl font-bold my-5">{{ $t('app.reports.tax.transactions.title') }}</h3></div>
+        <div><h3 class="text-2xl font-bold my-5 dark:text-white">{{ $t('app.reports.tax.transactions.title') }}</h3></div>
         <div class="text-end my-5"><button @click="processExport" class="btn--main">
           <i class="fa-solid fa-download"></i> {{ $t('app.reports.tax.transactions.download') }}</button>
         </div>
       </div>
-      <div class="overflow-hidden rounded-xl border border-gray-300 bg-white p-5" >
+      <div class="overflow-hidden rounded-xl border border-gray-300 bg-white p-5  dark:border-gray-700 dark:bg-gray-800 dark:text-white" >
         <div class="overflow-auto">
           <table>
             <thead>
@@ -145,7 +145,7 @@ export default {
 
 <style scoped>
 .map-body {
-  @apply rounded-xl border border-gray-300 bg-white p-5;
+  @apply rounded-xl border border-gray-300 bg-white p-5  dark:border-gray-700 dark:bg-gray-800 dark:text-white;
   max-height: 600px
 }
 .report-subtitle {
@@ -153,7 +153,7 @@ export default {
 }
 
 .country-body {
-  @apply rounded-xl bg-white border border-gray-300 p-5 overflow-y-auto;
+  @apply rounded-xl bg-white border border-gray-300 p-5 overflow-y-auto  dark:border-gray-700 dark:bg-gray-800 dark:text-white;
   max-height: 600px
 }
 .country-title {
