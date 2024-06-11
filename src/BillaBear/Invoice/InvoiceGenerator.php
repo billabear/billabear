@@ -20,6 +20,7 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
+use Brick\Money\Money;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
@@ -49,6 +50,7 @@ class InvoiceGenerator
         SubscriptionPlan $newPlan,
         Price $oldPrice,
         Price $newPrice,
+        ?Money $diff = null,
     ): Invoice {
         $lines = [];
         $total = null;
@@ -58,7 +60,12 @@ class InvoiceGenerator
         $invoice->setValid(true);
         $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->getGenerator()->generate());
 
-        $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney())->abs();
+        if (!$diff) {
+            $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney());
+        }
+
+        $diff = $diff->abs();
+
         $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax(), $newPlan->getProduct()->getTaxType());
 
         $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
@@ -162,7 +169,7 @@ class InvoiceGenerator
     /**
      * @throws \Brick\Money\Exception\MoneyMismatchException
      */
-    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?\Brick\Money\Money $total, array $lines, ?\Brick\Money\Money $subTotal, PriceInfo $priceInfo, ?\Brick\Money\Money $vat): Invoice
+    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?Money $total, array $lines, ?Money $subTotal, PriceInfo $priceInfo, ?Money $vat): Invoice
     {
         if ($customer->hasCredit() && !$customer->getCreditAsMoney()->isZero()) {
             $line = new InvoiceLine();

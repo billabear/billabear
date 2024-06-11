@@ -24,11 +24,14 @@ use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 
 class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 {
+    private bool $stripeBillingEnabled = false;
+
     public function __construct(
         private SubscriptionManager $stripeBillingManager,
         private InvoiceSubscriptionManager $invoiceSubscriptionManager,
         private SettingsRepositoryInterface $settingsRepository,
     ) {
+        $this->stripeBillingEnabled = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling();
     }
 
     /**
@@ -36,7 +39,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
      */
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()) {
+        if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
             return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
         }
 
@@ -45,7 +48,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function startSubscriptionWithDto(CustomerInterface $customer, StartSubscriptionDto $startSubscriptionDto): Subscription
     {
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
+        if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
             return $this->invoiceSubscriptionManager->startSubscriptionWithDto($customer, $startSubscriptionDto);
         }
 
@@ -55,7 +58,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     public function cancelSubscriptionAtEndOfCurrentPeriod(Subscription $subscription): Subscription
     {
         $customer = $subscription->getCustomer();
-        if (Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
+        if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $customer->getBillingType() || null === $subscription->getMainExternalReference()) {
             return $this->invoiceSubscriptionManager->cancelSubscriptionAtEndOfCurrentPeriod($subscription);
         }
 
@@ -84,7 +87,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
-        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
+        if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType() || null === $subscription->getMainExternalReference()) {
             $this->invoiceSubscriptionManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
 
             return;
@@ -95,7 +98,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
-        if (Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()
+        if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()
             || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()
             || null === $subscription->getMainExternalReference()) {
             $this->invoiceSubscriptionManager->changeSubscriptionPlan($subscription, $plan, $price, $billingChangeTiming);

@@ -13,6 +13,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Security\ApiUser;
+use Brick\Math\RoundingMode;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -115,15 +116,28 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         return $subscription;
     }
 
+    /**
+     * @var \BillaBear\Entity\Price
+     */
     public function changeSubscriptionPrice(Subscription $subscription, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
+        /** @var \BillaBear\Entity\Price $oldPrice */
         $oldPrice = $subscription->getPrice();
 
         $diff = $price->getAsMoney()->minus($oldPrice->getAsMoney());
         $customer = $subscription->getCustomer();
         if (BillingChangeTiming::INSTANTLY === $billingChangeTiming) {
+            $diff = $this->calculateProrateDiff($subscription, $oldPrice, $price);
+
             if ($diff->isPositive()) {
-                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $subscription->getSubscriptionPlan(), $subscription->getSubscriptionPlan(), $oldPrice, $price);
+                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade(
+                    $customer,
+                    $subscription->getSubscriptionPlan(),
+                    $subscription->getSubscriptionPlan(),
+                    $oldPrice,
+                    $price,
+                    $diff,
+                );
 
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
                     try {
@@ -144,6 +158,13 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                 }
                 $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'price change', $user);
             }
+
+            if (!$oldPrice->isSameSchedule($price)) {
+                $dateStr = sprintf('+1 %s', $price->getSchedule());
+                $newValid = new \DateTime($dateStr);
+                $subscription->setValidUntil($newValid);
+                $subscription->setStartOfCurrentPeriod(new \DateTime());
+            }
         }
 
         $subscription->setPrice($price);
@@ -152,14 +173,15 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
+        /** @var \BillaBear\Entity\Price $oldPrice */
         $oldPrice = $subscription->getPrice();
         $oldPlan = $subscription->getSubscriptionPlan();
-
-        $diff = $price->getAsMoney()->minus($oldPrice->getAsMoney());
         $customer = $subscription->getCustomer();
         if (BillingChangeTiming::INSTANTLY === $billingChangeTiming) {
+            $diff = $this->calculateProrateDiff($subscription, $oldPrice, $price);
+
             if ($diff->isPositive()) {
-                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price);
+                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price, $diff);
 
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
                     try {
@@ -180,11 +202,38 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                 }
                 $this->creditAdjustmentRecorder->createRecord('credit', $customer, $diff->abs(), 'plan change', $user);
             }
+            if (!$oldPrice->isSameSchedule($price)) {
+                $dateStr = sprintf('+1 %s', $price->getSchedule());
+                $newValid = new \DateTime($dateStr);
+                $subscription->setValidUntil($newValid);
+                $subscription->setStartOfCurrentPeriod(new \DateTime());
+            }
         }
 
         $subscription->setPrice($price);
         $subscription->setMoneyAmount($price->getAsMoney());
         $subscription->setSubscriptionPlan($plan);
         $subscription->setPlanName($plan->getName());
+    }
+
+    /**
+     * @throws \Brick\Money\Exception\MoneyMismatchException
+     */
+    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, Price|\BillaBear\Entity\Price $price): \Brick\Money\Money
+    {
+        $now = new \DateTime();
+        $originalInterval = $subscription->getStartOfCurrentPeriod()->diff($subscription->getValidUntil());
+        $timeLeftInterval = $subscription->getStartOfCurrentPeriod()->diff($now);
+        if (0 !== $originalInterval->days) {
+            $percentage = ($timeLeftInterval->days / $originalInterval->days);
+        } else {
+            $percentage = 0;
+        }
+
+        $oldPriceMoney = $oldPrice->getAsMoney();
+        $proRateAmount = $oldPriceMoney->minus($oldPriceMoney->multipliedBy($percentage, RoundingMode::DOWN));
+        $diff = $price->getAsMoney()->minus($proRateAmount);
+
+        return $diff;
     }
 }

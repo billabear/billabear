@@ -18,4 +18,12 @@ use Parthenon\Billing\Entity\Product;
 #[ORM\Table('price')]
 class Price extends \Parthenon\Billing\Entity\Price
 {
+    public function isSameSchedule(Price $price): bool
+    {
+        if ($this->getSchedule() === $price->getSchedule()) {
+            return true;
+        }
+
+        return false;
+    }
 }

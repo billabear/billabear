@@ -129,7 +129,7 @@ class SubscriptionController
         SubscriptionDataMapper $subscriptionFactory,
         TransactionManager $transactionManager,
     ): Response {
-        $this->getLogger()->info('Received a request to write create subscription');
+        $this->getLogger()->info('Received a request to write create subscription', ['customer_id' => $request->get('customerId')]);
 
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
@@ -197,7 +197,7 @@ class SubscriptionController
         PaymentRepositoryInterface $paymentRepository,
         PaymentDataMapper $paymentFactory,
     ): Response {
-        $this->getLogger()->info('Received a request to view subscription', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to view subscription', ['subscription_id' => $request->get('subscriptionId')]);
 
         try {
             /** @var Subscription $subscription */
@@ -235,7 +235,7 @@ class SubscriptionController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
-        $this->getLogger()->info('Received a request to update subscription payment details', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to update subscription payment details', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -278,7 +278,7 @@ class SubscriptionController
         \BillaBear\DataMappers\CancellationDataMapper $cancellationRequestFactory,
         UserProvider $userProvider,
     ): Response {
-        $this->getLogger()->info('Received a request to cancel subscription', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to cancel subscription', ['subscription_id' => $request->get('subscriptionId')]);
 
         try {
             /** @var Subscription $subscription */
@@ -332,7 +332,7 @@ class SubscriptionController
         PriceDataMapper $priceFactory,
         SerializerInterface $serializer,
     ): Response {
-        $this->getLogger()->info('Received a request to read change price of subscription', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to read change price of subscription', ['subscription_id' => $request->get('subscriptionId')]);
 
         try {
             /** @var Subscription $subscription */
@@ -371,7 +371,7 @@ class SubscriptionController
         PriceRepositoryInterface $priceRepository,
         SubscriptionManagerInterface $subscriptionManager
     ): Response {
-        $this->getLogger()->info('Received a request to write change price of subscription', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to write change price of subscription', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -406,7 +406,7 @@ class SubscriptionController
         PriceRepositoryInterface $priceRepository,
         SerializerInterface $serializer,
     ): Response {
-        $this->getLogger()->info('Received a request to read change subscription plan', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to read change subscription plan', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -444,7 +444,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
-        $this->getLogger()->info('Received a request to write change subscription plan', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received a request to write change subscription plan', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));

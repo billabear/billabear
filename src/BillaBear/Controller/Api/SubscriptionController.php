@@ -13,6 +13,7 @@ use BillaBear\Database\TransactionManager;
 use BillaBear\DataMappers\CancellationDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription;
+use BillaBear\Dto\Request\Api\Subscription\ChangePrice;
 use BillaBear\Dto\Request\Api\Subscription\CreateSubscription;
 use BillaBear\Dto\Request\Api\Subscription\UpdatePlan;
 use BillaBear\Dto\Request\App\Subscription\UpdatePaymentMethod;
@@ -356,6 +357,42 @@ class SubscriptionController
         $price = $priceRepository->findById($dto->getPriceId());
         $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getPlanId());
         $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price, $change);
+
+        $subscriptionRepository->save($subscription);
+
+        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    #[Route('/api/v1/subscription/{subscriptionId}/price', name: 'api_v1_subscription_update_price', methods: ['POST'])]
+    public function changeSubscriptionPrice(
+        Request $request,
+        SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        PriceRepositoryInterface $priceRepository,
+        SubscriptionManagerInterface $subscriptionManager,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+    ): Response {
+        $this->getLogger()->info('Received a request to api change price of subscription', ['subscription_id' => $request->get('subscriptionId')]);
+        try {
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var ChangePrice $dto */
+        $dto = $serializer->deserialize($request->getContent(), ChangePrice::class, 'json');
+        $errors = $validator->validate($dto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $price = $priceRepository->findById($dto->getPrice());
+        $when = BillingChangeTiming::from($dto->getWhen());
+        $subscriptionManager->changeSubscriptionPrice($subscription, $price, $when);
 
         $subscriptionRepository->save($subscription);
 

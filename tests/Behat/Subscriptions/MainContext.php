@@ -321,6 +321,15 @@ class MainContext implements Context
 
             $paymentReference = $paymentDetails->getStoredPaymentReference();
 
+            $start = new \DateTime($row['Started Current Period'] ?? 'now');
+
+            if (isset($row['Next Charge'])) {
+                $end = new \DateTime($row['Next Charge']);
+            } else {
+                $end = clone $start;
+                $end = $end->modify('+1 '.$row['Price Schedule']);
+            }
+
             $subscription = new Subscription();
             $subscription->setPaymentSchedule($row['Price Schedule']);
             $subscription->setCustomer($customer);
@@ -335,9 +344,9 @@ class MainContext implements Context
             $subscription->setChildExternalReference('saddsa');
             $subscription->setCreatedAt(new \DateTime($row['Started At'] ?? 'now'));
             $subscription->setUpdatedAt(new \DateTime('now'));
-            $subscription->setStartOfCurrentPeriod(new \DateTime($row['Started Current Period'] ?? 'now'));
+            $subscription->setStartOfCurrentPeriod($start);
             $subscription->setPaymentDetails($paymentDetails);
-            $subscription->setValidUntil(new \DateTime($row['Next Charge'] ?? '+1 '.$row['Price Schedule']));
+            $subscription->setValidUntil($end);
 
             if (isset($row['Ended At'])) {
                 $subscription->setEndedAt(new \DateTime($row['Ended At']));
@@ -640,6 +649,18 @@ class MainContext implements Context
     }
 
     /**
+     * @When I update via the api the subscription :arg1 for :arg2 to use the :arg5 in :arg3 per :arg4 price
+     */
+    public function iUpdateViaTheApiTheSubscriptionForToUseTheInPerPrice($planName, $customerEmail, $priceAmount, $currency, $schedule)
+    {
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['amount' => $priceAmount, 'currency' => $currency, 'schedule' => $schedule]);
+
+        $subscription = $this->getSubscription($customerEmail, $planName);
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/price', ['price' => (string) $price->getId(), 'when' => 'instantly']);
+    }
+
+    /**
      * @When I update the subscription :planName for :customerEmail to use the :priceAmount in :currency per :schedule price
      */
     public function iUpdateTheSubscriptionForToUseTheInPerPrice($planName, $customerEmail, $priceAmount, $currency, $schedule)
@@ -664,6 +685,20 @@ class MainContext implements Context
 
         if ($subscription->getPrice()->getId() != $price->getId()) {
             throw new \Exception('Price not the same');
+        }
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will expire in a year
+     */
+    public function theSubscriptionForWillExpireInAYearTime($planName, $customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        $nextYear = new \DateTime('+1 year');
+        if ($subscription->getValidUntil()->format('Y-m-d') !== $nextYear->format('Y-m-d')) {
+            throw new \Exception(sprintf('Expected %s but got %s', $subscription->getValidUntil()->format('Y-m-d'), $nextYear->format('Y-m-d')));
         }
     }
 

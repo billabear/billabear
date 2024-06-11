@@ -9,7 +9,11 @@
 namespace BillaBear\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Parthenon\Billing\Entity\Price;
 
+/**
+ * @method Price getPrice()
+ */
 #[ORM\Entity]
 #[ORM\Table('subscription')]
 class Subscription extends \Parthenon\Billing\Entity\Subscription

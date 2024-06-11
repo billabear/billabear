@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table('payment')]
-#[ORM\Index(name: 'threshold_idx', columns: ['country', 'createdAt'])]
+#[ORM\Index(name: 'threshold_idx', columns: ['country', 'created_at'])]
 class Payment extends \Parthenon\Billing\Entity\Payment
 {
     #[ORM\ManyToOne(targetEntity: Invoice::class)]

@@ -178,6 +178,32 @@ class InvoiceContext implements Context
     }
 
     /**
+     * @Then there will be an invoice for a partial amount of :arg3 for :arg1 for :arg2
+     */
+    public function thereWillBeAnInvoiceForAPartialAmountOfForFor($amount, $planName, $customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $amount = (int) $amount;
+
+        if (27000 == $invoice->getAmountDue()) {
+            throw new \Exception('Has crisp amount');
+        }
+
+        if ($invoice->getAmountDue() < $amount) {
+            return;
+        }
+
+        throw new \Exception(sprintf('Expected %d but got %d', $amount, $invoice->getAmountDue()));
+    }
+
+    /**
      * @Then there the latest invoice for :arg1 will not have tax country of :arg2
      */
     public function thereTheLatestInvoiceForWillNotHaveTaxCountryOf($customerEmail, $expectedCountry)
