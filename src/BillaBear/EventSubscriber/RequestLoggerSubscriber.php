@@ -39,7 +39,7 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
     public function onKernelResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
-        // Turn non
+        // Turn non json bodies to null
         $body = json_encode(json_decode($response->getContent(), true));
 
         $this->getLogger()->info('Sending response', ['body' => $body]);
