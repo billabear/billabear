@@ -1,0 +1,47 @@
+<?php
+
+/*
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
+ *
+ * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ */
+
+namespace BillaBear\EventSubscriber;
+
+use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+
+class RequestLoggerSubscriber implements EventSubscriberInterface
+{
+    use LoggerAwareTrait;
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            'kernel.request' => 'onKernelRequest',
+            'kernel.response' => 'onKernelResponse',
+        ];
+    }
+
+    public function onKernelRequest(RequestEvent $event)
+    {
+        $request = $event->getRequest();
+
+        $this->getLogger()->info('Received request', [
+            'method' => $request->getMethod(),
+            'uri' => $request->getRequestUri(),
+            'body' => $request->getContent(),
+        ]);
+    }
+
+    public function onKernelResponse(ResponseEvent $event)
+    {
+        $response = $event->getResponse();
+        // Turn non
+        $body = json_encode(json_decode($response->getContent(), true));
+
+        $this->getLogger()->info('Sending response', ['body' => $body]);
+    }
+}
