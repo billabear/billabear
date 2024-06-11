@@ -11,7 +11,6 @@ namespace BillaBear\Controller\Public;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Parthenon\Common\LoggerAwareTrait;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,13 +27,8 @@ class FrontController
     public function handlePublic(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
-        #[Autowire(env: 'STRIPE_PRIVATE_API_KEY')] $privateApiKey,
     ) {
         $this->getLogger()->info('Received request to handle public site');
-
-        if (empty($privateApiKey)) {
-            return new RedirectResponse('/error/stripe');
-        }
 
         try {
             $settings = $settingsRepository->getDefaultSettings();
