@@ -169,6 +169,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
         $subscription->setPrice($price);
         $subscription->setMoneyAmount($price->getAsMoney());
+        $subscription->setPaymentSchedule($price->getSchedule());
     }
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
