@@ -32,31 +32,31 @@ class UpdatePlan
     #[Assert\NotBlank]
     #[PriceExists]
     #[SerializedName('price')]
-    private $priceId;
+    private $price;
 
     #[Assert\NotBlank]
     #[SubscriptionPlanExists]
     #[SerializedName('plan')]
-    private $planId;
+    private $plan;
 
-    public function getPriceId()
+    public function getPrice()
     {
-        return $this->priceId;
+        return $this->price;
     }
 
-    public function setPriceId($priceId): void
+    public function setPrice($price): void
     {
-        $this->priceId = $priceId;
+        $this->price = $price;
     }
 
-    public function getPlanId()
+    public function getPlan()
     {
-        return $this->planId;
+        return $this->plan;
     }
 
-    public function setPlanId($planId): void
+    public function setPlan($plan): void
     {
-        $this->planId = $planId;
+        $this->plan = $plan;
     }
 
     public function getWhen()

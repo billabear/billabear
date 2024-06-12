@@ -354,8 +354,8 @@ class SubscriptionController
             default => BillingChangeTiming::NEXT_CYCLE,
         };
 
-        $price = $priceRepository->findById($dto->getPriceId());
-        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getPlanId());
+        $price = $priceRepository->findById($dto->getPrice());
+        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getPlan());
         $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price, $change);
 
         $subscriptionRepository->save($subscription);
