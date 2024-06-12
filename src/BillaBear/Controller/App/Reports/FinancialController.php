@@ -18,6 +18,7 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\LifetimeValueStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Stats\LifeTimeValueCalculation;
+use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
@@ -76,8 +77,9 @@ class FinancialController
 
         if (0 !== $customerCount && 0 !== $lifespan) {
             $lifeTime = $total->getMinorAmount()->dividedBy($customerCount, roundingMode: RoundingMode::HALF_UP);
+            $lifespan = BigDecimal::of($lifespan);
 
-            if (!$lifeTime->isZero()) {
+            if (!$lifeTime->isZero() && !$lifespan->isZero()) {
                 $lifeTime->dividedBy($lifespan, roundingMode: RoundingMode::HALF_UP);
             }
         } else {
