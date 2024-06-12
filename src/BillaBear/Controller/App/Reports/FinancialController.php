@@ -97,7 +97,7 @@ class FinancialController
 
         $dto = new LifetimeValueDto();
         $dto->setLifetimeValue($lifeTime->toInt());
-        $dto->setLifespan($lifespan);
+        $dto->setLifespan($lifespan->toFloat());
         $dto->setCurrency($currency->getCurrencyCode());
         $dto->setCustomerCount($customerCount);
         $dto->setBrands($brandDtos);
