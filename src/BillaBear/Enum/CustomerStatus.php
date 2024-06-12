@@ -14,5 +14,6 @@ enum CustomerStatus: string
     case ACTIVE = 'active';
     case DISABLED = 'disabled';
     case CHURNED = 'churned';
+    case REACTIVATED = 'reactivated';
     case UNKNOWN = 'unknown';
 }

@@ -72,6 +72,24 @@ Feature: Customer Subscription Update Price
     And the subscription "Test Plan" for "customer.one@example.org" will expire in a year
     And there will be an invoice for a partial amount of 30000 for "Test Plan" for "customer.one@example.org"
 
+  Scenario: Update price
+    Given I have authenticated to the API
+    And stripe billing is disabled
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Started Current Period | Next Charge |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | -7 days                | +10 minutes |
+    And the following payment details:
+      | Customer Email           | Last Four | Expiry Month | Expiry Year |
+      | customer.one@example.org | 0444      | 03           | 25          |
+    When I update via the api the subscription "Test Plan" for "customer.one@example.org" to use the 30000 in "USD" per "year" price
+    Then the subscription "Test Plan" for "customer.one@example.org" will be for 30000 in "USD" per "year"
+    And the subscription "Test Plan" for "customer.one@example.org" will expire in a year
+    And there will be an invoice for the amount of 30000 for "Test Plan" for "customer.one@example.org"
+
   Scenario: Update price - Stripe Billing
     Given I have authenticated to the API
     And stripe billing is disabled
