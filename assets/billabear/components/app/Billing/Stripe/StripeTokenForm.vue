@@ -4,6 +4,7 @@
     <form @submit.prevent="send" :disabled="sending">
 
       <div id="cardInput"></div>
+      <div id="cardError"></div>
 
       <div class="mt-3">
         <SubmitButton :in-progress="sending">{{ $t('app.billing.card_form.add_card') }}</SubmitButton>

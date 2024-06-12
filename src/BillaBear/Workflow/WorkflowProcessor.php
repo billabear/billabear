@@ -38,7 +38,9 @@ class WorkflowProcessor
             }
         } catch (\Throwable $e) {
             $this->getLogger()->info('Transition for workflow failed', ['workflow' => $workflowType->value, 'transition' => $transition, 'message' => $e->getMessage()]);
-            $subject->setError($e->getMessage());
+            $errorMessage = sprintf("%s\n%s:%s", $e->getMessage(), $e->getFile(), $e->getLine());
+
+            $subject->setError($errorMessage);
             $subject->setHasError(true);
         }
 

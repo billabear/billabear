@@ -9,18 +9,18 @@
 namespace BillaBear\Schedule\Messenger\Handler;
 
 use BillaBear\Background\Invoice\DisableOverdueInvoices;
-use BillaBear\Schedule\Messenger\Message\InvoiceOverdueWarning;
+use BillaBear\Schedule\Messenger\Message\DisableOverdueCustomers;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class InvoiceDisableOverdueHandler
+class DisableOverdueCustomersHandler
 {
     public function __construct(
         private DisableOverdueInvoices $disableOverdueInvoices,
     ) {
     }
 
-    public function __invoke(InvoiceOverdueWarning $checker)
+    public function __invoke(DisableOverdueCustomers $checker)
     {
         $this->disableOverdueInvoices->execute();
     }
