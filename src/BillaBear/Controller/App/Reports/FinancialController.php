@@ -75,11 +75,11 @@ class FinancialController
             $total = $total->plus($amountToAdd, RoundingMode::HALF_UP);
         }
 
-        if (0 !== $customerCount && 0 !== $lifespan) {
+        $lifespan = BigDecimal::of($lifespan);
+        if (0 !== $customerCount && !$lifespan->isZero()) {
             $lifeTime = $total->getMinorAmount()->dividedBy($customerCount, roundingMode: RoundingMode::HALF_UP);
-            $lifespan = BigDecimal::of($lifespan);
 
-            if (!$lifeTime->isZero() && !$lifespan->isZero()) {
+            if (!$lifeTime->isZero()) {
                 $lifeTime->dividedBy($lifespan, roundingMode: RoundingMode::HALF_UP);
             }
         } else {
