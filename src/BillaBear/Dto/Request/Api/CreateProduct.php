@@ -19,12 +19,12 @@ class CreateProduct
     private string $name;
 
     #[SerializedName('external_reference')]
-    private ?string $externalReference = null;
+    private ?string $external_reference = null;
 
     #[SerializedName('tax_type')]
     #[Assert\NotBlank(allowNull: true)]
     #[TaxTypeExists]
-    private $taxType;
+    private $tax_type;
 
     #[Assert\Type('boolean')]
     private $physical = false;
@@ -41,22 +41,22 @@ class CreateProduct
 
     public function getExternalReference(): ?string
     {
-        return $this->externalReference;
+        return $this->external_reference;
     }
 
-    public function setExternalReference(?string $externalReference): void
+    public function setExternalReference(?string $external_reference): void
     {
-        $this->externalReference = $externalReference;
+        $this->external_reference = $external_reference;
     }
 
     public function getTaxType()
     {
-        return $this->taxType;
+        return $this->tax_type;
     }
 
-    public function setTaxType($taxType): void
+    public function setTaxType($tax_type): void
     {
-        $this->taxType = $taxType;
+        $this->tax_type = $tax_type;
     }
 
     public function isPhysical(): bool

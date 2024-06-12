@@ -22,7 +22,7 @@ class CreateSubscription
     #[Assert\Type('string')]
     #[SubscriptionPlanExists]
     #[SerializedName('subscription_plan')]
-    private $subscriptionPlan;
+    private $subscription_plan;
 
     #[Assert\Type('string')]
     #[PriceExists]
@@ -50,12 +50,12 @@ class CreateSubscription
 
     public function getSubscriptionPlan()
     {
-        return $this->subscriptionPlan;
+        return $this->subscription_plan;
     }
 
-    public function setSubscriptionPlan($subscriptionPlan): void
+    public function setSubscriptionPlan($subscription_plan): void
     {
-        $this->subscriptionPlan = $subscriptionPlan;
+        $this->subscription_plan = $subscription_plan;
     }
 
     public function getPrice()

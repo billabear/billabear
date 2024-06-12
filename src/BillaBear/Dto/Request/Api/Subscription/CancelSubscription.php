@@ -33,7 +33,7 @@ class CancelSubscription
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[Assert\Choice([self::REFUND_NONE, self::REFUND_PRORATE, self::REFUND_FULL])]
-    private $refundType = 'none';
+    private $refund_type = 'none';
 
     private $comment;
 
@@ -59,12 +59,12 @@ class CancelSubscription
 
     public function getRefundType()
     {
-        return $this->refundType;
+        return $this->refund_type;
     }
 
-    public function setRefundType($refundType): void
+    public function setRefundType($refund_type): void
     {
-        $this->refundType = $refundType;
+        $this->refund_type = $refund_type;
     }
 
     public function getComment()

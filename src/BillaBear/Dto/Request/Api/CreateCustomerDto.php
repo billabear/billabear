@@ -51,19 +51,19 @@ class CreateCustomerDto
     #[SerializedName('tax_number')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    private $taxNumber;
+    private $tax_number;
 
     #[SerializedName('digital_tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type(['integer', 'float'])]
     #[Assert\PositiveOrZero]
-    private $digitalTaxRate;
+    private $digital_tax_rate;
 
     #[SerializedName('standard_tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type(['integer', 'float'])]
     #[Assert\PositiveOrZero]
-    private $standardTaxRate;
+    private $standard_tax_rate;
 
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
@@ -152,32 +152,32 @@ class CreateCustomerDto
 
     public function getTaxNumber()
     {
-        return $this->taxNumber;
+        return $this->tax_number;
     }
 
-    public function setTaxNumber($taxNumber): void
+    public function setTaxNumber($tax_number): void
     {
-        $this->taxNumber = $taxNumber;
+        $this->tax_number = $tax_number;
     }
 
-    public function getDigitalTaxRate()
+    public function getDigitalTaxrate()
     {
-        return $this->digitalTaxRate;
+        return $this->digital_tax_rate;
     }
 
-    public function setDigitalTaxRate($digitalTaxRate): void
+    public function setDigitalTaxrate($digital_tax_rate): void
     {
-        $this->digitalTaxRate = $digitalTaxRate;
+        $this->digital_tax_rate = $digital_tax_rate;
     }
 
-    public function getStandardTaxRate()
+    public function getStandardTaxrate()
     {
-        return $this->standardTaxRate;
+        return $this->standard_tax_rate;
     }
 
-    public function setStandardTaxRate($standardTaxRate): void
+    public function setStandardTaxrate($standard_tax_rate): void
     {
-        $this->standardTaxRate = $standardTaxRate;
+        $this->standard_tax_rate = $standard_tax_rate;
     }
 
     public function getType()

@@ -128,7 +128,7 @@ Feature: Customer Subscription Create APP
       | Subscription Plan | Price Currency | Price Schedule |
       | test_plan_two     | USD            | month          |
     Then there should not be a subscription for the user "customer.one@example.org"
-    And there should be an error for "subscriptionPlan"
+    And there should be an error for "subscription_plan"
 
   Scenario: Create Failure
     Given I have authenticated to the API

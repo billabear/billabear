@@ -26,7 +26,7 @@ class CreateCheckoutSubscription
     #[SerializedName('seat_number')]
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    private $seatNumber;
+    private $seat_number;
 
     public function getPlan()
     {
@@ -50,11 +50,11 @@ class CreateCheckoutSubscription
 
     public function getSeatNumber()
     {
-        return $this->seatNumber;
+        return $this->seat_number;
     }
 
-    public function setSeatNumber($seatNumber): void
+    public function setSeatNumber($seat_number): void
     {
-        $this->seatNumber = $seatNumber;
+        $this->seat_number = $seat_number;
     }
 }

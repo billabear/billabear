@@ -87,7 +87,7 @@ class CustomerDataMapper
         $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
         $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
-        $customer->setStandardTaxRate($createCustomerDto->getStandardTaxRate());
+        $customer->setStandardTaxRate($createCustomerDto->getStandardTaxrate());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);

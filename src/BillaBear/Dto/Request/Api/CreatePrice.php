@@ -26,7 +26,7 @@ class CreatePrice
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('external_reference')]
-    private ?string $externalReference = null;
+    private ?string $external_reference = null;
 
     #[Assert\Type(type: 'boolean')]
     #[SerializedName('recurring')]
@@ -39,7 +39,7 @@ class CreatePrice
 
     #[SerializedName('including_tax')]
     #[Assert\Type(type: 'boolean')]
-    private bool $includingTax = true;
+    private bool $including_tax = true;
 
     #[SerializedName('public')]
     private bool $public = true;
@@ -76,17 +76,17 @@ class CreatePrice
 
     public function getExternalReference(): ?string
     {
-        return $this->externalReference;
+        return $this->external_reference;
     }
 
     public function hasExternalReference(): bool
     {
-        return isset($this->externalReference);
+        return isset($this->external_reference);
     }
 
-    public function setExternalReference(?string $externalReference): void
+    public function setExternalReference(?string $external_reference): void
     {
-        $this->externalReference = $externalReference;
+        $this->external_reference = $external_reference;
     }
 
     public function setRecurring(bool $recurring): void
@@ -99,9 +99,9 @@ class CreatePrice
         $this->schedule = $schedule;
     }
 
-    public function setIncludingTax(bool $includingTax): void
+    public function setIncludingTax(bool $including_tax): void
     {
-        $this->includingTax = $includingTax;
+        $this->including_tax = $including_tax;
     }
 
     public function isRecurring(): bool
@@ -116,6 +116,6 @@ class CreatePrice
 
     public function isIncludingTax(): bool
     {
-        return $this->includingTax;
+        return $this->including_tax;
     }
 }

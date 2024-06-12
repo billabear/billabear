@@ -46,7 +46,7 @@ class CreateCheckout
 
     #[Assert\DateTime(format: DATE_ATOM)]
     #[SerializedName('expires_at')]
-    private $expiresAt;
+    private $expires_at;
 
     public function getName()
     {
@@ -120,12 +120,12 @@ class CreateCheckout
 
     public function getExpiresAt()
     {
-        return $this->expiresAt;
+        return $this->expires_at;
     }
 
-    public function setExpiresAt($expiresAt): void
+    public function setExpiresAt($expires_at): void
     {
-        $this->expiresAt = $expiresAt;
+        $this->expires_at = $expires_at;
     }
 
     public function addItem(CreateCheckoutItem $createInvoiceItem): void

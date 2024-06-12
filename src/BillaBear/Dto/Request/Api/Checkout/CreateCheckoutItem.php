@@ -26,12 +26,12 @@ class CreateCheckoutItem
 
     #[SerializedName('include_tax')]
     #[Assert\Type('bool')]
-    private $includeTax;
+    private $include_tax;
 
     #[SerializedName('tax_type')]
     #[Assert\NotBlank()]
     #[TaxTypeExists]
-    private $taxType;
+    private $tax_type;
 
     public function getDescription()
     {
@@ -65,21 +65,21 @@ class CreateCheckoutItem
 
     public function getIncludeTax()
     {
-        return $this->includeTax;
+        return $this->include_tax;
     }
 
-    public function setIncludeTax($includeTax): void
+    public function setIncludeTax($include_tax): void
     {
-        $this->includeTax = $includeTax;
+        $this->include_tax = $include_tax;
     }
 
     public function getTaxType()
     {
-        return $this->taxType;
+        return $this->tax_type;
     }
 
-    public function setTaxType($taxType): void
+    public function setTaxType($tax_type): void
     {
-        $this->taxType = $taxType;
+        $this->tax_type = $tax_type;
     }
 }

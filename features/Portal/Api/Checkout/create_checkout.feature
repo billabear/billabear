@@ -38,3 +38,14 @@ Feature: Create Checkout
     When I create the checkout via the API
     Then there should be a permanent checkout called "Test"
     And the checkout "Test" should have a payment amount of 4000 "USD"
+
+  Scenario: Create Checkout
+    Given I have authenticated to the API
+    And I start creating a checkout called "Test"
+    And I add a subscription to "Test Two" at 1000 in "USD" per "week" to checkout
+    And I add a one-off fee of 3000 in "USD" for "Setup Fee"
+    And I set the brand for the checkout as "Example"
+    And I set the checkout to be permanent
+    When I create the checkout via the API
+    Then there should be a permanent checkout called "Test"
+    And the checkout "Test" should have a payment amount of 4000 "USD"
