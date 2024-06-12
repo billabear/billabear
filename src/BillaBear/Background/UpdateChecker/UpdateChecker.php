@@ -34,6 +34,10 @@ class UpdateChecker
         $response = $client->sendRequest($request);
         $data = json_decode($response->getBody()->getContents(), true);
 
+        if (!$data) {
+            return;
+        }
+
         if (str_contains('-dev', Kernel::VERSION)) {
             return;
         }
