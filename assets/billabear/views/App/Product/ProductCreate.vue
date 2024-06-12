@@ -63,11 +63,11 @@
 
         </div>
 
+        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
+        <p class="text-green-500 font-weight-bold" v-if="failed">{{ $t('app.product.create.failed_message') }}</p>
         <div class="form-field-submit-ctn ml-5">
           <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
         </div>
-        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
-        <p class="text-green-500 font-weight-bold" v-if="failed">{{ $t('app.product.create.failed_message') }}</p>
       </form>
     </LoadingScreen>
   </div>
@@ -112,7 +112,8 @@ export default {
       this.errors = {};
       axios.post('/app/product', this.product).then(
           response => {
-            this.sendingInProgress = false;
+            var id = response.data.id;
+            this.$router.push({name: 'app.product.view', params: {id: id}})
             this.success = true;
           }
       ).catch(error => {

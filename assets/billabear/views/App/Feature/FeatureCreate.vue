@@ -34,10 +34,10 @@
         </div>
 
 
-    <div class="form-field-submit-ctn">
-      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.feature.create.submit_btn') }}</SubmitButton>
-    </div>
-    <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.feature.create.success_message') }}</p>
+        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.feature.create.success_message') }}</p>
+        <div class="form-field-submit-ctn">
+          <SubmitButton :in-progress="sendingInProgress">{{ $t('app.feature.create.submit_btn') }}</SubmitButton>
+        </div>
       </div>
     </form>
   </div>

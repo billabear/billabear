@@ -238,6 +238,10 @@ export default {
 
       axios.post('/app/product/'+productId+'/plan', payload).then(
           response => {
+
+            var planId = response.data.id;
+            this.$router.push({name: 'app.subscription_plan.view', params: {productId: productId, subscriptionPlanId: planId}})
+
             this.sendingInProgress = false;
             this.success = true;
           }

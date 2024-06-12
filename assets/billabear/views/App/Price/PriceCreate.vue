@@ -80,10 +80,10 @@
 
       </div>
 
+      <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
       <div class="form-field-submit-ctn">
         <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
       </div>
-      <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
     </form>
   </div>
 </template>
