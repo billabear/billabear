@@ -26,17 +26,19 @@
 
     <div class="card-body m-5" v-if="active_filters.length > 0">
       <h2>{{ $t('app.customer.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div>
-            <input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" />
-            <input v-if="this.filters[filter].type == 'boolean'" type="checkbox"  class="filter_field" v-model="this.filters[filter].value" />
+      <form @submit.prevent="doSearch">
+        <div v-for="filter in active_filters">
+          <div class="px-3 py-1 sm:flex sm:px-6">
+            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
+            <div>
+              <input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" />
+              <input v-if="this.filters[filter].type == 'boolean'" type="checkbox"  class="filter_field" v-model="this.filters[filter].value" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
+        <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
+      </form>
     </div>
 
     <LoadingScreen :ready="ready">

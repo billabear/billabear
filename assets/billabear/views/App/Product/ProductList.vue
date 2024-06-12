@@ -21,12 +21,15 @@
 
     <div class="card-body m-5" v-if="active_filters.length > 0">
       <h2>{{ $t('app.product.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
+
+      <form @submit.prevent="doSearch">
+        <div v-for="filter in active_filters">
+          <div class="px-3 py-1 sm:flex sm:px-6">
+            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
+            <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
+          </div>
         </div>
-      </div>
+      </form>
 
       <button @click="doSearch" class="btn--main mt-3">{{ $t('app.product.list.filter.search') }}</button>
     </div>

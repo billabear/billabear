@@ -18,14 +18,17 @@
 
     <div class="card-body m-5" v-if="active_filters.length > 0">
       <h2>{{ $t('app.invoices.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-        </div>
-      </div>
 
-      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
+      <form @submit.prevent="doSearch">
+        <div v-for="filter in active_filters">
+          <div class="px-3 py-1 sm:flex sm:px-6">
+            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
+            <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
+          </div>
+        </div>
+
+        <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
+      </form>
     </div>
 
     <LoadingScreen :ready="ready">
@@ -49,12 +52,12 @@
               <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="list-btn">{{ $t('app.invoices.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="invoices.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.invoices.list.no_invoices') }}</td>
+              <td colspan="5" class="text-center">{{ $t('app.invoices.list.no_invoices') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr>
-              <td colspan="4" class="text-center">
+              <td colspan="5" class="text-center">
                 <LoadingMessage>{{ $t('app.invoices.list.loading') }}</LoadingMessage>
               </td>
             </tr>
