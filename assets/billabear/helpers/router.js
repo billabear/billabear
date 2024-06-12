@@ -54,6 +54,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (authRequired && !loggedIn) {
+        localStorage.setItem('app_redirect', window.location.pathname)
         return next('/login');
     }
 
@@ -66,6 +67,7 @@ axios.interceptors.response.use(response => {
 }, error => {
     if (error.response.status === 401) {
         localStorage.setItem('user', null);
+        localStorage.setItem('app_redirect', window.location.pathname)
         router.push('/login')
     }
     return Promise.reject(error);
