@@ -10,14 +10,14 @@
           <dl class="detail-list">
             <div>
               <dt>{{ $t('app.workflows.payment_failure_process.view.payment.amount') }}</dt>
-              <dd><Currency :currency="payment_failure_process.payment_attempt.invoice.currency" :amount="payment_failure_process.payment_attempt.invoice.amount" /></dd>
+              <dd><Currency :currency="payment_failure_process.payment_attempt.currency" :amount="payment_failure_process.payment_attempt.amount" /></dd>
             </div>
             <div>
               <dt>{{ $t('app.workflows.payment_failure_process.view.payment.customer') }}</dt>
               <dd><router-link :to="{name: 'app.customer.view', params: {id: payment_failure_process.customer.id}}">{{ payment_failure_process.customer.email }}</router-link></dd>
             </div>
           </dl>
-          <router-link :to="{name: 'app.invoices.view', params: {id: payment_failure_process.payment_attempt.invoice.id}}" class="btn--container">{{ $t('app.workflows.payment_failure_process.view.payment.view') }}</router-link>
+          <router-link v-if="payment_failure_process.payment_attempt.invoice != null" :to="{name: 'app.invoices.view', params: {id: payment_failure_process.payment_attempt.invoice.id}}" class="btn--container">{{ $t('app.workflows.payment_failure_process.view.payment.view') }}</router-link>
         </div>
 
         <div class="card-body">

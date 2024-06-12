@@ -20,6 +20,8 @@ services:
       - '../../../src/BillaBear/Event/'
       - '../../../src/BillaBear/Dto/'
       - '../../../src/BillaBear/Webhook/Outbound/Payload'
+      - '../../../src/BillaBear/Notification/Slack/Data'
+      - '../../../src/BillaBear/Notification/Email/Data'
       - '../../../src/BillaBear/Kernel.php'
 
   Custom\:

@@ -34,8 +34,6 @@ class WorkflowProcessor
                     $this->getLogger()->info('Did transition for workflow', ['workflow' => $workflowType->value, 'transition' => $transition]);
                 } else {
                     $this->getLogger()->info("Can't do transition for workflow", ['workflow' => $workflowType->value, 'transition' => $transition]);
-
-                    return $subject;
                 }
             }
         } catch (\Throwable $e) {

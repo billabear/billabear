@@ -33,6 +33,12 @@ Feature: View Lifetime Value
 
   Scenario:
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I view the lifetime value:
+    Then I should see a customer average lifespan
+    And I should see a customer average lifetime value
+
+  Scenario:
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |

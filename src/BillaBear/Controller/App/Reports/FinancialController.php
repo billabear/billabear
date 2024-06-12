@@ -6,7 +6,7 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Controller\App\Stats;
+namespace BillaBear\Controller\App\Reports;
 
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
@@ -75,7 +75,11 @@ class FinancialController
         }
 
         if (0 !== $customerCount && 0 !== $lifespan) {
-            $lifeTime = $total->getMinorAmount()->dividedBy($customerCount, roundingMode: RoundingMode::HALF_UP)->dividedBy($lifespan, roundingMode: RoundingMode::HALF_UP);
+            $lifeTime = $total->getMinorAmount()->dividedBy($customerCount, roundingMode: RoundingMode::HALF_UP);
+
+            if (!$lifeTime->isZero()) {
+                $lifeTime->dividedBy($lifespan, roundingMode: RoundingMode::HALF_UP);
+            }
         } else {
             $lifeTime = Money::zero($currency)->getMinorAmount();
         }

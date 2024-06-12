@@ -23,7 +23,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
     public function __construct(
         private SlackNotificationRepositoryInterface $slackNotificationRepository,
         private NotificationSender $notificationSender,
-        private EventDispatcherInterface $eventDisptacher)
+        private EventDispatcherInterface $webhookDisptacher)
     {
     }
 
@@ -33,7 +33,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
         $paymentCreation = $event->getSubject();
         $payment = $paymentCreation->getPayment();
         $payload = new PaymentReceivedPayload($payment);
-        $this->eventDisptacher->dispatch($payload);
+        $this->webhookDisptacher->dispatch($payload);
 
         $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::PAYMENT_PROCESSED);
         $notificationMessage = new PaymentProcessed($payment);
