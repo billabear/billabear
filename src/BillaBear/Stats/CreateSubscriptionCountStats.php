@@ -46,7 +46,7 @@ class CreateSubscriptionCountStats
                 while ($startDate < $now) {
                     $endDate = clone $startDate;
                     $endDate->modify('+1 day');
-                    $this->getLogger()->info('Getting stats for day', ['startDate' => $startDate, 'endDate' => $endDate]);
+                    $this->getLogger()->info('Getting stats for day', ['startDate' => $startDate, 'endDate' => $endDate, 'brand_code' => $brand->getCode()]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
                     $dayStat = $this->subscriptionCountDailyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
@@ -63,7 +63,7 @@ class CreateSubscriptionCountStats
                     $startDate->modify('first day of this month');
                     $endDate = clone $startDate;
                     $endDate->modify('+1 month');
-                    $this->getLogger()->info('Getting stats for month', ['startDate' => $startDate, 'endDate' => $endDate]);
+                    $this->getLogger()->info('Getting stats for month', ['startDate' => $startDate, 'endDate' => $endDate, 'brand_code' => $brand->getCode()]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
                     $monthStat = $this->subscriptionCountMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
@@ -80,7 +80,7 @@ class CreateSubscriptionCountStats
                     $startDate->modify('first day of this year');
                     $endDate = clone $startDate;
                     $endDate->modify('+1 year');
-                    $this->getLogger()->info('Getting stats for year', ['startDate' => $startDate, 'endDate' => $endDate]);
+                    $this->getLogger()->info('Getting stats for year', ['startDate' => $startDate, 'endDate' => $endDate, 'brand_code' => $brand->getCode()]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
                     $yearStat = $this->subscriptionCountYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
