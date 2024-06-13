@@ -12,6 +12,7 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
+use BillaBear\Entity\TaxType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Entity\ReceiptLine;
@@ -91,6 +92,9 @@ class ReceiptProvider
         $customer->getBrandSettings()->setBrandName('Dummy Brand');
         $customer->getBrandSettings()->setAddress(new Address());
 
+        $taxType = new TaxType();
+        $taxType->setName('name');
+
         $invoice = new Invoice();
         $invoice->setCreatedAt(new \DateTime('now'));
         $invoice->setCustomer($customer);
@@ -103,6 +107,7 @@ class ReceiptProvider
         $lineOne->setTaxTotal(2000);
         $lineOne->setDescription('Example Line One');
         $lineOne->setTaxCountry('DE');
+        $lineOne->setTaxType($taxType);
 
         $lineTwo = new InvoiceLine();
         $lineTwo->setInvoice($invoice);
@@ -112,6 +117,7 @@ class ReceiptProvider
         $lineTwo->setTaxTotal(4000);
         $lineTwo->setDescription('Example Line Two');
         $lineTwo->setTaxCountry('DE');
+        $lineTwo->setTaxType($taxType);
 
         $invoice->setLines(new ArrayCollection([$lineOne, $lineTwo]));
         $invoice->setTotal(30000);

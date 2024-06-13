@@ -1,6 +1,7 @@
 imports:
   - { resource: 'parameters.yaml' }
   - { resource: 'third_party.yaml' }
+  - { resource: 'templates.yaml' }
 
 services:
   # default configuration for services in *this* file

@@ -16,13 +16,15 @@ use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Entity\ReceiptLine;
 use Parthenon\Common\Address;
 use Parthenon\Common\Pdf\GeneratorInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
 class ReceiptPdfGenerator
 {
     public function __construct(
         private TemplateRepositoryInterface $templateRepository,
-        private Environment $twig,
+        #[Autowire('@template_twig')]
+        private Environment $templateTwig,
         private GeneratorInterface $pdfGenerator,
     ) {
     }
@@ -48,8 +50,8 @@ class ReceiptPdfGenerator
             throw new \Exception('Unable to find pdf template');
         }
 
-        $twigTemplate = $this->twig->createTemplate($template->getContent());
-        $content = $this->twig->render($twigTemplate, $this->getData($receipt));
+        $twigTemplate = $this->templateTwig->createTemplate($template->getContent());
+        $content = $this->templateTwig->render($twigTemplate, $this->getData($receipt));
 
         return $this->pdfGenerator->generate($content);
     }

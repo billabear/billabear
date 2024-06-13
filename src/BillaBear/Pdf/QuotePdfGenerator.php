@@ -15,14 +15,19 @@ use BillaBear\Entity\QuoteLine;
 use BillaBear\Entity\Template;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Address;
+use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Common\Pdf\GeneratorInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
 class QuotePdfGenerator
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private TemplateRepositoryInterface $templateRepository,
-        private Environment $twig,
+        #[Autowire('@template_twig')]
+        private Environment $templateTwig,
         private GeneratorInterface $pdfGenerator,
     ) {
     }
@@ -45,11 +50,13 @@ class QuotePdfGenerator
         }
 
         if (!$template) {
+            $this->getLogger()->critical('Quote Template not found');
+
             throw new \Exception('Unable to find pdf template');
         }
 
-        $twigTemplate = $this->twig->createTemplate($template->getContent());
-        $content = $this->twig->render($twigTemplate, $this->getData($quote));
+        $twigTemplate = $this->templateTwig->createTemplate($template->getContent());
+        $content = $this->templateTwig->render($twigTemplate, $this->getData($quote));
 
         return $this->pdfGenerator->generate($content);
     }

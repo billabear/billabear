@@ -16,13 +16,15 @@ use BillaBear\Entity\Template;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Address;
 use Parthenon\Common\Pdf\GeneratorInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
 class InvoicePdfGenerator
 {
     public function __construct(
         private TemplateRepositoryInterface $templateRepository,
-        private Environment $twig,
+        #[Autowire('@template_twig')]
+        private Environment $templateTwig,
         private GeneratorInterface $pdfGenerator,
     ) {
     }
@@ -49,8 +51,8 @@ class InvoicePdfGenerator
             throw new \Exception('Unable to find pdf template');
         }
 
-        $twigTemplate = $this->twig->createTemplate($template->getContent());
-        $content = $this->twig->render($twigTemplate, $this->getData($invoice));
+        $twigTemplate = $this->templateTwig->createTemplate($template->getContent());
+        $content = $this->templateTwig->render($twigTemplate, $this->getData($invoice));
 
         return $this->pdfGenerator->generate($content);
     }
