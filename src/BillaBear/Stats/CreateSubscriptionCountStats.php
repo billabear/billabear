@@ -14,9 +14,12 @@ use BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
+use Parthenon\Common\LoggerAwareTrait;
 
 class CreateSubscriptionCountStats
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
@@ -58,11 +61,12 @@ class CreateSubscriptionCountStats
                     $startDate->modify('first day of this month');
                     $endDate = clone $startDate;
                     $endDate->modify('+1 month');
+                    $this->getLogger()->debug('Getting stats for month', ['startDate' => $startDate, 'endDate' => $endDate]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
-                    $dayStat = $this->subscriptionCountMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
-                    $dayStat->setCount($dayStatCount);
-                    $this->subscriptionCountMonthlyStatsRepository->save($dayStat);
+                    $monthStat = $this->subscriptionCountMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                    $monthStat->setCount($dayStatCount);
+                    $this->subscriptionCountMonthlyStatsRepository->save($monthStat);
                     $startDate = $endDate;
                 }
 
@@ -76,8 +80,8 @@ class CreateSubscriptionCountStats
                     $endDate->modify('+1 year');
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
-                    $dayStat = $this->subscriptionCountYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
-                    $dayStat->setCount($dayStatCount);
+                    $yearStat = $this->subscriptionCountYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
+                    $yearStat->setCount($dayStatCount);
                     $this->subscriptionCountYearlyStatsRepository->save($dayStat);
                     $startDate = $endDate;
                 }
