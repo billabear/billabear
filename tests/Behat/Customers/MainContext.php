@@ -332,7 +332,9 @@ class MainContext implements Context
             $reference = $row['Reference'] ?? null;
 
             $billingAddress = new Address();
-            $billingAddress->setCountry($row['Country']);
+            if (!empty($row['Country'])) {
+                $billingAddress->setCountry($row['Country']);
+            }
             $billingAddress->setRegion($row['State'] ?? null);
 
             $customer = new Customer();
