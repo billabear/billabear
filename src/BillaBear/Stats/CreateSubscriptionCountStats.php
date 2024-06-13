@@ -31,6 +31,7 @@ class CreateSubscriptionCountStats
 
     public function generate()
     {
+        $this->getLogger()->info('Start create subscription count stats');
         try {
             $oldestSubscription = $this->subscriptionRepository->getOldestSubscription();
             $now = new \DateTime('now');
@@ -43,6 +44,7 @@ class CreateSubscriptionCountStats
 
             foreach ($brands as $brand) {
                 while ($startDate < $now) {
+                    $this->getLogger()->info('Getting stats for day', ['startDate' => $startDate, 'endDate' => $endDate]);
                     $endDate = clone $startDate;
                     $endDate->modify('+1 day');
 
@@ -61,7 +63,7 @@ class CreateSubscriptionCountStats
                     $startDate->modify('first day of this month');
                     $endDate = clone $startDate;
                     $endDate->modify('+1 month');
-                    $this->getLogger()->debug('Getting stats for month', ['startDate' => $startDate, 'endDate' => $endDate]);
+                    $this->getLogger()->info('Getting stats for month', ['startDate' => $startDate, 'endDate' => $endDate]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
                     $monthStat = $this->subscriptionCountMonthlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
@@ -78,6 +80,7 @@ class CreateSubscriptionCountStats
                     $startDate->modify('first day of this year');
                     $endDate = clone $startDate;
                     $endDate->modify('+1 year');
+                    $this->getLogger()->info('Getting stats for year', ['startDate' => $startDate, 'endDate' => $endDate]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
                     $yearStat = $this->subscriptionCountYearlyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
@@ -86,7 +89,8 @@ class CreateSubscriptionCountStats
                     $startDate = $endDate;
                 }
             }
-        } catch (NoEntityFoundException) {
+        } catch (NoEntityFoundException $e) {
+            $this->getLogger()->error('Unable to process stats', ['exception_message' => $e->getMessage()]);
         }
     }
 }
