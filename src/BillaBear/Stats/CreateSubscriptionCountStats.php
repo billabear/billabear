@@ -44,9 +44,9 @@ class CreateSubscriptionCountStats
 
             foreach ($brands as $brand) {
                 while ($startDate < $now) {
-                    $this->getLogger()->info('Getting stats for day', ['startDate' => $startDate, 'endDate' => $endDate]);
                     $endDate = clone $startDate;
                     $endDate->modify('+1 day');
+                    $this->getLogger()->info('Getting stats for day', ['startDate' => $startDate, 'endDate' => $endDate]);
 
                     $dayStatCount = $this->subscriptionRepository->getActiveCountForPeriod($startDate, $endDate, $brand);
                     $dayStat = $this->subscriptionCountDailyStatsRepository->getStatForDateTime($startDate, $brand->getCode());
