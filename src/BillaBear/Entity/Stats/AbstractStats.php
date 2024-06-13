@@ -109,6 +109,9 @@ class AbstractStats
 
             return;
         }
+        if (0 === $this->count) {
+            return;
+        }
         --$this->count;
     }
 
