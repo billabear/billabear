@@ -10,6 +10,7 @@ namespace BillaBear\Command;
 
 use BillaBear\Stats\CreateSubscriptionCountStats;
 use BillaBear\Stats\CustomerCreationStats;
+use BillaBear\Stats\RevenueEstimatesGeneration;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,6 +22,7 @@ class StatsFixCommand extends Command
     public function __construct(
         private CreateSubscriptionCountStats $createSubscriptionCountStats,
         private CustomerCreationStats $customerCreationStats,
+        private RevenueEstimatesGeneration $estimatesGeneration,
     ) {
         parent::__construct(null);
     }
@@ -30,6 +32,7 @@ class StatsFixCommand extends Command
         $output->writeln('Starting stats fix command');
         $this->createSubscriptionCountStats->generate();
         $this->customerCreationStats->generate();
+        $this->estimatesGeneration->generate();
 
         return Command::SUCCESS;
     }

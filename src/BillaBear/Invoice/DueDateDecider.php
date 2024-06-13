@@ -24,12 +24,12 @@ class DueDateDecider
 
     public function setDueAt(Invoice $invoice): void
     {
-        $defaultDueTime = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getDefaultInvoiceDueTime();
+        $databaseDueTime = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getDefaultInvoiceDueTime();
 
         try {
-            $date = new \DateTime('+'.$defaultDueTime);
+            $date = new \DateTime('+'.$databaseDueTime);
         } catch (\Throwable $e) {
-            $this->getLogger()->notice('Using default due time');
+            $this->getLogger()->error('Using default due time', ['failed_due_time' => $databaseDueTime, 'exception' => $e->getMessage()]);
             $date = new \DateTime('+'.SystemSettings::DEFAULT_DUE_TIME);
         }
 
