@@ -23,7 +23,7 @@
           <tbody v-if="loaded">
           <tr v-for="customer in customers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.system.webhook_event.view', params: {id: customer.id}})">
             <td>{{ customer.type }}</td>
-            <td>{{ customer.created_at }}</td>
+            <td>{{ $filters.moment(customer.created_at, 'lll') }}</td>
             <td><router-link :to="{name: 'app.system.webhook_event.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.system.webhooks.main.list.view_btn') }}</router-link></td>
           </tr>
           <tr v-if="customers.length === 0">

@@ -16,7 +16,7 @@
           </tr>
           <tr v-for="invite in sent_invites">
             <td>{{ invite.email }}</td>
-            <td>{{ invite.created_at }}</td>
+            <td>{{ $filters.moment(invite.created_at, 'lll') }}</td>
             <td class="text-end">
               <button class="btn--danger" @click="cancelInvite({invite})" :disabled="cancel_invite_in_progress" :class="{'btn--danger--disabled': cancel_invite_in_progress}" v-if="(current_invite != undefined && current_invite.id !== invite.id) || !cancel_invite_in_progress">{{ $t('app.team.pending_invites.cancel') }}</button>
               <button type="submit" class="btn--danger--disabled" v-else>

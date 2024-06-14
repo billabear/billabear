@@ -129,7 +129,7 @@
                 </tr>
                 <tr v-for="payment in payments">
                   <td>{{ currency(payment.amount) }}</td>
-                  <td>{{ payment.created_at }}</td>
+                  <td>{{ $filters.moment(payment.created_at, 'lll') }}</td>
                   <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="btn--main">{{ $t('app.subscription.view.payments.view') }}</router-link></td>
                 </tr>
                 </tbody>

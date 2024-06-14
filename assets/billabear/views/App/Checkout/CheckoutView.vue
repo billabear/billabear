@@ -60,11 +60,11 @@
                 </div>
                 <div>
                   <dt>{{ $t('app.checkout.view.checkout.created_at') }}</dt>
-                  <dd>{{ checkout.created_at }}</dd>
+                  <dd>{{ $filters.moment(checkout.created_at, 'lll') }}</dd>
                 </div>
                 <div>
                   <dt>{{ $t('app.checkout.view.checkout.expires_at') }}</dt>
-                  <dd>{{ checkout.expires_at }}</dd>
+                  <dd>{{ $filters.moment(checkout.expires_at, 'lll') }}</dd>
                 </div>
                 <div>
                   <dt>{{ $t('app.checkout.view.checkout.pay_link') }}</dt>

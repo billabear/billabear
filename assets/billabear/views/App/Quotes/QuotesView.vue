@@ -57,7 +57,7 @@
                 </div>
                 <div>
                   <dt>{{ $t('app.quotes.view.quote.created_at') }}</dt>
-                  <dd>{{ quote.created_at }}</dd>
+                  <dd>{{ $filters.moment(quote.created_at, 'lll') }}</dd>
                 </div>
                 <div>
                   <dt>{{ $t('app.quotes.view.quote.expires_at') }}</dt>

@@ -49,7 +49,7 @@
           <tr v-for="subscription in subscriptions" class="mt-5">
             <td>{{ subscription.change_date }}</td>
             <td>{{ subscription.status }}</td>
-            <td>{{ subscription.created_at }}</td>
+            <td>{{ $filters.moment(subscription.created_at, 'lll') }}</td>
             <td><router-link :to="{name: 'app.subscription.mass_change.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">

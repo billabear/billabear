@@ -32,8 +32,8 @@
           <tr v-for="key in apiKeys">
             <td>{{ key.name }}</td>
             <td>{{ key.key }}</td>
-            <td>{{ key.expires_at }}</td>
-            <td>{{ key.created_at }}</td>
+            <td>{{ $filters.moment(key.expires_at, 'lll') }}</td>
+            <td>{{ $filters.moment(key.created_at, 'lll') }}</td>
             <td><button v-if="key.active" @click="disable(key)" class="btn--danger">{{ $t('app.settings.api_keys.main.list.disable_button') }}</button></td>
           </tr>
           <tr v-if="apiKeys.length === 0">

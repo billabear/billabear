@@ -23,7 +23,7 @@
 
           <div>
             <dt>{{ $t('app.settings.stripe.view_import.last_updated_at') }}</dt>
-            <dd>{{ importData.updated_at }}</dd>
+            <dd>{{ $filters.moment(importData.updated_at, 'lll') }}</dd>
           </div>
           <div v-if="importData.last_id">
             <dt>{{ $t('app.settings.stripe.view_import.last_id_processed') }}</dt>

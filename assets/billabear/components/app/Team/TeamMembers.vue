@@ -13,7 +13,7 @@
         </tr>
         <tr v-for="member in members">
           <td>{{ member.email }}</td>
-          <td>{{ member.created_at }}</td>
+          <td>{{ $filters.moment(member.created_at, 'lll') }}</td>
           <td>
             <span class="badge--green" v-if="!member.is_deleted">{{ $t('app.team.members.active') }}</span>
             <span class="badge--red" v-else>{{ $t('app.team.members.disabled') }}</span>

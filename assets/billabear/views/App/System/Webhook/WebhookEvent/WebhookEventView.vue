@@ -16,7 +16,7 @@
               </div>
               <div>
                 <dt>{{ $t('app.system.webhooks.event.view.main.created_at') }}</dt>
-                <dd>{{ event.created_at }}</dd>
+                <dd>{{ $filters.moment(event.created_at, 'lll') }}</dd>
               </div>
               <div>
                 <dt>{{ $t('app.system.webhooks.event.view.main.payload') }}</dt>
@@ -40,7 +40,7 @@
               <tbody>
               <tr v-for="response in responses">
                 <td>{{ response.url }}</td>
-                <td>{{ response.created_at }}</td>
+                <td>{{ $filters.moment(response.created_at, 'lll') }}</td>
                 <td><button @click="showResponse(response)" class="btn--main">{{ $t('app.system.webhooks.event.view.responses.list.view') }}</button></td>
               </tr>
               </tbody>
