@@ -27,6 +27,11 @@ interface InvoiceRepositoryInterface extends CrudRepositoryInterface
     public function getOverdueInvoices(): array;
 
     /**
+     * @return Invoice[]
+     */
+    public function getUnpaidInvoices(): array;
+
+    /**
      * @throws NoEntityFoundException
      */
     public function getLatestForSubscription(Subscription $subscription): Invoice;

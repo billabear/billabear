@@ -34,6 +34,17 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
         return $query->getResult();
     }
 
+    public function getUnpaidInvoices(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('i');
+        $qb->where('i.paid = false');
+
+        $query = $qb->getQuery();
+        $query->execute();
+
+        return $query->getResult();
+    }
+
     public function getLatestForSubscription(Subscription $subscription): Invoice
     {
         $qb = $this->entityRepository->createQueryBuilder('i');

@@ -26,7 +26,7 @@ class UnpaidInvoiceStatsProvider
 
     public function getStats()
     {
-        $unpaidInvoices = $this->invoiceRepository->getOverdueInvoices();
+        $unpaidInvoices = $this->invoiceRepository->getUnpaidInvoices();
         $defaultCurrency = strtoupper($this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
 
         $currencyConverter = new CurrencyConverter($this->exchangeRateProvider);

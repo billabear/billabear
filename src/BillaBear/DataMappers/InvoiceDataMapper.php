@@ -16,14 +16,14 @@ use BillaBear\Dto\Generic\App\InvoiceQuickView as AppQuickViewDto;
 use BillaBear\Dto\Response\Portal\Invoice\Invoice as PublicDto;
 use BillaBear\Dto\Response\Portal\Invoice\InvoiceLine;
 use BillaBear\Entity\Invoice as Entity;
-use BillaBear\Invoice\PayLinkGenerator;
+use BillaBear\Invoice\PayLinkGeneratorInterface;
 
 class InvoiceDataMapper
 {
     public function __construct(
         private CustomerDataMapper $customerFactory,
         private AddressDataMapper $addressDataMapper,
-        private PayLinkGenerator $payLinkGenerator,
+        private PayLinkGeneratorInterface $payLinkGenerator,
     ) {
     }
 
