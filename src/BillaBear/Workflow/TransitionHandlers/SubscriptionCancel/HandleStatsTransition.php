@@ -9,7 +9,10 @@
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCancel;
 
 use BillaBear\Entity\CancellationRequest;
+use BillaBear\Entity\Customer;
+use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerSubscriptionEventType;
+use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\SubscriptionCancellationStats;
 use BillaBear\Subscription\CustomerSubscriptionEventCreator;
@@ -22,6 +25,7 @@ class HandleStatsTransition implements EventSubscriberInterface
         private SubscriptionCancellationStats $cancellationStats,
         private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
         private SubscriptionRepositoryInterface $subscriptionRepository,
+        private CustomerRepositoryInterface $customerRepository,
     ) {
     }
 
@@ -32,14 +36,18 @@ class HandleStatsTransition implements EventSubscriberInterface
 
         $subscription = $cancellationRequest->getSubscription();
         $this->cancellationStats->handleStats($subscription);
-        $count = $this->subscriptionRepository->getAllActiveCountForCustomer($subscription->getCustomer());
+        /** @var Customer $customer */
+        $customer = $subscription->getCustomer();
+        $count = $this->subscriptionRepository->getAllActiveCountForCustomer($customer);
 
         if ($count > 0) {
             $eventType = CustomerSubscriptionEventType::ADDON_REMOVED;
         } else {
             $eventType = CustomerSubscriptionEventType::CHURNED;
+            $customer->setStatus(CustomerStatus::CHURNED);
+            $this->customerRepository->save($customer);
         }
-        $this->customerSubscriptionEventCreator->create($eventType, $subscription->getCustomer(), $subscription, $cancellationRequest->getBillingAdmin());
+        $this->customerSubscriptionEventCreator->create($eventType, $customer, $subscription, $cancellationRequest->getBillingAdmin());
     }
 
     public static function getSubscribedEvents()

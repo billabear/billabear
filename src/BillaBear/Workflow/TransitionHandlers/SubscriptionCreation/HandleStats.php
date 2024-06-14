@@ -8,8 +8,11 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCreation;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\SubscriptionCreation;
+use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerSubscriptionEventType;
+use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\SubscriptionCreationStats;
 use BillaBear\Subscription\CustomerSubscriptionEventCreator;
@@ -24,7 +27,8 @@ class HandleStats implements EventSubscriberInterface
     public function __construct(
         private SubscriptionCreationStats $creationStats,
         private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
-        private SubscriptionRepositoryInterface $subscriptionRepository
+        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private CustomerRepositoryInterface $customerRepository,
     ) {
     }
 
@@ -40,17 +44,22 @@ class HandleStats implements EventSubscriberInterface
         $subscription = $subscriptionCreation->getSubscription();
         $this->creationStats->handleStats($subscription);
 
-        $count = $this->subscriptionRepository->getAllActiveCountForCustomer($subscription->getCustomer());
-        $cancelledCount = $this->subscriptionRepository->getAllCancelledCountForCustomer($subscription->getCustomer());
+        /** @var Customer $customer */
+        $customer = $subscription->getCustomer();
+        $count = $this->subscriptionRepository->getAllActiveCountForCustomer($customer);
+        $cancelledCount = $this->subscriptionRepository->getAllCancelledCountForCustomer($customer);
 
         if ($count > 1) {
             $eventType = CustomerSubscriptionEventType::ADDON_ADDED;
         } elseif ($cancelledCount > 0) {
             $eventType = CustomerSubscriptionEventType::REACTIVATED;
+            $customer->setStatus(CustomerStatus::REACTIVATED);
         } else {
             $eventType = CustomerSubscriptionEventType::ACTIVATED;
+            $customer->setStatus(CustomerStatus::ACTIVE);
         }
-        $this->customerSubscriptionEventCreator->create($eventType, $subscription->getCustomer(), $subscription);
+        $this->customerRepository->save($customer);
+        $this->customerSubscriptionEventCreator->create($eventType, $customer, $subscription);
 
         $this->getLogger()->info('Handled stats for subscription');
     }
