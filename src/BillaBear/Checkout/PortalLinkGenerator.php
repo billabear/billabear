@@ -12,7 +12,7 @@ use BillaBear\Entity\Checkout;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PortalLinkGenerator
+class PortalLinkGenerator implements PortalLinkGeneratorInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,

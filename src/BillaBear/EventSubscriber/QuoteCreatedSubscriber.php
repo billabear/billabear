@@ -12,7 +12,7 @@ use BillaBear\Event\QuoteCreated;
 use BillaBear\Notification\Email\Data\QuoteCreatedEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Pdf\QuotePdfGenerator;
-use BillaBear\Quotes\PayLinkGenerator;
+use BillaBear\Quotes\PayLinkGeneratorInterface;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,7 +23,7 @@ class QuoteCreatedSubscriber implements EventSubscriberInterface
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
         private QuotePdfGenerator $pdfGenerator,
-        private PayLinkGenerator $payLinkGenerator,
+        private PayLinkGeneratorInterface $payLinkGenerator,
     ) {
     }
 

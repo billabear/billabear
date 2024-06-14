@@ -23,7 +23,7 @@ use Parthenon\Notification\Sender\SymfonyEmailSender;
 use Postmark\PostmarkClient;
 use Symfony\Component\Mailer\MailerInterface;
 
-class EmailSenderFactory
+class EmailSenderFactory implements EmailSenderFactoryInterface
 {
     use LoggerAwareTrait;
 

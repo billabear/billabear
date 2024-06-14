@@ -9,7 +9,7 @@
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
 use BillaBear\Entity\Processes\InvoiceProcess;
-use BillaBear\Invoice\PayLinkGenerator;
+use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceOverdueEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Pdf\InvoicePdfGenerator;
@@ -25,7 +25,7 @@ class SendOverdueNotificationsTransition implements EventSubscriberInterface
     public function __construct(
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
-        private PayLinkGenerator $payLinkGenerator,
+        private PayLinkGeneratorInterface $payLinkGenerator,
         private InvoicePdfGenerator $invoicePdfGenerator,
     ) {
     }

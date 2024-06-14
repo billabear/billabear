@@ -15,7 +15,7 @@ use BillaBear\Dto\Generic\Public\Quote as PublicDto;
 use BillaBear\Dto\Generic\Public\QuoteLine as PublicLineDto;
 use BillaBear\Entity\Quote as Entity;
 use BillaBear\Entity\QuoteLine as EntityLine;
-use BillaBear\Quotes\PayLinkGenerator;
+use BillaBear\Quotes\PayLinkGeneratorInterface;
 
 class QuoteDataMapper
 {
@@ -24,7 +24,7 @@ class QuoteDataMapper
         private CustomerDataMapper $customerDataMapper,
         private SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
         private PriceDataMapper $priceDataMapper,
-        private PayLinkGenerator $payLinkGenerator,
+        private PayLinkGeneratorInterface $payLinkGenerator,
     ) {
     }
 

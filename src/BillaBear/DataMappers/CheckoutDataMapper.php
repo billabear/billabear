@@ -8,7 +8,7 @@
 
 namespace BillaBear\DataMappers;
 
-use BillaBear\Checkout\PortalLinkGenerator;
+use BillaBear\Checkout\PortalLinkGeneratorInterface;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use BillaBear\Dto\Generic\App\Checkout as AppDto;
 use BillaBear\Dto\Generic\App\CheckoutLine as AppLineDto;
@@ -24,7 +24,7 @@ class CheckoutDataMapper
         private CustomerDataMapper $customerDataMapper,
         private SubscriptionPlanDataMapper $subscriptionPlanDataMapper,
         private PriceDataMapper $priceDataMapper,
-        private PortalLinkGenerator $portalLinkGenerator,
+        private PortalLinkGeneratorInterface $portalLinkGenerator,
     ) {
     }
 

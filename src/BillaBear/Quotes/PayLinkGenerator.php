@@ -12,7 +12,7 @@ use BillaBear\Entity\Quote;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PayLinkGenerator
+class PayLinkGenerator implements PayLinkGeneratorInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
