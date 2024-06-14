@@ -68,7 +68,7 @@ class ActiveCountryProvider
         $money = Money::zero($defaultCurrency);
 
         foreach ($collectedAmounts as $amountData) {
-            $originalFee = Money::of($amountData['amount'], $amountData['currency']);
+            $originalFee = Money::ofMinor($amountData['amount'], $amountData['currency']);
             $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
             $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
         }
