@@ -115,7 +115,7 @@ default:
                 # Integrations
                 - BillaBear\Tests\Behat\Integrations\SlackIntegrationContext
 
-                # Stripe Interopt Layer
+                # Stripe Interopt Layer - Remove?
                 - BillaBear\Tests\Behat\Interopt\Stripe\SubscriptionsContext
 
                 # Workflow
