@@ -9,6 +9,7 @@
 namespace BillaBear\Subscription;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -32,6 +33,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
         private SubscriptionManager $stripeBillingManager,
         private InvoiceSubscriptionManager $invoiceSubscriptionManager,
         private SettingsRepositoryInterface $settingsRepository,
+        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
     ) {
         $this->stripeBillingEnabled = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling();
     }
@@ -100,6 +102,13 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
 
     public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
     {
+        if ($subscription->getPrice()->getAsMoney()->isLessThan($price->getAsMoney())) {
+            $eventType = CustomerSubscriptionEventType::UPGRADED;
+        } else {
+            $eventType = CustomerSubscriptionEventType::DOWNGRADED;
+        }
+        $this->customerSubscriptionEventCreator->create($eventType, $subscription->getCustomer(), $subscription);
+
         if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $subscription->getCustomer()->getBillingType()
             || !$this->settingsRepository->getDefaultSettings()->getSystemSettings()->isUseStripeBilling()
             || null === $subscription->getMainExternalReference()) {

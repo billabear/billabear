@@ -1,26 +1,28 @@
 services:
   _defaults:
     autowire: true
-    autoconfigure: true
+    autoconfigure: false # false to stop twig injecting the sandbox into the main twig env
 
-  twig.security_policy:
+  template.security_policy:
     class: Twig\Sandbox\SecurityPolicy
     factory: [ '@BillaBear\Twig\SecurityPolicyFactory', 'create' ]
 
   template_twig:
     class: Twig\Environment
     arguments:
-      - '@twig.loader'  # Assuming twig.loader is the loader service
+      - '@twig.loader'
     calls:
       - method: addExtension
         arguments:
-          - '@twig.sandbox'
+          - '@template.sandbox'
 
 
     # Define the sandbox extension with the custom security policy
-  twig.sandbox:
+  template.sandbox:
+    public: false
+    tags: ['not-extension']
     class: Twig\Extension\SandboxExtension
     arguments:
-      - '@twig.security_policy'
+      - '@template.security_policy'
       - true
 

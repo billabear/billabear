@@ -44,7 +44,7 @@ class CancellationRequest implements WorkflowProcessInterface
     private ?string $comment;
 
     #[ORM\ManyToOne(targetEntity: SubscriptionInterface::class)]
-    private SubscriptionInterface $subscription;
+    private Subscription $subscription;
 
     #[ORM\ManyToOne(targetEntity: BillingAdminInterface::class)]
     private ?BillingAdminInterface $billingAdmin = null;
@@ -111,12 +111,12 @@ class CancellationRequest implements WorkflowProcessInterface
         $this->comment = $comment;
     }
 
-    public function getSubscription(): SubscriptionInterface
+    public function getSubscription(): Subscription
     {
         return $this->subscription;
     }
 
-    public function setSubscription(SubscriptionInterface $subscription): void
+    public function setSubscription(Subscription $subscription): void
     {
         $this->subscription = $subscription;
     }

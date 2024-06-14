@@ -453,6 +453,11 @@ services:
   app.repository.orm.slack_notification:
     class: BillaBear\Repository\Orm\SlackNotificationRepository
 
+  BillaBear\Repository\CustomerSubscriptionEventRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.customer_subscription_event'
+  app.repository.orm.customer_subscription_event:
+    class: BillaBear\Repository\Orm\CustomerSubscriptionEventRepository
 
   BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\ObolRegister'
 

@@ -63,6 +63,7 @@ Feature: Customer Subscription Create APP
     And the payment amount stats for the day should be 3000 in the currency "USD"
     And the monthly recurring revenue estimate should be 3000
     And the annual recurring revenue estimate should be 36000
+    Then there should be an activated event for "customer.one@example.org"
 
   Scenario: Create one off
     Given I have authenticated to the API
@@ -154,3 +155,32 @@ Feature: Customer Subscription Create APP
       | test_plan         | USD            | month          |
     Then there should not be a subscription for the user "customer.one@example.org"
     And the response should be that payment is needed
+
+  Scenario: Addon Added event
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
+    When I create a subscription via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule |
+      | Test Plan         | 3000         | USD            | month          |
+    Then there should be an add-on added event for "customer.one@example.org"
+
+
+  Scenario: Reactivated event
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Status    | Started Current Period | Next Charge |
+      | Test Plan         | 3000         | USD            | month          | customer.one@example.org | Cancelled | -14 months             | -2 months   |
+    When I create a subscription via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule |
+      | Test Plan         | 3000         | USD            | month          |
+    Then there should be a reactivated event for "customer.one@example.org"

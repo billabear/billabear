@@ -11,6 +11,7 @@ namespace BillaBear\Repository;
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\SubscriptionPlan;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 /**
@@ -63,4 +64,8 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
      * @return Subscription[]
      */
     public function findActiveSubscriptionsOnDate(\DateTime $dateTime, int $count): array;
+
+    public function getAllActiveCountForCustomer(CustomerInterface $customer): int;
+
+    public function getAllCancelledCountForCustomer(CustomerInterface $customer): int;
 }

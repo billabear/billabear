@@ -9,7 +9,10 @@
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCreation;
 
 use BillaBear\Entity\SubscriptionCreation;
+use BillaBear\Enum\CustomerSubscriptionEventType;
+use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\SubscriptionCreationStats;
+use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -20,6 +23,8 @@ class HandleStats implements EventSubscriberInterface
 
     public function __construct(
         private SubscriptionCreationStats $creationStats,
+        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
+        private SubscriptionRepositoryInterface $subscriptionRepository
     ) {
     }
 
@@ -32,8 +37,20 @@ class HandleStats implements EventSubscriberInterface
 
             return;
         }
+        $subscription = $subscriptionCreation->getSubscription();
+        $this->creationStats->handleStats($subscription);
 
-        $this->creationStats->handleStats($subscriptionCreation->getSubscription());
+        $count = $this->subscriptionRepository->getAllActiveCountForCustomer($subscription->getCustomer());
+        $cancelledCount = $this->subscriptionRepository->getAllCancelledCountForCustomer($subscription->getCustomer());
+
+        if ($count > 1) {
+            $eventType = CustomerSubscriptionEventType::ADDON_ADDED;
+        } elseif ($cancelledCount > 0) {
+            $eventType = CustomerSubscriptionEventType::REACTIVATED;
+        } else {
+            $eventType = CustomerSubscriptionEventType::ACTIVATED;
+        }
+        $this->customerSubscriptionEventCreator->create($eventType, $subscription->getCustomer(), $subscription);
 
         $this->getLogger()->info('Handled stats for subscription');
     }

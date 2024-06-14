@@ -12,6 +12,7 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\SubscriptionPlan;
+use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -214,5 +215,43 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
             ->setMaxResults($count);
 
         return $qb->getQuery()->execute();
+    }
+
+    public function getAllActiveCountForCustomer(CustomerInterface $customer): int
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->select('COUNT(s) as count')
+            ->where('s.status = :status')
+            ->andWhere('s.customer = :customer')
+            ->setParameter('status', SubscriptionStatus::ACTIVE)
+            ->setParameter('customer', $customer);
+        $query = $qb->getQuery();
+
+        return (int) $query->getSingleScalarResult();
+    }
+
+    public function getAllCancelledCountForCustomer(CustomerInterface $customer): int
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->select('COUNT(s) as count')
+            ->where('s.status = :status')
+            ->andWhere('s.customer = :customer')
+            ->setParameter('status', SubscriptionStatus::CANCELLED)
+            ->setParameter('customer', $customer);
+        $query = $qb->getQuery();
+
+        $oneCount = (int) $query->getSingleScalarResult();
+
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->select('COUNT(s) as count')
+            ->where('s.status = :status')
+            ->andWhere('s.customer = :customer')
+            ->setParameter('status', SubscriptionStatus::PENDING_CANCEL)
+            ->setParameter('customer', $customer);
+        $query = $qb->getQuery();
+
+        $oneCount += $query->getSingleScalarResult();
+
+        return $oneCount;
     }
 }

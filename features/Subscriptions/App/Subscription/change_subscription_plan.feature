@@ -32,6 +32,7 @@ Feature: Customer Subscription Update Plan
       | Product One | 3000   | USD      | true      | month    | true   |
       | Product One | 3500   | USD      | true      | month    | true   |
       | Product One | 30000  | USD      | true      | year     | false  |
+      | Product One | 4500   | USD      | true      | month    | true   |
       | Product Two | 4500   | USD      | true      | month    | true   |
       | Product Two | 4000   | EUR      | true      | month    | true   |
       | Product Three | 5500   | USD      | true      | month    | true   |
@@ -120,7 +121,7 @@ Feature: Customer Subscription Update Plan
     And the subscription "Better Test Plan" for "customer.one@example.org" will exist
     And the latest invoice for "customer.one@example.org" will have amount due as 1500
 
-  Scenario: Update Plan - Stripe Billing Disable
+  Scenario: Downgrade event
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And stripe billing is disabled
     And the follow customers exist:
@@ -138,6 +139,24 @@ Feature: Customer Subscription Update Plan
       | Plan    | Test Plan   |
       | Price   | 3000        |
       | Currency| USD         |
-    Then the subscription "Better Test Plan" for "customer.one@example.org" will not exist
-    And the subscription "Test Plan" for "customer.one@example.org" will exist
-    Then there should be a credit for "customer.one@example.org" for 1500 in the currency "USD"
+    Then there should be an downgrade event for "customer.one@example.org"
+
+  Scenario: Upgrade event
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And stripe billing is disabled
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Better Test Plan  | 3000         | USD            | month          | customer.one@example.org |
+    And the following payment details:
+      | Customer Email           | Last Four | Expiry Month | Expiry Year |
+      | customer.one@example.org | 0444      | 03           | 25          |
+    When I update the subscription "Better Test Plan" for "customer.one@example.org" to plan to be changed instantly:
+      | Product | Product One |
+      | Plan    | Test Plan   |
+      | Price   | 4500        |
+      | Currency| USD         |
+    Then there should be an upgrade event for "customer.one@example.org"
