@@ -11,6 +11,7 @@ namespace BillaBear\Payment;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Invoice\PricerInterface;
+use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -19,12 +20,16 @@ use Parthenon\Billing\Entity\ReceiptInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Receipt\ReceiptGeneratorInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
 class ReceiptGenerator implements ReceiptGeneratorInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private PricerInterface $pricer,
         private EntityFactoryInterface $entityFactory,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
     }
 
@@ -42,6 +47,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $customer = $payment->getCustomer();
 
         if ($payment->getInvoice()) {
+            $this->getLogger()->debug('Create receipt from invoice', ['payment_id' => (string) $payment->getId()]);
             /** @var InvoiceLine $invoiceLine */
             foreach ($payment->getInvoice()->getLines() as $invoiceLine) {
                 /** @var \BillaBear\Entity\ReceiptLine $line */
@@ -63,6 +69,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $lines[] = $line;
             }
         } else {
+            $this->getLogger()->debug('Creating receipt from subscriptions', ['payment_id' => (string) $payment->getId()]);
             /** @var Subscription $subscription */
             foreach ($payment->getSubscriptions() as $subscription) {
                 /** @var \BillaBear\Entity\ReceiptLine $line */
@@ -90,11 +97,32 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         }
 
         if (!$total instanceof Money) {
+            $this->getLogger()->error("Attempted to create a receipt for a payment that didn't have an amount", ['payment_id' => (string) $payment->getId()]);
             throw new \LogicException('Total must be money if payments exist');
         }
 
         if (!isset($line)) {
-            throw new \LogicException('There must be at least one line');
+            $this->getLogger()->debug('Creating a receipt from just the payment.', ['payment_id' => (string) $payment->getId()]);
+            $taxType = $this->taxTypeRepository->getDefault();
+            $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($total, $payment->getCustomer(), true, $taxType);
+            $line = $this->entityFactory->getReceiptLine();
+            $line->setTotal($payment->getAmount());
+            $line->setCurrency($payment->getCurrency());
+            $line->setDescription('Standalone payment');
+            $line->setReceipt($receipt);
+
+            $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+            $line->setVatPercentage($priceInfo->taxInfo->rate);
+            $line->setTaxType($taxType);
+            $line->setTaxCountry($priceInfo->taxInfo->country);
+            $line->setTaxState($priceInfo->taxInfo->state);
+            $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+
+            $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
+            $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
+
+            $lines[] = $line;
         }
 
         $receipt->setCustomer($customer);

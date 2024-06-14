@@ -15,7 +15,9 @@ use BillaBear\Stats\PaymentAmountStats;
 use Obol\Model\PaymentDetails;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
+use Parthenon\Billing\Receipt\ReceiptGeneratorInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Billing\Subscription\PaymentLinkerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -31,6 +33,8 @@ class PaymentImporter
         private PaymentFactoryInterface $factory,
         private PaymentLinkerInterface $paymentLinker,
         private PaymentAmountStats $paymentAmountStats,
+        private ReceiptGeneratorInterface $receiptGenerator,
+        private ReceiptRepositoryInterface $receiptRepository,
     ) {
     }
 
@@ -55,6 +59,8 @@ class PaymentImporter
                     $payment->setCreatedAt($paymentDetails->getCreatedAt());
                     $this->paymentLinker->linkPaymentDetailsToSubscription($payment, $paymentDetails);
                     $this->paymentRepository->save($payment);
+                    $receipt = $this->receiptGenerator->generateReceiptForPayment($payment);
+                    $this->receiptRepository->save($receipt);
 
                     $this->paymentAmountStats->process($payment);
                 }
