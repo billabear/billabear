@@ -19,7 +19,7 @@
         <div class="stat">
           <h2 class="stat-header">{{ $t('app.reports.dashboard.header.unpaid_invoices') }}</h2>
           <div class="stat-body">
-            <span class="text-3xl">{{ responseData.header.unpaid_invoices_count }}</span> / {{ displayCurrency(responseData.header.unpaid_invoices_count) }} {{ currency }}
+            <span class="text-3xl">{{ responseData.header.unpaid_invoices_count }}</span> / {{ displayCurrency(responseData.header.unpaid_invoices_amount) }} {{ currency }}
           </div>
         </div>
         <div class="stat">

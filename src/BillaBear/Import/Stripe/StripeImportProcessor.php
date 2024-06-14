@@ -48,6 +48,7 @@ class StripeImportProcessor
         $request->setAttempts($attempts);
 
         $stripeImportStateMachine = $this->stripeImportStateMachine;
+        $request->setError(null);
 
         try {
             foreach (self::TRANSITIONS as $transition) {

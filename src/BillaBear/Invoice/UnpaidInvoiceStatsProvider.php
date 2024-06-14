@@ -14,9 +14,12 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
+use Parthenon\Common\LoggerAwareTrait;
 
 class UnpaidInvoiceStatsProvider
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,
         private BricksExchangeRateProvider $exchangeRateProvider,
