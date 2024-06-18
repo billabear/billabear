@@ -185,6 +185,7 @@ class SlackIntegrationContext implements Context
             $slackNotification->setSlackWebhook($this->getWebhookByName($row['Webhook']));
             $slackNotification->setEvent(SlackNotificationEvent::from($row['Event']));
             $slackNotification->setCreatedAt(new \DateTime());
+            $slackNotification->setMessageTemplate($row['Template'] ?? 'template');
             $this->slackNotificationRepository->getEntityManager()->persist($slackNotification);
         }
         $this->slackNotificationRepository->getEntityManager()->flush();
