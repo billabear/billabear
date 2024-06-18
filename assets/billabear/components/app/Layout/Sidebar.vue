@@ -110,7 +110,8 @@ export default {
   components: {Select, RoleOnlyView},
   data() {
     return {
-      locale: 'en'
+      locale: 'en',
+      origin: '',
     }
   },
   methods: {
@@ -121,6 +122,7 @@ export default {
   mounted() {
     const sidebar = document.getElementById('sidebar');
 
+    this.origin = window.location.hostname;
     if (sidebar) {
       const toggleSidebarMobile = (sidebar, sidebarBackdrop, toggleSidebarMobileHamburger, toggleSidebarMobileClose) => {
         sidebar.classList.toggle('hidden');
