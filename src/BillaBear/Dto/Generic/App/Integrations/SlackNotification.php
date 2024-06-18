@@ -18,6 +18,8 @@ class SlackNotification
 
     private SlackNotificationEvent $event;
 
+    private string $template;
+
     public function getId(): string
     {
         return $this->id;
@@ -46,5 +48,15 @@ class SlackNotification
     public function setEvent(SlackNotificationEvent $event): void
     {
         $this->event = $event;
+    }
+
+    public function getTemplate(): string
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(string $template): void
+    {
+        $this->template = $template;
     }
 }

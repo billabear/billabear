@@ -9,19 +9,27 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\Subscription;
-use Parthenon\Notification\Slack\MessageBuilder;
+use BillaBear\Enum\SlackNotificationEvent;
 
-class SubscriptionCreated implements SlackNotificationInterface
+class SubscriptionCreated extends AbstractNotification
 {
+    use CustomerTrait;
+    use SubscriptionTrait;
+
     public function __construct(private Subscription $subscription)
     {
     }
 
-    public function getMessage(): array
+    protected function getData(): array
     {
-        $messageBuilder = new MessageBuilder();
-        $messageBuilder->addTextSection('Subscription Created - '.$this->subscription->getCustomer()->getBillingEmail())->closeSection();
+        return [
+            'customer' => $this->buildCustomerData($this->subscription->getCustomer()),
+            'subscription' => $this->buildSubscriptionData($this->subscription),
+        ];
+    }
 
-        return $messageBuilder->build();
+    public function getEvent(): SlackNotificationEvent
+    {
+        return SlackNotificationEvent::SUBSCRIPTION_CREATED;
     }
 }

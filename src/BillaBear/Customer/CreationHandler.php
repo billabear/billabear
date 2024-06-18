@@ -9,11 +9,9 @@
 namespace BillaBear\Customer;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\SlackNotificationEvent;
 use BillaBear\Notification\Slack\Data\CustomerCreated;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
@@ -21,7 +19,6 @@ use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 class CreationHandler
 {
     public function __construct(
-        private SlackNotificationRepositoryInterface $slackNotificationRepository,
         private NotificationSender $notificationSender,
         private EventDispatcherInterface $eventProcessor,
         private ExternalRegisterInterface $externalRegister,
@@ -44,10 +41,7 @@ class CreationHandler
 
     public function handleSlackNotifications(Customer $customer): void
     {
-        $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::CUSTOMER_CREATED);
         $notificationMessage = new CustomerCreated($customer);
-        foreach ($notifications as $notification) {
-            $this->notificationSender->sendNotification($notification->getSlackWebhook(), $notificationMessage);
-        }
+        $this->notificationSender->sendNotification($notificationMessage);
     }
 }

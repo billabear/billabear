@@ -9,19 +9,25 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\Customer;
-use Parthenon\Notification\Slack\MessageBuilder;
+use BillaBear\Enum\SlackNotificationEvent;
 
-class CustomerCreated implements SlackNotificationInterface
+class CustomerCreated extends AbstractNotification
 {
+    use CustomerTrait;
+
     public function __construct(private Customer $customer)
     {
     }
 
-    public function getMessage(): array
+    public function getEvent(): SlackNotificationEvent
     {
-        $messageBuilder = new MessageBuilder();
-        $messageBuilder->addTextSection('Customer Created - '.$this->customer->getBillingEmail())->closeSection();
+        return SlackNotificationEvent::CUSTOMER_CREATED;
+    }
 
-        return $messageBuilder->build();
+    protected function getData(): array
+    {
+        return [
+            'customer' => $this->buildCustomerData($this->customer),
+        ];
     }
 }

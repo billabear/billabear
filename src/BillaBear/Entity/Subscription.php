@@ -12,7 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\Price;
 
 /**
- * @method Price getPrice()
+ * @method Price    getPrice()
+ * @method Customer getCustomer()
  */
 #[ORM\Entity]
 #[ORM\Table('subscription')]

@@ -8,8 +8,8 @@
 
 namespace BillaBear\Notification\Slack;
 
-use BillaBear\Entity\SlackWebhook;
 use BillaBear\Notification\Slack\Data\SlackNotificationInterface;
+use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\Slack\WebhookPosterInterface;
 
@@ -17,13 +17,19 @@ class NotificationSender
 {
     use LoggerAwareTrait;
 
-    public function __construct(private WebhookPosterInterface $webhookPoster)
-    {
+    public function __construct(
+        private WebhookPosterInterface $webhookPoster,
+        private SlackNotificationRepositoryInterface $slackNotificationRepository,
+    ) {
     }
 
-    public function sendNotification(SlackWebhook $slackWebhook, SlackNotificationInterface $slackNotification)
+    public function sendNotification(SlackNotificationInterface $slackNotification)
     {
-        $this->getLogger()->info('Sending slack notification');
-        $this->webhookPoster->send($slackWebhook->getWebhookUrl(), $slackNotification->getMessage());
+        $notifications = $this->slackNotificationRepository->findActiveForEvent($slackNotification->getEvent());
+
+        foreach ($notifications as $notification) {
+            $this->getLogger()->info('Sending slack notification', ['notification_id' => (string) $notification->getId(), 'event_type' => (string) $notification->getEvent()->value]);
+            $this->webhookPoster->send($notification->getSlackWebhook()->getWebhookUrl(), $slackNotification->getMessage($notification));
+        }
     }
 }

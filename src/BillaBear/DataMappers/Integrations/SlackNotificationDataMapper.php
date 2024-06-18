@@ -31,6 +31,7 @@ class SlackNotificationDataMapper
         $entity->setSlackWebhook($this->slackWebhookRepository->getById($dto->getWebhook()));
         $event = SlackNotificationEvent::from($dto->getEvent());
         $entity->setEvent($event);
+        $entity->setMessageTemplate($dto->getTemplate());
 
         return $entity;
     }
@@ -41,6 +42,7 @@ class SlackNotificationDataMapper
         $dto->setId((string) $entity->getId());
         $dto->setWebhook($this->slackWebhookDataMapper->createAppDto($entity->getSlackWebhook()));
         $dto->setEvent($entity->getEvent());
+        $dto->setTemplate($entity->getMessageTemplate());
 
         return $dto;
     }

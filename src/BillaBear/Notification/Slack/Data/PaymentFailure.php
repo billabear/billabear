@@ -9,19 +9,33 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\PaymentAttempt;
-use Parthenon\Notification\Slack\MessageBuilder;
+use BillaBear\Enum\SlackNotificationEvent;
+use Brick\Money\Money;
 
-class PaymentFailure implements SlackNotificationInterface
+class PaymentFailure extends AbstractNotification
 {
+    use CustomerTrait;
+
     public function __construct(private PaymentAttempt $paymentAttempt)
     {
     }
 
-    public function getMessage(): array
+    public function getEvent(): SlackNotificationEvent
     {
-        $messageBuilder = new MessageBuilder();
-        $messageBuilder->addTextSection('Payment processing failed - '.(string) $this->paymentAttempt->getAmount())->closeSection();
+        return SlackNotificationEvent::PAYMENT_FAILED;
+    }
 
-        return $messageBuilder->build();
+    protected function getData(): array
+    {
+        $money = Money::ofMinor($this->paymentAttempt->getAmount(), $this->paymentAttempt->getCurrency());
+
+        return [
+            'payment_attempt' => [
+                'amount' => $this->paymentAttempt->getAmount(),
+                'currency' => $this->paymentAttempt->getCurrency(),
+                'formatted_amount' => (string) $money,
+            ],
+            'customer' => $this->buildCustomerData($this->paymentAttempt->getCustomer()),
+        ];
     }
 }

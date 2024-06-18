@@ -22,6 +22,10 @@ class CreateSlackNotification
     #[ValidSlackEvent]
     private $event;
 
+    #[Assert\NotBlank()]
+    #[Assert\Type('string')]
+    private $template;
+
     public function getWebhook()
     {
         return $this->webhook;
@@ -40,5 +44,15 @@ class CreateSlackNotification
     public function setEvent($event): void
     {
         $this->event = $event;
+    }
+
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    public function setTemplate($template): void
+    {
+        $this->template = $template;
     }
 }

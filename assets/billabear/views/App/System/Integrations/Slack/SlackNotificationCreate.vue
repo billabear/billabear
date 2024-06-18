@@ -12,7 +12,7 @@
                 {{ $t('app.system.integrations.slack.notifications.create.fields.event') }}
               </label>
               <p class="form-field-error" v-if="errors.event != undefined">{{ errors.event }}</p>
-              <select class="form-field-select" id="event" v-model="webhook.event">
+              <select class="form-field-select" id="event"  @change="changeEvent" v-model="webhook.event">
                 <option>customer_created</option>
                 <option>payment_processed</option>
                 <option>subscription_created</option>
@@ -23,13 +23,22 @@
 
             <div class="form-field-ctn mt-4">
               <label class="form-field-lbl" for="webhook">
-                {{ $t('app.system.integrations.slack.webhooks.create.fields.webhook') }}
+                {{ $t('app.system.integrations.slack.notifications.create.fields.webhook') }}
               </label>
               <p class="form-field-error" v-if="errors.webhook != undefined">{{ errors.webhook }}</p>
               <select class="form-field-select" id="webhook" v-model="webhook.webhook">
                 <option v-for="webhook in webhooks" :value="webhook.id">{{ webhook.name }}</option>
               </select>
-              <p class="form-field-help">{{ $t('app.system.integrations.slack.webhooks.create.help_info.webhook') }}</p>
+              <p class="form-field-help">{{ $t('app.system.integrations.slack.notifications.create.help_info.webhook') }}</p>
+            </div>
+
+            <div class="form-field-ctn mt-4">
+              <label class="form-field-lbl" for="webhook">
+                {{ $t('app.system.integrations.slack.notifications.create.fields.template') }}
+              </label>
+              <p class="form-field-error" v-if="errors.template != undefined">{{ errors.template }}</p>
+              <textarea cols="90" rows="5" v-model="webhook.template"></textarea>
+              <p class="form-field-help" v-html="$t('app.system.integrations.slack.notifications.create.help_info.template')"></p>
             </div>
           </div>
         </div>
@@ -41,11 +50,11 @@
 
 <script>
 import axios from "axios";
-import {Select} from "flowbite-vue";
+import {Select, Textarea} from "flowbite-vue";
 
 export default {
   name: "SlackWebhookCreate",
-  components: {Select},
+  components: {Textarea, Select},
   data() {
     return {
       webhooks: [],
@@ -63,6 +72,19 @@ export default {
     })
   },
   methods: {
+    changeEvent: function () {
+      if (this.webhook.event == "customer_created") {
+        this.webhook.template = "A new customer ({{customer.email}}) has been created";
+      } else if (this.webhook.event === "payment_processed") {
+        this.webhook.template = "Successfully processed {{payment.amount_formatted}} for {{customer.email}}";
+      } else if (this.webhook.event === "payment_failure") {
+        this.webhook.template = "Failed to processed {{payment.amount_formatted}} for {{customer.email}}";
+      } else if (this.webhook.event === "subscription_created") {
+        this.webhook.template = "Successfully subscription {{subscription.plan_name}} for {{customer.email}}";
+      } else if (this.webhook.event === "subscription_cancelled") {
+        this.webhook.template = "Subscription {{subscription.plan_name}} for {{customer.email}} cancelled";
+      }
+    },
     save: function () {
       this.inProgress = true;
       this.errors={};

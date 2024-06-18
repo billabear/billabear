@@ -29,6 +29,9 @@ class SlackNotification implements DeletableInterface
     #[ORM\ManyToOne(targetEntity: SlackWebhook::class)]
     private SlackWebhook $slackWebhook;
 
+    #[ORM\Column(type: 'string', length: 10000)]
+    private string $messageTemplate;
+
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
@@ -104,5 +107,15 @@ class SlackNotification implements DeletableInterface
     public function setEvent(SlackNotificationEvent $event): void
     {
         $this->event = $event;
+    }
+
+    public function getMessageTemplate(): string
+    {
+        return $this->messageTemplate;
+    }
+
+    public function setMessageTemplate(string $messageTemplate): void
+    {
+        $this->messageTemplate = $messageTemplate;
     }
 }

@@ -9,7 +9,6 @@
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCancel;
 
 use BillaBear\Entity\CancellationRequest;
-use BillaBear\Enum\SlackNotificationEvent;
 use BillaBear\Notification\Slack\Data\SubscriptionCancelled;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
@@ -38,12 +37,9 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
         }
 
         $subscription = $cancellationRequest->getSubscription();
-        $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::SUBSCRIPTION_CANCELLED);
         $notificationMessage = new SubscriptionCancelled($subscription);
 
-        foreach ($notifications as $notification) {
-            $this->notificationSender->sendNotification($notification->getSlackWebhook(), $notificationMessage);
-        }
+        $this->notificationSender->sendNotification($notificationMessage);
     }
 
     public static function getSubscribedEvents()

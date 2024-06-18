@@ -9,7 +9,6 @@
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCreation;
 
 use BillaBear\Entity\SubscriptionCreation;
-use BillaBear\Enum\SlackNotificationEvent;
 use BillaBear\Notification\Slack\Data\SubscriptionCreated;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
@@ -37,12 +36,9 @@ class SendInternalNotification
         }
 
         $subscription = $subscriptionCreation->getSubscription();
-        $notifications = $this->slackNotificationRepository->findActiveForEvent(SlackNotificationEvent::SUBSCRIPTION_CREATED);
         $notificationMessage = new SubscriptionCreated($subscription);
 
-        foreach ($notifications as $notification) {
-            $this->notificationSender->sendNotification($notification->getSlackWebhook(), $notificationMessage);
-        }
+        $this->notificationSender->sendNotification($notificationMessage);
     }
 
     public static function getSubscribedEvents()

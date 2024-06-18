@@ -8,7 +8,12 @@
 
 namespace BillaBear\Notification\Slack\Data;
 
+use BillaBear\Entity\SlackNotification;
+use BillaBear\Enum\SlackNotificationEvent;
+
 interface SlackNotificationInterface
 {
-    public function getMessage(): array;
+    public function getEvent(): SlackNotificationEvent;
+
+    public function getMessage(SlackNotification $slackNotification): array;
 }

@@ -9,19 +9,30 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\Payment;
-use Parthenon\Notification\Slack\MessageBuilder;
+use BillaBear\Enum\SlackNotificationEvent;
 
-class PaymentProcessed implements SlackNotificationInterface
+class PaymentProcessed extends AbstractNotification
 {
+    use CustomerTrait;
+
     public function __construct(private Payment $payment)
     {
     }
 
-    public function getMessage(): array
+    public function getEvent(): SlackNotificationEvent
     {
-        $messageBuilder = new MessageBuilder();
-        $messageBuilder->addTextSection('Payment successfully processed - '.(string) $this->payment->getMoneyAmount())->closeSection();
+        return SlackNotificationEvent::PAYMENT_PROCESSED;
+    }
 
-        return $messageBuilder->build();
+    protected function getData(): array
+    {
+        return [
+            'customer' => $this->buildCustomerData($this->payment->getCustomer()),
+            'payment' => [
+                'amount' => $this->payment->getAmount(),
+                'currency' => $this->payment->getCurrency(),
+                'amount_formatted' => (string) $this->payment->getMoneyAmount(),
+            ],
+        ];
     }
 }
