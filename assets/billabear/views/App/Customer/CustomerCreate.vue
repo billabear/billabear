@@ -176,6 +176,7 @@
 
 <script>
 import axios from "axios";
+import {mapActions} from "vuex";
 
 export default {
   name: "CustomerCreate",
@@ -209,6 +210,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('onboardingStore', ['customerAdded']),
     send: function () {
       this.sendingInProgress = true;
       this.success = false;
@@ -226,6 +228,7 @@ export default {
           response => {
             this.sendingInProgress = false;
             this.success = true;
+            this.customerAdded();
 
             var id = response.data.id;
             this.$router.push({name: 'app.customer.view', params: {id: id}})

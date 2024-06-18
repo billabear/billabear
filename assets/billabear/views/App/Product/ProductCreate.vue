@@ -76,6 +76,7 @@
 <script>
 import axios from "axios";
 import {Toggle} from "flowbite-vue";
+import {mapActions} from "vuex";
 
 export default {
   name: "productCreate",
@@ -106,6 +107,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('onboardingStore', ['productAdded']),
     send: function () {
       this.sendingInProgress = true;
       this.success = false;
@@ -113,6 +115,7 @@ export default {
       axios.post('/app/product', this.product).then(
           response => {
             var id = response.data.id;
+            this.productAdded();
             this.$router.push({name: 'app.product.view', params: {id: id}})
             this.success = true;
           }

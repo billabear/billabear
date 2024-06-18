@@ -130,6 +130,7 @@
 
 <script>
 import axios from "axios";
+import {mapActions} from "vuex";
 
 export default {
   name: "SubscriptionPlanCreate",
@@ -177,6 +178,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('onboardingStore', ['subscriptionPlanAdded']),
     removeFeature: function (key) {
       this.subscription_plan.features.splice(key, 1);
     },
@@ -238,7 +240,7 @@ export default {
 
       axios.post('/app/product/'+productId+'/plan', payload).then(
           response => {
-
+            this.subscriptionPlanAdded();
             var planId = response.data.id;
             this.$router.push({name: 'app.subscription_plan.view', params: {productId: productId, subscriptionPlanId: planId}})
 

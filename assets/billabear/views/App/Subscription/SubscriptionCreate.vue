@@ -83,6 +83,7 @@
 
 <script>
 import axios from "axios";
+import {mapActions} from "vuex";
 
 export default {
   name: "SubscriptionPlanCreate",
@@ -157,6 +158,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('onboardingStore', ['subscriptionAdded']),
     refreshTrial: function () {
         if (this.eligible_currency != null) {
           this.trial = false;
@@ -190,6 +192,7 @@ export default {
       axios.post('/app/customer/'+customerId+'/subscription', payload).then(response => {
         this.sendingInProgress = false;
         this.success = true;
+        this.subscriptionAdded();
         this.$router.push({'name': 'app.subscription.view', params: {subscriptionId: response.data.id}})
       }).catch(error => {
         if (error.response.data.errors) {

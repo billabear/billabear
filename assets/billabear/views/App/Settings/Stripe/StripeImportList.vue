@@ -179,7 +179,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('onboardingStore', ['stripeImport', 'stripeKeysAdded']),
+    ...mapActions('onboardingStore', ['stripeImport', 'stripeKeysAdded', ]),
     registerWebhook: function () {
       this.sendingWebhookRequest = true;
       axios.post('/app/settings/stripe/webhook/register', {url: this.webhook_url}).then(response => {

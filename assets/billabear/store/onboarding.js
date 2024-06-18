@@ -26,6 +26,18 @@ const actions = {
     },
     stripeKeysAdded({commit}) {
         commit('markStripKeyAsDone');
+    },
+    productAdded({commit}){
+        commit('markProductAsDone')
+    },
+    subscriptionPlanAdded({commit}) {
+        commit('markSubscriptionPlanAsDone')
+    },
+    subscriptionAdded({commit}) {
+        commit('markSubscriptionAsDone')
+    },
+    customerAdded({commit}) {
+        commit('markCustomerAsDone')
     }
 }
 
