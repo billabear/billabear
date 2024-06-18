@@ -13,6 +13,7 @@ use BillaBear\Entity\State;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
@@ -26,8 +27,14 @@ class ThresholdManager
         private CountryRepositoryInterface $countryRepository,
         private PaymentRepositoryInterface $paymentRepository,
         private BricksExchangeRateProvider $exchangeRateProvider,
+        private SettingsRepositoryInterface $settingsRepository,
     ) {
         $this->currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
+    }
+
+    protected function isEuStopShopEnabled(): bool
+    {
+        return $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getOneStopShopTaxRules();
     }
 
     public function isThresholdReached(string $countryCode, ?Money $money): bool
@@ -37,6 +44,10 @@ class ThresholdManager
         }
         try {
             $country = $this->countryRepository->getByIsoCode($countryCode);
+
+            if ($country->isInEu() && $this->isEuStopShopEnabled()) {
+                return true;
+            }
 
             $amountTransacted = $this->getTransactedAmount($country);
 

@@ -19,6 +19,9 @@ class TaxSettings
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $europeanBusinessTaxRules = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $oneStopShopTaxRules = null;
+
     public function getTaxCustomersWithTaxNumbers(): bool
     {
         return true === $this->taxCustomersWithTaxNumbers;
@@ -37,5 +40,15 @@ class TaxSettings
     public function setEuropeanBusinessTaxRules(?bool $europeanBusinessTaxRules): void
     {
         $this->europeanBusinessTaxRules = $europeanBusinessTaxRules;
+    }
+
+    public function getOneStopShopTaxRules(): bool
+    {
+        return true === $this->oneStopShopTaxRules;
+    }
+
+    public function setOneStopShopTaxRules(?bool $oneStopShopTaxRules): void
+    {
+        $this->oneStopShopTaxRules = $oneStopShopTaxRules;
     }
 }

@@ -22,6 +22,14 @@
             <Toggle v-model="tax_settings.eu_business_tax_rules" />
             <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.eu_business_tax_rules') }}</p>
           </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="eu_business_tax_rules">
+              {{ $t('app.settings.tax_settings.update.fields.eu_one_stop_shop_rule') }}
+            </label>
+            <p class="form-field-error" v-if="errors.euOneStopShopRule != undefined">{{ errors.euOneStopShopRule }}</p>
+            <Toggle v-model="tax_settings.eu_one_stop_shop_rule" />
+            <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.eu_one_stop_shop_rule') }}</p>
+          </div>
         </div>
 
       <div class="m-5 form-field-submit-ctn">
@@ -50,6 +58,7 @@ export default {
       tax_settings: {
         tax_customers_with_tax_number: false,
         eu_business_tax_rules: false,
+        eu_one_stop_shop_rule: false,
       }
     }
   },

@@ -18,6 +18,9 @@ class TaxSettings
     #[SerializedName('eu_business_tax_rules')]
     private $euBusinessTaxRules;
 
+    #[SerializedName('eu_one_stop_shop_rule')]
+    private $euOneStopShopRule;
+
     public function getTaxCustomersWithTaxNumber()
     {
         return $this->taxCustomersWithTaxNumber;
@@ -36,5 +39,15 @@ class TaxSettings
     public function setEuBusinessTaxRules($euBusinessTaxRules): void
     {
         $this->euBusinessTaxRules = $euBusinessTaxRules;
+    }
+
+    public function getEuOneStopShopRule()
+    {
+        return $this->euOneStopShopRule;
+    }
+
+    public function setEuOneStopShopRule($euOneStopShopRule): void
+    {
+        $this->euOneStopShopRule = $euOneStopShopRule;
     }
 }

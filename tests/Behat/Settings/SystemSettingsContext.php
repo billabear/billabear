@@ -78,6 +78,30 @@ class SystemSettingsContext implements Context
     }
 
     /**
+     * @Given the EU one stop shop rule is enabled
+     */
+    public function theEuOneStopShopRuleIsEnabled()
+    {
+        $settings = $this->getSettings();
+        $taxSettings = $settings->getTaxSettings();
+        $taxSettings->setOneStopShopTaxRules(true);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the EU one stop shop rule is not enabled
+     */
+    public function theEuOneStopShopRuleIsNotEnabled()
+    {
+        $settings = $this->getSettings();
+        $taxSettings = $settings->getTaxSettings();
+        $taxSettings->setOneStopShopTaxRules(false);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @Given that the tax settings for eu business tax rules is true
      */
     public function thatTheTaxSettingsForEuBusinessTaxRulesIsTrue()
