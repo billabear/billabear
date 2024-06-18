@@ -154,6 +154,7 @@ class SlackIntegrationContext implements Context
         $payload = [
             'webhook' => (string) $webhook->getId(),
             'event' => $data['Event'],
+            'template' => $data['Template'] ?? 'Template',
         ];
         $this->sendJsonRequest('POST', '/app/integrations/slack/notification/create', $payload);
     }
