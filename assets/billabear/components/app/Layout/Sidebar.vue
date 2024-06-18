@@ -72,6 +72,12 @@
           <div class="pt-2 space-y-2">
             <a  class="sidebar-menu-item" target="_blank" :href="'https://docs.billabear.com/user?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('app.menu.main.docs') }} <i class="fa-solid fa-up-right-from-square"></i></a>
           </div>
+          <div class="pt-5 space-y-2">
+            <select @change="changeLocale" v-model="locale">
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="absolute bottom-0 left-0 justify-center hidden w-full p-4 space-x-4 bg-white lg:flex dark:bg-gray-800" sidebar-bottom-menu>
@@ -97,10 +103,21 @@
 
 <script>
 import RoleOnlyView from "../RoleOnlyView.vue";
+import {Select} from "flowbite-vue";
 
 export default {
   name: "Sidebar",
-  components: {RoleOnlyView},
+  components: {Select, RoleOnlyView},
+  data() {
+    return {
+      locale: 'en'
+    }
+  },
+  methods: {
+    changeLocale: function() {
+      this.$i18n.locale = this.locale
+    }
+  },
   mounted() {
     const sidebar = document.getElementById('sidebar');
 
