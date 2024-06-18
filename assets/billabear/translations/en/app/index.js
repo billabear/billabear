@@ -30,6 +30,7 @@ import {TAX_TYPE_TRANSLATIONS} from "./tax_type";
 import {FINANCE_TRANSLATIONS} from "./finance";
 import {TAX_TRANSLATIONS} from "./tax";
 import {STATE_TRANSLATIONS} from "./state";
+import {ONBOARDING_TRANSLATIONS} from "./onboarding";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -64,5 +65,6 @@ export const APP_TRANSLATIONS = {
     finance: FINANCE_TRANSLATIONS,
     tax: TAX_TRANSLATIONS,
     state: STATE_TRANSLATIONS,
+    onboarding: ONBOARDING_TRANSLATIONS,
     default_error_message: "Something went wrong!"
 };

@@ -2,6 +2,8 @@
   <div class="p-5">
     <h1 class="page-title mb-5">{{ $t('app.reports.dashboard.title') }}</h1>
 
+    <OnboardingMenu v-if="show_onboarding" />
+
     <LoadingScreen :ready="ready">
       <div class="grid grid-cols-4 gap-5 mb-5">
         <div class="stat">
@@ -56,10 +58,12 @@
 import axios from "axios";
 import currency from "currency.js";
 import WorldMap from "../../components/app/Graphs/WorldMap.vue";
+import {mapState} from "vuex";
+import OnboardingMenu from "../../components/app/Onboarding/OnboardingMenu.vue";
 
 export default {
   name: "Dashboard",
-  components: {WorldMap},
+  components: {OnboardingMenu, WorldMap},
   data() {
     return {
       ready: false,
@@ -306,6 +310,11 @@ export default {
       const viewName = 'monthly';
       this.setChartData(viewName)
     })
+  },
+  computed: {
+    ...mapState('onboardingStore', [
+      'show_onboarding'
+    ])
   },
   methods: {
     setChartData: function (viewName) {

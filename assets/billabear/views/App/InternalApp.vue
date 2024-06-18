@@ -8,6 +8,9 @@
       <div id="main-content" class="relative w-full h-full bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
           <div class="">
+            <div v-if="!has_stripe_key" class="w-100 bg-red-500 text-white p-3 font-bold">
+              {{ $t('app.onboarding.main.bar.message') }}
+            </div>
             <router-view></router-view>
           </div>
         </main>
@@ -34,10 +37,19 @@ export default {
       is_update_available: false,
       has_default_tax: false,
       origin: '',
+      has_api_key: true,
     }
   },
   computed: {
-    ...mapState('onboardingStore', ['has_stripe_imports'])
+    ...mapState('onboardingStore', [
+        'has_stripe_key',
+        'has_stripe_imports',
+        'has_subscription_plan',
+        'has_customer',
+        'has_subscription',
+        'has_product',
+        'show_onboarding'
+    ])
   },
   methods: {
     dimissStripeImport: function() {
@@ -50,15 +62,11 @@ export default {
         this.is_update_available = false;
       })
     },
-    ...mapActions('onboardingStore', ['setStripeImport', 'stripeImport']),
+    ...mapActions('onboardingStore', ['setStripeImport', 'stripeImport', 'fetchData']),
   },
   mounted() {
     this.origin = window.location.hostname;
-    axios.get("/app/system/data").then(response => {
-      this.setStripeImport({defaultValue: response.data.has_stripe_import});
-      this.is_update_available = response.data.is_update_available;
-      this.has_default_tax = response.data.has_default_tax;
-    })
+    this.fetchData()
   }
 }
 </script>

@@ -26,6 +26,10 @@ class ValidStripeConfigValidator extends ConstraintValidator
             return;
         }
 
+        if (!$value->getPrivateKey()) {
+            return;
+        }
+
         Stripe::setApiKey($value->getPrivateKey());
         try {
             $account = \Stripe\Account::retrieve();

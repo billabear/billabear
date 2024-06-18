@@ -10,16 +10,13 @@ namespace BillaBear\Dto\Request\App\Settings\Stripe;
 
 use BillaBear\Validator\Constraints\Integrations\ValidStripeConfig;
 use Symfony\Component\Serializer\Attribute\SerializedName;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ValidStripeConfig]
 class SendConfig
 {
-    #[Assert\NotBlank()]
     #[SerializedName('public_key')]
     private $publicKey;
 
-    #[Assert\NotBlank()]
     #[SerializedName('private_key')]
     private $privateKey;
 
