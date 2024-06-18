@@ -576,7 +576,7 @@ export const GERMAN_TRANSLATIONS = {
         "public": "Öffentlich",
         "help_info": {
           "amount": "Der Preis ist die Währung der unteren Ebene. 1,00 USD wäre also 100 und 9,99 wäre 999.",
-          "display_amount": "Dieser Preis würde {Betrag} betragen.",
+          "display_amount": "Dieser Preis würde {amount} betragen.",
           "external_reference": "Die Referenz für das Produkt, das vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
           "recurring": "Ob es sich um eine wiederkehrende Zahlung oder eine einmalige Zahlung handelt.",
           "currency": "Die Währung, die dem Kunden in Rechnung gestellt werden soll",
@@ -951,7 +951,7 @@ export const GERMAN_TRANSLATIONS = {
             "help_info": "Nach dem Änderungsdatum werden alle Verlängerungen zum neuen Preis durchgeführt. Der Abonnementplan wird sofort geändert."
           },
           "estimate": {
-            "amount": "Dies führt zu einer geschätzten {Betrag} {Währung} Änderung des {Fahrplans}"
+            "amount": "Dies führt zu einer geschätzten {amount} {currency} Änderung des {schedule}"
           },
           "submit_button": "Schaltfläche \"Senden"
         },
@@ -973,7 +973,7 @@ export const GERMAN_TRANSLATIONS = {
             "title": "Datum ändern"
           },
           "estimate": {
-            "amount": "Dies führt zu einer geschätzten {Betrag} {Währung} Änderung des {Fahrplans}"
+            "amount": "Dies führt zu einer geschätzten {amount} {currency} Änderung des {schedule}"
           },
           "export_button": "Kundenliste exportieren",
           "cancel": "Abbrechen",
@@ -1162,7 +1162,7 @@ export const GERMAN_TRANSLATIONS = {
           "generator": "Generatoreinstellungen aktualisieren"
         },
         "update": {
-          "title": "Vorlage aktualisieren - {Name}",
+          "title": "Vorlage aktualisieren - {name}",
           "content": "Inhalt",
           "save": "Speichern Sie",
           "download": "Test PDF herunterladen",
@@ -1214,7 +1214,7 @@ export const GERMAN_TRANSLATIONS = {
           "error_message": "Es ist ein Fehler aufgetreten"
         },
         "update": {
-          "title": "Markeneinstellungen aktualisieren - {Name}",
+          "title": "Markeneinstellungen aktualisieren - {name}",
           "fields": {
             "name": "Name",
             "email": "E-Mail Adresse",
@@ -1699,7 +1699,7 @@ export const GERMAN_TRANSLATIONS = {
         "lifetime": {
           "title": "Lebenszeit-Wert",
           "lifespan": "Lebenserwartung",
-          "lifespan_value": "{Lebensspanne} Jahre",
+          "lifespan_value": "{lifespan} Jahre",
           "lifetime": "Lebenszeit-Wert",
           "customer_count": "Kundenzahl",
           "filters": {
@@ -1733,9 +1733,9 @@ export const GERMAN_TRANSLATIONS = {
         },
         "countries": {
           "title": "Länder-Schwellenwerte",
-          "transacted_amount": "<strong>Bearbeitet:</strong> {Währung}{Bearbeiteter_Betrag}",
-          "collected_amount": "<strong>Gesammelt:</strong> {Währung}{Gesammelt_Betrag}",
-          "threshold_status": "<strong>Schwellenwert:</strong> {Status}",
+          "transacted_amount": "<strong>Bearbeitet:</strong> {currency}{transacted_amount}",
+          "collected_amount": "<strong>Gesammelt:</strong> {currency}{collected_amount}",
+          "threshold_status": "<strong>Schwellenwert:</strong> {status}",
           "threshold_reached": "Erreicht",
           "threshold_not_reached": "Nicht erreicht"
         },
@@ -1757,7 +1757,7 @@ export const GERMAN_TRANSLATIONS = {
         "help_info": {
           "type": "Art der Gutschriftsanpassung, Gutschrift oder Lastschrift",
           "amount": "Der Preis ist die Währung der unteren Ebene. 1,00 USD wäre also 100 und 9,99 wäre 999.",
-          "display_amount": "Dieser Preis würde {Betrag} betragen.",
+          "display_amount": "Dieser Preis würde {amount} betragen.",
           "currency": "Die Währung, die dem Kunden in Rechnung gestellt werden soll",
           "reason": "Ein optionaler Grund, der später hilfreich sein kann."
         },
@@ -1899,7 +1899,7 @@ export const GERMAN_TRANSLATIONS = {
           "tax_total": "Steuer Gesamt"
         },
         "status": {
-          "paid": "Rechnung erfolgreich bezahlt am {Datum}",
+          "paid": "Rechnung erfolgreich bezahlt am {date}",
           "outstanding": "Die Rechnung muss noch bezahlt werden."
         },
         "actions": {
@@ -1945,7 +1945,7 @@ export const GERMAN_TRANSLATIONS = {
           "entry_type": "Eintrag Typ",
           "entry_type_manual": "Handbuch",
           "entry_type_automatic": "Automatisch",
-          "amount": "Betrag - {Währung}",
+          "amount": "Betrag - {currency}",
           "code": "Code",
           "entry_event": "Veranstaltung",
           "event_expired_card_added": "Hinzufügen einer neuen Zahlungskarte bei Warnung vor abgelaufener Karte"
@@ -1955,7 +1955,7 @@ export const GERMAN_TRANSLATIONS = {
           "type": "Prozentsatz ist ein Prozentsatz einer Rechnung und fester Kredit ist ein fester Kredit",
           "entry_type": "Manuell bedeutet, dass der Benutzer einen Code eingibt, automatisch bedeutet, dass er durch ein Ereignis ausgelöst wird",
           "percentage": "Der Prozentsatz von",
-          "amount": "Der Betrag in {Währung}, den der Gutschein liefert",
+          "amount": "Der Betrag in {currency}, den der Gutschein liefert",
           "code": "Der Code, den der Kunde angeben muss, damit der Gutschein aktiviert wird",
           "entry_event": "Das Ereignis, das eintreten muss, damit der Gutschein aktiviert wird"
         }
@@ -1980,7 +1980,7 @@ export const GERMAN_TRANSLATIONS = {
           "disabled": "Behinderte",
           "entry_type": "Eintrag Typ",
           "percentage": "Prozentsatz",
-          "amount": "Betrag für {Währung}",
+          "amount": "Betrag für {currency}",
           "code": "Code",
           "automatic_event": "Automatisches Ereignis"
         },
@@ -2071,7 +2071,7 @@ export const GERMAN_TRANSLATIONS = {
           "pay_link": "Link bezahlen"
         },
         "status": {
-          "paid": "Angebot erfolgreich bezahlt am {Datum}"
+          "paid": "Angebot erfolgreich bezahlt am {date}"
         },
         "customer": {
           "title": "Kunde",
@@ -2334,7 +2334,7 @@ export const GERMAN_TRANSLATIONS = {
           "name": "Name"
         },
         "status": {
-          "paid": "Angebot erfolgreich bezahlt am {Datum}"
+          "paid": "Angebot erfolgreich bezahlt am {date}"
         },
         "customer": {
           "title": "Kunde",
