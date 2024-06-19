@@ -45,7 +45,7 @@
               {{ $t('app.vouchers.create.fields.amount', {currency: currency}) }}
             </label>
             <p class="form-field-error" v-if="errors['amounts['+key+'].amount'] != undefined">{{ errors['amounts['+key+'].amount'] }}</p>
-            <input type="text" class="form-field-input"  v-model="voucher.amounts[key].amount" />
+            <CurrencyInput v-model="voucher.amounts[key].amount" />
             <p class="form-field-help">{{ $t('app.vouchers.create.help_info.amount', {currency: currency}) }}</p>
           </div>
         </div>
@@ -99,9 +99,11 @@
 
 <script>
 import axios from "axios";
+import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
 
 export default {
   name: "VouchersCreate",
+  components: {CurrencyInput},
   data() {
     return {
       ready: false,

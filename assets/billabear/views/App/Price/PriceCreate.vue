@@ -3,13 +3,13 @@
     <h1 class="page-title">{{ $t('app.price.create.title') }}</h1>
 
     <form @submit.prevent="send">
-      <div class="mt-3 card-body">
+      <div class="m-5 card-body">
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="amount">
             {{ $t('app.price.create.amount') }}
           </label>
           <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
-          <input type="number" class="form-field-input" id="amount" v-model="price.amount" />
+          <CurrencyInput v-model="price.amount" />
           <p class="form-field-help">{{ $t('app.price.create.help_info.amount') }}</p>
           <p class="form-field-help">{{ $t('app.price.create.help_info.display_amount', {amount: currency(price.amount)}) }}</p>
         </div>
@@ -61,14 +61,14 @@
       </div>
 
 
-      <div class="form-field-ctn">
+      <div class="ml-5 form-field-ctn">
         <p @click="showAdvance = !showAdvance" class="cursor-pointer">
           <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
           <i class="fa-solid fa-caret-down" v-else></i>
           <span class="ml-2">{{ $t('app.price.create.show_advanced') }}</span>
         </p>
       </div>
-      <div class="card-body mt-5" v-if="showAdvance">
+      <div class="card-body m-5" v-if="showAdvance">
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="email">
             {{ $t('app.price.create.external_reference') }}
@@ -81,7 +81,7 @@
       </div>
 
       <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
-      <div class="form-field-submit-ctn">
+      <div class="ml-5 form-field-submit-ctn">
         <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
       </div>
     </form>
@@ -92,15 +92,16 @@
 import axios from "axios";
 import currency from "currency.js";
 import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
+import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
 
 export default {
   name: "PriceCreate",
-  components: {CurrencySelect},
+  components: {CurrencyInput, CurrencySelect},
   data() {
     return {
       price: {
         amount: 0,
-        currency: null,
+        currency: 'USD',
         recurring: true,
         schedule: null,
         external_reference: null,

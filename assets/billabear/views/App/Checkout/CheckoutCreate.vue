@@ -139,7 +139,7 @@
               </td>
               <td>
                 <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].amount !== undefined">{{ errors.items[key].amount }}</p>
-                <input type="number" class="form-field" v-model="item.amount" >
+                <CurrencyInput v-model="item.amount" />
               </td>
               <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
               <td>
@@ -173,10 +173,11 @@ import Autocomplete from "../../../components/app/Forms/Autocomplete.vue";
 import axios from "axios";
 import currency from "currency.js";
 import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
+import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
 
 export default {
   name: "CheckoutCreate",
-  components: {CurrencySelect, Autocomplete},
+  components: {CurrencyInput, CurrencySelect, Autocomplete},
   data() {
     return {
       brands: [],

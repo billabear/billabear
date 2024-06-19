@@ -54,12 +54,12 @@
             <td><router-link :to="{name: 'app.quotes.view', params: {id: quote.id}}" class="list-btn">{{ $t('app.quotes.list.view_btn') }}</router-link></td>
           </tr>
           <tr v-if="quotes.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.quotes.list.no_quotes') }}</td>
+            <td colspan="5" class="text-center">{{ $t('app.quotes.list.no_quotes') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="5" class="text-center">
               <LoadingMessage>{{ $t('app.quotes.list.loading') }}</LoadingMessage>
             </td>
           </tr>
