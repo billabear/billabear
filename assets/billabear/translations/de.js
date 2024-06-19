@@ -126,7 +126,7 @@ export const GERMAN_TRANSLATIONS = {
         "name": "Name",
         "email": "E-Mail",
         "password": "Passwort",
-        "save": "Speichern Sie",
+        "save": "Speichern",
         "error_message": "Beim Speichern der Benutzereinstellungen ist ein Problem aufgetreten. Bitte überprüfen Sie die Fehler.",
         "success_message": "Ihre Einstellungen wurden erfolgreich gespeichert.",
         "danger_zone": "Gefahrenzone",
@@ -160,7 +160,7 @@ export const GERMAN_TRANSLATIONS = {
         "region": "Staat",
         "country": "Land",
         "postal_code": "Postleitzahl",
-        "submit": "Speichern Sie"
+        "submit": "Speichern"
       },
       "main": {
         "title": "Rechnungsstellung",
@@ -197,7 +197,7 @@ export const GERMAN_TRANSLATIONS = {
         "create_new": "Erstellen",
         "next": "Nächste Seite",
         "prev": "Vorherige Seite",
-        "view_btn": "Siehe",
+        "view_btn": "Aussicht",
         "filter": {
           "title": "Filter",
           "email": "E-Mail",
@@ -314,7 +314,7 @@ export const GERMAN_TRANSLATIONS = {
             "schedule": "Zeitplan",
             "created_at": "Erstellt am",
             "valid_until": "Nächste Abrechnung",
-            "view": "Siehe"
+            "view": "Aussicht"
           },
           "add_new": "Neues Abonnement hinzufügen",
           "no_subscriptions": "Keine Abonnements"
@@ -379,7 +379,7 @@ export const GERMAN_TRANSLATIONS = {
             "overdue": "Überfällig",
             "paid": "Bezahlt",
             "created_at": "Erstellt am",
-            "view_btn": "Siehe"
+            "view_btn": "Aussicht"
           },
           "no_invoices": "Keine Rechnungen"
         }
@@ -518,7 +518,7 @@ export const GERMAN_TRANSLATIONS = {
           "title": "Abonnement-Pläne",
           "create": "Neuen Plan erstellen",
           "no_subscription_plans": "Derzeit gibt es keine Abonnementpläne",
-          "view": "Siehe",
+          "view": "Aussicht",
           "list": {
             "name": "Name",
             "external_reference": "Externe Referenz",
@@ -821,7 +821,7 @@ export const GERMAN_TRANSLATIONS = {
           "title": "Zahlungen",
           "amount": "Betrag",
           "created_at": "Erstellt am",
-          "view": "Siehe",
+          "view": "Aussicht",
           "no_payments": "Es gibt noch keine Zahlungen"
         },
         "payment_method": {
@@ -840,7 +840,7 @@ export const GERMAN_TRANSLATIONS = {
           "seats": {
             "seats": "Sitze",
             "seats_help": "Die Anzahl der Sitze für den Plan",
-            "submit": "Speichern Sie"
+            "submit": "Speichern"
           },
           "price": {
             "price": "Neuer Preis",
@@ -895,7 +895,7 @@ export const GERMAN_TRANSLATIONS = {
         "create_new": "Erstellen",
         "next": "Nächste Seite",
         "prev": "Vorherige Seite",
-        "view": "Siehe",
+        "view": "Aussicht",
         "filter": {
           "title": "Filter",
           "email": "E-Mail",
@@ -921,7 +921,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -1164,7 +1164,7 @@ export const GERMAN_TRANSLATIONS = {
         "update": {
           "title": "Vorlage aktualisieren - {name}",
           "content": "Inhalt",
-          "save": "Speichern Sie",
+          "save": "Speichern",
           "download": "Test PDF herunterladen",
           "template": "Vorlage",
           "help_info": {
@@ -1178,7 +1178,7 @@ export const GERMAN_TRANSLATIONS = {
           "tmp_dir": "Das temporäre Verzeichnis",
           "api_key": "Api-Schlüssel",
           "bin": "Speicherort",
-          "submit": "Speichern Sie",
+          "submit": "Speichern",
           "help_info": {
             "generator": "Der zu verwendende Generator. Wenn Sie nicht sicher sind, verwenden Sie mpdf",
             "tmp_dir": "Das zu verwendende temporäre Verzeichnis. Wenn Sie nicht sicher sind, verwenden Sie /tmp",
@@ -1189,7 +1189,7 @@ export const GERMAN_TRANSLATIONS = {
         "create": {
           "title": "Vorlage erstellen",
           "content": "Inhalt",
-          "save": "Speichern Sie",
+          "save": "Speichern",
           "download": "Test PDF herunterladen",
           "template": "Vorlage",
           "locale": "Schauplatz",
@@ -1309,7 +1309,7 @@ export const GERMAN_TRANSLATIONS = {
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
           "locale": "Schauplatz",
-          "view_btn": "Siehe",
+          "view_btn": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -1432,7 +1432,7 @@ export const GERMAN_TRANSLATIONS = {
           "invite": "Neuen Benutzer einladen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view_btn": "Siehe",
+          "view_btn": "Aussicht",
           "list": {
             "email": "E-Mail",
             "role": "Rollen"
@@ -1482,7 +1482,7 @@ export const GERMAN_TRANSLATIONS = {
             "created_at": "Erstellt am",
             "updated_at": "Aktualisierung am",
             "no_results": "Bislang wurden keine Streifen importiert.",
-            "view": "Siehe"
+            "view": "Aussicht"
           },
           "danger_zone": {
             "title": "Gefahrenzone",
@@ -1653,7 +1653,7 @@ export const GERMAN_TRANSLATIONS = {
             "card_number": "Kartennummer",
             "no_expiring_cards": "Keine Karten, die bald ablaufen",
             "loading": "laden",
-            "view": "Siehe"
+            "view": "Aussicht"
           }
         }
       },
@@ -1969,7 +1969,7 @@ export const GERMAN_TRANSLATIONS = {
           "type": "Typ",
           "entry_type": "Eintrag Typ"
         },
-        "view_btn": "Siehe",
+        "view_btn": "Aussicht",
         "loading": "Ladegutscheine"
       },
       "view": {
@@ -2053,7 +2053,7 @@ export const GERMAN_TRANSLATIONS = {
         "no_quotes": "Hier gibt es keine Zitate",
         "next": "Weiter",
         "prev": "Vorherige",
-        "view_btn": "Siehe",
+        "view_btn": "Aussicht",
         "filter": {
           "title": "Filter",
           "button": "Filter",
@@ -2110,7 +2110,7 @@ export const GERMAN_TRANSLATIONS = {
           "list": {
             "title": "Webhook-Endpunkte",
             "add": "Endpunkt hinzufügen",
-            "view": "Siehe",
+            "view": "Aussicht",
             "list": {
               "name": "Name",
               "url": "URL",
@@ -2166,7 +2166,7 @@ export const GERMAN_TRANSLATIONS = {
                 "status_code": "Status Code",
                 "body": "Körper",
                 "error": "Fehler",
-                "view": "Siehe",
+                "view": "Aussicht",
                 "created_at": "Erstellt am"
               }
             },
@@ -2215,7 +2215,7 @@ export const GERMAN_TRANSLATIONS = {
                 "name": "Der Name, der verwendet wird, um diesen Webhook innerhalb von BillaBear zu identifizieren",
                 "webhook": "Die von Slack bereitgestellte URL, die als Webhook verwendet werden soll"
               },
-              "save_btn": "Speichern Sie"
+              "save_btn": "Speichern"
             }
           },
           "notifications": {
@@ -2243,7 +2243,7 @@ export const GERMAN_TRANSLATIONS = {
                 "webhook": "Der Slack-Webhook, der für die Benachrichtigung verwendet werden soll",
                 "template": "Die Vorlage, die beim Versand der Benachrichtigung verwendet werden soll. <a href=\"https://docs.billabear.com/user/integration/slack\" target=\"_blank\">Variablen können hier gefunden werden</a>"
               },
-              "save_btn": "Speichern Sie"
+              "save_btn": "Speichern"
             }
           },
           "menu": {
@@ -2375,11 +2375,11 @@ export const GERMAN_TRANSLATIONS = {
         "create_new": "Erstellen",
         "next": "Nächste Seite",
         "prev": "Vorherige Seite",
-        "view_btn": "Siehe",
+        "view_btn": "Aussicht",
         "list": {
           "name": "Name",
           "created_at": "Erstellt am",
-          "view": "Siehe"
+          "view": "Aussicht"
         },
         "filter": {
           "title": "Filter",
@@ -2410,7 +2410,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "edit_button": "Bearbeiten",
           "bulk_button": "Bulk-Wiederaufbereitung",
           "filter": {
@@ -2486,7 +2486,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2544,7 +2544,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2602,7 +2602,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2665,7 +2665,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2707,7 +2707,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Siehe",
+          "view": "Aussicht",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2768,7 +2768,7 @@ export const GERMAN_TRANSLATIONS = {
           "iso_code": "Code",
           "tax_threshold": "Steuerlicher Schwellenwert"
         },
-        "view": "Siehe",
+        "view": "Aussicht",
         "filter": {
           "title": "Filter",
           "email": "E-Mail",
@@ -2831,7 +2831,7 @@ export const GERMAN_TRANSLATIONS = {
           "valid_until": "Gültig bis",
           "title": "Steuervorschrift hinzufügen",
           "default": "Standard-Steuerregel",
-          "save": "Speichern Sie",
+          "save": "Speichern",
           "select_tax_type": "Steuerart auswählen"
         },
         "edit_tax_rule": {
@@ -2851,7 +2851,7 @@ export const GERMAN_TRANSLATIONS = {
           "code": "Code",
           "has_nexus": "Hat Nexus?",
           "threshold": "Schwellenwert",
-          "view": "Siehe",
+          "view": "Aussicht",
           "no_states": "Es gibt keine Staaten"
         }
       },
@@ -2934,7 +2934,7 @@ export const GERMAN_TRANSLATIONS = {
           "valid_until": "Gültig bis",
           "title": "Steuervorschrift hinzufügen",
           "default": "Standard-Steuerregel",
-          "save": "Speichern Sie",
+          "save": "Speichern",
           "select_tax_type": "Steuerart auswählen"
         },
         "edit_tax_rule": {
@@ -2952,8 +2952,8 @@ export const GERMAN_TRANSLATIONS = {
     "default_error_message": "Etwas ist schief gelaufen!"
   },
   "install": {
-    "title": "Installieren Sie",
-    "submit_button": "Installieren Sie",
+    "title": "Installieren",
+    "submit_button": "Installieren",
     "user": {
       "title": "Erster Admin-Benutzer",
       "email": "E-Mail",
