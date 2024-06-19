@@ -7611,6 +7611,11 @@ vue-component-type-helpers@1.6.5:
   resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-1.6.5.tgz#ff6b75529063744b0966655725f3e02f30d97cd7"
   integrity sha512-iGdlqtajmiqed8ptURKPJ/Olz0/mwripVZszg6tygfZSIL9kYFPJTNY6+Q6OjWGznl2L06vxG5HvNvAnWrnzbg==
 
+vue-currency-input@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/vue-currency-input/-/vue-currency-input-3.1.0.tgz#869a89bbbb98cc8e483cb410adbdd0f8d6eb1d74"
+  integrity sha512-XZ8bg61zRNJjRDo7I4K0UAah9qtkipexRcn/h9MzEqZQ9gVZWABObgN+042UchmCTiwSfsjGOd6DZGzd/TUUMA==
+
 vue-demi@*:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.5.tgz#676d0463d1a1266d5ab5cba932e043d8f5f2fbd9"

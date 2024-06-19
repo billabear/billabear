@@ -52,6 +52,7 @@
         "vite": "^4.5.3",
         "vitest": "^0.23.1",
         "vue": "^3.2.36",
+        "vue-currency-input": "^3.1.0",
         "vue-final-modal": "^4.2.0",
         "vue-i18n": "^9.2.2",
         "vue-moment-v3": "^4.1.0",
