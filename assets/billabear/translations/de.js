@@ -1980,7 +1980,7 @@ export const GERMAN_TRANSLATIONS = {
           "disabled": "Behinderte",
           "entry_type": "Eintrag Typ",
           "percentage": "Prozentsatz",
-          "amount": "Betrag für {currency}",
+          "amount": "Betrag für {amount}",
           "code": "Code",
           "automatic_event": "Automatisches Ereignis"
         },

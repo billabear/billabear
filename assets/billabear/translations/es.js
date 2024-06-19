@@ -576,7 +576,7 @@ export const SPANISH_TRANSLATIONS = {
         "public": "Público",
         "help_info": {
           "amount": "El precio es la moneda de nivel menor. Así, 1,00 USD sería 100 y 9,99 sería 999.",
-          "display_amount": "Este precio sería de {importe}.",
+          "display_amount": "Este precio sería de {amount}.",
           "external_reference": "La referencia del producto que utiliza el proveedor de pagos. Déjelo vacío a menos que esté extremadamente seguro de que tiene la referencia correcta.",
           "recurring": "Si se trata de un pago periódico o puntual.",
           "currency": "La divisa en la que se cobrará al cliente",
@@ -951,7 +951,7 @@ export const SPANISH_TRANSLATIONS = {
             "help_info": "Después de la fecha de cambio, todas las renovaciones se harán al nuevo precio. El plan de suscripción se cambiará directamente."
           },
           "estimate": {
-            "amount": "Esto producirá un cambio estimado de {importe} {divisa} en el {programa}"
+            "amount": "Esto producirá un cambio estimado de {amount} {currency} en el {schedule}"
           },
           "submit_button": "Botón Enviar"
         },
@@ -973,7 +973,7 @@ export const SPANISH_TRANSLATIONS = {
             "title": "Fecha de modificación"
           },
           "estimate": {
-            "amount": "Esto producirá un cambio estimado de {importe} {divisa} en el {programa}"
+            "amount": "Esto producirá un cambio estimado de {amount} {currency} en el {schedule}"
           },
           "export_button": "Exportar lista de clientes",
           "cancel": "Cancelar",
@@ -1162,7 +1162,7 @@ export const SPANISH_TRANSLATIONS = {
           "generator": "Actualizar la configuración del generador"
         },
         "update": {
-          "title": "Actualizar plantilla - {nombre}",
+          "title": "Actualizar plantilla - {name}",
           "content": "Contenido",
           "save": "Guardar",
           "download": "Descargar Test PDF",
@@ -1214,7 +1214,7 @@ export const SPANISH_TRANSLATIONS = {
           "error_message": "Se ha producido un error"
         },
         "update": {
-          "title": "Actualizar configuración de marca - {nombre}",
+          "title": "Actualizar configuración de marca - {name}",
           "fields": {
             "name": "Nombre",
             "email": "Dirección de correo electrónico",
@@ -1699,7 +1699,7 @@ export const SPANISH_TRANSLATIONS = {
         "lifetime": {
           "title": "Valor de vida útil",
           "lifespan": "Vida útil",
-          "lifespan_value": "{vida} años",
+          "lifespan_value": "{lifespan} años",
           "lifetime": "Valor de vida útil",
           "customer_count": "Recuento de clientes",
           "filters": {
@@ -1733,9 +1733,9 @@ export const SPANISH_TRANSLATIONS = {
         },
         "countries": {
           "title": "Umbrales por país",
-          "transacted_amount": "<strong>Transacted:</strong> {currency}{importe_transacted}",
-          "collected_amount": "<strong>Recaudado:</strong> {moneda}{importe_recaudado}",
-          "threshold_status": "<strong>Umbral:</strong> {estado}",
+          "transacted_amount": "<strong>Transacted:</strong> {currency}{transacted_amount}",
+          "collected_amount": "<strong>Recaudado:</strong> {currency}{collected_amount}",
+          "threshold_status": "<strong>Umbral:</strong> {status}",
           "threshold_reached": "Alcanzado",
           "threshold_not_reached": "No alcanzado"
         },
@@ -1757,7 +1757,7 @@ export const SPANISH_TRANSLATIONS = {
         "help_info": {
           "type": "Tipo de ajuste de crédito, crédito o débito",
           "amount": "El precio es la moneda de nivel menor. Así, 1,00 USD sería 100 y 9,99 sería 999.",
-          "display_amount": "Este precio sería de {importe}.",
+          "display_amount": "Este precio sería de {amount}.",
           "currency": "La divisa en la que se cobrará al cliente",
           "reason": "Una razón opcional que puede ser útil más adelante."
         },
@@ -1899,7 +1899,7 @@ export const SPANISH_TRANSLATIONS = {
           "tax_total": "Total de impuestos"
         },
         "status": {
-          "paid": "Factura pagada con éxito en {fecha}",
+          "paid": "Factura pagada con éxito en {date}",
           "outstanding": "Todavía hay que pagar la factura."
         },
         "actions": {
@@ -1945,7 +1945,7 @@ export const SPANISH_TRANSLATIONS = {
           "entry_type": "Tipo de entrada",
           "entry_type_manual": "Manual",
           "entry_type_automatic": "Automático",
-          "amount": "Importe - {divisa}",
+          "amount": "Importe - {currency}",
           "code": "Código",
           "entry_event": "Evento",
           "event_expired_card_added": "Añadir nueva tarjeta de pago durante el aviso de tarjeta caducada"
@@ -1955,7 +1955,7 @@ export const SPANISH_TRANSLATIONS = {
           "type": "Porcentaje es un porcentaje de una factura y crédito fijo da un crédito fijo",
           "entry_type": "Manual significa que el usuario introduce un código, automático significa que se activa por un evento",
           "percentage": "El porcentaje de descuento",
-          "amount": "El importe en {divisa} que proporciona el vale",
+          "amount": "El importe en {currency} que proporciona el vale",
           "code": "El código que el cliente deberá proporcionar para que se active el vale",
           "entry_event": "El evento que debe ocurrir para que se active el vale"
         }
@@ -1980,7 +1980,7 @@ export const SPANISH_TRANSLATIONS = {
           "disabled": "Discapacitados",
           "entry_type": "Tipo de entrada",
           "percentage": "Porcentaje",
-          "amount": "Importe para {divisa}",
+          "amount": "Importe para {amount}",
           "code": "Código",
           "automatic_event": "Evento automático"
         },
@@ -2071,7 +2071,7 @@ export const SPANISH_TRANSLATIONS = {
           "pay_link": "Enlace de pago"
         },
         "status": {
-          "paid": "Presupuesto pagado con éxito en {fecha}"
+          "paid": "Presupuesto pagado con éxito en {date}"
         },
         "customer": {
           "title": "Cliente",
@@ -2334,7 +2334,7 @@ export const SPANISH_TRANSLATIONS = {
           "name": "Nombre"
         },
         "status": {
-          "paid": "Presupuesto pagado con éxito en {fecha}"
+          "paid": "Presupuesto pagado con éxito en {date}"
         },
         "customer": {
           "title": "Cliente",

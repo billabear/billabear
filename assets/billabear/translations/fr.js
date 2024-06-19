@@ -576,7 +576,7 @@ export const FRENCH_TRANSLATIONS = {
         "public": "Public",
         "help_info": {
           "amount": "Le prix est la monnaie du niveau inférieur. Ainsi, 1,00 USD correspond à 100 et 9,99 à 999.",
-          "display_amount": "Ce prix serait de {montant}.",
+          "display_amount": "Ce prix serait de {amount}.",
           "external_reference": "La référence du produit utilisé par le prestataire de paiement. Ne rien indiquer, sauf si vous êtes absolument certain d'avoir la bonne référence.",
           "recurring": "S'il s'agit d'un paiement récurrent ou d'un paiement unique.",
           "currency": "La devise dans laquelle le client doit être facturé",
@@ -951,7 +951,7 @@ export const FRENCH_TRANSLATIONS = {
             "help_info": "Après la date de changement, tous les renouvellements se feront au nouveau prix. Le plan d'abonnement sera modifié immédiatement."
           },
           "estimate": {
-            "amount": "Il en résultera une modification estimée du {montant} {devise} du {calendrier}"
+            "amount": "Il en résultera une modification estimée du {amount} {currency} du {schedule}"
           },
           "submit_button": "Bouton de soumission"
         },
@@ -973,7 +973,7 @@ export const FRENCH_TRANSLATIONS = {
             "title": "Date de modification"
           },
           "estimate": {
-            "amount": "Il en résultera une modification estimée du {montant} {devise} du {calendrier}"
+            "amount": "Il en résultera une modification estimée du {amount} {currency} du {schedule}"
           },
           "export_button": "Exporter la liste des clients",
           "cancel": "Annuler",
@@ -1162,7 +1162,7 @@ export const FRENCH_TRANSLATIONS = {
           "generator": "Mise à jour des paramètres du générateur"
         },
         "update": {
-          "title": "Mise à jour du modèle - {nom}",
+          "title": "Mise à jour du modèle - {name}",
           "content": "Contenu",
           "save": "Économiser",
           "download": "Télécharger le test PDF",
@@ -1214,7 +1214,7 @@ export const FRENCH_TRANSLATIONS = {
           "error_message": "Une erreur s'est produite"
         },
         "update": {
-          "title": "Mise à jour des paramètres de la marque - {nom}",
+          "title": "Mise à jour des paramètres de la marque - {name}",
           "fields": {
             "name": "Nom",
             "email": "Adresse électronique",
@@ -1699,7 +1699,7 @@ export const FRENCH_TRANSLATIONS = {
         "lifetime": {
           "title": "Valeur à vie",
           "lifespan": "Durée de vie",
-          "lifespan_value": "{espérance de vie} ans",
+          "lifespan_value": "{lifespan} ans",
           "lifetime": "Valeur à vie",
           "customer_count": "Nombre de clients",
           "filters": {
@@ -1733,9 +1733,9 @@ export const FRENCH_TRANSLATIONS = {
         },
         "countries": {
           "title": "Seuils par pays",
-          "transacted_amount": "<strong>Transacté:</strong> {devise}{montant_transacté}",
-          "collected_amount": "<strong>Collecté:</strong> {devise}{montant_collecté}",
-          "threshold_status": "<strong>Seuil:</strong> {état}",
+          "transacted_amount": "<strong>Transacté:</strong> {currency}{transacted_amount}",
+          "collected_amount": "<strong>Collecté:</strong> {currency}{collected_amount}",
+          "threshold_status": "<strong>Seuil:</strong> {status}",
           "threshold_reached": "Atteint",
           "threshold_not_reached": "Non atteint"
         },
@@ -1757,7 +1757,7 @@ export const FRENCH_TRANSLATIONS = {
         "help_info": {
           "type": "Type d'ajustement, crédit ou débit",
           "amount": "Le prix est la monnaie du niveau inférieur. Ainsi, 1,00 USD correspond à 100 et 9,99 à 999.",
-          "display_amount": "Ce prix serait de {montant}.",
+          "display_amount": "Ce prix serait de {amount}.",
           "currency": "La devise dans laquelle le client doit être facturé",
           "reason": "Une raison facultative qui peut être utile ultérieurement."
         },
@@ -1945,7 +1945,7 @@ export const FRENCH_TRANSLATIONS = {
           "entry_type": "Type d'entrée",
           "entry_type_manual": "Manuel",
           "entry_type_automatic": "Automatique",
-          "amount": "Montant - {devise}",
+          "amount": "Montant - {currency}",
           "code": "Code",
           "entry_event": "Événement",
           "event_expired_card_added": "Ajout d'une nouvelle carte de paiement lors de l'avertissement de carte expirée"
@@ -1955,7 +1955,7 @@ export const FRENCH_TRANSLATIONS = {
           "type": "Le pourcentage est un pourcentage sur une facture et le crédit fixe donne un crédit fixe",
           "entry_type": "Manuel signifie que l'utilisateur saisit un code, automatique signifie qu'il est déclenché par un événement",
           "percentage": "Le pourcentage de réduction",
-          "amount": "Le montant en {devise} que le bon fournit",
+          "amount": "Le montant en {currency} que le bon fournit",
           "code": "Le code que le client devra fournir pour que le bon soit activé",
           "entry_event": "L'événement qui doit se produire pour que le bon soit activé"
         }
@@ -1980,7 +1980,7 @@ export const FRENCH_TRANSLATIONS = {
           "disabled": "Handicapés",
           "entry_type": "Type d'entrée",
           "percentage": "Pourcentage",
-          "amount": "Montant pour {monnaie}",
+          "amount": "Montant pour {amount}",
           "code": "Code",
           "automatic_event": "Événement automatique"
         },
