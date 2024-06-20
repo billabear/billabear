@@ -73,3 +73,12 @@ Feature: Standalone trials expire without charge
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" has the trial ended
     Then there should be a trial ended event for "customer.one@example.org"
+
+  Scenario:
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status       |
+      | Test Two          | 1000         | USD            | week           | customer.one@example.org   | -3 Minutes  | trial_active |
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    Then there should be a trial extended event for "customer.one@example.org"

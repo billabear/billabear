@@ -12,10 +12,12 @@ use BillaBear\Database\TransactionManager;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
 use BillaBear\Subscription\TrialEnder;
 use Obol\Exception\PaymentFailureException;
@@ -34,6 +36,7 @@ class GenerateNewInvoices
         private SettingsRepositoryInterface $settingsRepository,
         private TransactionManager $transactionManager,
         private TrialEnder $trialEnder,
+        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
     ) {
     }
 
@@ -82,6 +85,8 @@ class GenerateNewInvoices
     }
 
     /**
+     * @param Subscription[] $activeSubscriptions
+     *
      * @throws \Exception
      */
     protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
@@ -94,6 +99,14 @@ class GenerateNewInvoices
             foreach ($activeSubscriptions as $activeSubscription) {
                 $this->schedulerProvider->getScheduler($activeSubscription->getPrice())->scheduleNextDueDate($activeSubscription);
                 $activeSubscription->setUpdatedAt(new \DateTime('now'));
+                if (SubscriptionStatus::TRIAL_ACTIVE == $activeSubscription->getStatus()) {
+                    $this->customerSubscriptionEventCreator->create(
+                        CustomerSubscriptionEventType::TRIAL_EXTENDED,
+                        $activeSubscription->getCustomer(),
+                        $activeSubscription
+                    );
+                }
+                $activeSubscription->setStatus(SubscriptionStatus::ACTIVE);
                 $this->subscriptionRepository->save($activeSubscription);
             }
             $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
