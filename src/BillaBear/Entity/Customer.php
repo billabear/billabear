@@ -388,4 +388,14 @@ class Customer implements CustomerInterface
     {
         return CustomerType::BUSINESS === $this->type;
     }
+
+    public function setEnabled(bool $enabled)
+    {
+        $this->disabled = !$enabled;
+    }
+
+    public function isEnabled(): bool
+    {
+        return !$this->disabled;
+    }
 }

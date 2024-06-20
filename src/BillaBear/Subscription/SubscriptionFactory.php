@@ -53,7 +53,6 @@ class SubscriptionFactory
         $subscription->setPrice($planPrice);
         $subscription->setMoneyAmount($planPrice->getAsMoney());
         $subscription->setActive(true);
-        $subscription->setStatus(SubscriptionStatus::ACTIVE);
         $subscription->setSeats($seatNumbers);
         $subscription->setCreatedAt(new \DateTime());
         $subscription->setUpdatedAt(new \DateTime());
@@ -62,6 +61,12 @@ class SubscriptionFactory
         $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
         $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
         $subscription->setPaymentDetails($paymentDetails);
+
+        if ($subscription->isHasTrial()) {
+            $subscription->setStatus(SubscriptionStatus::TRIAL_ACTIVE);
+        } else {
+            $subscription->setStatus(SubscriptionStatus::ACTIVE);
+        }
 
         $this->schedulerProvider->getScheduler($planPrice)->scheduleNextDueDate($subscription);
 

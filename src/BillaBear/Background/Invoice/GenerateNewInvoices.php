@@ -10,13 +10,17 @@ namespace BillaBear\Background\Invoice;
 
 use BillaBear\Database\TransactionManager;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Subscription;
+use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
 use Obol\Exception\PaymentFailureException;
-use Parthenon\Billing\Entity\Subscription;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
 
 class GenerateNewInvoices
@@ -30,11 +34,15 @@ class GenerateNewInvoices
         private InvoiceCharger $invoiceCharger,
         private SettingsRepositoryInterface $settingsRepository,
         private TransactionManager $transactionManager,
+        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
     ) {
     }
 
     public function execute(): void
     {
+        $now = new \DateTime();
+
+        $this->getLogger()->info('Starting to generate new invoices');
         $defaultSettings = $this->settingsRepository->getDefaultSettings();
 
         if (!$defaultSettings->getSystemSettings()->isUseStripeBilling()) {
@@ -44,14 +52,27 @@ class GenerateNewInvoices
         }
 
         $customer = null;
-        /** @var Subscription $activeSubscriptions */
+        /** @var Subscription[] $activeSubscriptions */
         $activeSubscriptions = [];
         foreach ($subscriptions as $subscription) {
             if ($customer instanceof Customer && $subscription->getCustomer()->getId() != $customer->getId()) {
                 $this->generateInvoice($activeSubscriptions, $customer);
                 $activeSubscriptions = [];
             }
+
             $customer = $subscription->getCustomer();
+            /** @var SubscriptionPlan $subscriptionPlan */
+            $subscriptionPlan = $subscription->getSubscriptionPlan();
+
+            if ($subscriptionPlan->getIsTrialStandalone() && SubscriptionStatus::TRIAL_ACTIVE === $subscription->getStatus()) {
+                $this->getLogger()->info('Skipping subscription that is for a standalone trial', ['subscription_id' => (string) $subscription->getId()]);
+                if ($subscription->getValidUntil() < $now) {
+                    $subscription->setStatus(SubscriptionStatus::TRIAL_ENDED);
+                    $this->subscriptionRepository->save($subscription);
+                    $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_ENDED, $customer, $subscription);
+                }
+                continue;
+            }
             $activeSubscriptions[] = $subscription;
         }
 

@@ -27,9 +27,9 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
         $qb = $this->entityRepository->createQueryBuilder('s');
         $qb->where('s.validUntil <= :fiveMinutes')
-            ->andWhere('s.status = :status')
+            ->andWhere('s.status in (:status)')
             ->setParameter('fiveMinutes', $fiveMinutes)
-            ->setParameter('status', SubscriptionStatus::ACTIVE)
+            ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE])
             ->orderBy('s.customer');
 
         return $qb->getQuery()->getResult();
@@ -45,11 +45,11 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         $qb->join('s.customer', 'c')
             ->where('s.validUntil >= :thirtySecondsAgo')
             ->andWhere('s.validUntil <= :fiveMinutes')
-            ->andWhere('s.status = :status')
+            ->andWhere('s.status in (:status)')
             ->andWhere('c.billingType = :invoiceType')
             ->setParameter('thirtySecondsAgo', $thirtySecondsAgo)
             ->setParameter('fiveMinutes', $fiveMinutes)
-            ->setParameter('status', SubscriptionStatus::ACTIVE)
+            ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE])
             ->setParameter('invoiceType', Customer::BILLING_TYPE_INVOICE)
             ->orderBy('s.customer');
 

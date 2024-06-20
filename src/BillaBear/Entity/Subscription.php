@@ -10,10 +10,12 @@ namespace BillaBear\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\Price;
+use Parthenon\Billing\Entity\SubscriptionPlan;
 
 /**
- * @method Price    getPrice()
- * @method Customer getCustomer()
+ * @method Price            getPrice()
+ * @method Customer         getCustomer()
+ * @method SubscriptionPlan getSubscriptionPlan()
  */
 #[ORM\Entity]
 #[ORM\Table('subscription')]

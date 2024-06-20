@@ -134,6 +134,7 @@ class AppContext implements Context
         $subscriptionPlan->addFeature($feature);
         $subscriptionPlan->addLimit($subscriptionLimit);
         $subscriptionPlan->setCodeName($data['Code Name'] ?? null);
+        $subscriptionPlan->setIsTrialStandalone('true' === strtolower($data['Standalone Trial'] ?? 'false'));
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();

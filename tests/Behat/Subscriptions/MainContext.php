@@ -303,6 +303,18 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the subscription for :arg1 has the trial ended
+     */
+    public function theSubscriptionForHasTheTrialEnded($customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        if (SubscriptionStatus::TRIAL_ENDED !== $subscription->getStatus()) {
+            throw new \Exception('Subscription does not have the correct status');
+        }
+    }
+
+    /**
      * @When the following subscriptions exist:
      */
     public function theFollowingSubscriptionsExist(TableNode $table)
@@ -313,8 +325,6 @@ class MainContext implements Context
             /** @var SubscriptionPlan $subscriptionPlan */
             $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $row['Subscription Plan']]);
             $customer = $this->getCustomerByEmail($row['Customer']);
-            /** @var Price $price */
-            $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
             $paymentDetails = $this->paymentDetailsRepository->findOneBy(['customer' => $customer]);
 
             if (!$paymentDetails instanceof PaymentCard) {
@@ -335,10 +345,19 @@ class MainContext implements Context
             $subscription = new Subscription();
             $subscription->setPaymentSchedule($row['Price Schedule']);
             $subscription->setCustomer($customer);
-            $subscription->setPrice($price);
+
+            if (isset($row['Price Amount'])) {
+                /** @var Price $price */
+                $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+
+                $subscription->setPrice($price);
+            }
+            $statusText = strtolower($row['Status'] ?? 'Active');
+            $status = SubscriptionStatus::from($statusText);
+
             $subscription->setSubscriptionPlan($subscriptionPlan);
             $subscription->setPlanName($subscriptionPlan->getName());
-            $subscription->setStatus('Active' === ($row['Status'] ?? 'Active') ? SubscriptionStatus::ACTIVE : SubscriptionStatus::CANCELLED);
+            $subscription->setStatus($status);
             $subscription->setCurrency($price->getCurrency());
             $subscription->setAmount($price->getAmount());
             $subscription->setMainExternalReference('sdasd');
@@ -356,6 +375,10 @@ class MainContext implements Context
 
             if (isset($row['Seats'])) {
                 $subscription->setSeats(intval($row['Seats']));
+            }
+
+            if (isset($row['Trial Ends'])) {
+                $subscription->setStatus();
             }
 
             $this->subscriptionRepository->getEntityManager()->persist($subscription);

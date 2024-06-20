@@ -17,4 +17,7 @@ enum CustomerSubscriptionEventType: string
     case DOWNGRADED = 'DOWNGRADED';
     case ADDON_ADDED = 'ADDON_ADDED';
     case ADDON_REMOVED = 'ADDON_REMOVED';
+    case TRIAL_STARTED = 'TRIAL_STARTED';
+    case TRIAL_EXTENDED = 'TRIAL_EXTENDED';
+    case TRIAL_ENDED = 'TRIAL_ENDED';
 }

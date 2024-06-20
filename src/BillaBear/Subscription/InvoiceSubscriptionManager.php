@@ -172,7 +172,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPaymentSchedule($price->getSchedule());
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
     {
         /** @var \BillaBear\Entity\Price $oldPrice */
         $oldPrice = $subscription->getPrice();

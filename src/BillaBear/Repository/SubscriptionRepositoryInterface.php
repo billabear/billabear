@@ -10,6 +10,7 @@ namespace BillaBear\Repository;
 
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Price;
+use BillaBear\Entity\Subscription as BillaSubscription;
 use BillaBear\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
@@ -20,22 +21,22 @@ use Parthenon\Billing\Entity\Subscription;
 interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\SubscriptionRepositoryInterface
 {
     /**
-     * @return Subscription[]
+     * @return BillaSubscription[]
      */
     public function getSubscriptionsExpiringInNextFiveMinutes(): array;
 
     /**
-     * @return Subscription[]
+     * @return BillaSubscription[]
      */
     public function getInvoiceSubscriptionsExpiringInNextFiveMinutes(): array;
 
     /**
-     * @return Subscription[]
+     * @return BillaSubscription[]
      */
     public function getAll(): array;
 
     /**
-     * @return Subscription[]
+     * @return BillaSubscription[]
      */
     public function getAllActive(): array;
 
@@ -54,14 +55,14 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getCountOfActiveCustomers(): int;
 
     /**
-     * @return Subscription[]
+     * @return BillaSubscription[]
      */
     public function findMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): array;
 
     public function countMassChangable(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): int;
 
     /**
-     * @return Subscription[]
+     * @return BillaSubscription[]
      */
     public function findActiveSubscriptionsOnDate(\DateTime $dateTime, int $count): array;
 

@@ -16,6 +16,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\SubscriptionCreationStats;
 use BillaBear\Subscription\CustomerSubscriptionEventCreator;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -54,10 +55,14 @@ class HandleStats implements EventSubscriberInterface
         } elseif ($cancelledCount > 0) {
             $eventType = CustomerSubscriptionEventType::REACTIVATED;
             $customer->setStatus(CustomerStatus::REACTIVATED);
+        } elseif (SubscriptionStatus::TRIAL_ACTIVE === $subscription->getStatus()) {
+            $eventType = CustomerSubscriptionEventType::TRIAL_STARTED;
+            $customer->setStatus(CustomerStatus::TRIAL_ACTIVE);
         } else {
             $eventType = CustomerSubscriptionEventType::ACTIVATED;
             $customer->setStatus(CustomerStatus::ACTIVE);
         }
+
         $this->customerRepository->save($customer);
         $this->customerSubscriptionEventCreator->create($eventType, $customer, $subscription);
 

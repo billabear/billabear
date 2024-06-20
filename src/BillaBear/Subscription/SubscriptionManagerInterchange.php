@@ -100,7 +100,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
         $this->stripeBillingManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan $plan, Price $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
     {
         if ($subscription->getPrice()->getAsMoney()->isLessThan($price->getAsMoney())) {
             $eventType = CustomerSubscriptionEventType::UPGRADED;

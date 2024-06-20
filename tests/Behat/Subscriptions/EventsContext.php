@@ -54,6 +54,30 @@ class EventsContext implements Context
     }
 
     /**
+     * @Then there should be a trial ended event for :arg1
+     */
+    public function thereShouldBeATrialEndedEventFor($arg1)
+    {
+        $this->checkEventExists(CustomerSubscriptionEventType::TRIAL_ENDED, $arg1);
+    }
+
+    /**
+     * @Then there should be a trial extended event for :arg1
+     */
+    public function thereShouldBeATrialExtendedEventFor($arg1)
+    {
+        $this->checkEventExists(CustomerSubscriptionEventType::TRIAL_EXTENDED, $arg1);
+    }
+
+    /**
+     * @Then there should be a trial started event for :arg1
+     */
+    public function thereShouldBeATrialCreatedEventFor($arg1)
+    {
+        $this->checkEventExists(CustomerSubscriptionEventType::TRIAL_STARTED, $arg1);
+    }
+
+    /**
      * @Then there should be an add-on added event for :arg1
      */
     public function thereShouldBeAnAddOnAddedEventFor($arg1)
