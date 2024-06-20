@@ -11,7 +11,7 @@ namespace BillaBear\EventSubscriber\Subscription;
 use BillaBear\Entity\SubscriptionCreation;
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
 use BillaBear\Stats\RevenueEstimatesGeneration;
-use BillaBear\Subscription\SubscriptionCreationProcessor;
+use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\StartSubscriptionPayload;
 use Parthenon\Billing\Event\SubscriptionCancelled;

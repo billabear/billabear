@@ -9,7 +9,7 @@
 namespace BillaBear\Workflow\Messenger\Handlers;
 
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
-use BillaBear\Subscription\SubscriptionCreationProcessor;
+use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

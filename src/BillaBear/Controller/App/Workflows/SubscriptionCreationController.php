@@ -17,7 +17,7 @@ use BillaBear\Dto\Response\App\Workflows\ViewSubscriptionCreation;
 use BillaBear\Enum\WorkflowType;
 use BillaBear\Filters\Workflows\CancellationRequestList;
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
-use BillaBear\Subscription\SubscriptionCreationProcessor;
+use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;

@@ -17,7 +17,7 @@ use BillaBear\Dto\Response\App\Workflows\ViewRefundCreatedProcess;
 use BillaBear\Enum\WorkflowType;
 use BillaBear\Filters\Workflows\CancellationRequestList;
 use BillaBear\Repository\RefundCreatedProcessRepositoryInterface;
-use BillaBear\Subscription\SubscriptionCreationProcessor;
+use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use BillaBear\Workflow\Messenger\Messages\ReprocessFailedRefundCreation;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;

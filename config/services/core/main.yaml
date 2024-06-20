@@ -323,6 +323,12 @@ services:
   app.repository.orm.expiring_cards_process:
     class: BillaBear\Repository\Orm\ExpiringCardProcessRepository
 
+  BillaBear\Repository\Processes\TrialEndedProcessRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_ended_process'
+  app.repository.orm.trial_ended_process:
+    class: BillaBear\Repository\Orm\TrialEndedProcessRepository
+
   BillaBear\Repository\Processes\InvoiceProcessRepository:
     arguments:
       $entityRepository: '@app.repository.orm.invoice_process'

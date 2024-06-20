@@ -12,13 +12,12 @@ use BillaBear\Database\TransactionManager;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
-use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
+use BillaBear\Subscription\TrialEnder;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
@@ -34,7 +33,7 @@ class GenerateNewInvoices
         private InvoiceCharger $invoiceCharger,
         private SettingsRepositoryInterface $settingsRepository,
         private TransactionManager $transactionManager,
-        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
+        private TrialEnder $trialEnder,
     ) {
     }
 
@@ -67,9 +66,7 @@ class GenerateNewInvoices
             if ($subscriptionPlan->getIsTrialStandalone() && SubscriptionStatus::TRIAL_ACTIVE === $subscription->getStatus()) {
                 $this->getLogger()->info('Skipping subscription that is for a standalone trial', ['subscription_id' => (string) $subscription->getId()]);
                 if ($subscription->getValidUntil() < $now) {
-                    $subscription->setStatus(SubscriptionStatus::TRIAL_ENDED);
-                    $this->subscriptionRepository->save($subscription);
-                    $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_ENDED, $customer, $subscription);
+                    $this->trialEnder->endTrial($subscription);
                 }
                 continue;
             }
