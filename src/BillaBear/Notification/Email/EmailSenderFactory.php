@@ -73,7 +73,7 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
     {
         $postmarkClient = new PostmarkClient($notificationSettings->getEmspApiKey());
 
-        $sender = new PostmarkEmailSender($postmarkClient);
+        $sender = new PostmarkEmailSender($postmarkClient, $this->createConfiguration($notificationSettings));
         $sender->setLogger($this->getLogger());
 
         return $sender;
