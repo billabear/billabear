@@ -46,6 +46,10 @@
                 <dt>{{ $t('app.subscription_plan.view.main.trial_length_days') }}</dt>
                 <dd>{{ subscription_plan.trial_length_days }}</dd>
               </div>
+              <div>
+                <dt>{{ $t('app.subscription_plan.view.main.is_trial_standalone') }}</dt>
+                <dd>{{ subscription_plan.is_trial_standalone }}</dd>
+              </div>
             </dl>
           </div>
         </div>

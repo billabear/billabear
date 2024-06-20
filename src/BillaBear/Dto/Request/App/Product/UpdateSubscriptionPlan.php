@@ -68,6 +68,9 @@ class UpdateSubscriptionPlan
     #[Assert\Count(min: 1)]
     protected array $prices = [];
 
+    #[SerializedName('is_trial_standalone')]
+    protected $isTrialStandalone;
+
     public function getId()
     {
         return $this->id;
@@ -201,5 +204,15 @@ class UpdateSubscriptionPlan
     public function setTrialLengthDays($trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
+    }
+
+    public function getIsTrialStandalone()
+    {
+        return true === $this->isTrialStandalone;
+    }
+
+    public function setIsTrialStandalone($isTrialStandalone): void
+    {
+        $this->isTrialStandalone = $isTrialStandalone;
     }
 }

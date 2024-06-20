@@ -24,6 +24,9 @@ class SubscriptionPlan extends \Parthenon\Billing\Entity\SubscriptionPlan implem
     #[ORM\Column(type: 'datetime', nullable: true)]
     protected ?\DateTimeInterface $deletedAt = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    protected ?bool $isTrialStandalone = null;
+
     public function setDeletedAt(\DateTimeInterface $dateTime): DeletableInterface
     {
         $this->deletedAt = $dateTime;
@@ -48,5 +51,15 @@ class SubscriptionPlan extends \Parthenon\Billing\Entity\SubscriptionPlan implem
         $this->isDeleted = false;
 
         return $this;
+    }
+
+    public function getIsTrialStandalone(): bool
+    {
+        return true === $this->isTrialStandalone;
+    }
+
+    public function setIsTrialStandalone(?bool $isTrialStandalone): void
+    {
+        $this->isTrialStandalone = $isTrialStandalone;
     }
 }

@@ -35,6 +35,9 @@ class SubscriptionPlan
 
     private bool $public;
 
+    #[SerializedName('is_trial_standalone')]
+    private bool $isTrialStandalone;
+
     public function getId()
     {
         return $this->id;
@@ -123,5 +126,15 @@ class SubscriptionPlan
     public function setTrialLengthDays(?int $trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
+    }
+
+    public function isTrialStandalone(): bool
+    {
+        return $this->isTrialStandalone;
+    }
+
+    public function setIsTrialStandalone(bool $isTrialStandalone): void
+    {
+        $this->isTrialStandalone = $isTrialStandalone;
     }
 }

@@ -74,6 +74,16 @@
         <input type="number" class="form-field-input" id="trial_length_days" v-model="subscription_plan.trial_length_days" />
         <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.trial_length_days') }}</p>
       </div>
+
+      <div class="form-field-ctn">
+        <label class="form-field-lbl" for="has_trial">
+          {{ $t('app.subscription_plan.update.fields.is_trial_standalone') }}
+        </label>
+        <p class="form-field-error" v-if="errors.isTrialStandalone != undefined">{{ errors.isTrialStandalone }}</p>
+        <input type="checkbox" id="has_trial" v-model="subscription_plan.is_trial_standalone" />
+        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.is_trial_standalone') }}</p>
+      </div>
+
     </div>
 
 

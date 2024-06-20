@@ -16,7 +16,8 @@ export const SUBSCRIPTION_PLAN_UPDATE_TRANSLATIONS = {
         features: "Features",
         limits: "Limits",
         has_trial: "Has Trial",
-        trial_length_days: "Trial Length"
+        trial_length_days: "Trial Length",
+        is_trial_standalone: "Is Trial Standalone?"
     },
     help_info: {
         name: "The name for the plan",
@@ -26,7 +27,8 @@ export const SUBSCRIPTION_PLAN_UPDATE_TRANSLATIONS = {
         free: "Is this a free plan?",
         per_seat: "Is the plan charged per seat?",
         has_trial: "If the plan has a trial period by default",
-        trial_length_days: "How long the trial should be in days"
+        trial_length_days: "How long the trial should be in days",
+        is_trial_standalone: "If a Trial is standalone it doesn't need a price and the subscription pauses at the end of the trial"
     },
     features: {
         title: 'Features',

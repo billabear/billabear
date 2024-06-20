@@ -17,8 +17,8 @@ use BillaBear\Dto\Generic\App\Limit;
 use BillaBear\Dto\Generic\App\Price;
 use BillaBear\Dto\Generic\App\SubscriptionPlan as AppDto;
 use BillaBear\Dto\Generic\Public\SubscriptionPlan as PublicDto;
-use BillaBear\Dto\Request\App\PostSubscriptionPlan;
 use BillaBear\Dto\Request\App\Product\UpdateSubscriptionPlan;
+use BillaBear\Dto\Request\App\Subscription\PostSubscriptionPlan;
 use BillaBear\Entity\SubscriptionPlan;
 use Doctrine\Common\Collections\Collection;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
@@ -50,6 +50,7 @@ class SubscriptionPlanDataMapper
         $subscriptionPlan->setFree($dto->getFree());
         $subscriptionPlan->setHasTrial($dto->getHasTrial());
         $subscriptionPlan->setTrialLengthDays($dto->getTrialLengthDays());
+        $subscriptionPlan->setIsTrialStandalone($dto->getIsTrialStandalone());
 
         $subscriptionPlan->getPrices()->clear();
         /** @var Price $priceDto */
@@ -98,6 +99,7 @@ class SubscriptionPlanDataMapper
         $dto->setUserCount($subscriptionPlan->getUserCount());
         $dto->setHasTrial($subscriptionPlan->getHasTrial());
         $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
+        $dto->setIsTrialStandalone($subscriptionPlan->getIsTrialStandalone());
 
         return $dto;
     }
@@ -119,6 +121,7 @@ class SubscriptionPlanDataMapper
         $dto->setHasTrial($subscriptionPlan->getHasTrial());
         $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
         $dto->setProduct($this->productFactory->createAppDtoFromProduct($subscriptionPlan->getProduct()));
+        $dto->setIsTrialStandalone($subscriptionPlan->getIsTrialStandalone());
 
         $priceEntities = $subscriptionPlan->getPrices() instanceof Collection ? $subscriptionPlan->getPrices()->toArray() : $subscriptionPlan->getPrices();
         $featuresEntities = $subscriptionPlan->getFeatures() instanceof Collection ? $subscriptionPlan->getFeatures()->toArray() : $subscriptionPlan->getFeatures();
@@ -148,6 +151,7 @@ class SubscriptionPlanDataMapper
         $dto->setHasTrial($subscriptionPlan->getHasTrial());
         $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
         $dto->setProduct($this->productFactory->createApiDtoFromProduct($subscriptionPlan->getProduct()));
+        $dto->setIsTrialStandalone($subscriptionPlan->getIsTrialStandalone());
 
         $priceEntities = $subscriptionPlan->getPrices() instanceof Collection ? $subscriptionPlan->getPrices()->toArray() : $subscriptionPlan->getPrices();
         $featuresEntities = $subscriptionPlan->getFeatures() instanceof Collection ? $subscriptionPlan->getFeatures()->toArray() : $subscriptionPlan->getFeatures();

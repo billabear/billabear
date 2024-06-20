@@ -59,6 +59,15 @@
       </div>
 
       <div class="form-field-ctn">
+        <label class="form-field-lbl" for="has_trial">
+          {{ $t('app.subscription_plan.create.fields.is_trial_standalone') }}
+        </label>
+        <p class="form-field-error" v-if="errors.isTrialStandalone != undefined">{{ errors.isTrialStandalone }}</p>
+        <input type="checkbox" id="has_trial" v-model="subscription_plan.is_trial_standalone" />
+        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.is_trial_standalone') }}</p>
+      </div>
+
+      <div class="form-field-ctn">
         <label class="form-field-lbl" for="trial_length_days">
           {{ $t('app.subscription_plan.create.fields.trial_length_days') }}
         </label>

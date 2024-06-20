@@ -43,6 +43,9 @@ class SubscriptionPlan
 
     private Product $product;
 
+    #[SerializedName('is_trial_standalone')]
+    private bool $isTrialStandalone;
+
     public function getId()
     {
         return $this->id;
@@ -171,5 +174,15 @@ class SubscriptionPlan
     public function setProduct(Product $product): void
     {
         $this->product = $product;
+    }
+
+    public function getIsTrialStandalone(): bool
+    {
+        return $this->isTrialStandalone;
+    }
+
+    public function setIsTrialStandalone(bool $isTrialStandalone): void
+    {
+        $this->isTrialStandalone = $isTrialStandalone;
     }
 }

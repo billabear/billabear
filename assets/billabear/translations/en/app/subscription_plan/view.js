@@ -14,7 +14,8 @@ export const SUBSCRIPTION_PLAN_VIEW_TRANSLATIONS = {
         user_count: "User Count",
         public: "Publicly Available",
         has_trial: "Has Trial",
-        trial_length_days: "Trial Length"
+        trial_length_days: "Trial Length",
+        is_trial_standalone: "Is Trial Standalone?"
     },
     limits: {
         title: "Limits",

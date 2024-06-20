@@ -6,10 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Dto\Request\App;
+namespace BillaBear\Dto\Request\App\Subscription;
 
 use BillaBear\Dto\Generic\App\Feature;
 use BillaBear\Dto\Generic\App\Price;
+use BillaBear\Dto\Request\App\PostLimit;
 use BillaBear\Validator\Constraints\UniqueSubscriptionPlanCodeName;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -66,6 +67,9 @@ class PostSubscriptionPlan
     #[SerializedName('prices')]
     #[Assert\Count(min: 1)]
     protected array $prices = [];
+
+    #[SerializedName('is_trial_standalone')]
+    protected $isTrialStandalone;
 
     public function getName()
     {
@@ -190,5 +194,15 @@ class PostSubscriptionPlan
     public function setTrialLengthDays($trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
+    }
+
+    public function getIsTrialStandalone()
+    {
+        return true === $this->isTrialStandalone;
+    }
+
+    public function setIsTrialStandalone($isTrialStandalone): void
+    {
+        $this->isTrialStandalone = $isTrialStandalone;
     }
 }
