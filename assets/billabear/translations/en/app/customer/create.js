@@ -18,6 +18,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     billing_type: "Billing Type",
     billing_type_card: "Card",
     billing_type_invoice: "Invoice",
+    company_name: "Company Name",
     brand: "Brand",
     tax_number: "Tax Number",
     standard_tax_rate: "Standard Tax Rate",
@@ -27,6 +28,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",
+        company: "The name of the company",
         street_line_one: "The first line of the street billing address",
         street_line_two: "The second line of the street billing address",
         city: "The city for the billing address",

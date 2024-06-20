@@ -69,6 +69,10 @@
 
               <dl class="detail-list">
                 <div>
+                  <dt>{{ $t('app.customer.view.address.company_name') }}</dt>
+                  <dd>{{ customer.address.company_name }}</dd>
+                </div>
+                <div>
                   <dt>{{ $t('app.customer.view.address.street_line_one') }}</dt>
                   <dd>{{ customer.address.street_line_one }}</dd>
                 </div>

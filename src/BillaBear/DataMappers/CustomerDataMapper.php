@@ -60,6 +60,7 @@ class CustomerDataMapper
     public function createCustomer(ApiCreate|AppCreate|PublicCreate $createCustomerDto, ?Customer $customer = null): Customer
     {
         $address = new Address();
+        $address->setCompanyName($createCustomerDto->getAddress()?->getCompanyName());
         $address->setStreetLineOne($createCustomerDto->getAddress()?->getStreetLineOne());
         $address->setStreetLineTwo($createCustomerDto->getAddress()?->getStreetLineTwo());
         $address->setCountry($createCustomerDto->getAddress()?->getCountry());
@@ -105,6 +106,7 @@ class CustomerDataMapper
     public function createApiDto(Customer $customer): CustomerApiDto
     {
         $address = new AddressDto();
+        $address->setCompanyName($customer->getBillingAddress()->getCompanyName());
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
         $address->setStreetLineTwo($customer->getBillingAddress()->getStreetLineTwo());
         $address->setCity($customer->getBillingAddress()->getCity());
@@ -137,6 +139,7 @@ class CustomerDataMapper
         }
 
         $address = new AddressDto();
+        $address->setCompanyName($customer->getBillingAddress()->getCompanyName());
         $address->setStreetLineOne($customer->getBillingAddress()->getStreetLineOne());
         $address->setStreetLineTwo($customer->getBillingAddress()->getStreetLineTwo());
         $address->setCity($customer->getBillingAddress()->getCity());

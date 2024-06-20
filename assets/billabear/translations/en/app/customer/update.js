@@ -8,6 +8,7 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     country: "Country",
     post_code: "Post Code",
     reference: "Reference",
+    company_name: "Company Name",
     external_reference: "External Reference",
     advance: "advance",
     submit_btn: "Updated",
@@ -30,6 +31,7 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",
+        company_name: "The name of the company",
         street_line_one: "The first line of the street billing address",
         street_line_two: "The second line of the street billing address",
         city: "The city for the billing address",

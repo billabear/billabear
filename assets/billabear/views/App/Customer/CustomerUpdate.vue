@@ -82,6 +82,14 @@
           <h2 class="mb-3">{{ $t('app.customer.update.address_title') }}</h2>
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="street_line_one">
+              {{ $t('app.customer.update.company_name') }}
+            </label>
+            <p class="form-field-error" v-if="errors['address.company_name'] != undefined">{{ errors['address.company_name'] }}</p>
+            <input type="text" class="form-field-input" id="street_line_one"  v-model="customer.address.company_name"  />
+            <p class="form-field-help">{{ $t('app.customer.update.help_info.company_name') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="street_line_one">
               {{ $t('app.customer.update.street_line_one') }}
             </label>
             <p class="form-field-error" v-if="errors['address.street_line_one'] != undefined">{{ errors['address.street_line_one'] }}</p>

@@ -16,6 +16,7 @@ class AddressDataMapper
     public function createDto(Address $address): Dto
     {
         $dto = new Dto();
+        $dto->setCompanyName($address->getCompanyName());
         $dto->setStreetLineOne($address->getStreetLineOne());
         $dto->setStreetLineTwo($address->getStreetLineTwo());
         $dto->setCity($address->getCity());

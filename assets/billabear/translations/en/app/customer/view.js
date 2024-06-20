@@ -21,6 +21,7 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         type: "Type"
     },
     address: {
+        company_name: "Company Name",
         title: "Address",
         street_line_one: "Street Line 1",
         street_line_two: "Street Line 2",
