@@ -11,9 +11,12 @@ namespace BillaBear\Notification\Email;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\EmailTemplate;
 use BillaBear\Repository\EmailTemplateRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
 class EmailTemplateProvider
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private EmailTemplateRepositoryInterface $emailTemplateRepository,
     ) {
@@ -38,6 +41,8 @@ class EmailTemplateProvider
         if ($emailTemplate) {
             return $emailTemplate;
         }
+
+        $this->getLogger()->warning('Unable to find email template', ['template_name' => $templateName]);
 
         throw new \Exception('Unable to find email template');
     }

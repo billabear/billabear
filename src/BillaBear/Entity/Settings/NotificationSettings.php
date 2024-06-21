@@ -42,6 +42,9 @@ class NotificationSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $defaultOutgoingEmail = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $sendTrialEndingWarning = false;
+
     public function getSendCustomerNotifications(): ?bool
     {
         return $this->sendCustomerNotifications;
@@ -100,5 +103,15 @@ class NotificationSettings
     public function setDefaultOutgoingEmail(?string $defaultOutgoingEmail): void
     {
         $this->defaultOutgoingEmail = $defaultOutgoingEmail;
+    }
+
+    public function getSendTrialEndingWarning(): bool
+    {
+        return true === $this->sendTrialEndingWarning;
+    }
+
+    public function setSendTrialEndingWarning(?bool $sendTrialEndingWarning): void
+    {
+        $this->sendTrialEndingWarning = $sendTrialEndingWarning;
     }
 }

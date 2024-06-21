@@ -740,6 +740,24 @@ SOFTWARE. #}
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
         $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_SUBSCRIPTION_RENEWAL_WARNING);
+        $emailTemplate->setSubject('Your subscription is going to renew');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your subscription is due to be renewed. Your default payment method has expired. Update your payment method to ensure uninterrupted access.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_TRIAL_ENDING);
+        $emailTemplate->setSubject('Payment Method Expiring Soon');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('Your subscription is due to be renewed. Your default payment method has expired. Update your payment method to ensure uninterrupted access.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
     }
 
     private function getEmailTemplate(string $content): string

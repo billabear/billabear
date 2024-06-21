@@ -36,6 +36,10 @@ class EmailTemplate
 
     public const NAME_QUOTE_CREATED = 'quote_created';
 
+    public const NAME_TRIAL_ENDING_WARNING = 'trial_ending_warning';
+
+    public const NAME_SUBSCRIPTION_RENEWAL_WARNING = 'subscription_renewal_warning';
+
     public const TEMPLATE_NAMES = [
         self::NAME_SUBSCRIPTION_CREATED,
         self::NAME_SUBSCRIPTION_PAUSED,
@@ -48,6 +52,8 @@ class EmailTemplate
         self::NAME_INVOICE_CREATED,
         self::NAME_INVOICE_OVERDUE,
         self::NAME_QUOTE_CREATED,
+        self::NAME_TRIAL_ENDING_WARNING,
+        self::NAME_SUBSCRIPTION_RENEWAL_WARNING,
     ];
 
     #[ORM\Id]

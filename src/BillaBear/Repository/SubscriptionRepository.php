@@ -26,9 +26,9 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         $fiveMinutes = new \DateTime('+5 minutes');
 
         $qb = $this->entityRepository->createQueryBuilder('s');
-        $qb->where('s.validUntil <= :fiveMinutes')
+        $qb->where('s.validUntil <= :sevenDays')
             ->andWhere('s.status in (:status)')
-            ->setParameter('fiveMinutes', $fiveMinutes)
+            ->setParameter('sevenDays', $fiveMinutes)
             ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE])
             ->orderBy('s.customer');
 
@@ -44,11 +44,11 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         $qb = $this->entityRepository->createQueryBuilder('s');
         $qb->join('s.customer', 'c')
             ->where('s.validUntil >= :thirtySecondsAgo')
-            ->andWhere('s.validUntil <= :fiveMinutes')
+            ->andWhere('s.validUntil <= :sevenDays')
             ->andWhere('s.status in (:status)')
             ->andWhere('c.billingType = :invoiceType')
             ->setParameter('thirtySecondsAgo', $thirtySecondsAgo)
-            ->setParameter('fiveMinutes', $fiveMinutes)
+            ->setParameter('sevenDays', $fiveMinutes)
             ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE])
             ->setParameter('invoiceType', Customer::BILLING_TYPE_INVOICE)
             ->orderBy('s.customer');
@@ -253,5 +253,24 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         $oneCount += $query->getSingleScalarResult();
 
         return $oneCount;
+    }
+
+    public function getTrialEndingInNextSevenDays(): array
+    {
+        // Incase it takes a while to start the process.
+        $thirtySecondsAgo = new \DateTime('-30 seconds');
+        $sevenDays = new \DateTime('+7 days');
+
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->join('s.customer', 'c')
+            ->where('s.validUntil >= :thirtySecondsAgo')
+            ->andWhere('s.validUntil <= :sevenDays')
+            ->andWhere('s.status in (:status)')
+            ->setParameter('thirtySecondsAgo', $thirtySecondsAgo)
+            ->setParameter('sevenDays', $sevenDays)
+            ->setParameter('status', [SubscriptionStatus::TRIAL_ACTIVE])
+            ->orderBy('s.customer');
+
+        return $qb->getQuery()->getResult();
     }
 }
