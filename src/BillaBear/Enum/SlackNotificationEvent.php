@@ -15,4 +15,7 @@ enum SlackNotificationEvent: string
     case PAYMENT_FAILED = 'payment_failed';
     case SUBSCRIPTION_CREATED = 'subscription_created';
     case SUBSCRIPTION_CANCELLED = 'subscription_cancelled';
+    case TRIAL_STARTED = 'trial_started';
+    case TRIAL_EXTENDED = 'trial_extended';
+    case TRIAL_ENDED = 'trial_ended';
 }

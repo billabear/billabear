@@ -17,6 +17,9 @@
                 <option>payment_processed</option>
                 <option>subscription_created</option>
                 <option>subscription_cancelled</option>
+                <option>trial_started</option>
+                <option>trial_ended</option>
+                <option>trial_extended</option>
               </select>
               <p class="form-field-help">{{ $t('app.system.integrations.slack.notifications.create.help_info.event') }}</p>
             </div>
