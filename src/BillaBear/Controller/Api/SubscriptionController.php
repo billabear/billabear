@@ -113,7 +113,7 @@ class SubscriptionController
         } else {
             $subscriptionPlan = $subscriptionPlanRepository->getByCodeName($planIdentifier);
         }
-        $subscription = $trialManager->startTrial($customer, $subscriptionPlan, $dto->getSeatNumber(), $dto->getTrialLength());
+        $subscription = $trialManager->startTrial($customer, $subscriptionPlan, $dto->getSeatNumber(), $dto->getTrialLengthDays());
 
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');

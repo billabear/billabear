@@ -24,7 +24,7 @@ class CreateTrial
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    private $trial_length;
+    private $trial_length_days;
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
@@ -41,14 +41,14 @@ class CreateTrial
         $this->subscription_plan = $subscription_plan;
     }
 
-    public function getTrialLength()
+    public function getTrialLengthDays()
     {
-        return $this->trial_length;
+        return $this->trial_length_days;
     }
 
-    public function setTrialLength($trial_length): void
+    public function setTrialLengthDays($trial_length): void
     {
-        $this->trial_length = $trial_length;
+        $this->trial_length_days = $trial_length;
     }
 
     public function getSeatNumber()
