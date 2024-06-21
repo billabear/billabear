@@ -37,15 +37,16 @@
           <tr>
             <th>{{ $t('app.system.integrations.slack.notifications.list.event') }}</th>
             <th>{{ $t('app.system.integrations.slack.notifications.list.webhook')}}</th>
+            <th>{{ $t('app.system.integrations.slack.notifications.list.template')}}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="loaded">
-          <tr v-for="notification in notifications" class="mt-5">
+          <tr v-for="(notification, key) in notifications" class="mt-5">
             <td>{{ notification.event }}</td>
             <td>{{ notification.webhook.name }}</td>
-            <td>
-                </td>
+            <td>{{ notification.template }}</td>
+            <td><button class="btn--danger" :disabled="deleting" @click="deleteNot(key)"><i class="fa-solid fa-trash"></i></button></td>
           </tr>
           <tr v-if="notifications.length === 0">
             <td colspan="4" class="text-center">{{ $t('app.system.integrations.slack.notifications.list.no_notifications') }}</td>
@@ -99,6 +100,7 @@ export default {
       loaded: false,
       has_error: false,
       customers: [],
+      notifications: [],
       has_more: false,
       last_key: null,
       first_key: null,
@@ -107,6 +109,7 @@ export default {
       show_back: false,
       show_filter_menu: false,
       active_filters: [],
+      deleting: false,
       per_page: "10",
       filters: {
       },
@@ -123,6 +126,13 @@ export default {
     }
   },
   methods: {
+    deleteNot: function(key) {
+      const item = this.notifications[key];
+      axios.post("/app/integrations/slack/notification/"+item.id+"/delete").then((response) => {
+
+        this.notifications.splice( this.notifications.indexOf(key), 1);
+      })
+    },
     currency: function (value) {
       return currency(value, { fromCents: true });
     },

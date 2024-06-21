@@ -15,6 +15,7 @@ use BillaBear\DataMappers\Integrations\SlackWebhookDataMapper;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackNotification;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackWebhook;
 use BillaBear\Dto\Response\App\Integrations\Slack\CreateSlackNotificationView;
+use BillaBear\Entity\SlackNotification;
 use BillaBear\Entity\SlackWebhook;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
@@ -171,5 +172,23 @@ class SlackController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/app/integrations/slack/notification/{id}/delete', name: 'billabear_app_integrations_slack_deletenotification', methods: ['POST'])]
+    public function deleteNotification(
+        Request $request,
+        SlackNotificationRepositoryInterface $repository,
+    ): Response {
+        $this->getLogger()->info('Received app request to delete slack notification', ['slack_notification_id' => $request->get('id')]);
+        try {
+            /** @var SlackNotification $slackNotification */
+            $slackNotification = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $slackNotification->markAsDeleted();
+        $repository->save($slackNotification);
+
+        return new JsonResponse([], JsonResponse::HTTP_OK);
     }
 }
