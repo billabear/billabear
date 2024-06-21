@@ -74,3 +74,14 @@ Feature: Customer Subscription Create APP
     And the monthly recurring revenue estimate should be 0
     And the annual recurring revenue estimate should be 0
     Then there should be a trial started event for "customer.one@example.org"
+
+  Scenario: Create
+    Given I have authenticated to the API
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    When I create a trial subscription via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan |
+      | Broken            |
+    Then there should not be a subscription for the user "customer.one@example.org"
