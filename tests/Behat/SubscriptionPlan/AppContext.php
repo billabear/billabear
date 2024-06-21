@@ -167,6 +167,7 @@ class AppContext implements Context
         $subscriptionPlan->addFeature($feature);
         $subscriptionPlan->addLimit($subscriptionLimit);
         $subscriptionPlan->addPrice($price);
+        $subscriptionPlan->setIsTrialStandalone('true' === strtolower($data['Standalone Trial'] ?? 'false'));
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();
@@ -200,6 +201,7 @@ class AppContext implements Context
         $subscriptionPlan->addLimit($subscriptionLimit);
         $subscriptionPlan->addPrice($price);
         $subscriptionPlan->addPrice($yearlyPrice);
+        $subscriptionPlan->setIsTrialStandalone('true' === strtolower($data['Standalone Trial'] ?? 'false'));
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();

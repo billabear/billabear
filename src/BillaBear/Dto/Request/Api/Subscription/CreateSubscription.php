@@ -33,7 +33,7 @@ class CreateSubscription
     private $currency;
 
     #[Assert\Type('card_token')]
-    private $cardToken;
+    private $card_token;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: ['week', 'month', 'year'])]
@@ -41,12 +41,12 @@ class CreateSubscription
 
     #[PaymentMethodExists]
     #[SerializedName('payment_details')]
-    private $paymentDetails;
+    private $payment_details;
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
     #[SerializedName('seat_number')]
-    private $seatNumbers = 1;
+    private $seat_number;
 
     public function getSubscriptionPlan()
     {
@@ -70,27 +70,27 @@ class CreateSubscription
 
     public function getPaymentDetails()
     {
-        return $this->paymentDetails;
+        return $this->payment_details;
     }
 
-    public function setPaymentDetails($paymentDetails): void
+    public function setPaymentDetails($payment_details): void
     {
-        $this->paymentDetails = $paymentDetails;
+        $this->payment_details = $payment_details;
     }
 
-    public function getSeatNumbers(): int
+    public function getSeatNumber(): int
     {
-        return $this->seatNumbers;
+        return $this->seat_number;
     }
 
-    public function setSeatNumbers(int $seatNumbers): void
+    public function setSeatNumber(int $seat_number): void
     {
-        $this->seatNumbers = $seatNumbers;
+        $this->seat_number = $seat_number;
     }
 
     public function hasPaymentDetails(): bool
     {
-        return isset($this->paymentDetails);
+        return isset($this->payment_details);
     }
 
     public function getCurrency()
@@ -115,11 +115,11 @@ class CreateSubscription
 
     public function getCardToken()
     {
-        return $this->cardToken;
+        return $this->card_token;
     }
 
-    public function setCardToken($cardToken): void
+    public function setCardToken($card_token): void
     {
-        $this->cardToken = $cardToken;
+        $this->card_token = $card_token;
     }
 }

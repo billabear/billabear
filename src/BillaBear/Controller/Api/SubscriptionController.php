@@ -15,6 +15,7 @@ use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription;
 use BillaBear\Dto\Request\Api\Subscription\ChangePrice;
 use BillaBear\Dto\Request\Api\Subscription\CreateSubscription;
+use BillaBear\Dto\Request\Api\Subscription\CreateTrial;
 use BillaBear\Dto\Request\Api\Subscription\UpdatePlan;
 use BillaBear\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use BillaBear\Dto\Response\Api\ListResponse;
@@ -24,6 +25,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
+use BillaBear\Subscription\TrialManager;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
@@ -77,6 +79,46 @@ class SubscriptionController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/api/v1/customer/{customerId}/subscription/trial', name: 'api_v1_subscription_trial', methods: ['POST'])]
+    public function createTrial(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        CustomerRepositoryInterface $customerRepository,
+        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
+        SubscriptionDataMapper $subscriptionFactory,
+        TrialManager $trialManager,
+    ): Response {
+        $this->getLogger()->info('Received request to create a customer trial subscription', ['customer_id' => $request->get('customerId')]);
+
+        try {
+            $customer = $customerRepository->findById($request->get('customerId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        /** @var CreateTrial $dto */
+        $dto = $serializer->deserialize($request->getContent(), CreateTrial::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response instanceof Response) {
+            return $response;
+        }
+        $planIdentifier = $dto->getSubscriptionPlan();
+        if (Uuid::isValid($planIdentifier)) {
+            $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());
+        } else {
+            $subscriptionPlan = $subscriptionPlanRepository->getByCodeName($planIdentifier);
+        }
+        $subscription = $trialManager->startTrial($customer, $subscriptionPlan, $dto->getSeatNumber(), $dto->getTrialLength());
+
+        $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
+        $json = $serializer->serialize($subscriptionDto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
     }
 
     #[Route('/api/v1/customer/{customerId}/subscription/start', name: 'api_v1_subscription_start', methods: ['POST'])]
@@ -147,7 +189,7 @@ class SubscriptionController
         }
         $transactionManager->start();
         try {
-            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumbers());
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumber());
             $transactionManager->finish();
         } catch (PaymentFailureException $e) {
             $this->getLogger()->warning('Payment failure during creation', ['reason' => $e->getReason()->value]);

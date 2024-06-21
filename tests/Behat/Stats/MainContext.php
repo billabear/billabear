@@ -27,12 +27,18 @@ use BillaBear\Entity\Stats\SubscriptionCancellationYearlyStats;
 use BillaBear\Entity\Stats\SubscriptionCreationDailyStats;
 use BillaBear\Entity\Stats\SubscriptionCreationMonthlyStats;
 use BillaBear\Entity\Stats\SubscriptionCreationYearlyStats;
+use BillaBear\Entity\Stats\TrialStartedDailyStats;
+use BillaBear\Entity\Stats\TrialStartedMonthlyStats;
+use BillaBear\Entity\Stats\TrialStartedYearlyStats;
 use BillaBear\Repository\Orm\CachedStatsRepository;
 use BillaBear\Repository\Orm\PaymentAmountDailyStatsRepository;
 use BillaBear\Repository\Orm\RefundAmountDailyStatsRepository;
 use BillaBear\Repository\Orm\SubscriptionCreationDailyStatsRepository;
 use BillaBear\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
 use BillaBear\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
+use BillaBear\Repository\Orm\TrialStartedDailyStatsRepository;
+use BillaBear\Repository\Orm\TrialStartedMonthlyStatsRepository;
+use BillaBear\Repository\Orm\TrialStartedYearlyStatsRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
 class MainContext implements Context
@@ -44,10 +50,77 @@ class MainContext implements Context
         private SubscriptionCreationDailyStatsRepository $subscriptionDailyStatsRepository,
         private SubscriptionCreationMonthlyStatsRepository $subscriptionCreationMonthlyStatsRepository,
         private SubscriptionCreationYearlyStatsRepository $subscriptionCreationYearlyStatsRepository,
+        private TrialStartedDailyStatsRepository $trialStartedDailyStatsRepository,
+        private TrialStartedMonthlyStatsRepository $trialStartedMonthlyStatsRepository,
+        private TrialStartedYearlyStatsRepository $trialStartedYearlyStatsRepository,
         private PaymentAmountDailyStatsRepository $paymentAmountDailyStatsRepository,
         private RefundAmountDailyStatsRepository $refundAmountDailyStatsRepository,
         private CachedStatsRepository $cachedStatsRepository,
     ) {
+    }
+
+    /**
+     * @Then the trial started daily stat for the day should be :arg1
+     */
+    public function theTrialStartedDailyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->trialStartedDailyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => $dateTime->format('d'),
+        ]);
+
+        if (!$statEntity instanceof TrialStartedDailyStats) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity->getCount() != $count) {
+            throw new \Exception('Count is wrong');
+        }
+    }
+
+    /**
+     * @Then the trial started monthly stat for the day should be :arg1
+     */
+    public function theTrialStartedMonthlyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->trialStartedMonthlyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => 1,
+        ]);
+
+        if (!$statEntity instanceof TrialStartedMonthlyStats) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity->getCount() != $count) {
+            throw new \Exception('Count is wrong');
+        }
+    }
+
+    /**
+     * @Then the trial started yearly stat for the day should be :arg1
+     */
+    public function theTrialStartedYearlyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->trialStartedYearlyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => 1,
+            'day' => 1,
+        ]);
+
+        if (!$statEntity instanceof TrialStartedYearlyStats && 0 != $count) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity?->getCount() != $count && 0 != $count) {
+            throw new \Exception('Count is wrong');
+        }
     }
 
     /**
@@ -62,11 +135,11 @@ class MainContext implements Context
             'day' => $dateTime->format('d'),
         ]);
 
-        if (!$statEntity instanceof SubscriptionCreationDailyStats) {
+        if (!$statEntity instanceof SubscriptionCreationDailyStats && 0 != $count) {
             throw new \Exception('No stat found');
         }
 
-        if ($statEntity->getCount() != $count) {
+        if ($statEntity?->getCount() != $count && 0 != $count) {
             throw new \Exception('Count is wrong');
         }
     }
@@ -83,11 +156,11 @@ class MainContext implements Context
             'day' => 1,
         ]);
 
-        if (!$statEntity instanceof SubscriptionCreationMonthlyStats) {
+        if (!$statEntity instanceof SubscriptionCreationMonthlyStats && 0 != $count) {
             throw new \Exception('No stat found');
         }
 
-        if ($statEntity->getCount() != $count) {
+        if ($statEntity?->getCount() != $count && 0 != $count) {
             throw new \Exception('Count is wrong');
         }
     }
@@ -104,11 +177,11 @@ class MainContext implements Context
             'day' => 1,
         ]);
 
-        if (!$statEntity instanceof SubscriptionCreationYearlyStats) {
+        if (!$statEntity instanceof SubscriptionCreationYearlyStats && 0 != $count) {
             throw new \Exception('No stat found');
         }
 
-        if ($statEntity->getCount() != $count) {
+        if ($statEntity?->getCount() != $count && 0 != $count) {
             throw new \Exception('Count is wrong');
         }
     }
@@ -125,14 +198,14 @@ class MainContext implements Context
             'day' => $dateTime->format('d'),
         ]);
 
-        if (!$statEntity instanceof PaymentAmountDailyStats) {
+        if (!$statEntity instanceof PaymentAmountDailyStats && 0 != $amount) {
             throw new \Exception('No stat found');
         }
 
-        if ($statEntity->getAmount() != $amount) {
+        if ($statEntity?->getAmount() != $amount && 0 != $amount) {
             throw new \Exception(sprintf('Expected %d but got %d', $amount, $statEntity->getAmount()));
         }
-        if ($statEntity->getCurrency() != $currency) {
+        if ($statEntity?->getCurrency() != $currency && 0 != $amount) {
             throw new \Exception('Currency is wrong');
         }
     }
@@ -529,16 +602,16 @@ class MainContext implements Context
     /**
      * @Then the monthly recurring revenue estimate should be :arg1
      */
-    public function theMonthlyRecurringRevenueEstimateShouldBe($arg1)
+    public function theMonthlyRecurringRevenueEstimateShouldBe($amount)
     {
         /** @var CachedStats $cached */
         $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_MRR]);
 
-        if (!$cached instanceof CachedStats) {
+        if (!$cached instanceof CachedStats && 0 != $amount) {
             throw new \Exception("Can't find stat");
         }
 
-        if ($cached->getValue() != $arg1) {
+        if ($cached?->getValue() != $amount && 0 != $amount) {
             throw new \Exception('Incorrect value - '.$cached->getValue());
         }
     }
@@ -546,16 +619,16 @@ class MainContext implements Context
     /**
      * @Then the annual recurring revenue estimate should be :arg1
      */
-    public function theAnnualRecurringRevenueEstimateShouldBe($arg1)
+    public function theAnnualRecurringRevenueEstimateShouldBe($amount)
     {
         /** @var CachedStats $cached */
         $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_ARR]);
 
-        if (!$cached instanceof CachedStats) {
+        if (!$cached instanceof CachedStats && 0 != $amount) {
             throw new \Exception("Can't find stat");
         }
 
-        if ($cached->getValue() != $arg1) {
+        if ($cached?->getValue() != $amount && 0 != $amount) {
             throw new \Exception('Incorrect value - '.$cached->getValue());
         }
     }

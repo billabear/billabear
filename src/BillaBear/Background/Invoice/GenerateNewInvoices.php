@@ -19,7 +19,7 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
-use BillaBear\Subscription\TrialEnder;
+use BillaBear\Subscription\TrialManager;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
@@ -35,7 +35,7 @@ class GenerateNewInvoices
         private InvoiceCharger $invoiceCharger,
         private SettingsRepositoryInterface $settingsRepository,
         private TransactionManager $transactionManager,
-        private TrialEnder $trialEnder,
+        private TrialManager $trialEnder,
         private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
     ) {
     }

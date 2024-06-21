@@ -152,6 +152,22 @@ class ApiContext implements Context
     }
 
     /**
+     * @When I create a trial subscription via the API for :arg1 with the follow:
+     */
+    public function iCreateATrialSubscriptionViaTheApiForWithTheFollow($customerEmail, TableNode $table)
+    {
+        $row = current($table->getColumnsHash());
+        /** @var SubscriptionPlan $subscriptionPlan */
+        $subscriptionPlan = $this->planRepository->findOneBy(['name' => $row['Subscription Plan']]);
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $payload = [
+            'subscription_plan' => (string) $subscriptionPlan->getId(),
+        ];
+
+        $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/trial', $payload);
+    }
+
+    /**
      * @When I create a subscription with code and currency via the API for :arg1 with the follow:
      */
     public function iCreateASubscriptionWithCodeAndCurrencyViaTheApiForWithTheFollow($customerEmail, TableNode $table)

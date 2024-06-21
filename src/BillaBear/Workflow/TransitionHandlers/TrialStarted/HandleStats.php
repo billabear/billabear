@@ -6,12 +6,13 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Workflow\TransitionHandlers\TrailEnded;
+namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
-use BillaBear\Entity\Processes\TrialEndedProcess;
+use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Stats\TrialStartedStats;
 use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,23 +26,25 @@ class HandleStats implements EventSubscriberInterface
         private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private CustomerRepositoryInterface $customerRepository,
+        private TrialStartedStats $startedStats,
     ) {
     }
 
     public function transition(Event $event)
     {
-        /** @var TrialEndedProcess $trialEnded */
-        $trialEnded = $event->getSubject();
-        $subscription = $trialEnded->getSubscription();
+        /** @var TrialStartedProcess $trialStartedProcess */
+        $trialStartedProcess = $event->getSubject();
+        $subscription = $trialStartedProcess->getSubscription();
+        $this->startedStats->handleStats($subscription);
 
-        $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_ENDED, $subscription->getCustomer(), $subscription);
-        $this->getLogger()->info('Handled stats for trial ended');
+        $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_STARTED, $subscription->getCustomer(), $subscription);
+        $this->getLogger()->info('Handled stats for trial started');
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.trial_ended.transition.handle_stats' => ['transition'],
+            'workflow.trial_started.transition.handle_stats' => ['transition'],
         ];
     }
 }

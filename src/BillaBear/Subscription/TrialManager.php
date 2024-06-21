@@ -8,26 +8,49 @@
 
 namespace BillaBear\Subscription;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\Processes\TrialEndedProcess;
+use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Entity\Subscription;
+use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\Processes\TrialEndedProcessRepositoryInterface;
+use BillaBear\Repository\Processes\TrialStartedProcessRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Process\TrialEndedProcessor;
+use BillaBear\Subscription\Process\TrialStartedProcessor;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
 
-class TrialEnder
+class TrialManager
 {
     use LoggerAwareTrait;
 
     public function __construct(
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private TrialEndedProcessRepositoryInterface $trialEndedProcessRepository,
+        private TrialStartedProcessor $trialStartedProcess,
+        private SubscriptionFactory $subscriptionFactory,
         private TrialEndedProcessor $trialEndedProcessor,
+        private TrialStartedProcessRepositoryInterface $trialStartedProcessRepository,
     ) {
     }
 
-    public function endTrial(Subscription $subscription)
+    public function startTrial(Customer $customer, SubscriptionPlan $subscriptionPlan, ?int $seatNumber = null, ?int $trialLengthDays = null): Subscription
+    {
+        $subscription = $this->subscriptionFactory->create($customer, $subscriptionPlan, seatNumber: $seatNumber, hasTrial: true, trialLengthDays: $trialLengthDays);
+        $this->subscriptionRepository->save($subscription);
+
+        $process = new TrialStartedProcess();
+        $process->setSubscription($subscription);
+        $process->setCreatedAt(new \DateTime());
+        $process->setState('started');
+        $this->trialStartedProcessRepository->save($process);
+        $this->trialStartedProcess->process($process);
+
+        return $subscription;
+    }
+
+    public function endTrial(Subscription $subscription): void
     {
         $this->getLogger()->info('Ended trial for subscription', ['subscription_id' => (string) $subscription->getId()]);
 

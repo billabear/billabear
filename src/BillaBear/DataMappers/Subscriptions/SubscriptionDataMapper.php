@@ -94,7 +94,9 @@ class SubscriptionDataMapper
         if ($subscription->getSubscriptionPlan()) {
             $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
         }
-        $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
+        if ($subscription->getPrice()) {
+            $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
+        }
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());
         $dto->setPaymentProviderDetailsUrl($subscription->getMainExternalReferenceDetailsUrl());
@@ -112,7 +114,9 @@ class SubscriptionDataMapper
         $dto = new ApiDto();
         $dto->setId((string) $subscription->getId());
         $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()));
-        $dto->setPrice($this->priceFactory->createApiDto($subscription->getPrice()));
+        if ($subscription->getPrice()) {
+            $dto->setPrice($this->priceFactory->createApiDto($subscription->getPrice()));
+        }
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());
         $dto->setCreatedAt($subscription->getCreatedAt());

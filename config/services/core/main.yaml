@@ -294,6 +294,22 @@ services:
   app.repository.orm.refund_amount_yearly_stats:
     class: BillaBear\Repository\Orm\RefundAmountYearlyStatsRepository
 
+  BillaBear\Repository\Stats\TrialStartedDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_started_daily_stats'
+  app.repository.orm.trial_started_daily_stats:
+    class: BillaBear\Repository\Orm\TrialStartedDailyStatsRepository
+  BillaBear\Repository\Stats\TrialStartedMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_started_weekly_stats'
+  app.repository.orm.trial_started_weekly_stats:
+    class: BillaBear\Repository\Orm\TrialStartedMonthlyStatsRepository
+  BillaBear\Repository\Stats\TrialStartedYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_started_yearly_stats'
+  app.repository.orm.trial_started_yearly_stats:
+    class: BillaBear\Repository\Orm\TrialStartedYearlyStatsRepository
+
   BillaBear\Repository\Stats\ChargeBackAmountDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.charge_back_amount_daily_stats'
@@ -328,6 +344,12 @@ services:
       $entityRepository: '@app.repository.orm.trial_ended_process'
   app.repository.orm.trial_ended_process:
     class: BillaBear\Repository\Orm\TrialEndedProcessRepository
+
+  BillaBear\Repository\Processes\TrialStartedProcessRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_started_process'
+  app.repository.orm.trial_started_process:
+    class: BillaBear\Repository\Orm\TrialStartedProcessRepository
 
   BillaBear\Repository\Processes\InvoiceProcessRepository:
     arguments:
