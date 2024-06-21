@@ -27,6 +27,9 @@ use BillaBear\Entity\Stats\SubscriptionCancellationYearlyStats;
 use BillaBear\Entity\Stats\SubscriptionCreationDailyStats;
 use BillaBear\Entity\Stats\SubscriptionCreationMonthlyStats;
 use BillaBear\Entity\Stats\SubscriptionCreationYearlyStats;
+use BillaBear\Entity\Stats\TrialExtendedDailyStats;
+use BillaBear\Entity\Stats\TrialExtendedMonthlyStats;
+use BillaBear\Entity\Stats\TrialExtendedYearlyStats;
 use BillaBear\Entity\Stats\TrialStartedDailyStats;
 use BillaBear\Entity\Stats\TrialStartedMonthlyStats;
 use BillaBear\Entity\Stats\TrialStartedYearlyStats;
@@ -36,6 +39,9 @@ use BillaBear\Repository\Orm\RefundAmountDailyStatsRepository;
 use BillaBear\Repository\Orm\SubscriptionCreationDailyStatsRepository;
 use BillaBear\Repository\Orm\SubscriptionCreationMonthlyStatsRepository;
 use BillaBear\Repository\Orm\SubscriptionCreationYearlyStatsRepository;
+use BillaBear\Repository\Orm\TrialExtendedDailyStatsRepository;
+use BillaBear\Repository\Orm\TrialExtendedMonthlyStatsRepository;
+use BillaBear\Repository\Orm\TrialExtendedYearlyStatsRepository;
 use BillaBear\Repository\Orm\TrialStartedDailyStatsRepository;
 use BillaBear\Repository\Orm\TrialStartedMonthlyStatsRepository;
 use BillaBear\Repository\Orm\TrialStartedYearlyStatsRepository;
@@ -53,6 +59,9 @@ class MainContext implements Context
         private TrialStartedDailyStatsRepository $trialStartedDailyStatsRepository,
         private TrialStartedMonthlyStatsRepository $trialStartedMonthlyStatsRepository,
         private TrialStartedYearlyStatsRepository $trialStartedYearlyStatsRepository,
+        private TrialExtendedDailyStatsRepository $trialExtendedDailyStatsRepository,
+        private TrialExtendedMonthlyStatsRepository $trialExtendedMonthlyStatsRepository,
+        private TrialExtendedYearlyStatsRepository $trialExtendedYearlyStatsRepository,
         private PaymentAmountDailyStatsRepository $paymentAmountDailyStatsRepository,
         private RefundAmountDailyStatsRepository $refundAmountDailyStatsRepository,
         private CachedStatsRepository $cachedStatsRepository,
@@ -115,6 +124,69 @@ class MainContext implements Context
         ]);
 
         if (!$statEntity instanceof TrialStartedYearlyStats && 0 != $count) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity?->getCount() != $count && 0 != $count) {
+            throw new \Exception('Count is wrong');
+        }
+    }
+
+    /**
+     * @Then the trial extended daily stat for the day should be :arg1
+     */
+    public function theTrialExtendedDailyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->trialExtendedDailyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => $dateTime->format('d'),
+        ]);
+
+        if (!$statEntity instanceof TrialExtendedDailyStats && 0 != $count) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity?->getCount() != $count && 0 != $count) {
+            throw new \Exception('Count is wrong');
+        }
+    }
+
+    /**
+     * @Then the trial extended monthly stat for the day should be :arg1
+     */
+    public function theTrialExtendedMonthlyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->trialExtendedMonthlyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => 1,
+        ]);
+
+        if (!$statEntity instanceof TrialExtendedMonthlyStats && 0 != $count) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity?->getCount() != $count && 0 != $count) {
+            throw new \Exception('Count is wrong');
+        }
+    }
+
+    /**
+     * @Then the trial extended yearly stat for the day should be :arg1
+     */
+    public function theTrialExtendedYearlyStatForTheDayShouldBe($count)
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->trialExtendedYearlyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => 1,
+            'day' => 1,
+        ]);
+
+        if (!$statEntity instanceof TrialExtendedYearlyStats && 0 != $count) {
             throw new \Exception('No stat found');
         }
 

@@ -9,7 +9,9 @@
 namespace BillaBear\Subscription;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Price;
 use BillaBear\Entity\Processes\TrialEndedProcess;
+use BillaBear\Entity\Processes\TrialExtendedProcess;
 use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
@@ -17,6 +19,7 @@ use BillaBear\Repository\Processes\TrialEndedProcessRepositoryInterface;
 use BillaBear\Repository\Processes\TrialStartedProcessRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Process\TrialEndedProcessor;
+use BillaBear\Subscription\Process\TrialExtendedProcessor;
 use BillaBear\Subscription\Process\TrialStartedProcessor;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
@@ -31,6 +34,7 @@ class TrialManager
         private TrialStartedProcessor $trialStartedProcess,
         private SubscriptionFactory $subscriptionFactory,
         private TrialEndedProcessor $trialEndedProcessor,
+        private TrialExtendedProcessor $trialExtendProcessor,
         private TrialStartedProcessRepositoryInterface $trialStartedProcessRepository,
     ) {
     }
@@ -46,6 +50,31 @@ class TrialManager
         $process->setState('started');
         $this->trialStartedProcessRepository->save($process);
         $this->trialStartedProcess->process($process);
+
+        return $subscription;
+    }
+
+    public function extendTrial(Subscription $subscription, Price $price): Subscription
+    {
+        if ($price->isRecurring()) {
+            $subscription->setPaymentSchedule($price->getSchedule());
+        } else {
+            $subscription->setPaymentSchedule('one-off');
+        }
+        $subscription->setPrice($price);
+        $subscription->setMoneyAmount($price->getAsMoney());
+        $subscription->setStatus(SubscriptionStatus::ACTIVE);
+
+        // Don't charge them just now, wait until the trial is over.
+        $this->subscriptionRepository->save($subscription);
+
+        $process = new TrialExtendedProcess();
+        $process->setSubscription($subscription);
+        $process->setCreatedAt(new \DateTime());
+        $process->setState('started');
+        $this->trialEndedProcessRepository->save($process);
+
+        $this->trialExtendProcessor->process($process);
 
         return $subscription;
     }

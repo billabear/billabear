@@ -343,14 +343,17 @@ class MainContext implements Context
             }
 
             $subscription = new Subscription();
-            $subscription->setPaymentSchedule($row['Price Schedule']);
+
             $subscription->setCustomer($customer);
 
             if (isset($row['Price Amount'])) {
                 /** @var Price $price */
                 $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
 
+                $subscription->setPaymentSchedule($row['Price Schedule']);
                 $subscription->setPrice($price);
+                $subscription->setCurrency($price->getCurrency());
+                $subscription->setAmount($price->getAmount());
             }
             $statusText = strtolower($row['Status'] ?? 'Active');
             $status = SubscriptionStatus::from($statusText);
@@ -358,8 +361,6 @@ class MainContext implements Context
             $subscription->setSubscriptionPlan($subscriptionPlan);
             $subscription->setPlanName($subscriptionPlan->getName());
             $subscription->setStatus($status);
-            $subscription->setCurrency($price->getCurrency());
-            $subscription->setAmount($price->getAmount());
             $subscription->setMainExternalReference('sdasd');
             $subscription->setMainExternalReferenceDetailsUrl('sdasd');
             $subscription->setChildExternalReference('saddsa');
@@ -377,31 +378,29 @@ class MainContext implements Context
                 $subscription->setSeats(intval($row['Seats']));
             }
 
-            if (isset($row['Trial Ends'])) {
-                $subscription->setStatus();
-            }
-
             $this->subscriptionRepository->getEntityManager()->persist($subscription);
             $this->subscriptionRepository->getEntityManager()->flush();
 
-            // TODO add ability to create a history of payments
-            $payment = new Payment();
-            $payment->addSubscription($subscription);
-            $payment->setPaymentReference($paymentReference);
-            $payment->setMoneyAmount($price->getAsMoney());
-            $payment->setCustomer($customer);
-            $payment->setStatus(PaymentStatus::COMPLETED);
-            $payment->setRefunded(false);
-            $payment->setCompleted(true);
-            $payment->setChargedBack(true);
-            $payment->setCreatedAt(new \DateTime('now'));
-            $payment->setUpdatedAt(new \DateTime('now'));
-            $payment->setCountry($customer->getCountry());
+            if (isset($row['Price Amount'])) {
+                // TODO add ability to create a history of payments
+                $payment = new Payment();
+                $payment->addSubscription($subscription);
+                $payment->setPaymentReference($paymentReference);
+                $payment->setMoneyAmount($price->getAsMoney());
+                $payment->setCustomer($customer);
+                $payment->setStatus(PaymentStatus::COMPLETED);
+                $payment->setRefunded(false);
+                $payment->setCompleted(true);
+                $payment->setChargedBack(true);
+                $payment->setCreatedAt(new \DateTime('now'));
+                $payment->setUpdatedAt(new \DateTime('now'));
+                $payment->setCountry($customer->getCountry());
 
-            $payment->setProvider('test_dummy');
+                $payment->setProvider('test_dummy');
 
-            $this->subscriptionRepository->getEntityManager()->persist($payment);
-            $this->subscriptionRepository->getEntityManager()->flush();
+                $this->subscriptionRepository->getEntityManager()->persist($payment);
+                $this->subscriptionRepository->getEntityManager()->flush();
+            }
         }
     }
 
@@ -724,6 +723,37 @@ class MainContext implements Context
         $nextYear = new \DateTime('+1 year');
         if ($subscription->getValidUntil()->format('Y-m-d') !== $nextYear->format('Y-m-d')) {
             throw new \Exception(sprintf('Expected %s but got %s', $subscription->getValidUntil()->format('Y-m-d'), $nextYear->format('Y-m-d')));
+        }
+    }
+
+    /**
+     * @When I extend via the API the subscription :arg1 for :arg2 with the follow:
+     */
+    public function iExtendViaTheApiTheSubscriptionForWithTheFollow($planName, $customerEmail, TableNode $table)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+        $row = $table->getRowsHash();
+
+        /** @var Price $price */
+        $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+
+        $payload = [
+            'price' => (string) $price->getId(),
+        ];
+
+        $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/extend', $payload);
+    }
+
+    /**
+     * @Then the subscription :arg1 for :arg2 will be active
+     */
+    public function theSubscriptionForWillBeActive($planName, $customerEmail)
+    {
+        $subscription = $this->getSubscription($customerEmail, $planName);
+
+        if (SubscriptionStatus::ACTIVE !== $subscription->getStatus()) {
+            var_dump($this->session->getPage()->getContent());
+            throw new \Exception('Not active');
         }
     }
 
