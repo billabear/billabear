@@ -46,7 +46,7 @@ class CreateSubscription
     #[Assert\Type('integer')]
     #[Assert\Positive]
     #[SerializedName('seat_number')]
-    private $seat_number;
+    private $seat_number = 1;
 
     public function getSubscriptionPlan()
     {
@@ -78,12 +78,12 @@ class CreateSubscription
         $this->payment_details = $payment_details;
     }
 
-    public function getSeatNumber(): int
+    public function getSeatNumber()
     {
         return $this->seat_number;
     }
 
-    public function setSeatNumber(int $seat_number): void
+    public function setSeatNumber($seat_number): void
     {
         $this->seat_number = $seat_number;
     }

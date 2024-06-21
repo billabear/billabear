@@ -45,6 +45,16 @@ class SubscriptionFactory
         $subscription = $this->entityFactory->getSubscriptionEntity();
         $subscription->setPlanName($plan->getName());
         $subscription->setSubscriptionPlan($plan);
+        $subscription->setActive(true);
+        $subscription->setSeats($seatNumber);
+        $subscription->setCreatedAt(new \DateTime());
+        $subscription->setUpdatedAt(new \DateTime());
+        $subscription->setStartOfCurrentPeriod(new \DateTime());
+        $subscription->setCustomer($customer);
+        $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
+        $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
+        $subscription->setPaymentDetails($paymentDetails);
+
         if (null !== $planPrice) {
             if ($planPrice->isRecurring()) {
                 $subscription->setPaymentSchedule($planPrice->getSchedule());
@@ -55,16 +65,6 @@ class SubscriptionFactory
             $subscription->setMoneyAmount($planPrice->getAsMoney());
             $this->schedulerProvider->getScheduler($planPrice)->scheduleNextDueDate($subscription);
         }
-
-        $subscription->setActive(true);
-        $subscription->setSeats($seatNumber);
-        $subscription->setCreatedAt(new \DateTime());
-        $subscription->setUpdatedAt(new \DateTime());
-        $subscription->setStartOfCurrentPeriod(new \DateTime());
-        $subscription->setCustomer($customer);
-        $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
-        $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
-        $subscription->setPaymentDetails($paymentDetails);
 
         if ($subscription->isHasTrial()) {
             $subscription->setStatus(SubscriptionStatus::TRIAL_ACTIVE);
