@@ -12,6 +12,7 @@ use BillaBear\Entity\Processes\TrialEndedProcess;
 use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Stats\TrialEndedStats;
 use BillaBear\Subscription\CustomerSubscriptionEventCreator;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,6 +26,7 @@ class HandleStats implements EventSubscriberInterface
         private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private CustomerRepositoryInterface $customerRepository,
+        private TrialEndedStats $endedStats,
     ) {
     }
 
@@ -34,6 +36,7 @@ class HandleStats implements EventSubscriberInterface
         $trialEnded = $event->getSubject();
         $subscription = $trialEnded->getSubscription();
 
+        $this->endedStats->handleStats($subscription);
         $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_ENDED, $subscription->getCustomer(), $subscription);
         $this->getLogger()->info('Handled stats for trial ended');
     }

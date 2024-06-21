@@ -324,7 +324,24 @@ services:
     arguments:
       $entityRepository: '@app.repository.orm.trial_extended_yearly_stats'
   app.repository.orm.trial_extended_yearly_stats:
-    class: BillaBear\Repository\Orm\TrialStartedYearlyStatsRepository
+    class: BillaBear\Repository\Orm\TrialExtendedYearlyStatsRepository
+
+
+  BillaBear\Repository\Stats\TrialEndedDailyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_ended_daily_stats'
+  app.repository.orm.trial_ended_daily_stats:
+    class: BillaBear\Repository\Orm\TrialEndedDailyStatsRepository
+  BillaBear\Repository\Stats\TrialEndedMonthlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_ended_weekly_stats'
+  app.repository.orm.trial_ended_weekly_stats:
+    class: BillaBear\Repository\Orm\TrialEndedMonthlyStatsRepository
+  BillaBear\Repository\Stats\TrialEndedYearlyStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.trial_ended_yearly_stats'
+  app.repository.orm.trial_ended_yearly_stats:
+    class: BillaBear\Repository\Orm\TrialEndedYearlyStatsRepository
 
   BillaBear\Repository\Stats\ChargeBackAmountDailyStatsRepository:
     arguments:
