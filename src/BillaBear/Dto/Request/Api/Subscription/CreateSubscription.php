@@ -32,7 +32,7 @@ class CreateSubscription
     #[Assert\Type('string')]
     private $currency;
 
-    #[Assert\Type('card_token')]
+    #[Assert\Type('string')]
     private $card_token;
 
     #[Assert\Type('string')]

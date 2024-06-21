@@ -74,6 +74,7 @@ class CustomerSubscriptionController
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         SubscriptionDataMapper $subscriptionFactory,
         TrialManager $trialManager,
+        FrontendAddProcessorInterface $frontendAddProcessor,
     ): Response {
         $this->getLogger()->info('Received request to create a customer trial subscription', ['customer_id' => $request->get('customerId')]);
 
@@ -91,6 +92,15 @@ class CustomerSubscriptionController
         if ($response instanceof Response) {
             return $response;
         }
+
+        if ($dto->getCardToken()) {
+            try {
+                $frontendAddProcessor->createPaymentDetailsFromToken($customer, $dto->getCardToken());
+            } catch (\Exception $exception) {
+                return new JsonResponse(['error' => 'Unable to add card via token'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+            }
+        }
+
         $planIdentifier = $dto->getSubscriptionPlan();
         if (Uuid::isValid($planIdentifier)) {
             $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());

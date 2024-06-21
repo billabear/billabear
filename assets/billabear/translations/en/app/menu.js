@@ -9,6 +9,7 @@ export const MENU_TRANSLATIONS = {
         invoices: "Invoices",
         system: "System",
         docs: "Documentation",
-        workflows: "Workflows"
+        workflows: "Workflows",
+        developers: "Developers",
     }
 }

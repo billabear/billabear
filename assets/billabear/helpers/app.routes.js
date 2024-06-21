@@ -61,6 +61,12 @@ import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGenerato
 import {AppFinanceRoutes} from "./app.finance.routes";
 import {REPORT_ROUTES} from "./app.reports.routes";
 import PdfTemplateCreate from "../views/App/Settings/PdfTemplates/PdfTemplateCreate.vue";
+import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
+import SlackGroup from "../views/App/System/Integrations/Slack/SlackGroup.vue";
+import SlackNotificationList from "../views/App/System/Integrations/Slack/SlackNotificationList.vue";
+import SlackNotificationCreate from "../views/App/System/Integrations/Slack/SlackNotificationCreate.vue";
+import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
+import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -243,6 +249,41 @@ export const APP_ROUTES = [
                 name: "app.settings.exchange_rates.list",
                 path: "exchange-rates",
                 component: ExchangeRatesList
+            },
+            {
+                name: 'app.settings.integrations.list',
+                path: 'integrations/list',
+                component: IntegrationsList
+            },
+            {
+                name: 'app.settings.integrations.slack',
+                path: 'integrations/slack',
+                redirect: "webhook",
+                component: SlackGroup,
+                children: [
+                    {
+                        name: 'app.system.integrations.slack.notification',
+                        path: 'notification',
+                        component: SlackNotificationList
+                    },
+                    {
+                        name: 'app.system.integrations.slack.notification.create',
+                        path: 'notification/create',
+                        component: SlackNotificationCreate
+
+                    },
+                    {
+                        name: 'app.system.integrations.slack.webhook',
+                        path: 'webhook',
+                        component: SlackWebhookList
+                    },
+                    {
+                        name: 'app.system.integrations.slack.webhook.create',
+                        path: 'webhook/create',
+                        component: SlackWebhookCreate
+
+                    }
+                ]
             }
         ]
     },

@@ -64,7 +64,7 @@
               <li>
                 <router-link :to="{name: 'app.system.webhooks'}" class="sidebar-menu-item">
                   <i class="fa-solid fa-screwdriver-wrench"></i>
-                  <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.system') }}</span>
+                  <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.developers') }}</span>
                 </router-link>
               </li>
             </RoleOnlyView>

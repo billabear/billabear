@@ -12,4 +12,5 @@ export const SETTINGS_MENU_TRANSACTIONS = {
     stripe: "Stripe",
     api_keys: "API Keys",
     exchange_rates: "Exchange Rates",
+    integrations: "Integrations"
 };

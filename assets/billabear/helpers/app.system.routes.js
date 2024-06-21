@@ -50,40 +50,4 @@ export const SYSTEM_ROUTES = [
         component: CancellationRequestView
     },
 
-    {
-        name: 'app.system.integrations.list',
-        path: 'integrations/list',
-        component: IntegrationsList
-    },
-
-    {
-        name: 'app.system.integrations.slack',
-        path: 'integrations/slack',
-        redirect: "webhook",
-        component: SlackGroup,
-        children: [
-            {
-                name: 'app.system.integrations.slack.notification',
-                path: 'notification',
-                component: SlackNotificationList
-            },
-            {
-                name: 'app.system.integrations.slack.notification.create',
-                path: 'notification/create',
-                component: SlackNotificationCreate
-
-            },
-            {
-                name: 'app.system.integrations.slack.webhook',
-                path: 'webhook',
-                component: SlackWebhookList
-            },
-            {
-                name: 'app.system.integrations.slack.webhook.create',
-                path: 'webhook/create',
-                component: SlackWebhookCreate
-
-            }
-        ]
-    }
 ];

@@ -31,6 +31,9 @@ class CreateTrial
     #[SerializedName('seat_number')]
     private $seat_number;
 
+    #[Assert\Type('string')]
+    private $card_token;
+
     public function getSubscriptionPlan()
     {
         return $this->subscription_plan;
@@ -59,5 +62,15 @@ class CreateTrial
     public function setSeatNumber(int $seat_number): void
     {
         $this->seat_number = $seat_number;
+    }
+
+    public function getCardToken()
+    {
+        return $this->card_token;
+    }
+
+    public function setCardToken($card_token): void
+    {
+        $this->card_token = $card_token;
     }
 }
