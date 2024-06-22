@@ -156,6 +156,7 @@ export default {
         limits: [{}],
         features: [{}],
         user_count: 1,
+        is_trial_standalone: false,
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -218,6 +219,7 @@ export default {
         prices: [],
         has_trial: this.subscription_plan.has_trial,
         trial_length_days: this.subscription_plan.trial_length_days,
+        is_trial_standalone: this.subscription_plan.is_trial_standalone,
       };
       var count = this.subscription_plan.features.length;
       var features = [];
