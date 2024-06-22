@@ -113,7 +113,7 @@ class SubscriptionDataMapper
     {
         $dto = new ApiDto();
         $dto->setId((string) $subscription->getId());
-        $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()));
+        $dto->setPlan($this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()));
         if ($subscription->getPrice()) {
             $dto->setPrice($this->priceFactory->createApiDto($subscription->getPrice()));
         }

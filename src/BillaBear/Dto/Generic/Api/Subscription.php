@@ -35,8 +35,8 @@ class Subscription
     #[SerializedName('child_external_reference')]
     private ?string $childExternalReference;
 
-    #[SerializedName('subscription_plan')]
-    private SubscriptionPlan $subscriptionPlan;
+    #[SerializedName('plan')]
+    private SubscriptionPlan $plan;
 
     #[SerializedName('price')]
     private Price $price;
@@ -124,14 +124,14 @@ class Subscription
         $this->childExternalReference = $childExternalReference;
     }
 
-    public function getSubscriptionPlan(): SubscriptionPlan
+    public function getPlan(): SubscriptionPlan
     {
-        return $this->subscriptionPlan;
+        return $this->plan;
     }
 
-    public function setSubscriptionPlan(SubscriptionPlan $subscriptionPlan): void
+    public function setPlan(SubscriptionPlan $plan): void
     {
-        $this->subscriptionPlan = $subscriptionPlan;
+        $this->plan = $plan;
     }
 
     public function getPrice(): Price
