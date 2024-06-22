@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <Topbar />
-    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+  <LoadingScreen :ready="ready" v-if="!error">
 
-      <Sidebar />
+    <div>
+      <Topbar />
+      <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
 
-      <div id="main-content" class="relative w-full h-full bg-gray-50 lg:ml-64 dark:bg-gray-900">
-        <main>
-          <div class="">
-            <div v-if="!has_stripe_key" class="w-100 bg-red-500 text-white p-3 font-bold">
-              {{ $t('app.onboarding.main.bar.message') }}
+        <Sidebar />
+
+        <div id="main-content" class="relative w-full h-full bg-gray-50 lg:ml-64 dark:bg-gray-900">
+          <main>
+            <div class="">
+              <div v-if="!has_stripe_key" class="w-100 bg-red-500 text-white p-3 font-bold">
+                {{ $t('app.onboarding.main.bar.message') }}
+              </div>
+              <router-view></router-view>
             </div>
-            <router-view></router-view>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
-  </div>
 
+  </LoadingScreen>
+  <div v-else class="h-screen flex w-screen items-center justify-center">
+    {{ $t('app.onboarding.error') }}
+  </div>
 </template>
 
 <script>
@@ -48,7 +54,9 @@ export default {
         'has_customer',
         'has_subscription',
         'has_product',
-        'show_onboarding'
+        'show_onboarding',
+        'ready',
+        'error'
     ])
   },
   methods: {

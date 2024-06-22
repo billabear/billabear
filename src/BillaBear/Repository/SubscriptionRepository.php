@@ -35,6 +35,21 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return $qb->getQuery()->getResult();
     }
 
+    public function getSubscriptionsExpiringInTwoDays(): array
+    {
+        $thirtySecondsAgo = new \DateTime('+24 hours');
+        $fiveMinutes = new \DateTime('+48 hours');
+
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->where('s.validUntil <= :sevenDays')
+            ->andWhere('s.status in (:status)')
+            ->setParameter('sevenDays', $fiveMinutes)
+            ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE])
+            ->orderBy('s.customer');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getInvoiceSubscriptionsExpiringInNextFiveMinutes(): array
     {
         // Incase it takes a while to start the process.

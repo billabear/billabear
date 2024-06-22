@@ -8,22 +8,24 @@
 
 namespace BillaBear\Background\Notifications;
 
-use BillaBear\Notification\Email\Data\TrialEndingWarningEmail;
+use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Notification\Email\Data\DayBeforeChargeWarningEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
 
-class TrialEndingWarning
+class DayBeforeChargeWarning
 {
     use LoggerAwareTrait;
 
     public function __construct(
         private SubscriptionRepositoryInterface $subscriptionRepository,
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private EmailSenderInterface $sender,
         private EmailBuilder $emailBuilder,
-        private BrandSettingsRepositoryInterface $brandSettingsRepository,
     ) {
     }
 
@@ -32,7 +34,7 @@ class TrialEndingWarning
         $all = $this->brandSettingsRepository->getAll();
         $enabled = false;
         foreach ($all as $setting) {
-            if ($setting->getNotificationSettings()->getSendTrialEndingWarning()) {
+            if ($setting->getNotificationSettings()->getSendBeforeChargeWarnings()) {
                 $enabled = true;
             }
         }
@@ -41,22 +43,29 @@ class TrialEndingWarning
             return;
         }
 
-        $this->getLogger()->info('Starting trial ending soon warning email run');
-        $subscriptions = $this->subscriptionRepository->getTrialEndingInNextSevenDays();
+        $this->getLogger()->info('Starting day before charge warning run');
+
+        $subscriptions = $this->subscriptionRepository->getSubscriptionsExpiringInTwoDays();
 
         foreach ($subscriptions as $subscription) {
-            if (!$subscription->getCustomer()->getBrandSettings()->getNotificationSettings()->getSendTrialEndingWarning()) {
+            if (!$subscription->getCustomer()->getBrandSettings()->getNotificationSettings()->getSendBeforeChargeWarnings()) {
+                continue;
+            }
+            /** @var SubscriptionPlan $plan */
+            $plan = $subscription->getSubscriptionPlan();
+            if ($plan->getIsTrialStandalone() && SubscriptionStatus::TRIAL_ACTIVE === $subscription->getStatus()) {
+                // There isn't going to be a next charge.
                 continue;
             }
 
             $this->getLogger()->info(
-                'Sending trial warning email to customer for subscription',
+                'Sending before charge warning email to customer for subscription',
                 [
                     'customer_id' => (string) $subscription->getCustomer()->getId(),
                     'subscription_id' => (string) $subscription->getId(),
                 ]
             );
-            $emailPayload = new TrialEndingWarningEmail($subscription);
+            $emailPayload = new DayBeforeChargeWarningEmail($subscription);
             $email = $this->emailBuilder->build($subscription->getCustomer(), $emailPayload);
             $this->sender->send($email);
         }

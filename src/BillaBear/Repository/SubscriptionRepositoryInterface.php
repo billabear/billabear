@@ -28,6 +28,11 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     /**
      * @return BillaSubscription[]
      */
+    public function getSubscriptionsExpiringInTwoDays(): array;
+
+    /**
+     * @return BillaSubscription[]
+     */
     public function getTrialEndingInNextSevenDays(): array;
 
     /**

@@ -15,15 +15,6 @@
             <Toggle v-model="notificationSettings.send_customer_notifications" />
             <p class="form-field-help">{{ $t('app.settings.notification_settings.update.help_info.send_customer_notifications') }}</p>
           </div>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="send_trial_warning_emails">
-              {{ $t('app.settings.notification_settings.update.fields.send_trial_ending_warnings') }}
-            </label>
-            <p class="form-field-error" v-if="errors.sendTrialWarningEmails != undefined">{{ errors.sendTrialWarningEmails }}</p>
-
-            <Toggle v-model="notificationSettings.send_trial_ending_warnings" />
-            <p class="form-field-help">{{ $t('app.settings.notification_settings.update.help_info.send_trial_ending_warnings') }}</p>
-          </div>
 
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="default_outgoing_email">

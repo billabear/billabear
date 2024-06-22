@@ -43,5 +43,12 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         invoice_created: "Invoice Created",
         invoice_overdue: "Invoice Overdue",
         quote_created: "Quote Created",
+        trial_ending_warning: "Trial Ending Warning",
+        before_charge_warning: "Before Charge Warning",
+        before_charge_warning_options: {
+            none: "None",
+            all: "All",
+            yearly: "Yearly"
+        }
     }
 };

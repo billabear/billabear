@@ -9,6 +9,7 @@
 namespace BillaBear\Dto\Request\App\BrandSettings;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Notifications
 {
@@ -32,6 +33,17 @@ class Notifications
 
     #[SerializedName('quote_created')]
     private $quoteCreated;
+
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('boolean')]
+    #[SerializedName('trial_ending_warning')]
+    private $trialEndingWarnings;
+
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+    #[Assert\Choice(choices: ['none', 'all', 'yearly'])]
+    #[SerializedName('before_charge_warning')]
+    private $beforeChargeWarnings;
 
     public function getSubscriptionCreation()
     {
@@ -101,5 +113,25 @@ class Notifications
     public function setInvoiceOverdue($invoiceOverdue): void
     {
         $this->invoiceOverdue = $invoiceOverdue;
+    }
+
+    public function getTrialEndingWarnings()
+    {
+        return $this->trialEndingWarnings;
+    }
+
+    public function setTrialEndingWarnings($trialEndingWarnings): void
+    {
+        $this->trialEndingWarnings = $trialEndingWarnings;
+    }
+
+    public function getBeforeChargeWarnings()
+    {
+        return $this->beforeChargeWarnings;
+    }
+
+    public function setBeforeChargeWarnings($beforeChargeWarnings): void
+    {
+        $this->beforeChargeWarnings = $beforeChargeWarnings;
     }
 }

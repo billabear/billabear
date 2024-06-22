@@ -8,6 +8,7 @@
 
 namespace BillaBear\Schedule;
 
+use BillaBear\Schedule\Messenger\Message\BeforeChargeWarning;
 use BillaBear\Schedule\Messenger\Message\DisableOverdueCustomers;
 use BillaBear\Schedule\Messenger\Message\ExpiredCardsDayBefore;
 use BillaBear\Schedule\Messenger\Message\ExpiredCardsFirstOfMonth;
@@ -18,6 +19,7 @@ use BillaBear\Schedule\Messenger\Message\MassSubscriptionChange;
 use BillaBear\Schedule\Messenger\Message\RefreshExchangeRates;
 use BillaBear\Schedule\Messenger\Message\RetryPayments;
 use BillaBear\Schedule\Messenger\Message\StripeImport;
+use BillaBear\Schedule\Messenger\Message\TrialEndingWarning;
 use BillaBear\Schedule\Messenger\Message\UpdateChecker;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;
@@ -37,6 +39,8 @@ class MainSchedule implements ScheduleProviderInterface
         $schedule->add(RecurringMessage::cron('*/5 * * * *', new GenerateNewInvoices()));
         $schedule->add(RecurringMessage::cron('5 0 * * *', new ExpiredCardsDayBefore()));
         $schedule->add(RecurringMessage::cron('1 0 1 * *', new ExpiredCardsFirstOfMonth()));
+        $schedule->add(RecurringMessage::cron('5 1 * * *', new BeforeChargeWarning()));
+        $schedule->add(RecurringMessage::cron('15 1 * * *', new TrialEndingWarning()));
         $schedule->add(RecurringMessage::cron('1 2 * * *', new UpdateChecker()));
         $schedule->add(RecurringMessage::cron('1 3 * * *', new InvoiceOverdueWarning()));
         $schedule->add(RecurringMessage::cron('1 4 * * *', new DisableOverdueCustomers()));

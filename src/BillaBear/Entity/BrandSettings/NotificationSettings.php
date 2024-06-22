@@ -34,6 +34,12 @@ class NotificationSettings
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $quoteCreated = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $sendTrialEndingWarning = false;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $sendBeforeChargeWarnings = null;
+
     public function getSubscriptionCreation(): bool
     {
         return true === $this->subscriptionCreation;
@@ -102,5 +108,29 @@ class NotificationSettings
     public function setInvoiceOverdue(?bool $invoiceOverdue): void
     {
         $this->invoiceOverdue = $invoiceOverdue;
+    }
+
+    public function getSendTrialEndingWarning(): bool
+    {
+        return true === $this->sendTrialEndingWarning;
+    }
+
+    public function setSendTrialEndingWarning(?bool $sendTrialEndingWarning): void
+    {
+        $this->sendTrialEndingWarning = $sendTrialEndingWarning;
+    }
+
+    public function getSendBeforeChargeWarnings(): string
+    {
+        if (null === $this->sendBeforeChargeWarnings) {
+            return 'none';
+        }
+
+        return $this->sendBeforeChargeWarnings;
+    }
+
+    public function setSendBeforeChargeWarnings(?string $sendBeforeChargeWarnings): void
+    {
+        $this->sendBeforeChargeWarnings = $sendBeforeChargeWarnings;
     }
 }

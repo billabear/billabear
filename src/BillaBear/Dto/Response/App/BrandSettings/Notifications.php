@@ -33,6 +33,12 @@ class Notifications
     #[SerializedName('quote_created')]
     private bool $quoteCreated;
 
+    #[SerializedName('trial_ending_warning')]
+    private bool $trialEndingWarnings;
+
+    #[SerializedName('before_charge_warning')]
+    private string $beforeChargeWarnings;
+
     public function getSubscriptionCreation()
     {
         return true === $this->subscriptionCreation;
@@ -101,5 +107,25 @@ class Notifications
     public function setInvoiceOverdue(bool $invoiceOverdue): void
     {
         $this->invoiceOverdue = $invoiceOverdue;
+    }
+
+    public function isTrialEndingWarnings(): bool
+    {
+        return $this->trialEndingWarnings;
+    }
+
+    public function setTrialEndingWarnings(bool $trialEndingWarnings): void
+    {
+        $this->trialEndingWarnings = $trialEndingWarnings;
+    }
+
+    public function getBeforeChargeWarnings(): string
+    {
+        return $this->beforeChargeWarnings;
+    }
+
+    public function setBeforeChargeWarnings(string $beforeChargeWarnings): void
+    {
+        $this->beforeChargeWarnings = $beforeChargeWarnings;
     }
 }

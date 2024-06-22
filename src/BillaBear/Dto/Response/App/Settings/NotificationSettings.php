@@ -29,9 +29,6 @@ class NotificationSettings
     #[SerializedName('default_outgoing_email')]
     private ?string $defaultOutgoingEmail;
 
-    #[SerializedName('send_trial_ending_warnings')]
-    private ?bool $sendTrialEndingWarnings;
-
     public function getSendCustomerNotifications(): ?bool
     {
         return $this->sendCustomerNotifications;
@@ -90,15 +87,5 @@ class NotificationSettings
     public function setDefaultOutgoingEmail(?string $defaultOutgoingEmail): void
     {
         $this->defaultOutgoingEmail = $defaultOutgoingEmail;
-    }
-
-    public function getSendTrialEndingWarnings(): ?bool
-    {
-        return true === $this->sendTrialEndingWarnings;
-    }
-
-    public function setSendTrialEndingWarnings(?bool $sendTrialEndingWarnings): void
-    {
-        $this->sendTrialEndingWarnings = $sendTrialEndingWarnings;
     }
 }

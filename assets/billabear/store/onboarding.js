@@ -8,6 +8,8 @@ const state = {
     has_subscription: false,
     has_customer: false,
     show_onboarding: false,
+    ready: false,
+    error: false,
 }
 
 const actions = {
@@ -21,7 +23,7 @@ const actions = {
         axios.get("/app/system/data").then((response) => {
             commit('setDefaults', response.data)
         }).catch(error => {
-
+            commit('setError')
         })
     },
     stripeKeysAdded({commit}) {
@@ -42,6 +44,9 @@ const actions = {
 }
 
 const mutations = {
+    setError(state) {
+        state.error = true;
+    },
     setDefaults(state, defaults) {
         state.has_stripe_key = defaults.has_stripe_key;
         state.has_product = defaults.has_product;
@@ -49,6 +54,7 @@ const mutations = {
         state.has_subscription = defaults.has_subscription;
         state.has_customer = defaults.has_customer;
         state.has_stripe_imports = defaults.has_stripe_imports;
+        state.ready = true;
 
         state.show_onboarding = (
             !defaults.has_stripe_key || !defaults.has_product ||

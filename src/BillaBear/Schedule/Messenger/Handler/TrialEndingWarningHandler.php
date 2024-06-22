@@ -12,7 +12,7 @@ use BillaBear\Background\Notifications\TrialEndingWarning;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class TrailEndingWarningHandler
+class TrialEndingWarningHandler
 {
     public function __construct(private TrialEndingWarning $process)
     {

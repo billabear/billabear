@@ -22,7 +22,6 @@ class NotificationSettingsDataMapper
         $settings->setEmspApiKey($dto->getEmspApiKey());
         $settings->setEmspApiUrl($dto->getEmspApiUrl());
         $settings->setEmspDomain($dto->getEmspDomain());
-        $settings->setSendTrialEndingWarning($dto->getSendTrialEndingWarnings());
 
         return $settings;
     }
@@ -36,7 +35,6 @@ class NotificationSettingsDataMapper
         $dto->setEmspDomain($settings->getEmspDomain());
         $dto->setDefaultOutgoingEmail($settings->getDefaultOutgoingEmail());
         $dto->setSendCustomerNotifications($settings->getSendCustomerNotifications());
-        $dto->setSendTrialEndingWarnings($settings->getSendTrialEndingWarning());
 
         return $dto;
     }

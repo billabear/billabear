@@ -164,6 +164,18 @@
               <input type="checkbox" id="quote_created" v-model="brand.notifications.quote_created" />
               <label for="quote_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.quote_created') }}</label>
             </div>
+            <div class="ds">
+              <input type="checkbox" id="send_trial_ending_warnings" v-model="brand.notifications.trial_ending_warning" />
+              <label for="send_trial_ending_warnings" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.trial_ending_warning') }}</label>
+            </div>
+            <div class="ds">
+              <select v-model="brand.notifications.before_charge_warning">
+                <option value="none">{{ $t('app.settings.brand_settings.update.notification.before_charge_warning_options.none') }}</option>
+                <option value="yearly">{{ $t('app.settings.brand_settings.update.notification.before_charge_warning_options.yearly') }}</option>
+                <option value="all">{{ $t('app.settings.brand_settings.update.notification.before_charge_warning_options.all') }}</option>
+              </select>
+              <label class="ml-3">{{ $t('app.settings.brand_settings.update.notification.before_charge_warning') }}</label>
+            </div>
           </div></div>
         </div>
         <div class="mt-5 form-field-submit-ctn">

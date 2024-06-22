@@ -18,33 +18,28 @@ class NotificationSettings
 {
     #[Assert\Type('boolean')]
     #[SerializedName('send_customer_notifications')]
-    private ?bool $sendCustomerNotifications;
+    private $sendCustomerNotifications;
 
     #[Assert\NotBlank]
     #[Assert\Choice(choices: Entity::EMSP_CHOICES)]
-    private ?string $emsp;
+    private $emsp;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('emsp_api_key')]
-    private ?string $emspApiKey;
+    private $emspApiKey;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('emsp_api_url')]
-    private ?string $emspApiUrl;
+    private $emspApiUrl;
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('emsp_domain')]
-    private ?string $emspDomain;
+    private $emspDomain;
 
     #[Assert\NotBlank()]
     #[Assert\Email]
     #[SerializedName('default_outgoing_email')]
-    private ?string $defaultOutgoingEmail;
-
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type('boolean')]
-    #[SerializedName('send_trial_ending_warnings')]
-    private ?bool $sendTrialEndingWarnings = null;
+    private $defaultOutgoingEmail;
 
     public function getSendCustomerNotifications(): ?bool
     {
@@ -104,16 +99,6 @@ class NotificationSettings
     public function setDefaultOutgoingEmail(?string $defaultOutgoingEmail): void
     {
         $this->defaultOutgoingEmail = $defaultOutgoingEmail;
-    }
-
-    public function getSendTrialEndingWarnings(): bool
-    {
-        return true === $this->sendTrialEndingWarnings;
-    }
-
-    public function setSendTrialEndingWarnings(?bool $sendTrialEndingWarnings): void
-    {
-        $this->sendTrialEndingWarnings = $sendTrialEndingWarnings;
     }
 
     public function validate(ExecutionContextInterface $context, $payload)
