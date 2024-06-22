@@ -41,9 +41,10 @@ class NotificationSettings
     #[SerializedName('default_outgoing_email')]
     private ?string $defaultOutgoingEmail;
 
+    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('boolean')]
     #[SerializedName('send_trial_ending_warnings')]
-    private ?bool $sendTrialEndingWarnings;
+    private ?bool $sendTrialEndingWarnings = null;
 
     public function getSendCustomerNotifications(): ?bool
     {
