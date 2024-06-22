@@ -85,6 +85,40 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the latest invoice for :arg1 will not have the invoice number :arg2
+     */
+    public function theLatestInvoiceForWillNotHaveTheInvoiceNumber($customerEmail, $invoiceNumber)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+        if ($invoice->getInvoiceNumber() == $invoiceNumber) {
+            throw new \Exception('Same invoice number - '.$invoice->getInvoiceNumber());
+        }
+    }
+
+    /**
+     * @Then the latest invoice for :arg1 will have the invoice number starting with :arg2 and :arg3 chars
+     */
+    public function theLatestInvoiceForWillHaveTheInvoiceNumberStartingWithAndChars($customerEmail, $start, $arg3)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if (!str_starts_with($invoice->getInvoiceNumber(), $start)) {
+            throw new \Exception('Invoice number is different: '.$invoice->getInvoiceNumber());
+        }
+
+        $count = 1;
+        $number = str_replace($start, '', $invoice->getInvoiceNumber(), $count);
+
+        if (strlen($number) !== intval($arg3)) {
+            throw new \Exception('Got a different response');
+        }
+    }
+
+    /**
      * @Then the latest invoice for :arg1 will have tax amount due
      */
     public function theLatestInvoiceForWillHaveTaxAmountDue($customerEmail)

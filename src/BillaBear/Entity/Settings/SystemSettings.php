@@ -29,6 +29,9 @@ class SystemSettings
     private ?int $subsequentialNumber = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $invoiceNumberFormat = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $systemUrl = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -248,5 +251,15 @@ class SystemSettings
     public function setStripePrivateKey(?string $stripePrivateKey): void
     {
         $this->stripePrivateKey = $stripePrivateKey;
+    }
+
+    public function getInvoiceNumberFormat(): ?string
+    {
+        return $this->invoiceNumberFormat;
+    }
+
+    public function setInvoiceNumberFormat(?string $invoiceNumberFormat): void
+    {
+        $this->invoiceNumberFormat = $invoiceNumberFormat;
     }
 }

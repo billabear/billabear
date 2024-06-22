@@ -27,6 +27,9 @@ class SystemSettings
     #[SerializedName('default_invoice_due_time')]
     private ?string $defaultInvoiceDueTime = null;
 
+    #[SerializedName('format')]
+    private ?string $format = null;
+
     public function getSystemUrl(): ?string
     {
         return $this->systemUrl;
@@ -75,5 +78,15 @@ class SystemSettings
     public function setDefaultInvoiceDueTime(?string $defaultInvoiceDueTime): void
     {
         $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format;
+    }
+
+    public function setFormat(?string $format): void
+    {
+        $this->format = $format;
     }
 }

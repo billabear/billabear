@@ -35,16 +35,25 @@
             <select class="form-field" id="timezone" v-model="systemSettings.invoice_number_generation">
               <option value="random">{{ $t('app.settings.system_settings.update.invoice_number_generation.random') }}</option>
               <option value="subsequential">{{ $t('app.settings.system_settings.update.invoice_number_generation.subsequential') }}</option>
+              <option value="format">{{ $t('app.settings.system_settings.update.invoice_number_generation.format') }}</option>
             </select>
             <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.invoice_number_generation') }}</p>
           </div>
 
-          <div class="form-field-ctn" v-if="systemSettings.invoice_number_generation === 'subsequential'">
+          <div class="form-field-ctn" v-if="systemSettings.invoice_number_generation !== 'random'">
             <label class="form-field-lbl" for="subsequential_number">
               {{ $t('app.settings.system_settings.update.fields.subsequential_number') }}
             </label>
             <input type="number" class="form-field" v-model="systemSettings.subsequential_number" />
             <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.subsequential_number') }}</p>
+          </div>
+
+          <div class="form-field-ctn" v-if="systemSettings.invoice_number_generation === 'format'">
+            <label class="form-field-lbl" for="format">
+              {{ $t('app.settings.system_settings.update.fields.format') }}
+            </label>
+            <input type="text" class="form-field" v-model="systemSettings.format" />
+            <p class="form-field-help">{{ $t('app.settings.system_settings.update.help_info.format') }}</p>
           </div>
 
           <div class="form-field-ctn" >
@@ -62,10 +71,10 @@
 
         </div>
 
+        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.system_settings.update.success_message') }}</p>
         <div class="m-5 form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.system_settings.update.submit_btn') }}</SubmitButton>
         </div>
-        <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.system_settings.update.success_message') }}</p>
       </form>
     </LoadingScreen>
   </div>

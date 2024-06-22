@@ -16,13 +16,19 @@ class InvoiceNumberGeneratorProvider
         private SettingsRepositoryInterface $settingsRepository,
         private RandomInvoiceNumberGenerator $randomInvoiceNumberGenerator,
         private SubsequentialGenerator $subsequentialGenerator,
+        private FormatNumberGenerator $formatNumberGenerator,
     ) {
     }
 
     public function getGenerator(): InvoiceNumberGeneratorInterface
     {
-        if ('subsequential' === $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getInvoiceNumberGeneration()) {
+        $generation = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getInvoiceNumberGeneration();
+        if ('subsequential' === $generation) {
             return $this->subsequentialGenerator;
+        }
+
+        if ('format' === $generation) {
+            return $this->formatNumberGenerator;
         }
 
         return $this->randomInvoiceNumberGenerator;

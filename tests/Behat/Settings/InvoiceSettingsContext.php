@@ -61,6 +61,29 @@ class InvoiceSettingsContext implements Context
     }
 
     /**
+     * @Given the subsequential invoice number is :arg1
+     */
+    public function theSubsequentialInvoiceNumberIs($arg1)
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setSubsequentialNumber(intval($arg1));
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given the invoice number generation is format :arg1
+     */
+    public function theInvoiceNumberGenerationIsFormat($arg1)
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setInvoiceNumberGeneration('format');
+        $settings->getSystemSettings()->setInvoiceNumberFormat($arg1);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @Then the invoice number generation should be subsequential.
      */
     public function theInvoiceNumberGenerationShouldBeSubsequential()

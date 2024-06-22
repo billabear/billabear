@@ -21,6 +21,7 @@ class SystemSettingsDataMapper
         $settings->setInvoiceNumberGeneration($dto->getInvoiceNumberGeneration());
         $settings->setSubsequentialNumber($dto->getSubsequentialNumber());
         $settings->setDefaultInvoiceDueTime($dto->getDefaultInvoiceDueTime());
+        $settings->setInvoiceNumberFormat($dto->getFormat());
 
         return $settings;
     }
@@ -33,6 +34,7 @@ class SystemSettingsDataMapper
         $dto->setInvoiceNumberGeneration($settings->getInvoiceNumberGeneration());
         $dto->setSubsequentialNumber($settings->getSubsequentialNumber());
         $dto->setDefaultInvoiceDueTime($settings->getDefaultInvoiceDueTime());
+        $dto->setFormat($settings->getInvoiceNumberFormat());
 
         return $dto;
     }
