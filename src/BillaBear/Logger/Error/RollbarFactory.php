@@ -28,10 +28,10 @@ class RollbarFactory
     {
         $checkIgnoreCallback = function ($isUncaught, $toLog, $payload) {
             if ($toLog instanceof HttpException) {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         };
 
         $config = [

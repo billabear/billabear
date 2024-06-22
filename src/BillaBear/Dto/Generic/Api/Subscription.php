@@ -15,7 +15,7 @@ class Subscription
     private string $id;
 
     #[SerializedName('schedule')]
-    private string $schedule;
+    private ?string $schedule;
 
     #[SerializedName('created_at')]
     private \DateTimeInterface $createdAt;
@@ -54,12 +54,12 @@ class Subscription
         $this->id = $id;
     }
 
-    public function getSchedule(): string
+    public function getSchedule(): ?string
     {
         return $this->schedule;
     }
 
-    public function setSchedule(string $schedule): void
+    public function setSchedule(?string $schedule): void
     {
         $this->schedule = $schedule;
     }
