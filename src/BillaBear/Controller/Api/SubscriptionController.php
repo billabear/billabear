@@ -85,7 +85,7 @@ class SubscriptionController
             firstId: $firstKey,
         );
 
-        $dtos = array_map([$subscriptionFactory, 'createAppDto'], $resultSet->getResults());
+        $dtos = array_map([$subscriptionFactory, 'createApiDto'], $resultSet->getResults());
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());
         $listResponse->setData($dtos);
@@ -110,7 +110,7 @@ class SubscriptionController
             return new JsonResponse(null, status: JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $dto = $subscriptionFactory->createAppDto($subscription);
+        $dto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
