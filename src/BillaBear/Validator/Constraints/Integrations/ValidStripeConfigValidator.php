@@ -9,6 +9,8 @@
 namespace BillaBear\Validator\Constraints\Integrations;
 
 use BillaBear\Dto\Request\App\Settings\Stripe\SendConfig;
+use Parthenon\Common\LoggerAwareTrait;
+use Stripe\Balance;
 use Stripe\Exception\PermissionException;
 use Stripe\Stripe;
 use Symfony\Component\Validator\Constraint;
@@ -16,6 +18,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class ValidStripeConfigValidator extends ConstraintValidator
 {
+    use LoggerAwareTrait;
+
     public function validate(mixed $value, Constraint $constraint)
     {
         if (empty($value)) {
@@ -32,7 +36,8 @@ class ValidStripeConfigValidator extends ConstraintValidator
 
         Stripe::setApiKey($value->getPrivateKey());
         try {
-            $account = \Stripe\Account::retrieve();
+            $balance = Balance::retrieve();
+            $this->getLogger()->info('Validated a stripe account', ['livemode' => $balance->livemode ? 'live' : 'test']);
         } catch (\Stripe\Exception\AuthenticationException|PermissionException $e) {
             $this->context->buildViolation($constraint->message)->atPath('privateKey')->addViolation();
         }
