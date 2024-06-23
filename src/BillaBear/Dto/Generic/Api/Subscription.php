@@ -44,6 +44,8 @@ class Subscription
     #[SerializedName('seat_number')]
     private ?int $seatNumber = null;
 
+    private string $status;
+
     public function getId(): string
     {
         return $this->id;
@@ -152,5 +154,15 @@ class Subscription
     public function setSeatNumber(?int $seatNumber): void
     {
         $this->seatNumber = $seatNumber;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

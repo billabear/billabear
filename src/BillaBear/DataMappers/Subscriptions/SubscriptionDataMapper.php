@@ -123,6 +123,7 @@ class SubscriptionDataMapper
         $dto->setSeatNumber($subscription->getSeats());
         $dto->setUpdatedAt($subscription->getUpdatedAt());
         $dto->setValidUntil($subscription->getValidUntil());
+        $dto->setStatus($subscription->getStatus()->value);
 
         return $dto;
     }
