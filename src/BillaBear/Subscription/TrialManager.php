@@ -15,6 +15,8 @@ use BillaBear\Entity\Processes\TrialExtendedProcess;
 use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Enum\CustomerStatus;
+use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\Processes\TrialEndedProcessRepositoryInterface;
 use BillaBear\Repository\Processes\TrialStartedProcessRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -36,12 +38,15 @@ class TrialManager
         private TrialEndedProcessor $trialEndedProcessor,
         private TrialExtendedProcessor $trialExtendProcessor,
         private TrialStartedProcessRepositoryInterface $trialStartedProcessRepository,
+        private CustomerRepositoryInterface $customerRepository,
     ) {
     }
 
     public function startTrial(Customer $customer, SubscriptionPlan $subscriptionPlan, ?int $seatNumber = null, ?int $trialLengthDays = null): Subscription
     {
         $subscription = $this->subscriptionFactory->create($customer, $subscriptionPlan, seatNumber: $seatNumber, hasTrial: true, trialLengthDays: $trialLengthDays);
+
+        $subscription->getCustomer()->setStatus(CustomerStatus::TRIAL_ACTIVE);
         $this->subscriptionRepository->save($subscription);
 
         $process = new TrialStartedProcess();
@@ -64,6 +69,7 @@ class TrialManager
         $subscription->setPrice($price);
         $subscription->setMoneyAmount($price->getAsMoney());
         $subscription->setStatus(SubscriptionStatus::ACTIVE);
+        $subscription->getCustomer()->setStatus(CustomerStatus::ACTIVE);
 
         // Don't charge them just now, wait until the trial is over.
         $this->subscriptionRepository->save($subscription);
@@ -85,6 +91,7 @@ class TrialManager
 
         $subscription->setStatus(SubscriptionStatus::TRIAL_ENDED);
         $subscription->setActive(false);
+        $subscription->getCustomer()->setStatus(CustomerStatus::TRIAL_ENDED);
         $this->subscriptionRepository->save($subscription);
 
         $process = new TrialEndedProcess();
