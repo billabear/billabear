@@ -81,6 +81,10 @@ class GenerateNewInvoices
 
             return;
         }
+
+        if (0 === count($activeSubscriptions)) {
+            return;
+        }
         $this->generateInvoice($activeSubscriptions, $customer);
     }
 
