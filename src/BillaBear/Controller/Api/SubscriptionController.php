@@ -103,7 +103,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionDataMapper $subscriptionFactory,
     ): Response {
-        $this->getLogger()->info('Received request to view subscriptions', ['subscription_id' => $request->get('id')]);
+        $this->getLogger()->info('Received request to view subscription', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
