@@ -58,7 +58,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
         $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
-        if (Customer::BILLING_TYPE_CARD === $customer->getBillingType() && SubscriptionStatus::TRIAL_ACTIVE !== $subscription->getStatus()) {
+        if (Customer::BILLING_TYPE_CARD === $customer->getBillingType() && SubscriptionStatus::ACTIVE === $subscription->getStatus()) {
             $this->invoiceCharger->chargeInvoice($invoice);
         }
 
