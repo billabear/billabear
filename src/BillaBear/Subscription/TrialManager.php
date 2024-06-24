@@ -84,6 +84,7 @@ class TrialManager
         $this->getLogger()->info('Ended trial for subscription', ['subscription_id' => (string) $subscription->getId()]);
 
         $subscription->setStatus(SubscriptionStatus::TRIAL_ENDED);
+        $subscription->setActive(false);
         $this->subscriptionRepository->save($subscription);
 
         $process = new TrialEndedProcess();

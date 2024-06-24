@@ -57,6 +57,15 @@ class ApiContext implements Context
     }
 
     /**
+     * @When I request the active subscription list api for :arg1
+     */
+    public function iRequestTheActiveSubscriptionListApiFor($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/subscription/active');
+    }
+
+    /**
      * @When I request via the API the subscription :arg1 for :arg2
      */
     public function iRequestViaTheApiTheSubscriptionFor($planName, $customerEmail)

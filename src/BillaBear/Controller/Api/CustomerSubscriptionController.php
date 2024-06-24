@@ -52,8 +52,36 @@ class CustomerSubscriptionController
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
+        $dtos = array_map([$subscriptionFactory, 'createApiDto'], $subscriptions);
+
+        $listResponse = new ListResponse();
+        $listResponse->setHasMore(false);
+        $listResponse->setData($dtos);
+        $listResponse->setLastKey(null);
+
+        $json = $serializer->serialize($listResponse, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/api/v1/customer/{customerId}/subscription/active', methods: ['GET'])]
+    public function listCustomerSubscriptionsActive(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        \BillaBear\Repository\SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionDataMapper $subscriptionFactory,
+        SerializerInterface $serializer,
+    ) {
+        $this->getLogger()->info('Received request to list customer subscriptions', ['customer_id' => $request->get('customerId')]);
+        try {
+            $customer = $customerRepository->findById($request->get('customerId'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
         $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
-        $dtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
+        $dtos = array_map([$subscriptionFactory, 'createApiDto'], $subscriptions);
 
         $listResponse = new ListResponse();
         $listResponse->setHasMore(false);

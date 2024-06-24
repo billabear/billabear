@@ -358,6 +358,11 @@ class MainContext implements Context
             $statusText = strtolower($row['Status'] ?? 'Active');
             $status = SubscriptionStatus::from($statusText);
 
+            $active = match ($status) {
+                SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE, SubscriptionStatus::OVERDUE_PAYMENT_OPEN, SubscriptionStatus::PENDING_CANCEL => true,
+                default => false,
+            };
+
             $subscription->setSubscriptionPlan($subscriptionPlan);
             $subscription->setPlanName($subscriptionPlan->getName());
             $subscription->setStatus($status);
@@ -369,6 +374,7 @@ class MainContext implements Context
             $subscription->setStartOfCurrentPeriod($start);
             $subscription->setPaymentDetails($paymentDetails);
             $subscription->setValidUntil($end);
+            $subscription->setActive($active);
 
             if (isset($row['Ended At'])) {
                 $subscription->setEndedAt(new \DateTime($row['Ended At']));
