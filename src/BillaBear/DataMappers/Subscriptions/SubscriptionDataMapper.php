@@ -116,6 +116,7 @@ class SubscriptionDataMapper
         $dto->setPlan($this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()));
         if ($subscription->getPrice()) {
             $dto->setPrice($this->priceFactory->createApiDto($subscription->getPrice()));
+            $dto->setSchedule($subscription->getPrice()->getSchedule());
         }
         $dto->setChildExternalReference($subscription->getChildExternalReference());
         $dto->setMainExternalReference($subscription->getMainExternalReference());

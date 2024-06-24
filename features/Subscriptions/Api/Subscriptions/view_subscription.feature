@@ -1,8 +1,4 @@
-Feature: Customer Subscription Read APP
-  In order to manage a customer's subscriptions
-  As an API user
-  I need to be see customer's Subscription
-
+Feature: Customer Subscription Read APi
   Background:
     Given the following accounts exist:
       | Name        | Email                   | Password  |
