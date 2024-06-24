@@ -20,7 +20,7 @@ class ViewSubscription
 
     private Customer $customer;
 
-    private Product $product;
+    private ?Product $product;
 
     #[SerializedName('payment_details')]
     private PaymentMethod $paymentDetails;
@@ -47,12 +47,12 @@ class ViewSubscription
         $this->customer = $customer;
     }
 
-    public function getProduct(): Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(Product $product): void
+    public function setProduct(?Product $product): void
     {
         $this->product = $product;
     }

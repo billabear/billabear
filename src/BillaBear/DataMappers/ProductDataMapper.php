@@ -71,8 +71,12 @@ class ProductDataMapper
         return $dto;
     }
 
-    public function createAppDtoFromProduct(Product $product): AppDto
+    public function createAppDtoFromProduct(?Product $product): ?AppDto
     {
+        if (!$product) {
+            return null;
+        }
+
         $dto = new AppDto();
         $dto->setId((string) $product->getId());
         $dto->setName($product->getName());

@@ -28,6 +28,12 @@ Feature: Customer Subscription Read APP
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
+    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
+      | Name             | Trial Plan |
+      | Public           | True       |
+      | Per Seat         | False      |
+      | User Count       | 10         |
+      | Standalone Trial | true       |
 
 
   Scenario: Get subscription
@@ -43,3 +49,15 @@ Feature: Customer Subscription Read APP
     Then I will see the subscription has the plan "Test Plan"
     Then I will see the subscription has the schedule "month"
     Then I will see the payments for the subscription
+
+  Scenario: Get subscription for trial
+    When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And the following subscriptions exist:
+      | Subscription Plan | Customer                 | Status       | Next Charge |
+      | Trial Plan         | customer.one@example.org | trial_active | +3 days     |
+    When I view the subscription "Trial Plan" for "customer.one@example.org"
+    Then I will see the subscription has the plan "Trial Plan"

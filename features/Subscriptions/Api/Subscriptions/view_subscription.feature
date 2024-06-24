@@ -1,4 +1,5 @@
 Feature: Customer Subscription Read APi
+
   Background:
     Given the following accounts exist:
       | Name        | Email                   | Password  |
@@ -24,7 +25,6 @@ Feature: Customer Subscription Read APi
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
-
 
   Scenario: Get subscription
     Given I have authenticated to the API
