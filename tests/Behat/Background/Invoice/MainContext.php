@@ -18,6 +18,7 @@ use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceProcessRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class MainContext implements Context
 {
@@ -30,6 +31,7 @@ class MainContext implements Context
         private InvoiceRepository $invoiceRepository,
         private InvoiceProcessRepository $invoiceProcessRepository,
         private DisableOverdueInvoices $disableOverdueInvoices,
+        private KernelInterface $kernel,
     ) {
     }
 
@@ -52,6 +54,20 @@ class MainContext implements Context
 
         if ($invoice->getAmountDue() != $amount) {
             throw new \Exception('Different amount due - '.$invoice->getAmountDue());
+        }
+    }
+
+    /**
+     * @Then there will be no error logs for invoice
+     */
+    public function thereWillBeNoNewInvoices()
+    {
+        $file = sprintf('%s/%s.log', $this->kernel->getLogDir(), $this->kernel->getEnvironment());
+        $time = time();
+        $mtime = filemtime($file);
+        $diff = $time - $mtime;
+        if ($diff < 2) {
+            throw new \Exception('Log has been modified '.$diff.' seconds ago');
         }
     }
 

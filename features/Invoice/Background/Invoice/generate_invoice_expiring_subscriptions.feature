@@ -37,10 +37,11 @@ Feature: Generate new invoices
       | Feature Two   | feature_two   | A dummy feature |
       | Feature Three | feature_three | A dummy feature |
     Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
-      | Name       | Test Plan |
-      | Public     | True      |
-      | Per Seat   | False     |
-      | User Count | 10        |
+      | Name             | Test Plan |
+      | Public           | True      |
+      | Per Seat         | False     |
+      | User Count       | 10        |
+      | Standalone Trial | true      |
     Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
       | Name       | Test Two |
       | Public     | True     |
@@ -77,8 +78,8 @@ Feature: Generate new invoices
 
   Scenario:
     Given the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
-      | Test Plan         | 1000         | USD            | week           | customer.four@example.org  | +3 Minutes  | Active |
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                  | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.four@example.org | +3 Minutes  | Active |
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.four@example.org" will expire in a week
@@ -115,7 +116,7 @@ Feature: Generate new invoices
     And stripe billing is enabled
     And the following credit transactions exist:
       | Customer                 | Type   | Amount | Currency |
-      | customer.one@example.org | credit | 100   | USD      |
+      | customer.one@example.org | credit | 100    | USD      |
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 900
@@ -132,7 +133,7 @@ Feature: Generate new invoices
     And stripe billing is enabled
     And the following credit transactions exist:
       | Customer                 | Type   | Amount | Currency |
-      | customer.one@example.org | credit | 1100  | USD      |
+      | customer.one@example.org | credit | 1100   | USD      |
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 0
@@ -150,8 +151,8 @@ Feature: Generate new invoices
       | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
     And stripe billing is enabled
     And the following credit transactions exist:
-      | Customer                 | Type   | Amount | Currency |
-      | customer.one@example.org | debit  | 100   | USD      |
+      | Customer                 | Type  | Amount | Currency |
+      | customer.one@example.org | debit | 100    | USD      |
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 1100
@@ -169,8 +170,8 @@ Feature: Generate new invoices
       | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
     And stripe billing is enabled
     And the following credit transactions exist:
-      | Customer                 | Type   | Amount | Currency |
-      | customer.one@example.org | debit  | 100   | USD      |
+      | Customer                 | Type  | Amount | Currency |
+      | customer.one@example.org | debit | 100    | USD      |
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 1100
@@ -187,8 +188,8 @@ Feature: Generate new invoices
       | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
     And stripe billing is enabled
     And the following vouchers exist:
-      | Name        | Type         | Entry Type | Code | Percentage Value | USD  | GBP | Disabled |
-      | Voucher One | Percentage   | Automatic  | n/a  | 50               | n/a  | n/a | false    |
+      | Name        | Type       | Entry Type | Code | Percentage Value | USD | GBP | Disabled |
+      | Voucher One | Percentage | Automatic  | n/a  | 50               | n/a | n/a | false    |
     And the customer "customer.one@example.org" has the voucher "Voucher One" applied
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
@@ -205,8 +206,8 @@ Feature: Generate new invoices
       | Test Two          | 30000        | USD            | year           | customer.six@example.org   | +10 Minutes | Active    |
     And stripe billing is enabled
     And the following vouchers exist:
-      | Name        | Type         | Entry Type | Code | Percentage Value | USD  | GBP | Disabled |
-      | Voucher One | Percentage   | Automatic  | n/a  | 50               | n/a  | n/a | false    |
+      | Name        | Type       | Entry Type | Code | Percentage Value | USD | GBP | Disabled |
+      | Voucher One | Percentage | Automatic  | n/a  | 50               | n/a | n/a | false    |
     And the customer "customer.one@example.org" has the voucher "Voucher One" applied that has been used
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
@@ -225,7 +226,7 @@ Feature: Generate new invoices
     And stripe billing is enabled
     And the following credit transactions exist:
       | Customer                 | Type   | Amount | Currency |
-      | customer.one@example.org | credit | 100   | USD      |
+      | customer.one@example.org | credit | 100    | USD      |
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
     And the latest invoice for "customer.one@example.org" will have amount due as 900
@@ -246,3 +247,10 @@ Feature: Generate new invoices
       | customer.one@example.org | credit | 100    | GBP      |
     When the background task to reinvoice active subscriptions
     Then the subscription for "customer.one@example.org" will expire in a week
+
+  Scenario: Only subscription
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Next Charge | Status       |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | trial_active |
+    When the background task to reinvoice active subscriptions
+    Then there will be no error logs for invoice

@@ -17,6 +17,7 @@ use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Entity\SubscriptionSeatModification;
 use BillaBear\Enum\SubscriptionSeatModificationType;
+use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
@@ -47,7 +48,7 @@ class MainContext implements Context
         private SubscriptionPlanRepository $subscriptionPlanRepository,
         private CustomerRepository $customerRepository,
         private PaymentCardServiceRepository $paymentDetailsRepository,
-        private SubscriptionSeatModificationRepository $subscriptionSeatModificationRepository,
+        private SubscriptionSeatModificationRepository $subscriptionSeatModificationRepository, private readonly InvoiceRepositoryInterface $invoiceRepository,
     ) {
     }
 

@@ -128,7 +128,7 @@ class GenerateNewInvoices
             $this->getLogger()->critical('An error happened while generating invoice', [
                 'exception_message' => $exception->getMessage(),
                 'exception_line' => $exception->getLine(),
-                'exception_file' => $exception->getTraceAsString(),
+                'exception_file' => $exception->getFile(),
                 'customer_id' => (string) $customer->getId(),
                 'subscriptions' => array_map(function ($item) {
                     return (string) $item->getId();
