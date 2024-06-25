@@ -8,8 +8,20 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\CustomerSubscriptionEvent;
+use BillaBear\Entity\Subscription;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface CustomerSubscriptionEventRepositoryInterface extends CrudRepositoryInterface
 {
+    /**
+     * @return CustomerSubscriptionEvent[]
+     */
+    public function getAllForCustomer(Customer $customer): array;
+
+    /**
+     * @return CustomerSubscriptionEvent[]
+     */
+    public function getAllForSubscription(Subscription $subscription): array;
 }

@@ -20,6 +20,7 @@ use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
 use BillaBear\DataMappers\RefundDataMapper;
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
+use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\Dto\Request\App\CreateCustomerDto;
 use BillaBear\Dto\Response\App\Customer\CreateCustomerView;
@@ -31,6 +32,7 @@ use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
@@ -234,6 +236,8 @@ class CustomerController
         CreditDataMapper $creditDataMapper,
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceDataMapper $invoiceDataMapper,
+        CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
+        CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
 
@@ -263,6 +267,9 @@ class CustomerController
         $invoices = $invoiceRepository->getAllForCustomer($customer);
         $invoiceDtos = array_map([$invoiceDataMapper, 'createQuickViewAppDto'], $invoices);
 
+        $subscriptionEvents = $customerSubscriptionEventRepository->getAllForCustomer($customer);
+        $subscriptionEventDtos = array_map([$customerSubscriptionEventDataMapper, 'createAppDto'], $subscriptionEvents);
+
         $customerDto = $customerDataMapper->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
@@ -273,6 +280,7 @@ class CustomerController
         $dto->setLimits($limits);
         $dto->setCredit($creditNotesDto);
         $dto->setInvoices($invoiceDtos);
+        $dto->setSubscriptionEvents($subscriptionEventDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

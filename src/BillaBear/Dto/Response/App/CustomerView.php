@@ -35,6 +35,9 @@ class CustomerView
 
     protected array $invoices = [];
 
+    #[SerializedName('subscription_events')]
+    protected array $subscriptionEvents;
+
     public function getCustomer(): Customer
     {
         return $this->customer;
@@ -123,5 +126,15 @@ class CustomerView
     public function setInvoices(array $invoices): void
     {
         $this->invoices = $invoices;
+    }
+
+    public function getSubscriptionEvents(): array
+    {
+        return $this->subscriptionEvents;
+    }
+
+    public function setSubscriptionEvents(array $subscriptionEvents): void
+    {
+        $this->subscriptionEvents = $subscriptionEvents;
     }
 }

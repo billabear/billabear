@@ -8,8 +8,19 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
+use BillaBear\Entity\Subscription;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class CustomerSubscriptionEventRepository extends DoctrineCrudRepository implements CustomerSubscriptionEventRepositoryInterface
 {
+    public function getAllForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
+    }
+
+    public function getAllForSubscription(Subscription $subscription): array
+    {
+        return $this->entityRepository->findBy(['subscription' => $subscription]);
+    }
 }

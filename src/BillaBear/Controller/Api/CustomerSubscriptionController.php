@@ -211,7 +211,7 @@ class CustomerSubscriptionController
         }
         $transactionManager->start();
         try {
-            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumber());
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumber(), !$dto->getDenyTrial());
             $transactionManager->finish();
         } catch (PaymentFailureException $e) {
             $this->getLogger()->warning('Payment failure during creation', ['reason' => $e->getReason()->value]);

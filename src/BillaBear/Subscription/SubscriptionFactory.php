@@ -41,6 +41,12 @@ class SubscriptionFactory
         if (null === $seatNumber) {
             $seatNumber = 1;
         }
+
+        if (null === $hasTrial) {
+            $hasTrial = $plan->getHasTrial();
+            $trialLengthDays = $plan->getTrialLengthDays();
+        }
+
         /** @var Subscription $subscription */
         $subscription = $this->entityFactory->getSubscriptionEntity();
         $subscription->setPlanName($plan->getName());
@@ -51,8 +57,8 @@ class SubscriptionFactory
         $subscription->setUpdatedAt(new \DateTime());
         $subscription->setStartOfCurrentPeriod(new \DateTime());
         $subscription->setCustomer($customer);
-        $subscription->setTrialLengthDays($trialLengthDays ?? $plan->getTrialLengthDays());
-        $subscription->setHasTrial($hasTrial ?? $plan->getHasTrial());
+        $subscription->setTrialLengthDays($trialLengthDays);
+        $subscription->setHasTrial($hasTrial);
         $subscription->setPaymentDetails($paymentDetails);
 
         if (null !== $planPrice) {

@@ -109,33 +109,37 @@ class InvoiceGenerator
         foreach ($subscriptions as $subscription) {
             $price = $subscription->getPrice();
 
-            if (!$price instanceof Price) {
-                throw new \Exception(sprintf("The subscription '%s' has no price", $subscription->getPlanName()));
-            }
-
-            $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
-            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $subscription->getSeats());
-
-            $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
-            $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
-            $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
-
             $line = new InvoiceLine();
-            $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
-            $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
-            $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-            $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
-            if (null !== $subscription->getSeats() && $subscription->getSeats() > 1) {
-                $line->setDescription(sprintf('%d x %s', $subscription->getSeats(), $subscription->getPlanName()));
+            if ($price instanceof Price) {
+                $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
+                $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $subscription->getSeats());
+
+                $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
+                $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
+                $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
+                $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+                $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
+                $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+                if (null !== $subscription->getSeats() && $subscription->getSeats() > 1) {
+                    $line->setDescription(sprintf('%d x %s', $subscription->getSeats(), $subscription->getPlanName()));
+                } else {
+                    $line->setDescription($subscription->getPlanName());
+                }
+                $line->setTaxPercentage($priceInfo->taxInfo->rate);
+                $line->setTaxType($taxType);
+                $line->setTaxCountry($priceInfo->taxInfo->country);
+                $line->setTaxState($priceInfo->taxInfo->state);
+                $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             } else {
-                $line->setDescription($subscription->getPlanName());
+                $line->setCurrency('USD');
+                $line->setTotal(0);
+                $line->setSubTotal(0);
+                $line->setTaxTotal(0);
+                $line->setDescription('Free trial');
             }
-            $line->setTaxPercentage($priceInfo->taxInfo->rate);
-            $line->setTaxType($taxType);
-            $line->setTaxCountry($priceInfo->taxInfo->country);
-            $line->setTaxState($priceInfo->taxInfo->state);
-            $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+
             $lines[] = $line;
         }
         $invoice->setSubscriptions($subscriptions);

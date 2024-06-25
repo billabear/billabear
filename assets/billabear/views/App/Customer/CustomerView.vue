@@ -100,43 +100,71 @@
             </div>
           </div>
 
-        <div class="card-body">
-          <div class="grid grid-cols-2">
-            <div><h2  class="section-header">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
-            <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-              <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
+          <div class="card-body">
+            <div class="grid grid-cols-2">
+              <div><h2  class="section-header">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
+              <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+                <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
 
-            </RoleOnlyView>
+              </RoleOnlyView>
+            </div>
+
+            <div class="mt-2">
+
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
+                  <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
+                  <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
+                  <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="subscription in subscriptions" class="mt-5">
+                  <td v-if="subscription.plan !== undefined && subscription.plan !== null">{{ subscription.plan.name }}</td>
+                  <td v-else>N/A</td>
+                  <td>{{ subscription.status }}</td>
+                  <td>{{ subscription.schedule }}</td>
+                  <td>{{ $filters.moment(subscription.valid_until, "LLL") }}</td>
+                  <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="list-btn">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
+                </tr>
+                <tr v-if="subscriptions.length == 0">
+                  <td colspan="6" class="text-center">{{ $t('app.customer.view.subscriptions.no_subscriptions') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <div class="card-body">
+            <div class="grid grid-cols-2">
+              <div><h2  class="section-header">{{ $t('app.customer.view.subscription_events.title') }}</h2></div>
+            </div>
 
-          <div class="mt-2">
+            <div class="mt-2">
 
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
-                <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
-                <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
-                <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="subscription in subscriptions" class="mt-5">
-                <td v-if="subscription.plan !== undefined && subscription.plan !== null">{{ subscription.plan.name }}</td>
-                <td v-else>N/A</td>
-                <td>{{ subscription.status }}</td>
-                <td>{{ subscription.schedule }}</td>
-                <td>{{ $filters.moment(subscription.valid_until, "LLL") }}</td>
-                <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="list-btn">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
-              </tr>
-              <tr v-if="subscriptions.length == 0">
-                <td colspan="6" class="text-center">{{ $t('app.customer.view.subscriptions.no_subscriptions') }}</td>
-              </tr>
-              </tbody>
-            </table>
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.customer.view.subscription_events.list.event') }}</th>
+                  <th>{{ $t('app.customer.view.subscription_events.list.subscription') }}</th>
+                  <th>{{ $t('app.customer.view.subscription_events.list.created_at') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="subscription in subscription_events" class="mt-5">
+                  <td>{{ subscription.type }}</td>
+                  <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}">{{ subscription.subscription.plan.name }}</router-link></td>
+                  <td>{{ $filters.moment(subscription.created_at, "LLL") }}</td>
+                </tr>
+                <tr v-if="subscriptions.length == 0">
+                  <td colspan="6" class="text-center">{{ $t('app.customer.view.subscription_events.no_subscription_events') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
 
           <div class="card-body">
@@ -390,6 +418,7 @@ export default {
       limits: {},
       credit: [],
       invoices: [],
+      subscription_events: [],
     }
   },
   methods: {
@@ -442,6 +471,7 @@ export default {
       this.limits = response.data.limits;
       this.credit = response.data.credit;
       this.invoices = response.data.invoices;
+      this.subscription_events = response.data.subscription_events;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

@@ -64,6 +64,15 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         add_new: "Add New Subscription",
         no_subscriptions: "No Subscriptions"
     },
+    subscription_events: {
+        title: "Subscription Events",
+        list: {
+            event: "Event",
+            subscription: "Subscription",
+            created_at: "Created At"
+        },
+        no_subscription_events: "No Subscription Events"
+    },
     payments: {
         title: "Payments",
         list: {

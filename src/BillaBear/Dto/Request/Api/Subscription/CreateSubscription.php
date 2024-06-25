@@ -48,6 +48,9 @@ class CreateSubscription
     #[SerializedName('seat_number')]
     private $seat_number = 1;
 
+    #[Assert\Type('boolean')]
+    private $deny_trial;
+
     public function getSubscriptionPlan()
     {
         return $this->subscription_plan;
@@ -121,5 +124,15 @@ class CreateSubscription
     public function setCardToken($card_token): void
     {
         $this->card_token = $card_token;
+    }
+
+    public function getDenyTrial()
+    {
+        return $this->deny_trial;
+    }
+
+    public function setDenyTrial($deny_trial): void
+    {
+        $this->deny_trial = $deny_trial;
     }
 }

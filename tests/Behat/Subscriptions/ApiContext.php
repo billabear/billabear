@@ -156,6 +156,7 @@ class ApiContext implements Context
         if (isset($row['Seats'])) {
             $payload['seat_number'] = (int) $row['Seats'];
         }
+        $payload['deny_trial'] = 'true' === strtolower($row['Deny Trial'] ?? 'false');
 
         $this->sendJsonRequest('POST', '/api/v1/customer/'.$customer->getId().'/subscription/start', $payload);
     }
