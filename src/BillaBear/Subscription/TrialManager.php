@@ -59,6 +59,16 @@ class TrialManager
         return $subscription;
     }
 
+    public function startTrialProcess(Subscription $subscription): void
+    {
+        $process = new TrialStartedProcess();
+        $process->setSubscription($subscription);
+        $process->setCreatedAt(new \DateTime());
+        $process->setState('started');
+        $this->trialStartedProcessRepository->save($process);
+        $this->trialStartedProcess->process($process);
+    }
+
     public function extendTrial(Subscription $subscription, Price $price): Subscription
     {
         if ($price->isRecurring()) {

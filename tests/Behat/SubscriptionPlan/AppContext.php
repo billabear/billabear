@@ -167,6 +167,7 @@ class AppContext implements Context
         $subscriptionPlan->addFeature($feature);
         $subscriptionPlan->addLimit($subscriptionLimit);
         $subscriptionPlan->addPrice($price);
+        $subscriptionPlan->setHasTrial('true' === strtolower($data['Standalone Trial'] ?? 'false'));
         $subscriptionPlan->setIsTrialStandalone('true' === strtolower($data['Standalone Trial'] ?? 'false'));
         $subscriptionPlan->setTrialLengthDays(30);
 

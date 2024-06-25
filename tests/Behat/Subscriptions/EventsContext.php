@@ -78,6 +78,14 @@ class EventsContext implements Context
     }
 
     /**
+     * @Then there should not be a trial started event for :arg1
+     */
+    public function thereShouldNotBeATrialCreatedEventFor($arg1)
+    {
+        $this->checkEventExists(CustomerSubscriptionEventType::TRIAL_STARTED, $arg1, false);
+    }
+
+    /**
      * @Then there should be an add-on added event for :arg1
      */
     public function thereShouldBeAnAddOnAddedEventFor($arg1)
@@ -109,15 +117,16 @@ class EventsContext implements Context
         $this->checkEventExists(CustomerSubscriptionEventType::UPGRADED, $arg1);
     }
 
-    private function checkEventExists(CustomerSubscriptionEventType $eventType, string $customerEmail)
+    private function checkEventExists(CustomerSubscriptionEventType $eventType, string $customerEmail, bool $find = true)
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
         $event = $this->customerSubscriptionEventRepository->findOneBy(['customer' => $customer, 'eventType' => $eventType]);
 
-        if (!$event instanceof CustomerSubscriptionEvent) {
-            var_dump($this->getJsonContent());
+        if (!$event instanceof CustomerSubscriptionEvent && $find) {
             throw new \Exception('Event was not found');
+        } elseif ($event instanceof CustomerSubscriptionEvent && !$find) {
+            throw new \Exception('Event was found');
         }
     }
 }

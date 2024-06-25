@@ -80,12 +80,12 @@ class MainContext implements Context
             'day' => $dateTime->format('d'),
         ]);
 
-        if (!$statEntity instanceof TrialStartedDailyStats) {
+        if (!$statEntity instanceof TrialStartedDailyStats && 0 !== intval($count)) {
             var_dump($this->getJsonContent());
             throw new \Exception('No stat found');
         }
 
-        if ($statEntity->getCount() != $count) {
+        if ($statEntity?->getCount() != $count && 0 !== intval($count)) {
             throw new \Exception('Count is wrong');
         }
     }
@@ -102,11 +102,11 @@ class MainContext implements Context
             'day' => 1,
         ]);
 
-        if (!$statEntity instanceof TrialStartedMonthlyStats) {
+        if (!$statEntity instanceof TrialStartedMonthlyStats && 0 !== intval($count)) {
             throw new \Exception('No stat found');
         }
 
-        if ($statEntity->getCount() != $count) {
+        if ($statEntity?->getCount() != $count && 0 !== intval($count)) {
             throw new \Exception('Count is wrong');
         }
     }

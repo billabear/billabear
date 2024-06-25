@@ -49,12 +49,17 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         private InvoiceCharger $invoiceCharger,
         private Security $security,
         private CreditAdjustmentRecorder $creditAdjustmentRecorder,
+        private TrialManager $trialManager,
     ) {
     }
 
     public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = 0): Subscription
     {
         $subscription = $this->subscriptionFactory->create($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
+
+        if ($subscription->isHasTrial()) {
+            $this->trialManager->startTrialProcess($subscription);
+        }
 
         $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 

@@ -179,6 +179,7 @@ Feature: Customer Subscription Create APP
 
   Scenario: Create trial
     Given I have authenticated to the API
+    And stripe billing is disabled
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
@@ -200,6 +201,7 @@ Feature: Customer Subscription Create APP
 
   Scenario: Create trial - Deny
     Given I have authenticated to the API
+    And stripe billing is disabled
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
@@ -217,7 +219,7 @@ Feature: Customer Subscription Create APP
     And the payment amount stats for the day should be 3000 in the currency "USD"
     And the monthly recurring revenue estimate should be 3000
     And the annual recurring revenue estimate should be 36000
-    Then there should be a trial started event for "customer.one@example.org"
+    Then there should not be a trial started event for "customer.one@example.org"
 
   Scenario: Reactivated event
     Given I have authenticated to the API
