@@ -36,7 +36,7 @@ class SubscriptionFactory
         ?PaymentCard $paymentDetails = null,
         ?int $seatNumber = 1,
         ?bool $hasTrial = null,
-        ?int $trialLengthDays = 0,
+        ?int $trialLengthDays = null,
     ): Subscription {
         if (null === $seatNumber) {
             $seatNumber = 1;
