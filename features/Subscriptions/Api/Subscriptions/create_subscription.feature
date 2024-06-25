@@ -50,7 +50,7 @@ Feature: Customer Subscription Create APP
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
-      | Code Name  | test_plan |
+      | Code Name  | trial_plan |
       | Standalone Trial | true      |
 
 
