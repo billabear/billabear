@@ -169,7 +169,7 @@ class AppContext implements Context
         $subscriptionPlan->addPrice($price);
         $subscriptionPlan->setHasTrial('true' === strtolower($data['Standalone Trial'] ?? 'false'));
         $subscriptionPlan->setIsTrialStandalone('true' === strtolower($data['Standalone Trial'] ?? 'false'));
-        $subscriptionPlan->setTrialLengthDays(30);
+        $subscriptionPlan->setTrialLengthDays(intval($data['Trial Length'] ?? 30));
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();

@@ -134,6 +134,19 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the trial for the subscription for :arg1 should end in :arg2 days
+     */
+    public function theTrialForTheSubscriptionForShouldEndInDays($customerEmail, $days)
+    {
+        $subscription = $this->getSubscription($customerEmail);
+        $future = new \DateTime("+{$days} days");
+
+        if ($future->format('Y-m-d') !== $subscription->getValidUntil()->format('Y-m-d')) {
+            throw new \Exception('Different expire date:'.$subscription->getValidUntil()->format('Y-m-d H:i:s'));
+        }
+    }
+
+    /**
      * @When I add :arg2 seat to the suscription for :arg1
      */
     public function iAddSeatToTheSuscriptionFor($seatNumber, $customerEmail)

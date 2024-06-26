@@ -46,13 +46,13 @@ Feature: Customer Subscription Create APP
       | User Count | 10        |
       | Code Name  | test_plan |
     Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "3000" in "USD" with:
-      | Name       | Trial Plan |
-      | Public     | True      |
-      | Per Seat   | False     |
-      | User Count | 10        |
-      | Code Name  | trial_plan |
-      | Standalone Trial | true      |
-
+      | Name             | Trial Plan |
+      | Public           | True       |
+      | Per Seat         | False      |
+      | User Count       | 10         |
+      | Code Name        | trial_plan |
+      | Standalone Trial | true       |
+      | Trial Length     | 30         |
 
   Scenario: Create
     Given I have authenticated to the API
@@ -197,7 +197,8 @@ Feature: Customer Subscription Create APP
     And the payment amount stats for the day should be 0 in the currency "USD"
     And the monthly recurring revenue estimate should be 0
     And the annual recurring revenue estimate should be 0
-    Then there should be a trial started event for "customer.one@example.org"
+    And there should be a trial started event for "customer.one@example.org"
+    And the trial for the subscription for "customer.one@example.org" should end in 30 days
 
   Scenario: Create trial - Deny
     Given I have authenticated to the API
