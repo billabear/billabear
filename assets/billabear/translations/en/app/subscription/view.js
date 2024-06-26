@@ -35,6 +35,15 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         brand: 'Card Type',
         invoiced: 'Invoiced'
     },
+    subscription_events: {
+        title: "Subscription Events",
+        list: {
+            event: "Event",
+            subscription: "Subscription",
+            created_at: "Created At"
+        },
+        no_subscription_events: "No Subscription Events"
+    },
     buttons: {
         cancel: "Cancel",
         payment_method: "Update Payment Details"

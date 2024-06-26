@@ -16,6 +16,7 @@ use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\DataMappers\ProductDataMapper;
+use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
 use BillaBear\Dto\Generic\App\SubscriptionPlan;
@@ -30,6 +31,7 @@ use BillaBear\Dto\Response\App\Subscription\UpdatePlanView;
 use BillaBear\Dto\Response\App\Subscription\ViewSubscription;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
@@ -196,6 +198,8 @@ class SubscriptionController
         SerializerInterface $serializer,
         PaymentRepositoryInterface $paymentRepository,
         PaymentDataMapper $paymentFactory,
+        CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
+        CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to view subscription', ['subscription_id' => $request->get('subscriptionId')]);
 
@@ -209,6 +213,9 @@ class SubscriptionController
         $dto = $subscriptionFactory->createAppDto($subscription);
         $customerDto = $customerFactory->createAppDto($subscription->getCustomer());
 
+        $customerSubscriptionEvents = $customerSubscriptionEventRepository->getAllForSubscription($subscription);
+        $customerSubscriptionsDtos = array_map([$customerSubscriptionEventDataMapper, 'createAppDto'], $customerSubscriptionEvents);
+
         $payments = $paymentRepository->getPaymentsForSubscription($subscription);
         $paymentDtos = array_map([$paymentFactory, 'createAppDto'], $payments);
 
@@ -216,6 +223,7 @@ class SubscriptionController
         $view->setSubscription($dto);
         $view->setCustomer($customerDto);
         $view->setPayments($paymentDtos);
+        $view->setSubscriptionEvents($customerSubscriptionsDtos);
         if ($subscription->getPaymentDetails()) {
             $view->setPaymentDetails($paymentDetailsFactory->createAppDto($subscription->getPaymentDetails()));
         }

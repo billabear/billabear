@@ -136,6 +136,33 @@
               </table>
             </div>
           </div>
+
+          <div class="card-body">
+            <div class="grid grid-cols-2">
+              <div><h2  class="section-header">{{ $t('app.subscription.view.subscription_events.title') }}</h2></div>
+            </div>
+
+            <div class="mt-2">
+
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.subscription.view.subscription_events.list.event') }}</th>
+                  <th>{{ $t('app.subscription.view.subscription_events.list.created_at') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="subscription in subscription_events" class="mt-5">
+                  <td>{{ subscription.type }}</td>
+                  <td>{{ $filters.moment(subscription.created_at, "LLL") }}</td>
+                </tr>
+                <tr v-if="subscription_events.length == 0">
+                  <td colspan="6" class="text-center">{{ $t('app.subscription.view.subscription_events.no_subscription_events') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div class="mt-5 mr-5 text-end">
 
@@ -459,6 +486,7 @@ export default {
       newPaymentMethod: {},
       paymentMethodsSending: false,
       seatSending: false,
+      subscription_events: []
     };
   },
   mounted() {
@@ -469,6 +497,7 @@ export default {
       this.customer = response.data.customer;
       this.paymentDetails = response.data.payment_details;
       this.payments = response.data.payments;
+      this.subscription_events = response.data.subscription_events;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

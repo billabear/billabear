@@ -137,6 +137,7 @@
               </table>
             </div>
           </div>
+
           <div class="card-body">
             <div class="grid grid-cols-2">
               <div><h2  class="section-header">{{ $t('app.customer.view.subscription_events.title') }}</h2></div>
@@ -158,7 +159,7 @@
                   <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}">{{ subscription.subscription.plan.name }}</router-link></td>
                   <td>{{ $filters.moment(subscription.created_at, "LLL") }}</td>
                 </tr>
-                <tr v-if="subscriptions.length == 0">
+                <tr v-if="subscription_events.length == 0">
                   <td colspan="6" class="text-center">{{ $t('app.customer.view.subscription_events.no_subscription_events') }}</td>
                 </tr>
                 </tbody>
