@@ -108,7 +108,7 @@
                 <td>{{ limit.limit }}</td>
               </tr>
               <tr v-if="subscription_plan.limits.length === 0">
-                <td>{{ $t('app.subscription_plan.view.features.list.no_limits') }}</td>
+                <td colspan="2">{{ $t('app.subscription_plan.view.features.list.no_limits') }}</td>
               </tr>
               </tbody>
             </table>
