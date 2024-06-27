@@ -49,13 +49,12 @@ class MainContext implements Context
     {
         $data = $this->getJsonContent();
 
-        if (!isset($data['limits'][$limitName])) {
-            throw new \Exception('Limit not set');
+        foreach ($data['limits'] as $limit) {
+            if ($limit['feature']['name'] === $limitName && intval($limit['feature']) === intval($limit)) {
+                return;
+            }
         }
-
-        if ($data['limits'][$limitName] != $limit) {
-            throw new \Exception('Limit is not the same');
-        }
+        throw new \Exception("Can't find limit");
     }
 
     /**
