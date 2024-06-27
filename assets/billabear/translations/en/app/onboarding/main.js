@@ -10,7 +10,8 @@ export const ONBOARDING_MAIN_TRANSLATION = {
         },
         has_stripe_imports: {
             text: "Import data from Stripe",
-            button: "Import"
+            button: "Import",
+            dismiss: "Dismiss"
         },
         has_product: {
             text: "Create First Product",

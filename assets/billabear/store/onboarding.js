@@ -26,6 +26,11 @@ const actions = {
             commit('setError')
         })
     },
+    dismissStripeImport({commit}) {
+        axios.post("/app/settings/stripe-import/dismiss").then((response) => {
+            commit('markStripeImportDone')
+        })
+    },
     stripeKeysAdded({commit}) {
         commit('markStripKeyAsDone');
     },

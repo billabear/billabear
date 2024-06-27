@@ -45,6 +45,9 @@
         <router-link class="ml-3 btn--black" :to="{name: 'app.settings.import.stripe'}" v-if="!has_stripe_imports">
           {{ $t('app.onboarding.main.dialog.has_stripe_imports.button') }}
         </router-link>
+        <span class="text-blue-500 underline cursor-pointer ml-3" @click="dismissStripeImport" v-if="!has_stripe_imports">
+          {{ $t('app.onboarding.main.dialog.has_stripe_imports.dismiss') }}
+        </span>
       </li>
 
 
@@ -133,7 +136,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "OnboardingMenu",
@@ -149,6 +152,9 @@ export default {
       'show_onboarding'
     ])
   },
+  methods: {
+    ...mapActions('onboardingStore', ['dismissStripeImport'])
+  }
 }
 </script>
 
