@@ -1,12 +1,17 @@
 import {router} from "../helpers/router";
 import {userservice} from "../services/userservice";
+import axios from "axios";
 
 const rawUserData = localStorage.getItem('user');
 var userData;
 try {
      userData = JSON.parse(rawUserData);
 } catch (e) {
-     userData = null;
+    axios.get('/app/user').then(response => {
+        userData = response.data.user;
+    }).catch(error => {
+        userData = null;
+    })
 }
 
 const state = {
