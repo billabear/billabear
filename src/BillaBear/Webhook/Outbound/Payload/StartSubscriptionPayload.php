@@ -10,6 +10,8 @@ namespace BillaBear\Webhook\Outbound\Payload;
 
 use BillaBear\Entity\Subscription;
 use BillaBear\Enum\WebhookEventType;
+use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
+use BillaBear\Webhook\Outbound\Payload\Parts\SubscriptionPayloadTrait;
 
 class StartSubscriptionPayload implements PayloadInterface
 {

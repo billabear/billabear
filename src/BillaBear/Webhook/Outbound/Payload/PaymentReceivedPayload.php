@@ -10,6 +10,7 @@ namespace BillaBear\Webhook\Outbound\Payload;
 
 use BillaBear\Entity\Payment;
 use BillaBear\Enum\WebhookEventType;
+use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
 
 class PaymentReceivedPayload implements PayloadInterface
 {

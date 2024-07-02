@@ -10,6 +10,7 @@ namespace BillaBear\Webhook\Outbound\Payload;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\WebhookEventType;
+use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
 
 class CustomerDisabledPayload implements PayloadInterface
 {
