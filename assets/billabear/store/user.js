@@ -25,6 +25,7 @@ const state = {
     redirect_page: undefined,
     in_progress: false,
     successfully_progress: false,
+    locale: 'en'
 }
 
 const actions = {
@@ -73,8 +74,10 @@ const actions = {
     markAsLoggedin({commit}, {user}) {
         localStorage.setItem('user', JSON.stringify(user));
         commit('loginSuccess', user);
+    },
+    updateLocale({commit}, {locale}) {
+        commit('setLocale', locale);
     }
-
 };
 
 const mutations = {
@@ -86,11 +89,15 @@ const mutations = {
             message: undefined,
         }
     },
+    setLocale(state, locale) {
+        state.locale = locale
+    },
     loginSuccess(state, user) {
         state.in_progress = false;
         state.status = { loggedIn: true };
         state.user = user;
         state.successfully_progress = true;
+        state.locale = user.locale;
     },
     loginFailure(state, error) {
         state.in_progress = false;

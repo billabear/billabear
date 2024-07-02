@@ -49,6 +49,8 @@ services:
   Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@BillaBear\Subscription\SubscriptionManagerInterchange'
   Parthenon\Billing\Receipt\ReceiptGeneratorInterface: '@BillaBear\Payment\ReceiptGenerator'
   Parthenon\Billing\Obol\PaymentFactoryInterface: '@BillaBear\Payment\PaymentFactory'
+  Parthenon\User\Formatter\UserFormatterInterface: '@BillaBear\User\UserFormatter'
+  parthenon.user.form.settings: '@BillaBear\User\Form\UserSettings'
 
   BillaBear\Webhook\Outbound\EventDispatcherInterface: '@BillaBear\Webhook\Outbound\Messenger\EventDispatcher'
 

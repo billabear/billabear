@@ -22,6 +22,15 @@
           <label  class="block mt-5 mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $t('app.user.settings.email') }}</label>
           <input type="text" class="form-field-input"  :class="{'form-error': errors.email !== undefined}"  v-model="user.email" />
           <span class="error-message" v-if="errors.email" v-for="error in errors.email">{{ error }}</span>
+
+          <label  class="block mt-5 mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $t('app.user.settings.locale') }}</label>
+          <select v-model="user.locale" class="form-field-input">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+          </select>
+          <span class="error-message" v-if="errors.locale" v-for="error in errors.locale">{{ error }}</span>
         </div>
 
         <div class="mt-3">
@@ -59,6 +68,7 @@
 
 <script>
 import {userservice} from "../../../services/userservice";
+import {mapActions} from "vuex";
 
 export default {
   name: "UserSettings",
@@ -90,6 +100,7 @@ export default {
     )
   },
   methods: {
+    ...mapActions('userStore', ['updateLocale']),
     changePassword: function () {
         var hasErrors = false;
         this.need_current_password = false;
@@ -136,9 +147,10 @@ export default {
     },
     save: function () {
       this.sending_settings = true;
-      return;
       userservice.updateSettings(this.user).then(
           user => {
+            this.updateLocale({locale: this.user.locale})
+            this.$i18n.locale = this.user.locale;
             this.alert = {
               type: "success",
               message: this.$t("app.user.settings.success_message")

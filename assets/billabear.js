@@ -13,6 +13,7 @@ import '@vue-flow/core/dist/theme-default.css';
 import '@vue-flow/controls/dist/style.css'
 
 
+
 /* this contains the default theme, these are optional styles */
 import 'vue-final-modal/style.css';
 import 'flowbite';
@@ -24,12 +25,9 @@ import App from "./billabear/views/App";
 
 import {router} from "./billabear/helpers/router"
 import {store} from './billabear/store'
-import {createApp} from "vue";
-import {createVfm} from 'vue-final-modal'
+import { createApp } from "vue";
+import { createVfm } from 'vue-final-modal'
 import {ENGLISH_TRANSLATIONS} from "./billabear/translations/en";
-import {GERMAN_TRANSLATIONS} from "./billabear/translations/de";
-import {SPANISH_TRANSLATIONS} from "./billabear/translations/es";
-import {FRENCH_TRANSLATIONS} from "./billabear/translations/fr";
 import {createI18n} from "vue-i18n";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -42,7 +40,10 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import RoleOnlyView from "./billabear/components/app/RoleOnlyView.vue";
 
 
-import {VueFlow} from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
+import {GERMAN_TRANSLATIONS} from "./billabear/translations/de";
+import {SPANISH_TRANSLATIONS} from "./billabear/translations/es";
+import {FRENCH_TRANSLATIONS} from "./billabear/translations/fr";
 
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS,
@@ -50,10 +51,30 @@ const TRANSLATIONS = {
     es: SPANISH_TRANSLATIONS,
     fr: FRENCH_TRANSLATIONS,
 };
+function getBrowserLocale(options = {}) {
+    const defaultOptions = { countryCodeOnly: false };
+    const opt = { ...defaultOptions, ...options };
 
+    const navigatorLocale = navigator.languages !== undefined
+        ? navigator.languages[0]
+        : navigator.language;
+
+    if (!navigatorLocale) {
+        return undefined;
+    }
+
+    const trimmedLocale = opt.countryCodeOnly
+        ? navigatorLocale.trim().split(/-|_/)[0]
+        : navigatorLocale.trim();
+
+    return trimmedLocale;
+}
+
+const browserLocale = getBrowserLocale({ countryCodeOnly: true });
+console.log(browserLocale)
 const i18n = createI18n({
     legacy: false,
-    locale: 'en',
+    locale: browserLocale || 'en',
     messages: TRANSLATIONS,
 });
 

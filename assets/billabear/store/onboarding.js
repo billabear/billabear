@@ -20,11 +20,15 @@ const actions = {
         commit('setStripeDefaultValue', defaultValue)
     },
     fetchData({commit}) {
-        axios.get("/app/system/data").then((response) => {
-            commit('setDefaults', response.data)
-        }).catch(error => {
-            commit('setError')
-        })
+        return new Promise((resolve, reject) => {
+            axios.get("/app/system/data").then((response) => {
+                commit('setDefaults', response.data)
+                resolve(response);
+            }).catch(error => {
+                commit('setError')
+                reject(error);
+            })
+        });
     },
     dismissStripeImport({commit}) {
         axios.post("/app/settings/stripe-import/dismiss").then((response) => {

@@ -106,20 +106,28 @@
 <script>
 import RoleOnlyView from "../RoleOnlyView.vue";
 import {Select} from "flowbite-vue";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "Sidebar",
   components: {Select, RoleOnlyView},
   data() {
     return {
-      locale: 'en',
       origin: '',
     }
   },
+  computed: {
+    ...mapState('userStore', ['locale']),
+  },
   methods: {
-    changeLocale: function() {
-      this.$i18n.locale = this.locale
-    }
+    ...mapActions('userStore', ['updateLocale']),
+    changeLocale: function(value) {
+      this.updateLocale({locale: value.target.value})
+      this.$i18n.locale = this.locale;
+    },
+    updateValue(event) {
+      this.localSelectedValue = event.target.value;
+    },
   },
   mounted() {
     const sidebar = document.getElementById('sidebar');

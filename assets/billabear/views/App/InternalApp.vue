@@ -48,15 +48,18 @@ export default {
   },
   computed: {
     ...mapState('onboardingStore', [
-        'has_stripe_key',
-        'has_stripe_imports',
-        'has_subscription_plan',
-        'has_customer',
-        'has_subscription',
-        'has_product',
-        'show_onboarding',
-        'ready',
-        'error'
+      'has_stripe_key',
+      'has_stripe_imports',
+      'has_subscription_plan',
+      'has_customer',
+      'has_subscription',
+      'has_product',
+      'show_onboarding',
+      'ready',
+      'error'
+    ]),
+    ...mapState('userStore', [
+      'locale',
     ])
   },
   methods: {
@@ -74,7 +77,9 @@ export default {
   },
   mounted() {
     this.origin = window.location.hostname;
-    this.fetchData()
+    this.fetchData().then(response => {
+      this.$i18n.locale = this.locale;
+    });
   }
 }
 </script>

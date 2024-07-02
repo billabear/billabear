@@ -3,6 +3,7 @@ export const USER_SETTINGS_TRANSLATIONS = {
     name: "Name",
     email: "E-Mail",
     password: "Password",
+    locale: "Locale",
     save: "Save",
     error_message: "There was a problem saving the user settings. Please check errors.",
     success_message: "Successfully saved your settings.",

@@ -66,6 +66,8 @@ class InstallController
         $errors = $validator->validate($dto);
 
         $errorResponse = $this->handleErrors($errors);
+        $locale = $request->headers->get('Accept-Language', 'en-US');
+        $locale = preg_split('~-|_~', $locale)[0];
 
         if ($errorResponse) {
             return $errorResponse;
@@ -81,6 +83,7 @@ class InstallController
             $user = new User();
             $user->setEmail($dto->getEmail());
             $user->setPassword($dto->getPassword());
+            $user->setLocale($locale);
             $userCreator->create($user);
 
             $user->setIsConfirmed(true);
