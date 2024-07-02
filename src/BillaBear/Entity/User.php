@@ -16,12 +16,14 @@ use Parthenon\Billing\Entity\BillingAdminInterface;
 class User extends \Parthenon\User\Entity\User implements BillingAdminInterface
 {
     #[ORM\Column(name: 'locale', type: 'string', length: 255, nullable: true)]
-    private ?string $locale = null;
+    private ?string $locale = self::DEFAULT_LOCALE;
 
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
     public const ROLE_CUSTOMER_SUPPORT = 'ROLE_CUSTOMER_SUPPORT';
     public const ROLE_USER = 'ROLE_USER';
+
+    public const DEFAULT_LOCALE = 'en';
 
     public const ROLES = [
         self::ROLE_ADMIN,
@@ -35,9 +37,9 @@ class User extends \Parthenon\User\Entity\User implements BillingAdminInterface
         return $this->email;
     }
 
-    public function getLocale(): ?string
+    public function getLocale(): string
     {
-        return $this->locale;
+        return $this->locale ?? self::DEFAULT_LOCALE;
     }
 
     public function setLocale(?string $locale): void
