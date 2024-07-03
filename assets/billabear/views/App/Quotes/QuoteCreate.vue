@@ -111,13 +111,11 @@
               <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].amount !== undefined">{{ errors.items[key].amount }}</p>
               <CurrencyInput v-model="item.amount" />
             </td>
-            <td><input type="checkbox" class="form-field" v-model="item.tax_included" /></td>
+            <td><input type="checkbox" class="form-field" v-model="item.include_tax" /></td>
             <td>
               <p class="form-field-error" v-if="errors.items != undefined && errors.items[key] !== undefined && errors.items[key].taxType != undefined">{{ errors.items[key].taxType }}</p>
               <select class="form-field" id="name" v-model="item.tax_type">
-                <option value="digital_goods">{{ $t('app.quotes.create.items.tax_types.digital_goods') }}</option>
-                <option value="digital_services">{{ $t('app.quotes.create.items.tax_types.digital_services') }}</option>
-                <option value="physical">{{ $t('app.quotes.create.items.tax_types.physical') }}</option>
+                <option v-for="type in tax_types" :value="type.id">{{ type.name }}</option>
               </select>
             </td>
             <td><button class="btn--danger" @click="deleteItem(key)"><i class="fa-solid fa-trash"></i></button> </td>
@@ -166,12 +164,14 @@ export default {
       create_customer_email: "",
       send_create_customer: false,
       plans: [],
+      tax_types: [],
       success: false,
     }
   },
   mounted() {
     axios.get("/app/quotes/create").then(response => {
       this.plans = response.data.subscription_plans;
+      this.tax_types = response.data.tax_types;
     })
   },
   watch: {

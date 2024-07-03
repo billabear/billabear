@@ -376,7 +376,8 @@
                     </span>
                     <span class="badge--red" v-else>
                       {{ $t('app.customer.view.invoices.list.outstanding') }}
-                    </span></td>
+                    </span>
+                  </td>
                   <td>{{ $filters.moment(invoice.created_at, "LLL") || "unknown" }}</td>
                   <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="btn--main">{{ $t('app.customer.view.invoices.list.view_btn') }}</router-link></td>
                 </tr>

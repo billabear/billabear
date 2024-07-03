@@ -39,6 +39,7 @@
               <th>{{ $t('app.invoices.list.email') }}</th>
               <th>{{ $t('app.invoices.list.total')}}</th>
               <th>{{ $t('app.invoices.list.currency')}}</th>
+              <th>{{ $t('app.invoices.list.status')}}</th>
               <th>{{ $t('app.invoices.list.created_at') }}</th>
               <th></th>
             </tr>
@@ -48,6 +49,15 @@
               <td>{{ invoice.customer.email }}</td>
               <td>{{ currency(invoice.total) }}</td>
               <td>{{ invoice.currency }}</td>
+              <td>
+
+                    <span class="badge--green" v-if="invoice.paid">
+                      {{ $t('app.invoices.list.paid') }}
+                    </span>
+                <span class="badge--red" v-else>
+                      {{ $t('app.invoices.list.outstanding') }}
+                    </span>
+              </td>
               <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
               <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="list-btn">{{ $t('app.invoices.list.view_btn') }}</router-link></td>
             </tr>

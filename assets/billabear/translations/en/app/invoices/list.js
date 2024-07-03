@@ -11,6 +11,9 @@ export const INVOICES_LIST_TRANSLATIONS = {
     next: "Next",
     prev: "Previous",
     view_btn: "View Invoice",
+    status: "Status",
+    paid: "Paid",
+    outstanding: "Outstanding",
     filter: {
         title: "Filters",
         button: "Filters",
