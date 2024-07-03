@@ -108,6 +108,7 @@ class ApiContext implements Context
             }
             $price->setPublic('true' === strtolower($row['Public'] ?? 'true'));
             $price->setCreatedAt(new \DateTime('now'));
+            $price->setIncludingTax('true' === strtolower($row['Include Tax'] ?? 'true'));
             $this->priceRepository->getEntityManager()->persist($price);
         }
         $this->priceRepository->getEntityManager()->flush();

@@ -206,9 +206,10 @@ class InvoiceContext implements Context
     }
 
     /**
-     * @Then there will be an invoice for the amount of :arg3 for :arg1 for :arg2
+     * @Then there will be an invoice for the amount of :amount for :arg1 for :customerEmail
+     * @Then there will be an invoice for the amount of :amount for :customerEmail
      */
-    public function thereWillBeAnInvoiceForTheAmountOfForFor($amount, $planName, $customerEmail)
+    public function thereWillBeAnInvoiceForTheAmountOfForFor($amount, $customerEmail)
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
