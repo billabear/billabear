@@ -157,15 +157,6 @@ export default {
   methods: {
     ...mapActions('onboardingStore', ['subscriptionPlanAdded']),
     ...mapActions('planStore', ['fetchData']),
-    removeFeature: function (key) {
-      this.subscription_plan.features.splice(key, 1);
-    },
-    removeLimit: function (key) {
-      this.subscription_plan.limits.splice(key, 1);
-    },
-    removePrice: function (key) {
-      this.subscription_plan.prices.splice(key, 1);
-    },
     send: function () {
       var productId = this.$route.params.productId
       this.sendingInProgress = true;
