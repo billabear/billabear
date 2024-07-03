@@ -108,7 +108,7 @@
                 <td>{{ limit.limit }}</td>
               </tr>
               <tr v-if="subscription_plan.limits.length === 0">
-                <td colspan="2">{{ $t('app.subscription_plan.view.features.list.no_limits') }}</td>
+                <td colspan="2" class="text-center">{{ $t('app.subscription_plan.view.limits.list.no_limits') }}</td>
               </tr>
               </tbody>
             </table>
@@ -127,7 +127,7 @@
                 <td>{{ feature.name }}</td>
               </tr>
               <tr v-if="subscription_plan.features.length === 0">
-                <td>{{ $t('app.subscription_plan.view.features.list.no_features') }}</td>
+                <td class="text-center">{{ $t('app.subscription_plan.view.features.list.no_features') }}</td>
               </tr>
               </tbody>
             </table>
