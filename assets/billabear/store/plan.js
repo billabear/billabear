@@ -12,6 +12,16 @@ const state = {
 }
 
 const actions = {
+    fetchSubscriptionPlan({commit}, {productId, subscriptionPlanId}) {
+        return new Promise((resolve, reject) => {
+            axios.get('/app/product/'+productId+'/plan/'+subscriptionPlanId+'/update').then(response => {
+                commit('setSubscriptionPlanData', response.data);
+                resolve(response);
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
     fetchData({commit}, {productId}) {
         return new Promise((resolve, reject) => {
             axios.get('/app/product/'+productId+'/plan-creation').then(response => {
@@ -89,6 +99,14 @@ const mutations = {
         state.sendingRequest = false;
     },
     setData(state, payload) {
+        state.features = payload.features;
+        state.prices = payload.prices;
+        state.loaded = true;
+    },
+    setSubscriptionPlanData(state, payload) {
+        state.selectedPrices = payload.subscription_plan.prices;
+        state.selectedLimits = payload.subscription_plan.limits;
+        state.selectedFeatures = payload.subscription_plan.features;
         state.features = payload.features;
         state.prices = payload.prices;
         state.loaded = true;

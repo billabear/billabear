@@ -3,131 +3,92 @@
     <h1 class="page-title">{{ $t('app.subscription_plan.update.title') }}</h1>
 
     <form @submit.prevent="send">
-    <div class="m-5 card-body">
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="name">
-          {{ $t('app.subscription_plan.update.fields.name') }}
-        </label>
-        <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
-        <input type="text" class="form-field-input" id="name" v-model="subscription_plan.name" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.name') }}</p>
-      </div>
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="code_name">
-          {{ $t('app.subscription_plan.update.fields.code_name') }}
-        </label>
-        <p class="form-field-error" v-if="errors.codeName != undefined">{{ errors.codeName }}</p>
-        <input type="text" class="form-field-input" id="code_name" v-model="subscription_plan.code_name" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.code_name') }}</p>
-      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="card-body">
+          <h2 class="section-header">{{ $t('app.subscription_plan.create.main_section.title') }}</h2>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription_plan.create.main_section.fields.name') }}
+            </label>
+            <p class="form-field-error" v-if="errors.name != undefined">{{ errors.name }}</p>
+            <input type="text" class="form-field" id="name" v-model="subscription_plan.name" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.main_section.help_info.name') }}</p>
+          </div>
 
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="public">
-          {{ $t('app.subscription_plan.update.fields.public') }}
-        </label>
-        <p class="form-field-error" v-if="errors.public != undefined">{{ errors.public }}</p>
-        <input type="checkbox" id="public" v-model="subscription_plan.public" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.public') }}</p>
-      </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.subscription_plan.create.main_section.fields.code_name') }}
+            </label>
+            <p class="form-field-error" v-if="errors.codeName != undefined">{{ errors.codeName }}</p>
+            <input type="text" class="form-field" id="name" v-model="subscription_plan.code_name" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.main_section.help_info.code_name') }}</p>
+          </div>
 
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="per_seat">
-          {{ $t('app.subscription_plan.update.fields.per_seat') }}
-        </label>
-        <p class="form-field-error" v-if="errors.perSeat != undefined">{{ errors.perSeat }}</p>
-        <input type="checkbox" id="per_seat" v-model="subscription_plan.per_seat" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.per_seat') }}</p>
-      </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="public">
+              {{ $t('app.subscription_plan.create.main_section.fields.public') }}
+            </label>
+            <p class="form-field-error" v-if="errors.public != undefined">{{ errors.public }}</p>
+            <input type="checkbox" id="public" v-model="subscription_plan.public" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.main_section.help_info.public') }}</p>
+          </div>
 
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="free">
-          {{ $t('app.subscription_plan.update.fields.free') }}
-        </label>
-        <p class="form-field-error" v-if="errors.free != undefined">{{ errors.free }}</p>
-        <input type="checkbox" id="free" v-model="subscription_plan.free" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.free') }}</p>
-      </div>
-
-      <div class="form-field-ctn" v-if="subscription_plan.per_seat == false">
-        <label class="form-field-lbl" for="user_count">
-          {{ $t('app.subscription_plan.update.fields.user_count') }}
-        </label>
-        <p class="form-field-error" v-if="errors.user_count != undefined">{{ errors.user_count }}</p>
-        <input type="number" class="form-field-input" id="user_count" v-model="subscription_plan.user_count" :class="{disabled: subscription_plan.per_seat_plan}" :disabled="subscription_plan.per_seat_plan" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.user_count') }}</p>
-      </div>
-
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="has_trial">
-          {{ $t('app.subscription_plan.create.fields.has_trial') }}
-        </label>
-        <p class="form-field-error" v-if="errors.has_trial != undefined">{{ errors.has_trial }}</p>
-        <input type="checkbox" id="has_trial" v-model="subscription_plan.has_trial" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.has_trial') }}</p>
-      </div>
-
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="trial_length_days">
-          {{ $t('app.subscription_plan.create.fields.trial_length_days') }}
-        </label>
-        <p class="form-field-error" v-if="errors.trial_length_days != undefined">{{ errors.trial_length_days }}</p>
-        <input type="number" class="form-field-input" id="trial_length_days" v-model="subscription_plan.trial_length_days" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.create.help_info.trial_length_days') }}</p>
-      </div>
-
-      <div class="form-field-ctn">
-        <label class="form-field-lbl" for="has_trial">
-          {{ $t('app.subscription_plan.update.fields.is_trial_standalone') }}
-        </label>
-        <p class="form-field-error" v-if="errors.isTrialStandalone != undefined">{{ errors.isTrialStandalone }}</p>
-        <input type="checkbox" id="has_trial" v-model="subscription_plan.is_trial_standalone" />
-        <p class="form-field-help">{{ $t('app.subscription_plan.update.help_info.is_trial_standalone') }}</p>
-      </div>
-
-    </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="per_seat">
+              {{ $t('app.subscription_plan.create.main_section.fields.per_seat') }}
+            </label>
+            <p class="form-field-error" v-if="errors.perSeat != undefined">{{ errors.perSeat }}</p>
+            <input type="checkbox" id="per_seat" v-model="subscription_plan.per_seat" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.main_section.help_info.per_seat') }}</p>
+          </div>
 
 
-      <div class="m-5 card-body">
-        <h2>{{ $t('app.subscription_plan.update.features.title') }}</h2>
-
-        <div v-for="(feature, key) in subscription_plan.features">
-          <select class="form-field" v-model="subscription_plan.features[key]">
-            <option></option>
-            <option v-for="featureInfo in features" :value="featureInfo">{{ featureInfo.name }}</option>
-          </select>
-          <i class="ml-3 fa-solid fa-trash cursor-pointer" @click="removeFeature(key)"></i>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="free">
+              {{ $t('app.subscription_plan.create.main_section.fields.free') }}
+            </label>
+            <p class="form-field-error" v-if="errors.free != undefined">{{ errors.free }}</p>
+            <input type="checkbox" id="free" v-model="subscription_plan.free" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.main_section.help_info.free') }}</p>
+          </div>
         </div>
-        <button @click.prevent="subscription_plan.features.push({})"  class="mt-5 btn--main">{{ $t('app.subscription_plan.update.features.add_feature') }}</button>
-      </div>
 
-      <div class="m-5 card-body">
-        <h2>{{ $t('app.subscription_plan.update.limits.title') }}</h2>
+        <div class="card-body">
+          <h2 class="section-header">{{ $t('app.subscription_plan.create.trial_section.title') }}</h2>
 
-        <div v-for="(limit, key) in subscription_plan.limits">
-          <select  class="form-field" v-model="subscription_plan.limits[key].feature">
-            <option></option>
-            <option v-for="featureInfo in features" :value="featureInfo">{{ featureInfo.name }}</option>
-          </select>
-          <input type="number" class="form-field" v-model="subscription_plan.limits[key].limit" />
-          <i class="ml-3 fa-solid fa-trash cursor-pointer" @click="removeLimit(key)"></i>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="has_trial">
+              {{ $t('app.subscription_plan.create.trial_section.fields.has_trial') }}
+            </label>
+            <p class="form-field-error" v-if="errors.hasTrial != undefined">{{ errors.hasTrial }}</p>
+            <input type="checkbox" id="has_trial" v-model="subscription_plan.has_trial" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.trial_section.help_info.has_trial') }}</p>
+          </div>
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="has_trial">
+              {{ $t('app.subscription_plan.create.trial_section.fields.is_trial_standalone') }}
+            </label>
+            <p class="form-field-error" v-if="errors.isTrialStandalone != undefined">{{ errors.isTrialStandalone }}</p>
+            <input type="checkbox" id="has_trial" v-model="subscription_plan.is_trial_standalone" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.trial_section.help_info.is_trial_standalone') }}</p>
+          </div>
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="trial_length_days">
+              {{ $t('app.subscription_plan.create.trial_section.fields.trial_length_days') }}
+            </label>
+            <p class="form-field-error" v-if="errors.trialLengthDays != undefined">{{ errors.trialLengthDays }}</p>
+            <input type="number" class="form-field" id="trial_length_days" v-model="subscription_plan.trial_length_days" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.trial_section.help_info.trial_length_days') }}</p>
+          </div>
         </div>
-        <button @click.prevent="subscription_plan.limits.push({feature: {}, limit: 0})" class="mt-5 btn--main">{{ $t('app.subscription_plan.update.limits.add_limit') }}</button>
+
+
+      <SectionFeatures />
+      <SectionLimits />
+      <SectionPrices />
       </div>
-
-
-      <div class="m-5 card-body">
-        <h2>{{ $t('app.subscription_plan.update.prices.title') }}</h2>
-
-        <div v-for="(price, key) in subscription_plan.prices">
-          <select  class="form-field" v-model="subscription_plan.prices[key]">
-            <option></option>
-            <option v-for="priceInfo in prices" :value="priceInfo">{{ priceInfo.display_value }} - {{ priceInfo.schedule }}</option>
-          </select>
-          <i class="ml-3 fa-solid fa-trash cursor-pointer" @click="removePrice(key)"></i>
-        </div>
-        <button @click.prevent="subscription_plan.prices.push({})" class="mt-5 btn--main">{{ $t('app.subscription_plan.update.prices.add_price') }}</button>
-      </div>
-
     <div class="ml-5 form-field-submit-ctn">
       <SubmitButton :in-progress="sendingInProgress">{{ $t('app.subscription_plan.update.submit_btn') }}</SubmitButton>
     </div>
@@ -138,9 +99,14 @@
 
 <script>
 import axios from "axios";
+import {mapActions, mapState} from "vuex";
+import SectionLimits from "./Parts/SectionLimits.vue";
+import SectionFeatures from "./Parts/SectionFeatures.vue";
+import SectionPrices from "./Parts/SectionPrices.vue";
 
 export default {
   name: "SubscriptionPlanUpdate",
+  components: {SectionPrices, SectionFeatures, SectionLimits},
   data() {
     return {
       subscription_plan: {
@@ -171,11 +137,8 @@ export default {
   mounted() {
     var productId = this.$route.params.productId
     var subscriptionPlanId = this.$route.params.subscriptionPlanId;
-    axios.get('/app/product/'+productId+'/plan/'+subscriptionPlanId+'/update').then(response => {
+    this.fetchSubscriptionPlan({productId, subscriptionPlanId}).then(response => {
       this.subscription_plan = response.data.subscription_plan;
-      this.features = response.data.features;
-      this.prices = response.data.prices;
-      this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
         this.errorMessage = this.$t('app.product.view.error.not_found')
@@ -187,16 +150,11 @@ export default {
       this.ready = true;
     })
   },
+  computed: {
+      ...mapState('planStore', ['selectedFeatures', 'selectedLimits', 'selectedPrices'])
+  },
   methods: {
-    removeFeature: function (key) {
-      this.subscription_plan.features.splice(key, 1);
-    },
-    removeLimit: function (key) {
-      this.subscription_plan.limits.splice(key, 1);
-    },
-    removePrice: function (key) {
-      this.subscription_plan.prices.splice(key, 1);
-    },
+    ...mapActions('planStore', ['fetchSubscriptionPlan']),
     send: function () {
       var productId = this.$route.params.productId
       this.sendingInProgress = true;
@@ -220,30 +178,31 @@ export default {
         trial_length_days: this.subscription_plan.trial_length_days,
         is_trial_standalone: this.subscription_plan.is_trial_standalone,
       };
-      var count = this.subscription_plan.features.length;
+
+      var count = this.selectedFeatures.length;
       var features = [];
       for (var i = 0; i  < count; i++) {
-        if (this.subscription_plan.features[i].id !== undefined && this.subscription_plan.features[i].id !== null) {
-          features.push(this.subscription_plan.features[i])
+        if (this.selectedFeatures[i].id !== undefined && this.selectedFeatures[i].id !== null) {
+          features.push(this.selectedFeatures[i])
         }
       }
       payload.features = features;
 
-      var count = this.subscription_plan.limits.length;
+      var count = this.selectedLimits.length;
       var limits = [];
       for (var i = 0; i  < count; i++) {
-        if (this.subscription_plan.limits[i].feature !== undefined && this.subscription_plan.limits[i].feature.id !== undefined && this.subscription_plan.limits[i].feature.id !== null &&
-            this.subscription_plan.limits[i].limit !== undefined && this.subscription_plan.limits[i].limit !== null) {
-          limits.push(this.subscription_plan.limits[i])
+        if (this.selectedLimits[i].feature !== undefined && this.selectedLimits[i].feature.id !== undefined && this.selectedLimits[i].feature.id !== null &&
+            this.selectedLimits[i].limit !== undefined && this.selectedLimits[i].limit !== null) {
+          limits.push(this.selectedLimits[i])
         }
       }
       payload.limits = limits;
 
-      var count = this.subscription_plan.prices.length;
+      var count = this.selectedPrices.length;
       var prices = [];
       for (var i = 0; i  < count; i++) {
-        if (this.subscription_plan.prices[i].id !== undefined && this.subscription_plan.prices[i].id !== null) {
-          prices.push(this.subscription_plan.prices[i])
+        if (this.selectedPrices[i].id !== undefined && this.selectedPrices[i].id !== null) {
+          prices.push(this.selectedPrices[i])
         }
       }
       payload.prices = prices;
