@@ -19,7 +19,7 @@ class BricksExchangeRateProvider implements ExchangeRateProvider
 
     public function getExchangeRate(string $sourceCurrencyCode, string $targetCurrencyCode)
     {
-        $exchangeRate = $this->exchangeRatesRepository->getByCode($targetCurrencyCode, $sourceCurrencyCode);
+        $exchangeRate = $this->exchangeRatesRepository->getByCode($sourceCurrencyCode, $targetCurrencyCode);
 
         return $exchangeRate->getExchangeRate();
     }
