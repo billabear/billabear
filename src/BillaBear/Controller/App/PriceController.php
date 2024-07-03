@@ -80,7 +80,7 @@ class PriceController
             }
         }
         $priceRepository->save($price);
-        $dto = $priceFactory->createApiDto($price);
+        $dto = $priceFactory->createAppDto($price);
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);

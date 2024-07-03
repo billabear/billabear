@@ -18,7 +18,7 @@
             <label class="form-field-lbl" for="code">
               {{ $t('app.feature.create.fields.code') }}
             </label>
-            <p class="form-field-error" v-if="errors.code != undefined">{{ errors.code }}</p>
+
             <input type="text" class="form-field-input" id="code" v-model="feature.code" />
             <p class="form-field-help">{{ $t('app.feature.create.help_info.code') }}</p>
           </div>

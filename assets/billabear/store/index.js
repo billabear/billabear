@@ -3,6 +3,7 @@ import {userStore} from "./user";
 import {teamStore} from "./team";
 import {billingStore} from "./billing";
 import {onboardingStore} from "./onboarding";
+import {planStore} from "./plan";
 
 export const store = createStore({
     modules: {
@@ -10,5 +11,6 @@ export const store = createStore({
         teamStore,
         billingStore,
         onboardingStore,
+        planStore,
     }
 });

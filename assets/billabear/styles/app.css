@@ -410,7 +410,7 @@ body {
     @apply text-end px-5;
 }
 .section-header {
-    @apply mb-3 dark:text-gray-300;
+    @apply text-xl font-bold mb-3 dark:text-gray-300;
 }
 .detail-list {
 }

@@ -116,6 +116,6 @@ class CreatePrice
 
     public function isIncludingTax(): bool
     {
-        return $this->including_tax;
+        return true === $this->including_tax;
     }
 }
