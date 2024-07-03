@@ -56,6 +56,7 @@ class PriceDataMapper
         $dto->setRecurring($price->isRecurring());
         $dto->setSchedule($price->getSchedule());
         $dto->setPublic($price->isPublic());
+        $dto->setIncludingTax($price->isIncludingTax());
 
         return $dto;
     }
@@ -70,6 +71,7 @@ class PriceDataMapper
         $dto->setRecurring($price->isRecurring());
         $dto->setSchedule($price->getSchedule());
         $dto->setPublic($price->isPublic());
+        $dto->setIncludingTax($price->isIncludingTax());
 
         return $dto;
     }
@@ -91,6 +93,7 @@ class PriceDataMapper
         $dto->setPaymentProviderDetailsUrl($price->getPaymentProviderDetailsUrl());
         $dto->setDisplayValue((string) $price->getAsMoney());
         $dto->setProduct($this->productDataMapper->createAppDtoFromProduct($price->getProduct()));
+        $dto->setIncludingTax($price->isIncludingTax());
 
         return $dto;
     }

@@ -26,23 +26,23 @@ class CreatePrice
 
     #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('external_reference')]
-    private ?string $external_reference = null;
+    private $external_reference;
 
     #[Assert\Type(type: 'boolean')]
     #[SerializedName('recurring')]
-    private bool $recurring;
+    private $recurring;
 
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Choice(['week', 'month', 'year'])]
     #[SerializedName('schedule')]
-    private ?string $schedule = null;
+    private $schedule;
 
     #[SerializedName('including_tax')]
     #[Assert\Type(type: 'boolean')]
-    private bool $including_tax = true;
+    private $including_tax;
 
     #[SerializedName('public')]
-    private bool $public = true;
+    private $public = true;
 
     public function getAmount(): int
     {

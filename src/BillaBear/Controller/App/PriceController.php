@@ -74,6 +74,8 @@ class PriceController
             try {
                 $priceRegister->registerPrice($price);
             } catch (ProviderFailureException $e) {
+                $this->getLogger()->error('Failed to register price with stripe', ['exception_message' => $e->getMessage()]);
+
                 return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
             }
         }

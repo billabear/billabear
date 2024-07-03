@@ -42,6 +42,6 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
         // Turn non json bodies to null
         $body = json_encode(json_decode($response->getContent(), true));
 
-        $this->getLogger()->info('Sending response', ['body' => $body]);
+        $this->getLogger()->info('Sending response', ['body' => $body, 'status' => $response->getStatusCode()]);
     }
 }
