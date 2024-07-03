@@ -133,7 +133,9 @@
         </div>
       </div>
 
-      <div v-else>{{ errorMessage }}</div>
+      <div v-else>
+        <ErrorBear />
+      </div>
     </LoadingScreen>
 
   </div>
@@ -143,10 +145,11 @@
 import axios from "axios";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import ErrorBear from "../../../components/app/ErrorBear.vue";
 
 export default {
   name: "productView",
-  components: {RoleOnlyView},
+  components: {ErrorBear, RoleOnlyView},
   data() {
     return {
       ready: false,

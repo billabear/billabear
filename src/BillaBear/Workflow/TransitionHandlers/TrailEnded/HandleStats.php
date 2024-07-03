@@ -9,6 +9,7 @@
 namespace BillaBear\Workflow\TransitionHandlers\TrailEnded;
 
 use BillaBear\Entity\Processes\TrialEndedProcess;
+use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -35,6 +36,10 @@ class HandleStats implements EventSubscriberInterface
         /** @var TrialEndedProcess $trialEnded */
         $trialEnded = $event->getSubject();
         $subscription = $trialEnded->getSubscription();
+
+        $customer = $subscription->getCustomer();
+        $customer->setStatus(CustomerStatus::TRIAL_ENDED);
+        $this->customerRepository->save($customer);
 
         $this->endedStats->handleStats($subscription);
         $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_ENDED, $subscription->getCustomer(), $subscription);

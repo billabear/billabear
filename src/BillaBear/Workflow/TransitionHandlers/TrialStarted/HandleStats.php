@@ -8,7 +8,9 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\Processes\TrialStartedProcess;
+use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -36,6 +38,10 @@ class HandleStats implements EventSubscriberInterface
         $trialStartedProcess = $event->getSubject();
         $subscription = $trialStartedProcess->getSubscription();
         $this->startedStats->handleStats($subscription);
+        /** @var Customer $customer */
+        $customer = $subscription->getCustomer();
+        $customer->setStatus(CustomerStatus::TRIAL_ACTIVE);
+        $this->customerRepository->save($customer);
 
         $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_STARTED, $subscription->getCustomer(), $subscription);
         $this->getLogger()->info('Handled stats for trial started');

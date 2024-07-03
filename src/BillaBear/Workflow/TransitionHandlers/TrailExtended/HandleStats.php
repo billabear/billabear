@@ -9,6 +9,7 @@
 namespace BillaBear\Workflow\TransitionHandlers\TrailExtended;
 
 use BillaBear\Entity\Processes\TrialExtendedProcess;
+use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -39,6 +40,10 @@ class HandleStats implements EventSubscriberInterface
         $subscription = $trialEnded->getSubscription();
         $this->extendedStats->handleStats($subscription);
         $this->creationStats->handleStats($subscription);
+
+        $customer = $subscription->getCustomer();
+        $customer->setStatus(CustomerStatus::ACTIVE);
+        $this->customerRepository->save($customer);
 
         $this->customerSubscriptionEventCreator->create(CustomerSubscriptionEventType::TRIAL_EXTENDED, $subscription->getCustomer(), $subscription);
         $this->getLogger()->info('Handled stats for trial extended', ['subscription_id' => (string) $subscription->getId()]);
