@@ -29,5 +29,10 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
         daily: "Daily",
         monthly: "Monthly",
         yearly: "Yearly"
+    },
+    links: {
+        customers: "Customers",
+        subscriptions: "Subscriptions",
+        invoices: "Invoices"
     }
 };

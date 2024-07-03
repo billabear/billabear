@@ -22,7 +22,7 @@ export default {
         return false;
       }
 
-      if (this.$props.role === 'ROLE_USER') {
+      if (this.$props.role === 'ROLE_CUSTOMER_SUPPORT') {
         return true;
       }
 
@@ -37,11 +37,11 @@ export default {
       if (data.roles.includes('ROLE_ACCOUNT_MANAGER')  && (this.$props.role !== 'ROLE_ADMIN' && this.$props.role !== 'ROLE_DEVELOPER')) {
         return true;
       }
-      if (data.roles.includes('ROLE_CUSTOMER_SUPPORT') && (this.$props.role !== 'ROLE_ADMIN' && this.$props.role !== 'ROLE_DEVELOPER' && this.$props.role !== 'ROLE_ACCOUNT_MANAGER')) {
+      if (data.roles.includes('ROLE_USER') && (this.$props.role !== 'ROLE_ADMIN' && this.$props.role !== 'ROLE_DEVELOPER' && this.$props.role !== 'ROLE_ACCOUNT_MANAGER')) {
         return true;
       }
 
-      if (data.roles === ['ROLE_USER'] && this.$props.role === 'ROLE_USER') {
+      if (data.roles == ['ROLE_CUSTOMER_SUPPORT'] && this.$props.role === 'ROLE_CUSTOMER_SUPPORT') {
         return true;
       }
 

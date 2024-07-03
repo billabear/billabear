@@ -28,24 +28,26 @@
                 <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.invoices') }}</span>
               </router-link>
             </li>
-            <li>
-              <router-link :to="{name: 'app.product.list'}" class="sidebar-menu-item">
-                <i class="fa-solid fa-box"></i>
-                <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.products') }}</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'app.payment.list'}" class="sidebar-menu-item">
-                <i class="fa-solid fa-cash-register"></i>
-                <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.finance') }}</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'app.reports'}" class="sidebar-menu-item">
-                <i class="fa-solid fa-chart-simple"></i>
-                <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.reports') }}</span>
-              </router-link>
-            </li>
+            <RoleOnlyView role="ROLE_USER">
+              <li>
+                <router-link :to="{name: 'app.product.list'}" class="sidebar-menu-item">
+                  <i class="fa-solid fa-box"></i>
+                  <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.products') }}</span>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{name: 'app.payment.list'}" class="sidebar-menu-item">
+                  <i class="fa-solid fa-cash-register"></i>
+                  <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.finance') }}</span>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{name: 'app.reports'}" class="sidebar-menu-item">
+                  <i class="fa-solid fa-chart-simple"></i>
+                  <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.reports') }}</span>
+                </router-link>
+              </li>
+            </RoleOnlyView>
             <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
               <li>
                 <router-link :to="{name: 'app.settings'}" class="sidebar-menu-item">

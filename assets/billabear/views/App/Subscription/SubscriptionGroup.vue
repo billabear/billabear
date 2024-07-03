@@ -4,7 +4,9 @@
       <div class="submenu-container">
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.list'}" class="submenu-link">{{ $t('app.subscription.menu.subscriptions') }}</router-link></li>
-          <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.mass_change.list'}" class="submenu-link">{{ $t('app.subscription.menu.mass_change') }}</router-link></li>
+          <RoleOnlyView role="ROLE_USER">
+            <li class="submenu-list-item"><router-link :to="{name: 'app.subscription.mass_change.list'}" class="submenu-link">{{ $t('app.subscription.menu.mass_change') }}</router-link></li>
+          </RoleOnlyView>
         </ul>
       </div>
     </div>
