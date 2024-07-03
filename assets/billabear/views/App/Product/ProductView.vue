@@ -44,6 +44,49 @@
         </div>
 
         <div class="mt-5">
+          <h2 class="mb-2">{{ $t('app.product.view.subscription_plan.title') }}</h2>
+
+          <table class="list-table mb-5">
+            <thead>
+            <tr>
+              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
+              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+              <th></th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="plan in subscriptionPlans" class="mt-5">
+              <td>{{ plan.name }}</td>
+              <td>{{ plan.code_name }}</td>
+              <td>
+                <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                <span v-else>{{ plan.external_reference }}</span>
+              </td>
+              <td>
+                <router-link :to="{name: 'app.subscription_plan.view', params: {productId: id, subscriptionPlanId: plan.id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.view') }}</router-link>
+              </td>
+              <td>
+                <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+                  <button class="btn--danger" @click="deleteSubscriptionPlan(plan, key)"><i class="fa-solid fa-trash"></i></button>
+                </RoleOnlyView>
+              </td>
+            </tr>
+            <tr v-if="subscriptionPlans.length === 0">
+              <td colspan="5" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+
+            <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
+
+          </RoleOnlyView>
+          </div>
+
+        <div class="mt-5">
           <h2 class="mb-5">{{ $t('app.product.view.price.title') }}</h2>
 
           <table class="list-table">
@@ -88,47 +131,6 @@
             <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
           </RoleOnlyView>
         </div>
-        <div class="mt-5">
-          <h2 class="mb-2">{{ $t('app.product.view.subscription_plan.title') }}</h2>
-
-          <table class="list-table mb-5">
-            <thead>
-            <tr>
-              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
-              <th></th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="plan in subscriptionPlans" class="mt-5">
-              <td>{{ plan.name }}</td>
-              <td>{{ plan.code_name }}</td>
-              <td>
-                <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ plan.external_reference }}</span>
-              </td>
-              <td>
-                <router-link :to="{name: 'app.subscription_plan.view', params: {productId: id, subscriptionPlanId: plan.id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.view') }}</router-link>
-              </td>
-              <td>
-                <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-                  <button class="btn--danger" @click="deleteSubscriptionPlan(plan, key)"><i class="fa-solid fa-trash"></i></button>
-                </RoleOnlyView>
-              </td>
-            </tr>
-            <tr v-if="subscriptionPlans.length === 0">
-              <td colspan="5" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
-            </tr>
-            </tbody>
-          </table>
-          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-
-            <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
-
-          </RoleOnlyView>
-          </div>
       </div>
 
       <div v-else>{{ errorMessage }}</div>
