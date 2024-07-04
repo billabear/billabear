@@ -52,7 +52,7 @@ services:
   Parthenon\User\Formatter\UserFormatterInterface: '@BillaBear\User\UserFormatter'
   parthenon.user.form.settings: '@BillaBear\User\Form\UserSettings'
 
-  BillaBear\Webhook\Outbound\EventDispatcherInterface: '@BillaBear\Webhook\Outbound\Messenger\EventDispatcher'
+  BillaBear\Webhook\Outbound\WebhookDispatcherInterface: '@BillaBear\Webhook\Outbound\WebhookDispatcher'
 
   parthenon.billing.repository.orm.product_repository_doctrine: '@BillaBear\Repository\Orm\ProductRepository'
   parthenon.billing.repository.orm.price_repository_doctrine: '@BillaBear\Repository\Orm\PriceRepository'

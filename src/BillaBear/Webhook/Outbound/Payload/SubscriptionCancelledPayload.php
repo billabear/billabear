@@ -13,7 +13,7 @@ use BillaBear\Enum\WebhookEventType;
 use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
 use BillaBear\Webhook\Outbound\Payload\Parts\SubscriptionPayloadTrait;
 
-class StartSubscriptionPayload implements PayloadInterface
+class SubscriptionCancelledPayload implements PayloadInterface
 {
     use CustomerPayloadTrait;
     use SubscriptionPayloadTrait;
@@ -25,13 +25,13 @@ class StartSubscriptionPayload implements PayloadInterface
 
     public function getType(): WebhookEventType
     {
-        return WebhookEventType::SUBSCRIPTION_CREATED;
+        return WebhookEventType::SUBSCRIPTION_CANCELLED;
     }
 
     public function getPayload(): array
     {
         return [
-            'type' => WebhookEventType::SUBSCRIPTION_CREATED->value,
+            'type' => WebhookEventType::SUBSCRIPTION_CANCELLED->value,
             'subscription' => $this->getSubscriptionData($this->subscription),
             'customer' => $this->getCustomerData($this->subscription->getCustomer()),
         ];

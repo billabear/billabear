@@ -15,6 +15,8 @@ use BillaBear\Entity\Subscription;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\UpdateAction\AddSeatToSubscription;
 use BillaBear\Subscription\UpdateAction\RemoveSeatFromSubscription;
+use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +30,10 @@ class SubscriptionSeatsController
 {
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
+
+    public function __construct(private WebhookDispatcherInterface $webhookDispatcher)
+    {
+    }
 
     #[Route('/api/v1/subscription/{id}/seats/add', name: 'app_api_subscriptionseats_addseat', methods: ['POST'])]
     public function addSeat(
@@ -54,6 +60,7 @@ class SubscriptionSeatsController
         }
 
         $addSeatToSubscription->addSeats($subscription, $dto->getSeats());
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true]);
     }
@@ -84,6 +91,7 @@ class SubscriptionSeatsController
         }
 
         $removeSeatFromSubscription->removeSeats($subscription, $dto->getSeats());
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true]);
     }

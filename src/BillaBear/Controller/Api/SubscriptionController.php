@@ -24,6 +24,8 @@ use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\Subscription\TrialManager;
+use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
@@ -45,8 +47,10 @@ class SubscriptionController
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
 
-    public function __construct(private CancellationDataMapper $cancellationRequestFactory)
-    {
+    public function __construct(
+        private CancellationDataMapper $cancellationRequestFactory,
+        private WebhookDispatcherInterface $webhookDispatcher,
+    ) {
     }
 
     #[Route('/api/v1/subscription', name: 'api_v1_subscription_list', methods: ['GET'])]
@@ -251,6 +255,7 @@ class SubscriptionController
 
         $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         $methodUpdateProcessor->process($subscription, $paymentDetails);
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
@@ -291,6 +296,7 @@ class SubscriptionController
         $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price, $change);
 
         $subscriptionRepository->save($subscription);
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
@@ -327,6 +333,7 @@ class SubscriptionController
         $subscriptionManager->changeSubscriptionPrice($subscription, $price, $when);
 
         $subscriptionRepository->save($subscription);
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
     }

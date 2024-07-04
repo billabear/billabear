@@ -6,11 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Webhook\Outbound;
+namespace BillaBear\Dummy;
 
 use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
-interface EventDispatcherInterface
+class WebhookDispatcher implements WebhookDispatcherInterface
 {
-    public function dispatch(PayloadInterface $payload): void;
+    public function dispatch(PayloadInterface $payload): void
+    {
+        // TODO: Implement dispatch() method.
+    }
 }

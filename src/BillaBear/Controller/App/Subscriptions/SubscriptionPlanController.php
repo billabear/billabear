@@ -17,10 +17,10 @@ use BillaBear\Dto\Response\App\SubscriptionPlanCreationInfo;
 use BillaBear\Dto\Response\App\SubscriptionPlanUpdateView;
 use BillaBear\Dto\Response\App\SubscriptionPlanView;
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Webhook\Outbound\EventDispatcher;
 use BillaBear\Webhook\Outbound\Payload\PlanCreatedPayload;
 use BillaBear\Webhook\Outbound\Payload\PlanDeletePayload;
 use BillaBear\Webhook\Outbound\Payload\PlanUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -84,7 +84,7 @@ class SubscriptionPlanController
         SubscriptionPlanDataMapper $factory,
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        EventDispatcher $eventDispatcher,
+        WebhookDispatcher $eventDispatcher,
     ) {
         $this->getLogger()->info('Received request to write create plan', ['product_id' => $request->get('id')]);
 
@@ -149,7 +149,7 @@ class SubscriptionPlanController
     public function deletePlan(
         Request $request,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        EventDispatcher $eventDispatcher,
+        WebhookDispatcher $eventDispatcher,
     ): Response {
         $this->getLogger()->info('Received request to delete plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
 
@@ -220,7 +220,7 @@ class SubscriptionPlanController
         SubscriptionPlanDataMapper $factory,
         ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
-        EventDispatcher $eventDispatcher,
+        WebhookDispatcher $eventDispatcher,
     ) {
         $this->getLogger()->info('Received request to write update plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
 

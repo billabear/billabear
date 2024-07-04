@@ -13,14 +13,14 @@ use BillaBear\Notification\Slack\Data\CustomerCreated;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 class CreationHandler
 {
     public function __construct(
         private NotificationSender $notificationSender,
-        private EventDispatcherInterface $eventProcessor,
+        private WebhookDispatcherInterface $eventProcessor,
         private ExternalRegisterInterface $externalRegister,
         private CustomerRepositoryInterface $customerRepository,
         private CustomerCreationStats $customerCreationStats,

@@ -8,11 +8,11 @@
 
 namespace BillaBear\Webhook\Outbound\Messenger;
 
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class EventDispatcher implements EventDispatcherInterface
+class WebhookDispatcher implements WebhookDispatcherInterface
 {
     public function __construct(private MessageBusInterface $messageBus)
     {

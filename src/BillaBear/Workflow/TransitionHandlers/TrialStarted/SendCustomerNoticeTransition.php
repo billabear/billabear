@@ -9,8 +9,8 @@
 namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
 use BillaBear\Entity\Processes\TrialEndedProcess;
-use BillaBear\Webhook\Outbound\EventDispatcher;
 use BillaBear\Webhook\Outbound\Payload\TrialStartedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,7 +22,7 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private EventDispatcher $eventDispatcher,
+        private WebhookDispatcher $eventDispatcher,
     ) {
     }
 

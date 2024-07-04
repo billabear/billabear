@@ -17,6 +17,11 @@ use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
+use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
+use BillaBear\Webhook\Outbound\Payload\CustomerEnabledPayload;
+use BillaBear\Webhook\Outbound\Payload\CustomerUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -39,6 +44,7 @@ class CustomerController
         ValidatorInterface $validator,
         CustomerDataMapper $customerFactory,
         CreationHandler $creationHandler,
+        WebhookDispatcherInterface $webhookDispatcher,
     ): Response {
         $this->getLogger()->info('Start create customer API request');
 
@@ -71,6 +77,7 @@ class CustomerController
 
         $dto = $customerFactory->createApiDto($customer);
         $jsonResponse = $serializer->serialize($dto, 'json');
+        $webhookDispatcher->dispatch(new CustomerCreatedPayload($customer));
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
     }
@@ -174,6 +181,7 @@ class CustomerController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CustomerDataMapper $customerFactory,
+        WebhookDispatcherInterface $webhookDispatcher,
     ): Response {
         $this->getLogger()->info('Starting customer update API request');
         try {
@@ -205,6 +213,7 @@ class CustomerController
         $customerRepository->save($newCustomer);
         $dto = $customerFactory->createApiDto($newCustomer);
         $jsonResponse = $serializer->serialize($dto, 'json');
+        $webhookDispatcher->dispatch(new CustomerUpdatedPayload($customer));
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
     }
@@ -213,6 +222,7 @@ class CustomerController
     public function disableCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
+        WebhookDispatcherInterface $webhookDispatcher,
     ) {
         $this->getLogger()->info('Starting customer disable API request');
 
@@ -227,6 +237,7 @@ class CustomerController
 
         $customer->setStatus(CustomerStatus::DISABLED);
         $customerRepository->save($customer);
+        $webhookDispatcher->dispatch(new CustomerDisabledPayload($customer));
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
@@ -235,6 +246,7 @@ class CustomerController
     public function enableCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
+        WebhookDispatcherInterface $webhookDispatcher,
     ) {
         $this->getLogger()->info('Starting customer enable API request');
 
@@ -249,6 +261,7 @@ class CustomerController
 
         $customer->setStatus(CustomerStatus::ACTIVE);
         $customerRepository->save($customer);
+        $webhookDispatcher->dispatch(new CustomerEnabledPayload($customer));
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }

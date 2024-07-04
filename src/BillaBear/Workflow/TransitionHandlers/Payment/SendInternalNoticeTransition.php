@@ -11,8 +11,8 @@ namespace BillaBear\Workflow\TransitionHandlers\Payment;
 use BillaBear\Entity\PaymentCreation;
 use BillaBear\Notification\Slack\Data\PaymentProcessed;
 use BillaBear\Notification\Slack\NotificationSender;
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\PaymentReceivedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
@@ -20,7 +20,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
 {
     public function __construct(
         private NotificationSender $notificationSender,
-        private EventDispatcherInterface $webhookDisptacher)
+        private WebhookDispatcherInterface $webhookDisptacher)
     {
     }
 

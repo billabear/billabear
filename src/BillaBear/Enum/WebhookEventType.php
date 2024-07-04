@@ -15,10 +15,12 @@ enum WebhookEventType: string
     case CUSTOMER_CREATED = 'customer_created';
     case CUSTOMER_ENABLED = 'customer_enabled';
     case CUSTOMER_DISABLED = 'customer_disabled';
+    case CUSTOMER_UPDATED = 'customer_updated';
 
     case SUBSCRIPTION_CREATED = 'subscription_created';
     case SUBSCRIPTION_PAUSED = 'subscription_paused';
     case SUBSCRIPTION_CANCELLED = 'subscription_cancelled';
+    case SUBSCRIPTION_UPDATED = 'subscription_updated';
 
     case TRIAL_STARTED = 'trial_started';
     case TRIAL_EXTENDED = 'trial_extended';

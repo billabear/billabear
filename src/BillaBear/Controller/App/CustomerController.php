@@ -36,8 +36,9 @@ use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerEnabledPayload;
+use BillaBear\Webhook\Outbound\Payload\CustomerUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
@@ -195,7 +196,7 @@ class CustomerController
     public function enableCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        EventDispatcherInterface $eventProcessor,
+        WebhookDispatcherInterface $eventProcessor,
     ) {
         $this->getLogger()->info('Received request to enable customer', ['customer_id' => $request->get('id')]);
 
@@ -295,6 +296,7 @@ class CustomerController
         ValidatorInterface $validator,
         CustomerDataMapper $customerFactory,
         ObolRegister $obolRegister,
+        WebhookDispatcherInterface $webhookDispatcher,
     ): Response {
         $this->getLogger()->info('Received request to update customer', ['customer_id' => $request->get('id')]);
 
@@ -324,6 +326,9 @@ class CustomerController
         $obolRegister->update($newCustomer);
 
         $customerRepository->save($newCustomer);
+
+        $webhookDispatcher->dispatch(new CustomerUpdatedPayload($customer));
+
         $dto = $customerFactory->createAppDto($newCustomer);
         $jsonResponse = $serializer->serialize($dto, 'json');
 

@@ -29,6 +29,7 @@ use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Dto\Response\App\Subscription\CreateView;
 use BillaBear\Dto\Response\App\Subscription\UpdatePlanView;
 use BillaBear\Dto\Response\App\Subscription\ViewSubscription;
+use BillaBear\Entity\Subscription;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
@@ -36,8 +37,9 @@ use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\User\UserProvider;
+use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -59,6 +61,10 @@ class SubscriptionController
     use ValidationErrorResponseTrait;
     use CrudListTrait;
     use LoggerAwareTrait;
+
+    public function __construct(private WebhookDispatcherInterface $webhookDispatcher)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/customer/{customerId}/subscription', name: 'app_subscription_create_view', methods: ['GET'])]
@@ -270,6 +276,7 @@ class SubscriptionController
 
         $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         $methodUpdateProcessor->process($subscription, $paymentDetails);
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
@@ -377,7 +384,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         PriceRepositoryInterface $priceRepository,
-        SubscriptionManagerInterface $subscriptionManager
+        SubscriptionManagerInterface $subscriptionManager,
     ): Response {
         $this->getLogger()->info('Received a request to write change price of subscription', ['subscription_id' => $request->get('subscriptionId')]);
         try {
@@ -400,6 +407,7 @@ class SubscriptionController
         $subscriptionManager->changeSubscriptionPrice($subscription, $price, BillingChangeTiming::NEXT_CYCLE);
 
         $subscriptionRepository->save($subscription);
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }
@@ -478,6 +486,7 @@ class SubscriptionController
         $subscriptionManager->changeSubscriptionPlan($subscription, $subscriptionPlan, $price, $change);
 
         $subscriptionRepository->save($subscription);
+        $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
     }

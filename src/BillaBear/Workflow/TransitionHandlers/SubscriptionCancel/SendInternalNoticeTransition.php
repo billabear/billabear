@@ -12,6 +12,8 @@ use BillaBear\Entity\CancellationRequest;
 use BillaBear\Notification\Slack\Data\SubscriptionCancelled;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\SubscriptionCancelledPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -23,6 +25,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
     public function __construct(
         private SlackNotificationRepositoryInterface $slackNotificationRepository,
         private NotificationSender $notificationSender,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -40,6 +43,7 @@ class SendInternalNoticeTransition implements EventSubscriberInterface
         $notificationMessage = new SubscriptionCancelled($subscription);
 
         $this->notificationSender->sendNotification($notificationMessage);
+        $this->webhookDispatcher->dispatch(new SubscriptionCancelledPayload($subscription));
     }
 
     public static function getSubscribedEvents()

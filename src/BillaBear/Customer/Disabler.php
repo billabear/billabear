@@ -11,14 +11,14 @@ namespace BillaBear\Customer;
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 class Disabler
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
-        private EventDispatcherInterface $eventProcessor,
+        private WebhookDispatcherInterface $eventProcessor,
     ) {
     }
 

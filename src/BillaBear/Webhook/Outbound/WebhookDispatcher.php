@@ -10,7 +10,7 @@ namespace BillaBear\Webhook\Outbound;
 
 use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 
-class EventDispatcher implements EventDispatcherInterface
+class WebhookDispatcher implements WebhookDispatcherInterface
 {
     public function __construct(private EventProcessor $eventProcessor)
     {

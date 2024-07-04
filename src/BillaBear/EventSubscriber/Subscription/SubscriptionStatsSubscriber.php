@@ -12,8 +12,8 @@ use BillaBear\Entity\SubscriptionCreation;
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
 use BillaBear\Stats\RevenueEstimatesGeneration;
 use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
-use BillaBear\Webhook\Outbound\EventDispatcherInterface;
-use BillaBear\Webhook\Outbound\Payload\StartSubscriptionPayload;
+use BillaBear\Webhook\Outbound\Payload\SubscriptionStartPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,7 +24,7 @@ class SubscriptionStatsSubscriber implements EventSubscriberInterface
         private SubscriptionCreationRepositoryInterface $subscriptionCreationRepository,
         private SubscriptionCreationProcessor $subscriptionCreationProcessor,
         private RevenueEstimatesGeneration $revenueEstimatesGeneration,
-        private EventDispatcherInterface $eventDispatcher,
+        private WebhookDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -52,7 +52,7 @@ class SubscriptionStatsSubscriber implements EventSubscriberInterface
 
         $this->revenueEstimatesGeneration->generate();
 
-        $this->eventDispatcher->dispatch(new StartSubscriptionPayload($subscriptionCreated->getSubscription()));
+        $this->eventDispatcher->dispatch(new SubscriptionStartPayload($subscriptionCreated->getSubscription()));
     }
 
     public function adjustStats(): void

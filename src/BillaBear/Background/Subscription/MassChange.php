@@ -10,6 +10,8 @@ namespace BillaBear\Background\Subscription;
 
 use BillaBear\Repository\MassSubscriptionChangeRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 
@@ -19,6 +21,7 @@ class MassChange
         private MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private SubscriptionManagerInterface $subscriptionManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -43,6 +46,7 @@ class MassChange
                     $subscription->setSubscriptionPlan($massChange->getNewSubscriptionPlan());
                 }
 
+                $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
                 $this->subscriptionRepository->save($subscription);
             }
         }
