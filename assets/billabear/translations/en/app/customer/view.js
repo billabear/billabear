@@ -103,7 +103,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             expiry_year: "Expiry Year",
             name: "Name"
         },
-        add_new: "Add new payment method",
+        add_token: "With Token",
+        add_new: "Add new",
         no_payment_details: "No payment details",
         delete: "Delete",
         make_default: "Make Default"

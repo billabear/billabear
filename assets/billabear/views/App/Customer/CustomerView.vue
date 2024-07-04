@@ -171,9 +171,14 @@
           <div class="card-body">
             <div class="grid grid-cols-2">
               <div><h2  class="section-header">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
-              <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-                <div><router-link class="btn--main" :to="{name: 'app.customer.payment_details.add', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_new') }}</router-link></div>
-              </RoleOnlyView>
+              <div class="text-end">
+                <RoleOnlyView role="ROLE_DEVELOPER">
+                  <router-link class="btn--secondary mr-2" :to="{name: 'app.customer.payment_details.token', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_token') }}</router-link>
+                </RoleOnlyView>
+                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+                  <router-link class="btn--main" :to="{name: 'app.customer.payment_details.add', params: {customerId: customer.id}}">{{ $t('app.customer.view.payment_details.add_new') }}</router-link>
+                </RoleOnlyView>
+              </div>
             </div>
 
             <div class="mt-2">

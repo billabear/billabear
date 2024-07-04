@@ -67,6 +67,7 @@ import SlackNotificationList from "../views/App/System/Integrations/Slack/SlackN
 import SlackNotificationCreate from "../views/App/System/Integrations/Slack/SlackNotificationCreate.vue";
 import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
 import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
+import AddWithToken from "../views/App/PaymentDetails/AddWithToken.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -125,6 +126,11 @@ export const APP_ROUTES = [
                 name: 'app.customer.payment_details.add',
                 path: 'customer/:customerId/payment-details/add',
                 component: AddPaymentDetails
+            },
+            {
+                name: 'app.customer.payment_details.token',
+                path: 'customer/:customerId/payment-details/token',
+                component: AddWithToken
             },
             {
                 name: 'app.subscription.create',
