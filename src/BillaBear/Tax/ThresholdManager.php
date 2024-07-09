@@ -45,6 +45,10 @@ class ThresholdManager
         try {
             $country = $this->countryRepository->getByIsoCode($countryCode);
 
+            if ($country->getCollecting()) {
+                return true;
+            }
+
             if ($country->isInEu() && $this->isEuStopShopEnabled()) {
                 return true;
             }

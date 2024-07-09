@@ -45,6 +45,12 @@ class CreateCountry
     #[Assert\Type('boolean')]
     private $enabled = true;
 
+    #[Assert\Type('boolean')]
+    private $collecting = false;
+
+    #[Assert\Type('string')]
+    private $taxNumber;
+
     public function getName()
     {
         return $this->name;
@@ -123,5 +129,25 @@ class CreateCountry
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getCollecting()
+    {
+        return true === $this->collecting;
+    }
+
+    public function setCollecting(bool $collecting): void
+    {
+        $this->collecting = $collecting;
+    }
+
+    public function getTaxNumber()
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber($taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

@@ -51,6 +51,12 @@ class Country
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: State::class)]
     private array|Collection $states;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $collecting = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $taxNumber = null;
+
     public function getId()
     {
         return $this->id;
@@ -158,5 +164,25 @@ class Country
     public function setStates(Collection|array $states): void
     {
         $this->states = $states;
+    }
+
+    public function getCollecting(): bool
+    {
+        return true === $this->collecting;
+    }
+
+    public function setCollecting(?bool $collecting): void
+    {
+        $this->collecting = $collecting;
+    }
+
+    public function getTaxNumber(): ?string
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber(?string $taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

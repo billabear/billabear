@@ -8,6 +8,8 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         in_eu: "In Eu",
         start_of_tax_year: "Start Of Tax Year",
         enabled: "Enabled",
+        collecting: "Collecting Tax",
+        tax_number: "Tax Number"
     },
     edit_button: "Edit",
     tax_rule: {

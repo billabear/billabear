@@ -37,6 +37,11 @@ class Country
     #[SerializedName('start_of_tax_year')]
     private ?string $startOfTaxYear;
 
+    private bool $collecting;
+
+    #[SerializedName('tax_number')]
+    private ?string $taxNumber;
+
     public function getId(): string
     {
         return $this->id;
@@ -135,5 +140,25 @@ class Country
     public function setIsoCode3(string $isoCode3): void
     {
         $this->isoCode3 = $isoCode3;
+    }
+
+    public function isCollecting(): bool
+    {
+        return $this->collecting;
+    }
+
+    public function setCollecting(bool $collecting): void
+    {
+        $this->collecting = $collecting;
+    }
+
+    public function getTaxNumber(): ?string
+    {
+        return $this->taxNumber;
+    }
+
+    public function setTaxNumber(?string $taxNumber): void
+    {
+        $this->taxNumber = $taxNumber;
     }
 }

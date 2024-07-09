@@ -34,6 +34,14 @@
                 <dt>{{ $t('app.country.view.fields.in_eu') }}</dt>
                 <dd>{{ country.in_eu }}</dd>
               </div>
+              <div>
+                <dt>{{ $t('app.country.view.fields.collecting') }}</dt>
+                <dd>{{ country.collecting }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.country.view.fields.tax_number') }}</dt>
+                <dd>{{ country.tax_number }}</dd>
+              </div>
               <div v-if="country.start_of_tax_year">
                 <dt>{{ $t('app.country.view.fields.start_of_tax_year') }}</dt>
                 <dd>{{ country.start_of_tax_year }}</dd>

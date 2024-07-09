@@ -63,6 +63,22 @@
             <input type="checkbox" class="form-field" v-model="country.in_eu" />
             <p class="form-field-help">{{ $t('app.country.edit.country.help_info.in_eu') }}</p>
           </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="collecting">
+              {{ $t('app.country.edit.country.fields.collecting') }}
+            </label>
+            <p class="form-field-error" v-if="errors.collecting != undefined">{{ errors.collecting }}</p>
+            <Toggle v-model="country.collecting" />
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.collecting') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.country.edit.country.fields.tax_number') }}
+            </label>
+            <p class="form-field-error" v-if="errors.taxNumber != undefined">{{ errors.taxNumber }}</p>
+            <input type="text" class="form-field" v-model="country.tax_number" />
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.tax_number') }}</p>
+          </div>
         </div>
       </div>
       <div class="mt-5 ml-5">

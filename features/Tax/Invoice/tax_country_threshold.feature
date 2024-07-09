@@ -89,6 +89,21 @@ Feature: Tax the correct country with threshold
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
       | Test Plan         | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
     And that the following countries exist:
+      | Name           | ISO Code | Threshold | Currency | Collecting |
+      | United States  | US       | 1000000   | USD      | False      |
+      | United Kingdom | GB       | 1000000   | GBP      | True       |
+    And the following country tax rules exist:
+      | Country       | Tax Type       | Tax Rate | Valid From |
+      | United States | Digital Goods  | 17.5     | -10 days   |
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.seven@example.org" will have tax country of "GB"
+
+  Scenario:
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
+    And that the following countries exist:
       | Name           | ISO Code | Threshold | Currency |
       | United States  | US       | 1000000   | USD      |
       | United Kingdom | GB       | 0         | USD      |

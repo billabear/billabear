@@ -159,6 +159,7 @@ class CountryContext implements Context
             $country->setCreatedAt(new \DateTime());
             $country->setEnabled('true' === strtolower($row['Enabled'] ?? 'true'));
             $country->setInEu('true' === strtolower($row['In EU'] ?? 'false'));
+            $country->setCollecting('true' === strtolower($row['Collecting'] ?? 'false'));
 
             $this->countryRepository->getEntityManager()->persist($country);
         }

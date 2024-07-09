@@ -50,8 +50,24 @@
               {{ $t('app.country.create.country.fields.in_eu') }}
             </label>
             <p class="form-field-error" v-if="errors.inEu != undefined">{{ errors.inEu }}</p>
-            <input type="checkbox" class="form-field" v-model="country.in_eu" />
+            <Toggle v-model="country.in_eu" />
             <p class="form-field-help">{{ $t('app.country.create.country.help_info.in_eu') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="collecting">
+              {{ $t('app.country.create.country.fields.collecting') }}
+            </label>
+            <p class="form-field-error" v-if="errors.collecting != undefined">{{ errors.collecting }}</p>
+            <Toggle v-model="country.collecting" />
+            <p class="form-field-help">{{ $t('app.country.create.country.help_info.collecting') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="name">
+              {{ $t('app.country.create.country.fields.tax_number') }}
+            </label>
+            <p class="form-field-error" v-if="errors.taxNumber != undefined">{{ errors.taxNumber }}</p>
+            <input type="text" class="form-field" v-model="country.tax_number" />
+            <p class="form-field-help">{{ $t('app.country.create.country.help_info.tax_number') }}</p>
           </div>
         </div>
       </div>
@@ -65,10 +81,11 @@
 <script>
 import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 import axios from "axios";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "CountryCreate",
-  components: {CurrencySelect},
+  components: {Toggle, CurrencySelect},
   data() {
     return {
       ready: true,
