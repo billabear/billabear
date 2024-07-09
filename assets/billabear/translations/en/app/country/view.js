@@ -48,7 +48,7 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         add: "Add New State",
         name: "Name",
         code: "Code",
-        has_nexus: "Has Nexus?",
+        collecting: "Collecting Tax?",
         threshold: "Threshold",
         view: "View",
         no_states: "There are no states"

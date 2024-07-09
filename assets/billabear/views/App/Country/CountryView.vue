@@ -100,7 +100,7 @@
           <tr>
             <th>{{ $t('app.country.view.states.name') }}</th>
             <th>{{ $t('app.country.view.states.code') }}</th>
-            <th>{{ $t('app.country.view.states.has_nexus') }}</th>
+            <th>{{ $t('app.country.view.states.collecting') }}</th>
             <th>{{ $t('app.country.view.states.threshold') }}</th>
             <th></th>
           </tr>
@@ -109,9 +109,9 @@
             <tr v-for="state in states">
               <td>{{state.name}}</td>
               <td>{{state.code}}</td>
-              <td>{{state.has_nexus}}</td>
+              <td>{{state.collecting}}</td>
               <td><Currency :amount="state.threshold" :currency="country.currency" /></td>
-              <td><router-link class="btn--main" :to="{name: 'app.finance.state.view', params: {countryId: country.id, id: state.id}}">{{ $t('app.country.view.states.view') }}</router-link></td>
+              <td><router-link class="btn--main" :to="{name: 'app.finance.state.view', params: {countryId: country.id, stateId: state.id}}">{{ $t('app.country.view.states.view') }}</router-link></td>
             </tr>
           </tbody>
           <tbody v-else>
@@ -238,7 +238,6 @@ export default {
       },
       creatingTaxRule: false,
       taxRuleErrors: {},
-      original_tax_rule: {},
     }
   },
   mounted() {

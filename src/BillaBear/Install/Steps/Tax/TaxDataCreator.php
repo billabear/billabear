@@ -78,7 +78,7 @@ class TaxDataCreator
                 $state->setName($data['name']);
                 $state->setCode($code);
                 $state->setThreshold($data['threshold']);
-                $state->setHasNexus(false);
+                $state->setCollecting(false);
 
                 $this->stateRepository->save($state);
 

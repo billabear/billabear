@@ -28,7 +28,7 @@ class StateDataMapper
             $entity = new Entity();
         }
 
-        $entity->setHasNexus($createState->getHasNexus());
+        $entity->setCollecting($createState->getHasNexus());
         $entity->setName($createState->getName());
         $entity->setCode($createState->getCode());
         $entity->setThreshold($createState->getThreshold());
@@ -43,7 +43,7 @@ class StateDataMapper
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
         $dto->setCode($entity->getCode());
-        $dto->setHasNexus($entity->hasNexus());
+        $dto->setCollecting($entity->hasNexus());
         $dto->setCountry($this->dataMapper->createAppDto($entity->getCountry()));
         $dto->setThreshold($entity->getThreshold());
 

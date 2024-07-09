@@ -34,7 +34,7 @@ class State
     private Country $country;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $hasNexus;
+    private bool $collecting;
 
     public function getId()
     {
@@ -88,11 +88,11 @@ class State
 
     public function hasNexus(): bool
     {
-        return $this->hasNexus;
+        return $this->collecting;
     }
 
-    public function setHasNexus(bool $hasNexus): void
+    public function setCollecting(bool $collecting): void
     {
-        $this->hasNexus = $hasNexus;
+        $this->collecting = $collecting;
     }
 }

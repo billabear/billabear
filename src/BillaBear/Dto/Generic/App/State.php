@@ -8,8 +8,6 @@
 
 namespace BillaBear\Dto\Generic\App;
 
-use Symfony\Component\Serializer\Attribute\SerializedName;
-
 class State
 {
     private string $id;
@@ -20,8 +18,7 @@ class State
 
     private int $threshold;
 
-    #[SerializedName('has_nexus')]
-    private bool $hasNexus;
+    private bool $collecting;
 
     private Country $country;
 
@@ -65,14 +62,14 @@ class State
         $this->threshold = $threshold;
     }
 
-    public function isHasNexus(): bool
+    public function isCollecting(): bool
     {
-        return $this->hasNexus;
+        return $this->collecting;
     }
 
-    public function setHasNexus(bool $hasNexus): void
+    public function setCollecting(bool $collecting): void
     {
-        $this->hasNexus = $hasNexus;
+        $this->collecting = $collecting;
     }
 
     public function getCountry(): Country
