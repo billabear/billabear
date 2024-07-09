@@ -12,7 +12,7 @@ class TaxInfo
 {
     public function __construct(
         public readonly ?float $rate,
-        public readonly string $country,
+        public readonly ?string $country,
         public readonly bool $reverseCharge,
         public readonly ?string $state = null,
     ) {

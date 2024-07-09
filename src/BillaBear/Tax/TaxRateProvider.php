@@ -93,6 +93,11 @@ class TaxRateProvider implements TaxRateProviderInterface
     public function buildTaxInfo(TaxType $taxType, Address $address, Money $amount, bool $reverseCharge = false): TaxInfo
     {
         $countryCode = $address->getCountry();
+
+        if (!$this->thresholdManager->isThresholdReached($countryCode, $amount)) {
+            return new TaxInfo(null, null, false);
+        }
+
         $countryTax = $this->taxRuleProvider->getCountryRule($taxType, $address);
         $stateTax = $this->taxRuleProvider->getStateRule($taxType, $address, $amount);
 

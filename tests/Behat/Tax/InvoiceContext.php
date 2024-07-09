@@ -180,6 +180,30 @@ class InvoiceContext implements Context
     }
 
     /**
+     * @When there the latest invoice for :arg1 will have tax country is empty
+     */
+    public function thereTheLatestInvoiceForWillHaveTaxCountryIsEmpty($customerEmail)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $country = null;
+        /** @var InvoiceLine $line */
+        foreach ($invoice->getLines() as $line) {
+            $country = $line->getTaxCountry();
+        }
+
+        if ($country) {
+            throw new \Exception('Got country - '.$country);
+        }
+    }
+
+    /**
      * @Then there will be an invoice for a partial amount of :arg3 for :arg1 for :arg2
      */
     public function thereWillBeAnInvoiceForAPartialAmountOfForFor($amount, $planName, $customerEmail)
