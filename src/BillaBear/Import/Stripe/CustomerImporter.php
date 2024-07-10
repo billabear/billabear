@@ -10,7 +10,9 @@ namespace BillaBear\Import\Stripe;
 
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
+use BillaBear\Entity\Customer as CustomerEntity;
 use BillaBear\Entity\StripeImport;
+use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Repository\StripeImportRepositoryInterface;
@@ -30,6 +32,7 @@ class CustomerImporter
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private PaymentMethodsDataMapper $paymentMethodsFactory,
         private CustomerCreditImporter $customerCreditImporter,
+        private BrandSettingsRepositoryInterface $brandSettingsRepository,
     ) {
     }
 
@@ -38,6 +41,7 @@ class CustomerImporter
         $provider = $this->provider;
         $limit = 25;
         $lastId = $save ? $stripeImport->getLastId() : null;
+        $brand = $this->brandSettingsRepository->getByCode(CustomerEntity::DEFAULT_BRAND);
         do {
             $customerList = $provider->customers()->list($limit, $lastId);
             /** @var Customer $customerModel */
@@ -48,6 +52,9 @@ class CustomerImporter
                     $customer = null;
                 }
                 $customer = $this->factory->createCustomerFromObol($customerModel, $customer);
+                $customer->setBrand(CustomerEntity::DEFAULT_BRAND);
+                $customer->setBrandSettings($brand);
+
                 $this->customerRepository->save($customer);
                 $this->customerCreditImporter->importForCustomer($customer);
 
