@@ -3,6 +3,9 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.state.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+      <div class="m-5 text-end">
+        <router-link :to="{'name': 'app.finance.state.edit', params: {countryId: countryId,stateId: state.id}}" class="btn--main">{{ $t('app.state.view.edit') }}</router-link>
+      </div>
       <div class="mx-5">
         <div class="card-body">
           <div class="section-body">
@@ -174,11 +177,13 @@ export default {
       },
       taxRuleErrors: {},
       original_tax_rule: {},
+      countryId: null,
     }
   },
   mounted() {
 
     const id = this.$route.params.countryId
+    this.countryId = id;
     const stateId = this.$route.params.stateId
     axios.get("/app/country/"+id+"/state/"+stateId+"/view").then(response => {
       this.state = response.data.state;

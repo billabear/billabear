@@ -1,5 +1,6 @@
 export const STATE_VIEW_TRANSLATIONS = {
     title: "View State",
+    edit: "Edit",
     fields: {
         name: "Name",
         code: "Code",
