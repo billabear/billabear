@@ -14,6 +14,7 @@ use BillaBear\DataMappers\Tax\StateTaxRuleDataMapper;
 use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateState;
 use BillaBear\Dto\Request\App\Country\CreateStateTaxRule;
+use BillaBear\Dto\Request\App\Country\UpdateState;
 use BillaBear\Dto\Request\App\Country\UpdateStateTaxRule;
 use BillaBear\Dto\Response\App\Tax\StateView;
 use BillaBear\Repository\CountryRepositoryInterface;
@@ -182,5 +183,39 @@ class StateController
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/app/country/{id}/state/{stateId}/edit', methods: ['POST'])]
+    public function editState(
+        Request $request,
+        StateRepositoryInterface $stateRepository,
+        StateDataMapper $stateDataMapper,
+        ValidatorInterface $validator,
+        SerializerInterface $serializer
+    ): Response {
+        $this->getLogger()->info('Received request to edit state', [
+            'country_id' => $request->get('id'),
+            'state_id' => $request->get('stateId'),
+        ]);
+        try {
+            $entity = $stateRepository->findById($request->get('stateId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $createDto = $serializer->deserialize($request->getContent(), UpdateState::class, 'json');
+        $errors = $validator->validate($createDto);
+        $errorResponse = $this->handleErrors($errors);
+
+        if ($errorResponse instanceof Response) {
+            return $errorResponse;
+        }
+
+        $entity = $stateDataMapper->createEntity($createDto, $entity);
+        $stateRepository->save($entity);
+        $appDto = $stateDataMapper->createAppDto($entity);
+        $json = $serializer->serialize($appDto, 'json');
+
+        return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
     }
 }

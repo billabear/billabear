@@ -11,6 +11,7 @@ namespace BillaBear\DataMappers\Tax;
 use BillaBear\DataMappers\CountryDataMapper;
 use BillaBear\Dto\Generic\App\State as AppDto;
 use BillaBear\Dto\Request\App\Country\CreateState;
+use BillaBear\Dto\Request\App\Country\UpdateState;
 use BillaBear\Entity\State as Entity;
 use BillaBear\Repository\CountryRepositoryInterface;
 
@@ -22,7 +23,7 @@ class StateDataMapper
     {
     }
 
-    public function createEntity(CreateState $createState, ?Entity $entity = null): Entity
+    public function createEntity(CreateState|UpdateState $createState, ?Entity $entity = null): Entity
     {
         if (!$entity) {
             $entity = new Entity();
@@ -32,7 +33,9 @@ class StateDataMapper
         $entity->setName($createState->getName());
         $entity->setCode($createState->getCode());
         $entity->setThreshold($createState->getThreshold());
-        $entity->setCountry($this->countryRepository->findById($createState->getCountry()));
+        if ($createState instanceof CreateState) {
+            $entity->setCountry($this->countryRepository->findById($createState->getCountry()));
+        }
 
         return $entity;
     }
