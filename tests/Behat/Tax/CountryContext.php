@@ -59,7 +59,7 @@ class CountryContext implements Context
             'name' => $data['Name'],
             'code' => $data['Code'],
             'threshold' => intval($data['Threshold']),
-            'has_nexus' => boolval($data['Has Nexus'] ?? 'false'),
+            'collecting' => boolval($data['Collecting'] ?? 'false'),
             'country' => (string) $country->getId(),
         ];
 

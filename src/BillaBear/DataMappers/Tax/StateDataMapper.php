@@ -28,7 +28,7 @@ class StateDataMapper
             $entity = new Entity();
         }
 
-        $entity->setCollecting($createState->getHasNexus());
+        $entity->setCollecting($createState->getCollecting());
         $entity->setName($createState->getName());
         $entity->setCode($createState->getCode());
         $entity->setThreshold($createState->getThreshold());

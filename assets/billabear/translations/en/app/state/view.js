@@ -4,6 +4,7 @@ export const STATE_VIEW_TRANSLATIONS = {
         name: "Name",
         code: "Code",
         threshold: "Threshold",
+        collecting: "Collecting",
     },
     tax_rule: {
         title: "Tax Rules",

@@ -8,12 +8,12 @@
 
 namespace BillaBear\Dto\Request\App\Country;
 
-use BillaBear\Validator\Constraints\Country\StateExists;
+use BillaBear\Validator\Constraints\Country\CountryExists;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateState
 {
-    #[StateExists]
+    #[CountryExists]
     private $country;
 
     #[Assert\NotBlank()]
@@ -29,7 +29,7 @@ class CreateState
     private $threshold;
 
     #[Assert\Type('boolean')]
-    private $hasNexus;
+    private $collecting;
 
     public function getCountry()
     {
@@ -71,13 +71,13 @@ class CreateState
         $this->threshold = $threshold;
     }
 
-    public function getHasNexus()
+    public function getCollecting()
     {
-        return true === $this->hasNexus;
+        return true === $this->collecting;
     }
 
-    public function setHasNexus($hasNexus): void
+    public function setCollecting($collecting): void
     {
-        $this->hasNexus = $hasNexus;
+        $this->collecting = $collecting;
     }
 }

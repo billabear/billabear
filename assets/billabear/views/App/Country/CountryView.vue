@@ -90,7 +90,7 @@
         <div class="grid grid-cols-2">
           <h2 class="page-title">{{ $t('app.country.view.states.title') }}</h2>
           <div class="text-end mt-5 mr-5">
-            <button class="btn--main" @click="">{{ $t('app.country.view.states.add') }}</button>
+            <router-link :to="{name: 'app.finance.state.create', params: {countryId: country.id}}" class="btn--main">{{ $t('app.country.view.states.add') }}</router-link>
           </div>
         </div>
 

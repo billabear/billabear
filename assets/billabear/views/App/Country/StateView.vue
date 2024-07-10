@@ -16,6 +16,10 @@
                 <dd>{{ state.code }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.state.view.fields.collecting') }}</dt>
+                <dd>{{ state.collecting }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.state.view.fields.threshold') }}</dt>
                 <dd><Currency :amount="state.threshold" :currency="state.country.currency" /></dd>
               </div>

@@ -13,6 +13,8 @@ import CountryEdit from "../views/App/Country/CountryEdit.vue";
 import TaxTypeList from "../views/App/TaxType/TaxTypeList.vue";
 import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
 import StateView from "../views/App/Country/StateView.vue";
+import StateEdit from "../views/App/Country/StateEdit.vue";
+import StateCreate from "../views/App/Country/StateCreate.vue";
 
 export const AppFinanceRoutes  = [
     {
@@ -71,9 +73,19 @@ export const AppFinanceRoutes  = [
         component: CountryView
     },
     {
+        name: 'app.finance.state.create',
+        path: 'country/:id/state/create',
+        component: StateCreate
+    },
+    {
         name: 'app.finance.state.view',
         path: 'country/:countryId/state/:stateId/view',
         component: StateView
+    },
+    {
+        name: 'app.finance.state.edit',
+        path: 'country/:countryId/state/:stateId/edit',
+        component: StateEdit
     },
     {
         name: 'app.finance.country.edit',

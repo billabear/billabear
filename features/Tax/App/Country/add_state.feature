@@ -14,6 +14,6 @@ Feature: Add State
       | Country    | United States |
       | Name       | Texas         |
       | Code       | TX            |
-      | Has Nexus  | true          |
+      | Collecting | true          |
       | Threshold  | 1000          |
     Then there will be a state "Texas" in the country "United States"
