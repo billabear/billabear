@@ -12,7 +12,6 @@ use BillaBear\Entity\CountryTaxRule;
 use BillaBear\Entity\State;
 use BillaBear\Entity\StateTaxRule;
 use BillaBear\Entity\TaxType;
-use BillaBear\Exception\NoRateForCountryException;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\StateTaxRuleRepositoryInterface;
@@ -30,7 +29,7 @@ class TaxRuleProvider
     ) {
     }
 
-    public function getCountryRule(TaxType $taxType, Address $address, ?\DateTime $when = null): CountryTaxRule
+    public function getCountryRule(TaxType $taxType, Address $address, ?\DateTime $when = null): ?CountryTaxRule
     {
         if (!$when) {
             $when = new \DateTime();
@@ -38,7 +37,7 @@ class TaxRuleProvider
         try {
             $country = $this->countryRepository->getByIsoCode($address->getCountry());
         } catch (NoEntityFoundException $entityFoundException) {
-            throw new NoRateForCountryException(sprintf('No country entity found for %s', $address->getCountry()), previous: $entityFoundException);
+            return null;
         }
         $rules = $this->countryTaxRuleRepository->getForCountryAndTaxType($country, $taxType);
 
@@ -49,11 +48,7 @@ class TaxRuleProvider
         }
         $default = $this->countryTaxRuleRepository->getDefaultForCountryAndTaxType($country, $taxType);
 
-        if ($default) {
-            return $default;
-        }
-
-        throw new NoRateForCountryException(sprintf("No tax rate for '%s' found", $address->getCountry()));
+        return $default;
     }
 
     public function getStateRule(TaxType $taxType, Address $address, ?Money $amount, ?\DateTime $when = null): ?StateTaxRule

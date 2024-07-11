@@ -102,7 +102,7 @@ class TaxRateProvider implements TaxRateProviderInterface
         $stateTax = $this->taxRuleProvider->getStateRule($taxType, $address, $amount);
 
         $state = null;
-        $taxRate = $countryTax->getTaxRate();
+        $taxRate = $countryTax?->getTaxRate();
 
         if ($stateTax) {
             $state = ucwords($address->getRegion());
