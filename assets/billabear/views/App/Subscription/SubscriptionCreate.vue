@@ -71,7 +71,7 @@
             <input type="number" class="form-field" v-model="trial_length_days" :disabled="eligible_currency != null || !trial" />
           </div>
         </div>
-        <div class="form-field-submit-ctn">
+        <div class="form-field-submit-ctn mt-5">
           <button type="submit" class="btn--main" disabled v-if="price == null || subscription_plan == null">{{ $t('app.subscription.create.submit_btn') }}</button>
           <SubmitButton :in-progress="sendingInProgress" v-else>{{ $t('app.subscription.create.submit_btn') }}</SubmitButton>
         </div>
