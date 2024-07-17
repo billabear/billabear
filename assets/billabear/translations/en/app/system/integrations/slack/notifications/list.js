@@ -3,6 +3,7 @@ export const SYSTEM_INTEGRATIONS_SLACK_NOTIFICATIONS_LIST_TRANSLATIONS = {
     event: "Event",
     webhook: "Webhook",
     disable_btn: "Disable",
+    template: "Template",
     enable_btn: "Enable",
     no_notifications: "There are no slack notifications yet",
     next: "Next",
