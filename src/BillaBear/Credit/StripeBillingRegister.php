@@ -13,7 +13,9 @@ use BillaBear\Settings\StripeBillingTrait;
 use Obol\Model\Credit\CreditTransaction;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
+#[Lazy]
 class StripeBillingRegister
 {
     use StripeBillingTrait;

@@ -12,6 +12,7 @@ use BillaBear\Command\DevDemoDataCommand;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
+use BillaBear\Enum\CustomerType;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
@@ -34,11 +35,13 @@ class CustomerCreation
     ) {
     }
 
-    public function createData(OutputInterface $output): void
+    public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $faker = \Faker\Factory::create();
-        /** @var StripeClient $stripe */
-        $stripe = new StripeClient($this->stripeConfig['api_key']);
+        /* @var StripeClient $stripe */
+        if ($writeToStripe) {
+            $stripe = new StripeClient($this->stripeConfig['api_key']);
+        }
 
         $numberOfCustomers = DevDemoDataCommand::getNumberOfCustomers();
         $output->writeln('Starting to create customers');
@@ -65,24 +68,41 @@ class CustomerCreation
             $customer->setLocale($faker->locale);
             $customer->setBrandSettings($brandSettings);
             $customer->setCreatedAt(new \DateTime('now'));
+            $customer->setType($faker->randomElement([CustomerType::BUSINESS, CustomerType::INDIVIDUAL]));
 
-            $this->externalRegister->register($customer);
+            if ($writeToStripe) {
+                $this->externalRegister->register($customer);
+            } else {
+                $customer->setExternalCustomerReference('cus_'.$faker->text(7));
+            }
             $this->customerRepository->save($customer);
 
-            $stripeSource = $stripe->customers->createSource($customer->getExternalCustomerReference(), [
-                'source' => 'tok_visa', // Test card token obtained from Stripe.js or Elements
-            ]);
-
-            $paymentCard = new PaymentCard();
-            $paymentCard->setLastFour($stripeSource->last4);
-            $paymentCard->setProvider('stripe');
-            $paymentCard->setBrand($stripeSource->brand);
-            $paymentCard->setExpiryYear($stripeSource->exp_year);
-            $paymentCard->setExpiryMonth($stripeSource->exp_month);
-            $paymentCard->setStoredPaymentReference($stripeSource->id);
-            $paymentCard->setStoredCustomerReference($stripeSource->customer);
-            $paymentCard->setCreatedAt(new \DateTime('now'));
-            $paymentCard->setCustomer($customer);
+            if ($writeToStripe) {
+                $stripeSource = $stripe->customers->createSource($customer->getExternalCustomerReference(), [
+                    'source' => 'tok_visa', // Test card token obtained from Stripe.js or Elements
+                ]);
+                $paymentCard = new PaymentCard();
+                $paymentCard->setLastFour($stripeSource->last4);
+                $paymentCard->setProvider('stripe');
+                $paymentCard->setBrand($stripeSource->brand);
+                $paymentCard->setExpiryYear($stripeSource->exp_year);
+                $paymentCard->setExpiryMonth($stripeSource->exp_month);
+                $paymentCard->setStoredPaymentReference($stripeSource->id);
+                $paymentCard->setStoredCustomerReference($stripeSource->customer);
+                $paymentCard->setCreatedAt(new \DateTime('now'));
+                $paymentCard->setCustomer($customer);
+            } else {
+                $paymentCard = new PaymentCard();
+                $paymentCard->setLastFour($faker->numerify('####'));
+                $paymentCard->setProvider('stripe');
+                $paymentCard->setBrand($faker->randomElement(['visa', 'mastercard']));
+                $paymentCard->setExpiryYear($faker->numberBetween(24, 55));
+                $paymentCard->setExpiryMonth($faker->numberBetween(1, 12));
+                $paymentCard->setStoredPaymentReference('card_'.$faker->text(7));
+                $paymentCard->setStoredCustomerReference($customer->getExternalCustomerReference());
+                $paymentCard->setCreatedAt(new \DateTime('now'));
+                $paymentCard->setCustomer($customer);
+            }
 
             $this->paymentCardRepository->save($paymentCard);
             $progressBar->advance();

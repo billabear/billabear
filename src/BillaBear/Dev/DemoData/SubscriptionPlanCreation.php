@@ -8,10 +8,11 @@
 
 namespace BillaBear\Dev\DemoData;
 
-use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\Product;
+use BillaBear\Entity\Price;
+use BillaBear\Entity\Product;
+use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Billing\Entity\SubscriptionFeature;
-use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
@@ -31,10 +32,11 @@ class SubscriptionPlanCreation
         private ProductRegisterInterface $productRegister,
         private PriceRepositoryInterface $priceRepository,
         private PriceRegisterInterface $priceRegister,
+        private TaxTypeRepositoryInterface $taxTypeRepository,
     ) {
     }
 
-    public function createData(OutputInterface $output): void
+    public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $output->writeln("\nCreate features");
         $faker = \Faker\Factory::create();
@@ -74,10 +76,13 @@ class SubscriptionPlanCreation
         $progressBar->start();
         $products = [];
         $prices = [];
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 3; ++$i) {
             $product = new Product();
             $product->setName($faker->domainName);
-            $this->productRegister->registerProduct($product);
+            $product->setTaxType($this->taxTypeRepository->getDefault());
+            if ($writeToStripe) {
+                $this->productRegister->registerProduct($product);
+            }
             $this->productRepository->save($product);
             $products[] = $product;
             $prices[$product->getName()] = [];
@@ -94,7 +99,10 @@ class SubscriptionPlanCreation
                 $price->setPublic(true);
                 $price->setSchedule('month');
                 $price->setRecurring(true);
-                $this->priceRegister->registerPrice($price);
+
+                if ($writeToStripe) {
+                    $this->priceRegister->registerPrice($price);
+                }
                 $this->priceRepository->save($price);
                 $prices[$product->getName()][] = $price;
 
@@ -107,7 +115,9 @@ class SubscriptionPlanCreation
                 $price->setPublic(true);
                 $price->setSchedule('year');
                 $price->setRecurring(true);
-                $this->priceRegister->registerPrice($price);
+                if ($writeToStripe) {
+                    $this->priceRegister->registerPrice($price);
+                }
                 $this->priceRepository->save($price);
                 $prices[$product->getName()][] = $price;
             }

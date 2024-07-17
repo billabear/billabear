@@ -14,7 +14,9 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Obol\Model\CancelSubscription;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Obol\SubscriptionFactory;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
+#[Lazy]
 class DisableStripeBilling implements ExecutorInterface
 {
     public function __construct(

@@ -25,8 +25,10 @@ use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+#[Lazy]
 class InvoiceCharger
 {
     use LoggerAwareTrait;

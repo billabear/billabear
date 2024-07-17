@@ -53,7 +53,8 @@ class DevDemoDataCommand extends Command
     {
         $this->addOption('date', mode: InputOption::VALUE_REQUIRED, description: 'The starting date to add new customers and subscriptions', default: '-18 months')
             ->addOption('count', mode: InputOption::VALUE_REQUIRED, description: 'The number of users to add', default: 3000)
-            ->addOption('products', mode: InputOption::VALUE_OPTIONAL, description: 'If products and features are to be added', default: 'true');
+            ->addOption('products', mode: InputOption::VALUE_OPTIONAL, description: 'If products and features are to be added', default: 'true')
+            ->addOption('stripe', mode: InputOption::VALUE_OPTIONAL, description: 'If data needs to be added to Stripe. (Takes longer)', default: 'true');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -61,14 +62,15 @@ class DevDemoDataCommand extends Command
         self::$count = $input->getOption('count');
         self::$date = new \DateTime($input->getOption('date'));
         $products = $input->getOption('products');
+        $writeToStripe = 'true' === strtolower($input->getOption('stripe'));
 
         $output->writeln('Start creating demo data');
-        $this->customerCreation->createData($output);
+        $this->customerCreation->createData($output, $writeToStripe);
         if ('true' === strtolower($products)) {
-            $this->subscriptionPlanCreation->createData($output);
+            $this->subscriptionPlanCreation->createData($output, $writeToStripe);
         }
-        $this->subscriptionCreation->createData($output);
-        $this->invoiceCreation->createData($output);
+        $this->subscriptionCreation->createData($output, $writeToStripe);
+        $this->invoiceCreation->createData($output, $writeToStripe);
         $this->estimatesGeneration->generate();
         $this->createSubscriptionCountStats->generate();
 

@@ -18,7 +18,9 @@ use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Factory\EntityFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
+#[Lazy]
 class PaymentFactory implements PaymentFactoryInterface
 {
     public function __construct(

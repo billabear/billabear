@@ -13,7 +13,9 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use Obol\Model\Address;
 use Obol\Model\Customer as ObolCustomer;
 use Obol\Provider\ProviderInterface;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
+#[Lazy]
 class ObolRegister implements ExternalRegisterInterface
 {
     public function __construct(private ProviderInterface $provider, private SettingsRepositoryInterface $settingsRepository)

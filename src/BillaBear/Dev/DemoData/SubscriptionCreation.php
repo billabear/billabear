@@ -35,7 +35,7 @@ class SubscriptionCreation
     ) {
     }
 
-    public function createData(OutputInterface $output): void
+    public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $output->writeln("\nCreate Subscriptions");
         $faker = \Faker\Factory::create();
