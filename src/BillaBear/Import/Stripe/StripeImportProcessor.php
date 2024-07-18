@@ -8,6 +8,7 @@
 
 namespace BillaBear\Import\Stripe;
 
+use BillaBear\Notification\Email\EmailSenderFactoryInterface;
 use BillaBear\Repository\StripeImportRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -23,6 +24,7 @@ class StripeImportProcessor
     public function __construct(
         private WorkflowInterface $stripeImportStateMachine,
         private StripeImportRepositoryInterface $stripeImportRepository,
+        private EmailSenderFactoryInterface $emailSenderFactory,
     ) {
     }
 
@@ -33,6 +35,7 @@ class StripeImportProcessor
         if (!$request) {
             return;
         }
+        $this->emailSenderFactory->disable();
 
         $fiveMinutesAgo = new \DateTime('-2 minutes');
 

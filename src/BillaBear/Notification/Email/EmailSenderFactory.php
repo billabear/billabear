@@ -27,8 +27,15 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
 {
     use LoggerAwareTrait;
 
+    private bool $enabled = true;
+
     public function __construct(private SettingsRepositoryInterface $settingsRepository, private MailerInterface $mailer)
     {
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
     }
 
     public function create(): EmailSenderInterface
@@ -36,6 +43,13 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
         try {
             $notificationSettings = $this->settingsRepository->getDefaultSettings()->getNotificationSettings();
         } catch (TableNotFoundException $e) {
+            return new NullEmailSender();
+        }
+
+        // Added to stop emails being sent during batch re-processing like imports.
+        if (!$this->enabled) {
+            $this->getLogger()->debug('Email sending is disabled so null email sender returned');
+
             return new NullEmailSender();
         }
 
