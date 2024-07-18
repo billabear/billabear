@@ -13,6 +13,8 @@ use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Pdf\InvoicePdfGenerator;
+use BillaBear\Repository\SettingsRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -22,11 +24,14 @@ use Symfony\Component\Workflow\Event\Event;
 #[Autoconfigure(lazy: true)]
 class SendCustomerNotificationsTransition implements EventSubscriberInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
         private PayLinkGeneratorInterface $payLinkGenerator,
         private InvoicePdfGenerator $invoicePdfGenerator,
+        private SettingsRepositoryInterface $settingsRepository,
     ) {
     }
 
@@ -48,7 +53,13 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
         if (!$brand->getNotificationSettings()->getInvoiceCreated()) {
             return;
         }
+        $settings = $this->settingsRepository->getDefaultSettings();
 
+        if (!$settings->getNotificationSettings()?->getSendCustomerNotifications()) {
+            $this->getLogger()->info('Sending customer notifications are disabled in the settings');
+
+            return;
+        }
         $fullPayLink = $this->payLinkGenerator->generatePayLink($invoice);
 
         $pdf = $this->invoicePdfGenerator->generate($invoice);
@@ -56,6 +67,7 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
 
         $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $invoiceCreatedEmail);
+        $email->addAttachment($attachment);
         $this->emailSender->send($email);
     }
 }

@@ -49,7 +49,7 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
         $settings = $this->settingsRepository->getDefaultSettings();
 
         if (!$settings->getNotificationSettings()?->getSendCustomerNotifications()) {
-            $this->getLogger()->info('Starting customer notifications are disabled in the settings');
+            $this->getLogger()->info('Sending customer notifications are disabled in the settings');
 
             return;
         }

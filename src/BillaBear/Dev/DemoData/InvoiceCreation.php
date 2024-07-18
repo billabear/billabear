@@ -84,7 +84,7 @@ class InvoiceCreation
                         if ($writeToStripe) {
                             $this->invoiceCharger->chargeInvoice($invoice, createdAt: $subscription->getStartOfCurrentPeriod());
                         } else {
-                            $this->createPaymentLocally($invoice, $subscription);
+                            $this->createPaymentLocally($invoice, $subscription, $lastStart);
                         }
                     } catch (PaymentFailureException) {
                     }
@@ -94,7 +94,7 @@ class InvoiceCreation
         $progressBar->finish();
     }
 
-    public function createPaymentLocally(\BillaBear\Entity\Invoice $invoice, Subscription $subscription): void
+    public function createPaymentLocally(\BillaBear\Entity\Invoice $invoice, Subscription $subscription, \DateTime $lastStart): void
     {
         $faker = \Faker\Factory::create();
         $paymentDetails = new PaymentDetails();
@@ -105,7 +105,7 @@ class InvoiceCreation
         /** @var Payment $payment */
         $payment = $this->paymentFactory->fromSubscriptionCreation($paymentDetails, $invoice->getCustomer());
 
-        $invoice->setPaidAt(new \DateTime('now'));
+        $invoice->setPaidAt($lastStart);
 
         $payment->addSubscription($subscription);
         $payment->setInvoice($invoice);

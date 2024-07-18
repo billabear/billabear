@@ -45,7 +45,7 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
         $customer = $cancellationRequest->getSubscription()->getCustomer();
 
         if (!$customer->getBrandSettings()->getNotificationSettings()->getSubscriptionCreation()) {
-            $this->getLogger()->info('Brand has subscription cancellation email');
+            $this->getLogger()->info('Brand has not subscription cancellation email');
 
             return;
         }
@@ -54,7 +54,7 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
         $settings = $this->settingsRepository->getDefaultSettings();
 
         if (!$settings->getNotificationSettings()?->getSendCustomerNotifications()) {
-            $this->getLogger()->info('Starting customer notifications are disabled in the settings');
+            $this->getLogger()->info('Sending customer notifications are disabled in the settings');
 
             return;
         }
