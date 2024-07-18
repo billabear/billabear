@@ -19,6 +19,7 @@ use BillaBear\Dto\Request\App\Country\CreateCountryTaxRule;
 use BillaBear\Dto\Request\App\Country\UpdateCountry;
 use BillaBear\Dto\Request\App\Country\UpdateCountryTaxRule;
 use BillaBear\Dto\Response\App\Country\CountryView;
+use BillaBear\Filters\CountryList;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
@@ -47,7 +48,7 @@ class CountryController
     ): Response {
         $this->getLogger()->info('Received request to list countries');
 
-        return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper, 'id');
+        return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper, 'id', filterList: new CountryList());
     }
 
     #[Route('/app/country', methods: ['POST'])]

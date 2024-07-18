@@ -12,9 +12,8 @@ export const COUNTRY_LIST_TRANSLATIONS = {
     view: "View",
     filter: {
         title: "Filters",
-        email: "Email",
-        reference: "Reference",
-        external_reference: "External Reference",
+        name: "Name",
+        code: "Code",
         button: "Filters",
         search: "Filter"
     },

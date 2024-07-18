@@ -117,6 +117,16 @@ export default {
       active_filters: [],
       per_page: "10",
       filters: {
+        name: {
+          label: 'app.country.list.filter.name',
+          type: 'text',
+          value: null
+        },
+        code: {
+          label: 'app.country.list.filter.code',
+          type: 'text',
+          value: null
+        },
       }
     }
   },
