@@ -146,7 +146,7 @@ final class Version20240719093721 extends AbstractMigration
         $this->addSql('ALTER TABLE payment ADD country VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE payment ADD state VARCHAR(255) DEFAULT NULL');
         $this->addSql('CREATE INDEX threshold_idx ON payment (country, created_at)');
-        $this->addSql('ALTER TABLE price ADD including_tax BOOLEAN DEFAULT NULL');
+        $this->addSql('ALTER TABLE price ADD including_tax BOOLEAN DEFAULT false');
         $this->addSql('ALTER TABLE product ADD tax_type_id UUID DEFAULT NULL');
         $this->addSql('ALTER TABLE product ADD physical BOOLEAN DEFAULT NULL');
         $this->addSql('ALTER TABLE product DROP tax_type');
