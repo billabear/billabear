@@ -8,12 +8,14 @@
 
 namespace BillaBear\Dto\Request\App\Integrations\Slack;
 
+use BillaBear\Validator\Constraints\Integrations\SlackWebhookUnique;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateSlackWebhook
 {
     #[Assert\Type('string')]
     #[Assert\NotBlank]
+    #[SlackWebhookUnique]
     private $name;
 
     #[Assert\Type('string')]

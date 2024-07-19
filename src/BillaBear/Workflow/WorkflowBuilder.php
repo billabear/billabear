@@ -77,7 +77,9 @@ class WorkflowBuilder
 
     private function getPlaceNames(array $places): array
     {
-        return array_map(function (PlaceInterface $place) { return $place->getName(); }, $places);
+        return array_map(function (PlaceInterface $place) {
+            return $place->getName();
+        }, $places);
     }
 
     /**

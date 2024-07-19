@@ -53,7 +53,7 @@ export default {
       this.errors={};
       axios.post("/app/integrations/slack/webhook/create", this.webhook).then(response => {
         this.inProgress = false;
-        this.$router.push({'name': 'app.system.integrations.slack'})
+        this.$router.push({'name': 'app.system.integrations.slack.webhook'})
       }).catch(error => {
         this.inProgress = false;
         this.errors = error.response.data.errors;

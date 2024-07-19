@@ -19,7 +19,7 @@
                 <option>subscription_cancelled</option>
                 <option>trial_started</option>
                 <option>trial_ended</option>
-                <option>trial_extended</option>
+                <option>trial_converted</option>
               </select>
               <p class="form-field-help">{{ $t('app.system.integrations.slack.notifications.create.help_info.event') }}</p>
             </div>
@@ -76,6 +76,7 @@ export default {
   },
   methods: {
     changeEvent: function () {
+
       if (this.webhook.event == "customer_created") {
         this.webhook.template = "A new customer ({{customer.email}}) has been created";
       } else if (this.webhook.event === "payment_processed") {
@@ -86,6 +87,12 @@ export default {
         this.webhook.template = "Successfully subscription {{subscription.plan_name}} for {{customer.email}}";
       } else if (this.webhook.event === "subscription_cancelled") {
         this.webhook.template = "Subscription {{subscription.plan_name}} for {{customer.email}} cancelled";
+      } else if (this.webhook.event === "trial_started") {
+        this.webhook.template = "Trial started for {{customer.email}} for {{subscription.plan_name}}";
+      } else if (this.webhook.event === "trial_ended") {
+        this.webhook.template = "Trial ended for {{customer.email}} for {{subscription.plan_name}}";
+      } else if (this.webhook.event === "trial converted") {
+        this.webhook.template = "Trial converted into a subscription for {{customer.email}} for {{subscription.plan_name}}";
       }
     },
     save: function () {
@@ -93,7 +100,7 @@ export default {
       this.errors={};
       axios.post("/app/integrations/slack/notification/create", this.webhook).then(response => {
         this.inProgress = false;
-        this.$router.push({'name': 'app.system.integrations.slack'})
+        this.$router.push({'name': 'app.system.integrations.slack.notification'})
       }).catch(error => {
         this.inProgress = false;
         this.errors = error.response.data.errors;

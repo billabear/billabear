@@ -14,8 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'process_trial_extended')]
-class TrialExtendedProcess implements WorkflowProcessInterface
+#[ORM\Table(name: 'process_trial_converted')]
+class TrialConvertedProcess implements WorkflowProcessInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]

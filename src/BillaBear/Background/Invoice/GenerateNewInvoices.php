@@ -105,7 +105,7 @@ class GenerateNewInvoices
                 $activeSubscription->setUpdatedAt(new \DateTime('now'));
                 if (SubscriptionStatus::TRIAL_ACTIVE == $activeSubscription->getStatus()) {
                     $this->customerSubscriptionEventCreator->create(
-                        CustomerSubscriptionEventType::TRIAL_EXTENDED,
+                        CustomerSubscriptionEventType::TRIAL_CONVERTED,
                         $activeSubscription->getCustomer(),
                         $activeSubscription
                     );

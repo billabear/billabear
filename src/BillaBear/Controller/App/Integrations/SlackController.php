@@ -43,7 +43,7 @@ class SlackController
         SerializerInterface $serializer,
     ): JsonResponse {
         $this->getLogger()->info('Received app request to show create slack notification');
-        $webhooks = $repository->getAll();
+        $webhooks = $repository->getAllEnable();
         $dtos = array_map([$dataMapper, 'createAppDto'], $webhooks);
         $view = new CreateSlackNotificationView();
         $view->setWebhooks($dtos);

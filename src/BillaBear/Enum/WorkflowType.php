@@ -14,7 +14,7 @@ enum WorkflowType: string
     case CREATE_SUBSCRIPTION = 'create_subscription';
     case TRIAL_STARTED = 'trial_started';
     case TRIAL_ENDED = 'trial_ended';
-    case TRIAL_EXTENDED = 'trial_extended';
+    case TRIAL_CONVERTED = 'trial_extended';
     case CREATE_PAYMENT = 'create_payment';
     case CREATE_CHARGEBACK = 'create_chargeback';
     case CREATE_REFUND = 'create_refund';

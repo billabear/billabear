@@ -10,14 +10,14 @@ namespace BillaBear\Dev\DemoData;
 
 use BillaBear\Command\DevDemoDataCommand;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Price;
+use BillaBear\Entity\Subscription;
+use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
-use BillaBear\Stats\SubscriptionCreationStats;
+use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\PaymentCard;
-use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -31,7 +31,7 @@ class SubscriptionCreation
         private SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,
-        private SubscriptionCreationStats $subscriptionCreationStats,
+        private SubscriptionCreationProcessor $subscriptionCreationProcessor,
     ) {
     }
 
@@ -117,7 +117,14 @@ class SubscriptionCreation
 
                     $this->subscriptionRepository->save($subscription);
 
-                    $this->subscriptionCreationStats->handleStats($subscription);
+                    $process = new \BillaBear\Entity\SubscriptionCreation();
+                    $process->setSubscription($subscription);
+                    $process->setCreatedAt($startDate);
+                    $process->setState('started');
+                    $this->subscriptionCreationProcessor->process($process);
+                }
+                if ($totalCount <= $progressBar->getProgress()) {
+                    break 2;
                 }
             }
             $origStartDate->modify('+1 month');

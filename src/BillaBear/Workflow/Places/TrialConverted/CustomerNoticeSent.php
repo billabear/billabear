@@ -6,7 +6,7 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Workflow\Places\TrialExtended;
+namespace BillaBear\Workflow\Places\TrialConverted;
 
 use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
@@ -25,7 +25,7 @@ class CustomerNoticeSent implements PlaceInterface
 
     public function getWorkflow(): WorkflowType
     {
-        return WorkflowType::TRIAL_EXTENDED;
+        return WorkflowType::TRIAL_CONVERTED;
     }
 
     public function getToTransitionName(): string

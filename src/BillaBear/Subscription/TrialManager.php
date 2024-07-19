@@ -10,8 +10,8 @@ namespace BillaBear\Subscription;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
+use BillaBear\Entity\Processes\TrialConvertedProcess;
 use BillaBear\Entity\Processes\TrialEndedProcess;
-use BillaBear\Entity\Processes\TrialExtendedProcess;
 use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
@@ -84,7 +84,7 @@ class TrialManager
         // Don't charge them just now, wait until the trial is over.
         $this->subscriptionRepository->save($subscription);
 
-        $process = new TrialExtendedProcess();
+        $process = new TrialConvertedProcess();
         $process->setSubscription($subscription);
         $process->setCreatedAt(new \DateTime());
         $process->setState('started');

@@ -13,3 +13,13 @@ Feature: Create Slack Webhook
       | Name    | A Test Webhook      |
       | Webhook | https://example.org |
     Then there will be a slack webhook called "A Test Webhook"
+
+  Scenario:
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the following slack webhooks exist:
+      | Name        | Webhook |
+      | DevChat     | https://example.org |
+    When I create a slack webhook with:
+      | Name    | DevChat      |
+      | Webhook | https://example.org |
+    Then there should be an error for "name"

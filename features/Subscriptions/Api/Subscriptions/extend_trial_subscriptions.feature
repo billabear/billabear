@@ -48,7 +48,7 @@ Feature: Extend trial subscription
      | Price Currency | USD   |
      | Price Schedule | month |
     Then the subscription "Test Plan" for "customer.one@example.org" will be active
-    Then there should be a trial extended event for "customer.one@example.org"
+    Then there should be a trial converted event for "customer.one@example.org"
     And the trial extended daily stat for the day should be 1
     And the trial extended monthly stat for the day should be 1
     And the trial extended yearly stat for the day should be 1

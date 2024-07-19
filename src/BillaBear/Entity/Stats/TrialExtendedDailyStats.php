@@ -11,7 +11,7 @@ namespace BillaBear\Entity\Stats;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
-#[ORM\Table('stats_trial_extended_daily')]
+#[ORM\Table('stats_trial_converted_daily')]
 class TrialExtendedDailyStats extends AbstractStats
 {
 }

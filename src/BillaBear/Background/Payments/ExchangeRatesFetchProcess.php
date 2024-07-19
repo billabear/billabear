@@ -10,14 +10,12 @@ namespace BillaBear\Background\Payments;
 
 use BillaBear\Payment\ExchangeRates\ProviderInterface;
 use BillaBear\Repository\ExchangeRatesRepositoryInterface;
-use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
 class ExchangeRatesFetchProcess
 {
     public function __construct(
         private ProviderInterface $provider,
-        private SettingsRepositoryInterface $settingsRepository,
         private ExchangeRatesRepositoryInterface $repository,
         private PriceRepositoryInterface $priceRepository,
     ) {

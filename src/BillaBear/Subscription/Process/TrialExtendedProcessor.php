@@ -8,7 +8,7 @@
 
 namespace BillaBear\Subscription\Process;
 
-use BillaBear\Entity\Processes\TrialExtendedProcess;
+use BillaBear\Entity\Processes\TrialConvertedProcess;
 use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\Processes\TrialExtendedProcessRepositoryInterface;
 use BillaBear\Workflow\WorkflowProcessor;
@@ -21,8 +21,8 @@ class TrialExtendedProcessor
     ) {
     }
 
-    public function process(TrialExtendedProcess $request): void
+    public function process(TrialConvertedProcess $request): void
     {
-        $this->workflowProcessor->process($request, WorkflowType::TRIAL_EXTENDED, $this->trialExtendedProcessRepository);
+        $this->workflowProcessor->process($request, WorkflowType::TRIAL_CONVERTED, $this->trialExtendedProcessRepository);
     }
 }

@@ -17,4 +17,11 @@ interface SlackWebhookRepositoryInterface extends CrudRepositoryInterface
      * @return SlackWebhook[]
      */
     public function getAll(): array;
+
+    /**
+     * @return SlackWebhook[]
+     */
+    public function getAllEnable(): array;
+
+    public function getByName(string $name): SlackWebhook;
 }

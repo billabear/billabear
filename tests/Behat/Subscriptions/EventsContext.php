@@ -62,11 +62,11 @@ class EventsContext implements Context
     }
 
     /**
-     * @Then there should be a trial extended event for :arg1
+     * @Then there should be a trial converted event for :arg1
      */
     public function thereShouldBeATrialExtendedEventFor($arg1)
     {
-        $this->checkEventExists(CustomerSubscriptionEventType::TRIAL_EXTENDED, $arg1);
+        $this->checkEventExists(CustomerSubscriptionEventType::TRIAL_CONVERTED, $arg1);
     }
 
     /**
