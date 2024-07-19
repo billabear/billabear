@@ -47,10 +47,10 @@ final class Version20240719093721 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_135A2C129A1887DC ON process_trial_ended (subscription_id)');
         $this->addSql('COMMENT ON COLUMN process_trial_ended.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN process_trial_ended.subscription_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE process_trial_extended (id UUID NOT NULL, subscription_id UUID DEFAULT NULL, state VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, error VARCHAR(255) DEFAULT NULL, has_error BOOLEAN DEFAULT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX IDX_27826F0F9A1887DC ON process_trial_extended (subscription_id)');
-        $this->addSql('COMMENT ON COLUMN process_trial_extended.id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN process_trial_extended.subscription_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE process_trial_converted (id UUID NOT NULL, subscription_id UUID DEFAULT NULL, state VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, error VARCHAR(255) DEFAULT NULL, has_error BOOLEAN DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_27826F0F9A1887DC ON process_trial_converted (subscription_id)');
+        $this->addSql('COMMENT ON COLUMN process_trial_converted.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN process_trial_converted.subscription_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE process_trial_started (id UUID NOT NULL, subscription_id UUID DEFAULT NULL, state VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, error VARCHAR(255) DEFAULT NULL, has_error BOOLEAN DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E6EBEC199A1887DC ON process_trial_started (subscription_id)');
         $this->addSql('COMMENT ON COLUMN process_trial_started.id IS \'(DC2Type:uuid)\'');
@@ -112,7 +112,7 @@ final class Version20240719093721 extends AbstractMigration
         $this->addSql('ALTER TABLE customer_subscription_events ADD CONSTRAINT FK_A611B9619A1887DC FOREIGN KEY (subscription_id) REFERENCES subscription (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE customer_subscription_events ADD CONSTRAINT FK_A611B96135AE3EF9 FOREIGN KEY (done_by_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE process_trial_ended ADD CONSTRAINT FK_135A2C129A1887DC FOREIGN KEY (subscription_id) REFERENCES subscription (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE process_trial_extended ADD CONSTRAINT FK_27826F0F9A1887DC FOREIGN KEY (subscription_id) REFERENCES subscription (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE process_trial_converted ADD CONSTRAINT FK_27826F0F9A1887DC FOREIGN KEY (subscription_id) REFERENCES subscription (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE process_trial_started ADD CONSTRAINT FK_E6EBEC199A1887DC FOREIGN KEY (subscription_id) REFERENCES subscription (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE slack_notification ADD CONSTRAINT FK_4FFC6C91B2A257EF FOREIGN KEY (slack_webhook_id) REFERENCES slack_webhook (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE state ADD CONSTRAINT FK_A393D2FBF92F3E70 FOREIGN KEY (country_id) REFERENCES country (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -192,7 +192,7 @@ final class Version20240719093721 extends AbstractMigration
         $this->addSql('ALTER TABLE customer_subscription_events DROP CONSTRAINT FK_A611B9619A1887DC');
         $this->addSql('ALTER TABLE customer_subscription_events DROP CONSTRAINT FK_A611B96135AE3EF9');
         $this->addSql('ALTER TABLE process_trial_ended DROP CONSTRAINT FK_135A2C129A1887DC');
-        $this->addSql('ALTER TABLE process_trial_extended DROP CONSTRAINT FK_27826F0F9A1887DC');
+        $this->addSql('ALTER TABLE process_trial_converted DROP CONSTRAINT FK_27826F0F9A1887DC');
         $this->addSql('ALTER TABLE process_trial_started DROP CONSTRAINT FK_E6EBEC199A1887DC');
         $this->addSql('ALTER TABLE slack_notification DROP CONSTRAINT FK_4FFC6C91B2A257EF');
         $this->addSql('ALTER TABLE state DROP CONSTRAINT FK_A393D2FBF92F3E70');
@@ -203,7 +203,7 @@ final class Version20240719093721 extends AbstractMigration
         $this->addSql('DROP TABLE country_tax_rule');
         $this->addSql('DROP TABLE customer_subscription_events');
         $this->addSql('DROP TABLE process_trial_ended');
-        $this->addSql('DROP TABLE process_trial_extended');
+        $this->addSql('DROP TABLE process_trial_converted');
         $this->addSql('DROP TABLE process_trial_started');
         $this->addSql('DROP TABLE slack_notification');
         $this->addSql('DROP TABLE slack_webhook');
