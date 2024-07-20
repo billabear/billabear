@@ -11,6 +11,7 @@ import InternalApp from "../views/App/InternalApp.vue";
 import StartingPoint from "../views/Install/StartingPoint.vue";
 import StripeNoKey from "../views/Install/StripeNoKey.vue";
 import StripeInvalid from "../views/Install/StripeInvalid.vue";
+import LoginLink from "../views/Public/LoginLink.vue";
 
 
 export const router = createRouter({
@@ -18,6 +19,7 @@ export const router = createRouter({
     routes: [
         { path: '/', name: 'public.index', component: Login },
         { path: '/login', name: 'public.login', component: Login },
+        { path: '/login-link', name: 'public.login_link', component: LoginLink },
         { path: '/signup', name: 'public.signup', component: Signup },
         { path: '/signup/:code', name: 'public.signup_invite', component: Signup },
         { path: '/forgot-password', name: 'public.forgot_password', component: ForgotPassword },
