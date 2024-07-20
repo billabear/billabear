@@ -1,6 +1,247 @@
-export const GERMAN_TRANSLATIONS = {
+export const GERMAN_TRANSLATIONS ={
   "global": {
-    "loading": "Laden"
+    "loading": "Laden",
+    "country": {
+      "AU": "Australien",
+      "BE": "Belgien",
+      "CA": "Kanada",
+      "HR": "Kroatien",
+      "CZ": "Tschechische Republik",
+      "DK": "Dänemark",
+      "EE": "Estland",
+      "FI": "Finnland",
+      "FR": "Frankreich",
+      "DE": "Deutschland",
+      "GR": "Griechenland",
+      "HU": "Ungarn",
+      "IS": "Island",
+      "LV": "Lettland",
+      "LI": "Liechtenstein",
+      "LT": "Litauen",
+      "LU": "Luxemburg",
+      "GB": "Vereinigtes Königreich",
+      "US": "Vereinigte Staaten",
+      "NL": "Niederlande",
+      "RO": "Rumänien",
+      "SK": "Slowakei",
+      "SI": "Slowenien",
+      "ES": "Spanien",
+      "SE": "Schweden",
+      "AF": "Afghanistan",
+      "AL": "Albanien",
+      "DZ": "Algerien",
+      "AD": "Andorra",
+      "AO": "Angola",
+      "AI": "Anguilla",
+      "AQ": "Antarktis",
+      "AG": "Antigua und Barbuda",
+      "AR": "Argentinien",
+      "AM": "Armenien",
+      "AW": "Aruba",
+      "AT": "Österreich",
+      "AZ": "Aserbaidschan",
+      "BS": "Bahamas",
+      "BH": "Bahrain",
+      "BD": "Bangladesch",
+      "BB": "Barbados",
+      "BY": "Weißrussland",
+      "BZ": "Belize",
+      "BJ": "Benin",
+      "BM": "Bermuda",
+      "BT": "Bhutan",
+      "BO": "Bolivien",
+      "BA": "Bosnien und Herzegowina",
+      "BW": "Botswana",
+      "BR": "Brasilien",
+      "IO": "Britisches Territorium im Indischen Ozean",
+      "BN": "Brunei Darussalam",
+      "BG": "Bulgarien",
+      "BF": "Burkina Faso",
+      "BI": "Burundi",
+      "CV": "Cabo Verde",
+      "KH": "Kambodscha",
+      "CM": "Kamerun",
+      "KY": "Kaimaninseln",
+      "CF": "Zentralafrikanische Republik",
+      "TD": "Chad",
+      "CL": "Chile",
+      "CN": "China",
+      "CX": "Weihnachtsinsel",
+      "CC": "Cocos (Keeling) Inseln",
+      "CO": "Kolumbien",
+      "KM": "Komoren",
+      "CG": "Kongo",
+      "CD": "Kongo, Demokratische Republik",
+      "CK": "Cookinseln",
+      "CR": "Costa Rica",
+      "CI": "Côte d'Ivoire",
+      "CU": "Kuba",
+      "CY": "Zypern",
+      "DJ": "Dschibuti",
+      "DM": "Dominica",
+      "DO": "Dominikanische Republik",
+      "EC": "Ecuador",
+      "EG": "Ägypten",
+      "SV": "El Salvador",
+      "GQ": "Äquatorialguinea",
+      "ER": "Eritrea",
+      "SZ": "Eswatini",
+      "ET": "Äthiopien",
+      "FK": "Falklandinseln (Malwinen)",
+      "FO": "Färöer Inseln",
+      "FJ": "Fidschi",
+      "GF": "Französisch-Guayana",
+      "PF": "Französisch-Polynesien",
+      "GA": "Gabun",
+      "GM": "Gambia",
+      "GE": "Georgien",
+      "GH": "Ghana",
+      "GI": "Gibraltar",
+      "GL": "Grönland",
+      "GD": "Grenada",
+      "GP": "Guadeloupe",
+      "GT": "Guatemala",
+      "GG": "Guernsey",
+      "GN": "Guinea",
+      "GW": "Guinea-Bissau",
+      "GY": "Guyana",
+      "HT": "Haiti",
+      "HN": "Honduras",
+      "HK": "Hongkong",
+      "IN": "Indien",
+      "ID": "Indonesien",
+      "IR": "Iran, Islamische Republik",
+      "IQ": "Irak",
+      "IE": "Irland",
+      "IM": "Isle of Man",
+      "IL": "Israel",
+      "IT": "Italien",
+      "JM": "Jamaika",
+      "JP": "Japan",
+      "JE": "Jersey",
+      "JO": "Jordanien",
+      "KZ": "Kasachstan",
+      "KE": "Kenia",
+      "KI": "Kiribati",
+      "KP": "Korea, Demokratische Volksrepublik",
+      "KR": "Korea, Republik",
+      "KW": "Kuwait",
+      "KG": "Kirgisistan",
+      "LA": "Demokratische Volksrepublik Laos",
+      "LB": "Libanon",
+      "LS": "Lesotho",
+      "LR": "Liberia",
+      "LY": "Libyen",
+      "MO": "Macao",
+      "MG": "Madagaskar",
+      "MW": "Malawi",
+      "MY": "Malaysia",
+      "MV": "Malediven",
+      "ML": "Mali",
+      "MT": "Malta",
+      "MH": "Marshallinseln",
+      "MQ": "Martinique",
+      "MR": "Mauretanien",
+      "MU": "Mauritius",
+      "YT": "Mayotte",
+      "MX": "Mexiko",
+      "FM": "Mikronesien, Föderierte Staaten von",
+      "MD": "Moldawien, Republik",
+      "MC": "Monaco",
+      "MN": "Mongolei",
+      "ME": "Montenegro",
+      "MS": "Montserrat",
+      "MA": "Marokko",
+      "MZ": "Mosambik",
+      "MM": "Myanmar",
+      "NA": "Namibia",
+      "NR": "Nauru",
+      "NP": "Nepal",
+      "NC": "Neukaledonien",
+      "NZ": "Neuseeland",
+      "NI": "Nicaragua",
+      "NE": "Niger",
+      "NG": "Nigeria",
+      "NU": "Niue",
+      "NF": "Norfolkinsel",
+      "MK": "Nordmazedonien",
+      "NO": "Norwegen",
+      "OM": "Oman",
+      "PK": "Pakistan",
+      "PW": "Palau",
+      "PS": "Palästina, Staat",
+      "PA": "Panama",
+      "PG": "Papua-Neuguinea",
+      "PY": "Paraguay",
+      "PE": "Peru",
+      "PH": "Philippinen",
+      "PN": "Pitcairn",
+      "PL": "Polen",
+      "PT": "Portugal",
+      "QA": "Katar",
+      "RE": "Réunion",
+      "RU": "Russische Föderation",
+      "RW": "Ruanda",
+      "BL": "St. Barthélemy",
+      "SH": "St. Helena, Himmelfahrt und Tristan da Cunha",
+      "KN": "St. Kitts und Nevis",
+      "LC": "St. Lucia",
+      "MF": "St. Martin (französischer Teil)",
+      "PM": "St. Pierre und Miquelon",
+      "VC": "St. Vincent und die Grenadinen",
+      "WS": "Samoa",
+      "SM": "San Marino",
+      "ST": "Sao Tome und Principe",
+      "SA": "Saudi-Arabien",
+      "SN": "Senegal",
+      "RS": "Serbien",
+      "SC": "Seychellen",
+      "SL": "Sierra Leone",
+      "SG": "Singapur",
+      "SX": "Sint Maarten (Niederländischer Teil)",
+      "SB": "Salomoninseln",
+      "SO": "Somalia",
+      "ZA": "Südafrika",
+      "GS": "Südgeorgien und die Südlichen Sandwichinseln",
+      "SS": "Südsudan",
+      "LK": "Sri Lanka",
+      "SD": "Sudan",
+      "SR": "Surinam",
+      "SJ": "Svalbard und Jan Mayen",
+      "CH": "Schweiz",
+      "SY": "Arabische Republik Syrien",
+      "TW": "Taiwan, Provinz China",
+      "TJ": "Tadschikistan",
+      "TZ": "Tansania, Vereinigte Republik",
+      "TH": "Thailand",
+      "TL": "Timor-Leste",
+      "TG": "Togo",
+      "TK": "Tokelau",
+      "TO": "Tonga",
+      "TT": "Trinidad und Tobago",
+      "TN": "Tunesien",
+      "TR": "Türkei",
+      "TM": "Turkmenistan",
+      "TC": "Turks- und Caicosinseln",
+      "TV": "Tuvalu",
+      "UG": "Uganda",
+      "UA": "Ukraine",
+      "AE": "Vereinigte Arabische Emirate",
+      "UM": "Vereinigte Staaten Minor Outlying Islands",
+      "UY": "Uruguay",
+      "UZ": "Usbekistan",
+      "VU": "Vanuatu",
+      "VE": "Venezuela",
+      "VN": "Vietnam",
+      "VG": "Jungferninseln, Britisch",
+      "VI": "Jungferninseln, U.S.A.",
+      "WF": "Wallis und Futuna",
+      "EH": "Westsahara",
+      "YE": "Jemen",
+      "ZM": "Sambia",
+      "ZW": "Simbabwe"
+    },
+    "select_country": "Land auswählen"
   },
   "public": {
     "login": {
@@ -69,7 +310,8 @@ export const GERMAN_TRANSLATIONS = {
         "invoices": "Rechnungen",
         "system": "System",
         "docs": "Dokumentation",
-        "workflows": "Arbeitsabläufe"
+        "workflows": "Arbeitsabläufe",
+        "developers": "Entwickler"
       }
     },
     "team": {
@@ -126,7 +368,8 @@ export const GERMAN_TRANSLATIONS = {
         "name": "Name",
         "email": "E-Mail",
         "password": "Passwort",
-        "save": "Speichern",
+        "locale": "Schauplatz",
+        "save": "Speichern Sie",
         "error_message": "Beim Speichern der Benutzereinstellungen ist ein Problem aufgetreten. Bitte überprüfen Sie die Fehler.",
         "success_message": "Ihre Einstellungen wurden erfolgreich gespeichert.",
         "danger_zone": "Gefahrenzone",
@@ -160,7 +403,7 @@ export const GERMAN_TRANSLATIONS = {
         "region": "Staat",
         "country": "Land",
         "postal_code": "Postleitzahl",
-        "submit": "Speichern"
+        "submit": "Speichern Sie"
       },
       "main": {
         "title": "Rechnungsstellung",
@@ -197,7 +440,7 @@ export const GERMAN_TRANSLATIONS = {
         "create_new": "Erstellen",
         "next": "Nächste Seite",
         "prev": "Vorherige Seite",
-        "view_btn": "Aussicht",
+        "view_btn": "Siehe",
         "filter": {
           "title": "Filter",
           "email": "E-Mail",
@@ -229,6 +472,7 @@ export const GERMAN_TRANSLATIONS = {
         "billing_type": "Art der Abrechnung",
         "billing_type_card": "Karte",
         "billing_type_invoice": "Rechnung",
+        "company_name": "Name des Unternehmens",
         "brand": "Marke",
         "tax_number": "Steuernummer",
         "standard_tax_rate": "Standard-Steuersatz",
@@ -238,6 +482,7 @@ export const GERMAN_TRANSLATIONS = {
         "help_info": {
           "email": "Die E-Mail für den Kunden, an den die Rechnungen gehen sollen",
           "locale": "Das für die Sprache zu verwendende Gebietsschema",
+          "company": "Der Name des Unternehmens",
           "street_line_one": "Die erste Zeile der Rechnungsadresse",
           "street_line_two": "Die zweite Zeile der Rechnungsadresse",
           "city": "Die Stadt für die Rechnungsadresse",
@@ -277,6 +522,7 @@ export const GERMAN_TRANSLATIONS = {
           "type": "Typ"
         },
         "address": {
+          "company_name": "Name des Unternehmens",
           "title": "Adresse",
           "street_line_one": "Straße Linie 1",
           "street_line_two": "Straße Linie 2",
@@ -314,10 +560,19 @@ export const GERMAN_TRANSLATIONS = {
             "schedule": "Zeitplan",
             "created_at": "Erstellt am",
             "valid_until": "Nächste Abrechnung",
-            "view": "Aussicht"
+            "view": "Siehe"
           },
           "add_new": "Neues Abonnement hinzufügen",
           "no_subscriptions": "Keine Abonnements"
+        },
+        "subscription_events": {
+          "title": "Ereignisse im Abonnement",
+          "list": {
+            "event": "Veranstaltung",
+            "subscription": "Abonnement",
+            "created_at": "Erstellt am"
+          },
+          "no_subscription_events": "Keine Abonnement-Ereignisse"
         },
         "payments": {
           "title": "Zahlungen",
@@ -349,7 +604,8 @@ export const GERMAN_TRANSLATIONS = {
             "expiry_year": "Verfallsjahr",
             "name": "Name"
           },
-          "add_new": "Neue Zahlungsmethode hinzufügen",
+          "add_token": "Mit Token",
+          "add_new": "Neu hinzufügen",
           "no_payment_details": "Keine Zahlungsangaben",
           "delete": "Löschen",
           "make_default": "Standard machen"
@@ -379,7 +635,7 @@ export const GERMAN_TRANSLATIONS = {
             "overdue": "Überfällig",
             "paid": "Bezahlt",
             "created_at": "Erstellt am",
-            "view_btn": "Aussicht"
+            "view_btn": "Siehe"
           },
           "no_invoices": "Keine Rechnungen"
         }
@@ -394,6 +650,7 @@ export const GERMAN_TRANSLATIONS = {
         "country": "Land",
         "post_code": "Postleitzahl",
         "reference": "Referenz",
+        "company_name": "Name des Unternehmens",
         "external_reference": "Externe Referenz",
         "advance": "vorschuss",
         "submit_btn": "Aktualisiert",
@@ -416,6 +673,7 @@ export const GERMAN_TRANSLATIONS = {
         "help_info": {
           "email": "Die E-Mail für den Kunden, an den die Rechnungen gehen sollen",
           "locale": "Das für die Sprache zu verwendende Gebietsschema",
+          "company_name": "Der Name des Unternehmens",
           "street_line_one": "Die erste Zeile der Rechnungsadresse",
           "street_line_two": "Die zweite Zeile der Rechnungsadresse",
           "city": "Die Stadt für die Rechnungsadresse",
@@ -518,7 +776,7 @@ export const GERMAN_TRANSLATIONS = {
           "title": "Abonnement-Pläne",
           "create": "Neuen Plan erstellen",
           "no_subscription_plans": "Derzeit gibt es keine Abonnementpläne",
-          "view": "Aussicht",
+          "view": "Siehe",
           "list": {
             "name": "Name",
             "external_reference": "Externe Referenz",
@@ -576,7 +834,7 @@ export const GERMAN_TRANSLATIONS = {
         "public": "Öffentlich",
         "help_info": {
           "amount": "Der Preis ist die Währung der unteren Ebene. 1,00 USD wäre also 100 und 9,99 wäre 999.",
-          "display_amount": "Dieser Preis würde {amount} betragen.",
+          "display_amount": "Dieser Preis würde {Betrag} betragen.",
           "external_reference": "Die Referenz für das Produkt, das vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
           "recurring": "Ob es sich um eine wiederkehrende Zahlung oder eine einmalige Zahlung handelt.",
           "currency": "Die Währung, die dem Kunden in Rechnung gestellt werden soll",
@@ -634,46 +892,91 @@ export const GERMAN_TRANSLATIONS = {
     "subscription_plan": {
       "create": {
         "title": "Neuen Abonnementplan erstellen",
-        "advance": "vorschuss",
-        "submit_btn": "Abonnementplan erstellen",
-        "show_advanced": "Fortgeschrittene",
-        "success_message": "Erfolgreich erstellter Abonnementplan",
-        "address_title": "Adresse",
-        "fields": {
-          "name": "Name",
-          "code_name": "Code Name",
-          "user_count": "Anzahl der Benutzer",
-          "public": "Öffentlich zugänglicher Plan",
-          "per_seat": "Pro Sitzplatz",
-          "free": "Kostenlos",
-          "prices": "Preise",
-          "features": "Eigenschaften",
-          "limits": "Grenzwerte",
-          "has_trial": "Hat Versuch",
-          "trial_length_days": "Dauer der Prüfung"
+        "main_section": {
+          "title": "Wichtigste Details",
+          "fields": {
+            "name": "Name",
+            "code_name": "Code Name",
+            "user_count": "Anzahl der Benutzer",
+            "public": "Öffentlich zugänglicher Plan",
+            "per_seat": "Pro Sitzplatz",
+            "free": "Kostenlos"
+          },
+          "help_info": {
+            "name": "Der Name des Abonnementplans",
+            "code_name": "Der Codename für den Plan, der mit der API verwendet werden soll.",
+            "user_count": "Die Anzahl der für diesen Plan zulässigen Benutzer",
+            "public": "Ist der Plan für die Öffentlichkeit zugänglich oder handelt es sich um einen individuellen Plan?",
+            "free": "Ist dies ein kostenloser Plan?",
+            "per_seat": "Wird der Plan pro Sitzplatz berechnet?"
+          }
         },
-        "help_info": {
-          "name": "Der Name für den Plan",
-          "code_name": "Der Codename für den Plan, der mit der API verwendet werden soll.",
-          "user_count": "Die Anzahl der für diesen Plan zulässigen Benutzer",
-          "public": "Ist der Plan für die Öffentlichkeit zugänglich oder handelt es sich um einen individuellen Plan?",
-          "free": "Ist dies ein kostenloser Plan?",
-          "per_seat": "Wird der Plan pro Sitzplatz berechnet?",
-          "has_trial": "Wenn der Plan standardmäßig eine Probezeit hat",
-          "trial_length_days": "Wie lange die Prüfung dauern soll (in Tagen)"
+        "trial_section": {
+          "title": "Details zur Studie",
+          "fields": {
+            "has_trial": "Hat Versuch",
+            "is_trial_standalone": "Ist die Prüfung eigenständig",
+            "trial_length_days": "Versuchsdauer in Tagen"
+          },
+          "help_info": {
+            "has_trial": "Wenn der Plan standardmäßig eine Probezeit hat",
+            "trial_length_days": "Wie lange die Prüfung dauern soll (in Tagen)",
+            "is_trial_standalone": "Wenn eine Testversion eigenständig ist, braucht sie keinen Preis und das Abonnement endet am Ende der Testphase"
+          }
         },
-        "features": {
+        "features_section": {
           "title": "Eigenschaften",
-          "add_feature": "Merkmal hinzufügen"
+          "columns": {
+            "feature": "Merkmal",
+            "description": "Beschreibung"
+          },
+          "create": {
+            "name": "Name",
+            "code_name": "Code Name",
+            "description": "Beschreibung",
+            "button": "Erstellen"
+          },
+          "add_feature": "Hinzufügen",
+          "existing": "Vorhandene Merkmale",
+          "new": "Neu erstellen",
+          "no_features": "Keine Merkmale"
         },
-        "limits": {
+        "limits_section": {
           "title": "Grenzwerte",
-          "add_limit": "Limits hinzufügen"
+          "columns": {
+            "limit": "Grenze",
+            "feature": "Merkmal",
+            "description": "Beschreibung"
+          },
+          "fields": {
+            "limit": "Grenze",
+            "feature": "Merkmal"
+          },
+          "add_limit": "Hinzufügen",
+          "no_limits": "Keine Grenzen"
         },
-        "prices": {
+        "prices_section": {
           "title": "Preise",
-          "add_price": "Preis hinzufügen"
-        }
+          "columns": {
+            "amount": "Betrag",
+            "currency": "Währung",
+            "schedule": "Zeitplan"
+          },
+          "create": {
+            "amount": "Betrag",
+            "currency": "Währung",
+            "recurring": "Wiederkehrende",
+            "schedule": "Zeitplan",
+            "including_tax": "Einschließlich Steuer",
+            "public": "Öffentlich",
+            "button": "Erstellen"
+          },
+          "add_price": "Hinzufügen",
+          "existing": "Bestehende Preise",
+          "new": "Neu erstellen",
+          "no_prices": "Keine Preise"
+        },
+        "submit_btn": "Plan erstellen"
       },
       "view": {
         "title": "Details zum Abonnementplan anzeigen",
@@ -691,7 +994,8 @@ export const GERMAN_TRANSLATIONS = {
           "user_count": "Anzahl der Benutzer",
           "public": "Öffentlich zugänglich",
           "has_trial": "Hat Versuch",
-          "trial_length_days": "Dauer der Prüfung"
+          "trial_length_days": "Dauer der Prüfung",
+          "is_trial_standalone": "Ist die Studie eigenständig?"
         },
         "limits": {
           "title": "Grenzwerte",
@@ -739,7 +1043,8 @@ export const GERMAN_TRANSLATIONS = {
           "features": "Eigenschaften",
           "limits": "Grenzwerte",
           "has_trial": "Hat Versuch",
-          "trial_length_days": "Dauer der Prüfung"
+          "trial_length_days": "Dauer der Prüfung",
+          "is_trial_standalone": "Ist die Studie eigenständig?"
         },
         "help_info": {
           "name": "Der Name für den Plan",
@@ -749,7 +1054,8 @@ export const GERMAN_TRANSLATIONS = {
           "free": "Ist dies ein kostenloser Plan?",
           "per_seat": "Wird der Plan pro Sitzplatz berechnet?",
           "has_trial": "Wenn der Plan standardmäßig eine Probezeit hat",
-          "trial_length_days": "Wie lange die Prüfung dauern soll (in Tagen)"
+          "trial_length_days": "Wie lange die Prüfung dauern soll (in Tagen)",
+          "is_trial_standalone": "Wenn eine Testversion eigenständig ist, braucht sie keinen Preis und das Abonnement endet am Ende der Testphase"
         },
         "features": {
           "title": "Eigenschaften",
@@ -773,6 +1079,16 @@ export const GERMAN_TRANSLATIONS = {
     "payment_details": {
       "add": {
         "title": "Zahlungsdetails hinzufügen"
+      },
+      "add_with_token": {
+        "title": "Zahlungsdetails mit Token hinzufügen",
+        "field": {
+          "token": "Token"
+        },
+        "help_info": {
+          "token": "Das von Stripe bereitgestellte Token."
+        },
+        "submit": "Einreichen"
       }
     },
     "subscription": {
@@ -821,7 +1137,7 @@ export const GERMAN_TRANSLATIONS = {
           "title": "Zahlungen",
           "amount": "Betrag",
           "created_at": "Erstellt am",
-          "view": "Aussicht",
+          "view": "Siehe",
           "no_payments": "Es gibt noch keine Zahlungen"
         },
         "payment_method": {
@@ -832,6 +1148,15 @@ export const GERMAN_TRANSLATIONS = {
           "brand": "Karte Typ",
           "invoiced": "In Rechnung gestellt"
         },
+        "subscription_events": {
+          "title": "Ereignisse im Abonnement",
+          "list": {
+            "event": "Veranstaltung",
+            "subscription": "Abonnement",
+            "created_at": "Erstellt am"
+          },
+          "no_subscription_events": "Keine Abonnement-Ereignisse"
+        },
         "buttons": {
           "cancel": "Abbrechen",
           "payment_method": "Zahlungsdetails aktualisieren"
@@ -840,7 +1165,7 @@ export const GERMAN_TRANSLATIONS = {
           "seats": {
             "seats": "Sitze",
             "seats_help": "Die Anzahl der Sitze für den Plan",
-            "submit": "Speichern"
+            "submit": "Speichern Sie"
           },
           "price": {
             "price": "Neuer Preis",
@@ -895,7 +1220,7 @@ export const GERMAN_TRANSLATIONS = {
         "create_new": "Erstellen",
         "next": "Nächste Seite",
         "prev": "Vorherige Seite",
-        "view": "Aussicht",
+        "view": "Siehe",
         "filter": {
           "title": "Filter",
           "email": "E-Mail",
@@ -921,7 +1246,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -951,7 +1276,7 @@ export const GERMAN_TRANSLATIONS = {
             "help_info": "Nach dem Änderungsdatum werden alle Verlängerungen zum neuen Preis durchgeführt. Der Abonnementplan wird sofort geändert."
           },
           "estimate": {
-            "amount": "Dies führt zu einer geschätzten {amount} {currency} Änderung des {schedule}"
+            "amount": "Dies führt zu einer geschätzten {Betrag} {Währung} Änderung des {Fahrplans}"
           },
           "submit_button": "Schaltfläche \"Senden"
         },
@@ -973,7 +1298,7 @@ export const GERMAN_TRANSLATIONS = {
             "title": "Datum ändern"
           },
           "estimate": {
-            "amount": "Dies führt zu einer geschätzten {amount} {currency} Änderung des {schedule}"
+            "amount": "Dies führt zu einer geschätzten {Betrag} {Währung} Änderung des {Fahrplans}"
           },
           "export_button": "Kundenliste exportieren",
           "cancel": "Abbrechen",
@@ -1147,7 +1472,8 @@ export const GERMAN_TRANSLATIONS = {
         "users": "Benutzer",
         "stripe": "Streifen",
         "api_keys": "API-Schlüssel",
-        "exchange_rates": "Wechselkurse"
+        "exchange_rates": "Wechselkurse",
+        "integrations": "Integrationen"
       },
       "pdf_template": {
         "list": {
@@ -1162,9 +1488,9 @@ export const GERMAN_TRANSLATIONS = {
           "generator": "Generatoreinstellungen aktualisieren"
         },
         "update": {
-          "title": "Vorlage aktualisieren - {name}",
+          "title": "Vorlage aktualisieren - {Name}",
           "content": "Inhalt",
-          "save": "Speichern",
+          "save": "Speichern Sie",
           "download": "Test PDF herunterladen",
           "template": "Vorlage",
           "help_info": {
@@ -1178,7 +1504,7 @@ export const GERMAN_TRANSLATIONS = {
           "tmp_dir": "Das temporäre Verzeichnis",
           "api_key": "Api-Schlüssel",
           "bin": "Speicherort",
-          "submit": "Speichern",
+          "submit": "Speichern Sie",
           "help_info": {
             "generator": "Der zu verwendende Generator. Wenn Sie nicht sicher sind, verwenden Sie mpdf",
             "tmp_dir": "Das zu verwendende temporäre Verzeichnis. Wenn Sie nicht sicher sind, verwenden Sie /tmp",
@@ -1189,7 +1515,7 @@ export const GERMAN_TRANSLATIONS = {
         "create": {
           "title": "Vorlage erstellen",
           "content": "Inhalt",
-          "save": "Speichern",
+          "save": "Speichern Sie",
           "download": "Test PDF herunterladen",
           "template": "Vorlage",
           "locale": "Schauplatz",
@@ -1214,7 +1540,7 @@ export const GERMAN_TRANSLATIONS = {
           "error_message": "Es ist ein Fehler aufgetreten"
         },
         "update": {
-          "title": "Markeneinstellungen aktualisieren - {name}",
+          "title": "Markeneinstellungen aktualisieren - {Name}",
           "fields": {
             "name": "Name",
             "email": "E-Mail Adresse",
@@ -1257,7 +1583,14 @@ export const GERMAN_TRANSLATIONS = {
             "expiring_card_warning_day_before": "Warnung vor ablaufender Karte - Tag davor",
             "invoice_created": "Rechnung erstellt",
             "invoice_overdue": "Überfällige Rechnung",
-            "quote_created": "Zitat Erstellt"
+            "quote_created": "Zitat Erstellt",
+            "trial_ending_warning": "Warnung vor dem Ende des Prozesses",
+            "before_charge_warning": "Warnung vor dem Aufladen",
+            "before_charge_warning_options": {
+              "none": "Keine",
+              "all": "Alle",
+              "yearly": "Jährlich"
+            }
           }
         },
         "create": {
@@ -1309,7 +1642,7 @@ export const GERMAN_TRANSLATIONS = {
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
           "locale": "Schauplatz",
-          "view_btn": "Aussicht",
+          "view_btn": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -1400,18 +1733,21 @@ export const GERMAN_TRANSLATIONS = {
             "timezone": "Zeitzone",
             "invoice_number_generation": "Generierung von Rechnungsnummern",
             "subsequential_number": "Fortlaufende Nummer",
-            "default_invoice_due_time": "Standard-Rechnungsfälligkeitszeit"
+            "default_invoice_due_time": "Standard-Rechnungsfälligkeitszeit",
+            "format": "Format"
           },
           "help_info": {
-            "system_url": "Die Basis-URL, unter der billabear zu finden ist.",
+            "system_url": "Die Basis-URL, unter der BillaBear zu finden ist.",
             "timezone": "Die Standardzeitzone für das System",
             "invoice_number_generation": "Wie die Rechnungsnummer generiert wird. Random ist eine zufällige Zeichenkette und subsequent bedeutet, dass es eine Zahl ist, die inkrementiert",
             "subsequential_number": "Die zuletzt verwendete Rechnungsnummer. Die nächste Rechnungsnummer wird eine Stelle höher sein",
-            "default_invoice_due_time": "Wie viel Zeit zwischen der Rechnungserstellung und dem Fälligkeitsdatum liegt"
+            "default_invoice_due_time": "Wie viel Zeit zwischen der Rechnungserstellung und dem Fälligkeitsdatum liegt",
+            "format": "Das Format, das für die Generierung von Rechnungsnummern verwendet werden soll. %S ist die fortlaufende Nummer und %R steht für 8 zufällige Zeichen."
           },
           "invoice_number_generation": {
             "random": "Zufallszahl",
-            "subsequential": "Nachfolgend"
+            "subsequential": "Nachfolgend",
+            "format": "Format"
           },
           "default_invoice_due_time": {
             "30_days": "30 Tage",
@@ -1432,7 +1768,7 @@ export const GERMAN_TRANSLATIONS = {
           "invite": "Neuen Benutzer einladen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view_btn": "Aussicht",
+          "view_btn": "Siehe",
           "list": {
             "email": "E-Mail",
             "role": "Rollen"
@@ -1482,7 +1818,7 @@ export const GERMAN_TRANSLATIONS = {
             "created_at": "Erstellt am",
             "updated_at": "Aktualisierung am",
             "no_results": "Bislang wurden keine Streifen importiert.",
-            "view": "Aussicht"
+            "view": "Siehe"
           },
           "danger_zone": {
             "title": "Gefahrenzone",
@@ -1577,11 +1913,13 @@ export const GERMAN_TRANSLATIONS = {
           "success_message": "Aktualisierte Steuereinstellungen",
           "fields": {
             "tax_customers_with_tax_number": "Steuerliche Kunden mit Steuernummer",
-            "eu_business_tax_rules": "Umgang mit EU-Unternehmenssteuerregelungen"
+            "eu_business_tax_rules": "Umgang mit EU-Unternehmenssteuerregelungen",
+            "eu_one_stop_shop_rule": "EU-Regel der einzigen Anlaufstelle"
           },
           "help_info": {
             "tax_customers_with_tax_number": "Wenn nicht angekreuzt, wird Kunden, die eine Steuernummer angegeben haben, keine Steuer berechnet",
-            "eu_business_tax_rules": "Wenn diese Option aktiviert ist, werden Geschäftskunden, die eine Mehrwertsteuernummer angegeben haben, anders behandelt als normale Kunden"
+            "eu_business_tax_rules": "Wenn diese Option aktiviert ist, werden Geschäftskunden, die eine Mehrwertsteuernummer angegeben haben, anders behandelt als normale Kunden",
+            "eu_one_stop_shop_rule": "Anwendung der EU-Regel der einzigen Anlaufstelle. Die EU-Länder werden unabhängig vom Schwellenwert besteuert."
           }
         }
       }
@@ -1643,6 +1981,11 @@ export const GERMAN_TRANSLATIONS = {
           "daily": "Täglich",
           "monthly": "Monatlich",
           "yearly": "Jährlich"
+        },
+        "links": {
+          "customers": "Kunden",
+          "subscriptions": "Abonnements",
+          "invoices": "Rechnungen"
         }
       },
       "expiring_cards": {
@@ -1653,7 +1996,7 @@ export const GERMAN_TRANSLATIONS = {
             "card_number": "Kartennummer",
             "no_expiring_cards": "Keine Karten, die bald ablaufen",
             "loading": "laden",
-            "view": "Aussicht"
+            "view": "Siehe"
           }
         }
       },
@@ -1699,7 +2042,7 @@ export const GERMAN_TRANSLATIONS = {
         "lifetime": {
           "title": "Lebenszeit-Wert",
           "lifespan": "Lebenserwartung",
-          "lifespan_value": "{lifespan} Jahre",
+          "lifespan_value": "{Lebensspanne} Jahre",
           "lifetime": "Lebenszeit-Wert",
           "customer_count": "Kundenzahl",
           "filters": {
@@ -1733,9 +2076,9 @@ export const GERMAN_TRANSLATIONS = {
         },
         "countries": {
           "title": "Länder-Schwellenwerte",
-          "transacted_amount": "<strong>Bearbeitet:</strong> {currency}{transacted_amount}",
-          "collected_amount": "<strong>Gesammelt:</strong> {currency}{collected_amount}",
-          "threshold_status": "<strong>Schwellenwert:</strong> {status}",
+          "transacted_amount": "<strong>Bearbeitet:</strong> {Währung}{Bearbeiteter_Betrag}",
+          "collected_amount": "<strong>Gesammelt:</strong> {Währung}{Gesammelt_Betrag}",
+          "threshold_status": "<strong>Schwellenwert:</strong> {Status}",
           "threshold_reached": "Erreicht",
           "threshold_not_reached": "Nicht erreicht"
         },
@@ -1757,7 +2100,7 @@ export const GERMAN_TRANSLATIONS = {
         "help_info": {
           "type": "Art der Gutschriftsanpassung, Gutschrift oder Lastschrift",
           "amount": "Der Preis ist die Währung der unteren Ebene. 1,00 USD wäre also 100 und 9,99 wäre 999.",
-          "display_amount": "Dieser Preis würde {amount} betragen.",
+          "display_amount": "Dieser Preis würde {Betrag} betragen.",
           "currency": "Die Währung, die dem Kunden in Rechnung gestellt werden soll",
           "reason": "Ein optionaler Grund, der später hilfreich sein kann."
         },
@@ -1779,6 +2122,9 @@ export const GERMAN_TRANSLATIONS = {
         "next": "Weiter",
         "prev": "Vorherige",
         "view_btn": "Rechnung ansehen",
+        "status": "Status",
+        "paid": "Bezahlt",
+        "outstanding": "Herausragend",
         "filter": {
           "title": "Filter",
           "button": "Filter",
@@ -1899,7 +2245,7 @@ export const GERMAN_TRANSLATIONS = {
           "tax_total": "Steuer Gesamt"
         },
         "status": {
-          "paid": "Rechnung erfolgreich bezahlt am {date}",
+          "paid": "Rechnung erfolgreich bezahlt am {Datum}",
           "outstanding": "Die Rechnung muss noch bezahlt werden."
         },
         "actions": {
@@ -1945,7 +2291,7 @@ export const GERMAN_TRANSLATIONS = {
           "entry_type": "Eintrag Typ",
           "entry_type_manual": "Handbuch",
           "entry_type_automatic": "Automatisch",
-          "amount": "Betrag - {currency}",
+          "amount": "Betrag - {Währung}",
           "code": "Code",
           "entry_event": "Veranstaltung",
           "event_expired_card_added": "Hinzufügen einer neuen Zahlungskarte bei Warnung vor abgelaufener Karte"
@@ -1955,7 +2301,7 @@ export const GERMAN_TRANSLATIONS = {
           "type": "Prozentsatz ist ein Prozentsatz einer Rechnung und fester Kredit ist ein fester Kredit",
           "entry_type": "Manuell bedeutet, dass der Benutzer einen Code eingibt, automatisch bedeutet, dass er durch ein Ereignis ausgelöst wird",
           "percentage": "Der Prozentsatz von",
-          "amount": "Der Betrag in {currency}, den der Gutschein liefert",
+          "amount": "Der Betrag in {Währung}, den der Gutschein liefert",
           "code": "Der Code, den der Kunde angeben muss, damit der Gutschein aktiviert wird",
           "entry_event": "Das Ereignis, das eintreten muss, damit der Gutschein aktiviert wird"
         }
@@ -1969,7 +2315,7 @@ export const GERMAN_TRANSLATIONS = {
           "type": "Typ",
           "entry_type": "Eintrag Typ"
         },
-        "view_btn": "Aussicht",
+        "view_btn": "Siehe",
         "loading": "Ladegutscheine"
       },
       "view": {
@@ -1980,7 +2326,7 @@ export const GERMAN_TRANSLATIONS = {
           "disabled": "Behinderte",
           "entry_type": "Eintrag Typ",
           "percentage": "Prozentsatz",
-          "amount": "Betrag für {amount}",
+          "amount": "Betrag für {Währung}",
           "code": "Code",
           "automatic_event": "Automatisches Ereignis"
         },
@@ -2053,7 +2399,7 @@ export const GERMAN_TRANSLATIONS = {
         "no_quotes": "Hier gibt es keine Zitate",
         "next": "Weiter",
         "prev": "Vorherige",
-        "view_btn": "Aussicht",
+        "view_btn": "Siehe",
         "filter": {
           "title": "Filter",
           "button": "Filter",
@@ -2071,7 +2417,7 @@ export const GERMAN_TRANSLATIONS = {
           "pay_link": "Link bezahlen"
         },
         "status": {
-          "paid": "Angebot erfolgreich bezahlt am {date}"
+          "paid": "Angebot erfolgreich bezahlt am {Datum}"
         },
         "customer": {
           "title": "Kunde",
@@ -2110,7 +2456,7 @@ export const GERMAN_TRANSLATIONS = {
           "list": {
             "title": "Webhook-Endpunkte",
             "add": "Endpunkt hinzufügen",
-            "view": "Aussicht",
+            "view": "Siehe",
             "list": {
               "name": "Name",
               "url": "URL",
@@ -2166,7 +2512,7 @@ export const GERMAN_TRANSLATIONS = {
                 "status_code": "Status Code",
                 "body": "Körper",
                 "error": "Fehler",
-                "view": "Aussicht",
+                "view": "Siehe",
                 "created_at": "Erstellt am"
               }
             },
@@ -2215,7 +2561,7 @@ export const GERMAN_TRANSLATIONS = {
                 "name": "Der Name, der verwendet wird, um diesen Webhook innerhalb von BillaBear zu identifizieren",
                 "webhook": "Die von Slack bereitgestellte URL, die als Webhook verwendet werden soll"
               },
-              "save_btn": "Speichern"
+              "save_btn": "Speichern Sie"
             }
           },
           "notifications": {
@@ -2224,6 +2570,7 @@ export const GERMAN_TRANSLATIONS = {
               "event": "Veranstaltung",
               "webhook": "Webhook",
               "disable_btn": "Deaktivieren Sie",
+              "template": "Vorlage",
               "enable_btn": "Aktivieren Sie",
               "no_notifications": "Es gibt noch keine Slack-Benachrichtigungen",
               "next": "Weiter",
@@ -2243,7 +2590,7 @@ export const GERMAN_TRANSLATIONS = {
                 "webhook": "Der Slack-Webhook, der für die Benachrichtigung verwendet werden soll",
                 "template": "Die Vorlage, die beim Versand der Benachrichtigung verwendet werden soll. <a href=\"https://docs.billabear.com/user/integration/slack\" target=\"_blank\">Variablen können hier gefunden werden</a>"
               },
-              "save_btn": "Speichern"
+              "save_btn": "Speichern Sie"
             }
           },
           "menu": {
@@ -2334,7 +2681,7 @@ export const GERMAN_TRANSLATIONS = {
           "name": "Name"
         },
         "status": {
-          "paid": "Angebot erfolgreich bezahlt am {date}"
+          "paid": "Angebot erfolgreich bezahlt am {Datum}"
         },
         "customer": {
           "title": "Kunde",
@@ -2375,11 +2722,11 @@ export const GERMAN_TRANSLATIONS = {
         "create_new": "Erstellen",
         "next": "Nächste Seite",
         "prev": "Vorherige Seite",
-        "view_btn": "Aussicht",
+        "view_btn": "Siehe",
         "list": {
           "name": "Name",
           "created_at": "Erstellt am",
-          "view": "Aussicht"
+          "view": "Siehe"
         },
         "filter": {
           "title": "Filter",
@@ -2410,7 +2757,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "edit_button": "Bearbeiten",
           "bulk_button": "Bulk-Wiederaufbereitung",
           "filter": {
@@ -2486,7 +2833,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2544,7 +2891,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2602,7 +2949,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2665,7 +3012,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2707,7 +3054,7 @@ export const GERMAN_TRANSLATIONS = {
           "create_new": "Erstellen",
           "next": "Nächste Seite",
           "prev": "Vorherige Seite",
-          "view": "Aussicht",
+          "view": "Siehe",
           "filter": {
             "title": "Filter",
             "email": "E-Mail",
@@ -2768,12 +3115,11 @@ export const GERMAN_TRANSLATIONS = {
           "iso_code": "Code",
           "tax_threshold": "Steuerlicher Schwellenwert"
         },
-        "view": "Aussicht",
+        "view": "Siehe",
         "filter": {
           "title": "Filter",
-          "email": "E-Mail",
-          "reference": "Referenz",
-          "external_reference": "Externe Referenz",
+          "name": "Name",
+          "code": "Code",
           "button": "Filter",
           "search": "Filter"
         },
@@ -2788,7 +3134,9 @@ export const GERMAN_TRANSLATIONS = {
             "currency": "Währung",
             "threshold": "Schwellenwert",
             "in_eu": "In der EU?",
-            "tax_year": "Beginn des Steuerjahres"
+            "tax_year": "Beginn des Steuerjahres",
+            "collecting": "Steuer einziehen",
+            "tax_number": "Steuernummer"
           },
           "help_info": {
             "name": "Der Name des Landes",
@@ -2796,7 +3144,9 @@ export const GERMAN_TRANSLATIONS = {
             "currency": "Die Berichtswährung für das Land",
             "threshold": "Die Steuerschwelle für das Land",
             "in_eu": "Ist das Land Mitglied der EU?",
-            "tax_year": "Das Datum des Beginns des Steuerjahres für das Land"
+            "tax_year": "Das Datum des Beginns des Steuerjahres für das Land",
+            "collecting": "Wenn Steuern immer für dieses Land erhoben werden sollen",
+            "tax_number": "Ihre Steuernummer für dieses Land."
           }
         },
         "create_button": "Erstellen"
@@ -2810,7 +3160,9 @@ export const GERMAN_TRANSLATIONS = {
           "currency": "Währung",
           "in_eu": "In Eu",
           "start_of_tax_year": "Beginn des Steuerjahres",
-          "enabled": "Aktiviert"
+          "enabled": "Aktiviert",
+          "collecting": "Steuererhebung",
+          "tax_number": "Steuernummer"
         },
         "edit_button": "Bearbeiten",
         "tax_rule": {
@@ -2831,7 +3183,7 @@ export const GERMAN_TRANSLATIONS = {
           "valid_until": "Gültig bis",
           "title": "Steuervorschrift hinzufügen",
           "default": "Standard-Steuerregel",
-          "save": "Speichern",
+          "save": "Speichern Sie",
           "select_tax_type": "Steuerart auswählen"
         },
         "edit_tax_rule": {
@@ -2849,9 +3201,9 @@ export const GERMAN_TRANSLATIONS = {
           "add": "Neuen Staat hinzufügen",
           "name": "Name",
           "code": "Code",
-          "has_nexus": "Hat Nexus?",
+          "collecting": "Steuern eintreiben?",
           "threshold": "Schwellenwert",
-          "view": "Aussicht",
+          "view": "Siehe",
           "no_states": "Es gibt keine Staaten"
         }
       },
@@ -2865,7 +3217,9 @@ export const GERMAN_TRANSLATIONS = {
             "threshold": "Schwellenwert",
             "in_eu": "In der EU?",
             "tax_year": "Beginn des Steuerjahres",
-            "enabled": "Aktiviert"
+            "enabled": "Aktiviert",
+            "collecting": "Steuer einziehen",
+            "tax_number": "Steuernummer"
           },
           "help_info": {
             "name": "Der Name des Landes",
@@ -2874,7 +3228,9 @@ export const GERMAN_TRANSLATIONS = {
             "threshold": "Die Steuerschwelle für das Land",
             "in_eu": "Ist das Land Mitglied der EU?",
             "tax_year": "Das Datum des Beginns des Steuerjahres für das Land",
-            "enabled": "Wenn das Land für Kundenanmeldungen aktiviert ist"
+            "enabled": "Wenn das Land für Kundenanmeldungen aktiviert ist",
+            "collecting": "Wenn Steuern immer für dieses Land erhoben werden sollen",
+            "tax_number": "Ihre Steuernummer für dieses Land."
           }
         },
         "update_button": "Update"
@@ -2911,10 +3267,12 @@ export const GERMAN_TRANSLATIONS = {
     "state": {
       "view": {
         "title": "Ansicht Staat",
+        "edit": "Bearbeiten",
         "fields": {
           "name": "Name",
           "code": "Code",
-          "threshold": "Schwellenwert"
+          "threshold": "Schwellenwert",
+          "collecting": "Sammeln"
         },
         "tax_rule": {
           "title": "Steuerliche Vorschriften",
@@ -2934,7 +3292,7 @@ export const GERMAN_TRANSLATIONS = {
           "valid_until": "Gültig bis",
           "title": "Steuervorschrift hinzufügen",
           "default": "Standard-Steuerregel",
-          "save": "Speichern",
+          "save": "Speichern Sie",
           "select_tax_type": "Steuerart auswählen"
         },
         "edit_tax_rule": {
@@ -2947,13 +3305,84 @@ export const GERMAN_TRANSLATIONS = {
           "save": "Update",
           "select_tax_type": "Steuerart auswählen"
         }
+      },
+      "create": {
+        "title": "Neuen Staat erstellen",
+        "state": {
+          "fields": {
+            "name": "Name",
+            "code": "Code",
+            "collecting": "Sammeln",
+            "threshold": "Schwellenwert"
+          },
+          "help_info": {
+            "name": "Der Name des Staates",
+            "code": "Der Code, der oft als Abkürzung für den Zustand verwendet wird",
+            "collecting": "Wenn wir ständig Steuern für den Staat eintreiben",
+            "threshold": "Was die wirtschaftliche Schwelle für den Staat ist"
+          }
+        },
+        "create_button": "Erstellen"
+      },
+      "edit": {
+        "title": "Zustand bearbeiten",
+        "state": {
+          "fields": {
+            "name": "Name",
+            "code": "Code",
+            "collecting": "Sammeln",
+            "threshold": "Schwellenwert"
+          },
+          "help_info": {
+            "name": "Der Name des Staates",
+            "code": "Der Code, der oft als Abkürzung für den Zustand verwendet wird",
+            "collecting": "Wenn wir ständig Steuern für den Staat eintreiben",
+            "threshold": "Was die wirtschaftliche Schwelle für den Staat ist"
+          }
+        },
+        "update_button": "Update"
+      }
+    },
+    "onboarding": {
+      "main": {
+        "bar": {
+          "message": "Stripe muss konfiguriert werden, bevor Sie BillaBear verwenden können"
+        },
+        "dialog": {
+          "title": "Onboarding",
+          "has_stripe_key": {
+            "text": "Gültige Stripe-API-Schlüssel eingeben",
+            "button": "Hier eingeben"
+          },
+          "has_stripe_imports": {
+            "text": "Daten von Stripe importieren",
+            "button": "Importieren",
+            "dismiss": "Ablehnen"
+          },
+          "has_product": {
+            "text": "Erstes Produkt erstellen",
+            "button": "Produkt erstellen"
+          },
+          "has_subscription_plan": {
+            "text": "Ersten Abonnementplan erstellen",
+            "button": "Erstellen"
+          },
+          "has_customer": {
+            "text": "Ersten Kunden anlegen",
+            "button": "Erstellen"
+          },
+          "has_subscription": {
+            "text": "Erstes Abonnement erstellen",
+            "button": "Erstellen"
+          }
+        }
       }
     },
     "default_error_message": "Etwas ist schief gelaufen!"
   },
   "install": {
-    "title": "Installieren",
-    "submit_button": "Installieren",
+    "title": "Installieren Sie",
+    "submit_button": "Installieren Sie",
     "user": {
       "title": "Erster Admin-Benutzer",
       "email": "E-Mail",

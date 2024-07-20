@@ -44,12 +44,14 @@ import { VueFlow } from '@vue-flow/core'
 import {GERMAN_TRANSLATIONS} from "./billabear/translations/de";
 import {SPANISH_TRANSLATIONS} from "./billabear/translations/es";
 import {FRENCH_TRANSLATIONS} from "./billabear/translations/fr";
+import {DUTCH_TRANSLATIONS} from "./billabear/translations/nl";
 
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS,
     de: GERMAN_TRANSLATIONS,
     es: SPANISH_TRANSLATIONS,
     fr: FRENCH_TRANSLATIONS,
+    nl: DUTCH_TRANSLATIONS,
 };
 function getBrowserLocale(options = {}) {
     const defaultOptions = { countryCodeOnly: false };
@@ -76,6 +78,7 @@ const i18n = createI18n({
     legacy: false,
     locale: browserLocale || 'en',
     messages: TRANSLATIONS,
+    fallbackLocale: ['en']
 });
 
 var billabear = createApp(
