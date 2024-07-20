@@ -65,9 +65,6 @@
       </div>
     </div>
   </div>
-  <pre>
-    {{ trans }}
-  </pre>
 </template>
 
 <script>
@@ -77,14 +74,11 @@ import WorldMap from "../../components/app/Graphs/WorldMap.vue";
 import {mapState} from "vuex";
 import OnboardingMenu from "../../components/app/Onboarding/OnboardingMenu.vue";
 
-import {ENGLISH_TRANSLATIONS} from "../../translations/en";
-
 export default {
   name: "Dashboard",
   components: {OnboardingMenu, WorldMap},
   data() {
     return {
-      trans: ENGLISH_TRANSLATIONS,
       ready: false,
       estimated_mrr: 0,
       estimated_arr: 0,
