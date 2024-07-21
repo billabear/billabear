@@ -20,30 +20,31 @@ Watch the video on youtube.
 * [Technical Documentation](https://docs.billabear.com/technical/) - Technical information for hosting and integration
 * [Swagger](https://swagger.billabear.com) - The REST API docs for integration
 
-## Features:
+## Features
 
-* Fully customisable Invoice, Receipt, and Email templates
-* White Label Billing - Handle multiple brands
-* Voucher Management
-* REST API for integration
-* Multiple Email Integrations - SendGrid, MailGun, and Postmark
-* Expired Card Notifications - including the ability to offer incentives to add a card.
-* Multiple Subscriptions per customer - Add add-ons.
-* Ability to have Custom Plans and Custom pricing
-* Stripe Billing Data Import
-* Stripe Billing Integration
-* Ability to Migrate away from Stripe Billing
-* Invoice payment type for Enterprise customers
-* Webhooks for events
-* Workflows
-* Churn Reports
-
-## RoadMap
-
-* Better Reports
-* Metric and Usage Based Billing
-* [And you can add more here](https://github.com/billabear/billabear/discussions/categories/ideas)
-
+* Tax System (Thresholds, Multiple Tax Types, Country Tax Rules, State Tax Rules)
+* Workflow system
+* Plan Management 
+* Subscription Management
+* Slack Integration
+* Invoice System
+* Hosted Checkout
+* Paylinks
+* Quotes
+* Mass Subscription Change System
+* Reports (Subscription, Lifetime Value, Churn)
+* Email Service Provider (EMSP) API integration (SendGrid, Mailgun, PostMark)
+* Email Template Management - Either via EMSP templates or twig templates
+* Document Management (Invoice, PDF, Quote) - Via Twig templates
+* Multiple Brand support
+* Multiple Currency Support
+* Multiple Language Support
+* Subscription Add-ons
+* Webhooks
+* Dunning
+* Vouchers
+* Credit notes
+* And more
 
 ## How to Integrate
 
@@ -72,6 +73,10 @@ cd hosting-docker-compose
 docker compose up -d
 ```
 
+### Managed Cloud Hosting
+
+You can get managed cloud hosting at https://billabear.com.
+
 ### Development
 
 ```
@@ -88,6 +93,36 @@ It's available free to use under the Functional Software License that adds restr
 
 There are arguments about if these licenses are open source or not, but generally for most we care can we use it for free and can we modify it. And this is true for BillaBear.
 
-### Is it possible to get a hosted version?
+### Is it possible to have a customer that pays by invoice seperately?
 
-Yes. We're able to host BillaBear for you. For more info please email sales@billabear.com.
+Yes! BillaBear allows you to define how a customer pays which includes by invoice.
+
+### Is it possible to disable customer creation for countries?
+
+Yes! You're able to
+
+### Is it possible to only collect tax for a country once we've met the Threshold?
+
+Yes! BillaBear is aware of tax thresholds for countries and states. 
+
+You can also declare that you're collecting tax for a country even though you've not met the threshold.
+
+### How much control over templates will I have?
+
+Complete control. With the ability to define the templates using the Twig templating langage you're able to update them with ease. You're also able to use email service provider's templating systems.
+
+### Can I a trial that once it ends doesn't automatically convert to a proper subscription?
+
+Yes! With BillaBear you can have an automatically converted trial or a standalone trial.
+
+### Will I be able to see what subscriptions a payment is for?
+
+Yes! BillaBear links payments to customers and the subscriptions they are for. As well as linking refunds from the payments.
+
+### Will I be able to handle tax rates changing?
+
+Yes! BillaBear allows you to define the start and end date of a tax rule. This means you can define when a tax rate ends and the next one takes over. So if a tax rate does change you're able to create the rule ahead of time and have it applied correctly automatically when the time comes.
+
+### Can I do usage based billing?
+
+No. Sadly, BillaBear doesn't support usage based billing yet. However, it will be added in the future. The same goes for tier pricing and stair pricing.
