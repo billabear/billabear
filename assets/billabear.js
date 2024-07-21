@@ -45,6 +45,7 @@ import {GERMAN_TRANSLATIONS} from "./billabear/translations/de";
 import {SPANISH_TRANSLATIONS} from "./billabear/translations/es";
 import {FRENCH_TRANSLATIONS} from "./billabear/translations/fr";
 import {DUTCH_TRANSLATIONS} from "./billabear/translations/nl";
+import {ITALIAN_TRANSLATIONS} from "./billabear/translations/it";
 
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS,
@@ -52,6 +53,7 @@ const TRANSLATIONS = {
     es: SPANISH_TRANSLATIONS,
     fr: FRENCH_TRANSLATIONS,
     nl: DUTCH_TRANSLATIONS,
+    it: ITALIAN_TRANSLATIONS,
 };
 function getBrowserLocale(options = {}) {
     const defaultOptions = { countryCodeOnly: false };
