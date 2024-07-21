@@ -15,8 +15,8 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
-    public const VERSION = '2024.01.01';
-    public const VERSION_ID = '20240101';
+    public const VERSION = '2024.01.02';
+    public const VERSION_ID = '20240102';
 
     protected function build(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
     {
