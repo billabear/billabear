@@ -17,6 +17,8 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 
+    public const PASSWORD_KEY = 'password';
+
     public static function getSubscribedEvents()
     {
         return [
@@ -29,10 +31,13 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
+        $data = json_decode($request->getContent(), true);
+        $data = $this->filter($data);
+
         $this->getLogger()->info('Received request', [
             'method' => $request->getMethod(),
             'uri' => $request->getRequestUri(),
-            'body' => $request->getContent(),
+            'body' => json_encode($data),
         ]);
     }
 
@@ -43,5 +48,18 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
         $body = json_encode(json_decode($response->getContent(), true));
 
         $this->getLogger()->info('Sending response', ['body' => $body, 'status' => $response->getStatusCode()]);
+    }
+
+    private function filter(array $items): array
+    {
+        foreach ($items as $key => $item) {
+            if (self::PASSWORD_KEY === strtolower($key)) {
+                $record[$key] = '****';
+            } elseif (is_array($item)) {
+                $record[$key] = $this->filter($item);
+            }
+        }
+
+        return $items;
     }
 }
