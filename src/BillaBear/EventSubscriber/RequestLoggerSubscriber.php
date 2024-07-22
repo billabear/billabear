@@ -32,12 +32,15 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $data = json_decode($request->getContent(), true);
-        $data = $this->filter($data);
+        if (is_array($data)) {
+            $data = $this->filter($data);
+            $data = json_encode($data);
+        }
 
         $this->getLogger()->info('Received request', [
             'method' => $request->getMethod(),
             'uri' => $request->getRequestUri(),
-            'body' => json_encode($data),
+            'body' => $data,
         ]);
     }
 
