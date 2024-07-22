@@ -53,6 +53,14 @@ To start integrating with BillaBear you can use the REST API.
 * [Swagger Docs](https://swagger.billabear.com)
 * [Technical Documentation For API](https://docs.billabear.com/technical/api/)
 
+### SDKS
+
+* [PHP](https://github.com/billabear/php-sdk)
+* [Java](https://github.com/billabear/java-sdk)
+* [Go](https://github.com/billabear/go-sdk)
+* [JavaScript](https://github.com/billabear/javascript-sdk)
+* [Ruby](https://github.com/billabear/ruby-sdk)
+
 ## Getting Started
 
 To get started using this repository you can get up and running using Docker and Docker compose.
