@@ -26,7 +26,7 @@ class TaxRateProvider implements TaxRateProviderInterface
     ) {
     }
 
-    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo
+    public function getRateForCustomer(Customer $customer, ?TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo
     {
         $customerCountry = $customer->getCountry();
         if ($customer->hasStandardTaxRate()) {
@@ -43,6 +43,10 @@ class TaxRateProvider implements TaxRateProviderInterface
 
         if ($brand->getTaxRate()) {
             return new TaxInfo($brand->getTaxRate(), $brandCountry, false);
+        }
+
+        if (!$taxType) {
+            throw new \Exception('Must have tax type set');
         }
 
         if (!$this->countryRepository->hasWithIsoCode($customerCountry)) {

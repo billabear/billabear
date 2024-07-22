@@ -152,12 +152,12 @@ class InvoiceLine
         $this->taxPercentage = $taxPercentage;
     }
 
-    public function getTaxType(): TaxType
+    public function getTaxType(): ?TaxType
     {
         return $this->taxType;
     }
 
-    public function setTaxType(TaxType $taxType): void
+    public function setTaxType(?TaxType $taxType): void
     {
         $this->taxType = $taxType;
     }

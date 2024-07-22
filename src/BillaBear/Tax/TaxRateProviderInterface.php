@@ -15,5 +15,5 @@ use Brick\Money\Money;
 
 interface TaxRateProviderInterface
 {
-    public function getRateForCustomer(Customer $customer, TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo;
+    public function getRateForCustomer(Customer $customer, ?TaxType $taxType, ?Product $product = null, ?Money $amount = null): TaxInfo;
 }

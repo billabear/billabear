@@ -21,7 +21,7 @@ class Pricer implements PricerInterface
     {
     }
 
-    public function getCustomerPriceInfo(Price $price, Customer $customer, TaxType $taxType, ?int $seatNumber = 1): PriceInfo
+    public function getCustomerPriceInfo(Price $price, Customer $customer, ?TaxType $taxType, ?int $seatNumber = 1): PriceInfo
     {
         if (null === $seatNumber) {
             $seatNumber = 1;
@@ -51,7 +51,7 @@ class Pricer implements PricerInterface
         );
     }
 
-    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, TaxType $taxType): PriceInfo
+    public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, ?TaxType $taxType): PriceInfo
     {
         $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, amount: $money);
         $rawRate = $taxInfo->rate;

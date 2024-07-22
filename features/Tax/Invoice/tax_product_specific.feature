@@ -7,9 +7,9 @@ Feature: Use Product Tax Rate
       | Tim Brown   | tim.brown@example.org   | AF@k3P@ss |
       | Sally Braun | sally.braun@example.org | AF@k3Pass |
     And the follow products exist:
-      | Name        | External Reference | Tax Rate |
-      | Product One | prod_jf9j545       | 25       |
-      | Product Two | prod_jf9j542       |          |
+      | Name        | External Reference | Tax Rate | Tax Type |
+      | Product One | prod_jf9j545       | 25       | NULL     |
+      | Product Two | prod_jf9j542       |          |          |
     And the follow prices exist:
       | Product     | Amount | Currency | Recurring | Schedule | Public |
       | Product One | 1000   | USD      | true      | week     | true   |
