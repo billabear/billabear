@@ -57,9 +57,9 @@ class RequestLoggerSubscriber implements EventSubscriberInterface
     {
         foreach ($items as $key => $item) {
             if (self::PASSWORD_KEY === strtolower($key)) {
-                $record[$key] = '****';
+                $items[$key] = '****';
             } elseif (is_array($item)) {
-                $record[$key] = $this->filter($item);
+                $items[$key] = $this->filter($item);
             }
         }
 
