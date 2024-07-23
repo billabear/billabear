@@ -12,7 +12,7 @@ use Parthenon\Notification\EmailSenderInterface;
 
 interface EmailSenderFactoryInterface
 {
-    public function __invoke(): EmailSenderInterface;
+    public function create(): EmailSenderInterface;
 
     public function disable(): void;
 }

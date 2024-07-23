@@ -38,7 +38,7 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
         $this->enabled = false;
     }
 
-    public function __invoke(): EmailSenderInterface
+    public function create(): EmailSenderInterface
     {
         try {
             $notificationSettings = $this->settingsRepository->getDefaultSettings()->getNotificationSettings();
