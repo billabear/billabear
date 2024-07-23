@@ -9,13 +9,14 @@
 namespace BillaBear\User\Notification;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Notification\Email\SystemEmail;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Config;
 use Parthenon\Notification\Email;
+use Parthenon\User\Entity\ForgotPasswordCode;
 use Parthenon\User\Entity\InviteCode;
 use Parthenon\User\Entity\UserInterface;
 use Parthenon\User\Notification\MessageFactory as BaseMessageFactory;
+use Parthenon\User\Notification\UserEmail;
 use Twig\Environment;
 
 class MessageFactory extends BaseMessageFactory
@@ -23,6 +24,22 @@ class MessageFactory extends BaseMessageFactory
     public function __construct(Config $config, private Environment $twig, private BrandSettingsRepositoryInterface $brandSettingsRepository)
     {
         parent::__construct($config);
+    }
+
+    public function getPasswordResetMessage(UserInterface $user, ForgotPasswordCode $passwordReset): Email
+    {
+        $brand = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
+        $emailVariables = [
+            'forgot_url' => rtrim($this->config->getSiteUrl(), '/').'/forgot-password/'.$passwordReset->getCode(),
+            'brand_name' => $brand->getBrandName(),
+        ];
+        $content = $this->twig->render('Mail/forgot_password.html.twig', $emailVariables);
+
+        $message = UserEmail::createFromUser($user);
+        $message->setSubject('Password Reset')
+            ->setContent($content);
+
+        return $message;
     }
 
     public function getInviteMessage(UserInterface $user, InviteCode $inviteCode): Email
@@ -34,7 +51,7 @@ class MessageFactory extends BaseMessageFactory
         ];
         $content = $this->twig->render('Mail/invite.html.twig', $emailVariables);
 
-        $message = SystemEmail::createFromUser($user);
+        $message = UserEmail::createFromUser($user);
         $message->setSubject('Invited to use BillaBear for '.$brand->getBrandName())
             ->setContent($content)
             ->setToName('Invited User')
