@@ -26,11 +26,19 @@ abstract class AbstractNotification implements SlackNotificationInterface
 
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
+                if ($value instanceof \DateTime) {
+                    $value = $value->format(DATE_ATOM);
+                }
+
                 $template = preg_replace("|({{\W*".$key."\W*}})|isU", $value, $template, -1);
                 continue;
             }
 
             foreach ($value as $subKey => $subValue) {
+                if ($subValue instanceof \DateTime) {
+                    $subValue = $subValue->format(DATE_ATOM);
+                }
+
                 $template = preg_replace("|({{\W*".$key."\.".$subKey."\W*}})|isU", $subValue, $template, -1);
             }
         }

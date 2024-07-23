@@ -15,6 +15,6 @@ class SlackNotificationRepository extends DoctrineCrudRepository implements Slac
 {
     public function findActiveForEvent(SlackNotificationEvent $event): array
     {
-        return $this->entityRepository->findBy(['event' => $event]);
+        return $this->entityRepository->findBy(['event' => $event, 'isDeleted' => false]);
     }
 }

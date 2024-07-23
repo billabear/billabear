@@ -50,21 +50,21 @@ class HandleStats implements EventSubscriberInterface
         $count = $this->subscriptionRepository->getAllActiveCountForCustomer($customer);
         $cancelledCount = $this->subscriptionRepository->getAllCancelledCountForCustomer($customer);
 
-        if ($count > 1) {
-            $eventType = CustomerSubscriptionEventType::ADDON_ADDED;
-        } elseif ($cancelledCount > 0) {
-            $eventType = CustomerSubscriptionEventType::REACTIVATED;
-            $customer->setStatus(CustomerStatus::REACTIVATED);
-        } elseif (SubscriptionStatus::TRIAL_ACTIVE === $subscription->getStatus()) {
-            $eventType = CustomerSubscriptionEventType::TRIAL_STARTED;
-            $customer->setStatus(CustomerStatus::TRIAL_ACTIVE);
-        } else {
-            $eventType = CustomerSubscriptionEventType::ACTIVATED;
-            $customer->setStatus(CustomerStatus::ACTIVE);
+        // Only create a customer subscription event is it's not a trial.
+        // Trials events are managed by the trial flows.
+        if (SubscriptionStatus::TRIAL_ACTIVE !== $subscription->getStatus()) {
+            if ($count > 1) {
+                $eventType = CustomerSubscriptionEventType::ADDON_ADDED;
+            } elseif ($cancelledCount > 0) {
+                $eventType = CustomerSubscriptionEventType::REACTIVATED;
+                $customer->setStatus(CustomerStatus::REACTIVATED);
+            } else {
+                $eventType = CustomerSubscriptionEventType::ACTIVATED;
+                $customer->setStatus(CustomerStatus::ACTIVE);
+            }
+            $this->customerRepository->save($customer);
+            $this->customerSubscriptionEventCreator->create($eventType, $customer, $subscription);
         }
-
-        $this->customerRepository->save($customer);
-        $this->customerSubscriptionEventCreator->create($eventType, $customer, $subscription);
 
         $this->getLogger()->info('Handled stats for subscription');
     }

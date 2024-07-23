@@ -12,9 +12,12 @@ use BillaBear\Notification\Slack\Data\TrialStarted;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class SendInternalNotification
+#[Autoconfigure(lazy: true)]
+class SendInternalNotification implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
 

@@ -8,7 +8,9 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
-use BillaBear\Entity\Processes\TrialEndedProcess;
+use BillaBear\Entity\Processes\TrialStartedProcess;
+use BillaBear\Notification\Slack\NotificationSender;
+use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\TrialStartedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Common\LoggerAwareTrait;
@@ -23,12 +25,14 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
 
     public function __construct(
         private WebhookDispatcher $eventDispatcher,
+        private SlackNotificationRepositoryInterface $slackNotificationRepository,
+        private NotificationSender $notificationSender,
     ) {
     }
 
     public function transition(Event $event)
     {
-        /** @var TrialEndedProcess $trialEnded */
+        /** @var TrialStartedProcess $trialEnded */
         $trialEnded = $event->getSubject();
         $subscription = $trialEnded->getSubscription();
         $payload = new TrialStartedPayload($subscription);

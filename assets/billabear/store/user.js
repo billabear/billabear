@@ -62,7 +62,7 @@ const actions = {
                     }
                 },
                 error => {
-                    commit('loginFailure', error);
+                    commit('loginFailure', error.response.data.error);
                 }
             );
     },
