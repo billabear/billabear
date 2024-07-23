@@ -9,13 +9,13 @@
 namespace BillaBear\User\Notification;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Notification\Email\SystemEmail;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Config;
 use Parthenon\Notification\Email;
 use Parthenon\User\Entity\InviteCode;
 use Parthenon\User\Entity\UserInterface;
 use Parthenon\User\Notification\MessageFactory as BaseMessageFactory;
-use Parthenon\User\Notification\UserEmail;
 use Twig\Environment;
 
 class MessageFactory extends BaseMessageFactory
@@ -34,7 +34,7 @@ class MessageFactory extends BaseMessageFactory
         ];
         $content = $this->twig->render('Mail/invite.html.twig', $emailVariables);
 
-        $message = UserEmail::createFromUser($user);
+        $message = SystemEmail::createFromUser($user);
         $message->setSubject('Invited to use BillaBear for '.$brand->getBrandName())
             ->setContent($content)
             ->setToName('Invited User')
