@@ -16,6 +16,6 @@ enum SlackNotificationEvent: string
     case SUBSCRIPTION_CREATED = 'subscription_created';
     case SUBSCRIPTION_CANCELLED = 'subscription_cancelled';
     case TRIAL_STARTED = 'trial_started';
-    case TRIAL_EXTENDED = 'trial_extended';
     case TRIAL_ENDED = 'trial_ended';
+    case TRIAL_CONVERTED = 'trial_converted';
 }

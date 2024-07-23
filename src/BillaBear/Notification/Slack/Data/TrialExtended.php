@@ -30,6 +30,6 @@ class TrialExtended extends AbstractNotification
 
     public function getEvent(): SlackNotificationEvent
     {
-        return SlackNotificationEvent::TRIAL_EXTENDED;
+        return SlackNotificationEvent::TRIAL_CONVERTED;
     }
 }
