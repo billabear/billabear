@@ -67,7 +67,7 @@
         </div>
         <div class="card-body">
           <h2 class="section-header">{{ $t('app.subscription.view.pricing.title') }}</h2>
-          <dl class="detail-list section-body">
+          <dl class="detail-list section-body" v-if="subscription.price">
             <div>
               <dt>{{ $t('app.subscription.view.pricing.price') }}</dt>
               <dd>{{ subscription.price.display_value }}</dd>
@@ -81,6 +81,7 @@
               <dd>{{ subscription.price.schedule }}</dd>
             </div>
           </dl>
+          <span class="text-center w-full" v-else>{{ $t('app.subscription.view.pricing.no_price') }}</span>
           <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
             <div class="mt-2">
               <button class="btn--container" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>

@@ -1131,7 +1131,8 @@ export const ITALIAN_TRANSLATIONS = {
                     "price": "Prezzo",
                     "recurring": "Ricorrente",
                     "schedule": "Programma",
-                    "change": "Cambiamento"
+                    "change": "Cambiamento",
+                    "no_price": "Nessun prezzo fissato per l'abbonamento"
                 },
                 "payments": {
                     "title": "Pagamenti",

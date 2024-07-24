@@ -233,7 +233,7 @@ class SubscriptionController
         if ($subscription->getPaymentDetails()) {
             $view->setPaymentDetails($paymentDetailsFactory->createAppDto($subscription->getPaymentDetails()));
         }
-        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getPrice()?->getProduct()));
+        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getSubscriptionPlan()?->getProduct()));
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);

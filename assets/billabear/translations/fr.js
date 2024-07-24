@@ -1131,7 +1131,8 @@ export const FRENCH_TRANSLATIONS = {
           "price": "Prix",
           "recurring": "Récurrent",
           "schedule": "Calendrier",
-          "change": "Changer"
+          "change": "Changer",
+          "no_price": "Pas de prix fixé pour l'abonnement"
         },
         "payments": {
           "title": "Paiements",
