@@ -1131,7 +1131,8 @@ export const GERMAN_TRANSLATIONS ={
           "price": "Preis",
           "recurring": "Wiederkehrende",
           "schedule": "Zeitplan",
-          "change": "Ändern Sie"
+          "change": "Ändern Sie",
+          "no_price": "Es gibt kein Preis für das Abonnement festgelegt"
         },
         "payments": {
           "title": "Zahlungen",

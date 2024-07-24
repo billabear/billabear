@@ -1131,7 +1131,8 @@ export const SPANISH_TRANSLATIONS = {
           "price": "Precio",
           "recurring": "Recurrente",
           "schedule": "Horario",
-          "change": "Cambia"
+          "change": "Cambia",
+          "no_price": "No hay precio establecido para la suscripción",
         },
         "payments": {
           "title": "Pagos",

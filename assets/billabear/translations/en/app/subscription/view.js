@@ -18,7 +18,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         price: "Price",
         recurring: "Recurring",
         schedule: "Schedule",
-        change: "Change"
+        change: "Change",
+        no_price: "No price set for subscription"
     },
     payments: {
         title: "Payments",

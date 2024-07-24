@@ -1131,7 +1131,8 @@ export const DUTCH_TRANSLATIONS = {
                     "price": "Prijs",
                     "recurring": "Terugkerend",
                     "schedule": "Schema",
-                    "change": "Verander"
+                    "change": "Verander",
+                    "no_price": "Er is geen prijs vastgesteld voor een abonnement"
                 },
                 "payments": {
                     "title": "Betalingen",
