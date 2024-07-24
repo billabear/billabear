@@ -2139,7 +2139,8 @@ export const SPANISH_TRANSLATIONS = {
         "invoices": "Lista completa",
         "unpaid_invoices": "Lista de impagados",
         "create": "Crear factura",
-        "quotes": "Citas"
+        "quotes": "Citas",
+        "settings": "Ajustes"
       },
       "create": {
         "title": "Crear factura",
@@ -2260,7 +2261,8 @@ export const SPANISH_TRANSLATIONS = {
           "message": "Pago efectuado con éxito."
         },
         "download": "Descargar factura"
-      }
+      },
+      "settings": {"title": "Configuración de factura", "update": "Actualizar"}
     },
     "home": {
       "stripe_import": {

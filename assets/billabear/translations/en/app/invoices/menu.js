@@ -3,5 +3,6 @@ export const INVOICES_MENU_TRANSLATIONS = {
     invoices: "List All",
     unpaid_invoices: "Unpaid List",
     create: "Create Invoice",
-    quotes: "Quotes"
+    quotes: "Quotes",
+    settings: "Settings"
 };

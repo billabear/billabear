@@ -2139,7 +2139,8 @@ export const ITALIAN_TRANSLATIONS = {
                 "invoices": "Elenco di tutti",
                 "unpaid_invoices": "Elenco non pagato",
                 "create": "Creare una fattura",
-                "quotes": "Citazioni"
+                "quotes": "Citazioni",
+                "settings": "Impostazioni"
             },
             "create": {
                 "title": "Creare una fattura",
@@ -2260,7 +2261,8 @@ export const ITALIAN_TRANSLATIONS = {
                     "message": "Il pagamento è stato effettuato con successo."
                 },
                 "download": "Scarica la fattura"
-            }
+            },
+            "settings": {"title": "Impostazioni della fattura", "update": "Aggiornamento"}
         },
         "home": {
             "stripe_import": {

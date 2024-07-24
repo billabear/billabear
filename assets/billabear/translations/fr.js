@@ -2139,7 +2139,8 @@ export const FRENCH_TRANSLATIONS = {
         "invoices": "Tout lister",
         "unpaid_invoices": "Liste des impayés",
         "create": "Créer une facture",
-        "quotes": "Citations"
+        "quotes": "Citations",
+        "settings": "Paramètres"
       },
       "create": {
         "title": "Créer une facture",
@@ -2260,7 +2261,8 @@ export const FRENCH_TRANSLATIONS = {
           "message": "Paiement effectué avec succès."
         },
         "download": "Télécharger la facture"
-      }
+      },
+      "settings": {"title": "Paramètres de facture", "update": "Mise à jour"}
     },
     "home": {
       "stripe_import": {

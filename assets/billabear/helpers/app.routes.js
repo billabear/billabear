@@ -68,6 +68,7 @@ import SlackNotificationCreate from "../views/App/Developer/Integrations/Slack/S
 import SlackWebhookList from "../views/App/Developer/Integrations/Slack/SlackWebhookList.vue";
 import SlackWebhookCreate from "../views/App/Developer/Integrations/Slack/SlackWebhookCreate.vue";
 import AddWithToken from "../views/App/PaymentDetails/AddWithToken.vue";
+import InvoiceSettings from "../views/App/Invoices/InvoiceSettings.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -412,6 +413,11 @@ export const APP_ROUTES = [
                 name: 'app.quotes.view',
                 path: "quotes/view/:id",
                 component: QuotesView,
+            },
+            {
+                name: 'app.invoice.settings',
+                path: 'invoices/settings',
+                component: InvoiceSettings
             }
         ]
     },

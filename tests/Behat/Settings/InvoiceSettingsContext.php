@@ -52,12 +52,11 @@ class InvoiceSettingsContext implements Context
      */
     public function iUpdateTheInvoiceNumberGenerationToSubsequentialWithTheCountOf($count)
     {
-        $this->sendJsonRequest('GET', '/app/settings/system');
-        $settings = $this->getJsonContent()['system_settings'];
-        $settings['timezone'] = $this->getJsonContent()['timezones'][0];
+        $this->sendJsonRequest('GET', '/app/invoice/settings');
+        $settings = $this->getJsonContent()['invoice_settings'];
         $settings['invoice_number_generation'] = 'subsequential';
         $settings['subsequential_number'] = $count;
-        $this->sendJsonRequest('POST', '/app/settings/system', $settings);
+        $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
     }
 
     /**
@@ -123,11 +122,10 @@ class InvoiceSettingsContext implements Context
      */
     public function iUpdateTheInvoiceNumberGenerationToRandom()
     {
-        $this->sendJsonRequest('GET', '/app/settings/system');
-        $settings = $this->getJsonContent()['system_settings'];
-        $settings['timezone'] = $this->getJsonContent()['timezones'][0];
+        $this->sendJsonRequest('GET', '/app/invoice/settings');
+        $settings = $this->getJsonContent()['invoice_settings'];
         $settings['invoice_number_generation'] = 'random';
-        $this->sendJsonRequest('POST', '/app/settings/system', $settings);
+        $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
     }
 
     /**

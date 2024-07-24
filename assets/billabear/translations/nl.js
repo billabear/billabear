@@ -2139,7 +2139,8 @@ export const DUTCH_TRANSLATIONS = {
                 "invoices": "Toon alle",
                 "unpaid_invoices": "Onbetaalde lijst",
                 "create": "Factuur maken",
-                "quotes": "Citaten"
+                "quotes": "Citaten",
+                "settings": "Instellingen"
             },
             "create": {
                 "title": "Factuur maken",
@@ -2260,7 +2261,8 @@ export const DUTCH_TRANSLATIONS = {
                     "message": "Betaling succesvol uitgevoerd."
                 },
                 "download": "Factuur downloaden"
-            }
+            },
+            "settings": {"title": "Factuurinstellingen", "update": "Update"}
         },
         "home": {
             "stripe_import": {

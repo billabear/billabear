@@ -6,18 +6,20 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\DataMappers\Settings;
+namespace BillaBear\DataMappers\Invoice;
 
-use BillaBear\Dto\Request\App\Settings\SystemSettings as RequestDto;
-use BillaBear\Dto\Response\App\Settings\SystemSettings as AppDto;
+use BillaBear\Dto\Request\App\Invoice\UpdateSettings;
+use BillaBear\Dto\Response\App\Invoice\InvoiceSettings as AppDto;
 use BillaBear\Entity\Settings\SystemSettings;
 
-class SystemSettingsDataMapper
+class SettingsDataMapper
 {
-    public function updateEntity(RequestDto $dto, SystemSettings $settings): SystemSettings
+    public function updateInvoiceSettings(UpdateSettings $dto, SystemSettings $settings): SystemSettings
     {
-        $settings->setSystemUrl($dto->getSystemUrl());
-        $settings->setTimezone($dto->getTimezone());
+        $settings->setInvoiceNumberGeneration($dto->getInvoiceNumberGeneration());
+        $settings->setSubsequentialNumber($dto->getSubsequentialNumber());
+        $settings->setDefaultInvoiceDueTime($dto->getDefaultInvoiceDueTime());
+        $settings->setInvoiceNumberFormat($dto->getFormat());
 
         return $settings;
     }
@@ -25,8 +27,6 @@ class SystemSettingsDataMapper
     public function createAppDto(SystemSettings $settings): AppDto
     {
         $dto = new AppDto();
-        $dto->setSystemUrl($settings->getSystemUrl());
-        $dto->setTimezone($settings->getTimezone());
         $dto->setInvoiceNumberGeneration($settings->getInvoiceNumberGeneration());
         $dto->setSubsequentialNumber($settings->getSubsequentialNumber());
         $dto->setDefaultInvoiceDueTime($settings->getDefaultInvoiceDueTime());

@@ -2139,7 +2139,8 @@ export const GERMAN_TRANSLATIONS ={
         "invoices": "Alle auflisten",
         "unpaid_invoices": "Unbezahlte Liste",
         "create": "Rechnung erstellen",
-        "quotes": "Zitate"
+        "quotes": "Zitate",
+        "settings": "Einstellungen"
       },
       "create": {
         "title": "Rechnung erstellen",
@@ -2260,7 +2261,8 @@ export const GERMAN_TRANSLATIONS ={
           "message": "Zahlung erfolgreich durchgeführt."
         },
         "download": "Rechnung herunterladen"
-      }
+      },
+      "settings": {"title": "Rechnungseinstellungen", "update": "Aktualisieren"}
     },
     "home": {
       "stripe_import": {

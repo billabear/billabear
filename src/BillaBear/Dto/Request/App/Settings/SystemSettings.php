@@ -22,24 +22,6 @@ class SystemSettings
     #[Assert\Timezone]
     private $timezone;
 
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Choice(choices: ['random', 'subsequential', 'format'])]
-    #[SerializedName('invoice_number_generation')]
-    private $invoiceNumberGeneration;
-
-    #[Assert\PositiveOrZero()]
-    #[SerializedName('subsequential_number')]
-    private $subsequentialNumber;
-
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type('string')]
-    #[SerializedName('format')]
-    private $format;
-
-    #[Assert\Choice(choices: ['30 days', '60 days', '90 days', '120 days'])]
-    #[SerializedName('default_invoice_due_time')]
-    private $defaultInvoiceDueTime;
-
     public function getSystemUrl()
     {
         return $this->systemUrl;

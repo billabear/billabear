@@ -6,37 +6,23 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Dto\Response\App\Settings;
+namespace BillaBear\Dto\Response\App\Invoice;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class SystemSettings
+class InvoiceSettings
 {
-    #[SerializedName('system_url')]
-    private ?string $systemUrl = null;
+    #[SerializedName('invoice_number_generation')]
+    private ?string $invoiceNumberGeneration = null;
 
-    #[SerializedName('timezone')]
-    private ?string $timezone = null;
+    #[SerializedName('subsequential_number')]
+    private ?int $subsequentialNumber = null;
 
-    public function getSystemUrl(): ?string
-    {
-        return $this->systemUrl;
-    }
+    #[SerializedName('default_invoice_due_time')]
+    private ?string $defaultInvoiceDueTime = null;
 
-    public function setSystemUrl(?string $systemUrl): void
-    {
-        $this->systemUrl = $systemUrl;
-    }
-
-    public function getTimezone(): ?string
-    {
-        return $this->timezone;
-    }
-
-    public function setTimezone(?string $timezone): void
-    {
-        $this->timezone = $timezone;
-    }
+    #[SerializedName('format')]
+    private ?string $format = null;
 
     public function getInvoiceNumberGeneration(): ?string
     {
