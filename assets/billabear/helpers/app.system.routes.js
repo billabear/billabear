@@ -1,16 +1,16 @@
-import WebhookMain from "../views/App/System/Webhook/WebhookMain.vue";
-import WebhookEndpointList from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointList.vue";
-import WebhookEndpointCreate from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointCreate.vue";
-import WebhookEndpointView from "../views/App/System/Webhook/WebhookEndpoint/WebhookEndpointView.vue";
-import WebhookEventView from "../views/App/System/Webhook/WebhookEvent/WebhookEventView.vue";
+import WebhookMain from "../views/App/Developer/Webhook/WebhookMain.vue";
+import WebhookEndpointList from "../views/App/Developer/Webhook/WebhookEndpoint/WebhookEndpointList.vue";
+import WebhookEndpointCreate from "../views/App/Developer/Webhook/WebhookEndpoint/WebhookEndpointCreate.vue";
+import WebhookEndpointView from "../views/App/Developer/Webhook/WebhookEndpoint/WebhookEndpointView.vue";
+import WebhookEventView from "../views/App/Developer/Webhook/WebhookEvent/WebhookEventView.vue";
 import CancellationRequestList from "../views/App/Workflows/CancellationRequest/CancellationRequestList.vue";
 import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
-import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
-import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
-import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
-import SlackGroup from "../views/App/System/Integrations/Slack/SlackGroup.vue";
-import SlackNotificationList from "../views/App/System/Integrations/Slack/SlackNotificationList.vue";
-import SlackNotificationCreate from "../views/App/System/Integrations/Slack/SlackNotificationCreate.vue";
+import IntegrationsList from "../views/App/Developer/Integrations/IntegrationsList.vue";
+import SlackWebhookList from "../views/App/Developer/Integrations/Slack/SlackWebhookList.vue";
+import SlackWebhookCreate from "../views/App/Developer/Integrations/Slack/SlackWebhookCreate.vue";
+import SlackGroup from "../views/App/Developer/Integrations/Slack/SlackGroup.vue";
+import SlackNotificationList from "../views/App/Developer/Integrations/Slack/SlackNotificationList.vue";
+import SlackNotificationCreate from "../views/App/Developer/Integrations/Slack/SlackNotificationCreate.vue";
 
 
 export const SYSTEM_ROUTES = [

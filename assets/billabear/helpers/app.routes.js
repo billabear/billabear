@@ -53,7 +53,7 @@ import QuotesView from "../views/App/Quotes/QuotesView.vue";
 import QuoteCreate from "../views/App/Quotes/QuoteCreate.vue";
 import InvoicesView from "../views/App/Invoices/InvoicesView.vue";
 import {SYSTEM_ROUTES} from "./app.system.routes";
-import SystemGroup from "../views/App/System/SystemGroup.vue";
+import SystemGroup from "../views/App/Developer/SystemGroup.vue";
 import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
 import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
 import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
@@ -61,12 +61,12 @@ import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGenerato
 import {AppFinanceRoutes} from "./app.finance.routes";
 import {REPORT_ROUTES} from "./app.reports.routes";
 import PdfTemplateCreate from "../views/App/Settings/PdfTemplates/PdfTemplateCreate.vue";
-import IntegrationsList from "../views/App/System/Integrations/IntegrationsList.vue";
-import SlackGroup from "../views/App/System/Integrations/Slack/SlackGroup.vue";
-import SlackNotificationList from "../views/App/System/Integrations/Slack/SlackNotificationList.vue";
-import SlackNotificationCreate from "../views/App/System/Integrations/Slack/SlackNotificationCreate.vue";
-import SlackWebhookList from "../views/App/System/Integrations/Slack/SlackWebhookList.vue";
-import SlackWebhookCreate from "../views/App/System/Integrations/Slack/SlackWebhookCreate.vue";
+import IntegrationsList from "../views/App/Developer/Integrations/IntegrationsList.vue";
+import SlackGroup from "../views/App/Developer/Integrations/Slack/SlackGroup.vue";
+import SlackNotificationList from "../views/App/Developer/Integrations/Slack/SlackNotificationList.vue";
+import SlackNotificationCreate from "../views/App/Developer/Integrations/Slack/SlackNotificationCreate.vue";
+import SlackWebhookList from "../views/App/Developer/Integrations/Slack/SlackWebhookList.vue";
+import SlackWebhookCreate from "../views/App/Developer/Integrations/Slack/SlackWebhookCreate.vue";
 import AddWithToken from "../views/App/PaymentDetails/AddWithToken.vue";
 
 // All paths have the prefix /app/.
