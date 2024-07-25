@@ -27,7 +27,6 @@ import {router} from "./billabear/helpers/router"
 import {store} from './billabear/store'
 import { createApp } from "vue";
 import { createVfm } from 'vue-final-modal'
-import {ENGLISH_TRANSLATIONS} from "./billabear/translations/en";
 import {createI18n} from "vue-i18n";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -41,11 +40,12 @@ import RoleOnlyView from "./billabear/components/app/RoleOnlyView.vue";
 
 
 import { VueFlow } from '@vue-flow/core'
-import {GERMAN_TRANSLATIONS} from "./billabear/translations/de";
-import {SPANISH_TRANSLATIONS} from "./billabear/translations/es";
-import {FRENCH_TRANSLATIONS} from "./billabear/translations/fr";
-import {DUTCH_TRANSLATIONS} from "./billabear/translations/nl";
-import {ITALIAN_TRANSLATIONS} from "./billabear/translations/it";
+import {ENGLISH_TRANSLATIONS} from "./billabear/translations/en.js";
+import GERMAN_TRANSLATIONS from "./billabear/translations/de.json";
+import SPANISH_TRANSLATIONS from "./billabear/translations/es.json";
+import FRENCH_TRANSLATIONS from "./billabear/translations/fr.json";
+import DUTCH_TRANSLATIONS from "./billabear/translations/nl.json";
+import ITALIAN_TRANSLATIONS from "./billabear/translations/it.json";
 
 const TRANSLATIONS = {
     en: ENGLISH_TRANSLATIONS,

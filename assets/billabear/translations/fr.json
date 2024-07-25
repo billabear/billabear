@@ -1,4 +1,4 @@
-export const FRENCH_TRANSLATIONS = {
+{
   "global": {
     "loading": "Chargement",
     "country": {
