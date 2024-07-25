@@ -39,6 +39,6 @@ class DayBeforeChargeWarningEmail extends AbstractEmailData
 
     public function getTemplateName(): string
     {
-        return EmailTemplate::NAME_TRIAL_ENDING_WARNING;
+        return EmailTemplate::NAME_SUBSCRIPTION_RENEWAL_WARNING;
     }
 }

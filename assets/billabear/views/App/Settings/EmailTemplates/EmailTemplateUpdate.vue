@@ -66,7 +66,8 @@
     </div>
 
     <div class="m-5 form-field-submit-ctn">
-      <SubmitButton :in-progress="sendingInProgress">{{ $t('app.settings.email_template.update.submit_btn') }}</SubmitButton>
+      <Button @click="sendTemplate" :in-progress="sendingInProgress" class="btn--secondary">{{ $t('app.settings.email_template.update.test_email') }}</Button>
+      <SubmitButton :in-progress="sendingInProgress" class="ml-5">{{ $t('app.settings.email_template.update.submit_btn') }}</SubmitButton>
     </div>
     <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.email_template.update.success_message') }}</p>
     </form>
@@ -75,9 +76,11 @@
 
 <script>
 import axios from "axios";
+import {Button} from "flowbite-vue";
 
 export default {
   name: "CustomerCreate",
+  components: {Button},
   data() {
     return {
       allowedNames: [],
@@ -105,6 +108,22 @@ export default {
     })
   },
   methods: {
+    sendTemplate: function (){
+      var id = this.$route.params.id
+      this.sendingInProgress = true;
+      this.success = false;
+      this.errors = {};
+      axios.post('/app/settings/email-template/'+id+'/test', this.emailTemplate).then(
+          response => {
+            this.sendingInProgress = false;
+            this.success = true;
+          }
+      ).catch(error => {
+        this.errors = error.response.data.errors;
+        this.sendingInProgress = false;
+        this.success = false;
+      })
+    },
     send: function () {
       var id = this.$route.params.id
       this.sendingInProgress = true;

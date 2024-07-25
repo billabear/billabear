@@ -9,20 +9,28 @@
 namespace BillaBear\Notification\Email;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\EmailTemplate;
 use BillaBear\Notification\Email\Data\AbstractEmailData;
 use Parthenon\Notification\Email;
 use Twig\Environment;
 
 class EmailBuilder
 {
-    public function __construct(private Environment $twig, private EmailTemplateProvider $emailTemplateProvider)
-    {
+    public function __construct(
+        private Environment $twig,
+        private EmailTemplateProvider $emailTemplateProvider,
+    ) {
     }
 
     public function build(Customer $customer, AbstractEmailData $emailData): Email
     {
         $emailTemplate = $this->emailTemplateProvider->getTemplateForCustomer($customer, $emailData->getTemplateName());
 
+        return $this->buildWithTemplate($customer, $emailTemplate, $emailData);
+    }
+
+    public function buildWithTemplate(Customer $customer, EmailTemplate $emailTemplate, AbstractEmailData $emailData): Email
+    {
         $email = new Email();
         $email->setToAddress($customer->getBillingEmail());
         $email->setFromAddress($customer->getBrandSettings()->getEmailAddress());
