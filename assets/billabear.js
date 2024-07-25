@@ -75,7 +75,7 @@ function getBrowserLocale(options = {}) {
 }
 
 const browserLocale = getBrowserLocale({ countryCodeOnly: true });
-console.log(browserLocale)
+
 const i18n = createI18n({
     legacy: false,
     locale: browserLocale || 'en',
