@@ -1584,7 +1584,7 @@
                         "expiring_card_warning_day_before": "Warnung vor ablaufender Karte - Tag davor",
                         "invoice_created": "Rechnung erstellt",
                         "invoice_overdue": "Überfällige Rechnung",
-                        "quote_created": "Zitat Erstellt",
+                        "quote_created": "Angebot Erstellt",
                         "trial_ending_warning": "Warnung vor dem Ende des Prozesses",
                         "before_charge_warning": "Warnung vor dem Aufladen",
                         "before_charge_warning_options": {
@@ -2141,7 +2141,7 @@
                 "invoices": "Alle auflisten",
                 "unpaid_invoices": "Unbezahlte Liste",
                 "create": "Rechnung erstellen",
-                "quotes": "Zitate",
+                "quotes": "Angebote",
                 "settings": "Einstellungen"
             },
             "create": {
@@ -2346,7 +2346,7 @@
             "create": {
                 "title": "Angebot erstellen",
                 "create_quote": "Angebot erstellen",
-                "success_message": "Zitat erstellt",
+                "success_message": "Angebot erstellt",
                 "errors": {
                     "no_customer": "Ein Kunde wird benötigt",
                     "nothing_to_invoice": "Sie müssen ein Abonnement oder einen einmaligen Artikel hinzufügen.",
@@ -2399,12 +2399,12 @@
                 }
             },
             "list": {
-                "title": "Zitate",
+                "title": "Angebote",
                 "email": "Kunden-E-Mail",
                 "total": "Insgesamt",
                 "currency": "Währung",
                 "created_at": "Erstellt am",
-                "no_quotes": "Hier gibt es keine Zitate",
+                "no_quotes": "Hier gibt es keine Angebote",
                 "next": "Weiter",
                 "prev": "Vorherige",
                 "view_btn": "Siehe",
