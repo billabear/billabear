@@ -2393,7 +2393,7 @@
                     },
                     "tax_types": {
                         "digital_services": "Digitale Dienste",
-                        "digital_goods": "Digitale Güter",
+                        "digital_goods": "Digitale Waren",
                         "physical": "Physische Waren\/Dienstleistungen"
                     }
                 }
