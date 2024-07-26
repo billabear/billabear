@@ -13,4 +13,6 @@ use BillaBear\Entity\Invoice;
 interface InvoiceFormatterInterface
 {
     public function generate(Invoice $invoice);
+
+    public function filename(Invoice $invoice): string;
 }

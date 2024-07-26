@@ -64,7 +64,8 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
 
         $generator = $this->invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         $pdf = $generator->generate($invoice);
-        $attachment = new Attachment(sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), $pdf);
+        $filename = $generator->filename($invoice);
+        $attachment = new Attachment($filename, $pdf);
 
         $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $invoiceCreatedEmail);

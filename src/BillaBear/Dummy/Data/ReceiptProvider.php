@@ -133,6 +133,7 @@ class ReceiptProvider
         $invoice = new Invoice();
         $invoice->setCreatedAt(new \DateTime('now'));
         $invoice->setCustomer($customer);
+        $invoice->setInvoiceNumber('DUMMY-4848484');
 
         $lineOne = new InvoiceLine();
         $lineOne->setInvoice($invoice);

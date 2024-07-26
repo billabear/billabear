@@ -243,7 +243,7 @@ class PdfTemplateController
         file_put_contents($tmpFile, $pdf);
 
         $response = new BinaryFileResponse($tmpFile);
-        $filename = 'dummy.pdf';
+        $filename = $generator->filename($invoice);
 
         $response->headers->set('Content-Type', 'application/pdf');
         $response->setContentDisposition(

@@ -127,4 +127,9 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
             'postcode' => $address->getPostcode(),
         ];
     }
+
+    public function filename(Invoice $invoice): string
+    {
+        return sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber());
+    }
 }

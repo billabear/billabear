@@ -53,7 +53,8 @@ class SendOverdueNotificationsTransition implements EventSubscriberInterface
 
         $generator = $this->invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         $pdf = $generator->generate($invoice);
-        $attachment = new Attachment(sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), $pdf);
+        $filename = $generator->filename($invoice);
+        $attachment = new Attachment($filename, $pdf);
 
         $invoiceOverdueEmail = new InvoiceOverdueEmail($invoice, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $invoiceOverdueEmail);
