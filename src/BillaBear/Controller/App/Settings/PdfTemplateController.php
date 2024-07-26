@@ -21,7 +21,7 @@ use BillaBear\Dto\Response\App\Template\TemplateView;
 use BillaBear\Dummy\Data\ReceiptProvider;
 use BillaBear\Entity\Template;
 use BillaBear\Enum\PdfGeneratorType;
-use BillaBear\Invoice\Formatter\InvoicePdfGenerator;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Pdf\ReceiptPdfGenerator;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -219,7 +219,7 @@ class PdfTemplateController
     public function downloadInvoice(
         Request $request,
         TemplateRepositoryInterface $templateRepository,
-        InvoicePdfGenerator $generator,
+        InvoiceFormatterProvider $invoiceFormatterProvider,
         ReceiptProvider $provider,
     ): Response {
         $this->getLogger()->info('Received request to download invoice template', ['pdf_template' => $request->get('id')]);
@@ -231,6 +231,7 @@ class PdfTemplateController
         }
 
         $invoice = $provider->getInvoice();
+        $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         try {
             $pdf = $generator->generate($invoice);
         } catch (Error $e) {

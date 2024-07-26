@@ -9,7 +9,7 @@
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
 use BillaBear\Entity\Processes\InvoiceProcess;
-use BillaBear\Invoice\Formatter\InvoicePdfGenerator;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
 use BillaBear\Notification\Email\EmailBuilder;
@@ -30,7 +30,7 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
         private PayLinkGeneratorInterface $payLinkGenerator,
-        private InvoicePdfGenerator $invoicePdfGenerator,
+        private InvoiceFormatterProvider $invoiceFormatterProvider,
         private SettingsRepositoryInterface $settingsRepository,
     ) {
     }
@@ -62,7 +62,8 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
         }
         $fullPayLink = $this->payLinkGenerator->generatePayLink($invoice);
 
-        $pdf = $this->invoicePdfGenerator->generate($invoice);
+        $generator = $this->invoiceFormatterProvider->getFormatter($invoice->getCustomer());
+        $pdf = $generator->generate($invoice);
         $attachment = new Attachment(sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), $pdf);
 
         $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);

@@ -11,7 +11,7 @@ namespace BillaBear\Controller\Api;
 use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Entity\Invoice;
-use BillaBear\Invoice\Formatter\InvoicePdfGenerator;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
@@ -86,7 +86,7 @@ class InvoiceController
     public function downloadInvoice(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
-        InvoicePdfGenerator $generator,
+        InvoiceFormatterProvider $invoiceFormatterProvider,
     ): Response {
         $this->getLogger()->info('Received an API request to download invoice', ['invoice_id' => $request->get('id')]);
         try {
@@ -95,6 +95,7 @@ class InvoiceController
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         $pdf = $generator->generate($invoice);
         $tmpFile = tempnam('/tmp', 'pdf');
         file_put_contents($tmpFile, $pdf);

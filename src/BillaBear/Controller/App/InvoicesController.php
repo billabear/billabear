@@ -16,7 +16,7 @@ use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Invoice;
 use BillaBear\Event\InvoicePaid;
 use BillaBear\Filters\InvoiceList;
-use BillaBear\Invoice\Formatter\InvoicePdfGenerator;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Invoice\ManualInvoiceCreator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\InvoiceRepositoryInterface;
@@ -112,7 +112,7 @@ class InvoicesController
     public function downloadInvoice(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
-        InvoicePdfGenerator $generator,
+        InvoiceFormatterProvider $invoiceFormatterProvider,
     ): Response {
         $this->getLogger()->info('Received request to download invoice', ['invoice_id' => $request->get('id')]);
 
@@ -122,6 +122,7 @@ class InvoicesController
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         $pdf = $generator->generate($invoice);
         $tmpFile = tempnam('/tmp', 'pdf');
         file_put_contents($tmpFile, $pdf);
