@@ -40,6 +40,9 @@ class NotificationSettings
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $sendBeforeChargeWarnings = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $paymentFailure = null;
+
     public function getSubscriptionCreation(): bool
     {
         return true === $this->subscriptionCreation;
@@ -132,5 +135,15 @@ class NotificationSettings
     public function setSendBeforeChargeWarnings(?string $sendBeforeChargeWarnings): void
     {
         $this->sendBeforeChargeWarnings = $sendBeforeChargeWarnings;
+    }
+
+    public function getPaymentFailure(): bool
+    {
+        return true === $this->paymentFailure;
+    }
+
+    public function setPaymentFailure(?bool $paymentFailure): void
+    {
+        $this->paymentFailure = $paymentFailure;
     }
 }

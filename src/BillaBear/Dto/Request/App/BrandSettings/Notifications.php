@@ -39,6 +39,11 @@ class Notifications
     #[SerializedName('trial_ending_warning')]
     private $trialEndingWarnings;
 
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('boolean')]
+    #[SerializedName('payment_failure')]
+    private $paymentFailure;
+
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[Assert\Choice(choices: ['none', 'all', 'yearly'])]
@@ -133,5 +138,15 @@ class Notifications
     public function setBeforeChargeWarnings($beforeChargeWarnings): void
     {
         $this->beforeChargeWarnings = $beforeChargeWarnings;
+    }
+
+    public function getPaymentFailure()
+    {
+        return $this->paymentFailure;
+    }
+
+    public function setPaymentFailure($paymentFailure): void
+    {
+        $this->paymentFailure = $paymentFailure;
     }
 }

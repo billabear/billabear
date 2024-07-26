@@ -11,6 +11,7 @@ namespace BillaBear\Dummy\Data;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\Payment;
+use BillaBear\Entity\PaymentAttempt;
 use BillaBear\Entity\Quote;
 use BillaBear\Entity\QuoteLine;
 use BillaBear\Entity\TaxType;
@@ -35,6 +36,18 @@ class ReceiptProvider
         $payment->setCreatedAt(new \DateTime());
 
         return $payment;
+    }
+
+    public function getPaymentAttempt(): PaymentAttempt
+    {
+        $paymentAttempt = new PaymentAttempt();
+        $paymentAttempt->setCustomer($this->buildCustomer());
+        $paymentAttempt->setCurrency('GBP');
+        $paymentAttempt->setAmount(4242);
+        $paymentAttempt->setFailureReason('lack of funds');
+        $paymentAttempt->setCreatedAt(new \DateTime());
+
+        return $paymentAttempt;
     }
 
     public function getPaymentCard(): PaymentCard

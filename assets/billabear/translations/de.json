@@ -1591,7 +1591,8 @@
                             "none": "Keine",
                             "all": "Alle",
                             "yearly": "Jährlich"
-                        }
+                        },
+                        "payment_failure": "Fehlgeschlagene Zahlung"
                     }
                 },
                 "create": {

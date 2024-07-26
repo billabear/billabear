@@ -39,6 +39,9 @@ class Notifications
     #[SerializedName('before_charge_warning')]
     private string $beforeChargeWarnings;
 
+    #[SerializedName('payment_failure')]
+    private bool $paymentFailure;
+
     public function getSubscriptionCreation()
     {
         return true === $this->subscriptionCreation;
@@ -127,5 +130,15 @@ class Notifications
     public function setBeforeChargeWarnings(string $beforeChargeWarnings): void
     {
         $this->beforeChargeWarnings = $beforeChargeWarnings;
+    }
+
+    public function isPaymentFailure(): bool
+    {
+        return $this->paymentFailure;
+    }
+
+    public function setPaymentFailure(bool $paymentFailure): void
+    {
+        $this->paymentFailure = $paymentFailure;
     }
 }

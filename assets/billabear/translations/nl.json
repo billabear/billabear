@@ -1591,7 +1591,8 @@
                             "none": "Geen",
                             "all": "Alle",
                             "yearly": "Jaarlijks"
-                        }
+                        },
+                        "payment_failure": "Mislukte betaling"
                     }
                 },
                 "create": {

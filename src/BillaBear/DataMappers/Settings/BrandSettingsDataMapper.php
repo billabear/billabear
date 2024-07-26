@@ -46,6 +46,7 @@ class BrandSettingsDataMapper
         $brandSettings->getNotificationSettings()->setInvoiceOverdue($dto->getNotifications()->getInvoiceOverdue());
         $brandSettings->getNotificationSettings()->setSendTrialEndingWarning($dto->getNotifications()->getTrialEndingWarnings());
         $brandSettings->getNotificationSettings()->setSendBeforeChargeWarnings($dto->getNotifications()->getBeforeChargeWarnings());
+        $brandSettings->getNotificationSettings()->setPaymentFailure($dto->getNotifications()->getPaymentFailure());
 
         $brandSettings->setTaxNumber($dto->getTaxNumber());
         $brandSettings->setTaxRate($dto->getTaxRate());
@@ -89,6 +90,7 @@ class BrandSettingsDataMapper
         $dto->getNotifications()->setInvoiceOverdue($brandSettings->getNotificationSettings()->getInvoiceOverdue());
         $dto->getNotifications()->setTrialEndingWarnings($brandSettings->getNotificationSettings()->getSendTrialEndingWarning());
         $dto->getNotifications()->setBeforeChargeWarnings($brandSettings->getNotificationSettings()->getSendBeforeChargeWarnings());
+        $dto->getNotifications()->setPaymentFailure($brandSettings->getNotificationSettings()->getPaymentFailure());
 
         return $dto;
     }

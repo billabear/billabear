@@ -45,6 +45,7 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         quote_created: "Quote Created",
         trial_ending_warning: "Trial Ending Warning",
         before_charge_warning: "Before Charge Warning",
+        payment_failure: "Payment Failure",
         before_charge_warning_options: {
             none: "None",
             all: "All",

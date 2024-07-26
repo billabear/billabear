@@ -1591,7 +1591,8 @@
                             "none": "Nessuno",
                             "all": "Tutti",
                             "yearly": "Annuale"
-                        }
+                        },
+                        "payment_failure": "Mancato pagamento"
                     }
                 },
                 "create": {

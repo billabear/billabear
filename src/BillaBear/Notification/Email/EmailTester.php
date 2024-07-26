@@ -20,6 +20,7 @@ use BillaBear\Notification\Email\Data\ExpiringCardEmai;
 use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
 use BillaBear\Notification\Email\Data\InvoiceOverdueEmail;
 use BillaBear\Notification\Email\Data\PaymentCreatedEmail;
+use BillaBear\Notification\Email\Data\PaymentFailureEmail;
 use BillaBear\Notification\Email\Data\QuoteCreatedEmail;
 use BillaBear\Notification\Email\Data\SubscriptionCancelEmail;
 use BillaBear\Notification\Email\Data\SubscriptionCreatedEmailData;
@@ -48,9 +49,11 @@ class EmailTester
             EmailTemplate::NAME_PAYMENT_METHOD_EXPIRY_WARNING => $this->createExpiredCard($user, $template),
             EmailTemplate::NAME_INVOICE_CREATED => $this->createInvoiceCreated($user, $template),
             EmailTemplate::NAME_INVOICE_OVERDUE => $this->createInvoiceOverdue($user, $template),
+            EmailTemplate::NAME_QUOTE_CREATED => $this->createQuoteCreated($user, $template),
             EmailTemplate::NAME_SUBSCRIPTION_CANCELLED => $this->createSubscriptionCancelled($user, $template),
             EmailTemplate::NAME_TRIAL_ENDING_WARNING => $this->createDayBeforeTrialEndingWarning($user, $template),
             EmailTemplate::NAME_SUBSCRIPTION_CREATED => $this->createSubscriptionCreated($user, $template),
+            EmailTemplate::NAME_PAYMENT_FAILED => $this->createPaymentFailed($user, $template),
         };
 
         $this->emailSender->send($email);
@@ -171,5 +174,15 @@ class EmailTester
         $emailData = new ExpiringCardEmai($paymentCard, $subscription);
 
         return $this->emailBuilder->buildWithTemplate($subscription->getCustomer(), $template, $emailData);
+    }
+
+    private function createPaymentFailed(User $user, EmailTemplate $template): Email
+    {
+        $payment = $this->receiptProvider->getPaymentAttempt();
+        $payment->getCustomer()->setBillingEmail($user->getEmail());
+        $payment->getCustomer()->setBrandSettings($this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND));
+        $emailData = new PaymentFailureEmail($payment);
+
+        return $this->emailBuilder->buildWithTemplate($payment->getCustomer(), $template, $emailData);
     }
 }

@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -131,5 +132,10 @@ class PaymentAttempt
     public function setSubscriptions(Collection|array $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
+    }
+
+    public function getMoneyAmount(): Money
+    {
+        return Money::ofMinor($this->amount, $this->currency);
     }
 }

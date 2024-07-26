@@ -165,6 +165,10 @@
               <label for="quote_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.quote_created') }}</label>
             </div>
             <div class="ds">
+              <input type="checkbox" id="quote_created" v-model="brand.notifications.payment_failure" />
+              <label for="quote_created" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.payment_failure') }}</label>
+            </div>
+            <div class="ds">
               <input type="checkbox" id="send_trial_ending_warnings" v-model="brand.notifications.trial_ending_warning" />
               <label for="send_trial_ending_warnings" class="ml-3">{{ $t('app.settings.brand_settings.update.notification.trial_ending_warning') }}</label>
             </div>

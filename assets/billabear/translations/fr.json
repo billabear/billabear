@@ -1591,7 +1591,8 @@
                             "none": "Aucun",
                             "all": "Tous",
                             "yearly": "Annuel"
-                        }
+                        },
+                        "payment_failure": "Défaut de paiement"
                     }
                 },
                 "create": {
