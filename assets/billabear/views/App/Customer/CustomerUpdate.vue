@@ -75,6 +75,17 @@
             <input type="number" class="form-field-input" id="standard_tax_rate" v-model="customer.standard_tax_rate"  />
             <p class="form-field-help">{{ $t('app.customer.update.help_info.standard_tax_rate') }}</p>
           </div>
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="tax_number">
+              {{ $t('app.customer.update.invoice_format') }}
+            </label>
+            <p class="form-field-error" v-if="errors.invoiceFormat != undefined">{{ errors.invoiceFormat }}</p>
+            <select class="form-field" v-model="customer.invoice_format">
+              <option value="pdf">PDF</option>/
+            </select>
+            <p class="form-field-help">{{ $t('app.customer.update.help_info.invoice_format') }}</p>
+          </div>
         </div>
 
 

@@ -49,6 +49,9 @@ class Customer
     #[SerializedName('standard_tax_rate')]
     protected ?float $standardTaxRate;
 
+    #[SerializedName('invoice_format')]
+    protected ?string $invoiceFormat;
+
     protected string $type;
 
     public function getId(): string
@@ -179,5 +182,15 @@ class Customer
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getInvoiceFormat(): ?string
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat(?string $invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
     }
 }

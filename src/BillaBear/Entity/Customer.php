@@ -10,6 +10,7 @@ namespace BillaBear\Entity;
 
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerType;
+use BillaBear\Enum\InvoiceFormat;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -95,6 +96,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(enumType: CustomerType::class)]
     protected CustomerType $type;
+
+    #[ORM\Column(name: 'invoice_format', enumType: InvoiceFormat::class, nullable: true)]
+    protected ?InvoiceFormat $invoiceFormat = null;
 
     public function getId()
     {
@@ -397,5 +401,15 @@ class Customer implements CustomerInterface
     public function isEnabled(): bool
     {
         return !$this->disabled;
+    }
+
+    public function getInvoiceFormat(): ?InvoiceFormat
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat(?InvoiceFormat $invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
     }
 }

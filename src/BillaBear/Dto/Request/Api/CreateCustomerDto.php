@@ -70,6 +70,11 @@ class CreateCustomerDto
     #[Assert\Choice(choices: ['individual', 'business'])]
     private $type;
 
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('string')]
+    #[Assert\Choice(['pdf'])]
+    private $invoiceFormat;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -188,5 +193,15 @@ class CreateCustomerDto
     public function setType($type): void
     {
         $this->type = $type;
+    }
+
+    public function getInvoiceFormat()
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat($invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
     }
 }

@@ -9,6 +9,7 @@
 namespace BillaBear\Invoice\Formatter;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Enum\InvoiceFormat;
 
 class InvoiceFormatterProvider
 {
@@ -18,6 +19,11 @@ class InvoiceFormatterProvider
 
     public function getFormatter(Customer $customer): InvoiceFormatterInterface
     {
-        return $this->invoicePdfGenerator;
+        $generator = match ($customer->getInvoiceFormat()) {
+            InvoiceFormat::PDF => $this->invoicePdfGenerator,
+            default => $this->invoicePdfGenerator,
+        };
+
+        return $generator;
     }
 }

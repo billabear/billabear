@@ -54,6 +54,9 @@ class Customer
 
     protected string $type;
 
+    #[SerializedName('invoice_format')]
+    protected ?string $invoiceFormat;
+
     public function getId(): string
     {
         return $this->id;
@@ -192,5 +195,15 @@ class Customer
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getInvoiceFormat(): ?string
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat(?string $invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
     }
 }
