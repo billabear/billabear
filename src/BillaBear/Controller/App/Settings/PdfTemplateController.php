@@ -21,7 +21,7 @@ use BillaBear\Dto\Response\App\Template\TemplateView;
 use BillaBear\Dummy\Data\ReceiptProvider;
 use BillaBear\Entity\Template;
 use BillaBear\Enum\PdfGeneratorType;
-use BillaBear\Pdf\InvoicePdfGenerator;
+use BillaBear\Invoice\Formatter\InvoicePdfGenerator;
 use BillaBear\Pdf\ReceiptPdfGenerator;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;

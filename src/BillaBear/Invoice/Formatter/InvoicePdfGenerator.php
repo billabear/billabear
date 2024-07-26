@@ -6,7 +6,7 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Pdf;
+namespace BillaBear\Invoice\Formatter;
 
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Customer;
@@ -19,7 +19,7 @@ use Parthenon\Common\Pdf\GeneratorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
-class InvoicePdfGenerator
+class InvoicePdfGenerator implements InvoiceFormatterInterface
 {
     public function __construct(
         private TemplateRepositoryInterface $templateRepository,

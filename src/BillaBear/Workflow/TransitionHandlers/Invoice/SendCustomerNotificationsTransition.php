@@ -9,10 +9,10 @@
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
 use BillaBear\Entity\Processes\InvoiceProcess;
+use BillaBear\Invoice\Formatter\InvoicePdfGenerator;
 use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
 use BillaBear\Notification\Email\EmailBuilder;
-use BillaBear\Pdf\InvoicePdfGenerator;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\Attachment;
