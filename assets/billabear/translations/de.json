@@ -251,7 +251,7 @@
             "login_button": "Anmeldung",
             "remember_me_label": "Erinnern Sie sich an mich",
             "forgot_password_link": "Haben Sie Ihr Passwort vergessen?",
-            "signup_link": "Anmelden für ein Konto",
+            "signup_link": "Registrierung für ein Konto",
             "logging_in": "Einloggen"
         },
         "signup": {
@@ -368,7 +368,7 @@
                 "name": "Name",
                 "email": "E-Mail",
                 "password": "Passwort",
-                "locale": "Schauplatz",
+                "locale": "Gebietsschema",
                 "save": "Speichern Sie",
                 "error_message": "Beim Speichern der Benutzereinstellungen ist ein Problem aufgetreten. Bitte überprüfen Sie die Fehler.",
                 "success_message": "Ihre Einstellungen wurden erfolgreich gespeichert.",
@@ -403,7 +403,7 @@
                 "region": "Staat",
                 "country": "Land",
                 "postal_code": "Postleitzahl",
-                "submit": "Speichern Sie"
+                "submit": "Speichern"
             },
             "main": {
                 "title": "Rechnungsstellung",
@@ -468,7 +468,7 @@
                 "show_advanced": "Fortgeschrittene",
                 "success_message": "Erfolgreich erstellter Kunde",
                 "address_title": "Adresse",
-                "locale": "Schauplatz",
+                "locale": "Gebietsschema",
                 "billing_type": "Art der Abrechnung",
                 "billing_type_card": "Karte",
                 "billing_type_invoice": "Rechnung",
@@ -478,7 +478,7 @@
                 "standard_tax_rate": "Standard-Steuersatz",
                 "type": "Kunde Typ",
                 "type_business": "Business",
-                "type_individual": "Einzelne",
+                "type_individual": "Privatkunde",
                 "help_info": {
                     "email": "Die E-Mail für den Kunden, an den die Rechnungen gehen sollen",
                     "locale": "Das für die Sprache zu verwendende Gebietsschema",
@@ -490,8 +490,7 @@
                     "country": "Das Rechnungsland des Kunden - ISO 3166-1 Alpha-2 Ländercode.",
                     "post_code": "Die Postleitzahl für die Rechnungsadresse",
                     "reference": "Ihre interne Referenz für den Kunden",
-                    "billing_type": "Wie dem Kunden die Rechnung gestellt werden soll. Karte bedeutet, dass die Zahlungen automatisch über eine registrierte Karte erfolgen. Rechnung bedeutet, dass der Kunde eine Rechnung erhält und manuell bezahlt",
-                    "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
+                    "billing_type": "Wie dem Kunden die Rechnung gestellt werden soll. Karte bedeutet, dass die Zahlungen automatisch über eine registrierte Karte erfolgen. Rechnung bedeutet, dass der Kunde eine Rechnung erhält und manuell bezahlt", "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
                     "brand": "Die Marke, der der Kunde angehören wird.",
                     "tax_number": "Die Steuernummer des Kunden",
                     "standard_tax_rate": "Der für den Kunden anzuwendende Steuersatz für alles außer digitalen Dienstleistungen",
@@ -514,7 +513,7 @@
                     "reference": "Interne Referenz",
                     "external_reference": "Externe Referenz",
                     "status": "Status",
-                    "locale": "Schauplatz",
+                    "locale": "Gebietsschema",
                     "brand": "Marke",
                     "billing_type": "Art der Abrechnung",
                     "tax_number": "Steuernummer",
@@ -631,7 +630,7 @@
                         "amount": "Betrag",
                         "currency": "Währung",
                         "status": "Status",
-                        "outstanding": "Herausragend",
+                        "outstanding": "Ausstehend",
                         "overdue": "Überfällig",
                         "paid": "Bezahlt",
                         "created_at": "Erstellt am",
@@ -654,12 +653,12 @@
                 "external_reference": "Externe Referenz",
                 "advance": "vorschuss",
                 "submit_btn": "Aktualisiert",
-                "show_advanced": "Fortgeschrittene",
+                "show_advanced": "Gefahrenzone",
                 "success_message": "Erfolgreiche Aktualisierung des Kunden",
                 "address_title": "Adresse",
                 "tax_number": "Steuernummer",
                 "standard_tax_rate": "Standard-Steuersatz",
-                "locale": "Schauplatz",
+                "locale": "Gebietsschema",
                 "error": {
                     "not_found": "Kein solcher Kunde gefunden",
                     "unknown": "Ein unbekannter Fehler ist aufgetreten"
@@ -1480,7 +1479,7 @@
                 "list": {
                     "title": "Vorlage",
                     "name": "Name",
-                    "locale": "Schauplatz",
+                    "locale": "Gebietsschema",
                     "brand": "Marke",
                     "create_btn": "Erstellen",
                     "edit_btn": "Bearbeiten",
@@ -1519,7 +1518,7 @@
                     "save": "Speichern Sie",
                     "download": "Test PDF herunterladen",
                     "template": "Vorlage",
-                    "locale": "Schauplatz",
+                    "locale": "Gebietsschema",
                     "type": "Typ",
                     "brand": "Marke",
                     "help_info": {
@@ -1643,7 +1642,7 @@
                     "create_new": "Erstellen",
                     "next": "Nächste Seite",
                     "prev": "Vorherige Seite",
-                    "locale": "Schauplatz",
+                    "locale": "Gebietsschema",
                     "view_btn": "Siehe",
                     "filter": {
                         "title": "Filter",
@@ -1659,7 +1658,7 @@
                     "title": "E-Mail-Vorlage erstellen",
                     "fields": {
                         "name": "Name",
-                        "locale": "Schauplatz",
+                        "locale": "Gebietsschema",
                         "use_emsp_template": "EMSP-Vorlage verwenden",
                         "subject": "Thema",
                         "template_body": "Vorlage Körper",
@@ -1683,7 +1682,7 @@
                     "title": "E-Mail-Vorlage aktualisieren",
                     "fields": {
                         "name": "Name",
-                        "locale": "Schauplatz",
+                        "locale": "Gebietsschema",
                         "use_emsp_template": "EMSP-Vorlage verwenden",
                         "subject": "Thema",
                         "template_body": "Vorlage Körper",
@@ -2127,7 +2126,7 @@
                 "view_btn": "Rechnung ansehen",
                 "status": "Status",
                 "paid": "Bezahlt",
-                "outstanding": "Herausragend",
+                "outstanding": "Ausstehend",
                 "filter": {
                     "title": "Filter",
                     "button": "Filter",
@@ -2635,7 +2634,7 @@
                         "permanent": "Dauerhaft",
                         "customer": "Kunde",
                         "currency": "Währung",
-                        "slug": "Schnecke",
+                        "slug": "slug",
                         "expires_at": "Läuft ab bei",
                         "brand": "Marke"
                     },
@@ -3315,7 +3314,7 @@
                 }
             },
             "create": {
-                "title": "Neuen Staat erstellen",
+                "title": "Neue Region erstellen",
                 "state": {
                     "fields": {
                         "name": "Name",
