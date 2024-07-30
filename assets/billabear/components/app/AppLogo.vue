@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <img src="/images/app-logo.png" alt="" class="" width="150" />
+    <img src="/images/app-logo.svg" alt="" class="" width="150" />
   </div>
 </template>
 
