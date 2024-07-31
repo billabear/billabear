@@ -72,7 +72,7 @@ class CreateCustomerDto
 
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    #[Assert\Choice(['pdf'])]
+    #[Assert\Choice(['pdf', 'zugferd_v1'])]
     private $invoiceFormat;
 
     public function getEmail(): ?string
