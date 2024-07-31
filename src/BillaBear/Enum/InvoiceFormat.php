@@ -11,4 +11,5 @@ namespace BillaBear\Enum;
 enum InvoiceFormat: string
 {
     case PDF = 'pdf';
+    case ZUGFERD = 'zugferd';
 }

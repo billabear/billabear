@@ -474,7 +474,7 @@
                 "billing_type_invoice": "Rechnung",
                 "company_name": "Name des Unternehmens",
                 "brand": "Marke",
-                "tax_number": "Steuernummer",
+                "tax_number": "Umsatzsteuer-Identifikationsnummer",
                 "standard_tax_rate": "Standard-Steuersatz",
                 "type": "Kunde Typ",
                 "type_business": "Business",
@@ -492,7 +492,7 @@
                     "reference": "Ihre interne Referenz für den Kunden",
                     "billing_type": "Wie dem Kunden die Rechnung gestellt werden soll. Karte bedeutet, dass die Zahlungen automatisch über eine registrierte Karte erfolgen. Rechnung bedeutet, dass der Kunde eine Rechnung erhält und manuell bezahlt", "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
                     "brand": "Die Marke, der der Kunde angehören wird.",
-                    "tax_number": "Die Steuernummer des Kunden",
+                    "tax_number": "Die Umsatzsteuer-Identifikationsnummer des Kunden",
                     "standard_tax_rate": "Der für den Kunden anzuwendende Steuersatz für alles außer digitalen Dienstleistungen",
                     "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist"
                 },
@@ -516,7 +516,7 @@
                     "locale": "Gebietsschema",
                     "brand": "Marke",
                     "billing_type": "Art der Abrechnung",
-                    "tax_number": "Steuernummer",
+                    "tax_number": "Umsatzsteuer-Identifikationsnummer",
                     "standard_tax_rate": "Standard-Steuersatz",
                     "type": "Typ"
                 },
@@ -656,7 +656,7 @@
                 "show_advanced": "Gefahrenzone",
                 "success_message": "Erfolgreiche Aktualisierung des Kunden",
                 "address_title": "Adresse",
-                "tax_number": "Steuernummer",
+                "tax_number": "Umsatzsteuer-Identifikationsnummer",
                 "standard_tax_rate": "Standard-Steuersatz",
                 "locale": "Gebietsschema",
                 "error": {
@@ -682,7 +682,7 @@
                     "reference": "Ihre interne Referenz für den Kunden",
                     "billing_type": "Wie dem Kunden die Rechnung gestellt werden soll. Karte bedeutet, dass die Zahlungen automatisch über eine registrierte Karte erfolgen. Rechnung bedeutet, dass der Kunde eine Rechnung erhält und manuell bezahlt",
                     "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
-                    "tax_number": "Die Steuernummer des Kunden",
+                    "tax_number": "Die Umsatzsteuer-Identifikationsnummer des Kunden",
                     "standard_tax_rate": "Der für den Kunden anzuwendende Steuersatz für alles außer digitalen Dienstleistungen",
                     "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist"
                 }
@@ -1552,7 +1552,7 @@
                         "country": "Land",
                         "postcode": "Postleitzahl",
                         "code": "Code",
-                        "tax_number": "Steuernummer",
+                        "tax_number": "Umsatzsteuer-Identifikationsnummer",
                         "tax_rate": "Steuersatz",
                         "digital_services_tax_rate": "Steuersatz für digitale Dienstleistungen"
                     },
@@ -1567,7 +1567,7 @@
                         "region": "Die Region\/das Bundesland für die Rechnungsadresse",
                         "country": "Das Rechnungsland des Kunden - ISO 3166-1 Alpha-2 Ländercode.",
                         "postcode": "Die Postleitzahl für die Rechnungsadresse",
-                        "tax_number": "Die Steuernummer für das Unternehmen\/die Marke",
+                        "tax_number": "Die Umsatzsteuer-Identifikationsnummer für das Unternehmen\/die Marke",
                         "tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz gefunden werden kann",
                         "digital_services_tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz für digitale Dienstleistungen gefunden werden kann"
                     },
@@ -1607,14 +1607,14 @@
                         "country": "Land",
                         "post_code": "Postleitzahl",
                         "code": "Code",
-                        "tax_number": "Steuernummer",
+                        "tax_number": "Umsatzsteuer-Identifikationsnummer",
                         "tax_rate": "Steuersatz",
                         "digital_services_tax_rate": "Steuersatz für digitale Dienstleistungen"
                     },
                     "help_info": {
                         "name": "Der Name der Marke",
                         "code": "Der Code, der zur Identifizierung der Marke bei API-Aufrufen verwendet wird. Er kann nicht aktualisiert werden. Meistens handelt es sich um einen alphanumerischen Kleinbuchstaben mit Unterstrichen.",
-                        "tax_number": "Die Steuernummer für die Marke\/das Unternehmen",
+                        "tax_number": "Die Umsatzsteuer-Identifikationsnummer für die Marke\/das Unternehmen",
                         "email": "Die E-Mail, die für den Versand von E-Mails an Markenkunden verwendet werden soll",
                         "company_name": "Der Firmenname für die Rechnungsstellung",
                         "street_line_one": "Die erste Zeile der Rechnungsadresse",
@@ -1914,13 +1914,13 @@
                     "submit_btn": "Einreichen",
                     "success_message": "Aktualisierte Steuereinstellungen",
                     "fields": {
-                        "tax_customers_with_tax_number": "Steuerliche Kunden mit Steuernummer",
+                        "tax_customers_with_tax_number": "Steuerliche Kunden mit Umsatzsteuer-Identifikationsnummer",
                         "eu_business_tax_rules": "Umgang mit EU-Unternehmenssteuerregelungen",
                         "eu_one_stop_shop_rule": "EU-Regel der einzigen Anlaufstelle"
                     },
                     "help_info": {
-                        "tax_customers_with_tax_number": "Wenn nicht angekreuzt, wird Kunden, die eine Steuernummer angegeben haben, keine Steuer berechnet",
-                        "eu_business_tax_rules": "Wenn diese Option aktiviert ist, werden Geschäftskunden, die eine Mehrwertsteuernummer angegeben haben, anders behandelt als normale Kunden",
+                        "tax_customers_with_tax_number": "Wenn nicht angekreuzt, wird Kunden, die eine Umsatzsteuer-Identifikationsnummer angegeben haben, keine Steuer berechnet",
+                        "eu_business_tax_rules": "Wenn diese Option aktiviert ist, werden Geschäftskunden, die eine Umsatzsteuer-Identifikationsnummer angegeben haben, anders behandelt als normale Kunden",
                         "eu_one_stop_shop_rule": "Anwendung der EU-Regel der einzigen Anlaufstelle. Die EU-Länder werden unabhängig vom Schwellenwert besteuert."
                     }
                 }
@@ -3143,7 +3143,7 @@
                         "in_eu": "In der EU?",
                         "tax_year": "Beginn des Steuerjahres",
                         "collecting": "Steuer einziehen",
-                        "tax_number": "Steuernummer"
+                        "tax_number": "Umsatzsteuer-Identifikationsnummer"
                     },
                     "help_info": {
                         "name": "Der Name des Landes",
@@ -3153,7 +3153,7 @@
                         "in_eu": "Ist das Land Mitglied der EU?",
                         "tax_year": "Das Datum des Beginns des Steuerjahres für das Land",
                         "collecting": "Wenn Steuern immer für dieses Land erhoben werden sollen",
-                        "tax_number": "Ihre Steuernummer für dieses Land."
+                        "tax_number": "Ihre Umsatzsteuer-Identifikationsnummer für dieses Land."
                     }
                 },
                 "create_button": "Erstellen"
@@ -3169,7 +3169,7 @@
                     "start_of_tax_year": "Beginn des Steuerjahres",
                     "enabled": "Aktiviert",
                     "collecting": "Steuererhebung",
-                    "tax_number": "Steuernummer"
+                    "tax_number": "Umsatzsteuer-Identifikationsnummer"
                 },
                 "edit_button": "Bearbeiten",
                 "tax_rule": {
@@ -3226,7 +3226,7 @@
                         "tax_year": "Beginn des Steuerjahres",
                         "enabled": "Aktiviert",
                         "collecting": "Steuer einziehen",
-                        "tax_number": "Steuernummer"
+                        "tax_number": "Umsatzsteuer-Identifikationsnummer"
                     },
                     "help_info": {
                         "name": "Der Name des Landes",
@@ -3237,7 +3237,7 @@
                         "tax_year": "Das Datum des Beginns des Steuerjahres für das Land",
                         "enabled": "Wenn das Land für Kundenanmeldungen aktiviert ist",
                         "collecting": "Wenn Steuern immer für dieses Land erhoben werden sollen",
-                        "tax_number": "Ihre Steuernummer für dieses Land."
+                        "tax_number": "Ihre Umsatzsteuer-Identifikationsnummer für dieses Land."
                     }
                 },
                 "update_button": "Update"

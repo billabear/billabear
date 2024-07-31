@@ -13,14 +13,16 @@ use BillaBear\Enum\InvoiceFormat;
 
 class InvoiceFormatterProvider
 {
-    public function __construct(private InvoicePdfGenerator $invoicePdfGenerator)
-    {
+    public function __construct(
+        private InvoicePdfGenerator $invoicePdfGenerator,
+        private ZUGFeRDFormatter $zugFeRDFormatter,
+    ) {
     }
 
     public function getFormatter(Customer $customer): InvoiceFormatterInterface
     {
         $generator = match ($customer->getInvoiceFormat()) {
-            InvoiceFormat::PDF => $this->invoicePdfGenerator,
+            InvoiceFormat::ZUGFERD => $this->zugFeRDFormatter,
             default => $this->invoicePdfGenerator,
         };
 

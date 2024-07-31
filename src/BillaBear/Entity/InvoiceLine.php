@@ -117,6 +117,11 @@ class InvoiceLine
         $this->taxTotal = $taxTotal;
     }
 
+    public function getTaxTotalAsMoney(): Money
+    {
+        return Money::ofMinor($this->taxTotal, $this->currency);
+    }
+
     public function getDescription(): string
     {
         return $this->description;

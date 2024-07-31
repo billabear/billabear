@@ -74,16 +74,16 @@ class Invoice
     private bool $paid = false;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $createdAt;
+    private \DateTime $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $paidAt = null;
+    private ?\DateTime $paidAt = null;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $updatedAt;
+    private \DateTime $updatedAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $dueAt = null;
+    private ?\DateTime $dueAt = null;
 
     public function __construct()
     {
@@ -220,12 +220,12 @@ class Invoice
         $this->taxTotal = $taxTotal;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -291,22 +291,22 @@ class Invoice
         $this->paid = $paid;
     }
 
-    public function getPaidAt(): ?\DateTimeInterface
+    public function getPaidAt(): ?\DateTime
     {
         return $this->paidAt;
     }
 
-    public function setPaidAt(\DateTimeInterface $paidAt): void
+    public function setPaidAt(\DateTime $paidAt): void
     {
         $this->paidAt = $paidAt;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -326,12 +326,12 @@ class Invoice
         return Money::ofMinor($this->amountDue, strtoupper($this->currency));
     }
 
-    public function getDueAt(): ?\DateTimeInterface
+    public function getDueAt(): ?\DateTime
     {
         return $this->dueAt;
     }
 
-    public function setDueAt(?\DateTimeInterface $dueAt): void
+    public function setDueAt(?\DateTime $dueAt): void
     {
         $this->dueAt = $dueAt;
     }

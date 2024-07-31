@@ -82,7 +82,8 @@
             </label>
             <p class="form-field-error" v-if="errors.invoiceFormat != undefined">{{ errors.invoiceFormat }}</p>
             <select class="form-field" v-model="customer.invoice_format">
-              <option value="pdf">PDF</option>/
+              <option value="pdf">PDF</option>
+              <option value="zugferd_v1"> ZUGFeRD v1 - Factur-X/XRechung</option>
             </select>
             <p class="form-field-help">{{ $t('app.customer.update.help_info.invoice_format') }}</p>
           </div>
