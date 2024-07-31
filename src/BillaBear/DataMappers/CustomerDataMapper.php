@@ -82,7 +82,7 @@ class CustomerDataMapper
 
         $invoiceFormat = match (strtolower($createCustomerDto->getInvoiceFormat() ?? '')) {
             InvoiceFormat::PDF->value => InvoiceFormat::PDF,
-            InvoiceFormat::ZUGFERD->value => InvoiceFormat::ZUGFERD,
+            InvoiceFormat::ZUGFERD_V1->value => InvoiceFormat::ZUGFERD_V1,
             default => InvoiceFormat::PDF,
         };
 
