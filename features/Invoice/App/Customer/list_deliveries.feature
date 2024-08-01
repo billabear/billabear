@@ -23,4 +23,4 @@ Feature:
     Then I will see an invoice delivery for "Email"
     And I will see an invoice delivery for SFTP to SFTP Host "example.org"
     And I will see an invoice delivery for Webhook to Webhook URL "https://example.net"
-    But I will not see an invoice delivery for Webhook to Webhook URL "https://example.net"
+    But I will not see an invoice delivery for Webhook to Webhook URL "https://example.org"
