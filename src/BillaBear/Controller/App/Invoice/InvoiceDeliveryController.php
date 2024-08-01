@@ -8,10 +8,10 @@
 
 namespace BillaBear\Controller\App\Invoice;
 
-use BillaBear\Background\Generic\GenericTasks;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Invoice\InvoiceDeliveryDataMapper;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
+use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -28,11 +28,7 @@ class InvoiceDeliveryController
     use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
 
-    public function __construct(private readonly GenericTasks $genericTasks)
-    {
-    }
-
-    #[Route('/app/customer/{customerId}/invoice-delivery', name: 'invoice_delivery', methods: ['POST'])]
+    #[Route('/app/customer/{customerId}/invoice-delivery', name: 'create_invoice_delivery', methods: ['POST'])]
     public function createNew(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -63,6 +59,34 @@ class InvoiceDeliveryController
         $appDto = $dataMapper->createAppDto($invoiceDelivery);
         $json = $serializer->serialize($appDto, 'json');
 
-        return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    #[Route('/app/customer/{customerId}/invoice-delivery', name: 'list_invoice_delivery', methods: ['GET'])]
+    public function listInvoiceDelivery(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliveryDataMapper $dataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        $this->getLogger()->info('Received a request to list invoice_delivery');
+
+        try {
+            $customer = $customerRepository->getById($request->get('customerId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $invoiceDeliveries = $invoiceDeliveryRepository->getAllForCustomer($customer);
+        $dtos = array_map([$dataMapper, 'createAppDto'], $invoiceDeliveries);
+
+        $listDto = new ListResponse();
+        $listDto->setData($dtos);
+        $listDto->setHasMore(false);
+
+        $json = $serializer->serialize($listDto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 }

@@ -8,8 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class InvoiceDeliveryRepository extends DoctrineRepository implements InvoiceDeliveryRepositoryInterface
 {
+    public function getAllForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
+    }
 }

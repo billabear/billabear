@@ -418,4 +418,105 @@ class AppContext implements Context
             throw new \Exception('No invoice delivery found');
         }
     }
+
+    /**
+     * @Given the following invoice delivery setups exist:
+     */
+    public function theFollowingInvoiceDeliverySetupsExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+        foreach ($data as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer']);
+            $invoiceDelivery = new InvoiceDelivery();
+            $invoiceDelivery->setCustomer($customer);
+            $invoiceDelivery->setType(InvoiceDeliveryType::from(strtolower($row['Type'])));
+            $invoiceDelivery->setEnabled(true);
+            $invoiceDelivery->setCreatedAt(new \DateTime());
+            $invoiceDelivery->setUpdatedAt(new \DateTime());
+            $invoiceDelivery->setSftpHost($row['SFTP Host']);
+            if (!empty($row['SFTP Port'])) {
+                $invoiceDelivery->setSftpPort((int) $row['SFTP Port']);
+            }
+            $invoiceDelivery->setSftpDir($row['SFTP Dir']);
+            $invoiceDelivery->setSftpUser($row['SFTP User']);
+            $invoiceDelivery->setSftpPassword($row['SFTP Password']);
+            $invoiceDelivery->setWebhookURL($row['Webhook URL']);
+            $invoiceDelivery->setWebhookMethod($row['Webhook Method']);
+
+            $this->invoiceDeliveryRepository->getEntityManager()->persist($invoiceDelivery);
+        }
+        $this->invoiceRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the delivery methods for :arg1
+     */
+    public function iViewTheDeliveryMethodsFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('GET', sprintf('/app/customer/%s/invoice-delivery', (string) $customer->getId()));
+    }
+
+    /**
+     * @Then I will see an invoice delivery for :arg1
+     */
+    public function iWillSeeAnInvoiceDeliveryFor($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if (strtolower($arg1) == $row['type']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find invoice delivery");
+    }
+
+    /**
+     * @Then I will see an invoice delivery for SFTP to SFTP Host :arg1
+     */
+    public function iWillSeeAnInvoiceDeliveryForSftpToSftpHost($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ('sftp' == $row['type'] && $arg1 === $row['sftp_host']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find invoice delivery");
+    }
+
+    /**
+     * @Then I will see an invoice delivery for Webhook to Webhook URL :arg1
+     */
+    public function iWillSeeAnInvoiceDeliveryForWebhookToWebhookUrl($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ('webhook' == $row['type'] && $arg1 === $row['webhook_url']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find invoice delivery");
+    }
+
+    /**
+     * @Then I will not see an invoice delivery for Webhook to Webhook URL :arg1
+     */
+    public function iWillNotSeeAnInvoiceDeliveryForWebhookToWebhookUrl($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ('webhook' == $row['type'] && $arg1 === $row['webhook_url']) {
+                throw new \Exception('Found invoice delivery');
+            }
+        }
+    }
 }

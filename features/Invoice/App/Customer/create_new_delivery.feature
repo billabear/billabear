@@ -1,4 +1,4 @@
-Feature: Update Invoice Settings
+Feature: Create Invoice Delivery
 
   Background:
     Given the following accounts exist:
@@ -9,7 +9,6 @@ Feature: Update Invoice Settings
     And the follow customers exist:
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
-      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
 
   Scenario:
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

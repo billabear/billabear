@@ -8,7 +8,7 @@
 
 namespace BillaBear\Dto\Generic\App;
 
-use JMS\Serializer\Annotation\SerializedName;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 class InvoiceDelivery
 {
