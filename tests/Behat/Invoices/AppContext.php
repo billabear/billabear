@@ -404,6 +404,73 @@ class AppContext implements Context
     }
 
     /**
+     * @When I edit the delivery methods for :arg1 for :arg2 with:
+     */
+    public function iEditTheDeliveryMethodsForForWith($email, $type, TableNode $table)
+    {
+        $type = InvoiceDeliveryType::from(strtolower($type));
+        $customer = $this->getCustomerByEmail($email);
+
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['customer' => $customer, 'type' => $type]);
+
+        if (!$invoiceDelivery instanceof InvoiceDelivery) {
+            throw new \Exception("Can't find existing invoice delivery");
+        }
+
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'type' => strtolower($data['Type']),
+        ];
+
+        if (isset($data['SFTP Host'])) {
+            $payload['sftp_host'] = $data['SFTP Host'];
+        }
+
+        if (isset($data['SFTP Port'])) {
+            $payload['sftp_port'] = (int) $data['SFTP Port'];
+        }
+
+        if (isset($data['SFTP Dir'])) {
+            $payload['sftp_dir'] = $data['SFTP Dir'];
+        }
+
+        if (isset($data['SFTP User'])) {
+            $payload['sftp_user'] = $data['SFTP User'];
+        }
+
+        if (isset($data['SFTP Password'])) {
+            $payload['sftp_password'] = $data['SFTP Password'];
+        }
+
+        if (isset($data['Webhook URL'])) {
+            $payload['webhook_url'] = $data['Webhook URL'];
+        }
+
+        if (isset($data['Webhook Method'])) {
+            $payload['webhook_method'] = $data['Webhook Method'];
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s/invoice-delivery/%s', (string) $customer->getId(), (string) $invoiceDelivery->getId()), $payload);
+    }
+
+    /**
+     * @Then there should be an invoice delivery for :arg1 for type :arg2 and url :arg3
+     */
+    public function thereShouldBeAnInvoiceDeliveryForForTypeAndUrl($email, $type, $url)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $type = strtolower($type);
+        $enumType = InvoiceDeliveryType::from($type);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
+        $this->invoiceDeliveryRepository->getEntityManager()->refresh($invoiceDelivery);
+
+        if ($url !== $invoiceDelivery->getWebhookUrl()) {
+            throw new \Exception(sprintf('Got %s', $invoiceDelivery->getWebhookUrl()));
+        }
+    }
+
+    /**
      * @Then there should be an invoice delivery for :arg1 for type :arg2
      */
     public function thereShouldBeAnInvoiceDeliveryForForType($email, $type)
@@ -414,7 +481,6 @@ class AppContext implements Context
         $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
 
         if (!$invoiceDelivery instanceof InvoiceDelivery) {
-            var_dump($this->getJsonContent());
             throw new \Exception('No invoice delivery found');
         }
     }

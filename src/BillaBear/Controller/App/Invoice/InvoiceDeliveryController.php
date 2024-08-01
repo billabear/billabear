@@ -62,6 +62,45 @@ class InvoiceDeliveryController
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 
+    #[Route('/app/customer/{customerId}/invoice-delivery/{invoiceDeliveryId}', name: 'edit_invoice_delivery', methods: ['POST'])]
+    public function editExisting(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliveryDataMapper $dataMapper,
+    ): Response {
+        $this->getLogger()->info('Received a request to create a new invoice_delivery');
+
+        try {
+            $customer = $customerRepository->getById($request->get('customerId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        try {
+            $invoiceDelivery = $invoiceDeliveryRepository->findById($request->get('invoiceDeliveryId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+        $createDto = $serializer->deserialize($request->getContent(), CreateInvoiceDelivery::class, 'json');
+        $errors = $validator->validate($createDto);
+        $response = $this->handleErrors($errors);
+
+        if ($response instanceof Response) {
+            return $response;
+        }
+
+        $invoiceDelivery = $dataMapper->createEntity($createDto, $invoiceDelivery);
+        $invoiceDelivery->setCustomer($customer);
+        $invoiceDeliveryRepository->save($invoiceDelivery);
+
+        $appDto = $dataMapper->createAppDto($invoiceDelivery);
+        $json = $serializer->serialize($appDto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
     #[Route('/app/customer/{customerId}/invoice-delivery', name: 'list_invoice_delivery', methods: ['GET'])]
     public function listInvoiceDelivery(
         Request $request,
