@@ -398,6 +398,12 @@ services:
   app.repository.orm.invoice_process:
     class: BillaBear\Repository\Orm\InvoiceProcessRepository
 
+  BillaBear\Repository\InvoiceDeliveryRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.invoice_delivery'
+  app.repository.orm.invoice_delivery:
+    class: BillaBear\Repository\Orm\InvoiceDeliveryRepository
+
   BillaBear\Repository\InvoiceRepository:
     arguments:
       $entityRepository: '@app.repository.orm.invoice'

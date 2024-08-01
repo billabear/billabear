@@ -13,10 +13,13 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
+use BillaBear\Entity\InvoiceDelivery;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Entity\Processes\InvoiceProcess;
+use BillaBear\Enum\InvoiceDeliveryType;
 use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\InvoiceDeliveryRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
 use BillaBear\Repository\Orm\PaymentFailureProcessRepository;
@@ -44,6 +47,7 @@ class AppContext implements Context
         private SubscriptionRepository $subscriptionRepository,
         private SubscriptionPlanRepository $planRepository,
         private TaxTypeRepository $taxTypeRepository,
+        private InvoiceDeliveryRepository $invoiceDeliveryRepository,
     ) {
     }
 
@@ -353,5 +357,65 @@ class AppContext implements Context
         $this->invoiceRepository->getEntityManager()->flush();
 
         return $invoice;
+    }
+
+    /**
+     * @When I create a delivery method for :arg1 with the following settings:
+     */
+    public function iCreateADeliveryMethodForWithTheFollowingSettings($email, TableNode $table)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'type' => strtolower($data['Type']),
+        ];
+
+        if (isset($data['SFTP Host'])) {
+            $payload['sftp_host'] = $data['SFTP Host'];
+        }
+
+        if (isset($data['SFTP Port'])) {
+            $payload['sftp_port'] = (int) $data['SFTP Port'];
+        }
+
+        if (isset($data['SFTP Dir'])) {
+            $payload['sftp_dir'] = $data['SFTP Dir'];
+        }
+
+        if (isset($data['SFTP User'])) {
+            $payload['sftp_user'] = $data['SFTP User'];
+        }
+
+        if (isset($data['SFTP Password'])) {
+            $payload['sftp_password'] = $data['SFTP Password'];
+        }
+
+        if (isset($data['Webhook URL'])) {
+            $payload['webhook_url'] = $data['Webhook URL'];
+        }
+
+        if (isset($data['Webhook Method'])) {
+            $payload['webhook_method'] = $data['Webhook Method'];
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s/invoice-delivery', (string) $customer->getId()), $payload);
+    }
+
+    /**
+     * @Then there should be an invoice delivery for :arg1 for type :arg2
+     */
+    public function thereShouldBeAnInvoiceDeliveryForForType($email, $type)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $type = strtolower($type);
+        $enumType = InvoiceDeliveryType::from($type);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
+
+        if (!$invoiceDelivery instanceof InvoiceDelivery) {
+            var_dump($this->getJsonContent());
+            throw new \Exception('No invoice delivery found');
+        }
     }
 }
