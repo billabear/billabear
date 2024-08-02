@@ -12,6 +12,7 @@ Feature: Create Invoice Delivery
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a delivery method for "customer.one@example.org" with the following settings:
       | Type          | SFTP            |
+      | Format        | PDF             |
       | SFTP User     | user            |
       | SFTP Password | Password        |
       | SFTP Host     | example.org     |
@@ -23,6 +24,7 @@ Feature: Create Invoice Delivery
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a delivery method for "customer.one@example.org" with the following settings:
       | Type           | Webhook             |
+      | Format         | PDF                 |
       | Webhook URL    | https://example.org |
       | Webhook Method | POST                |
     Then there should be an invoice delivery for "customer.one@example.org" for type "Webhook"
@@ -32,6 +34,7 @@ Feature: Create Invoice Delivery
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a delivery method for "customer.one@example.org" with the following settings:
       | Type           | Webhook     |
+      | Format         | PDF                 |
       | Webhook URL    | example.org |
       | Webhook Method | POST        |
     And there should be an error for "webhookUrl"

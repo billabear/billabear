@@ -18,6 +18,10 @@ class CreateInvoiceDelivery
     private $type;
 
     #[Assert\Type('string')]
+    #[Assert\Choice(['pdf', 'zugfred_v1'])]
+    private $format;
+
+    #[Assert\Type('string')]
     private $sftpHost;
 
     #[Assert\Type('string')]
@@ -173,5 +177,15 @@ class CreateInvoiceDelivery
     public function setWebhookMethod($webhookMethod): void
     {
         $this->webhookMethod = $webhookMethod;
+    }
+
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    public function setFormat($format): void
+    {
+        $this->format = $format;
     }
 }

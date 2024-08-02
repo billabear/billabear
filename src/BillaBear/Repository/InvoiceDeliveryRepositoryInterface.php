@@ -18,4 +18,9 @@ interface InvoiceDeliveryRepositoryInterface extends RepositoryInterface
      * @return InvoiceDelivery[]
      */
     public function getAllForCustomer(Customer $customer): array;
+
+    /**
+     * @return InvoiceDelivery[]
+     */
+    public function getEnabledForCustomer(Customer $customer): array;
 }

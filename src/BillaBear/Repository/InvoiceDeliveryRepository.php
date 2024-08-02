@@ -17,4 +17,9 @@ class InvoiceDeliveryRepository extends DoctrineRepository implements InvoiceDel
     {
         return $this->entityRepository->findBy(['customer' => $customer]);
     }
+
+    public function getEnabledForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer, 'enabled' => true]);
+    }
 }

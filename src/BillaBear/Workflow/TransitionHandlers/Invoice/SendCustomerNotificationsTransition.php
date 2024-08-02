@@ -9,16 +9,12 @@
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
 use BillaBear\Entity\Processes\InvoiceProcess;
-use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
-use BillaBear\Invoice\PayLinkGeneratorInterface;
-use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
-use BillaBear\Notification\Email\EmailBuilder;
-use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Invoice\Delivery\Messenger\InvoiceDeliveryRequest;
+use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
-use Parthenon\Notification\Attachment;
-use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 #[Autoconfigure(lazy: true)]
@@ -27,11 +23,8 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private EmailBuilder $emailBuilder,
-        private EmailSenderInterface $emailSender,
-        private PayLinkGeneratorInterface $payLinkGenerator,
-        private InvoiceFormatterProvider $invoiceFormatterProvider,
-        private SettingsRepositoryInterface $settingsRepository,
+        private InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -47,29 +40,19 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
         /** @var InvoiceProcess $invoiceProcess */
         $invoiceProcess = $event->getSubject();
         $invoice = $invoiceProcess->getInvoice();
-        $customer = $invoice->getCustomer();
-        $brand = $customer->getBrandSettings();
+        $deliveries = $this->invoiceDeliveryRepository->getEnabledForCustomer($invoice->getCustomer());
 
-        if (!$brand->getNotificationSettings()->getInvoiceCreated()) {
-            return;
+        foreach ($deliveries as $delivery) {
+            $this->getLogger()->info(
+                'Sending invoice to delivery queue',
+                [
+                    'invoice_id' => (string) $invoice->getId(),
+                    'invoice_delivery_id' => (string) $delivery->getId(),
+                ]
+            );
+
+            $request = new InvoiceDeliveryRequest((string) $invoice->getId(), (string) $delivery->getId());
+            $this->messageBus->dispatch($request);
         }
-        $settings = $this->settingsRepository->getDefaultSettings();
-
-        if (!$settings->getNotificationSettings()?->getSendCustomerNotifications()) {
-            $this->getLogger()->info('Sending customer notifications are disabled in the settings');
-
-            return;
-        }
-        $fullPayLink = $this->payLinkGenerator->generatePayLink($invoice);
-
-        $generator = $this->invoiceFormatterProvider->getFormatter($invoice->getCustomer());
-        $pdf = $generator->generate($invoice);
-        $filename = $generator->filename($invoice);
-        $attachment = new Attachment($filename, $pdf);
-
-        $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);
-        $email = $this->emailBuilder->build($customer, $invoiceCreatedEmail);
-        $email->addAttachment($attachment);
-        $this->emailSender->send($email);
     }
 }

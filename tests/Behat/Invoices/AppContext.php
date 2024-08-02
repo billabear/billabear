@@ -18,6 +18,7 @@ use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Entity\Processes\InvoiceProcess;
 use BillaBear\Enum\InvoiceDeliveryType;
+use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceDeliveryRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
@@ -370,6 +371,7 @@ class AppContext implements Context
 
         $payload = [
             'type' => strtolower($data['Type']),
+            'format' => strtolower($data['Format']),
         ];
 
         if (isset($data['SFTP Host'])) {
@@ -421,6 +423,7 @@ class AppContext implements Context
 
         $payload = [
             'type' => strtolower($data['Type']),
+            'format' => strtolower($data['Format']),
         ];
 
         if (isset($data['SFTP Host'])) {
@@ -496,6 +499,7 @@ class AppContext implements Context
             $invoiceDelivery = new InvoiceDelivery();
             $invoiceDelivery->setCustomer($customer);
             $invoiceDelivery->setType(InvoiceDeliveryType::from(strtolower($row['Type'])));
+            $invoiceDelivery->setInvoiceFormat(InvoiceFormat::from(strtolower($row['Format'])));
             $invoiceDelivery->setEnabled(true);
             $invoiceDelivery->setCreatedAt(new \DateTime());
             $invoiceDelivery->setUpdatedAt(new \DateTime());

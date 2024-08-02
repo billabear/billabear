@@ -21,7 +21,12 @@ class InvoiceFormatterProvider
 
     public function getFormatter(Customer $customer): InvoiceFormatterInterface
     {
-        $generator = match ($customer->getInvoiceFormat()) {
+        return $this->getFormatterByType($customer->getInvoiceFormat());
+    }
+
+    public function getFormatterByType(InvoiceFormat $format): InvoiceFormatterInterface
+    {
+        $generator = match ($format) {
             InvoiceFormat::ZUGFERD_V1 => $this->zugFeRDFormatter,
             default => $this->invoicePdfGenerator,
         };

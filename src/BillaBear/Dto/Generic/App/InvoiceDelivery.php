@@ -16,6 +16,8 @@ class InvoiceDelivery
 
     private string $type;
 
+    private string $format;
+
     #[SerializedName('sftp_host')]
     private ?string $sftpHost;
 
@@ -125,5 +127,15 @@ class InvoiceDelivery
     public function setWebhookMethod(?string $webhookMethod): void
     {
         $this->webhookMethod = $webhookMethod;
+    }
+
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    public function setFormat(string $format): void
+    {
+        $this->format = $format;
     }
 }

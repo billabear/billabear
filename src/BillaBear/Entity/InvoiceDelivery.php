@@ -9,6 +9,7 @@
 namespace BillaBear\Entity;
 
 use BillaBear\Enum\InvoiceDeliveryType;
+use BillaBear\Enum\InvoiceFormat;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -26,6 +27,9 @@ class InvoiceDelivery
 
     #[ORM\Column(type: 'string', length: 255)]
     private bool $enabled;
+
+    #[ORM\Column(type: 'string', length: 255, enumType: InvoiceFormat::class)]
+    private InvoiceFormat $invoiceFormat;
 
     #[ORM\Column(type: 'string', length: 255, enumType: InvoiceDeliveryType::class)]
     private InvoiceDeliveryType $type;
@@ -185,5 +189,15 @@ class InvoiceDelivery
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getInvoiceFormat(): InvoiceFormat
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat(InvoiceFormat $invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
     }
 }
