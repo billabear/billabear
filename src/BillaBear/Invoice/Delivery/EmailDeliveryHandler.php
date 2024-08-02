@@ -9,7 +9,7 @@
 namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\Invoice;
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
@@ -32,7 +32,7 @@ class EmailDeliveryHandler implements DeliveryHandlerInterface
     ) {
     }
 
-    public function deliver(Invoice $invoice, InvoiceDelivery $invoiceDelivery): void
+    public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void
     {
         $customer = $invoice->getCustomer();
         $brand = $customer->getBrandSettings();

@@ -9,7 +9,7 @@
 namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\Invoice;
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Invoice\Delivery\Factory\SftpTransportFactory;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use Parthenon\Common\LoggerAwareTrait;
@@ -24,7 +24,7 @@ class SftpDeliveryHandler implements DeliveryHandlerInterface
     ) {
     }
 
-    public function deliver(Invoice $invoice, InvoiceDelivery $invoiceDelivery): void
+    public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void
     {
         $this->getLogger()->info('Delivering an invoice via SFTP', ['invoice_id' => (string) $invoice->getId(), 'invoice_delivery_id' => (string) $invoiceDelivery->getId()]);
         $transport = $this->sftpTransportFactory->buildTransport($invoiceDelivery);

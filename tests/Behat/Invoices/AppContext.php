@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Entity\Processes\InvoiceProcess;
@@ -415,7 +415,7 @@ class AppContext implements Context
 
         $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['customer' => $customer, 'type' => $type]);
 
-        if (!$invoiceDelivery instanceof InvoiceDelivery) {
+        if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
             throw new \Exception("Can't find existing invoice delivery");
         }
 
@@ -483,7 +483,7 @@ class AppContext implements Context
         $enumType = InvoiceDeliveryType::from($type);
         $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
 
-        if (!$invoiceDelivery instanceof InvoiceDelivery) {
+        if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
             throw new \Exception('No invoice delivery found');
         }
     }
@@ -496,7 +496,7 @@ class AppContext implements Context
         $data = $table->getColumnsHash();
         foreach ($data as $row) {
             $customer = $this->getCustomerByEmail($row['Customer']);
-            $invoiceDelivery = new InvoiceDelivery();
+            $invoiceDelivery = new InvoiceDeliverySettings();
             $invoiceDelivery->setCustomer($customer);
             $invoiceDelivery->setType(InvoiceDeliveryType::from(strtolower($row['Type'])));
             $invoiceDelivery->setInvoiceFormat(InvoiceFormat::from(strtolower($row['Format'])));

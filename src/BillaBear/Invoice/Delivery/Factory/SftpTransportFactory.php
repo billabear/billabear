@@ -8,7 +8,7 @@
 
 namespace BillaBear\Invoice\Delivery\Factory;
 
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\PhpseclibV3\SftpAdapter;
@@ -17,7 +17,7 @@ use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 
 class SftpTransportFactory
 {
-    public function buildTransport(InvoiceDelivery $invoiceDelivery): FilesystemOperator
+    public function buildTransport(InvoiceDeliverySettings $invoiceDelivery): FilesystemOperator
     {
         return new Filesystem(new SftpAdapter(
             new SftpConnectionProvider(

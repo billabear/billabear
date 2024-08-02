@@ -9,9 +9,9 @@
 namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\Invoice;
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 
 interface DeliveryHandlerInterface
 {
-    public function deliver(Invoice $invoice, InvoiceDelivery $invoiceDelivery): void;
+    public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void;
 }

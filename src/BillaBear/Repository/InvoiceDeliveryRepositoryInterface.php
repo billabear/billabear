@@ -9,18 +9,18 @@
 namespace BillaBear\Repository;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface InvoiceDeliveryRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @return InvoiceDelivery[]
+     * @return InvoiceDeliverySettings[]
      */
     public function getAllForCustomer(Customer $customer): array;
 
     /**
-     * @return InvoiceDelivery[]
+     * @return InvoiceDeliverySettings[]
      */
     public function getEnabledForCustomer(Customer $customer): array;
 }

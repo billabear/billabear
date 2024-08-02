@@ -8,7 +8,7 @@
 
 namespace BillaBear\Invoice\Delivery;
 
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Enum\InvoiceDeliveryType;
 
 class DeliveryHandlerProvider
@@ -19,7 +19,7 @@ class DeliveryHandlerProvider
     ) {
     }
 
-    public function getDeliveryHandler(InvoiceDelivery $invoiceDelivery): DeliveryHandlerInterface
+    public function getDeliveryHandler(InvoiceDeliverySettings $invoiceDelivery): DeliveryHandlerInterface
     {
         return match ($invoiceDelivery->getType()) {
             InvoiceDeliveryType::SFTP => $this->sftpDeliveryHandler,

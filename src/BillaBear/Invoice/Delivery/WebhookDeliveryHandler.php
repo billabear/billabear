@@ -9,7 +9,7 @@
 namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\Invoice;
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use GuzzleHttp\Exception\BadResponseException;
 use Parthenon\Common\Http\ClientInterface;
@@ -29,7 +29,7 @@ class WebhookDeliveryHandler implements DeliveryHandlerInterface
     ) {
     }
 
-    public function deliver(Invoice $invoice, InvoiceDelivery $invoiceDelivery): void
+    public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void
     {
         $formatter = $this->invoiceFormatterProvider->getFormatterByType($invoiceDelivery->getInvoiceFormat());
         $invoiceContents = $formatter->generate($invoice);

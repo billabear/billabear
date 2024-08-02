@@ -13,8 +13,9 @@ use BillaBear\Enum\InvoiceFormat;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity]
-class InvoiceDelivery
+#[ORM\Entity()]
+#[ORM\Table('invoice_delivery_settings')]
+class InvoiceDeliverySettings
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]

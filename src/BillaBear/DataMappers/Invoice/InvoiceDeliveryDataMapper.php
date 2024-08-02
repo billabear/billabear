@@ -10,7 +10,7 @@ namespace BillaBear\DataMappers\Invoice;
 
 use BillaBear\Dto\Generic\App\InvoiceDelivery as AppDto;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
-use BillaBear\Entity\InvoiceDelivery as Entity;
+use BillaBear\Entity\InvoiceDeliverySettings as Entity;
 use BillaBear\Enum\InvoiceDeliveryType;
 use BillaBear\Enum\InvoiceFormat;
 
