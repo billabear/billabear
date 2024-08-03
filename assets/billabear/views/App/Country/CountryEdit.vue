@@ -4,7 +4,7 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.country.edit.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="p-5">
+      <div class="">
         <div class="card-body">
 
           <div class="form-field-ctn">
@@ -81,7 +81,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-5 ml-5">
+      <div class="mt-3">
         <SubmitButton :in-progress="sending" @click="send">{{ $t('app.country.edit.update_button') }}</SubmitButton>
       </div>
     </LoadingScreen>

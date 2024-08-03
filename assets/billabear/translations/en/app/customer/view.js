@@ -136,6 +136,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             created_at: "Created At",
             view_btn: "View"
         },
-        no_invoices: "No invoices"
+        no_invoices: "No invoices",
+        next: "Next",
+        prev: "Previous"
     }
 }

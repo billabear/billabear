@@ -3,14 +3,16 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.invoices.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="p-5">
-        <div class="mb-5">
+      <div class="">
+        <div class="mb-3">
           <div class="alert-success" v-if="invoice.paid">{{ $t('app.invoices.view.status.paid',  {date: $filters.moment(invoice.paid_at, 'LLL')}) }}</div>
           <div class="alert-error" v-else>{{ $t('app.invoices.view.status.outstanding') }}</div>
         </div>
 
-        <div class="text-end mb-5">
-          <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.view.download') }}</a>
+        <div class="text-end mb-3">
+          <SubmitButton :in-progress="chargingCard" @click="chargeCard" button-class=" btn--main" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.view.actions.charge_card') }}</SubmitButton>
+          <SubmitButton :in-progress="markingAsPaid" @click="markAsPaid" button-class="ml-3 btn--secondary" v-if="invoice.paid === false">{{ $t('app.invoices.view.actions.mark_as_paid') }}</SubmitButton>
+          <a :href="'/app/invoice/'+invoice.id+'/download'" class="ml-3 btn--main" target="_blank">{{ $t('app.invoices.view.download') }}</a>
         </div>
 
         <div class="card-body">
@@ -113,8 +115,9 @@
             </div>
           </div>
         </div>
-        <div class="">
-          <h2 class="my-3  dark:text-gray-300">{{ $t('app.invoices.view.lines.title') }}</h2>
+
+        <h2 class="my-3  dark:text-gray-300">{{ $t('app.invoices.view.lines.title') }}</h2>
+        <div class="card-body">
 
           <table class="list-table">
             <thead>
@@ -136,7 +139,7 @@
             </tbody>
           </table>
         </div>
-        <div class="my-3 text-end">
+        <div class="mt-3 text-end">
           <div class="float-right text-end w-1/5">
             <h3 class="text-xl dark:text-gray-500">{{ $t('app.invoices.view.total.title') }}</h3>
 
@@ -161,10 +164,6 @@
               </div>
             </dl>
           </div>
-        </div>
-        <div class="mt-3 clear-both">
-          <SubmitButton :in-progress="chargingCard" @click="chargeCard" button-class="btn--main" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.view.actions.charge_card') }}</SubmitButton>
-          <SubmitButton :in-progress="markingAsPaid" @click="markAsPaid" button-class="btn--secondary" v-if="invoice.paid === false">{{ $t('app.invoices.view.actions.mark_as_paid') }}</SubmitButton>
         </div>
       </div>
     </LoadingScreen>

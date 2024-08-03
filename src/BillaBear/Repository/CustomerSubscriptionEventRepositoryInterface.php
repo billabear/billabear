@@ -23,5 +23,10 @@ interface CustomerSubscriptionEventRepositoryInterface extends CrudRepositoryInt
     /**
      * @return CustomerSubscriptionEvent[]
      */
+    public function getLastTenForCustomer(Customer $customer): array;
+
+    /**
+     * @return CustomerSubscriptionEvent[]
+     */
     public function getAllForSubscription(Subscription $subscription): array;
 }

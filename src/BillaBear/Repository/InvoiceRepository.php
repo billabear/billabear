@@ -12,6 +12,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Subscription;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceRepository extends DoctrineCrudRepository implements InvoiceRepositoryInterface
@@ -61,5 +62,12 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
         if (!$entity instanceof Invoice) {
             throw new NoEntityFoundException(sprintf("Can't find invoice for subscription '%s'", $subscription->getId()));
         }
+    }
+
+    public function getLastTenForCustomer(Customer $customer): ResultSet
+    {
+        $results = $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], 11);
+
+        return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
 }

@@ -12,6 +12,7 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\Subscription as BillaSubscription;
 use BillaBear\Entity\SubscriptionPlan;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 
@@ -79,4 +80,6 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getAllActiveCountForCustomer(CustomerInterface $customer): int;
 
     public function getAllCancelledCountForCustomer(CustomerInterface $customer): int;
+
+    public function getLastTenForCustomer($customer): ResultSet;
 }

@@ -8,10 +8,17 @@
 
 namespace BillaBear\Filters;
 
+use Parthenon\Athena\Filters\ExactChoiceFilter;
+
 class RefundList extends AbstractFilterList
 {
     protected function getFilters(): array
     {
-        return [];
+        return [
+            'customer' => [
+                'field' => 'customer.id',
+                'filter' => ExactChoiceFilter::class,
+            ],
+        ];
     }
 }

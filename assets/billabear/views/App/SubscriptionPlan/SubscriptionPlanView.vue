@@ -1,16 +1,22 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.subscription_plan.view.title') }}</h1>
+    <div class="grid grid-cols-2">
 
-    <LoadingScreen :ready="ready">
-      <div v-if="!error">
+      <h1 class="page-title">{{ $t('app.subscription_plan.view.title') }}</h1>
+      <div class="text-end mt-5">
+
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-          <div class="mt-3 mr-5 text-end">
+          <div class="text-end">
             <router-link :to="{name: 'app.subscription_plan.update', params: {productId: product_id, subscriptionPlanId: subscription_plan.id}}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
           </div>
         </RoleOnlyView>
+      </div>
+    </div>
 
-        <div class="m-5 card-body">
+    <LoadingScreen :ready="ready">
+      <div v-if="!error">
+
+        <div class="card-body">
           <h2 class="section-header">{{ $t('app.subscription_plan.view.main.title') }}</h2>
           <div class="section-body">
             <dl class="detail-list">
@@ -54,24 +60,25 @@
           </div>
         </div>
 
-        <div class="mt-5">
-          <h2 class="mb-3">{{ $t('app.subscription_plan.view.price.title') }}</h2>
+        <div class="mt-3">
+          <h2 class="mb-3 text-2xl">{{ $t('app.subscription_plan.view.price.title') }}</h2>
 
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.subscription_plan.view.price.list.amount') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.currency') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.recurring') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.schedule') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.including_tax') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.public') }}</th>
-              <th>{{ $t('app.subscription_plan.view.price.list.external_reference') }}</th>
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+                <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.amount') }}</th>
+              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.currency') }}</th>
+              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.recurring') }}</th>
+              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.schedule') }}</th>
+              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.including_tax') }}</th>
+              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.public') }}</th>
+              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.external_reference') }}</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="price in subscription_plan.prices" class="mt-5">
-              <td>{{ price.amount }}</td>
+              <td class="py-3">{{ price.amount }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
               <td>{{ price.schedule }}</td>
@@ -85,52 +92,59 @@
               </td>
             </tr>
             <tr v-if="subscription_plan.prices.length === 0">
-              <td colspan="7" class="text-center">{{ $t('app.product.view.price.no_prices') }}</td>
+              <td colspan="7" class="py-3 text-center">{{ $t('app.product.view.price.no_prices') }}</td>
             </tr>
             </tbody>
           </table>
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-3">
 
           <div class="mt-5">
-            <h2 class="mb-3">{{ $t('app.subscription_plan.view.limits.title') }}</h2>
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.subscription_plan.view.limits.list.feature') }}</th>
-                <th>{{ $t('app.subscription_plan.view.limits.list.limit') }}</th>
+            <h2 class="mb-3 text-2xl">{{ $t('app.subscription_plan.view.limits.title') }}</h2>
+
+            <div class="rounded-lg bg-white shadow p-3">
+              <table class="w-full">
+                <thead>
+                <tr class="border-b border-black">
+                  <th class="text-left pb-2">{{ $t('app.subscription_plan.view.limits.list.feature') }}</th>
+                <th class="text-left pb-2">{{ $t('app.subscription_plan.view.limits.list.limit') }}</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="limit in subscription_plan.limits" class="mt-5">
-                <td>{{ limit.feature.name }}</td>
+                <td class="py-3">{{ limit.feature.name }}</td>
                 <td>{{ limit.limit }}</td>
               </tr>
               <tr v-if="subscription_plan.limits.length === 0">
-                <td colspan="2" class="text-center">{{ $t('app.subscription_plan.view.limits.list.no_limits') }}</td>
+                <td colspan="2" class="py-3 text-center">{{ $t('app.subscription_plan.view.limits.list.no_limits') }}</td>
               </tr>
               </tbody>
             </table>
+            </div>
           </div>
 
           <div class="mt-5">
-            <h2 class="mb-3">{{ $t('app.subscription_plan.view.features.title') }}</h2>
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.subscription_plan.view.features.list.feature') }}</th>
+            <h2 class="mb-3 text-2xl">{{ $t('app.subscription_plan.view.features.title') }}</h2>
+
+            <div class="rounded-lg bg-white shadow p-3">
+              <table class="w-full">
+                <thead>
+                <tr class="border-b border-black">
+                  <th class="text-left pb-2">{{ $t('app.subscription_plan.view.features.list.feature') }}</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="feature in subscription_plan.features" class="mt-5">
-                <td>{{ feature.name }}</td>
+                <td class="py-3">{{ feature.name }}</td>
               </tr>
               <tr v-if="subscription_plan.features.length === 0">
-                <td class="text-center">{{ $t('app.subscription_plan.view.features.list.no_features') }}</td>
+                <td class="text-center py-3">{{ $t('app.subscription_plan.view.features.list.no_features') }}</td>
               </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>

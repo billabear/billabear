@@ -1,23 +1,25 @@
 <template>
   <LoadingScreen :ready="ready" v-if="!error">
 
-    <div>
-      <Topbar />
-      <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-
-        <Sidebar />
-
-        <div id="main-content" class="relative w-full h-full bg-gray-50 lg:ml-64 dark:bg-gray-900">
-          <main>
-            <div class="">
-              <div v-if="!has_stripe_key" class="w-100 bg-red-500 text-white p-3 font-bold">
-                {{ $t('app.onboarding.main.bar.message') }}
-              </div>
-              <router-view></router-view>
-            </div>
-          </main>
+    <div class="h-screen w-screen md:flex">
+      <div class="hidden md:block sticky w-72 bg-teal-500 text-white overflow-auto">
+        <div class="py-12 px-5 text-white">
+          <img src="/images/app-logo.svg" class="h-12">
+        </div>
+        <MenuDesktop />
+      </div>
+      <div class="md:hidden bg-teal-500 text-white">
+        <MobileDesktop />
+      </div>
+      <div class="md:flex-1 bg-gray-100 p-5 divide-y divide-gray-200 overflow-auto h-screen">
+        <div class="text-end text-gray-500 font-bold pb-2">
+          <TopMenu />
+        </div>
+        <div class="pt-2 ">
+          <router-view></router-view>
         </div>
       </div>
+
     </div>
 
   </LoadingScreen>
@@ -27,17 +29,24 @@
 </template>
 
 <script>
-import AppLogo from "../../components/app/AppLogo.vue";
 import axios from "axios";
 import {mapActions, mapState} from "vuex";
-import RoleOnlyView from "../../components/app/RoleOnlyView.vue";
-import DarkMode from "../../components/app/DarkMode.vue";
-import Sidebar from "../../components/app/Layout/Sidebar.vue";
-import Topbar from "../../components/app/Layout/Topbar.vue";
+import MenuDesktop from "../../components/app/Layout/MenuDesktop.vue";
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import TopMenu from "../../components/app/Layout/TopMenu.vue";
+import MobileDesktop from "../../components/app/Layout/MobileMenu.vue";
 
 export default {
   name: "InternalApp",
-  components: {Topbar, Sidebar, DarkMode, RoleOnlyView, AppLogo},
+  components: {
+    MobileDesktop,
+    TopMenu,
+    MenuDesktop,
+    Menu,
+    MenuButton,
+    MenuItems,
+    MenuItem
+  },
   data() {
     return {
       is_update_available: false,

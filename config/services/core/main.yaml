@@ -44,6 +44,7 @@ services:
   Parthenon\User\Repository\UserRepositoryInterface: '@BillaBear\Repository\UserRepository'
   Parthenon\User\Notification\MessageFactory: '@BillaBear\User\Notification\MessageFactory'
   Parthenon\Billing\Repository\CustomerRepositoryInterface: '@BillaBear\Repository\CustomerRepository'
+  Parthenon\Billing\Repository\RefundRepositoryInterface: '@BillaBear\Repository\RefundRepository'
   Parthenon\Billing\Repository\PaymentRepositoryInterface: '@BillaBear\Repository\PaymentRepository'
   Parthenon\Billing\Repository\PaymentCardRepositoryInterface: '@BillaBear\Repository\PaymentCardRepository'
   Parthenon\Billing\Subscription\SubscriptionManagerInterface: '@BillaBear\Subscription\SubscriptionManagerInterchange'
@@ -100,6 +101,12 @@ services:
       $entityRepository: '@app.repository.orm.customer'
   app.repository.orm.customer:
     class: BillaBear\Repository\Orm\CustomerRepository
+
+  BillaBear\Repository\RefundRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.refund'
+  app.repository.orm.refund:
+    class: BillaBear\Repository\Orm\RefundRepository
 
   BillaBear\Repository\CountryRepository:
     arguments:

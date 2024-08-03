@@ -3,7 +3,7 @@
     <LoadingScreen :ready="ready">
       <h1 class="page-title">{{ $t('app.settings.pdf_template.update.title', {name: template.template.name}) }}</h1>
 
-      <div class="card-body m-5">
+      <div class="card-body">
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="content">
           {{ $t('app.settings.pdf_template.update.template') }}

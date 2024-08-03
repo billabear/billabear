@@ -5,7 +5,7 @@
     <LoadingScreen :ready="ready">
 
       <form @submit.prevent="save">
-        <div class="m-5 card-body">
+        <div class="card-body">
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="send_customer_notifications">
               {{ $t('app.settings.notification_settings.update.fields.send_customer_notifications') }}
@@ -63,7 +63,7 @@
 
         </div>
 
-        <div class="m-tform-field-submit-ctn">
+        <div class="mt-3 form-field-submit-ctn">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.notification_settings.update.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.notification_settings.update.success_message') }}</p>

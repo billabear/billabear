@@ -3,7 +3,7 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.state.edit.title') }}</h1>
 
     <LoadingScreen :ready="loaded">
-      <div class="card-body m-5">
+      <div class="card-body">
 
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
@@ -41,7 +41,7 @@
           <p class="form-field-help">{{ $t('app.state.edit.state.help_info.threshold') }}</p>
         </div>
       </div>
-      <SubmitButton class="ml-5" :in-progress="sending" @click="sendCreate">{{ $t('app.state.edit.update_button') }}</SubmitButton>
+      <SubmitButton class="mt-3" :in-progress="sending" @click="sendCreate">{{ $t('app.state.edit.update_button') }}</SubmitButton>
     </LoadingScreen>
   </div>
 </template>

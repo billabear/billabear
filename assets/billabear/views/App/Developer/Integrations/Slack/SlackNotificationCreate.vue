@@ -4,7 +4,7 @@
 
     <div>
       <form @submit.prevent="send">
-        <div class="p-5">
+        <div class="">
           <div class="card-body">
 
             <div class="form-field-ctn">
@@ -12,7 +12,7 @@
                 {{ $t('app.system.integrations.slack.notifications.create.fields.event') }}
               </label>
               <p class="form-field-error" v-if="errors.event != undefined">{{ errors.event }}</p>
-              <select class="form-field-select" id="event"  @change="changeEvent" v-model="webhook.event">
+              <select class="form-field" id="event"  @change="changeEvent" v-model="webhook.event">
                 <option>customer_created</option>
                 <option>payment_processed</option>
                 <option>subscription_created</option>
@@ -29,7 +29,7 @@
                 {{ $t('app.system.integrations.slack.notifications.create.fields.webhook') }}
               </label>
               <p class="form-field-error" v-if="errors.webhook != undefined">{{ errors.webhook }}</p>
-              <select class="form-field-select" id="webhook" v-model="webhook.webhook">
+              <select class="form-field" id="webhook" v-model="webhook.webhook">
                 <option v-for="webhook in webhooks" :value="webhook.id">{{ webhook.name }}</option>
               </select>
               <p class="form-field-help">{{ $t('app.system.integrations.slack.notifications.create.help_info.webhook') }}</p>
@@ -40,12 +40,12 @@
                 {{ $t('app.system.integrations.slack.notifications.create.fields.template') }}
               </label>
               <p class="form-field-error" v-if="errors.template != undefined">{{ errors.template }}</p>
-              <textarea cols="90" rows="5" v-model="webhook.template"></textarea>
+              <textarea cols="90" rows="5" class="form-field" v-model="webhook.template"></textarea>
               <p class="form-field-help" v-html="$t('app.system.integrations.slack.notifications.create.help_info.template')"></p>
             </div>
           </div>
         </div>
-        <SubmitButton class="ml-5" @click="save" :in-progress="inProgress">{{ $t('app.system.integrations.slack.webhooks.create.save_btn') }}</SubmitButton>
+        <SubmitButton class="mt-3" @click="save" :in-progress="inProgress">{{ $t('app.system.integrations.slack.webhooks.create.save_btn') }}</SubmitButton>
       </form>
     </div>
   </div>

@@ -1,0 +1,92 @@
+.list-btn, .btn--main {
+    @apply rounded-lg p-2 bg-teal-500 text-white font-bold hover:bg-teal-400;
+}
+
+.btn--secondary {
+    @apply rounded-lg p-2 border bg-white border-teal-500 text-teal-500 font-bold hover:bg-gray-100;
+}
+.btn--danger {
+    @apply rounded-lg p-2 border text-white bg-red-500 font-bold hover:bg-red-400;
+}
+.btn--black {
+    @apply rounded-lg p-2 border text-white bg-black font-bold hover:bg-gray-700;
+}
+
+.card-body {
+    @apply rounded-lg bg-white shadow p-3;
+}
+
+.btn--container {
+    @apply mt-2 block text-center rounded-lg w-full bg-teal-500 text-white p-2;
+}
+
+.section-header {
+    @apply text-xl mb-3 font-medium;
+}
+
+
+.detail-list {
+}
+
+.detail-list div:nth-child(even) {
+    @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
+}
+
+.detail-list div:nth-child(odd) {
+    @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
+}
+
+.detail-list dt {
+    @apply text-sm font-medium text-gray-500;
+}
+
+.detail-list dd {
+    @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+}
+
+.list-table {
+    @apply w-full;
+}
+
+.list-table thead th {
+    @apply pb-3 text-sm font-medium text-left text-gray-500 uppercase dark:text-gray-400;
+}
+
+.list-table tbody tr {
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+.list-table tbody td {
+    @apply py-2 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white;
+}
+.page-title {
+    @apply text-3xl my-5 p-0 ml-0;
+}
+
+.form-field-lbl {
+    @apply block mb-1 font-medium;
+}
+
+.form-field-input, .form-field {
+    @apply rounded-lg border border-gray-300 ring-teal-500;
+}
+
+.form-field-help {
+    @apply text-gray-500 italic mt-1;
+}
+
+.badge--red {
+    @apply p-1 rounded-lg bg-red-500 text-white font-medium;
+}
+
+.badge--green {
+    @apply p-1 rounded-lg bg-green-500 text-white font-medium;
+}
+
+.alert-success {
+    @apply p-1 rounded-lg bg-white text-black border border-green-500 font-medium;
+}
+
+.alert-error {
+    @apply rounded-lg bg-white border border-red-500 text-red-500 font-medium p-1;
+}

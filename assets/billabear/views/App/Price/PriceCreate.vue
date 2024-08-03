@@ -10,8 +10,6 @@
           </label>
           <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
           <CurrencyInput v-model="price.amount" />
-          <p class="form-field-help">{{ $t('app.price.create.help_info.amount') }}</p>
-          <p class="form-field-help">{{ $t('app.price.create.help_info.display_amount', {amount: currency(price.amount)}) }}</p>
         </div>
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="currency">

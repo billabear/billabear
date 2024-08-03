@@ -17,5 +17,16 @@ export const SUBSCRIPTION_LIST_TRANSLATIONS = {
         button: "Filters",
         search: "Filter"
     },
+    filters: {
+        status: "Status",
+        status_choices: {
+            cancelled: "Cancelled",
+            active: "Active",
+            blocked: "Blocked",
+            overdue_payment_open: "Overdue Payment Open",
+            trial_active: "Active Trial",
+            trial_ended: "Trial Ended"
+        }
+    },
     error_message: "An error has occurred"
 }

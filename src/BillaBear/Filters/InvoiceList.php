@@ -9,6 +9,7 @@
 namespace BillaBear\Filters;
 
 use Parthenon\Athena\Filters\ContainsFilter;
+use Parthenon\Athena\Filters\ExactChoiceFilter;
 
 class InvoiceList extends AbstractFilterList
 {
@@ -22,6 +23,10 @@ class InvoiceList extends AbstractFilterList
             'number' => [
                 'field' => 'invoiceNumber',
                 'filter' => ContainsFilter::class,
+            ],
+            'customer' => [
+                'field' => 'customer.id',
+                'filter' => ExactChoiceFilter::class,
             ],
         ];
     }

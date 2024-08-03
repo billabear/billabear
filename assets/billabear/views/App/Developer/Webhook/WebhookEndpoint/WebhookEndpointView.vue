@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="mt-5 ml-5 page-title">{{ $t('app.system.webhooks.webhook_endpoint.view.title') }}</h1>
+    <h1 class="page-title">{{ $t('app.system.webhooks.webhook_endpoint.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div v-if="!error" class="p-5">
+      <div v-if="!error">
         <div class="card-body">
 
           <h2 class="section-header">{{ $t('app.system.webhooks.webhook_endpoint.view.main.title') }}</h2>

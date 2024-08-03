@@ -7,27 +7,27 @@ import MassChangeView from "../views/App/Subscription/MassChange/MassChangeView.
 export const AppSubscriptionsRoutes  = [
     {
         name: 'app.subscription.view',
-        path: 'subscription/:subscriptionId',
+        path: 'subscriptions/subscription/:subscriptionId',
         component: SubscriptionView
     },
     {
         name: 'app.subscription.list',
-        path: 'list',
+        path: 'subscriptions/list',
         component: SubscriptionList
     },
     {
         name: 'app.subscription.mass_change.list',
-        path: 'mass-change',
+        path: 'subscriptions/mass-change',
         component: MassChangeList,
     },
     {
         name: 'app.subscription.mass_change.create',
-        path: 'mass-change/create',
+        path: 'subscriptions/mass-change/create',
         component: MassChangeCreate,
     },
     {
         name: 'app.subscription.mass_change.view',
-        path: 'mass-change/:id/view',
+        path: 'subscriptions/mass-change/:id/view',
         component: MassChangeView,
     },
 ]

@@ -23,42 +23,45 @@
         </div>
       </div>
       <div  v-if="add_type === 'new'">
-        <div class="grid grid-cols-3 gap-3">
-          <div class="">{{ $t('app.subscription_plan.create.prices_section.create.amount') }}</div>
-          <div class="">{{ $t('app.subscription_plan.create.prices_section.create.currency') }}</div>
-          <div class="">{{ $t('app.subscription_plan.create.prices_section.create.recurring') }}</div>
-          <div><CurrencyInput v-model="price.amount" /></div>
-          <div><CurrencySelect v-model="price.currency" /></div>
-          <div>
+        <div class="">
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.prices_section.create.amount') }}</span>
+            <CurrencyInput v-model="price.amount" />
+            <span class="form-field-error block" v-if="errors.amount != undefined">{{ $t(errors.amount) }}</span>
+
+          </div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.prices_section.create.currency') }}</span>
+            <CurrencySelect v-model="price.currency" />
+            <span class="form-field-error" v-if="errors.currency != undefined">{{ $t(errors.currency) }}</span>
+          </div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.prices_section.create.recurring') }}</span>
             <Toggle v-model="price.recurring" />
+            <span class="form-field-error" v-if="errors.recurring != undefined">{{ $t(errors.recurring) }}</span>
           </div>
-
-          <div v-if="Object.keys(errors).length > 0"><span class="form-field-error" v-if="errors.amount != undefined">{{ $t(errors.amount) }}</span></div>
-          <div v-if="Object.keys(errors).length > 0"><span class="form-field-error" v-if="errors.currency != undefined">{{ $t(errors.currency) }}</span></div>
-          <div v-if="Object.keys(errors).length > 0"><span class="form-field-error" v-if="errors.recurring != undefined">{{ $t(errors.recurring) }}</span></div>
-
-          <div class="">{{ $t('app.subscription_plan.create.prices_section.create.schedule') }}</div>
-          <div class="">{{ $t('app.subscription_plan.create.prices_section.create.including_tax') }}</div>
-          <div class="">{{ $t('app.subscription_plan.create.prices_section.create.public') }}</div>
-          <div><select class="form-field-input" id="name" v-model="price.schedule">
-            <option :value="null"> </option>
-            <option value="week">{{ $t('app.price.create.schedule.week') }}</option>
-            <option value="month">{{ $t('app.price.create.schedule.month') }}</option>
-            <option value="year">{{ $t('app.price.create.schedule.year') }}</option>
-          </select></div>
-          <div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.prices_section.create.schedule') }}</span>
+            <select class="form-field-input" id="name" v-model="price.schedule">
+              <option :value="null"> </option>
+              <option value="week">{{ $t('app.price.create.schedule.week') }}</option>
+              <option value="month">{{ $t('app.price.create.schedule.month') }}</option>
+              <option value="year">{{ $t('app.price.create.schedule.year') }}</option>
+            </select>
+            <span class="form-field-error" v-if="errors.schedule != undefined">{{ $t(errors.schedule) }}</span>
+          </div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.prices_section.create.including_tax') }}</span>
             <Toggle v-model="price.including_tax" />
+            <span class="form-field-error" v-if="errors.includingTax != undefined">{{ $t(errors.includingTax) }}</span>
           </div>
-          <div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.prices_section.create.public') }}</span>
             <Toggle v-model="price.public" />
+            <span class="form-field-error" v-if="errors.public != undefined">{{ $t(errors.public) }}</span>
           </div>
-
-          <div v-if="Object.keys(errors).length > 0"><span class="form-field-error" v-if="errors.schedule != undefined">{{ $t(errors.schedule) }}</span></div>
-          <div v-if="Object.keys(errors).length > 0"><span class="form-field-error" v-if="errors.including_tax != undefined">{{ $t(errors.including_tax) }}</span></div>
-          <div v-if="Object.keys(errors).length > 0"><span class="form-field-error" v-if="errors.public != undefined">{{ $t(errors.public) }}</span></div>
-
         </div>
-        <div class="mt-4">
+        <div class="mt-3">
           <SubmitButton :in-progress="sendingRequest" @click="sendCreate">{{ $t('app.subscription_plan.create.features_section.create.button') }}</SubmitButton>
         </div>
       </div>

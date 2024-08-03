@@ -1,12 +1,12 @@
 <template>
-  <div class="p-5">
-    <h1 class="page-title mb-5">{{ $t('app.reports.dashboard.title') }}</h1>
+  <div class="">
+    <h1 class="page-title">{{ $t('app.reports.dashboard.title') }}</h1>
 
     <div v-if="canSeeStats">
       <OnboardingMenu v-if="show_onboarding" />
 
       <LoadingScreen :ready="ready">
-        <div class="grid grid-cols-4 gap-5 mb-5">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div class="stat">
             <h2 class="stat-header">{{ $t('app.reports.dashboard.header.active_subscriptions') }}</h2>
             <div class="stat-body text-3xl">
@@ -33,14 +33,16 @@
           </div>
         </div>
         <div class="text-end my-5">
-          <div class="chart-button" @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
-            {{ $t('app.reports.dashboard.buttons.daily') }}
-          </div>
-          <div class="chart-button" @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
-            {{ $t('app.reports.dashboard.buttons.monthly') }}
-          </div>
-          <div class="chart-button" @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
-            {{ $t('app.reports.dashboard.buttons.yearly') }}
+          <div class="bg-white rounded-3xl inline p-3">
+            <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
+              {{ $t('app.reports.dashboard.buttons.daily') }}
+            </div>
+            <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
+              {{ $t('app.reports.dashboard.buttons.monthly') }}
+            </div>
+            <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
+              {{ $t('app.reports.dashboard.buttons.yearly') }}
+            </div>
           </div>
         </div>
         <div class="card-body">
@@ -426,7 +428,7 @@ export default {
 <style scoped>
 
 .stat {
-  @apply bg-gray-200 text-black p-3 rounded-lg shadow-lg dark:text-white dark:bg-gray-700 ;
+  @apply bg-white text-black p-3 rounded-lg shadow;
 }
 
 .stat-header {
@@ -435,6 +437,10 @@ export default {
 
 .stat-body {
   @apply mt-5;
+}
+
+.chart-button-selected {
+  @apply bg-teal-500 text-white font-medium;
 }
 
 </style>

@@ -1,13 +1,16 @@
 <template>
   <div>
-    <h2 class="page-title">{{ $t('app.settings.stripe.main.title') }}</h2>
+    <div class="grid grid-cols-2">
 
-    <div class="m-5 text-end">
-      <button v-if="!has_obol_config && !show_config" class="btn--secondary mr-2" @click="show_config = !show_config">{{ $t('app.settings.stripe.main.edit_config') }}</button>
-      <button v-if="!has_obol_config && show_config" class="btn--secondary mr-2" @click="show_config = !show_config">{{ $t('app.settings.stripe.main.hide_config') }}</button>
-      <SubmitButton :in-progress="sendingRequest" @click="createImportRequest" v-if="show_import_button">{{ $t('app.settings.stripe.main.start_button') }}</SubmitButton>
+      <h2 class="page-title">{{ $t('app.settings.stripe.main.title') }}</h2>
+
+      <div class="mt-5 text-end">
+        <button v-if="!has_obol_config && !show_config" class="btn--secondary mr-2" @click="show_config = !show_config">{{ $t('app.settings.stripe.main.edit_config') }}</button>
+        <button v-if="!has_obol_config && show_config" class="btn--secondary mr-2" @click="show_config = !show_config">{{ $t('app.settings.stripe.main.hide_config') }}</button>
+        <SubmitButton :in-progress="sendingRequest" @click="createImportRequest" v-if="show_import_button">{{ $t('app.settings.stripe.main.start_button') }}</SubmitButton>
+      </div>
+
     </div>
-
     <LoadingScreen :ready="ready">
       <div class="mt-4 card-body mx-5" v-if="show_config">
         <h2>{{ $t('app.settings.stripe.main.stripe_config.title') }}</h2>
@@ -40,35 +43,35 @@
       </div>
       <div v-else>
 
-        <div class="mt-3">
-          <table class="list-table">
+        <div class="rounded-lg bg-white shadow p-3">
+          <table class="w-full">
             <thead>
-            <tr>
-              <th>{{ $t('app.settings.stripe.main.list.state') }}</th>
-              <th>{{ $t('app.settings.stripe.main.list.last_id')}}</th>
-              <th>{{ $t('app.settings.stripe.main.list.created_at') }}</th>
-              <th>{{ $t('app.settings.stripe.main.list.updated_at') }}</th>
+            <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.settings.stripe.main.list.state') }}</th>
+              <th class="text-left pb-2">{{ $t('app.settings.stripe.main.list.last_id')}}</th>
+              <th class="text-left pb-2">{{ $t('app.settings.stripe.main.list.created_at') }}</th>
+              <th class="text-left pb-2">{{ $t('app.settings.stripe.main.list.updated_at') }}</th>
               <th></th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="request in importRequests">
-              <td>{{ request.state }}</td>
+              <td class="py-3">{{ request.state }}</td>
               <td>{{ request.last_id }}</td>
               <td>{{ $filters.moment(request.created_at, 'lll') }}</td>
               <td>{{ $filters.moment(request.updated_at, 'lll') }}</td>
-              <td><router-link :to="{name: 'app.settings.import.stripe.view', params: {id: request.id}}">{{ $t('app.settings.stripe.main.list.view') }}</router-link></td>
+              <td><router-link class="btn--main" :to="{name: 'app.settings.import.stripe.view', params: {id: request.id}}">{{ $t('app.settings.stripe.main.list.view') }}</router-link></td>
             </tr>
             <tr v-if="importRequests.length === 0">
-              <td colspan="5" class="text-center">{{ $t('app.settings.stripe.main.list.no_results') }}</td>
+              <td colspan="5" class="py-3 text-center">{{ $t('app.settings.stripe.main.list.no_results') }}</td>
             </tr>
             </tbody>
           </table>
         </div>
 
-        <div class="m-5 grid grid-cols-2 gap-5">
+        <div class="grid grid-cols-2 gap-3">
 
-          <div class="card-body mt-5">
+          <div class="card-body mt-3">
 
             <h2>{{ $t('app.settings.stripe.main.webhook.title') }}</h2>
             <div class="">
@@ -91,7 +94,7 @@
               </div>
             </div>
           </div>
-          <div class="card-body mt-5">
+          <div class="card-body mt-3">
             <h2>{{ $t('app.settings.stripe.main.danger_zone.title') }}</h2>
             <div class="mt-3">
 

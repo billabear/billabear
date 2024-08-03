@@ -1,67 +1,49 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.country.list.title') }}</h1>
+    <div class="grid grid-cols-2">
+      <h1 class="ml-5 mt-5 page-title">{{ $t('app.country.list.title') }}</h1>
 
-    <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
-          <div class="list_container">
-            <ListGroup>
-              <ListGroupItem v-for="(filter, filterKey) in filters">
-                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </Dropdown>
+      <div class="mt-5 text-end top-button-container">
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
           <router-link :to="{name: 'app.finance.country.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.country.list.create_new') }}</router-link>
         </RoleOnlyView>
       </div>
     </div>
 
-    <div class="card-body m-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.payment.list.filter.title') }}</h2>
-      <form @submit.prevent="doSearch">
-        <div v-for="filter in active_filters">
-          <div class="px-3 py-1 sm:flex sm:px-6">
-            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-            <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-          </div>
-        </div>
-
-        <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.country.list.filter.search') }}</button>
-      </form>
-    </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
-        <table class="list-table">
-          <thead>
-            <tr>
-              <th>{{ $t('app.country.list.list.name') }}</th>
-              <th>{{ $t('app.country.list.list.iso_code')}}</th>
-              <th>{{ $t('app.country.list.list.tax_threshold')}}</th>
-              <th></th>
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.country.list.list.name') }}</th>
+              <th class="text-left pb-2">{{ $t('app.country.list.list.iso_code')}}</th>
+              <th class="text-left pb-2">{{ $t('app.country.list.list.tax_threshold')}}</th>
+              <th class="text-left pb-2"></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="country in payments" class="mt-5 cursor-pointer">
-              <td>{{ country.name }}</td>
-              <td>{{ country.iso_code }}</td>
-              <td>
+              <td class="py-3">{{ country.name }}</td>
+              <td class="py-3">{{ country.iso_code }}</td>
+              <td class="py-3">
                 <span :class="{'badge--green': country.amount_transacted >= country.threshold, 'badge--red': country.amount_transacted < country.threshold }">
                   {{ currency(country.amount_transacted) }}/{{ currency(country.threshold) }}
                 </span>
               </td>
-              <td><router-link :to="{name: 'app.finance.country.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
+              <td class="py-3"><router-link :to="{name: 'app.finance.country.view', params: {id: country.id}}" class="list-btn">{{ $t('app.country.list.view') }}</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
-              <td colspan="5" class="text-center">{{ $t('app.country.list.no_countries') }}</td>
+              <td colspan="5" class="py-3 text-center">{{ $t('app.country.list.no_countries') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
-            <tr>
-              <td colspan="5" class="text-center">
+            <tr v-for="country in payments">
+              <td colspan="5" class="py-3 text-center">
                 <LoadingMessage>{{ $t('app.country.list.loading') }}</LoadingMessage>
               </td>
             </tr>
@@ -75,12 +57,14 @@
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.country.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+        </div>
+      </div>
         </div>
       </div>
     </LoadingScreen>
@@ -97,10 +81,11 @@ import "currency.js"
 import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "CustomerList.vue",
-  components: {ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
+  components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
   data() {
     return {
       ready: false,

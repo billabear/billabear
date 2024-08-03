@@ -16,7 +16,12 @@ class CustomerSubscriptionEventRepository extends DoctrineCrudRepository impleme
 {
     public function getAllForCustomer(Customer $customer): array
     {
-        return $this->entityRepository->findBy(['customer' => $customer]);
+        return $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC']);
+    }
+
+    public function getLastTenForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], 10);
     }
 
     public function getAllForSubscription(Subscription $subscription): array

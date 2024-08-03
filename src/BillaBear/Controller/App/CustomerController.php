@@ -35,13 +35,13 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
+use BillaBear\Repository\PaymentRepositoryInterface;
+use BillaBear\Repository\RefundRepositoryInterface;
+use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use BillaBear\Webhook\Outbound\Payload\CustomerUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
-use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Repository\RefundRepositoryInterface;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -248,39 +248,65 @@ class CustomerController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $payments = $paymentRepository->getPaymentsForCustomer($customer);
-        $paymentDtos = array_map([$paymentDataMapper, 'createAppDto'], $payments);
+        $payments = $paymentRepository->getLastTenForCustomer($customer);
+        $paymentDtos = array_map([$paymentDataMapper, 'createAppDto'], $payments->getResults());
 
-        $refunds = $refundRepository->getForCustomer($customer);
-        $refundDtos = array_map([$refundDataMapper, 'createAppDto'], $refunds);
+        $paymentList = new ListResponse();
+        $paymentList->setData($paymentDtos);
+        $paymentList->setLastKey($payments->getLastKey());
+        $paymentList->setFirstKey($payments->getFirstKey());
+        $paymentList->setHasMore($payments->hasMore());
+
+        $refunds = $refundRepository->getLastTenForCustomer($customer);
+        $refundDtos = array_map([$refundDataMapper, 'createAppDto'], $refunds->getResults());
+
+        $refundList = new ListResponse();
+        $refundList->setData($refundDtos);
+        $refundList->setHasMore($refunds->hasMore());
+        $refundList->setFirstKey($refundList->getFirstKey());
+        $refundList->setLastKey($refundList->getLastKey());
 
         $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
-        $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
-        $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
+        $subscriptions = $subscriptionRepository->getLastTenForCustomer($customer);
+        $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions->getResults());
 
-        $limits = $limitsFactory->createAppDto($customer, $subscriptions);
+        $subscriptionList = new ListResponse();
+        $subscriptionList->setData($subscriptionDtos);
+        $subscriptionList->setHasMore($subscriptions->hasMore());
+        $subscriptionList->setLastKey($subscriptions->getLastKey());
+        $subscriptionList->setFirstKey($subscriptions->getFirstKey());
+
+        $allSubscriptions = $subscriptionRepository->getAllForCustomer($customer);
+
+        $limits = $limitsFactory->createAppDto($customer, $allSubscriptions);
 
         $creditNotes = $creditNoteRepository->getForCustomer($customer);
         $creditNotesDto = array_map([$creditDataMapper, 'createAppDto'], $creditNotes);
 
-        $invoices = $invoiceRepository->getAllForCustomer($customer);
-        $invoiceDtos = array_map([$invoiceDataMapper, 'createQuickViewAppDto'], $invoices);
+        $invoices = $invoiceRepository->getLastTenForCustomer($customer);
+        $invoiceDtos = array_map([$invoiceDataMapper, 'createQuickViewAppDto'], $invoices->getResults());
 
-        $subscriptionEvents = $customerSubscriptionEventRepository->getAllForCustomer($customer);
+        $invoiceList = new ListResponse();
+        $invoiceList->setData($invoiceDtos);
+        $invoiceList->setHasMore($invoices->hasMore());
+        $invoiceList->setLastKey($invoices->getLastKey());
+        $invoiceList->setFirstKey($invoices->getFirstKey());
+
+        $subscriptionEvents = $customerSubscriptionEventRepository->getLastTenForCustomer($customer);
         $subscriptionEventDtos = array_map([$customerSubscriptionEventDataMapper, 'createAppDto'], $subscriptionEvents);
 
         $customerDto = $customerDataMapper->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
         $dto->setPaymentDetails($paymentDetailsDto);
-        $dto->setSubscriptions($subscriptionDtos);
-        $dto->setPayments($paymentDtos);
-        $dto->setRefunds($refundDtos);
+        $dto->setSubscriptions($subscriptionList);
+        $dto->setPayments($paymentList);
+        $dto->setRefunds($refundList);
         $dto->setLimits($limits);
         $dto->setCredit($creditNotesDto);
-        $dto->setInvoices($invoiceDtos);
+        $dto->setInvoices($invoiceList);
         $dto->setSubscriptionEvents($subscriptionEventDtos);
         $output = $serializer->serialize($dto, 'json');
 

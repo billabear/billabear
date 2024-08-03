@@ -8,7 +8,9 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\Payment;
+use Parthenon\Athena\ResultSet;
 
 interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\PaymentRepositoryInterface
 {
@@ -21,4 +23,6 @@ interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\Payme
      * @return Payment[]
      */
     public function getPaymentsAmountForStateSinceDate(string $countryCode, string $state, \DateTime $when): array;
+
+    public function getLastTenForCustomer(Customer $customer): ResultSet;
 }

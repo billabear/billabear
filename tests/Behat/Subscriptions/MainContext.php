@@ -435,7 +435,7 @@ class MainContext implements Context
             throw new \Exception('No subscriptions found');
         }
 
-        foreach ($data['subscriptions'] as $subscription) {
+        foreach ($data['subscriptions']['data'] as $subscription) {
             if ($subscription['plan']['name'] === $arg1) {
                 return;
             }

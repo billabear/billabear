@@ -1,21 +1,12 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.system.integrations.slack.notifications.list.title') }}</h1>
+    <div class="grid grid-cols-2">
 
-    <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
-          <div class="list_container">
-            <ListGroup>
-              <ListGroupItem v-for="(filter, filterKey) in filters">
-                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </Dropdown>
+      <h1 class="ml-5 mt-5 page-title">{{ $t('app.system.integrations.slack.notifications.list.title') }}</h1>
+
+      <div class="top-button-container mt-5 text-end">
+        <router-link :to="{name: 'app.system.integrations.slack.notification.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.system.integrations.slack.notifications.list.create_new') }}</router-link>
       </div>
-      <router-link :to="{name: 'app.system.integrations.slack.notification.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.system.integrations.slack.notifications.list.create_new') }}</router-link>
-
     </div>
 
     <div class="card-body m-5" v-if="active_filters.length > 0">
@@ -31,30 +22,31 @@
     </div>
 
     <LoadingScreen :ready="ready">
-      <div class="mt-3">
-        <table class="list-table">
+
+      <div class="rounded-lg bg-white shadow p-3">
+        <table class="w-full">
           <thead>
-          <tr>
-            <th>{{ $t('app.system.integrations.slack.notifications.list.event') }}</th>
-            <th>{{ $t('app.system.integrations.slack.notifications.list.webhook')}}</th>
-            <th>{{ $t('app.system.integrations.slack.notifications.list.template')}}</th>
+          <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.system.integrations.slack.notifications.list.event') }}</th>
+            <th class="text-left pb-2">{{ $t('app.system.integrations.slack.notifications.list.webhook')}}</th>
+            <th class="text-left pb-2">{{ $t('app.system.integrations.slack.notifications.list.template')}}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="loaded">
           <tr v-for="(notification, key) in notifications" class="mt-5">
-            <td>{{ notification.event }}</td>
-            <td>{{ notification.webhook.name }}</td>
-            <td>{{ notification.template }}</td>
-            <td><button class="btn--danger" :disabled="deleting" @click="deleteNot(key)"><i class="fa-solid fa-trash"></i></button></td>
+            <td class="py-3">{{ notification.event }}</td>
+            <td class="py-3">{{ notification.webhook.name }}</td>
+            <td class="py-3">{{ notification.template }}</td>
+            <td class="py-3"><button class="btn--danger" :disabled="deleting" @click="deleteNot(key)"><i class="fa-solid fa-trash"></i></button></td>
           </tr>
           <tr v-if="notifications.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.system.integrations.slack.notifications.list.no_notifications') }}</td>
+            <td colspan="4" class="py-3 text-center">{{ $t('app.system.integrations.slack.notifications.list.no_notifications') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="4" class="py-3 text-center">
               <LoadingMessage>{{ $t('app.system.integrations.slack.notifications.list.loading') }}</LoadingMessage>
             </td>
           </tr>

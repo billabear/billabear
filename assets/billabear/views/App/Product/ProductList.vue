@@ -1,76 +1,57 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="mt-5 ml-5 page-title">{{ $t('app.product.list.title') }}</h1>
+    <div class="grid grid-cols-2">
 
-    <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
-          <div class="list_container">
-            <ListGroup>
-              <ListGroupItem v-for="(filter, filterKey) in filters">
-                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </Dropdown>
+      <h1 class="mt-5 ml-5 page-title">{{ $t('app.product.list.title') }}</h1>
+
+      <div class="mt-5 text-end top-button-container">
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <router-link :to="{name: 'app.product.create'}" class="ml-3 btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.product.list.create_new') }}</router-link>
+        </RoleOnlyView>
       </div>
-      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-        <router-link :to="{name: 'app.product.create'}" class="ml-3 btn--main"><i class="fa-solid fa-user-plus"></i> {{ $t('app.product.list.create_new') }}</router-link>
-      </RoleOnlyView>
-    </div>
-
-    <div class="card-body m-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.product.list.filter.title') }}</h2>
-
-      <form @submit.prevent="doSearch">
-        <div v-for="filter in active_filters">
-          <div class="px-3 py-1 sm:flex sm:px-6">
-            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-            <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-          </div>
-        </div>
-      </form>
-
-      <button @click="doSearch" class="btn--main mt-3">{{ $t('app.product.list.filter.search') }}</button>
     </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
-        <table class="list-table">
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
           <thead>
-            <tr>
-              <th>{{ $t('app.product.list.name') }}</th>
-              <th>{{ $t('app.product.list.physical') }}</th>
+            <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.product.list.name') }}</th>
+              <th class="text-left pb-2">{{ $t('app.product.list.physical') }}</th>
               <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="product in products" class="mt-5">
-              <td>{{ product.name }}</td>
-              <td>{{ product.physical }}</td>
-              <td class="mt-2"><router-link :to="{name: 'app.product.view', params: {id: product.id}}" class="btn--main">View</router-link></td>
+              <td class="py-3">{{ product.name }}</td>
+              <td class="py-3">{{ product.physical }}</td>
+              <td class="py-3"><router-link :to="{name: 'app.product.view', params: {id: product.id}}" class="btn--main">View</router-link></td>
             </tr>
             <tr v-if="products.length === 0">
-              <td colspan="4" class="text-center">{{ $t('app.product.list.no_products') }}</td>
+              <td colspan="4" class="py-3 text-center">{{ $t('app.product.list.no_products') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
-          <tr>
-            <td colspan="4" class="text-center">
+          <tr v-for="product in products">
+            <td colspan="4" class="py-3 text-center">
               <LoadingMessage>{{ $t('app.product.list.loading') }}</LoadingMessage>
             </td>
           </tr>
           </tbody>
         </table>
     </div>
-      <div class="sm:grid sm:grid-cols-2 m-5">
+      <div class="sm:grid sm:grid-cols-2 mt-5">
 
         <div class="mt-4">
           <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.product.list.prev') }}</button>
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.product.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -78,6 +59,9 @@
           </select>
         </div>
       </div>
+        </div>
+      </div>
+
     </LoadingScreen>
   </div>
   <div v-else class="error-page">
@@ -90,10 +74,11 @@ import axios from "axios";
 import InternalApp from "../InternalApp.vue";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "ProductList.vue",
-  components: {ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
+  components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,

@@ -8,6 +8,9 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
+use Parthenon\Athena\ResultSet;
+
 class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentRepository implements PaymentRepositoryInterface
 {
     public function getPaymentsAmountForCountrySinceDate(string $countryCode, \DateTime $when): array
@@ -38,5 +41,12 @@ class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentReposit
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    public function getLastTenForCustomer(Customer $customer): ResultSet
+    {
+        $results = $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], limit: 11);
+
+        return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
 }

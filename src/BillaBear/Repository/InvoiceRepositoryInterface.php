@@ -12,6 +12,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Subscription;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface InvoiceRepositoryInterface extends CrudRepositoryInterface
@@ -20,6 +21,8 @@ interface InvoiceRepositoryInterface extends CrudRepositoryInterface
      * @return Invoice[]
      */
     public function getAllForCustomer(Customer $customer): array;
+
+    public function getLastTenForCustomer(Customer $customer): ResultSet;
 
     /**
      * @return Invoice[]

@@ -3,7 +3,7 @@
     <h1 class="page-title">{{ $t('app.subscription_plan.update.title') }}</h1>
 
     <form @submit.prevent="send">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 gap-3">
         <div class="card-body">
           <h2 class="section-header">{{ $t('app.subscription_plan.create.main_section.title') }}</h2>
           <div class="form-field-ctn">
@@ -89,7 +89,7 @@
       <SectionLimits />
       <SectionPrices />
       </div>
-    <div class="ml-5 form-field-submit-ctn">
+    <div class="form-field-submit-ctn">
       <SubmitButton :in-progress="sendingInProgress">{{ $t('app.subscription_plan.update.submit_btn') }}</SubmitButton>
     </div>
     <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.subscription_plan.update.success_message') }}</p>
@@ -226,10 +226,6 @@ export default {
 <style scoped>
 .form-field-error {
   @apply text-red-500 text-xs italic mb-2;
-}
-
-.form-field-ctn {
-  @apply w-full md:w-1/2 px-3 mb-6 md:mb-0 pt-2;
 }
 
 .form-field-lbl {

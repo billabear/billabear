@@ -3,7 +3,7 @@
     <h1 class="page-title">{{ $t('app.settings.email_template.update.title') }}</h1>
 
     <form @submit.prevent="send">
-    <div class="m-5 card-body">
+    <div class="card-body">
       <div class="form-field-ctn">
         <label class="form-field-lbl" for="name">
           {{ $t('app.settings.email_template.create.fields.name') }}
@@ -65,7 +65,7 @@
 
     </div>
 
-    <div class="m-5 form-field-submit-ctn">
+    <div class="mt-3 form-field-submit-ctn">
       <Button @click="sendTemplate" :in-progress="sendingInProgress" class="btn--secondary">{{ $t('app.settings.email_template.update.test_email') }}</Button>
       <SubmitButton :in-progress="sendingInProgress" class="ml-5">{{ $t('app.settings.email_template.update.submit_btn') }}</SubmitButton>
     </div>

@@ -1,59 +1,42 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.checkout.list.title') }}</h1>
+    <div class="grid grid-cols-2">
 
-    <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
-          <div class="list_container">
-            <ListGroup>
-              <ListGroupItem v-for="(filter, filterKey) in filters">
-                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </Dropdown>
+      <h1 class="ml-5 mt-5 page-title">{{ $t('app.checkout.list.title') }}</h1>
+
+      <div class="mt-5 top-button-container text-end">
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <router-link :to="{name: 'app.checkout.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.checkout.list.create_new') }}</router-link>
+        </RoleOnlyView>
       </div>
-      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-        <router-link :to="{name: 'app.checkout.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.checkout.list.create_new') }}</router-link>
-      </RoleOnlyView>
     </div>
-
-    <div class="card-body m-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.checkout.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-        </div>
-      </div>
-
-      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
-    </div>
-
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
-        <table class="list-table">
-          <thead>
-            <tr>
-              <th>{{ $t('app.checkout.list.list.name') }}</th>
-              <th>{{ $t('app.checkout.list.list.created_at') }}</th>
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.checkout.list.list.name') }}</th>
+              <th class="text-left pb-2">{{ $t('app.checkout.list.list.created_at') }}</th>
               <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="checkout in checkouts" class="mt-5 cursor-pointer">
-              <td>{{ checkout.name}}</td>
-              <td>{{ $filters.moment(checkout.created_at, 'lll') }}</td>
-              <td><router-link :to="{name: 'app.checkout.view', params: {id: checkout.id}}" class="list-btn">{{ $t('app.checkout.list.list.view') }}</router-link></td>
+              <td class="py-3">{{ checkout.name}}</td>
+              <td class="py-3">{{ $filters.moment(checkout.created_at, 'lll') }}</td>
+              <td class="py-3"><router-link :to="{name: 'app.checkout.view', params: {id: checkout.id}}" class="list-btn">{{ $t('app.checkout.list.list.view') }}</router-link></td>
             </tr>
             <tr v-if="checkouts.length === 0">
-              <td colspan="5" class="text-center">{{ $t('app.checkout.list.no_checkouts') }}</td>
+              <td colspan="5" class="py-3 text-center">{{ $t('app.checkout.list.no_checkouts') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
-            <tr>
-              <td colspan="5" class="text-center">
+            <tr v-for="checkout in checkouts">
+              <td colspan="5" class="py-3 text-center">
                 <LoadingMessage>{{ $t('app.payment.list.loading') }}</LoadingMessage>
               </td>
             </tr>
@@ -67,12 +50,14 @@
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.checkout.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+        </div>
+      </div>
         </div>
       </div>
     </LoadingScreen>
@@ -88,10 +73,11 @@ import InternalApp from "../InternalApp.vue";
 import "currency.js"
 import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "CheckoutList.vue",
-  components: {ListGroupItem, ListGroup, Dropdown, InternalApp},
+  components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp},
   data() {
     return {
       ready: false,

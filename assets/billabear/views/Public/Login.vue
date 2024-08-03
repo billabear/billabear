@@ -1,21 +1,23 @@
 <template>
-  <div class="flex items-center justify-center h-screen login">
+  <div class="w-screen">
+
+    <div class="mx-auto login max-w-2xl mt-12 mb-12 border rounded-lg bg-white shadow p-5">
     <form @submit.prevent="handleSubmit">
       <div class="p-5 public-form-body" :class="{'animate-shake': error_info.has_error}">
         <div class="w-full">
           <PublicLogo />
         </div>
-        <h1 class="h1 text-center">{{ $t('public.login.title') }}</h1>
+        <h1 class="h1 text-center text-3xl">{{ $t('public.login.title') }}</h1>
         <div class="px-5 mt-2 mb-3" v-if="error_info.has_error">
           <div class="alert-error text-center">{{ error_info.message }}</div>
         </div>
         <div class="px-5 mb-3">
           <label class="block mb-1">{{ $t('public.login.email') }}</label>
-          <input type="text" class="input-field" v-model="email" />
+          <input type="text" class="form-field w-full" v-model="email" />
         </div>
         <div class="px-5 mb-3">
           <label class="block mb-1">{{ $t('public.login.password') }}</label>
-          <input type="password" class="input-field" v-model="password" />
+          <input type="password" class="form-field w-full" v-model="password" />
         </div>
         <div class="px-5 mb-3 flex items-center justify-between">
           <router-link :to="{name: 'public.forgot_password'}" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">{{ $t('public.login.forgot_password_link') }}</router-link>
@@ -28,6 +30,7 @@
         </div>
       </div>
     </form>
+  </div>
   </div>
 </template>
 

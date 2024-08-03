@@ -12,6 +12,7 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\SubscriptionPlan;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
@@ -287,5 +288,12 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
             ->orderBy('s.customer');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getLastTenForCustomer($customer): ResultSet
+    {
+        $results = $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], 11);
+
+        return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
 }

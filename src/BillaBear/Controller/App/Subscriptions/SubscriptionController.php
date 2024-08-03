@@ -30,6 +30,7 @@ use BillaBear\Dto\Response\App\Subscription\CreateView;
 use BillaBear\Dto\Response\App\Subscription\UpdatePlanView;
 use BillaBear\Dto\Response\App\Subscription\ViewSubscription;
 use BillaBear\Entity\Subscription;
+use BillaBear\Filters\SubscriptionList;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
@@ -190,7 +191,7 @@ class SubscriptionController
     ): Response {
         $this->getLogger()->info('Received a request to list subscription');
 
-        return $this->crudList($request, $subscriptionRepository, $serializer, $subscriptionFactory, 'updatedAt');
+        return $this->crudList($request, $subscriptionRepository, $serializer, $subscriptionFactory, 'updatedAt', filterList: new SubscriptionList());
     }
 
     #[Route('/app/subscription/{subscriptionId}', name: 'app_subscription_view', methods: ['GET'])]

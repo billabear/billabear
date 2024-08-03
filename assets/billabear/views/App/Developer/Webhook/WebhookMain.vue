@@ -1,38 +1,37 @@
 <template>
   <div>
-    <div class="mx-5 mt-5 grid grid-cols-2">
+    <div class="grid grid-cols-2">
       <div>
-
         <h1 class="page-title">{{ $t('app.system.webhooks.main.title') }}</h1>
       </div>
-      <div class="text-end">
+      <div class="mt-3 text-end">
         <router-link :to="{name: 'app.system.webhook_endpoints.list'}" class="btn--main"><i class="fa-solid fa-gear"></i> {{ $t('app.system.webhooks.main.manage_endpoints') }}</router-link>
       </div>
     </div>
 
     <LoadingScreen :ready="ready">
-      <div class="mt-3">
-        <table class="list-table">
+      <div class="card-body">
+        <table class="w-full">
           <thead>
-          <tr>
-            <th>{{ $t('app.system.webhooks.main.list.type') }}</th>
-            <th>{{ $t('app.system.webhooks.main.list.created_at')}}</th>
+          <tr class="border-b border-black">
+            <th class="text-left pb-2 ">{{ $t('app.system.webhooks.main.list.type') }}</th>
+            <th class="text-left pb-2">{{ $t('app.system.webhooks.main.list.created_at')}}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="loaded">
           <tr v-for="customer in customers" class="mt-5 cursor-pointer" @click="$router.push({name: 'app.system.webhook_event.view', params: {id: customer.id}})">
-            <td>{{ customer.type }}</td>
-            <td>{{ $filters.moment(customer.created_at, 'lll') }}</td>
-            <td><router-link :to="{name: 'app.system.webhook_event.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.system.webhooks.main.list.view_btn') }}</router-link></td>
+            <td class="py-3">{{ customer.type }}</td>
+            <td class="py-3">{{ $filters.moment(customer.created_at, 'lll') }}</td>
+            <td class="py-3"><router-link :to="{name: 'app.system.webhook_event.view', params: {id: customer.id}}" class="list-btn">{{ $t('app.system.webhooks.main.list.view_btn') }}</router-link></td>
           </tr>
           <tr v-if="customers.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.system.webhooks.main.list.no_events') }}</td>
+            <td colspan="4" class="py-3 text-center">{{ $t('app.system.webhooks.main.list.no_events') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="4" class="py-3 text-center">
               <LoadingMessage>{{ $t('app.system.webhooks.main.list.loading') }}</LoadingMessage>
             </td>
           </tr>

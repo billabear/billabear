@@ -8,11 +8,21 @@
 
 namespace BillaBear\Filters;
 
+use Parthenon\Athena\Filters\ExactChoiceFilter;
+
 class SubscriptionList extends AbstractFilterList
 {
     protected function getFilters(): array
     {
         return [
+            'status' => [
+                'field' => 'status',
+                'filter' => ExactChoiceFilter::class,
+            ],
+            'customer' => [
+                'field' => 'customer.id',
+                'filter' => ExactChoiceFilter::class,
+            ],
         ];
     }
 }

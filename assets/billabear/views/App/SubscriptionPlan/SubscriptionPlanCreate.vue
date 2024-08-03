@@ -4,7 +4,7 @@
 
     <LoadingScreen :ready="loaded">
       <form @submit.prevent="send">
-        <div class="grid p-5 grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div class="card-body">
             <h2 class="section-header">{{ $t('app.subscription_plan.create.main_section.title') }}</h2>
             <div class="form-field-ctn">
@@ -90,7 +90,7 @@
           <SectionPrices />
         </div>
 
-        <div class="form-field-submit-ctn ml-5">
+        <div class="form-field-submit-ctn">
           <SubmitButton :in-progress="sendingInProgress">{{ $t('app.subscription_plan.create.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.subscription_plan.create.success_message') }}</p>
@@ -232,9 +232,6 @@ export default {
   @apply text-red-500 text-xs italic mb-2;
 }
 
-.form-field-ctn {
-  @apply w-full md:w-1/2 px-3 mb-6 md:mb-0 pt-2;
-}
 
 .form-field-lbl {
   @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;

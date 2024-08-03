@@ -31,7 +31,7 @@
 
         </div>
 
-        <div class="form-field-submit-ctn">
+        <div class="form-field-submit-ctn mt-3">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.user.update.submit_btn') }}</SubmitButton>
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.user.update.success_message') }}</p>

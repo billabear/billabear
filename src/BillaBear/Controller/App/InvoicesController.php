@@ -50,7 +50,7 @@ class InvoicesController
     ): Response {
         $this->getLogger()->info('Received request to list invoices');
 
-        return $this->crudList($request, $repository, $serializer, $factory);
+        return $this->crudList($request, $repository, $serializer, $factory, filterList: new InvoiceList());
     }
 
     #[Route('/app/invoices/unpaid', name: 'app_invoices_unpaid_list', methods: ['GET'])]

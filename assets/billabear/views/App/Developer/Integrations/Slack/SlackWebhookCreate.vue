@@ -4,7 +4,7 @@
 
     <div>
       <form @submit.prevent="send">
-        <div class="p-5">
+        <div class="">
           <div class="card-body">
 
             <div class="form-field-ctn">
@@ -26,7 +26,7 @@
             </div>
           </div>
         </div>
-        <SubmitButton class="ml-5" @click="save" :in-progress="inProgress">{{ $t('app.system.integrations.slack.webhooks.create.save_btn') }}</SubmitButton>
+        <SubmitButton class="mt-3" @click="save" :in-progress="inProgress">{{ $t('app.system.integrations.slack.webhooks.create.save_btn') }}</SubmitButton>
       </form>
     </div>
   </div>

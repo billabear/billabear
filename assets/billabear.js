@@ -18,7 +18,7 @@ import '@vue-flow/controls/dist/style.css'
 import 'vue-final-modal/style.css';
 import 'flowbite';
 
-import './billabear/styles/app.css';
+import './billabear/styles/three.css';
 import './billabear/flowbite/constants';
 
 import App from "./billabear/views/App";

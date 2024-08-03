@@ -1,6 +1,6 @@
 export const INVOICES_MENU_TRANSLATIONS = {
     title: "Invoices",
-    invoices: "List All",
+    invoices_list: "Invoice List",
     unpaid_invoices: "Unpaid List",
     create: "Create Invoice",
     quotes: "Quotes",
