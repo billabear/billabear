@@ -311,7 +311,13 @@
                 "system": "System",
                 "docs": "Dokumentation",
                 "workflows": "Arbeitsabläufe",
-                "developers": "Entwickler"
+                "developers": "Entwickler",
+                "home": "Startseite",
+                "customer_list": "Kundenliste",
+                "mobile": {
+                    "show": "Menü anzeigen",
+                    "hide": "Menü ausblenden"
+                }
             }
         },
         "team": {
@@ -447,7 +453,8 @@
                     "reference": "Referenz",
                     "external_reference": "Externe Referenz",
                     "button": "Filter",
-                    "search": "Filter"
+                    "search": "Filter",
+                    "no_filters": "Keine Filter"
                 },
                 "loading": "Ergebnisse laden",
                 "error_message": "Es ist ein Fehler aufgetreten"
@@ -490,13 +497,16 @@
                     "country": "Das Rechnungsland des Kunden - ISO 3166-1 Alpha-2 Ländercode.",
                     "post_code": "Die Postleitzahl für die Rechnungsadresse",
                     "reference": "Ihre interne Referenz für den Kunden",
-                    "billing_type": "Wie dem Kunden die Rechnung gestellt werden soll. Karte bedeutet, dass die Zahlungen automatisch über eine registrierte Karte erfolgen. Rechnung bedeutet, dass der Kunde eine Rechnung erhält und manuell bezahlt", "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
+                    "billing_type": "Wie dem Kunden die Rechnung gestellt werden soll. Karte bedeutet, dass die Zahlungen automatisch über eine registrierte Karte erfolgen. Rechnung bedeutet, dass der Kunde eine Rechnung erhält und manuell bezahlt",
+                    "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
                     "brand": "Die Marke, der der Kunde angehören wird.",
                     "tax_number": "Die Umsatzsteuer-Identifikationsnummer des Kunden",
                     "standard_tax_rate": "Der für den Kunden anzuwendende Steuersatz für alles außer digitalen Dienstleistungen",
-                    "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist"
+                    "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist",
+                    "invoice_format": "Das Format, das bei der Erstellung und Übermittlung einer Rechnung zu verwenden ist"
                 },
-                "failed_message": "Kunde kann nicht erfolgreich angelegt werden"
+                "failed_message": "Kunde kann nicht erfolgreich angelegt werden",
+                "invoice_format": "Rechnungsformat"
             },
             "view": {
                 "title": "Kundendetails anzeigen",
@@ -636,7 +646,9 @@
                         "created_at": "Erstellt am",
                         "view_btn": "Siehe"
                     },
-                    "no_invoices": "Keine Rechnungen"
+                    "no_invoices": "Keine Rechnungen",
+                    "next": "Weiter",
+                    "prev": "Vorherige"
                 }
             },
             "update": {
@@ -684,8 +696,10 @@
                     "external_reference": "Die Referenz für den Kunden, die vom Zahlungsanbieter verwendet wird. Lassen Sie sie leer, es sei denn, Sie sind sehr sicher, dass Sie die richtige Referenz haben.",
                     "tax_number": "Die Umsatzsteuer-Identifikationsnummer des Kunden",
                     "standard_tax_rate": "Der für den Kunden anzuwendende Steuersatz für alles außer digitalen Dienstleistungen",
-                    "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist"
-                }
+                    "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist",
+                    "invoice_format": "Das Format, das bei der Erstellung und Übermittlung einer Rechnung zu verwenden ist"
+                },
+                "invoice_format": "Rechnungsformat"
             },
             "menu": {
                 "title": "Kunden",
@@ -814,7 +828,8 @@
                 "title": "Produkt",
                 "products": "Produkte",
                 "features": "Eigenschaften",
-                "vouchers": "Gutscheine"
+                "vouchers": "Gutscheine",
+                "products_list": "Produktliste"
             }
         },
         "price": {
@@ -1229,12 +1244,24 @@
                     "button": "Filter",
                     "search": "Filter"
                 },
-                "error_message": "Es ist ein Fehler aufgetreten"
+                "error_message": "Es ist ein Fehler aufgetreten",
+                "filters": {
+                    "status": "Status",
+                    "status_choices": {
+                        "cancelled": "Abgesagt",
+                        "active": "Aktiv",
+                        "blocked": "Blockiert",
+                        "overdue_payment_open": "Überfällige Zahlung Offen",
+                        "trial_active": "Aktive Prüfung",
+                        "trial_ended": "Versuch beendet"
+                    }
+                }
             },
             "menu": {
                 "title": "Abonnements",
                 "subscriptions": "Abonnements",
-                "mass_change": "Massenänderung"
+                "mass_change": "Massenänderung",
+                "subscriptions_list": "Liste der Abonnements"
             },
             "mass_change": {
                 "list": {
@@ -2141,7 +2168,8 @@
                 "unpaid_invoices": "Unbezahlte Liste",
                 "create": "Rechnung erstellen",
                 "quotes": "Angebote",
-                "settings": "Einstellungen"
+                "settings": "Einstellungen",
+                "invoices_list": "Liste der Rechnungen"
             },
             "create": {
                 "title": "Rechnung erstellen",

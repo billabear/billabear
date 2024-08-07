@@ -311,7 +311,13 @@
                 "system": "Système",
                 "docs": "Documentation",
                 "workflows": "Flux de travail",
-                "developers": "Développeurs"
+                "developers": "Développeurs",
+                "home": "Accueil",
+                "customer_list": "Liste des clients",
+                "mobile": {
+                    "show": "Afficher le menu",
+                    "hide": "Cacher le menu"
+                }
             }
         },
         "team": {
@@ -447,7 +453,8 @@
                     "reference": "Référence",
                     "external_reference": "Référence externe",
                     "button": "Filtres",
-                    "search": "Filtre"
+                    "search": "Filtre",
+                    "no_filters": "Pas de filtre"
                 },
                 "loading": "Chargement des résultats",
                 "error_message": "Une erreur s'est produite"
@@ -495,9 +502,11 @@
                     "brand": "La marque à laquelle le client appartiendra.",
                     "tax_number": "Le numéro d'identification fiscale du client",
                     "standard_tax_rate": "Le taux d'imposition à appliquer au client pour tout ce qui n'est pas des services numériques",
-                    "type": "Si le client est une entreprise ou un particulier"
+                    "type": "Si le client est une entreprise ou un particulier",
+                    "invoice_format": "Le format à utiliser pour la création et la livraison d'une facture"
                 },
-                "failed_message": "Impossible de créer un client"
+                "failed_message": "Impossible de créer un client",
+                "invoice_format": "Format de la facture"
             },
             "view": {
                 "title": "Voir les détails du client",
@@ -637,7 +646,9 @@
                         "created_at": "Créé à",
                         "view_btn": "Voir"
                     },
-                    "no_invoices": "Pas de factures"
+                    "no_invoices": "Pas de factures",
+                    "next": "Suivant",
+                    "prev": "Précédent"
                 }
             },
             "update": {
@@ -685,8 +696,10 @@
                     "external_reference": "La référence du client utilisée par le prestataire de paiement. Ne rien indiquer, sauf si vous êtes absolument certain d'avoir la bonne référence.",
                     "tax_number": "Le numéro d'identification fiscale du client",
                     "standard_tax_rate": "Le taux d'imposition à appliquer au client pour tout ce qui n'est pas des services numériques",
-                    "type": "Si le client est une entreprise ou un particulier"
-                }
+                    "type": "Si le client est une entreprise ou un particulier",
+                    "invoice_format": "Le format à utiliser pour la création et la livraison d'une facture"
+                },
+                "invoice_format": "Format de la facture"
             },
             "menu": {
                 "title": "Clients",
@@ -815,7 +828,8 @@
                 "title": "Produit",
                 "products": "Produits",
                 "features": "Caractéristiques",
-                "vouchers": "Chèques"
+                "vouchers": "Chèques",
+                "products_list": "Liste des produits"
             }
         },
         "price": {
@@ -1230,12 +1244,24 @@
                     "button": "Filtres",
                     "search": "Filtre"
                 },
-                "error_message": "Une erreur s'est produite"
+                "error_message": "Une erreur s'est produite",
+                "filters": {
+                    "status": "Statut",
+                    "status_choices": {
+                        "cancelled": "Annulé",
+                        "active": "Actif",
+                        "blocked": "Bloqué",
+                        "overdue_payment_open": "Retard de paiement ouvert",
+                        "trial_active": "Essai actif",
+                        "trial_ended": "Essai terminé"
+                    }
+                }
             },
             "menu": {
                 "title": "Abonnements",
                 "subscriptions": "Abonnements",
-                "mass_change": "Changement de masse"
+                "mass_change": "Changement de masse",
+                "subscriptions_list": "Liste d'abonnement"
             },
             "mass_change": {
                 "list": {
@@ -2142,7 +2168,8 @@
                 "unpaid_invoices": "Liste des impayés",
                 "create": "Créer une facture",
                 "quotes": "Citations",
-                "settings": "Paramètres"
+                "settings": "Paramètres",
+                "invoices_list": "Liste des factures"
             },
             "create": {
                 "title": "Créer une facture",

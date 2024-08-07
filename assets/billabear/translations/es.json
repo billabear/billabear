@@ -311,7 +311,13 @@
                 "system": "Sistema",
                 "docs": "Documentación",
                 "workflows": "Flujos de trabajo",
-                "developers": "Desarrolladores"
+                "developers": "Desarrolladores",
+                "home": "Inicio",
+                "customer_list": "Lista de clientes",
+                "mobile": {
+                    "show": "Mostrar menú",
+                    "hide": "Ocultar menú"
+                }
             }
         },
         "team": {
@@ -447,7 +453,8 @@
                     "reference": "Referencia",
                     "external_reference": "Referencia externa",
                     "button": "Filtros",
-                    "search": "Filtro"
+                    "search": "Filtro",
+                    "no_filters": "Sin filtros"
                 },
                 "loading": "Carga de resultados",
                 "error_message": "Se ha producido un error"
@@ -495,9 +502,11 @@
                     "brand": "La marca a la que pertenecerá el cliente.",
                     "tax_number": "El número de identificación fiscal del cliente",
                     "standard_tax_rate": "El tipo impositivo que debe aplicarse al cliente para todo excepto los servicios digitales",
-                    "type": "Si el cliente es una empresa o un particular"
+                    "type": "Si el cliente es una empresa o un particular",
+                    "invoice_format": "El formato que debe utilizarse al crear y entregar una factura"
                 },
-                "failed_message": "No se ha podido crear el cliente"
+                "failed_message": "No se ha podido crear el cliente",
+                "invoice_format": "Formato de factura"
             },
             "view": {
                 "title": "Ver detalles del cliente",
@@ -637,7 +646,9 @@
                         "created_at": "Creado en",
                         "view_btn": "Ver"
                     },
-                    "no_invoices": "Sin facturas"
+                    "no_invoices": "Sin facturas",
+                    "next": "Siguiente",
+                    "prev": "Anterior"
                 }
             },
             "update": {
@@ -685,8 +696,10 @@
                     "external_reference": "La referencia del cliente que utiliza el proveedor de pagos. Déjelo vacío a menos que esté extremadamente seguro de que tiene la referencia correcta.",
                     "tax_number": "El número de identificación fiscal del cliente",
                     "standard_tax_rate": "El tipo impositivo que debe aplicarse al cliente para todo excepto los servicios digitales",
-                    "type": "Si el cliente es una empresa o un particular"
-                }
+                    "type": "Si el cliente es una empresa o un particular",
+                    "invoice_format": "El formato que debe utilizarse al crear y entregar una factura"
+                },
+                "invoice_format": "Formato de factura"
             },
             "menu": {
                 "title": "Clientes",
@@ -815,7 +828,8 @@
                 "title": "Producto",
                 "products": "Productos",
                 "features": "Características",
-                "vouchers": "Vales"
+                "vouchers": "Vales",
+                "products_list": "Lista de productos"
             }
         },
         "price": {
@@ -1230,12 +1244,24 @@
                     "button": "Filtros",
                     "search": "Filtro"
                 },
-                "error_message": "Se ha producido un error"
+                "error_message": "Se ha producido un error",
+                "filters": {
+                    "status": "Estado",
+                    "status_choices": {
+                        "cancelled": "Cancelado",
+                        "active": "Activo",
+                        "blocked": "Bloqueado",
+                        "overdue_payment_open": "Pago atrasado Abierto",
+                        "trial_active": "Prueba activa",
+                        "trial_ended": "Juicio finalizado"
+                    }
+                }
             },
             "menu": {
                 "title": "Suscripciones",
                 "subscriptions": "Suscripciones",
-                "mass_change": "Cambio de masas"
+                "mass_change": "Cambio de masas",
+                "subscriptions_list": "Lista de suscripción"
             },
             "mass_change": {
                 "list": {
@@ -2142,7 +2168,8 @@
                 "unpaid_invoices": "Lista de impagados",
                 "create": "Crear factura",
                 "quotes": "Citas",
-                "settings": "Ajustes"
+                "settings": "Ajustes",
+                "invoices_list": "Lista de facturas"
             },
             "create": {
                 "title": "Crear factura",

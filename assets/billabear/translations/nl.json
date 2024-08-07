@@ -311,7 +311,13 @@
                 "system": "Systeem",
                 "docs": "Documentatie",
                 "workflows": "Werkstromen",
-                "developers": "Ontwikkelaars"
+                "developers": "Ontwikkelaars",
+                "home": "Home",
+                "customer_list": "Klantenlijst",
+                "mobile": {
+                    "show": "Menu weergeven",
+                    "hide": "Menu verbergen"
+                }
             }
         },
         "team": {
@@ -447,7 +453,8 @@
                     "reference": "Referentie",
                     "external_reference": "Externe referentie",
                     "button": "Filters",
-                    "search": "Filter"
+                    "search": "Filter",
+                    "no_filters": "Geen filters"
                 },
                 "loading": "Resultaten laden",
                 "error_message": "Er is een fout opgetreden"
@@ -495,9 +502,11 @@
                     "brand": "Het merk waartoe de klant behoort.",
                     "tax_number": "Het belastingnummer voor de klant",
                     "standard_tax_rate": "Het belastingtarief dat moet worden toegepast voor de klant voor alles behalve digitale diensten",
-                    "type": "Als de klant een bedrijf of particulier is"
+                    "type": "Als de klant een bedrijf of particulier is",
+                    "invoice_format": "Het formaat dat moet worden gebruikt bij het maken en afleveren van een factuur"
                 },
-                "failed_message": "Kan geen klant aanmaken"
+                "failed_message": "Kan geen klant aanmaken",
+                "invoice_format": "Factuurformaat"
             },
             "view": {
                 "title": "Klantgegevens bekijken",
@@ -637,7 +646,9 @@
                         "created_at": "Gemaakt op",
                         "view_btn": "Bekijk"
                     },
-                    "no_invoices": "Geen facturen"
+                    "no_invoices": "Geen facturen",
+                    "next": "Volgende",
+                    "prev": "Vorige"
                 }
             },
             "update": {
@@ -685,8 +696,10 @@
                     "external_reference": "De referentie voor de klant die wordt gebruikt door de betalingsprovider. Laat leeg tenzij je heel zeker weet dat je de juiste referentie hebt.",
                     "tax_number": "Het belastingnummer voor de klant",
                     "standard_tax_rate": "Het belastingtarief dat moet worden toegepast voor de klant voor alles behalve digitale diensten",
-                    "type": "Als de klant een bedrijf of particulier is"
-                }
+                    "type": "Als de klant een bedrijf of particulier is",
+                    "invoice_format": "Het formaat dat moet worden gebruikt bij het maken en afleveren van een factuur"
+                },
+                "invoice_format": "Factuurformaat"
             },
             "menu": {
                 "title": "Klanten",
@@ -815,7 +828,8 @@
                 "title": "Product",
                 "products": "Producten",
                 "features": "Kenmerken",
-                "vouchers": "Bonnen"
+                "vouchers": "Bonnen",
+                "products_list": "Productlijst"
             }
         },
         "price": {
@@ -1230,12 +1244,24 @@
                     "button": "Filters",
                     "search": "Filter"
                 },
-                "error_message": "Er is een fout opgetreden"
+                "error_message": "Er is een fout opgetreden",
+                "filters": {
+                    "status": "Status",
+                    "status_choices": {
+                        "cancelled": "Geannuleerd",
+                        "active": "Actief",
+                        "blocked": "Geblokkeerd",
+                        "overdue_payment_open": "Achterstallige betaling Open",
+                        "trial_active": "Actief onderzoek",
+                        "trial_ended": "Proef beëindigd"
+                    }
+                }
             },
             "menu": {
                 "title": "Abonnementen",
                 "subscriptions": "Abonnementen",
-                "mass_change": "Massa Verandering"
+                "mass_change": "Massa Verandering",
+                "subscriptions_list": "Inschrijvingslijst"
             },
             "mass_change": {
                 "list": {
@@ -2142,7 +2168,8 @@
                 "unpaid_invoices": "Onbetaalde lijst",
                 "create": "Factuur maken",
                 "quotes": "Citaten",
-                "settings": "Instellingen"
+                "settings": "Instellingen",
+                "invoices_list": "Factuurlijst"
             },
             "create": {
                 "title": "Factuur maken",

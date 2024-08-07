@@ -311,7 +311,13 @@
                 "system": "Sistema",
                 "docs": "Documentazione",
                 "workflows": "Flussi di lavoro",
-                "developers": "Sviluppatori"
+                "developers": "Sviluppatori",
+                "home": "Casa",
+                "customer_list": "Elenco clienti",
+                "mobile": {
+                    "show": "Mostra menu",
+                    "hide": "Nascondi menu"
+                }
             }
         },
         "team": {
@@ -447,7 +453,8 @@
                     "reference": "Riferimento",
                     "external_reference": "Riferimento esterno",
                     "button": "Filtri",
-                    "search": "Filtro"
+                    "search": "Filtro",
+                    "no_filters": "Nessun filtro"
                 },
                 "loading": "Risultati del caricamento",
                 "error_message": "Si è verificato un errore"
@@ -495,9 +502,11 @@
                     "brand": "Il marchio a cui il cliente appartiene.",
                     "tax_number": "Il codice fiscale del cliente",
                     "standard_tax_rate": "L'aliquota d'imposta da applicare per il cliente per tutto ciò che non è servizio digitale",
-                    "type": "Se il cliente è un'azienda o un privato"
+                    "type": "Se il cliente è un'azienda o un privato",
+                    "invoice_format": "Il formato da utilizzare per la creazione e la consegna di una fattura."
                 },
-                "failed_message": "Impossibile creare un cliente"
+                "failed_message": "Impossibile creare un cliente",
+                "invoice_format": "Formato della fattura"
             },
             "view": {
                 "title": "Visualizza i dettagli del cliente",
@@ -637,7 +646,9 @@
                         "created_at": "Creato a",
                         "view_btn": "Vista"
                     },
-                    "no_invoices": "Nessuna fattura"
+                    "no_invoices": "Nessuna fattura",
+                    "next": "Avanti",
+                    "prev": "Precedente"
                 }
             },
             "update": {
@@ -685,8 +696,10 @@
                     "external_reference": "Il riferimento del cliente utilizzato dal fornitore del pagamento. Lasciare vuoto a meno che non si sia estremamente sicuri di avere il riferimento corretto.",
                     "tax_number": "Il codice fiscale del cliente",
                     "standard_tax_rate": "L'aliquota d'imposta da applicare per il cliente per tutto ciò che non è servizio digitale",
-                    "type": "Se il cliente è un'azienda o un privato"
-                }
+                    "type": "Se il cliente è un'azienda o un privato",
+                    "invoice_format": "Il formato da utilizzare per la creazione e la consegna di una fattura."
+                },
+                "invoice_format": "Formato della fattura"
             },
             "menu": {
                 "title": "Clienti",
@@ -815,7 +828,8 @@
                 "title": "Prodotto",
                 "products": "Prodotti",
                 "features": "Caratteristiche",
-                "vouchers": "Buoni"
+                "vouchers": "Buoni",
+                "products_list": "Elenco dei prodotti"
             }
         },
         "price": {
@@ -1230,12 +1244,24 @@
                     "button": "Filtri",
                     "search": "Filtro"
                 },
-                "error_message": "Si è verificato un errore"
+                "error_message": "Si è verificato un errore",
+                "filters": {
+                    "status": "Stato",
+                    "status_choices": {
+                        "cancelled": "Annullato",
+                        "active": "Attivo",
+                        "blocked": "Bloccato",
+                        "overdue_payment_open": "Pagamenti in ritardo aperti",
+                        "trial_active": "Prova attiva",
+                        "trial_ended": "Prova conclusa"
+                    }
+                }
             },
             "menu": {
                 "title": "Abbonamenti",
                 "subscriptions": "Abbonamenti",
-                "mass_change": "Cambiamento di massa"
+                "mass_change": "Cambiamento di massa",
+                "subscriptions_list": "Elenco abbonamenti"
             },
             "mass_change": {
                 "list": {
@@ -2142,7 +2168,8 @@
                 "unpaid_invoices": "Elenco non pagato",
                 "create": "Creare una fattura",
                 "quotes": "Citazioni",
-                "settings": "Impostazioni"
+                "settings": "Impostazioni",
+                "invoices_list": "Elenco fatture"
             },
             "create": {
                 "title": "Creare una fattura",
