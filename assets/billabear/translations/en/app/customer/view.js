@@ -139,5 +139,16 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         no_invoices: "No invoices",
         next: "Next",
         prev: "Previous"
+    },
+    invoice_delivery: {
+        title: "Invoice Delivery",
+        add_new: "Add New",
+        list: {
+            method: "Method",
+            format: "Format",
+            detail: "Detail",
+            view: "View",
+        },
+        no_delivery_methods: "No delivery methods",
     }
 }

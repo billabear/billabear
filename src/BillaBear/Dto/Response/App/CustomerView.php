@@ -35,6 +35,9 @@ class CustomerView
 
     protected ListResponse $invoices;
 
+    #[SerializedName('invoice_delivery')]
+    protected ListResponse $invoiceDelivery;
+
     #[SerializedName('subscription_events')]
     protected array $subscriptionEvents;
 
@@ -136,5 +139,15 @@ class CustomerView
     public function setSubscriptionEvents(array $subscriptionEvents): void
     {
         $this->subscriptionEvents = $subscriptionEvents;
+    }
+
+    public function getInvoiceDelivery(): ListResponse
+    {
+        return $this->invoiceDelivery;
+    }
+
+    public function setInvoiceDelivery(ListResponse $invoiceDelivery): void
+    {
+        $this->invoiceDelivery = $invoiceDelivery;
     }
 }

@@ -39,6 +39,8 @@ class InvoiceDelivery
     #[SerializedName('webhook_method')]
     private ?string $webhookMethod;
 
+    private ?string $email;
+
     public function getId(): string
     {
         return $this->id;
@@ -137,5 +139,15 @@ class InvoiceDelivery
     public function setFormat(string $format): void
     {
         $this->format = $format;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
     }
 }

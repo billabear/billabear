@@ -402,6 +402,10 @@ class AppContext implements Context
             $payload['webhook_method'] = $data['Webhook Method'];
         }
 
+        if (isset($data['Email'])) {
+            $payload['email'] = $data['Email'];
+        }
+
         $this->sendJsonRequest('POST', sprintf('/app/customer/%s/invoice-delivery', (string) $customer->getId()), $payload);
     }
 

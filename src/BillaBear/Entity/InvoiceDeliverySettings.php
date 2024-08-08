@@ -56,6 +56,9 @@ class InvoiceDeliverySettings
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $sftpPort = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $email = null;
+
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
@@ -200,5 +203,15 @@ class InvoiceDeliverySettings
     public function setInvoiceFormat(InvoiceFormat $invoiceFormat): void
     {
         $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
     }
 }

@@ -15,6 +15,7 @@ use BillaBear\Customer\LimitsFactory;
 use BillaBear\Customer\ObolRegister;
 use BillaBear\DataMappers\CreditDataMapper;
 use BillaBear\DataMappers\CustomerDataMapper;
+use BillaBear\DataMappers\Invoice\InvoiceDeliveryDataMapper;
 use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
@@ -33,6 +34,7 @@ use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
@@ -239,6 +241,8 @@ class CustomerController
         InvoiceDataMapper $invoiceDataMapper,
         CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
         CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
+        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliveryDataMapper $invoiceDeliveryDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
 
@@ -297,6 +301,13 @@ class CustomerController
         $subscriptionEvents = $customerSubscriptionEventRepository->getLastTenForCustomer($customer);
         $subscriptionEventDtos = array_map([$customerSubscriptionEventDataMapper, 'createAppDto'], $subscriptionEvents);
 
+        $invoiceDelivery = $invoiceDeliveryRepository->getAllForCustomer($customer);
+        $invoiceDeliveryDtos = array_map([$invoiceDeliveryDataMapper, 'createAppDto'], $invoiceDelivery);
+
+        $invoiceDeliveryList = new ListResponse();
+        $invoiceDeliveryList->setData($invoiceDeliveryDtos);
+        $invoiceDeliveryList->setHasMore(false);
+
         $customerDto = $customerDataMapper->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
@@ -307,6 +318,7 @@ class CustomerController
         $dto->setLimits($limits);
         $dto->setCredit($creditNotesDto);
         $dto->setInvoices($invoiceList);
+        $dto->setInvoiceDelivery($invoiceDeliveryList);
         $dto->setSubscriptionEvents($subscriptionEventDtos);
         $output = $serializer->serialize($dto, 'json');
 

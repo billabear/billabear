@@ -69,6 +69,9 @@ import SlackWebhookList from "../views/App/Developer/Integrations/Slack/SlackWeb
 import SlackWebhookCreate from "../views/App/Developer/Integrations/Slack/SlackWebhookCreate.vue";
 import AddWithToken from "../views/App/PaymentDetails/AddWithToken.vue";
 import InvoiceSettings from "../views/App/Invoices/InvoiceSettings.vue";
+import CustomerInvoiceDelivery from "../components/app/Customer/View/CustomerInvoiceDelivery.vue";
+import InvoiceDeliveryCreate from "../views/App/Invoices/Delivery/InvoiceDeliveryCreate.vue";
+import InvoiceDeliveryUpdate from "../views/App/Invoices/Delivery/InvoiceDeliveryUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -122,7 +125,16 @@ export const APP_ROUTES = [
         path: 'customer/:customerId/credit/add',
         component: CreditCreate
     },
-
+    {
+        name: 'app.customer.invoice_delivery.add',
+        path: 'customer/:customerId/invoice-delivery/add',
+        component: InvoiceDeliveryCreate
+    },
+    {
+        name: 'app.customer.invoice_delivery.view',
+        path: 'customer/:customerId/invoice-delivery/:invoiceDeliveryId/view',
+        component: InvoiceDeliveryUpdate
+    },
     {
         name: 'app.user.settings',
         path: "user",

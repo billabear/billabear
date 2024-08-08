@@ -255,6 +255,9 @@
           <div class="card-body">
             <CustomerInvoiceList :invoice-result="invoices" :customer="customer" />
           </div>
+          <div class="card-body">
+            <CustomerInvoiceDelivery :invoice-result="invoice_delivery" :customer="customer" />
+          </div>
       </div>
       </div>
 
@@ -274,10 +277,12 @@ import CustomerInvoiceList from "../../../components/app/Customer/View/CustomerI
 import CustomerSubscriptionEvent from "../../../components/app/Customer/View/CustomerSubscriptionEvent.vue";
 import CustomerPaymentList from "../../../components/app/Customer/View/CustomerPaymentList.vue";
 import CustomerRefundList from "../../../components/app/Customer/View/CustomerRefundList.vue";
+import CustomerInvoiceDelivery from "../../../components/app/Customer/View/CustomerInvoiceDelivery.vue";
 
 export default {
   name: "CustomerView",
   components: {
+    CustomerInvoiceDelivery,
     CustomerRefundList,
     CustomerPaymentList, CustomerSubscriptionEvent, CustomerInvoiceList, SubscriptionList, RoleOnlyView},
   data() {
@@ -295,6 +300,7 @@ export default {
       credit: [],
       invoices: [],
       subscription_events: [],
+      invoice_delivery: {}
     }
   },
   methods: {
@@ -348,6 +354,7 @@ export default {
       this.credit = response.data.credit;
       this.invoices = response.data.invoices;
       this.subscription_events = response.data.subscription_events;
+      this.invoice_delivery = response.data.invoice_delivery;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

@@ -62,6 +62,28 @@ class InvoiceDeliveryController
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
     }
 
+    #[Route('/app/customer/{customerId}/invoice-delivery/{invoiceDeliveryId}', name: 'read_edit_invoice_delivery', methods: ['GET'])]
+    public function readEditExisting(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliveryDataMapper $dataMapper,
+    ): Response {
+        $this->getLogger()->info('Received a request to read an invoice_delivery');
+        try {
+            $invoiceDelivery = $invoiceDeliveryRepository->findById($request->get('invoiceDeliveryId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $appDto = $dataMapper->createAppDto($invoiceDelivery);
+        $json = $serializer->serialize($appDto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_OK, json: true);
+    }
+
     #[Route('/app/customer/{customerId}/invoice-delivery/{invoiceDeliveryId}', name: 'edit_invoice_delivery', methods: ['POST'])]
     public function editExisting(
         Request $request,
@@ -71,7 +93,7 @@ class InvoiceDeliveryController
         InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $dataMapper,
     ): Response {
-        $this->getLogger()->info('Received a request to create a new invoice_delivery');
+        $this->getLogger()->info('Received a request to update an invoice_delivery');
 
         try {
             $customer = $customerRepository->getById($request->get('customerId'));

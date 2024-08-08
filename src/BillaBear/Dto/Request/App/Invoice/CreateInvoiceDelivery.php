@@ -18,7 +18,7 @@ class CreateInvoiceDelivery
     private $type;
 
     #[Assert\Type('string')]
-    #[Assert\Choice(['pdf', 'zugfred_v1'])]
+    #[Assert\Choice(['pdf', 'zugferd_v1'])]
     private $format;
 
     #[Assert\Type('string')]
@@ -44,6 +44,10 @@ class CreateInvoiceDelivery
     #[Assert\Type('string')]
     #[Assert\Choice(['POST', 'PUT'])]
     private $webhookMethod;
+
+    #[Assert\Type('string')]
+    #[Assert\Email()]
+    private $email;
 
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void
@@ -80,6 +84,13 @@ class CreateInvoiceDelivery
             }
 
             return;
+        }
+        if ('email' === $this->type) {
+            if (!$this->email) {
+                $context->buildViolation('Cannot be blank')
+                    ->atPath('email')
+                    ->addViolation();
+            }
         }
 
         if ('webhook' === $this->type) {
@@ -187,5 +198,15 @@ class CreateInvoiceDelivery
     public function setFormat($format): void
     {
         $this->format = $format;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 }

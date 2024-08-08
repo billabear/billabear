@@ -37,6 +37,7 @@ class InvoiceDeliveryDataMapper
         $invoiceDelivery->setSftpPassword($createInvoiceDelivery->getSftpPassword());
         $invoiceDelivery->setSftpPort($createInvoiceDelivery->getSftpPort());
         $invoiceDelivery->setSftpDir($createInvoiceDelivery->getSftpDir());
+        $invoiceDelivery->setEmail($createInvoiceDelivery->getEmail());
 
         return $invoiceDelivery;
     }
@@ -54,6 +55,7 @@ class InvoiceDeliveryDataMapper
         $appDto->setSftpPassword($delivery->getSftpPassword());
         $appDto->setSftpPort($delivery->getSftpPort());
         $appDto->setSftpDir($delivery->getSftpDir());
+        $appDto->setEmail($delivery->getEmail());
 
         return $appDto;
     }
