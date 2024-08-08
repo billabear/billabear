@@ -375,7 +375,7 @@
                 "email": "E-Mail",
                 "password": "Passwort",
                 "locale": "Gebietsschema",
-                "save": "Speichern Sie",
+                "save": "Speichern",
                 "error_message": "Beim Speichern der Benutzereinstellungen ist ein Problem aufgetreten. Bitte überprüfen Sie die Fehler.",
                 "success_message": "Ihre Einstellungen wurden erfolgreich gespeichert.",
                 "danger_zone": "Gefahrenzone",
@@ -1517,7 +1517,7 @@
                 "update": {
                     "title": "Vorlage aktualisieren - {name}",
                     "content": "Inhalt",
-                    "save": "Speichern Sie",
+                    "save": "Speichern",
                     "download": "Test PDF herunterladen",
                     "template": "Vorlage",
                     "help_info": {
@@ -1542,7 +1542,7 @@
                 "create": {
                     "title": "Vorlage erstellen",
                     "content": "Inhalt",
-                    "save": "Speichern Sie",
+                    "save": "Speichern",
                     "download": "Test PDF herunterladen",
                     "template": "Vorlage",
                     "locale": "Gebietsschema",
@@ -2596,7 +2596,7 @@
                                 "name": "Der Name, der verwendet wird, um diesen Webhook innerhalb von BillaBear zu identifizieren",
                                 "webhook": "Die von Slack bereitgestellte URL, die als Webhook verwendet werden soll"
                             },
-                            "save_btn": "Speichern Sie"
+                            "save_btn": "Speichern"
                         }
                     },
                     "notifications": {
@@ -2625,7 +2625,7 @@
                                 "webhook": "Der Slack-Webhook, der für die Benachrichtigung verwendet werden soll",
                                 "template": "Die Vorlage, die beim Versand der Benachrichtigung verwendet werden soll. <a href=\"https:\/\/docs.billabear.com\/user\/integration\/slack\" target=\"_blank\">Variablen können hier gefunden werden<\/a>"
                             },
-                            "save_btn": "Speichern Sie"
+                            "save_btn": "Speichern"
                         }
                     },
                     "menu": {
@@ -3218,7 +3218,7 @@
                     "valid_until": "Gültig bis",
                     "title": "Steuervorschrift hinzufügen",
                     "default": "Standard-Steuerregel",
-                    "save": "Speichern Sie",
+                    "save": "Speichern",
                     "select_tax_type": "Steuerart auswählen"
                 },
                 "edit_tax_rule": {
@@ -3327,7 +3327,7 @@
                     "valid_until": "Gültig bis",
                     "title": "Steuervorschrift hinzufügen",
                     "default": "Standard-Steuerregel",
-                    "save": "Speichern Sie",
+                    "save": "Speichern",
                     "select_tax_type": "Steuerart auswählen"
                 },
                 "edit_tax_rule": {

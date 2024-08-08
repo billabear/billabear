@@ -84,6 +84,26 @@
       </MenuTopItem>
       <MenuTopItem>
         <template v-slot:default>
+          <i class="fa-solid fa-cash-register"></i>
+          <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.reports') }}</span>
+        </template>
+        <template v-slot:submenu>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.report.subscriptions'}" class="submenu-link">{{ $t('app.reports.menu.subscriptions') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.report.churn'}" class="submenu-link">{{ $t('app.reports.menu.churn') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.report.lifetime'}" class="submenu-link">{{ $t('app.reports.menu.lifetime') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.report.tax'}" class="submenu-link">{{ $t('app.reports.menu.tax') }}</router-link>
+          </MenuSubItem>
+        </template>
+      </MenuTopItem>
+      <MenuTopItem>
+        <template v-slot:default>
             <i class="fa-solid fa-cash-register"></i>
             <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.finance') }}</span>
         </template>
