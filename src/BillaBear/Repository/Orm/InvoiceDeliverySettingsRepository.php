@@ -8,14 +8,14 @@
 
 namespace BillaBear\Repository\Orm;
 
-use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Entity\InvoiceDeliverySettings;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
-class InvoiceDeliveryRepository extends CustomServiceRepository
+class InvoiceDeliverySettingsRepository extends CustomServiceRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InvoiceDelivery::class);
+        parent::__construct($registry, InvoiceDeliverySettings::class);
     }
 }

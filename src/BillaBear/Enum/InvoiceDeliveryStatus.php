@@ -6,10 +6,10 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Repository;
+namespace BillaBear\Enum;
 
-use Parthenon\Common\Repository\DoctrineRepository;
-
-class InvoiceDeliveryRepository extends DoctrineRepository implements InvoiceDeliveryRepositoryInterface
+enum InvoiceDeliveryStatus: string
 {
+    case SUCCESS = 'success';
+    case FAILED = 'failed';
 }

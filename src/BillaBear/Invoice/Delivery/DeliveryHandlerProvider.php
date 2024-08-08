@@ -16,6 +16,7 @@ class DeliveryHandlerProvider
     public function __construct(
         private SftpDeliveryHandler $sftpDeliveryHandler,
         private EmailDeliveryHandler $emailDeliveryHandler,
+        private WebhookDeliveryHandler $webhookDeliveryHandler,
     ) {
     }
 
@@ -23,7 +24,9 @@ class DeliveryHandlerProvider
     {
         return match ($invoiceDelivery->getType()) {
             InvoiceDeliveryType::SFTP => $this->sftpDeliveryHandler,
+            InvoiceDeliveryType::WEBHOOK => $this->webhookDeliveryHandler,
             InvoiceDeliveryType::EMAIL => $this->emailDeliveryHandler,
+            default => $this->emailDeliveryHandler,
         };
     }
 }

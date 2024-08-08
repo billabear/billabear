@@ -10,7 +10,7 @@ namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
 use BillaBear\Entity\Processes\InvoiceProcess;
 use BillaBear\Invoice\Delivery\Messenger\InvoiceDeliveryRequest;
-use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,7 +23,7 @@ class SendCustomerNotificationsTransition implements EventSubscriberInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        private InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         private MessageBusInterface $messageBus,
     ) {
     }

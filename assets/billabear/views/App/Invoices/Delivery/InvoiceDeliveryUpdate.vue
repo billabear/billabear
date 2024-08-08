@@ -32,7 +32,7 @@
           <label class="form-field-lbl" for="email">
             {{ $t('app.invoices.delivery.update.fields.email.email') }}
           </label>
-          <input type="text" class="form-field" v-model="email" />
+          <input type="text" class="form-field" v-model="invoice_delivery.email" />
         </div>
       </div>
 

@@ -13,7 +13,7 @@ use BillaBear\DataMappers\Invoice\InvoiceDeliveryDataMapper;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,7 +34,7 @@ class InvoiceDeliveryController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $dataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to create a new invoice_delivery');
@@ -68,7 +68,7 @@ class InvoiceDeliveryController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $dataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to read an invoice_delivery');
@@ -90,7 +90,7 @@ class InvoiceDeliveryController
         CustomerRepositoryInterface $customerRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $dataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to update an invoice_delivery');
@@ -127,7 +127,7 @@ class InvoiceDeliveryController
     public function listInvoiceDelivery(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {

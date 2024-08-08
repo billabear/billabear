@@ -405,6 +405,12 @@ services:
   app.repository.orm.invoice_process:
     class: BillaBear\Repository\Orm\InvoiceProcessRepository
 
+  BillaBear\Repository\InvoiceDeliverySettingsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.invoice_delivery_settings'
+  app.repository.orm.invoice_delivery_settings:
+    class: BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository
+
   BillaBear\Repository\InvoiceDeliveryRepository:
     arguments:
       $entityRepository: '@app.repository.orm.invoice_delivery'

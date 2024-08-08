@@ -34,7 +34,7 @@ use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
-use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
@@ -241,7 +241,7 @@ class CustomerController
         InvoiceDataMapper $invoiceDataMapper,
         CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
         CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
-        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $invoiceDeliveryDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);

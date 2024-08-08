@@ -20,7 +20,7 @@ use BillaBear\Entity\Processes\InvoiceProcess;
 use BillaBear\Enum\InvoiceDeliveryType;
 use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
-use BillaBear\Repository\Orm\InvoiceDeliveryRepository;
+use BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
 use BillaBear\Repository\Orm\PaymentFailureProcessRepository;
@@ -48,7 +48,7 @@ class AppContext implements Context
         private SubscriptionRepository $subscriptionRepository,
         private SubscriptionPlanRepository $planRepository,
         private TaxTypeRepository $taxTypeRepository,
-        private InvoiceDeliveryRepository $invoiceDeliveryRepository,
+        private InvoiceDeliverySettingsRepository $invoiceDeliveryRepository,
     ) {
     }
 

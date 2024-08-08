@@ -8,10 +8,15 @@
 
 namespace BillaBear\Invoice\Delivery\Messenger;
 
+use BillaBear\Entity\InvoiceDelivery;
+use BillaBear\Enum\InvoiceDeliveryStatus;
 use BillaBear\Invoice\Delivery\DeliveryHandlerProvider;
 use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Parthenon\MultiTenancy\Database\DatabaseSwitcherInterface;
+use Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -21,13 +26,18 @@ class InvoiceDeliveryRequestHandler
 
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,
+        private InvoiceDeliverySettingsRepositoryInterface $invoiceDeliverySettingsRepository,
         private InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
         private DeliveryHandlerProvider $deliveryHandlerProvider,
+        private DatabaseSwitcherInterface $databaseSwitcher,
+        private TenantProviderInterface $tenantProvider,
     ) {
     }
 
     public function __invoke(InvoiceDeliveryRequest $invoiceDeliveryRequest): void
     {
+        $this->databaseSwitcher->switchToTenant($this->tenantProvider->getCurrentTenant());
+
         $this->getLogger()->info(
             'Handling invoice delivery request',
             [
@@ -37,9 +47,21 @@ class InvoiceDeliveryRequestHandler
         );
 
         $invoice = $this->invoiceRepository->findById($invoiceDeliveryRequest->invoiceId);
-        $invoiceDelivery = $this->invoiceDeliveryRepository->findById($invoiceDeliveryRequest->invoiceDeliveryId);
+        $invoiceDeliverySettings = $this->invoiceDeliverySettingsRepository->findById($invoiceDeliveryRequest->invoiceDeliveryId);
 
-        $handler = $this->deliveryHandlerProvider->getDeliveryHandler($invoiceDelivery);
-        $handler->deliver($invoice, $invoiceDelivery);
+        $handler = $this->deliveryHandlerProvider->getDeliveryHandler($invoiceDeliverySettings);
+        try {
+            $invoiceDelivery = new InvoiceDelivery();
+            $invoiceDelivery->setInvoice($invoice);
+            $invoiceDelivery->setInvoiceDeliverySettings($invoiceDeliverySettings);
+            $invoiceDelivery->setCustomer($invoice->getCustomer());
+            $invoiceDelivery->setCreatedAt(new \DateTime());
+            $handler->deliver($invoice, $invoiceDeliverySettings);
+            $invoiceDelivery->setStatus(InvoiceDeliveryStatus::SUCCESS);
+        } catch (\Throwable $exception) {
+            $invoiceDelivery->setStatus(InvoiceDeliveryStatus::FAILED);
+        } finally {
+            $this->invoiceDeliveryRepository->save($invoiceDelivery);
+        }
     }
 }
