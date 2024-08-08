@@ -30,7 +30,7 @@
                 </div>
                 <div v-if="invoice.due_date">
                   <dt>{{ $t('app.invoices.view.main.due_date') }}</dt>
-                  <dd>{{ invoice.due_date }}</dd>
+                  <dd>{{ $filters.moment(invoice.due_date, 'llll') }}</dd>
                 </div>
               </dl>
             </div>
@@ -140,7 +140,7 @@
           </table>
         </div>
         <div class="mt-3 text-end">
-          <div class="float-right text-end w-1/5">
+          <div class="w-full text-end">
             <h3 class="text-xl dark:text-gray-500">{{ $t('app.invoices.view.total.title') }}</h3>
 
             <dl class="total-list">
@@ -164,6 +164,30 @@
               </div>
             </dl>
           </div>
+        </div>
+        <div class="mt-3 card-body relative">
+          <h2 class="text-2xl mb-3">{{ $t('app.invoices.view.invoice_delivery.title') }}</h2>
+          <table class="list-table">
+            <thead>
+              <tr>
+                <th>{{ $t('app.invoices.view.invoice_delivery.method') }}</th>
+                <th>{{ $t('app.invoices.view.invoice_delivery.detail') }}</th>
+                <th>{{ $t('app.invoices.view.invoice_delivery.status') }}</th>
+                <th>{{ $t('app.invoices.view.invoice_delivery.created_at') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="invoiceDelivery in invoice_deliveries">
+                <td>{{ invoiceDelivery.invoice_delivery_settings.type }}</td>
+                <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'email'">{{ invoiceDelivery.invoice_delivery_settings.email }}</td>
+                <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'sftp'">{{ invoiceDelivery.invoice_delivery_settings.sftp_host }}</td>
+                <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'webhook'">{{ invoiceDelivery.invoice_delivery_settings.webhook_url }}</td>
+                <td>{{ invoiceDelivery.status }}</td>
+                <td>{{ $filters.moment(invoiceDelivery.created_at, 'llll') }}</td>
+
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </LoadingScreen>
@@ -197,6 +221,7 @@ export default {
   data() {
     return {
       invoice: {},
+      invoice_deliveries: [],
       ready: false,
       chargingCard: false,
       markingAsPaid: false,
@@ -212,6 +237,7 @@ export default {
     const id = this.$route.params.id
     axios.get("/app/invoice/"+id+"/view").then(response => {
       this.invoice = response.data.invoice;
+      this.invoice_deliveries = response.data.invoice_deliveries;
       this.ready = true;
     })
   },

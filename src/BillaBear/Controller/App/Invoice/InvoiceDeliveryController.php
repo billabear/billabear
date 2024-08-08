@@ -9,7 +9,7 @@
 namespace BillaBear\Controller\App\Invoice;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
-use BillaBear\DataMappers\Invoice\InvoiceDeliveryDataMapper;
+use BillaBear\DataMappers\Invoice\InvoiceDeliverySettingsDataMapper;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\CustomerRepositoryInterface;
@@ -35,7 +35,7 @@ class InvoiceDeliveryController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
-        InvoiceDeliveryDataMapper $dataMapper,
+        InvoiceDeliverySettingsDataMapper $dataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to create a new invoice_delivery');
 
@@ -69,7 +69,7 @@ class InvoiceDeliveryController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
-        InvoiceDeliveryDataMapper $dataMapper,
+        InvoiceDeliverySettingsDataMapper $dataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to read an invoice_delivery');
         try {
@@ -91,7 +91,7 @@ class InvoiceDeliveryController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
-        InvoiceDeliveryDataMapper $dataMapper,
+        InvoiceDeliverySettingsDataMapper $dataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to update an invoice_delivery');
 
@@ -128,7 +128,7 @@ class InvoiceDeliveryController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
-        InvoiceDeliveryDataMapper $dataMapper,
+        InvoiceDeliverySettingsDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received a request to list invoice_delivery');

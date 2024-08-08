@@ -9,53 +9,21 @@
 namespace BillaBear\DataMappers\Invoice;
 
 use BillaBear\Dto\Generic\App\InvoiceDelivery as AppDto;
-use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
-use BillaBear\Entity\InvoiceDeliverySettings as Entity;
-use BillaBear\Enum\InvoiceDeliveryType;
-use BillaBear\Enum\InvoiceFormat;
+use BillaBear\Entity\InvoiceDelivery as Entity;
 
 class InvoiceDeliveryDataMapper
 {
-    public function createEntity(CreateInvoiceDelivery $createInvoiceDelivery, ?Entity $invoiceDelivery = null): Entity
+    public function __construct(private InvoiceDeliverySettingsDataMapper $settingsDataMapper)
     {
-        if (!$invoiceDelivery instanceof Entity) {
-            $invoiceDelivery = new Entity();
-            $invoiceDelivery->setCreatedAt(new \DateTime());
-            $invoiceDelivery->setEnabled(true);
-        }
-        $invoiceDelivery->setUpdatedAt(new \DateTime());
-
-        $type = InvoiceDeliveryType::from($createInvoiceDelivery->getType());
-        $format = InvoiceFormat::from($createInvoiceDelivery->getFormat());
-
-        $invoiceDelivery->setType($type);
-        $invoiceDelivery->setInvoiceFormat($format);
-        $invoiceDelivery->setWebhookUrl($createInvoiceDelivery->getWebhookUrl());
-        $invoiceDelivery->setWebhookMethod($createInvoiceDelivery->getWebhookMethod());
-        $invoiceDelivery->setSftpHost($createInvoiceDelivery->getSftpHost());
-        $invoiceDelivery->setSftpUser($createInvoiceDelivery->getSftpUser());
-        $invoiceDelivery->setSftpPassword($createInvoiceDelivery->getSftpPassword());
-        $invoiceDelivery->setSftpPort($createInvoiceDelivery->getSftpPort());
-        $invoiceDelivery->setSftpDir($createInvoiceDelivery->getSftpDir());
-        $invoiceDelivery->setEmail($createInvoiceDelivery->getEmail());
-
-        return $invoiceDelivery;
     }
 
-    public function createAppDto(Entity $delivery)
+    public function createAppDto(Entity $entity): AppDto
     {
         $appDto = new AppDto();
-        $appDto->setId($delivery->getId());
-        $appDto->setType($delivery->getType()->value);
-        $appDto->setFormat($delivery->getInvoiceFormat()->value);
-        $appDto->setWebhookUrl($delivery->getWebhookUrl());
-        $appDto->setWebhookMethod($delivery->getWebhookMethod());
-        $appDto->setSftpHost($delivery->getSftpHost());
-        $appDto->setSftpUser($delivery->getSftpUser());
-        $appDto->setSftpPassword($delivery->getSftpPassword());
-        $appDto->setSftpPort($delivery->getSftpPort());
-        $appDto->setSftpDir($delivery->getSftpDir());
-        $appDto->setEmail($delivery->getEmail());
+        $appDto->setId((string) $entity->getId());
+        $appDto->setInvoiceDeliverySettings($this->settingsDataMapper->createAppDto($entity->getInvoiceDeliverySettings()));
+        $appDto->setStatus($entity->getStatus()->value);
+        $appDto->setCreatedAt($entity->getCreatedAt());
 
         return $appDto;
     }

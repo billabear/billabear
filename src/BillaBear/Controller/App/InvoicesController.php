@@ -9,6 +9,7 @@
 namespace BillaBear\Controller\App;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
+use BillaBear\DataMappers\Invoice\InvoiceDeliveryDataMapper;
 use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoice;
 use BillaBear\Dto\Response\App\Invoice\ViewInvoice;
@@ -19,6 +20,7 @@ use BillaBear\Filters\InvoiceList;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Invoice\ManualInvoiceCreator;
 use BillaBear\Payment\InvoiceCharger;
+use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Athena\Filters\BoolFilter;
@@ -171,6 +173,8 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceDataMapper $invoiceDataMapper,
         SerializerInterface $serializer,
+        InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliveryDataMapper $invoiceDeliveryDataMapper
     ): Response {
         $this->getLogger()->info('Received request to view invoice', ['invoice_id' => $request->get('id')]);
 
@@ -181,9 +185,12 @@ class InvoicesController
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
 
+        $invoiceDeliveries = $invoiceDeliveryRepository->getForInvoice($invoice);
+
         $invoiceDto = $invoiceDataMapper->createAppDto($invoice);
         $dto = new ViewInvoice();
         $dto->setInvoice($invoiceDto);
+        $dto->setInvoiceDeliveries(array_map([$invoiceDeliveryDataMapper, 'createAppDto'], $invoiceDeliveries));
 
         $json = $serializer->serialize($dto, 'json');
 

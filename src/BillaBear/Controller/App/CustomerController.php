@@ -15,7 +15,7 @@ use BillaBear\Customer\LimitsFactory;
 use BillaBear\Customer\ObolRegister;
 use BillaBear\DataMappers\CreditDataMapper;
 use BillaBear\DataMappers\CustomerDataMapper;
-use BillaBear\DataMappers\Invoice\InvoiceDeliveryDataMapper;
+use BillaBear\DataMappers\Invoice\InvoiceDeliverySettingsDataMapper;
 use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
@@ -242,7 +242,7 @@ class CustomerController
         CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
         CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
-        InvoiceDeliveryDataMapper $invoiceDeliveryDataMapper,
+        InvoiceDeliverySettingsDataMapper $invoiceDeliveryDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
 

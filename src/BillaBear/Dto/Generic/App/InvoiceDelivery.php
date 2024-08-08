@@ -14,32 +14,13 @@ class InvoiceDelivery
 {
     private string $id;
 
-    private string $type;
+    private string $status;
 
-    private string $format;
+    #[SerializedName('invoice_delivery_settings')]
+    private InvoiceDeliverySettings $invoiceDeliverySettings;
 
-    #[SerializedName('sftp_host')]
-    private ?string $sftpHost;
-
-    #[SerializedName('sftp_user')]
-    private ?string $sftpUser;
-
-    #[SerializedName('sftp_password')]
-    private ?string $sftpPassword;
-
-    #[SerializedName('sftp_dir')]
-    private ?string $sftpDir;
-
-    #[SerializedName('sftp_port')]
-    private ?int $sftpPort;
-
-    #[SerializedName('webhook_url')]
-    private ?string $webhookUrl;
-
-    #[SerializedName('webhook_method')]
-    private ?string $webhookMethod;
-
-    private ?string $email;
+    #[SerializedName('created_at')]
+    private \DateTime $createdAt;
 
     public function getId(): string
     {
@@ -51,103 +32,33 @@ class InvoiceDelivery
         $this->id = $id;
     }
 
-    public function getType(): string
+    public function getStatus(): string
     {
-        return $this->type;
+        return $this->status;
     }
 
-    public function setType(string $type): void
+    public function setStatus(string $status): void
     {
-        $this->type = $type;
+        $this->status = $status;
     }
 
-    public function getSftpHost(): ?string
+    public function getInvoiceDeliverySettings(): InvoiceDeliverySettings
     {
-        return $this->sftpHost;
+        return $this->invoiceDeliverySettings;
     }
 
-    public function setSftpHost(?string $sftpHost): void
+    public function setInvoiceDeliverySettings(InvoiceDeliverySettings $invoiceDeliverySettings): void
     {
-        $this->sftpHost = $sftpHost;
+        $this->invoiceDeliverySettings = $invoiceDeliverySettings;
     }
 
-    public function getSftpUser(): ?string
+    public function getCreatedAt(): \DateTime
     {
-        return $this->sftpUser;
+        return $this->createdAt;
     }
 
-    public function setSftpUser(?string $sftpUser): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
-        $this->sftpUser = $sftpUser;
-    }
-
-    public function getSftpPassword(): ?string
-    {
-        return $this->sftpPassword;
-    }
-
-    public function setSftpPassword(?string $sftpPassword): void
-    {
-        $this->sftpPassword = $sftpPassword;
-    }
-
-    public function getSftpDir(): ?string
-    {
-        return $this->sftpDir;
-    }
-
-    public function setSftpDir(?string $sftpDir): void
-    {
-        $this->sftpDir = $sftpDir;
-    }
-
-    public function getSftpPort(): ?int
-    {
-        return $this->sftpPort;
-    }
-
-    public function setSftpPort(?int $sftpPort): void
-    {
-        $this->sftpPort = $sftpPort;
-    }
-
-    public function getWebhookUrl(): ?string
-    {
-        return $this->webhookUrl;
-    }
-
-    public function setWebhookUrl(?string $webhookUrl): void
-    {
-        $this->webhookUrl = $webhookUrl;
-    }
-
-    public function getWebhookMethod(): ?string
-    {
-        return $this->webhookMethod;
-    }
-
-    public function setWebhookMethod(?string $webhookMethod): void
-    {
-        $this->webhookMethod = $webhookMethod;
-    }
-
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
-
-    public function setFormat(string $format): void
-    {
-        $this->format = $format;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): void
-    {
-        $this->email = $email;
+        $this->createdAt = $createdAt;
     }
 }
