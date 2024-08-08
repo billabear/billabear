@@ -216,6 +216,10 @@
         </template>
       </MenuTopItem>
     </RoleOnlyView>
+
+    <MenuTopItem>
+      <a  class="sidebar-menu-item" target="_blank" :href="'https://docs.billabear.com/user?utm_source=' + origin + '&utm_campaign=billabear_doc_links&utm_medium=update_announcement'">{{ $t('app.menu.main.docs') }} <i class="fa-solid fa-up-right-from-square"></i></a>
+    </MenuTopItem>
   </MenuContainer>
 </template>
 
@@ -227,7 +231,16 @@ import RoleOnlyView from "../RoleOnlyView.vue";
 
 export default {
   name: "MenuDesktop",
-  components: {RoleOnlyView, MenuContainer, MenuTopItem, MenuSubItem}
+  components: {RoleOnlyView, MenuContainer, MenuTopItem, MenuSubItem},
+  data() {
+    return {
+      origin: '',
+    }
+  },
+  mounted() {
+
+    this.origin = window.location.hostname;
+  }
 }
 </script>
 
