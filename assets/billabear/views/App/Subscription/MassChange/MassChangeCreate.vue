@@ -3,7 +3,7 @@
     <h1 class="mt-5 ml-5 page-title">{{ $t('app.subscription.mass_change.create.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="p-5">
+      <div class="">
         <div class="mt-3 card-body">
           <h2>{{ $t('app.subscription.mass_change.create.criteria.title') }}</h2>
 
