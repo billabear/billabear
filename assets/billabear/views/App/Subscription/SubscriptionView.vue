@@ -2,8 +2,8 @@
   <div>
     <LoadingScreen :ready="ready">
       <div v-if="!error">
-        <h1 class="mt-5 ml-5 page-title">{{ $t('app.subscription.view.title') }}</h1>
-        <div class="grid grid-cols-2 gap-3 p-5">
+        <h1 class="page-title">{{ $t('app.subscription.view.title') }}</h1>
+        <div class="grid grid-cols-2 gap-3">
         <div class="card-body">
           <h2 class="section-header">{{ $t('app.subscription.view.main.title') }}</h2>
           <dl class="detail-list section-body ">
