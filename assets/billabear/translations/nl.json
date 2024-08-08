@@ -848,7 +848,7 @@
                 "public": "Openbaar",
                 "help_info": {
                     "amount": "De prijs is de munteenheid van het lagere niveau. Dus 1,00 USD is 100 en 9,99 is 999.",
-                    "display_amount": "Deze prijs zou {bedrag} zijn.",
+                    "display_amount": "Deze prijs zou {amount} zijn.",
                     "external_reference": "De referentie voor het product dat wordt gebruikt door de betalingsprovider. Laat leeg tenzij je heel zeker weet dat je de juiste referentie hebt.",
                     "recurring": "Is dit een terugkerende betaling of eenmalig?",
                     "currency": "De valuta waarin de klant moet betalen",
@@ -1303,7 +1303,7 @@
                         "help_info": "Na de wijzigingsdatum gelden alle verlengingen voor de nieuwe prijs. Het abonnement wordt onmiddellijk gewijzigd."
                     },
                     "estimate": {
-                        "amount": "Dit zal een geschatte {bedrag} {valuta} wijziging in de {planning} opleveren"
+                        "amount": "Dit zal een geschatte {amount} {currency} wijziging in de {schedule} opleveren"
                     },
                     "submit_button": "Verzendknop"
                 },
@@ -1325,7 +1325,7 @@
                         "title": "Wijzigingsdatum"
                     },
                     "estimate": {
-                        "amount": "Dit zal een geschatte {bedrag} {valuta} wijziging in de {planning} opleveren"
+                        "amount": "Dit zal een geschatte {amount} {currency} wijziging in de {schedule} opleveren"
                     },
                     "export_button": "Klantenlijst exporteren",
                     "cancel": "Annuleren",
@@ -1515,7 +1515,7 @@
                     "generator": "Generatorinstellingen bijwerken"
                 },
                 "update": {
-                    "title": "Sjabloon bijwerken - {naam}",
+                    "title": "Sjabloon bijwerken - {name}",
                     "content": "Inhoud",
                     "save": "Sla",
                     "download": "Download Test PDF",
@@ -1567,7 +1567,7 @@
                     "error_message": "Er is een fout opgetreden"
                 },
                 "update": {
-                    "title": "Merkinstellingen bijwerken - {naam}",
+                    "title": "Merkinstellingen bijwerken - {name}",
                     "fields": {
                         "name": "Naam",
                         "email": "E-mailadres",
@@ -2071,7 +2071,7 @@
                 "lifetime": {
                     "title": "Levensduur",
                     "lifespan": "Levensduur",
-                    "lifespan_value": "{levensduur} jaar",
+                    "lifespan_value": "{lifespan} jaar",
                     "lifetime": "Levensduur",
                     "customer_count": "Aantal klanten",
                     "filters": {
@@ -2129,7 +2129,7 @@
                 "help_info": {
                     "type": "Type kredietaanpassing, credit of debet",
                     "amount": "De prijs is de munteenheid van het lagere niveau. Dus 1,00 USD is 100 en 9,99 is 999.",
-                    "display_amount": "Deze prijs zou {bedrag} zijn.",
+                    "display_amount": "Deze prijs zou {amount} zijn.",
                     "currency": "De valuta waarin de klant moet betalen",
                     "reason": "Een optionele reden die later nuttig kan zijn."
                 },
@@ -2276,7 +2276,7 @@
                     "tax_total": "Belasting Totaal"
                 },
                 "status": {
-                    "paid": "Factuur succesvol betaald op {datum}",
+                    "paid": "Factuur succesvol betaald op {date}",
                     "outstanding": "Factuur moet nog worden betaald."
                 },
                 "actions": {
@@ -2326,7 +2326,7 @@
                     "entry_type": "Type invoer",
                     "entry_type_manual": "Handmatig",
                     "entry_type_automatic": "Automatisch",
-                    "amount": "Bedrag - {valuta}",
+                    "amount": "Bedrag - {amount}",
                     "code": "Code",
                     "entry_event": "Evenement",
                     "event_expired_card_added": "Nieuwe betaalkaart toevoegen tijdens waarschuwing verlopen kaart"
@@ -2336,7 +2336,7 @@
                     "type": "Percentage is een percentage van een factuur en vast krediet geeft een vast krediet",
                     "entry_type": "Handmatig betekent dat de gebruiker een code invoert, automatisch betekent dat het wordt geactiveerd door een gebeurtenis",
                     "percentage": "Het percentage korting",
-                    "amount": "Het bedrag in {valuta} dat de voucher oplevert",
+                    "amount": "Het bedrag in {amount} dat de voucher oplevert",
                     "code": "De code die de klant moet invoeren om de voucher te activeren",
                     "entry_event": "De gebeurtenis die moet plaatsvinden om de voucher te activeren"
                 }
@@ -2361,7 +2361,7 @@
                     "disabled": "Uitgeschakeld",
                     "entry_type": "Type invoer",
                     "percentage": "Percentage",
-                    "amount": "Bedrag voor {valuta}",
+                    "amount": "Bedrag voor {amount}",
                     "code": "Code",
                     "automatic_event": "Automatisch evenement"
                 },
@@ -2452,7 +2452,7 @@
                     "pay_link": "Betaal link"
                 },
                 "status": {
-                    "paid": "Offerte succesvol betaald op {datum}"
+                    "paid": "Offerte succesvol betaald op {date}"
                 },
                 "customer": {
                     "title": "Klant",
@@ -2716,7 +2716,7 @@
                     "name": "Naam"
                 },
                 "status": {
-                    "paid": "Offerte succesvol betaald op {datum}"
+                    "paid": "Offerte succesvol betaald op {date}"
                 },
                 "customer": {
                     "title": "Klant",

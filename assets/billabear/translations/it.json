@@ -848,7 +848,7 @@
                 "public": "Pubblico",
                 "help_info": {
                     "amount": "Il prezzo è la valuta del livello minore. Quindi 1,00 USD corrisponde a 100 e 9,99 a 999.",
-                    "display_amount": "Il prezzo sarebbe {importo}.",
+                    "display_amount": "Il prezzo sarebbe {amount}.",
                     "external_reference": "Il riferimento del prodotto utilizzato dal fornitore del pagamento. Lasciare vuoto a meno che non si sia estremamente sicuri di avere il riferimento corretto.",
                     "recurring": "Se si tratta di un pagamento ricorrente o una tantum.",
                     "currency": "La valuta di addebito al cliente",
@@ -1303,7 +1303,7 @@
                         "help_info": "Dopo la data di modifica, tutti i rinnovi saranno al nuovo prezzo. Il piano di abbonamento verrà modificato immediatamente."
                     },
                     "estimate": {
-                        "amount": "Questo produrrà una modifica stimata di {importo} {valuta} al {programma}"
+                        "amount": "Questo produrrà una modifica stimata di {amount} {currency} al {schedule}"
                     },
                     "submit_button": "Pulsante di invio"
                 },
@@ -1325,7 +1325,7 @@
                         "title": "Data di modifica"
                     },
                     "estimate": {
-                        "amount": "Questo produrrà una modifica stimata di {importo} {valuta} al {programma}"
+                        "amount": "Questo produrrà una modifica stimata di {amount} {currency} al {schedule}"
                     },
                     "export_button": "Esportazione dell'elenco clienti",
                     "cancel": "Annullamento",
@@ -1515,7 +1515,7 @@
                     "generator": "Aggiornare le impostazioni del generatore"
                 },
                 "update": {
-                    "title": "Aggiorna modello - {nome}",
+                    "title": "Aggiorna modello - {name}",
                     "content": "Contenuto",
                     "save": "Risparmiare",
                     "download": "Scarica il test in PDF",
@@ -1567,7 +1567,7 @@
                     "error_message": "Si è verificato un errore"
                 },
                 "update": {
-                    "title": "Aggiorna le impostazioni del marchio - {nome}",
+                    "title": "Aggiorna le impostazioni del marchio - {name}",
                     "fields": {
                         "name": "Nome",
                         "email": "Indirizzo e-mail",
@@ -2071,7 +2071,7 @@
                 "lifetime": {
                     "title": "Valore della vita",
                     "lifespan": "Durata della vita",
-                    "lifespan_value": "{anni di durata della vita",
+                    "lifespan_value": "{lifespan}",
                     "lifetime": "Valore della vita",
                     "customer_count": "Conteggio clienti",
                     "filters": {
@@ -2105,9 +2105,9 @@
                 },
                 "countries": {
                     "title": "Soglie paese",
-                    "transacted_amount": "<strong>Transato:<\/strong> {valuta}{importo_transato}",
-                    "collected_amount": "<strong>Incasso:<\/strong> {valuta}{importo_incassato}",
-                    "threshold_status": "<strong>Soglia:<\/strong> {stato}",
+                    "transacted_amount": "<strong>Transato:<\/strong> {currency}{transacted_amount}",
+                    "collected_amount": "<strong>Incasso:<\/strong> {currency}{collected_amount}",
+                    "threshold_status": "<strong>Soglia:<\/strong> {status}",
                     "threshold_reached": "Raggiunto",
                     "threshold_not_reached": "Non raggiunto"
                 },
@@ -2129,7 +2129,7 @@
                 "help_info": {
                     "type": "Tipo di rettifica del credito, a credito o a debito",
                     "amount": "Il prezzo è la valuta del livello minore. Quindi 1,00 USD corrisponde a 100 e 9,99 a 999.",
-                    "display_amount": "Il prezzo sarebbe {importo}.",
+                    "display_amount": "Il prezzo sarebbe {amount}.",
                     "currency": "La valuta di addebito al cliente",
                     "reason": "Un motivo opzionale che può essere utile in seguito."
                 },
@@ -2276,7 +2276,7 @@
                     "tax_total": "Imposta Totale"
                 },
                 "status": {
-                    "paid": "Fattura pagata con successo alla {data}",
+                    "paid": "Fattura pagata con successo alla {date}",
                     "outstanding": "La fattura deve ancora essere pagata."
                 },
                 "actions": {
@@ -2326,7 +2326,7 @@
                     "entry_type": "Tipo di iscrizione",
                     "entry_type_manual": "Manuale",
                     "entry_type_automatic": "Automatico",
-                    "amount": "Importo - {valuta}",
+                    "amount": "Importo - {amount}",
                     "code": "Codice",
                     "entry_event": "Evento",
                     "event_expired_card_added": "Aggiungere una nuova carta di pagamento durante l'avviso di carta scaduta"
@@ -2336,7 +2336,7 @@
                     "type": "Percentuale è una percentuale di sconto su una fattura e credito fisso è un credito fisso",
                     "entry_type": "Manuale significa che l'utente inserisce un codice, automatico significa che viene attivato da un evento",
                     "percentage": "La percentuale di sconto",
-                    "amount": "L'importo in {valuta} che il buono fornisce",
+                    "amount": "L'importo in {amount} che il buono fornisce",
                     "code": "Il codice che il cliente dovrà fornire per l'attivazione del voucher",
                     "entry_event": "L'evento che deve verificarsi affinché il buono sia attivato"
                 }
@@ -2361,7 +2361,7 @@
                     "disabled": "Disabili",
                     "entry_type": "Tipo di iscrizione",
                     "percentage": "Percentuale",
-                    "amount": "Importo per {valuta}",
+                    "amount": "Importo per {amount}",
                     "code": "Codice",
                     "automatic_event": "Evento automatico"
                 },
@@ -2452,7 +2452,7 @@
                     "pay_link": "Collegamento a pagamento"
                 },
                 "status": {
-                    "paid": "Preventivo pagato con successo alla {data}"
+                    "paid": "Preventivo pagato con successo alla {date}"
                 },
                 "customer": {
                     "title": "Cliente",
@@ -2716,7 +2716,7 @@
                     "name": "Nome"
                 },
                 "status": {
-                    "paid": "Preventivo pagato con successo alla {data}"
+                    "paid": "Preventivo pagato con successo alla {date}"
                 },
                 "customer": {
                     "title": "Cliente",
