@@ -1,0 +1,118 @@
+{
+    "portal": {
+        "checkout": {
+            "total": "Impuesto : {amount} {currency}",
+            "items": {
+                "title": "Desglose de artículos"
+            },
+            "lines": {
+                "description": "Descripción",
+                "tax_total": "Total de impuestos",
+                "total": "Total",
+                "tax_rate": "Tipo impositivo"
+            },
+            "success": {
+                "title": "Éxito",
+                "message": "Gracias por su pago."
+            },
+            "customer": {
+                "title": "Información al cliente",
+                "fields": {
+                    "email": "Correo electrónico",
+                    "street_line_one": "Calle Línea 1",
+                    "street_line_two": "Calle Línea 2",
+                    "city": "Ciudad",
+                    "region": "Región",
+                    "country": "País",
+                    "post_code": "Código postal"
+                },
+                "help_info": {
+                    "email": "El correo electrónico que se utilizará para la facturación"
+                },
+                "submit": "Proceder al pago"
+            },
+            "payment": {
+                "title": "Pago",
+                "submit": "Pagar"
+            },
+            "loading": "Carga de los datos de pago",
+            "error": "Pedido no disponible"
+        },
+        "invoice": {
+            "pay": {
+                "title": "Pagar",
+                "general": {
+                    "invoice_number": "Número de factura",
+                    "issued_at": "Emitido en"
+                },
+                "payment": {
+                    "already_paid": "Esta factura ya ha sido abonada.",
+                    "amount": "El saldo pendiente es de: {amount} {currency}",
+                    "pay_button": "¡Paga ahora!"
+                },
+                "biller_details": {
+                    "title": "Detalles del vendedor"
+                },
+                "payee_details": {
+                    "title": "Detalles del cliente"
+                },
+                "lines": {
+                    "description": "Descripción",
+                    "tax_total": "Total de impuestos",
+                    "total": "Total",
+                    "tax_rate": "Tipo impositivo"
+                },
+                "payment_details": {
+                    "title": "Datos de pago"
+                },
+                "totals": {
+                    "total": "Total",
+                    "amount_due": "Importe debido"
+                },
+                "loading": "Cargando"
+            }
+        },
+        "quote": {
+            "pay": {
+                "title": "Información sobre cotizaciones",
+                "general": {
+                    "invoice_number": "Número de factura",
+                    "issued_at": "Emitido en"
+                },
+                "payment": {
+                    "already_paid": "Esta factura ya ha sido abonada.",
+                    "amount": "El saldo pendiente es de: {amount} {currency}",
+                    "pay_button": "¡Paga ahora!"
+                },
+                "biller_details": {
+                    "title": "Detalles del vendedor"
+                },
+                "payee_details": {
+                    "title": "Detalles del cliente"
+                },
+                "lines": {
+                    "description": "Descripción",
+                    "tax_total": "Total de impuestos",
+                    "total": "Total",
+                    "tax_rate": "Tipo impositivo"
+                },
+                "payment_details": {
+                    "title": "Datos de pago"
+                },
+                "totals": {
+                    "total": "Total",
+                    "amount_due": "Importe debido"
+                },
+                "loading": "Cargando",
+                "not_found": "No se ha encontrado ninguna cita",
+                "general_error": "Ha ocurrido algo inesperado. Vuelva a intentarlo más tarde.",
+                "already_paid": "Este presupuesto ha sido aceptado y pagado",
+                "has_expired": "Este presupuesto ha caducado. Póngase en contacto con su representante de ventas para obtener un nuevo presupuesto",
+                "expires_at": "Este presupuesto expirará el {date}."
+            }
+        },
+        "loading": {
+            "message": "Cargando"
+        }
+    }
+}

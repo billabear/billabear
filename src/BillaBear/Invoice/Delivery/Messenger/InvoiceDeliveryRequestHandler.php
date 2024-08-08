@@ -32,8 +32,6 @@ class InvoiceDeliveryRequestHandler
 
     public function __invoke(InvoiceDeliveryRequest $invoiceDeliveryRequest): void
     {
-        $this->databaseSwitcher->switchToTenant($this->tenantProvider->getCurrentTenant());
-
         $this->getLogger()->info(
             'Handling invoice delivery request',
             [

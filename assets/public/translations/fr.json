@@ -1,0 +1,118 @@
+{
+    "portal": {
+        "checkout": {
+            "total": "Taxe : {amount} {currency}",
+            "items": {
+                "title": "Ventilation des articles"
+            },
+            "lines": {
+                "description": "Description",
+                "tax_total": "Taxe Total",
+                "total": "Total",
+                "tax_rate": "Taux d'imposition"
+            },
+            "success": {
+                "title": "Succès",
+                "message": "Merci pour votre paiement !"
+            },
+            "customer": {
+                "title": "Informations sur les clients",
+                "fields": {
+                    "email": "Courriel",
+                    "street_line_one": "Ligne de rue 1",
+                    "street_line_two": "Ligne de rue 2",
+                    "city": "Ville",
+                    "region": "Région",
+                    "country": "Pays",
+                    "post_code": "Code postal"
+                },
+                "help_info": {
+                    "email": "L'adresse électronique à utiliser pour la facturation"
+                },
+                "submit": "Procéder au paiement"
+            },
+            "payment": {
+                "title": "Paiement",
+                "submit": "Payer"
+            },
+            "loading": "Chargement des détails de la caisse",
+            "error": "Checkout indisponible"
+        },
+        "invoice": {
+            "pay": {
+                "title": "Payer",
+                "general": {
+                    "invoice_number": "Numéro de la facture",
+                    "issued_at": "Délivré à"
+                },
+                "payment": {
+                    "already_paid": "Cette facture a déjà été payée avec succès !",
+                    "amount": "Le solde impayé est de : {amount} {currency}",
+                    "pay_button": "Payez maintenant !"
+                },
+                "biller_details": {
+                    "title": "Détails du vendeur"
+                },
+                "payee_details": {
+                    "title": "Détails pour les clients"
+                },
+                "lines": {
+                    "description": "Description",
+                    "tax_total": "Taxe Total",
+                    "total": "Total",
+                    "tax_rate": "Taux d'imposition"
+                },
+                "payment_details": {
+                    "title": "Modalités de paiement"
+                },
+                "totals": {
+                    "total": "Total",
+                    "amount_due": "Montant dû"
+                },
+                "loading": "Chargement"
+            }
+        },
+        "quote": {
+            "pay": {
+                "title": "Informations sur les citations",
+                "general": {
+                    "invoice_number": "Numéro de la facture",
+                    "issued_at": "Délivré à"
+                },
+                "payment": {
+                    "already_paid": "Cette facture a déjà été payée avec succès !",
+                    "amount": "Le solde impayé est de : {amount} {currency}",
+                    "pay_button": "Payez maintenant !"
+                },
+                "biller_details": {
+                    "title": "Détails du vendeur"
+                },
+                "payee_details": {
+                    "title": "Détails pour les clients"
+                },
+                "lines": {
+                    "description": "Description",
+                    "tax_total": "Taxe Total",
+                    "total": "Total",
+                    "tax_rate": "Taux d'imposition"
+                },
+                "payment_details": {
+                    "title": "Modalités de paiement"
+                },
+                "totals": {
+                    "total": "Total",
+                    "amount_due": "Montant dû"
+                },
+                "loading": "Chargement",
+                "not_found": "Aucune citation n'a été trouvée",
+                "general_error": "Il s'est passé quelque chose d'inattendu. Réessayez plus tard.",
+                "already_paid": "Ce devis a été accepté et payé",
+                "has_expired": "Ce devis a expiré. Contactez votre représentant pour un nouveau devis",
+                "expires_at": "Ce devis expirera le {date}"
+            }
+        },
+        "loading": {
+            "message": "Chargement"
+        }
+    }
+}

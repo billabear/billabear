@@ -1,0 +1,118 @@
+{
+    "portal": {
+        "checkout": {
+            "total": "Belasting : {amount} {currency}",
+            "items": {
+                "title": "Item Opsplitsing"
+            },
+            "lines": {
+                "description": "Beschrijving",
+                "tax_total": "Belasting Totaal",
+                "total": "Totaal",
+                "tax_rate": "Belastingtarief"
+            },
+            "success": {
+                "title": "Succes",
+                "message": "Bedankt voor je betaling!"
+            },
+            "customer": {
+                "title": "Informatie voor klanten",
+                "fields": {
+                    "email": "E-mail",
+                    "street_line_one": "Straat Lijn 1",
+                    "street_line_two": "Straatlijn 2",
+                    "city": "Stad",
+                    "region": "Regio",
+                    "country": "Land",
+                    "post_code": "Postcode"
+                },
+                "help_info": {
+                    "email": "Het e-mailadres dat moet worden gebruikt voor facturering"
+                },
+                "submit": "Doorgaan naar betaling"
+            },
+            "payment": {
+                "title": "Betaling",
+                "submit": "Betaal"
+            },
+            "loading": "Afrekengegevens laden",
+            "error": "Afrekenen niet beschikbaar"
+        },
+        "invoice": {
+            "pay": {
+                "title": "Betaal",
+                "general": {
+                    "invoice_number": "Factuurnummer",
+                    "issued_at": "Uitgegeven op"
+                },
+                "payment": {
+                    "already_paid": "Deze factuur is al succesvol betaald!",
+                    "amount": "Het uitstaande saldo is: {amount} {currency}",
+                    "pay_button": "Betaal nu!"
+                },
+                "biller_details": {
+                    "title": "Verkoper Details"
+                },
+                "payee_details": {
+                    "title": "Klantgegevens"
+                },
+                "lines": {
+                    "description": "Beschrijving",
+                    "tax_total": "Belasting Totaal",
+                    "total": "Totaal",
+                    "tax_rate": "Belastingtarief"
+                },
+                "payment_details": {
+                    "title": "Betalingsgegevens"
+                },
+                "totals": {
+                    "total": "Totaal",
+                    "amount_due": "Verschuldigd bedrag"
+                },
+                "loading": "Laden"
+            }
+        },
+        "quote": {
+            "pay": {
+                "title": "Citaat Informatie",
+                "general": {
+                    "invoice_number": "Factuurnummer",
+                    "issued_at": "Uitgegeven op"
+                },
+                "payment": {
+                    "already_paid": "Deze factuur is al succesvol betaald!",
+                    "amount": "Het uitstaande saldo is: {amount} {currency}",
+                    "pay_button": "Betaal nu!"
+                },
+                "biller_details": {
+                    "title": "Verkoper Details"
+                },
+                "payee_details": {
+                    "title": "Klantgegevens"
+                },
+                "lines": {
+                    "description": "Beschrijving",
+                    "tax_total": "Belasting Totaal",
+                    "total": "Totaal",
+                    "tax_rate": "Belastingtarief"
+                },
+                "payment_details": {
+                    "title": "Betalingsgegevens"
+                },
+                "totals": {
+                    "total": "Totaal",
+                    "amount_due": "Verschuldigd bedrag"
+                },
+                "loading": "Laden",
+                "not_found": "Geen citaat gevonden",
+                "general_error": "Er is iets onverwachts gebeurd. Probeer het later nog eens.",
+                "already_paid": "Deze offerte is geaccepteerd en betaald",
+                "has_expired": "Deze offerte is nu verlopen. Neem contact op met uw vertegenwoordiger voor een nieuwe offerte",
+                "expires_at": "Deze offerte vervalt op {date}"
+            }
+        },
+        "loading": {
+            "message": "Laden"
+        }
+    }
+}

@@ -1,0 +1,118 @@
+{
+    "portal": {
+        "checkout": {
+            "total": "Imposta : {amount} {currency}",
+            "items": {
+                "title": "Ripartizione degli articoli"
+            },
+            "lines": {
+                "description": "Descrizione",
+                "tax_total": "Imposta Totale",
+                "total": "Totale",
+                "tax_rate": "Aliquota fiscale"
+            },
+            "success": {
+                "title": "Il successo",
+                "message": "Grazie per il pagamento!"
+            },
+            "customer": {
+                "title": "Informazioni sul cliente",
+                "fields": {
+                    "email": "Email",
+                    "street_line_one": "Linea stradale 1",
+                    "street_line_two": "Linea stradale 2",
+                    "city": "Città",
+                    "region": "Regione",
+                    "country": "Paese",
+                    "post_code": "Codice postale"
+                },
+                "help_info": {
+                    "email": "L'e-mail da utilizzare per la fatturazione"
+                },
+                "submit": "Procedere al pagamento"
+            },
+            "payment": {
+                "title": "Pagamento",
+                "submit": "Paga"
+            },
+            "loading": "Caricamento dei dettagli della cassa",
+            "error": "Cassa non disponibile"
+        },
+        "invoice": {
+            "pay": {
+                "title": "Paga",
+                "general": {
+                    "invoice_number": "Numero di fattura",
+                    "issued_at": "Rilasciato a"
+                },
+                "payment": {
+                    "already_paid": "Questa fattura è già stata pagata con successo!",
+                    "amount": "Il saldo residuo è di: {amount} {currency}",
+                    "pay_button": "Pagate ora!"
+                },
+                "biller_details": {
+                    "title": "Dettagli del venditore"
+                },
+                "payee_details": {
+                    "title": "Dettagli cliente"
+                },
+                "lines": {
+                    "description": "Descrizione",
+                    "tax_total": "Imposta Totale",
+                    "total": "Totale",
+                    "tax_rate": "Aliquota fiscale"
+                },
+                "payment_details": {
+                    "title": "Dettagli sul pagamento"
+                },
+                "totals": {
+                    "total": "Totale",
+                    "amount_due": "Importo dovuto"
+                },
+                "loading": "Caricamento"
+            }
+        },
+        "quote": {
+            "pay": {
+                "title": "Informazioni sul preventivo",
+                "general": {
+                    "invoice_number": "Numero di fattura",
+                    "issued_at": "Rilasciato a"
+                },
+                "payment": {
+                    "already_paid": "Questa fattura è già stata pagata con successo!",
+                    "amount": "Il saldo residuo è di: {amount} {currency}",
+                    "pay_button": "Pagate ora!"
+                },
+                "biller_details": {
+                    "title": "Dettagli del venditore"
+                },
+                "payee_details": {
+                    "title": "Dettagli cliente"
+                },
+                "lines": {
+                    "description": "Descrizione",
+                    "tax_total": "Imposta Totale",
+                    "total": "Totale",
+                    "tax_rate": "Aliquota fiscale"
+                },
+                "payment_details": {
+                    "title": "Dettagli sul pagamento"
+                },
+                "totals": {
+                    "total": "Totale",
+                    "amount_due": "Importo dovuto"
+                },
+                "loading": "Caricamento",
+                "not_found": "Nessuna citazione trovata",
+                "general_error": "È successo qualcosa di inaspettato. Riprovare più tardi.",
+                "already_paid": "Questo preventivo è stato accettato e pagato",
+                "has_expired": "Questo preventivo è scaduto. Contattate il vostro rappresentante per un nuovo preventivo",
+                "expires_at": "Questa offerta scadrà alla {date}"
+            }
+        },
+        "loading": {
+            "message": "Caricamento"
+        }
+    }
+}

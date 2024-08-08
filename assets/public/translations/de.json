@@ -1,0 +1,118 @@
+{
+    "portal": {
+        "checkout": {
+            "total": "Steuer : {amount} {currency}",
+            "items": {
+                "title": "Aufschlüsselung der Posten"
+            },
+            "lines": {
+                "description": "Beschreibung",
+                "tax_total": "Steuer Gesamt",
+                "total": "Insgesamt",
+                "tax_rate": "Steuersatz"
+            },
+            "success": {
+                "title": "Erfolg",
+                "message": "Vielen Dank für Ihre Zahlung!"
+            },
+            "customer": {
+                "title": "Informationen für Kunden",
+                "fields": {
+                    "email": "E-Mail",
+                    "street_line_one": "Straße Linie 1",
+                    "street_line_two": "Straße Linie 2",
+                    "city": "Stadt",
+                    "region": "Region",
+                    "country": "Land",
+                    "post_code": "Postleitzahl"
+                },
+                "help_info": {
+                    "email": "Die E-Mail, die für die Rechnungsstellung verwendet werden soll"
+                },
+                "submit": "Zur Zahlung übergehen"
+            },
+            "payment": {
+                "title": "Zahlung",
+                "submit": "Bezahlen"
+            },
+            "loading": "Laden der Checkout-Details",
+            "error": "Checkout nicht verfügbar"
+        },
+        "invoice": {
+            "pay": {
+                "title": "Bezahlen",
+                "general": {
+                    "invoice_number": "Rechnungsnummer",
+                    "issued_at": "Ausgegeben am"
+                },
+                "payment": {
+                    "already_paid": "Diese Rechnung wurde bereits erfolgreich bezahlt!",
+                    "amount": "Der ausstehende Saldo beträgt: {amount} {currency}",
+                    "pay_button": "Jetzt bezahlen!"
+                },
+                "biller_details": {
+                    "title": "Verkäufer Details"
+                },
+                "payee_details": {
+                    "title": "Details zum Kunden"
+                },
+                "lines": {
+                    "description": "Beschreibung",
+                    "tax_total": "Steuer Gesamt",
+                    "total": "Insgesamt",
+                    "tax_rate": "Steuersatz"
+                },
+                "payment_details": {
+                    "title": "Details zur Bezahlung"
+                },
+                "totals": {
+                    "total": "Insgesamt",
+                    "amount_due": "Fälliger Betrag"
+                },
+                "loading": "Laden"
+            }
+        },
+        "quote": {
+            "pay": {
+                "title": "Informationen zitieren",
+                "general": {
+                    "invoice_number": "Rechnungsnummer",
+                    "issued_at": "Ausgegeben am"
+                },
+                "payment": {
+                    "already_paid": "Diese Rechnung wurde bereits erfolgreich bezahlt!",
+                    "amount": "Der ausstehende Saldo beträgt: {amount} {currency}",
+                    "pay_button": "Jetzt bezahlen!"
+                },
+                "biller_details": {
+                    "title": "Verkäufer Details"
+                },
+                "payee_details": {
+                    "title": "Details zum Kunden"
+                },
+                "lines": {
+                    "description": "Beschreibung",
+                    "tax_total": "Steuer Gesamt",
+                    "total": "Insgesamt",
+                    "tax_rate": "Steuersatz"
+                },
+                "payment_details": {
+                    "title": "Details zur Bezahlung"
+                },
+                "totals": {
+                    "total": "Insgesamt",
+                    "amount_due": "Fälliger Betrag"
+                },
+                "loading": "Laden",
+                "not_found": "Kein solches Angebot gefunden",
+                "general_error": "Es ist etwas Unerwartetes passiert. Versuchen Sie es später noch einmal.",
+                "already_paid": "Dieses Angebot ist angenommen und bezahlt worden",
+                "has_expired": "Dieses Angebot ist jetzt abgelaufen. Kontaktieren Sie Ihren Vertriebsmitarbeiter für ein neues Angebot",
+                "expires_at": "Dieses Angebot wird am {date} ablaufen."
+            }
+        },
+        "loading": {
+            "message": "Laden"
+        }
+    }
+}
