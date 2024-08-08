@@ -15,8 +15,6 @@ use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
-use Parthenon\MultiTenancy\Database\DatabaseSwitcherInterface;
-use Parthenon\MultiTenancy\TenantProvider\TenantProviderInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -29,8 +27,6 @@ class InvoiceDeliveryRequestHandler
         private InvoiceDeliverySettingsRepositoryInterface $invoiceDeliverySettingsRepository,
         private InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
         private DeliveryHandlerProvider $deliveryHandlerProvider,
-        private DatabaseSwitcherInterface $databaseSwitcher,
-        private TenantProviderInterface $tenantProvider,
     ) {
     }
 
