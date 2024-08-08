@@ -73,14 +73,13 @@ class CheckoutDataMapper
         $appDto = new PublicDto();
         $appDto->setName($entity->getName());
         $appDto->setCreatedAt($entity->getCreatedAt());
-        $appDto->setCreatedBy($this->billingAdminDataMapper->createAppDto($entity->getCreatedBy()));
         $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
         $appDto->setId((string) $entity->getId());
         $appDto->setCurrency($entity->getCurrency());
         $appDto->setTotal($entity->getTotal());
         $appDto->setTaxTotal($entity->getTaxTotal());
         $appDto->setSubTotal($entity->getSubTotal());
-        $appDto->setLines(array_map([$this, 'createAppLineDto'], $entity->getLines()->toArray()));
+        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
         $appDto->setExpiresAt($entity->getExpiresAt());
         $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
 
@@ -104,6 +103,7 @@ class CheckoutDataMapper
         $appLineDto->setCurrency($quoteLine->getCurrency());
         $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
         $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
+        $appLineDto->setSchedule($quoteLine->getPrice()?->getSchedule() ?? 'one-off');
 
         return $appLineDto;
     }

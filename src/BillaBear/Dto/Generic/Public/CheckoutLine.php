@@ -37,6 +37,8 @@ class CheckoutLine
     #[SerializedName('tax_rate')]
     private ?float $taxRate;
 
+    private ?string $schedule;
+
     public function getSubscriptionPlan(): ?SubscriptionPlan
     {
         return $this->subscriptionPlan;
@@ -125,5 +127,15 @@ class CheckoutLine
     public function setSeatNumber(?int $seatNumber): void
     {
         $this->seatNumber = $seatNumber;
+    }
+
+    public function getSchedule(): ?string
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule(?string $schedule): void
+    {
+        $this->schedule = $schedule;
     }
 }
