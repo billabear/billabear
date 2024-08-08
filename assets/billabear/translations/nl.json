@@ -317,7 +317,8 @@
                 "mobile": {
                     "show": "Menu weergeven",
                     "hide": "Menu verbergen"
-                }
+                },
+                "tax": "Belasting"
             }
         },
         "team": {

@@ -317,7 +317,8 @@
                 "mobile": {
                     "show": "Mostrar menú",
                     "hide": "Ocultar menú"
-                }
+                },
+                "tax": "Impuesto"
             }
         },
         "team": {

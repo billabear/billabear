@@ -13,6 +13,7 @@ export const MENU_TRANSLATIONS = {
         docs: "Documentation",
         workflows: "Workflows",
         developers: "Developers",
+        tax: "Tax",
         mobile: {
             show: "Show Menu",
             hide: "Hide Menu",

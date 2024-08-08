@@ -84,7 +84,7 @@
       </MenuTopItem>
       <MenuTopItem>
         <template v-slot:default>
-          <i class="fa-solid fa-cash-register"></i>
+          <i class="fa-solid fa-chart-simple"></i>
           <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.reports') }}</span>
         </template>
         <template v-slot:submenu>
@@ -96,9 +96,6 @@
           </MenuSubItem>
           <MenuSubItem>
             <router-link :to="{name: 'app.report.lifetime'}" class="submenu-link">{{ $t('app.reports.menu.lifetime') }}</router-link>
-          </MenuSubItem>
-          <MenuSubItem>
-            <router-link :to="{name: 'app.report.tax'}" class="submenu-link">{{ $t('app.reports.menu.tax') }}</router-link>
           </MenuSubItem>
         </template>
       </MenuTopItem>
@@ -119,12 +116,6 @@
           </MenuSubItem>
           <MenuSubItem>
             <router-link :to="{name: 'app.checkout.list'}">{{ $t('app.transactions.menu.checkout') }}</router-link>
-          </MenuSubItem>
-          <MenuSubItem>
-            <router-link :to="{name: 'app.finance.country.list'}">{{ $t('app.transactions.menu.countries') }}</router-link>
-          </MenuSubItem>
-          <MenuSubItem>
-            <router-link :to="{name: 'app.finance.tax_type.list'}">{{ $t('app.transactions.menu.tax_types') }}</router-link>
           </MenuSubItem>
         </template>
       </MenuTopItem>
@@ -166,15 +157,34 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.settings.system_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.system_settings') }}</router-link>
           </MenuSubItem>
+        </template>
+      </MenuTopItem>
+
+      <MenuTopItem>
+        <template v-slot:default>
+          <i class="fa-solid fa-money-bill"></i>
+          <span class="ml-3">{{ $t('app.menu.main.tax') }}</span>
+        </template>
+        <template v-slot:submenu>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.finance.country.list'}">{{ $t('app.transactions.menu.countries') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.finance.tax_type.list'}">{{ $t('app.transactions.menu.tax_types') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.report.tax'}" class="submenu-link">{{ $t('app.reports.menu.tax') }}</router-link>
+          </MenuSubItem>
           <MenuSubItem>
             <router-link :to="{name: 'app.settings.tax_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.tax_settings') }}</router-link>
           </MenuSubItem>
         </template>
       </MenuTopItem>
+
       <MenuTopItem>
         <template v-slot:default>
             <i class="fa-solid fa-route"></i>
-            <span class="ml-3" sidebar-toggle-item>{{ $t('app.menu.main.workflows') }}</span>
+            <span class="ml-3">{{ $t('app.menu.main.workflows') }}</span>
         </template>
         <template v-slot:submenu>
           <MenuSubItem>

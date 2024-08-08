@@ -317,7 +317,8 @@
                 "mobile": {
                     "show": "Mostra menu",
                     "hide": "Nascondi menu"
-                }
+                },
+                "tax": "Imposta"
             }
         },
         "team": {
