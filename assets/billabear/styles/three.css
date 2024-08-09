@@ -1,5 +1,5 @@
 .list-btn, .btn--main {
-    @apply rounded-lg p-2 bg-teal-500 text-white font-bold hover:bg-teal-400;
+    @apply rounded-lg p-2 bg-teal-500 text-white font-bold hover:bg-teal-400 no-underline;
 }
 
 .btn--secondary {
@@ -90,3 +90,20 @@
 .alert-error {
     @apply rounded-lg bg-white border border-red-500 text-red-500 font-medium p-1;
 }
+
+a {
+    @apply text-blue-500 underline hover:no-underline;
+}
+
+.menu a {
+    @apply no-underline text-white;
+}
+
+.form-field-error {
+    @apply text-red-500 italic py-1;
+}
+
+.form-field-lbl {
+    @apply font-medium mt-1;
+}
+

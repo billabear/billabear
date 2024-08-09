@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="menu">
     <slot></slot>
   </ul>
 </template>

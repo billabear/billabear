@@ -15,6 +15,7 @@ import TaxTypeCreate from "../views/App/TaxType/TaxTypeCreate.vue";
 import StateView from "../views/App/Country/StateView.vue";
 import StateEdit from "../views/App/Country/StateEdit.vue";
 import StateCreate from "../views/App/Country/StateCreate.vue";
+import TaxTypeUpdate from "../views/App/TaxType/TaxTypeUpdate.vue";
 
 export const AppFinanceRoutes  = [
     {
@@ -101,5 +102,10 @@ export const AppFinanceRoutes  = [
         name: 'app.finance.tax_type.create',
         path: 'tax/type/create',
         component: TaxTypeCreate
+    },
+    {
+        name: 'app.finance.tax_type.update',
+        path: 'tax/type/:id/update',
+        component: TaxTypeUpdate
     }
 ];

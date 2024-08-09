@@ -14,10 +14,13 @@ use BillaBear\Entity\TaxType as Entity;
 
 class TaxTypeDataMapper
 {
-    public function createEntity(CreateTaxType $createTaxType): Entity
+    public function createEntity(CreateTaxType $createTaxType, ?Entity $entity): Entity
     {
-        $entity = new Entity();
+        if (null === $entity) {
+            $entity = new Entity();
+        }
         $entity->setName($createTaxType->getName());
+        $entity->setVatSenseType($createTaxType->getVatSenseType());
 
         return $entity;
     }
@@ -32,6 +35,7 @@ class TaxTypeDataMapper
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
         $dto->setDefault($entity->isDefault());
+        $dto->setVatSenseType($entity->getVatSenseType());
 
         return $dto;
     }

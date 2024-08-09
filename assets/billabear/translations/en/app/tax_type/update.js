@@ -1,5 +1,5 @@
-export const TAX_TYPE_CREATE_TRANSLATIONS = {
-    title: "Create Tax Type",
+export const TAX_TYPE_UPDATE_TRANSLATIONS = {
+    title: "Update Tax Type",
     tax_type: {
         fields: {
             name: "Name",
@@ -10,5 +10,5 @@ export const TAX_TYPE_CREATE_TRANSLATIONS = {
             vat_sense_type: "The tax type in VAT Sense's system"
         }
     },
-    create_button: "Create"
+    update_button: "Update"
 }

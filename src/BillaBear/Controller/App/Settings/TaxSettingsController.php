@@ -8,6 +8,7 @@
 
 namespace BillaBear\Controller\App\Settings;
 
+use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\TaxSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\Tax\TaxSettings;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -17,11 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_ADMIN')]
 class TaxSettingsController
 {
     use LoggerAwareTrait;
+    use ValidationErrorResponseTrait;
 
     #[Route('/app/settings/tax', name: 'app_app_settings_taxsettings_readsettings', methods: ['GET'])]
     public function readSettings(
@@ -43,6 +46,7 @@ class TaxSettingsController
     public function setSettings(
         Request $request,
         SerializerInterface $serializer,
+        ValidatorInterface $validator,
         TaxSettingsDataMapper $taxSettingsFactory,
         SettingsRepositoryInterface $settingsRepository,
     ) {
@@ -50,6 +54,13 @@ class TaxSettingsController
 
         /** @var TaxSettings $dto */
         $dto = $serializer->deserialize($request->getContent(), TaxSettings::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response instanceof JsonResponse) {
+            return $response;
+        }
+
         $taxSettings = $taxSettingsFactory->createEntity($dto);
         $settings = $settingsRepository->getDefaultSettings();
         $settings->setTaxSettings($taxSettings);

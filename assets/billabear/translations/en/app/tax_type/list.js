@@ -6,7 +6,8 @@ export const TAX_TYPE_LIST_TRANSLATIONS = {
         name: "Name",
         make_default: "Make Default",
         is_default: "Is Default",
-        default: "Default"
+        default: "Default",
+        update: "Update",
     },
     no_tax_types: "There are currently no tax types"
 }

@@ -9,6 +9,8 @@
 namespace BillaBear\Dto\Request\App\Settings\Tax;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class TaxSettings
 {
@@ -20,6 +22,16 @@ class TaxSettings
 
     #[SerializedName('eu_one_stop_shop_rule')]
     private $euOneStopShopRule;
+
+    #[SerializedName('vat_sense_enabled')]
+    private $vatSenseEnabled;
+
+    #[SerializedName('vat_sense_api_key')]
+    #[Assert\Type('string')]
+    private $vatSenseApiKey;
+
+    #[SerializedName('validate_vat_ids')]
+    public $validateVatIds;
 
     public function getTaxCustomersWithTaxNumber()
     {
@@ -49,5 +61,45 @@ class TaxSettings
     public function setEuOneStopShopRule($euOneStopShopRule): void
     {
         $this->euOneStopShopRule = $euOneStopShopRule;
+    }
+
+    public function getVatSenseEnabled()
+    {
+        return $this->vatSenseEnabled;
+    }
+
+    public function setVatSenseEnabled($vatSenseEnabled): void
+    {
+        $this->vatSenseEnabled = $vatSenseEnabled;
+    }
+
+    public function getVatSenseApiKey()
+    {
+        return $this->vatSenseApiKey;
+    }
+
+    public function setVatSenseApiKey($vatSenseApiKey): void
+    {
+        $this->vatSenseApiKey = $vatSenseApiKey;
+    }
+
+    public function getValidateVatIds()
+    {
+        return $this->validateVatIds;
+    }
+
+    public function setValidateVatIds($validateVatIds): void
+    {
+        $this->validateVatIds = $validateVatIds;
+    }
+
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if ($this->vatSenseEnabled && empty($this->vatSenseApiKey)) {
+            $context->buildViolation('Cannot be blank')
+                ->atPath('vatSenseApiKey')
+                ->addViolation();
+        }
     }
 }

@@ -22,6 +22,7 @@
               <tr class="border-b border-black">
               <th class="text-left pb-2">{{ $t('app.tax_type.list.list.name') }}</th>
               <th class="text-left pb-2">{{ $t('app.tax_type.list.list.default') }}</th>
+                <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
@@ -31,6 +32,7 @@
                 <span v-if="tax_type.default">{{ $t('app.tax_type.list.list.is_default') }}</span>
                 <SubmitButton class="btn--main" :in-progress="sendingDefault" @click="makeDefault(tax_type.id)" v-else>{{ $t('app.tax_type.list.list.make_default') }}</SubmitButton>
               </td>
+              <td><router-link class="btn--main" :to="{name: 'app.finance.tax_type.update', params: {id: tax_type.id}}">{{ $t('app.tax_type.list.list.update') }}</router-link></td>
             </tr>
             <tr v-if="taxTypes.length === 0">
               <td colspan="5" class="py-3 text-center">{{ $t('app.tax_type.list.no_tax_types') }}</td>

@@ -8,6 +8,8 @@
 
 namespace BillaBear\Dto\Generic\App;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
+
 class TaxType
 {
     private string $id;
@@ -15,6 +17,9 @@ class TaxType
     private string $name;
 
     private bool $default;
+
+    #[SerializedName('vat_sense_type')]
+    private ?string $vatSenseType;
 
     public function getId(): string
     {
@@ -44,5 +49,15 @@ class TaxType
     public function setDefault(bool $default): void
     {
         $this->default = $default;
+    }
+
+    public function getVatSenseType(): ?string
+    {
+        return $this->vatSenseType;
+    }
+
+    public function setVatSenseType(?string $vatSenseType): void
+    {
+        $this->vatSenseType = $vatSenseType;
     }
 }

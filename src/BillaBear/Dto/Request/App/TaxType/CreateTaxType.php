@@ -16,6 +16,9 @@ class CreateTaxType
     #[Assert\Type('string')]
     private $name;
 
+    #[Assert\Type('string')]
+    private $vatSenseType;
+
     public function getName()
     {
         return $this->name;
@@ -24,5 +27,15 @@ class CreateTaxType
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    public function getVatSenseType()
+    {
+        return $this->vatSenseType;
+    }
+
+    public function setVatSenseType($vatSenseType): void
+    {
+        $this->vatSenseType = $vatSenseType;
     }
 }

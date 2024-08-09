@@ -22,6 +22,15 @@ class TaxSettings
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $oneStopShopTaxRules = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $validateTaxNumber = false;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $vatSenseEnabled = false;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $vatSenseApiKey = null;
+
     public function getTaxCustomersWithTaxNumbers(): bool
     {
         return true === $this->taxCustomersWithTaxNumbers;
@@ -50,5 +59,35 @@ class TaxSettings
     public function setOneStopShopTaxRules(?bool $oneStopShopTaxRules): void
     {
         $this->oneStopShopTaxRules = $oneStopShopTaxRules;
+    }
+
+    public function getValidateTaxNumber(): bool
+    {
+        return true === $this->validateTaxNumber;
+    }
+
+    public function setValidateTaxNumber(?bool $validateTaxNumber): void
+    {
+        $this->validateTaxNumber = $validateTaxNumber;
+    }
+
+    public function getVatSenseApiKey(): ?string
+    {
+        return $this->vatSenseApiKey;
+    }
+
+    public function setVatSenseApiKey(?string $vatSenseApiKey): void
+    {
+        $this->vatSenseApiKey = $vatSenseApiKey;
+    }
+
+    public function getVatSenseEnabled(): bool
+    {
+        return true === $this->vatSenseEnabled;
+    }
+
+    public function setVatSenseEnabled(?bool $vatSenseEnabled): void
+    {
+        $this->vatSenseEnabled = $vatSenseEnabled;
     }
 }

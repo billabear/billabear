@@ -27,6 +27,9 @@ class TaxType
     #[ORM\Column(name: 'is_default', type: 'boolean', nullable: true)]
     private ?bool $default = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $vatSenseType = null;
+
     public function getId()
     {
         return $this->id;
@@ -55,5 +58,15 @@ class TaxType
     public function setDefault(bool $default): void
     {
         $this->default = $default;
+    }
+
+    public function getVatSenseType(): ?string
+    {
+        return $this->vatSenseType;
+    }
+
+    public function setVatSenseType(?string $vatSenseType): void
+    {
+        $this->vatSenseType = $vatSenseType;
     }
 }

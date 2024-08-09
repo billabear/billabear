@@ -20,6 +20,9 @@ class TaxSettingsDataMapper
         $entity->setTaxCustomersWithTaxNumbers($requestDto->getTaxCustomersWithTaxNumber());
         $entity->setEuropeanBusinessTaxRules($requestDto->getEuBusinessTaxRules());
         $entity->setOneStopShopTaxRules($requestDto->getEuOneStopShopRule());
+        $entity->setValidateTaxNumber($requestDto->getValidateVatIds());
+        $entity->setVatSenseEnabled($requestDto->getVatSenseEnabled());
+        $entity->setVatSenseApiKey($requestDto->getVatSenseApiKey());
 
         return $entity;
     }
@@ -30,6 +33,9 @@ class TaxSettingsDataMapper
         $dto->setTaxCustomersWithTaxNumber($entity->getTaxCustomersWithTaxNumbers());
         $dto->setEuBusinessTaxRules($entity->getEuropeanBusinessTaxRules());
         $dto->setEuOneStopShopRule($entity->getOneStopShopTaxRules());
+        $dto->setVatSenseEnabled($entity->getVatSenseEnabled());
+        $dto->setVatSenseApiKey($entity->getVatSenseApiKey());
+        $dto->setValidateVatIds($entity->getValidateTaxNumber());
 
         return $dto;
     }

@@ -143,9 +143,6 @@
             <router-link :to="{name: 'app.settings.integrations.list'}" class="submenu-link">{{ $t('app.settings.menu.integrations') }}</router-link>
           </MenuSubItem>
           <MenuSubItem>
-            <router-link :to="{name: 'app.settings.tax_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.tax_settings') }}</router-link>
-          </MenuSubItem>
-          <MenuSubItem>
             <router-link :to="{name: 'app.settings.import.stripe'}" class="submenu-link">{{ $t('app.settings.menu.stripe') }}</router-link>
           </MenuSubItem>
           <MenuSubItem>

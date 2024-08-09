@@ -21,6 +21,15 @@ class TaxSettings
     #[SerializedName('eu_one_stop_shop_rule')]
     private bool $euOneStopShopRule;
 
+    #[SerializedName('vat_sense_enabled')]
+    private $vatSenseEnabled;
+
+    #[SerializedName('vat_sense_api_key')]
+    private $vatSenseApiKey;
+
+    #[SerializedName('validate_vat_ids')]
+    public $validateVatIds;
+
     public function getTaxCustomersWithTaxNumber(): bool
     {
         return $this->taxCustomersWithTaxNumber;
@@ -49,5 +58,35 @@ class TaxSettings
     public function setEuOneStopShopRule(bool $euOneStopShopRule): void
     {
         $this->euOneStopShopRule = $euOneStopShopRule;
+    }
+
+    public function getVatSenseEnabled()
+    {
+        return $this->vatSenseEnabled;
+    }
+
+    public function setVatSenseEnabled($vatSenseEnabled): void
+    {
+        $this->vatSenseEnabled = $vatSenseEnabled;
+    }
+
+    public function getVatSenseApiKey()
+    {
+        return $this->vatSenseApiKey;
+    }
+
+    public function setVatSenseApiKey($vatSenseApiKey): void
+    {
+        $this->vatSenseApiKey = $vatSenseApiKey;
+    }
+
+    public function getValidateVatIds()
+    {
+        return $this->validateVatIds;
+    }
+
+    public function setValidateVatIds($validateVatIds): void
+    {
+        $this->validateVatIds = $validateVatIds;
     }
 }
