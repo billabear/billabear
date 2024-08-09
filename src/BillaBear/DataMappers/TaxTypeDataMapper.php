@@ -14,7 +14,7 @@ use BillaBear\Entity\TaxType as Entity;
 
 class TaxTypeDataMapper
 {
-    public function createEntity(CreateTaxType $createTaxType, ?Entity $entity): Entity
+    public function createEntity(CreateTaxType $createTaxType, ?Entity $entity = null): Entity
     {
         if (null === $entity) {
             $entity = new Entity();
