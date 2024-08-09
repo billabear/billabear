@@ -650,6 +650,17 @@
                     "no_invoices": "Keine Rechnungen",
                     "next": "Weiter",
                     "prev": "Vorherige"
+                },
+                "invoice_delivery": {
+                    "title": "Lieferung von Rechnungen",
+                    "add_new": "Neu hinzufügen",
+                    "list": {
+                        "method": "Methode",
+                        "format": "Format",
+                        "detail": "Einzelheiten",
+                        "view": "Siehe"
+                    },
+                    "no_delivery_methods": "Keine Liefermethoden"
                 }
             },
             "update": {
@@ -2290,11 +2301,64 @@
                 "payment_succeeded": {
                     "message": "Zahlung erfolgreich durchgeführt."
                 },
-                "download": "Rechnung herunterladen"
+                "download": "Rechnung herunterladen",
+                "invoice_delivery": {
+                    "title": "Rechnungen Lieferungen",
+                    "method": "Methode",
+                    "detail": "Einzelheiten",
+                    "status": "Status",
+                    "created_at": "Erstellt am"
+                }
             },
             "settings": {
                 "title": "Rechnungseinstellungen",
                 "update": "Aktualisieren"
+            },
+            "delivery": {
+                "create": {
+                    "title": "Neue Rechnungslieferung erstellen",
+                    "fields": {
+                        "method": "Methode",
+                        "format": "Format",
+                        "sftp": {
+                            "port": "Hafen",
+                            "hostname": "Hostname",
+                            "directory": "Verzeichnis",
+                            "username": "Benutzername",
+                            "password": "Passwort"
+                        },
+                        "webhook": {
+                            "method": "Methode",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "E-Mail"
+                        }
+                    },
+                    "save": "Speichern Sie"
+                },
+                "update": {
+                    "title": "Rechnungszustellung aktualisieren",
+                    "fields": {
+                        "method": "Methode",
+                        "format": "Format",
+                        "sftp": {
+                            "port": "Hafen",
+                            "hostname": "Hostname",
+                            "directory": "Verzeichnis",
+                            "username": "Benutzername",
+                            "password": "Passwort"
+                        },
+                        "webhook": {
+                            "method": "Methode",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "E-Mail"
+                        }
+                    },
+                    "save": "Speichern Sie"
+                }
             }
         },
         "home": {

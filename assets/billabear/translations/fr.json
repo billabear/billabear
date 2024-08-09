@@ -650,6 +650,17 @@
                     "no_invoices": "Pas de factures",
                     "next": "Suivant",
                     "prev": "Précédent"
+                },
+                "invoice_delivery": {
+                    "title": "Livraison de la facture",
+                    "add_new": "Ajouter un nouveau",
+                    "list": {
+                        "method": "Méthode",
+                        "format": "Format",
+                        "detail": "Détail",
+                        "view": "Voir"
+                    },
+                    "no_delivery_methods": "Aucune méthode de livraison"
                 }
             },
             "update": {
@@ -2290,11 +2301,64 @@
                 "payment_succeeded": {
                     "message": "Paiement effectué avec succès."
                 },
-                "download": "Télécharger la facture"
+                "download": "Télécharger la facture",
+                "invoice_delivery": {
+                    "title": "Livraisons de factures",
+                    "method": "Méthode",
+                    "detail": "Détail",
+                    "status": "Statut",
+                    "created_at": "Créé à"
+                }
             },
             "settings": {
                 "title": "Paramètres de facture",
                 "update": "Mise à jour"
+            },
+            "delivery": {
+                "create": {
+                    "title": "Créer une nouvelle facture Livraison",
+                    "fields": {
+                        "method": "Méthode",
+                        "format": "Format",
+                        "sftp": {
+                            "port": "Port",
+                            "hostname": "Nom d'hôte",
+                            "directory": "Annuaire",
+                            "username": "Nom d'utilisateur",
+                            "password": "Mot de passe"
+                        },
+                        "webhook": {
+                            "method": "Méthode",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "Courriel"
+                        }
+                    },
+                    "save": "Économiser"
+                },
+                "update": {
+                    "title": "Mise à jour de la livraison de la facture",
+                    "fields": {
+                        "method": "Méthode",
+                        "format": "Format",
+                        "sftp": {
+                            "port": "Port",
+                            "hostname": "Nom d'hôte",
+                            "directory": "Annuaire",
+                            "username": "Nom d'utilisateur",
+                            "password": "Mot de passe"
+                        },
+                        "webhook": {
+                            "method": "Méthode",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "Courriel"
+                        }
+                    },
+                    "save": "Économiser"
+                }
             }
         },
         "home": {

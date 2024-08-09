@@ -650,6 +650,17 @@
                     "no_invoices": "Geen facturen",
                     "next": "Volgende",
                     "prev": "Vorige"
+                },
+                "invoice_delivery": {
+                    "title": "Factuurlevering",
+                    "add_new": "Nieuw toevoegen",
+                    "list": {
+                        "method": "Methode",
+                        "format": "Formaat",
+                        "detail": "Detail",
+                        "view": "Bekijk"
+                    },
+                    "no_delivery_methods": "Geen leveringsmethoden"
                 }
             },
             "update": {
@@ -2290,11 +2301,64 @@
                 "payment_succeeded": {
                     "message": "Betaling succesvol uitgevoerd."
                 },
-                "download": "Factuur downloaden"
+                "download": "Factuur downloaden",
+                "invoice_delivery": {
+                    "title": "Factuur Leveringen",
+                    "method": "Methode",
+                    "detail": "Detail",
+                    "status": "Status",
+                    "created_at": "Gemaakt op"
+                }
             },
             "settings": {
                 "title": "Factuurinstellingen",
                 "update": "Update"
+            },
+            "delivery": {
+                "create": {
+                    "title": "Nieuwe factuur aanmaken Aflevering",
+                    "fields": {
+                        "method": "Methode",
+                        "format": "Formaat",
+                        "sftp": {
+                            "port": "Haven",
+                            "hostname": "Hostnaam",
+                            "directory": "Directory",
+                            "username": "Gebruikersnaam",
+                            "password": "Wachtwoord"
+                        },
+                        "webhook": {
+                            "method": "Methode",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "E-mail"
+                        }
+                    },
+                    "save": "Sla"
+                },
+                "update": {
+                    "title": "Factuuraflevering bijwerken",
+                    "fields": {
+                        "method": "Methode",
+                        "format": "Formaat",
+                        "sftp": {
+                            "port": "Haven",
+                            "hostname": "Hostnaam",
+                            "directory": "Directory",
+                            "username": "Gebruikersnaam",
+                            "password": "Wachtwoord"
+                        },
+                        "webhook": {
+                            "method": "Methode",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "E-mail"
+                        }
+                    },
+                    "save": "Sla"
+                }
             }
         },
         "home": {

@@ -114,7 +114,7 @@ class PaymentInvoiceCreatorHandler implements HandlerInterface
                 $lineItems[] = $line;
             }
 
-            $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $payment->getSubscriptions()->toArray(), $lineItems);
+            $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $subscriptions, $lineItems);
         }
     }
 }

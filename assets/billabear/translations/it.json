@@ -650,6 +650,17 @@
                     "no_invoices": "Nessuna fattura",
                     "next": "Avanti",
                     "prev": "Precedente"
+                },
+                "invoice_delivery": {
+                    "title": "Consegna della fattura",
+                    "add_new": "Aggiungi nuovo",
+                    "list": {
+                        "method": "Metodo",
+                        "format": "Formato",
+                        "detail": "Dettaglio",
+                        "view": "Vista"
+                    },
+                    "no_delivery_methods": "Nessun metodo di consegna"
                 }
             },
             "update": {
@@ -2290,11 +2301,64 @@
                 "payment_succeeded": {
                     "message": "Il pagamento è stato effettuato con successo."
                 },
-                "download": "Scarica la fattura"
+                "download": "Scarica la fattura",
+                "invoice_delivery": {
+                    "title": "Consegne di fatture",
+                    "method": "Metodo",
+                    "detail": "Dettaglio",
+                    "status": "Stato",
+                    "created_at": "Creato a"
+                }
             },
             "settings": {
                 "title": "Impostazioni della fattura",
                 "update": "Aggiornamento"
+            },
+            "delivery": {
+                "create": {
+                    "title": "Creare una nuova fattura di consegna",
+                    "fields": {
+                        "method": "Metodo",
+                        "format": "Formato",
+                        "sftp": {
+                            "port": "Porto",
+                            "hostname": "Nome host",
+                            "directory": "Elenco",
+                            "username": "Nome utente",
+                            "password": "Password"
+                        },
+                        "webhook": {
+                            "method": "Metodo",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "Email"
+                        }
+                    },
+                    "save": "Risparmiare"
+                },
+                "update": {
+                    "title": "Aggiornare la consegna della fattura",
+                    "fields": {
+                        "method": "Metodo",
+                        "format": "Formato",
+                        "sftp": {
+                            "port": "Porto",
+                            "hostname": "Nome host",
+                            "directory": "Elenco",
+                            "username": "Nome utente",
+                            "password": "Password"
+                        },
+                        "webhook": {
+                            "method": "Metodo",
+                            "url": "URL"
+                        },
+                        "email": {
+                            "email": "Email"
+                        }
+                    },
+                    "save": "Risparmiare"
+                }
             }
         },
         "home": {
