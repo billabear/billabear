@@ -8,6 +8,52 @@
 
 namespace BillaBear\Tax\VatSense;
 
+use BillaBear\Exception\Tax\VatSense\FailedRequestException;
+use BillaBear\Repository\SettingsRepositoryInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
+use Nyholm\Psr7\Request;
+use Parthenon\Common\LoggerAwareTrait;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 class VatSenseClient
 {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private SettingsRepositoryInterface $settingsRepository, )
+    {
+    }
+
+    /**
+     * @throws FailedRequestException
+     */
+    public function validateTaxId(string $taxId): bool
+    {
+        $url = sprintf('https://api.vatsense.com/1.0/validate?vat_number=%s', $taxId);
+        $request = new Request('GET', $url);
+        $response = $this->sendRequest($request);
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return $data['data']['valid'];
+    }
+
+    private function sendRequest(RequestInterface $request): ResponseInterface
+    {
+        $this->getLogger()->info("Sending request to VatSense's API", ['url' => $request->getUri()]);
+        $client = new Client([
+            'auth' => ['user', $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getVatSenseApiKey()],
+        ]);
+        try {
+            $response = $client->send($request);
+            $this->getLogger()->info("Response received from VatSense's API", ['status' => $response->getStatusCode()]);
+        } catch (BadResponseException $e) {
+            $this->getLogger()->warning("Received an error from VatSense's API", ['status' => $e->getResponse()->getStatusCode(), 'body' => $e->getResponse()->getBody()->getContents()]);
+
+            throw new FailedRequestException('Got a bad response', previous: $e);
+        }
+
+        return $response;
+    }
 }

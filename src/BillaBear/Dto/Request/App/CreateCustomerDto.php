@@ -9,6 +9,7 @@
 namespace BillaBear\Dto\Request\App;
 
 use BillaBear\Dto\Generic\Address;
+use BillaBear\Validator\Constraints\ValidVatNumber;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -51,6 +52,7 @@ class CreateCustomerDto
     #[SerializedName('tax_number')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
+    #[ValidVatNumber]
     private $taxNumber;
 
     #[SerializedName('standard_tax_rate')]
