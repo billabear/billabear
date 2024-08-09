@@ -52,6 +52,7 @@ services:
   Parthenon\Billing\Obol\PaymentFactoryInterface: '@BillaBear\Payment\PaymentFactory'
   Parthenon\User\Formatter\UserFormatterInterface: '@BillaBear\User\UserFormatter'
   parthenon.user.form.settings: '@BillaBear\User\Form\UserSettings'
+  Parthenon\Billing\Webhook\Handler\ChargeSucceededHandler: '@BillaBear\Webhook\Handler\PaymentInvoiceCreatorHandler'
 
   BillaBear\Webhook\Outbound\WebhookDispatcherInterface: '@BillaBear\Webhook\Outbound\WebhookDispatcher'
 

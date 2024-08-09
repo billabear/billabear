@@ -34,6 +34,7 @@ class TaxDataCreator
 
     public function process(): void
     {
+        $hasDefaultTaxRate = false;
         foreach ($this->countryList->getCountryList() as $countryData) {
             $country = new Country();
             $country->setName($countryData['name']);
@@ -47,7 +48,6 @@ class TaxDataCreator
             $this->countryRepository->save($country);
 
             $rates = $countryData['rates'] ?? [];
-            $hasDefaultTaxRate = false;
             foreach ($rates as $name => $data) {
                 try {
                     $taxType = $this->taxTypeRepository->getByName($name);
