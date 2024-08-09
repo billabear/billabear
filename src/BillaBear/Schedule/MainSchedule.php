@@ -21,6 +21,7 @@ use BillaBear\Schedule\Messenger\Message\RetryPayments;
 use BillaBear\Schedule\Messenger\Message\StripeImport;
 use BillaBear\Schedule\Messenger\Message\TrialEndingWarning;
 use BillaBear\Schedule\Messenger\Message\UpdateChecker;
+use BillaBear\Schedule\Messenger\Message\VatSenseSync;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;
 use Symfony\Component\Scheduler\Schedule;
@@ -35,6 +36,7 @@ class MainSchedule implements ScheduleProviderInterface
         $schedule->add(RecurringMessage::cron('* * * * *', new StripeImport()));
         $schedule->add(RecurringMessage::cron('* * * * *', new GenericTasks()));
         $schedule->add(RecurringMessage::cron('* * * * *', new RetryPayments()));
+        $schedule->add(RecurringMessage::cron('15 2 * * *', new VatSenseSync()));
         $schedule->add(RecurringMessage::cron('1 3 * * *', new RefreshExchangeRates())); // Every day at 03:01 - this avoids the standard midnight process rush.
         $schedule->add(RecurringMessage::cron('*/5 * * * *', new GenerateNewInvoices()));
         $schedule->add(RecurringMessage::cron('5 0 * * *', new ExpiredCardsDayBefore()));
