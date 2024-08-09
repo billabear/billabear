@@ -167,4 +167,11 @@ class CountryTaxRule implements DeletableInterface
 
         return false;
     }
+
+    public function startsInFuture()
+    {
+        $now = new \DateTime();
+
+        return $this->validFrom > $now;
+    }
 }

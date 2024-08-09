@@ -39,6 +39,16 @@ class VatSenseClient
         return $data['data']['valid'];
     }
 
+    public function getTaxRates(): array
+    {
+        $url = sprintf('https://api.vatsense.com/1.0/rates');
+        $request = new Request('GET', $url);
+        $response = $this->sendRequest($request);
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return $data['data'];
+    }
+
     private function sendRequest(RequestInterface $request): ResponseInterface
     {
         $this->getLogger()->info("Sending request to VatSense's API", ['url' => $request->getUri()]);
