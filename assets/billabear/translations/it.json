@@ -1955,12 +1955,18 @@
                     "fields": {
                         "tax_customers_with_tax_number": "Clienti fiscali con codice fiscale",
                         "eu_business_tax_rules": "Gestire le norme fiscali dell'UE per le imprese",
-                        "eu_one_stop_shop_rule": "Regola dello sportello unico dell'UE"
+                        "eu_one_stop_shop_rule": "Regola dello sportello unico dell'UE",
+                        "vat_sense_enabled": "Senso dell'IVA abilitato",
+                        "vat_sense_api_key": "Chiave API VAT Sense",
+                        "validate_vat_ids": "Convalidare gli ID IVA"
                     },
                     "help_info": {
                         "tax_customers_with_tax_number": "Se non viene controllato, ai clienti che hanno fornito un codice fiscale non viene addebitata l'imposta",
                         "eu_business_tax_rules": "Se abilitato, i clienti commerciali che hanno fornito un numero di partita IVA saranno gestiti in modo diverso dai clienti normali",
-                        "eu_one_stop_shop_rule": "Applicare la regola dello sportello unico dell'UE. In cui i Paesi dell'UE sono tassati indipendentemente dalla soglia."
+                        "eu_one_stop_shop_rule": "Applicare la regola dello sportello unico dell'UE. In cui i Paesi dell'UE sono tassati indipendentemente dalla soglia.",
+                        "vat_sense_enabled": "Se si desidera sincronizzare le regole fiscali con il database di VAT Sense ogni giorno",
+                        "vat_sense_api_key": "La vostra chiave API VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Ottieni una chiave gratuita qui<\/a>.",
+                        "validate_vat_ids": "Se si desidera convalidare gli id delle tasse rispetto all'API VAT Sense."
                     }
                 }
             }
@@ -2332,7 +2338,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "Email"
+                            "email": "Email",
+                            "help_info": "Se non viene fornita alcuna e-mail, l'e-mail del cliente verrà utilizzata per impostazione predefinita."
                         }
                     },
                     "save": "Risparmiare"
@@ -2354,7 +2361,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "Email"
+                            "email": "Email",
+                            "help_info": "Se non viene fornita alcuna e-mail, l'e-mail del cliente verrà utilizzata per impostazione predefinita."
                         }
                     },
                     "save": "Risparmiare"
@@ -3345,7 +3353,8 @@
                     "name": "Nome",
                     "make_default": "Rendere predefinito",
                     "is_default": "È predefinito",
-                    "default": "Predefinito"
+                    "default": "Predefinito",
+                    "update": "Aggiornamento"
                 },
                 "no_tax_types": "Attualmente non ci sono tipi di imposte"
             },
@@ -3353,13 +3362,29 @@
                 "title": "Creare il tipo di imposta",
                 "tax_type": {
                     "fields": {
-                        "name": "Nome"
+                        "name": "Nome",
+                        "vat_sense_type": "IVA Tipo di senso"
                     },
                     "help_info": {
-                        "name": "Il nome della tassa"
+                        "name": "Il nome della tassa",
+                        "vat_sense_type": "Il tipo di imposta nel sistema IVA Sense"
                     }
                 },
                 "create_button": "Creare"
+            },
+            "update": {
+                "title": "Aggiornare il tipo di imposta",
+                "tax_type": {
+                    "fields": {
+                        "name": "Nome",
+                        "vat_sense_type": "IVA Tipo di senso"
+                    },
+                    "help_info": {
+                        "name": "Il nome della tassa",
+                        "vat_sense_type": "Il tipo di imposta nel sistema IVA Sense"
+                    }
+                },
+                "update_button": "Aggiornamento"
             }
         },
         "finance": [],

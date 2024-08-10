@@ -1955,12 +1955,18 @@
                     "fields": {
                         "tax_customers_with_tax_number": "Klanten met belastingnummer",
                         "eu_business_tax_rules": "Omgaan met de belastingregels voor bedrijven in de EU",
-                        "eu_one_stop_shop_rule": "EU-éénloketregel"
+                        "eu_one_stop_shop_rule": "EU-éénloketregel",
+                        "vat_sense_enabled": "VAT Sense ingeschakeld",
+                        "vat_sense_api_key": "VAT Sense API-key",
+                        "validate_vat_ids": "BTW-ID's valideren"
                     },
                     "help_info": {
                         "tax_customers_with_tax_number": "Als dit niet is aangevinkt, wordt er geen belasting in rekening gebracht aan klanten die een fiscaal nummer hebben opgegeven",
                         "eu_business_tax_rules": "Als deze optie is ingeschakeld, worden zakelijke klanten die een btw-nummer hebben opgegeven anders behandeld dan normale klanten",
-                        "eu_one_stop_shop_rule": "Pas de éénloketregel van de EU toe. Waar EU-landen worden belast ongeacht de drempel."
+                        "eu_one_stop_shop_rule": "Pas de éénloketregel van de EU toe. Waar EU-landen worden belast ongeacht de drempel.",
+                        "vat_sense_enabled": "Als je je belastingregels dagelijks wilt synchroniseren met de VAT Sense-database",
+                        "vat_sense_api_key": "Uw VAT Sense API-sleutel. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Krijg hier een gratis exemplaar<\/a>",
+                        "validate_vat_ids": "Als je Tax ids wilt valideren met VAT Sense API."
                     }
                 }
             }
@@ -2332,7 +2338,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "E-mail"
+                            "email": "E-mail",
+                            "help_info": "Als er geen e-mailadres is opgegeven, wordt standaard het e-mailadres van de klant gebruikt."
                         }
                     },
                     "save": "Sla"
@@ -2354,7 +2361,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "E-mail"
+                            "email": "E-mail",
+                            "help_info": "Als er geen e-mailadres is opgegeven, wordt standaard het e-mailadres van de klant gebruikt."
                         }
                     },
                     "save": "Sla"
@@ -3345,7 +3353,8 @@
                     "name": "Naam",
                     "make_default": "Standaard maken",
                     "is_default": "Is standaard",
-                    "default": "Standaard"
+                    "default": "Standaard",
+                    "update": "Update"
                 },
                 "no_tax_types": "Er zijn momenteel geen belastingsoorten"
             },
@@ -3353,13 +3362,29 @@
                 "title": "Belastingtype aanmaken",
                 "tax_type": {
                     "fields": {
-                        "name": "Naam"
+                        "name": "Naam",
+                        "vat_sense_type": "BTW Zintuigtype"
                     },
                     "help_info": {
-                        "name": "De naam voor de belasting"
+                        "name": "De naam voor de belasting",
+                        "vat_sense_type": "Het belastingtype in het systeem van VAT Sense"
                     }
                 },
                 "create_button": "Maak"
+            },
+            "update": {
+                "title": "Belastingtype bijwerken",
+                "tax_type": {
+                    "fields": {
+                        "name": "Naam",
+                        "vat_sense_type": "BTW Zintuigtype"
+                    },
+                    "help_info": {
+                        "name": "De naam voor de belasting",
+                        "vat_sense_type": "Het belastingtype in het systeem van VAT Sense"
+                    }
+                },
+                "update_button": "Update"
             }
         },
         "finance": [],

@@ -1955,12 +1955,18 @@
                     "fields": {
                         "tax_customers_with_tax_number": "Steuerliche Kunden mit Umsatzsteuer-Identifikationsnummer",
                         "eu_business_tax_rules": "Umgang mit EU-Unternehmenssteuerregelungen",
-                        "eu_one_stop_shop_rule": "EU-Regel der einzigen Anlaufstelle"
+                        "eu_one_stop_shop_rule": "EU-Regel der einzigen Anlaufstelle",
+                        "vat_sense_enabled": "VAT Sense Aktiviert",
+                        "vat_sense_api_key": "VAT Sense API-Schlüssel",
+                        "validate_vat_ids": "VAT-IDs validieren"
                     },
                     "help_info": {
                         "tax_customers_with_tax_number": "Wenn nicht angekreuzt, wird Kunden, die eine Umsatzsteuer-Identifikationsnummer angegeben haben, keine Steuer berechnet",
                         "eu_business_tax_rules": "Wenn diese Option aktiviert ist, werden Geschäftskunden, die eine Umsatzsteuer-Identifikationsnummer angegeben haben, anders behandelt als normale Kunden",
-                        "eu_one_stop_shop_rule": "Anwendung der EU-Regel der einzigen Anlaufstelle. Die EU-Länder werden unabhängig vom Schwellenwert besteuert."
+                        "eu_one_stop_shop_rule": "Anwendung der EU-Regel der einzigen Anlaufstelle. Die EU-Länder werden unabhängig vom Schwellenwert besteuert.",
+                        "vat_sense_enabled": "Wenn Sie Ihre Steuerregeln täglich mit der VAT Sense-Datenbank synchronisieren möchten",
+                        "vat_sense_api_key": "Ihr VAT Sense API-Schlüssel. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Holen Sie sich hier einen kostenlosen Schlüssel<\/a>",
+                        "validate_vat_ids": "Wenn Sie Steuer-IDs mit der VAT Sense API validieren möchten."
                     }
                 }
             }
@@ -2332,7 +2338,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "E-Mail"
+                            "email": "E-Mail",
+                            "help_info": "Wenn keine E-Mail-Adresse angegeben wird, wird standardmäßig die E-Mail-Adresse des Kunden verwendet."
                         }
                     },
                     "save": "Speichern Sie"
@@ -2354,7 +2361,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "E-Mail"
+                            "email": "E-Mail",
+                            "help_info": "Wenn keine E-Mail-Adresse angegeben wird, wird standardmäßig die E-Mail-Adresse des Kunden verwendet."
                         }
                     },
                     "save": "Speichern Sie"
@@ -3345,7 +3353,8 @@
                     "name": "Name",
                     "make_default": "Standard machen",
                     "is_default": "Ist Standard",
-                    "default": "Standard"
+                    "default": "Standard",
+                    "update": "Update"
                 },
                 "no_tax_types": "Derzeit gibt es keine Steuerarten"
             },
@@ -3353,13 +3362,29 @@
                 "title": "Steuerart erstellen",
                 "tax_type": {
                     "fields": {
-                        "name": "Name"
+                        "name": "Name",
+                        "vat_sense_type": "VAT Sense Typ"
                     },
                     "help_info": {
-                        "name": "Die Bezeichnung für die Steuer"
+                        "name": "Die Bezeichnung für die Steuer",
+                        "vat_sense_type": "Die Steuerart im System von VAT Sense"
                     }
                 },
                 "create_button": "Erstellen"
+            },
+            "update": {
+                "title": "Steuerart aktualisieren",
+                "tax_type": {
+                    "fields": {
+                        "name": "Name",
+                        "vat_sense_type": "VAT Sense Typ"
+                    },
+                    "help_info": {
+                        "name": "Die Bezeichnung für die Steuer",
+                        "vat_sense_type": "Die Steuerart im System von VAT Sense"
+                    }
+                },
+                "update_button": "Update"
             }
         },
         "finance": [],

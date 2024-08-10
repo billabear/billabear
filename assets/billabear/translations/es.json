@@ -1955,12 +1955,18 @@
                     "fields": {
                         "tax_customers_with_tax_number": "Clientes fiscales con NIF",
                         "eu_business_tax_rules": "Manejar las normas de la UE sobre fiscalidad de las empresas",
-                        "eu_one_stop_shop_rule": "Ventanilla única de la UE"
+                        "eu_one_stop_shop_rule": "Ventanilla única de la UE",
+                        "vat_sense_enabled": "VAT Sense Activado",
+                        "vat_sense_api_key": "Clave API VAT Sense",
+                        "validate_vat_ids": "Validar los CIF"
                     },
                     "help_info": {
                         "tax_customers_with_tax_number": "Si no se comprueba, los clientes que hayan facilitado un número de identificación fiscal no tendrán que pagar impuestos",
                         "eu_business_tax_rules": "Si esta opción está activada, los clientes comerciales que hayan facilitado un número de IVA recibirán un tratamiento diferente al de los clientes normales",
-                        "eu_one_stop_shop_rule": "Aplicar la regla de la ventanilla única de la UE. Los países de la UE tributan independientemente del umbral."
+                        "eu_one_stop_shop_rule": "Aplicar la regla de la ventanilla única de la UE. Los países de la UE tributan independientemente del umbral.",
+                        "vat_sense_enabled": "Si desea sincronizar diariamente sus normas fiscales con la base de datos VAT Sense",
+                        "vat_sense_api_key": "Tu clave de la API de VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Obtenga una gratis aquí<\/a>.",
+                        "validate_vat_ids": "Si desea validar los identificadores de impuestos con la API VAT Sense."
                     }
                 }
             }
@@ -2332,7 +2338,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "Correo electrónico"
+                            "email": "Correo electrónico",
+                            "help_info": "Si no se indica ninguna dirección de correo electrónico, se utilizará por defecto la del cliente."
                         }
                     },
                     "save": "Guardar"
@@ -2354,7 +2361,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "Correo electrónico"
+                            "email": "Correo electrónico",
+                            "help_info": "Si no se indica ninguna dirección de correo electrónico, se utilizará por defecto la del cliente."
                         }
                     },
                     "save": "Guardar"
@@ -3345,7 +3353,8 @@
                     "name": "Nombre",
                     "make_default": "Por defecto",
                     "is_default": "Por defecto",
-                    "default": "Por defecto"
+                    "default": "Por defecto",
+                    "update": "Actualización"
                 },
                 "no_tax_types": "Actualmente no existen tipos impositivos"
             },
@@ -3353,13 +3362,29 @@
                 "title": "Crear tipo de impuesto",
                 "tax_type": {
                     "fields": {
-                        "name": "Nombre"
+                        "name": "Nombre",
+                        "vat_sense_type": "Tipo de IVA"
                     },
                     "help_info": {
-                        "name": "El nombre del impuesto"
+                        "name": "El nombre del impuesto",
+                        "vat_sense_type": "El tipo de impuesto en el sistema VAT Sense"
                     }
                 },
                 "create_button": "Cree"
+            },
+            "update": {
+                "title": "Actualizar tipo de impuesto",
+                "tax_type": {
+                    "fields": {
+                        "name": "Nombre",
+                        "vat_sense_type": "Tipo de IVA"
+                    },
+                    "help_info": {
+                        "name": "El nombre del impuesto",
+                        "vat_sense_type": "El tipo de impuesto en el sistema VAT Sense"
+                    }
+                },
+                "update_button": "Actualización"
             }
         },
         "finance": [],

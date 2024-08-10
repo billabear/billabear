@@ -1955,12 +1955,18 @@
                     "fields": {
                         "tax_customers_with_tax_number": "Clients fiscaux avec numéro d'identification fiscale",
                         "eu_business_tax_rules": "Gérer les règles de l'UE en matière de fiscalité des entreprises",
-                        "eu_one_stop_shop_rule": "Règle du guichet unique de l'UE"
+                        "eu_one_stop_shop_rule": "Règle du guichet unique de l'UE",
+                        "vat_sense_enabled": "Activation de la détection de la TVA",
+                        "vat_sense_api_key": "Clé API VAT Sense",
+                        "validate_vat_ids": "Valider les identifiants de TVA"
                     },
                     "help_info": {
                         "tax_customers_with_tax_number": "Si la case n'est pas cochée, les clients qui ont fourni un numéro d'identification fiscale ne sont pas soumis à la taxe",
                         "eu_business_tax_rules": "Si cette option est activée, les entreprises clientes qui ont fourni un numéro de TVA seront traitées différemment des clients normaux",
-                        "eu_one_stop_shop_rule": "Appliquer la règle du guichet unique de l'UE. Les pays de l'UE sont taxés quel que soit le seuil d'imposition."
+                        "eu_one_stop_shop_rule": "Appliquer la règle du guichet unique de l'UE. Les pays de l'UE sont taxés quel que soit le seuil d'imposition.",
+                        "vat_sense_enabled": "Si vous souhaitez synchroniser quotidiennement vos règles fiscales avec la base de données VAT Sense",
+                        "vat_sense_api_key": "Votre clé API VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Obtenez-en un gratuitement ici<\/a>",
+                        "validate_vat_ids": "Si vous souhaitez valider les identifiants fiscaux par rapport à l'API VAT Sense."
                     }
                 }
             }
@@ -2332,7 +2338,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "Courriel"
+                            "email": "Courriel",
+                            "help_info": "Si aucun courriel n'est fourni, le courriel du client sera utilisé par défaut."
                         }
                     },
                     "save": "Économiser"
@@ -2354,7 +2361,8 @@
                             "url": "URL"
                         },
                         "email": {
-                            "email": "Courriel"
+                            "email": "Courriel",
+                            "help_info": "Si aucun courriel n'est fourni, le courriel du client sera utilisé par défaut."
                         }
                     },
                     "save": "Économiser"
@@ -3345,7 +3353,8 @@
                     "name": "Nom",
                     "make_default": "Rendre par défaut",
                     "is_default": "Est par défaut",
-                    "default": "Défaut"
+                    "default": "Défaut",
+                    "update": "Mise à jour"
                 },
                 "no_tax_types": "Il n'y a actuellement aucun type d'impôt"
             },
@@ -3353,13 +3362,29 @@
                 "title": "Créer un type de taxe",
                 "tax_type": {
                     "fields": {
-                        "name": "Nom"
+                        "name": "Nom",
+                        "vat_sense_type": "TVA Type de détection"
                     },
                     "help_info": {
-                        "name": "Le nom de la taxe"
+                        "name": "Le nom de la taxe",
+                        "vat_sense_type": "Le type de taxe dans le système de VAT Sense"
                     }
                 },
                 "create_button": "Créer"
+            },
+            "update": {
+                "title": "Mise à jour du type d'impôt",
+                "tax_type": {
+                    "fields": {
+                        "name": "Nom",
+                        "vat_sense_type": "TVA Type de détection"
+                    },
+                    "help_info": {
+                        "name": "Le nom de la taxe",
+                        "vat_sense_type": "Le type de taxe dans le système de VAT Sense"
+                    }
+                },
+                "update_button": "Mise à jour"
             }
         },
         "finance": [],
