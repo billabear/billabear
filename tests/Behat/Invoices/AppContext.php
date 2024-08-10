@@ -493,6 +493,22 @@ class AppContext implements Context
     }
 
     /**
+     * @Then there should be an invoice delivery for :arg1 for type :arg2 and format :arg3
+     */
+    public function thereShouldBeAnInvoiceDeliveryForForTypeAndFormat($email, $type, $format)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $type = strtolower($type);
+        $enumType = InvoiceDeliveryType::from($type);
+        $format = InvoiceFormat::from($format);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer, 'invoiceFormat' => $format]);
+
+        if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
+            throw new \Exception('No invoice delivery found');
+        }
+    }
+
+    /**
      * @Given the following invoice delivery setups exist:
      */
     public function theFollowingInvoiceDeliverySetupsExist(TableNode $table)

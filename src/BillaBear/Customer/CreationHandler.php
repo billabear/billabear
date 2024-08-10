@@ -9,9 +9,13 @@
 namespace BillaBear\Customer;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\InvoiceDeliverySettings;
+use BillaBear\Enum\InvoiceDeliveryType;
+use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Notification\Slack\Data\CustomerCreated;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
@@ -24,6 +28,7 @@ class CreationHandler
         private ExternalRegisterInterface $externalRegister,
         private CustomerRepositoryInterface $customerRepository,
         private CustomerCreationStats $customerCreationStats,
+        private InvoiceDeliverySettingsRepositoryInterface $invoiceDeliverySettingsRepository,
     ) {
     }
 
@@ -37,11 +42,25 @@ class CreationHandler
 
         $this->eventProcessor->dispatch(new CustomerCreatedPayload($customer));
         $this->handleSlackNotifications($customer);
+        $this->handleExtraEntities($customer);
     }
 
     public function handleSlackNotifications(Customer $customer): void
     {
         $notificationMessage = new CustomerCreated($customer);
         $this->notificationSender->sendNotification($notificationMessage);
+    }
+
+    private function handleExtraEntities(Customer $customer): void
+    {
+        $invoiceDelivery = new InvoiceDeliverySettings();
+        $invoiceDelivery->setCustomer($customer);
+        $invoiceDelivery->setEnabled(true);
+        $invoiceDelivery->setCreatedAt(new \DateTime());
+        $invoiceDelivery->setUpdatedAt(new \DateTime());
+        $invoiceDelivery->setInvoiceFormat(InvoiceFormat::PDF);
+        $invoiceDelivery->setType(InvoiceDeliveryType::EMAIL);
+
+        $this->invoiceDeliverySettingsRepository->save($invoiceDelivery);
     }
 }
