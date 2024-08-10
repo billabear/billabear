@@ -15,7 +15,8 @@ export const INVOICE_DELIVERY_CREATE = {
             url: "URL"
         },
         email: {
-            email: "Email"
+            email: "Email",
+            help_info: "If no email is provided the customer's email will be used by default"
         }
     },
     save: "Save"

@@ -33,6 +33,7 @@
             {{ $t('app.invoices.delivery.update.fields.email.email') }}
           </label>
           <input type="text" class="form-field" v-model="invoice_delivery.email" />
+          <p class="form-field-help">{{ $t('app.invoices.delivery.create.fields.email.help_info') }}</p>
         </div>
       </div>
 

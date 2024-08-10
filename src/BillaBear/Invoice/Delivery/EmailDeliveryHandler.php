@@ -56,7 +56,9 @@ class EmailDeliveryHandler implements DeliveryHandlerInterface
 
         $invoiceCreatedEmail = new InvoiceCreatedEmail($invoice, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $invoiceCreatedEmail);
-        $email->setToAddress($invoiceDelivery->getEmail());
+        if ($invoiceDelivery->getEmail()) {
+            $email->setToAddress($invoiceDelivery->getEmail());
+        }
         $email->addAttachment($attachment);
         $this->emailSender->send($email);
     }
