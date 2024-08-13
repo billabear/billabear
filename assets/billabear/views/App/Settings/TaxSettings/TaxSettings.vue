@@ -30,30 +30,6 @@
             <Toggle v-model="tax_settings.eu_one_stop_shop_rule" />
             <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.eu_one_stop_shop_rule') }}</p>
           </div>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="vat_sense_enabled">
-              {{ $t('app.settings.tax_settings.update.fields.vat_sense_enabled') }}
-            </label>
-            <p class="form-field-error" v-if="errors.vatSenseEnabled != undefined">{{ errors.vatSenseEnabled }}</p>
-            <Toggle v-model="tax_settings.vat_sense_enabled" />
-            <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.vat_sense_enabled') }}</p>
-          </div>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="vat_sense_api_key">
-              {{ $t('app.settings.tax_settings.update.fields.vat_sense_api_key') }}
-            </label>
-            <p class="form-field-error" v-if="errors.vatSenseApiKey != undefined">{{ errors.vatSenseApiKey }}</p>
-            <input type="text" class="form-field" v-model="tax_settings.vat_sense_api_key" />
-            <p class="form-field-help" v-html="$t('app.settings.tax_settings.update.help_info.vat_sense_api_key')"></p>
-          </div>
-          <div class="form-field-ctn">
-            <label class="form-field-lbl" for="vat_sense_enabled">
-              {{ $t('app.settings.tax_settings.update.fields.validate_vat_ids') }}
-            </label>
-            <p class="form-field-error" v-if="errors.validateVatIds != undefined">{{ errors.validateVatIds }}</p>
-            <Toggle v-model="tax_settings.validate_vat_ids" />
-            <p class="form-field-help">{{ $t('app.settings.tax_settings.update.help_info.validate_vat_ids') }}</p>
-          </div>
         </div>
 
       <div class="mt-3 form-field-submit-ctn">

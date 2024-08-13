@@ -175,6 +175,9 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.settings.tax_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.tax_settings') }}</router-link>
           </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.settings.tax_settings.vatsense'}" class="submenu-link">{{ $t('app.settings.menu.vat_sense') }}</router-link>
+          </MenuSubItem>
         </template>
       </MenuTopItem>
 

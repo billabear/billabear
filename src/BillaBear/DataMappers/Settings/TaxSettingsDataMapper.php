@@ -9,20 +9,26 @@
 namespace BillaBear\DataMappers\Settings;
 
 use BillaBear\Dto\Request\App\Settings\Tax\TaxSettings as RequestDto;
+use BillaBear\Dto\Request\App\Settings\Tax\VatSense;
 use BillaBear\Dto\Response\App\Settings\Tax\TaxSettings as AppDto;
 use BillaBear\Entity\Settings\TaxSettings as Entity;
 
 class TaxSettingsDataMapper
 {
-    public function createEntity(RequestDto $requestDto): Entity
+    public function updateTaxSettings(RequestDto $requestDto, Entity $entity): Entity
     {
-        $entity = new Entity();
         $entity->setTaxCustomersWithTaxNumbers($requestDto->getTaxCustomersWithTaxNumber());
         $entity->setEuropeanBusinessTaxRules($requestDto->getEuBusinessTaxRules());
         $entity->setOneStopShopTaxRules($requestDto->getEuOneStopShopRule());
-        $entity->setValidateTaxNumber($requestDto->getValidateVatIds());
-        $entity->setVatSenseEnabled($requestDto->getVatSenseEnabled());
-        $entity->setVatSenseApiKey($requestDto->getVatSenseApiKey());
+
+        return $entity;
+    }
+
+    public function updateVatSense(VatSense $vatSense, Entity $entity): Entity
+    {
+        $entity->setValidateTaxNumber($vatSense->getValidateVatIds());
+        $entity->setVatSenseEnabled($vatSense->getVatSenseEnabled());
+        $entity->setVatSenseApiKey($vatSense->getVatSenseApiKey());
 
         return $entity;
     }

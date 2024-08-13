@@ -72,6 +72,7 @@ import InvoiceSettings from "../views/App/Invoices/InvoiceSettings.vue";
 import CustomerInvoiceDelivery from "../components/app/Customer/View/CustomerInvoiceDelivery.vue";
 import InvoiceDeliveryCreate from "../views/App/Invoices/Delivery/InvoiceDeliveryCreate.vue";
 import InvoiceDeliveryUpdate from "../views/App/Invoices/Delivery/InvoiceDeliveryUpdate.vue";
+import VatSenseSettings from "../views/App/Settings/TaxSettings/VatSenseSettings.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -154,6 +155,11 @@ export const APP_ROUTES = [
         name: "app.settings.tax_settings.update",
         path: "tax-settings",
         component: TaxSettings
+    },
+    {
+        name: "app.settings.tax_settings.vatsense",
+        path: "tax-settings/vatsense",
+        component: VatSenseSettings
     },
     {
         name: "app.settings.pdf_template.create",

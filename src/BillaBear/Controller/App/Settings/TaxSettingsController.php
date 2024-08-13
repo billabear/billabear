@@ -11,6 +11,7 @@ namespace BillaBear\Controller\App\Settings;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Settings\TaxSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\Tax\TaxSettings;
+use BillaBear\Dto\Request\App\Settings\Tax\VatSense;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,8 +62,38 @@ class TaxSettingsController
             return $response;
         }
 
-        $taxSettings = $taxSettingsFactory->createEntity($dto);
         $settings = $settingsRepository->getDefaultSettings();
+        $taxSettings = $taxSettingsFactory->updateTaxSettings($dto, $settings->getTaxSettings());
+        $settings->setTaxSettings($taxSettings);
+        $settingsRepository->save($settings);
+
+        $outputDto = $taxSettingsFactory->createAppDto($taxSettings);
+        $json = $serializer->serialize($outputDto, 'json');
+
+        return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/tax/vatsense', name: 'app_app_settings_taxsettings_vat_setsettings', methods: ['POST'])]
+    public function setVatSenseSettings(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        TaxSettingsDataMapper $taxSettingsFactory,
+        SettingsRepositoryInterface $settingsRepository,
+    ) {
+        $this->getLogger()->info('Received request to set tax settings');
+
+        /** @var VatSense $dto */
+        $dto = $serializer->deserialize($request->getContent(), VatSense::class, 'json');
+        $errors = $validator->validate($dto);
+        $response = $this->handleErrors($errors);
+
+        if ($response instanceof JsonResponse) {
+            return $response;
+        }
+
+        $settings = $settingsRepository->getDefaultSettings();
+        $taxSettings = $taxSettingsFactory->updateVatSense($dto, $settings->getTaxSettings());
         $settings->setTaxSettings($taxSettings);
         $settingsRepository->save($settings);
 
