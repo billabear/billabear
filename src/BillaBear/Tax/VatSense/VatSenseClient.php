@@ -9,6 +9,7 @@
 namespace BillaBear\Tax\VatSense;
 
 use BillaBear\Exception\Tax\VatSense\FailedRequestException;
+use BillaBear\Kernel;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -33,6 +34,7 @@ class VatSenseClient
     {
         $url = sprintf('https://api.vatsense.com/1.0/validate?vat_number=%s', $taxId);
         $request = new Request('GET', $url);
+        $request = $request->withAddedHeader('User-Agent', 'BillaBear/'.Kernel::VERSION_ID);
         $response = $this->sendRequest($request);
         $data = json_decode($response->getBody()->getContents(), true);
 
