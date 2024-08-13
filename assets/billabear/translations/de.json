@@ -1512,7 +1512,8 @@
                 "stripe": "Streifen",
                 "api_keys": "API-Schlüssel",
                 "exchange_rates": "Wechselkurse",
-                "integrations": "Integrationen"
+                "integrations": "Integrationen",
+                "vat_sense": "VatSense"
             },
             "pdf_template": {
                 "list": {
@@ -1968,6 +1969,22 @@
                         "vat_sense_api_key": "Ihr VAT Sense API-Schlüssel. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Holen Sie sich hier einen kostenlosen Schlüssel<\/a>",
                         "validate_vat_ids": "Wenn Sie Steuer-IDs mit der VAT Sense API validieren möchten."
                     }
+                },
+                "vatsense": {
+                    "title": "VatSense",
+                    "fields": {
+                        "vat_sense_enabled": "VAT Sense Aktiviert",
+                        "vat_sense_api_key": "VAT Sense API-Schlüssel",
+                        "validate_vat_ids": "VAT-IDs validieren"
+                    },
+                    "help_info": {
+                        "vat_sense_enabled": "Wenn Sie Ihre Steuerregeln täglich mit der VAT Sense-Datenbank synchronisieren möchten",
+                        "vat_sense_api_key": "Ihr VAT Sense API-Schlüssel. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Holen Sie sich hier einen kostenlosen Schlüssel<\/a>",
+                        "validate_vat_ids": "Wenn Sie Steuer-IDs mit der VAT Sense API validieren möchten."
+                    },
+                    "description": "Mit unserer VAT Sense-Integration können Sie Ihre Steuerregeln automatisch aktualisieren lassen, wenn sich die Steuergesetze auf der ganzen Welt ändern. Außerdem können Sie die Umsatzsteuer-Identifikationsnummern von VAT Sense validieren lassen, damit Sie sicherstellen können, dass Ihre europäischen Kunden gültige Umsatzsteuer-Identifikationsnummern haben.",
+                    "create_account": "Sie können ein kostenloses Konto erstellen.",
+                    "create_account_link": "Konto erstellen"
                 }
             }
         },

@@ -1512,7 +1512,8 @@
                 "stripe": "Striscia",
                 "api_keys": "Chiavi API",
                 "exchange_rates": "Tassi di cambio",
-                "integrations": "Integrazioni"
+                "integrations": "Integrazioni",
+                "vat_sense": "VatSense"
             },
             "pdf_template": {
                 "list": {
@@ -1968,6 +1969,22 @@
                         "vat_sense_api_key": "La vostra chiave API VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Ottieni una chiave gratuita qui<\/a>.",
                         "validate_vat_ids": "Se si desidera convalidare gli id delle tasse rispetto all'API VAT Sense."
                     }
+                },
+                "vatsense": {
+                    "title": "VatSense",
+                    "fields": {
+                        "vat_sense_enabled": "Senso dell'IVA abilitato",
+                        "vat_sense_api_key": "Chiave API VAT Sense",
+                        "validate_vat_ids": "Convalidare gli ID IVA"
+                    },
+                    "help_info": {
+                        "vat_sense_enabled": "Se si desidera sincronizzare le regole fiscali con il database di VAT Sense ogni giorno",
+                        "vat_sense_api_key": "La vostra chiave API VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Ottieni una chiave gratuita qui<\/a>.",
+                        "validate_vat_ids": "Se si desidera convalidare gli id delle tasse rispetto all'API VAT Sense."
+                    },
+                    "description": "Grazie all'integrazione con VAT Sense, potrete aggiornare automaticamente le vostre regole fiscali in caso di modifiche alle leggi fiscali in tutto il mondo. È inoltre possibile far convalidare gli ID IVA da VAT Sense, in modo da garantire che i clienti europei abbiano ID IVA validi.",
+                    "create_account": "È possibile creare un account gratuito.",
+                    "create_account_link": "Creare un account"
                 }
             }
         },

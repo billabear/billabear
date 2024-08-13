@@ -1512,7 +1512,8 @@
                 "stripe": "Raya",
                 "api_keys": "Claves API",
                 "exchange_rates": "Tipos de cambio",
-                "integrations": "Integraciones"
+                "integrations": "Integraciones",
+                "vat_sense": "VatSense"
             },
             "pdf_template": {
                 "list": {
@@ -1968,6 +1969,22 @@
                         "vat_sense_api_key": "Tu clave de la API de VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Obtenga una gratis aquí<\/a>.",
                         "validate_vat_ids": "Si desea validar los identificadores de impuestos con la API VAT Sense."
                     }
+                },
+                "vatsense": {
+                    "title": "VatSense",
+                    "fields": {
+                        "vat_sense_enabled": "VAT Sense Activado",
+                        "vat_sense_api_key": "Clave API VAT Sense",
+                        "validate_vat_ids": "Validar los CIF"
+                    },
+                    "help_info": {
+                        "vat_sense_enabled": "Si desea sincronizar diariamente sus normas fiscales con la base de datos VAT Sense",
+                        "vat_sense_api_key": "Tu clave de la API de VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Obtenga una gratis aquí<\/a>.",
+                        "validate_vat_ids": "Si desea validar los identificadores de impuestos con la API VAT Sense."
+                    },
+                    "description": "Con nuestra integración con VAT Sense, podrá actualizar automáticamente sus normas fiscales cuando se produzcan cambios en la legislación fiscal de todo el mundo. También puede hacer que VAT Sense valide los CIF para asegurarse de que los clientes europeos tienen CIF válidos.",
+                    "create_account": "Puede crear una cuenta gratuita.",
+                    "create_account_link": "Crear una cuenta"
                 }
             }
         },

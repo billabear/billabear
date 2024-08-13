@@ -1512,7 +1512,8 @@
                 "stripe": "Rayure",
                 "api_keys": "Clés API",
                 "exchange_rates": "Taux de change",
-                "integrations": "Intégrations"
+                "integrations": "Intégrations",
+                "vat_sense": "VatSense"
             },
             "pdf_template": {
                 "list": {
@@ -1968,6 +1969,22 @@
                         "vat_sense_api_key": "Votre clé API VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Obtenez-en un gratuitement ici<\/a>",
                         "validate_vat_ids": "Si vous souhaitez valider les identifiants fiscaux par rapport à l'API VAT Sense."
                     }
+                },
+                "vatsense": {
+                    "title": "VatSense",
+                    "fields": {
+                        "vat_sense_enabled": "Activation de la détection de la TVA",
+                        "vat_sense_api_key": "Clé API VAT Sense",
+                        "validate_vat_ids": "Valider les identifiants de TVA"
+                    },
+                    "help_info": {
+                        "vat_sense_enabled": "Si vous souhaitez synchroniser quotidiennement vos règles fiscales avec la base de données VAT Sense",
+                        "vat_sense_api_key": "Votre clé API VAT Sense. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Obtenez-en un gratuitement ici<\/a>",
+                        "validate_vat_ids": "Si vous souhaitez valider les identifiants fiscaux par rapport à l'API VAT Sense."
+                    },
+                    "description": "Grâce à l'intégration de VAT Sense, vos règles fiscales sont automatiquement mises à jour lorsque des modifications sont apportées à la législation fiscale dans le monde entier. Vous pouvez également faire valider les identifiants de TVA par VAT Sense afin de vous assurer que les clients européens ont des identifiants de TVA valides.",
+                    "create_account": "Vous pouvez créer un compte gratuit.",
+                    "create_account_link": "Créer un compte"
                 }
             }
         },

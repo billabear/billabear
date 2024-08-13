@@ -1512,7 +1512,8 @@
                 "stripe": "Streep",
                 "api_keys": "API-sleutels",
                 "exchange_rates": "Wisselkoersen",
-                "integrations": "Integraties"
+                "integrations": "Integraties",
+                "vat_sense": "VatSense"
             },
             "pdf_template": {
                 "list": {
@@ -1968,6 +1969,22 @@
                         "vat_sense_api_key": "Uw VAT Sense API-sleutel. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Krijg hier een gratis exemplaar<\/a>",
                         "validate_vat_ids": "Als je Tax ids wilt valideren met VAT Sense API."
                     }
+                },
+                "vatsense": {
+                    "title": "VatSense",
+                    "fields": {
+                        "vat_sense_enabled": "VAT Sense ingeschakeld",
+                        "vat_sense_api_key": "VAT Sense API-key",
+                        "validate_vat_ids": "BTW-ID's valideren"
+                    },
+                    "help_info": {
+                        "vat_sense_enabled": "Als je je belastingregels dagelijks wilt synchroniseren met de VAT Sense-database",
+                        "vat_sense_api_key": "Uw VAT Sense API-sleutel. <a href=\"https:\/\/vatsense.com\/signup?referral=BILLABEAR\" target='_blank'>Krijg hier een gratis exemplaar<\/a>",
+                        "validate_vat_ids": "Als je Tax ids wilt valideren met VAT Sense API."
+                    },
+                    "description": "Met onze VAT Sense-integratie kun je je belastingregels automatisch laten bijwerken als er wijzigingen zijn in de belastingwetgeving over de hele wereld. Je kunt btw-identificatienummers ook laten valideren door VAT Sense, zodat je ervoor kunt zorgen dat Europese klanten geldige btw-identificatienummers hebben.",
+                    "create_account": "Je kunt een gratis account aanmaken.",
+                    "create_account_link": "Account aanmaken"
                 }
             }
         },
