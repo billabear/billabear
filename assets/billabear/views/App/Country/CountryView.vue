@@ -208,7 +208,10 @@
       </label>
       <p class="form-field-error" v-if="taxRuleErrors.default != undefined">{{ taxRuleErrors.isDefault }}</p>
       <input type="checkbox" class="form-field" v-model="tax_rule.is_default" />
-      <SubmitButton :in-progress="creatingTaxRule" @click="editCountryTaxRule" class="btn--main">{{ $t('app.country.view.edit_tax_rule.save') }}</SubmitButton>
+      <div>
+
+        <SubmitButton :in-progress="creatingTaxRule" @click="editCountryTaxRule" class="btn--main">{{ $t('app.country.view.edit_tax_rule.save') }}</SubmitButton>
+      </div>
     </VueFinalModal>
   </div>
 </template>
@@ -332,9 +335,11 @@ export default {
 
       axios.post("/app/country/"+id+"/tax-rule/"+this.tax_rule.id+"/edit", payload).then(response => {
         this.tax_rules[key] = response.data;
+        this.creatingTaxRule = false;
+        this.openCountryTaxEdit =false;
       }).catch(error => {
         this.taxRuleErrors = error.response.data.errors;
-        this.sendingInProgress = false;
+        this.creatingTaxRule = false;
         this.success = false;
       })
     },
