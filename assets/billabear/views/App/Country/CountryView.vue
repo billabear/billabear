@@ -166,7 +166,9 @@
       </label>
       <p class="form-field-error" v-if="taxRuleErrors.default != undefined">{{ taxRuleErrors.default }}</p>
       <input type="checkbox" class="form-field" v-model="tax_rule.default" />
+      <div class="mt-3">
       <SubmitButton :in-progress="creatingTaxRule" @click="createCountryTaxRule" class="btn--main">{{ $t('app.country.view.add_tax_rule.save') }}</SubmitButton>
+      </div>
     </VueFinalModal>
 
 
@@ -208,8 +210,7 @@
       </label>
       <p class="form-field-error" v-if="taxRuleErrors.default != undefined">{{ taxRuleErrors.isDefault }}</p>
       <input type="checkbox" class="form-field" v-model="tax_rule.is_default" />
-      <div>
-
+      <div class="mt-3">
         <SubmitButton :in-progress="creatingTaxRule" @click="editCountryTaxRule" class="btn--main">{{ $t('app.country.view.edit_tax_rule.save') }}</SubmitButton>
       </div>
     </VueFinalModal>
