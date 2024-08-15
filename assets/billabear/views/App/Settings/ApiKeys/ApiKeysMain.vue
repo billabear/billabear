@@ -40,8 +40,8 @@
             <td><button v-if="key.active" @click="disable(key)" class="btn--danger">{{ $t('app.settings.api_keys.main.list.disable_button') }}</button></td>
           </tr>
           <tr v-if="apiKeys.length === 0">
-            <td colspan="5" class="text-center">{{ $t('app.settings.api_keys.main.list.no_api_keys') }}</td>
-          </tr> class="py-3"
+            <td colspan="5" class="py-3 text-center">{{ $t('app.settings.api_keys.main.list.no_api_keys') }}</td>
+          </tr>
         </tbody>
       </table>
       </div>
