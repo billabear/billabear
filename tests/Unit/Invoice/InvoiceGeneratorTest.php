@@ -21,8 +21,10 @@ use BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Invoice\PriceInfo;
 use BillaBear\Invoice\Pricer;
+use BillaBear\Invoice\Usage\MetricProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\Usage\MetricUsageRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use BillaBear\Tax\TaxInfo;
 use Brick\Money\Money;
@@ -59,11 +61,11 @@ class InvoiceGeneratorTest extends TestCase
         $invoiceNumberGeneratorProvider = $this->createMock(InvoiceNumberGeneratorProvider::class);
         $invoiceNumberGeneratorProvider->method('getGenerator')->willReturn($invoiceNumberGenerator);
 
-        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false));
-        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false));
+        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false), 1);
+        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false), 1);
 
         $pricer = $this->createMock(Pricer::class);
-        $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls($priceInfoOne, $priceInfoTwo);
+        $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls([$priceInfoOne], [$priceInfoTwo]);
 
         $repository = $this->createMock(InvoiceRepositoryInterface::class);
         $repository->expects($this->once())->method('save')->with($this->isInstanceOf(Invoice::class));
@@ -78,7 +80,10 @@ class InvoiceGeneratorTest extends TestCase
         $dueDateDecider = $this->createMock(DueDateDecider::class);
         $exchangeRateProvider = $this->createMock(BricksExchangeRateProvider::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $exchangeRateProvider);
+        $metricProvider = $this->createMock(MetricProvider::class);
+        $metricUsage = $this->createMock(MetricUsageRepositoryInterface::class);
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $metricProvider, $metricUsage, $exchangeRateProvider);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
