@@ -14,7 +14,6 @@ use Behat\Mink\Session;
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceDeliverySettings;
-use BillaBear\Entity\InvoicedMetricCounter;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Entity\Processes\InvoiceProcess;
@@ -23,8 +22,6 @@ use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
-use BillaBear\Repository\Orm\MetricRepository;
-use BillaBear\Repository\Orm\MetricUsageRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
 use BillaBear\Repository\Orm\PaymentFailureProcessRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
@@ -33,9 +30,6 @@ use BillaBear\Repository\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
-use BillaBear\Tests\Behat\Usage\MetricTrait;
-use BillaBear\Tests\Behat\Usage\MetricUsageTrait;
-use Brick\Money\Money;
 use Obol\Model\Enum\ChargeFailureReasons;
 
 class AppContext implements Context
@@ -43,8 +37,6 @@ class AppContext implements Context
     use CustomerTrait;
     use SendRequestTrait;
     use SubscriptionTrait;
-    use MetricTrait;
-    use MetricUsageTrait;
 
     public function __construct(
         private Session $session,
@@ -57,8 +49,6 @@ class AppContext implements Context
         private SubscriptionPlanRepository $planRepository,
         private TaxTypeRepository $taxTypeRepository,
         private InvoiceDeliverySettingsRepository $invoiceDeliveryRepository,
-        private MetricRepository $metricRepository,
-        private MetricUsageRepository $metricUsageRepository,
     ) {
     }
 
@@ -285,58 +275,6 @@ class AppContext implements Context
     }
 
     /**
-     * @Then there the latest invoice for :customerEmail will be for :amount :currency
-     */
-    public function thereTheLatestInvoiceForWillBeFor($customerEmail, $amount, $currency)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
-
-        if (!$invoice instanceof Invoice) {
-            throw new \Exception('No invoice found');
-        }
-
-        $expected = Money::ofMinor($amount, $currency);
-        if (!$invoice->getTotalMoney()->isEqualTo($expected)) {
-            throw new \Exception('Got '.$invoice->getTotalMoney());
-        }
-    }
-
-    /**
-     * @Given the last invoice for :arg1 had a metric usage for :arg2 that was :arg3
-     */
-    public function theLastInvoiceForHadAMetricUsageForThatWas($customerEmail, $metricName, $value)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
-
-        if (!$invoice instanceof Invoice) {
-            throw new \Exception('No invoice found');
-        }
-
-        $metric = $this->getMetric($metricName);
-
-        $metricUsage = $this->getMetricUsage($customerEmail, $metricName);
-        $metricUsage->setValue(floatval($value));
-        $metricUsage->setUpdatedAt(new \DateTime('now'));
-        $this->invoiceRepository->getEntityManager()->persist($metricUsage);
-        $this->invoiceRepository->getEntityManager()->flush();
-
-        $invoicedMetricCounter = new InvoicedMetricCounter();
-        $invoicedMetricCounter->setMetric($metric);
-        $invoicedMetricCounter->setValue(floatval($value));
-        $invoicedMetricCounter->setMetricUsage($metricUsage);
-        $invoicedMetricCounter->setCreatedAt($invoice->getCreatedAt());
-
-        $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
-
-        $this->invoiceRepository->getEntityManager()->persist($invoice);
-        $this->invoiceRepository->getEntityManager()->flush();
-    }
-
-    /**
      * @Then there the latest invoice for :arg1 will not be marked as paid
      */
     public function thereTheLatestInvoiceForWillNotBeMarkedAsPaid($customerEmail)
@@ -382,8 +320,8 @@ class AppContext implements Context
 
         $invoice->setCustomer($customer);
         $invoice->setInvoiceNumber($row['Invoice Number'] ?? bin2hex(random_bytes(16)));
-        $invoice->setCreatedAt(new \DateTime($row['Created At'] ?? 'now'));
-        $invoice->setUpdatedAt(new \DateTime($row['Created At'] ?? 'now'));
+        $invoice->setCreatedAt(new \DateTime('now'));
+        $invoice->setUpdatedAt(new \DateTime('now'));
         $invoice->setCurrency('USD');
         $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
         $invoice->setValid(true);

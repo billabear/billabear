@@ -73,10 +73,6 @@ import CustomerInvoiceDelivery from "../components/app/Customer/View/CustomerInv
 import InvoiceDeliveryCreate from "../views/App/Invoices/Delivery/InvoiceDeliveryCreate.vue";
 import InvoiceDeliveryUpdate from "../views/App/Invoices/Delivery/InvoiceDeliveryUpdate.vue";
 import VatSenseSettings from "../views/App/Settings/TaxSettings/VatSenseSettings.vue";
-import MetricList from "../views/App/Metric/MetricList.vue";
-import MetricCreate from "../views/App/Metric/MetricCreate.vue";
-import MetricView from "../views/App/Metric/MetricView.vue";
-import MetricUpdate from "../views/App/Metric/MetricUpdate.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -388,25 +384,5 @@ export const APP_ROUTES = [
         name: 'app.invoice.settings',
         path: 'invoices/settings',
         component: InvoiceSettings
-    },
-    {
-        name: 'app.metric.list',
-        path: 'metric',
-        component: MetricList
-    },
-    {
-        name: 'app.metric.create',
-        path: 'metric/create',
-        component: MetricCreate,
-    },
-    {
-        name: 'app.metric.view',
-        path: 'metric/:id/view',
-        component: MetricView,
-    },
-    {
-        name: 'app.metric.update',
-        path: 'metric/:id/update',
-        component: MetricUpdate,
     },
 ]

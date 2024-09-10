@@ -121,10 +121,6 @@ default:
                 # Workflow
                 - BillaBear\Tests\Behat\Workflow\CancellationRequestContext
 
-                # Usage
-                - BillaBear\Tests\Behat\Usage\MetricContext
-                - BillaBear\Tests\Behat\Usage\EventContext
-
     extensions:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php

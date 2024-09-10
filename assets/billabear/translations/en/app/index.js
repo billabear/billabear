@@ -31,7 +31,6 @@ import {FINANCE_TRANSLATIONS} from "./finance";
 import {TAX_TRANSLATIONS} from "./tax";
 import {STATE_TRANSLATIONS} from "./state";
 import {ONBOARDING_TRANSLATIONS} from "./onboarding";
-import {METRIC_TRANSLATIONS} from "./metric";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -67,6 +66,5 @@ export const APP_TRANSLATIONS = {
     tax: TAX_TRANSLATIONS,
     state: STATE_TRANSLATIONS,
     onboarding: ONBOARDING_TRANSLATIONS,
-    default_error_message: "Something went wrong!",
-    metric: METRIC_TRANSLATIONS,
+    default_error_message: "Something went wrong!"
 };

@@ -3,6 +3,5 @@ export const PRODUCT_MENU_TRANSLATIONS = {
     products: "Products",
     products_list: "Product List",
     features: "Features",
-    vouchers: "Vouchers",
-    metrics: "Metrics"
+    vouchers: "Vouchers"
 }

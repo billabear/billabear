@@ -3,82 +3,14 @@
     <h1 class="page-title">{{ $t('app.price.create.title') }}</h1>
 
     <form @submit.prevent="send">
-      <div class="card-body">
+      <div class="m-5 card-body">
         <div class="form-field-ctn">
-
-          <label class="form-field-lbl" for="amount">
-            {{ $t('app.price.create.type') }}
-          </label>
-
-          <p class="form-field-error" v-if="errors.type != undefined">{{ errors.type }}</p>
-          <select class="form-field" v-model="price.type">
-            <option value="fixed_price">{{ $t('app.price.create.types.fixed_price') }}</option>
-            <option value="package">{{ $t('app.price.create.types.package') }}</option>
-            <option value="per_unit">{{ $t('app.price.create.types.per_unit') }}</option>
-            <option value="tiered_volume">{{ $t('app.price.create.types.tiered_volume') }}</option>
-            <option value="tiered_graduated">{{ $t('app.price.create.types.tiered_graduated') }}</option>
-          </select>
-        </div>
-
-        <div class="form-field-ctn" v-if="showAmount">
           <label class="form-field-lbl" for="amount">
             {{ $t('app.price.create.amount') }}
           </label>
           <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
           <CurrencyInput v-model="price.amount" />
         </div>
-
-        <div class="form-field-ctn" v-if="showUnits">
-          <label class="form-field-lbl" for="units">
-            {{ $t('app.price.create.units') }}
-          </label>
-          <p class="form-field-error" v-if="errors.units != undefined">{{ errors.units }}</p>
-          <input type="number" v-model="price.units" class="form-field-input" />
-        </div>
-
-        <div class="my-3" v-if="showTiers">
-          <h3 class="text-xl">
-            {{ $t('app.price.create.tiers') }}
-          </h3>
-
-          <table>
-            <thead>
-              <tr>
-                <th>{{ $t('app.price.create.tiers_fields.first_unit') }}</th>
-                <th>{{ $t('app.price.create.tiers_fields.last_unit') }}</th>
-                <th>{{ $t('app.price.create.tiers_fields.unit_price') }}</th>
-                <th>{{ $t('app.price.create.tiers_fields.flat_fee') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(tier, key) in tiers">
-                <td>
-                  <input disabled v-model="tier.first_unit" class="form-field-input" />
-                </td>
-                <td>
-                  <p class="form-field-error" v-if="errors.tiers != undefined && errors.tiers[key].last_unit != undefined">{{ errors.tiers[key].last_unit }}</p>
-
-                  <input v-model="tier.last_unit" class="form-field-input" type="number" v-if="key !== (tiers.length-1)" />
-                  <input disabled class="form-field-input" value="∞" v-else>
-                </td>
-                <td>
-                  <p class="form-field-error" v-if="errors.tiers != undefined && errors.tiers[key].unit_price != undefined">{{ errors.tiers[key].unit_price }}</p>
-
-                  <CurrencyInput v-model="tier.unit_price" />
-                </td>
-                <td>
-                  <p class="form-field-error" v-if="errors.tiers != undefined && errors.tiers[key].flat_fee != undefined">{{ errors.tiers[key].flat_fee }}</p>
-
-                  <CurrencyInput v-model="tier.flat_fee" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <button class="btn--main" @click="addTier">Add</button>
-        </div>
-
-
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="currency">
             {{ $t('app.price.create.currency') }}
@@ -86,35 +18,6 @@
           <p class="form-field-error" v-if="errors.currency != undefined">{{ errors.currency }}</p>
           <CurrencySelect v-model="price.currency" />
           <p class="form-field-help">{{ $t('app.price.create.help_info.currency') }}</p>
-        </div>
-        <div class="form-field-ctn" v-if="showUsage">
-          <label class="form-field-lbl" for="usage" >
-            {{ $t('app.price.create.usage') }}
-          </label>
-          <p class="form-field-error" v-if="errors.usage != undefined">{{ errors.usage }}</p>
-          <input type="checkbox" class="fodsrm-field-input" id="usage" v-model="price.usage" />
-          <p class="form-field-help">{{ $t('app.price.create.help_info.usage') }}</p>
-        </div>
-
-        <div class="form-field-ctn" v-if="price.usage">
-          <label class="form-field-lbl">{{ $t('app.price.create.metric') }}</label>
-          <p class="form-field-error" v-if="errors.metric != undefined">{{ errors.metric }}</p>
-          <select class="form-field" v-model="price.metric" v-if="metrics.length > 0">
-            <option v-for="metric in metrics" :value="metric.id">{{ metric.name }}</option>
-          </select>
-          <router-link :to="{name: 'app.metric.create'}" v-else>{{ $t('app.price.create.create_metric') }}</router-link>
-        </div>
-
-        <div class="form-field-ctn" v-if="price.usage">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.metric.create.metric_type') }}
-          </label>
-          <p class="form-field-error" v-if="errors.metric_type != undefined">{{ errors.metric_type }}</p>
-          <select class="form-field" v-model="price.metric_type">
-            <option value="resettable">{{ $t('app.price.create.metric_types.resettable') }}</option>
-            <option value="continuous">{{ $t('app.price.create.metric_types.continuous') }}</option>
-          </select>
-          <p class="form-field-help">{{ $t('app.price.create.help_info.metric_type') }}</p>
         </div>
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="recurring">
@@ -156,14 +59,14 @@
       </div>
 
 
-      <div class="my-3 form-field-ctn">
+      <div class="ml-5 form-field-ctn">
         <p @click="showAdvance = !showAdvance" class="cursor-pointer">
           <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
           <i class="fa-solid fa-caret-down" v-else></i>
           <span class="ml-2">{{ $t('app.price.create.show_advanced') }}</span>
         </p>
       </div>
-      <div class="card-body mb-3" v-if="showAdvance">
+      <div class="card-body m-5" v-if="showAdvance">
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="email">
             {{ $t('app.price.create.external_reference') }}
@@ -176,7 +79,7 @@
       </div>
 
       <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
-      <div class="form-field-submit-ctn">
+      <div class="ml-5 form-field-submit-ctn">
         <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
       </div>
     </form>
@@ -188,12 +91,10 @@ import axios from "axios";
 import currency from "currency.js";
 import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
-import SectionFeatures from "../SubscriptionPlan/Parts/SectionFeatures.vue";
-import {Button, Select} from "flowbite-vue";
 
 export default {
   name: "PriceCreate",
-  components: {Button, Select, SectionFeatures, CurrencyInput, CurrencySelect},
+  components: {CurrencyInput, CurrencySelect},
   data() {
     return {
       price: {
@@ -202,59 +103,16 @@ export default {
         recurring: true,
         schedule: null,
         external_reference: null,
-        including_tax: false,
+        including_tax: true,
         public: true,
-        type: 'fixed_price',
-        usage: false,
-        units: null,
       },
-      rawTiers: [
-        {first_unit: 1, last_unit: 1, unit_price: 0, flat_fee: 0}
-      ],
       errors: {},
       sendingInProgress: false,
       showAdvance: false,
       success: false,
-      metrics: []
-    }
-  },
-  computed: {
-    showAmount: function() {
-      return !(this.price.type === 'tiered_volume' || this.price.type === 'tiered_graduated')
-    },
-    showTiers: function() {
-      return (this.price.type === 'tiered_volume' || this.price.type === 'tiered_graduated')
-    },
-    showUnits: function () {
-      return (this.price.type === 'package')
-    },
-    showUsage: function () {
-      return (this.price.type !== 'fixed_price')
-    },
-    tiers: function () {
-      const output = [];
-      let lastUnit = 0;
-
-      this.rawTiers.forEach( tier => {
-        tier.first_unit = lastUnit + 1;
-        output.push(tier);
-        lastUnit = tier.last_unit;
-      });
-
-      output.push({first_unit: lastUnit+1, last_unit: null, unit_price: 0, flat_fee: 0});
-      return output;
     }
   },
   methods: {
-    addTier: function() {
-      let lastUnit = 1;
-
-      this.rawTiers.forEach( tier => {
-        lastUnit = tier.last_unit;
-      });
-      this.rawTiers.push({first_unit: lastUnit+1, last_unit: lastUnit+2, unit_price: 0, flat_fee: 0});
-
-    },
     currency: function (value) {
       return currency(value, { fromCents: true });
     },
@@ -263,29 +121,17 @@ export default {
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
-
-      if (this.showTiers) {
-        this.price.tiers = this.rawTiers;
-        this.price.amount = null;
-      }
-
       axios.post('/app/product/' + productId + '/price', this.price).then(
           response => {
             this.sendingInProgress = false;
             this.success = true;
           }
       ).catch(error => {
-        this.sendingInProgress = false;
         this.errors = error.response.data.errors;
+        this.sendingInProgress = false;
         this.success = false;
       })
     }
-  },
-  mounted() {
-    var productId = this.$route.params.productId
-    axios.get('/app/product/' + productId + '/price').then(response => {
-      this.metrics = response.data.metrics;
-    })
   }
 }
 </script>

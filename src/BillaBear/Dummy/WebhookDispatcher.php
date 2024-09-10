@@ -8,23 +8,13 @@
 
 namespace BillaBear\Dummy;
 
-use BillaBear\Entity\WebhookEvent;
-use BillaBear\Repository\WebhookEventRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 class WebhookDispatcher implements WebhookDispatcherInterface
 {
-    public function __construct(private WebhookEventRepositoryInterface $eventRepository)
-    {
-    }
-
     public function dispatch(PayloadInterface $payload): void
     {
-        $event = new WebhookEvent();
-        $event->setType($payload->getType());
-        $event->setPayload(json_encode($payload->getPayload()));
-        $event->setCreatedAt(new \DateTime());
-        $this->eventRepository->save($event);
+        // TODO: Implement dispatch() method.
     }
 }

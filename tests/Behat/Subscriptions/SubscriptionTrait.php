@@ -8,7 +8,7 @@
 
 namespace BillaBear\Tests\Behat\Subscriptions;
 
-use BillaBear\Entity\Subscription;
+use Parthenon\Billing\Entity\Subscription;
 
 trait SubscriptionTrait
 {

@@ -9,11 +9,9 @@
 namespace BillaBear\Controller\App;
 
 use BillaBear\DataMappers\PriceDataMapper;
-use BillaBear\DataMappers\Usage\MetricDataMapper;
 use BillaBear\Dto\Request\Api\CreatePrice;
-use BillaBear\Dto\Request\App\Price\CreatePriceView;
 use BillaBear\Dto\Response\Api\ListResponse;
-use BillaBear\Repository\Usage\MetricRepositoryInterface;
+use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
@@ -32,22 +30,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PriceController
 {
     use LoggerAwareTrait;
-
-    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
-    #[Route('/app/product/{id}/price', name: 'app_product_price_create_get', methods: ['GET'])]
-    public function createPriceRead(
-        MetricRepositoryInterface $metricRepository,
-        MetricDataMapper $metricDataMapper,
-        SerializerInterface $serializer,
-    ) {
-        $metrics = $metricRepository->getAll();
-        $dto = new CreatePriceView();
-        $dto->setMetrics(array_map([$metricDataMapper, 'createAppDto'], $metrics));
-
-        $json = $serializer->serialize($dto, 'json');
-
-        return new JsonResponse($json, status: Response::HTTP_OK, json: true);
-    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/price', name: 'app_product_price_create', methods: ['POST'])]
@@ -88,6 +70,15 @@ class PriceController
         $price = $priceFactory->createPriceFromDto($dto);
         $price->setProduct($product);
 
+        if (!$price->getExternalReference()) {
+            try {
+                $priceRegister->registerPrice($price);
+            } catch (ProviderFailureException $e) {
+                $this->getLogger()->error('Failed to register price with stripe', ['exception_message' => $e->getMessage()]);
+
+                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
+            }
+        }
         $priceRepository->save($price);
         $dto = $priceFactory->createAppDto($price);
         $jsonResponse = $serializer->serialize($dto, 'json');

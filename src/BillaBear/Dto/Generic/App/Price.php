@@ -8,7 +8,6 @@
 
 namespace BillaBear\Dto\Generic\App;
 
-use BillaBear\Dto\Generic\App\Usage\Metric;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Price
@@ -17,7 +16,7 @@ class Price
     private string $id;
 
     #[SerializedName('amount')]
-    private ?int $amount;
+    private int $amount;
 
     #[SerializedName('currency')]
     private string $currency;
@@ -46,8 +45,6 @@ class Price
     #[SerializedName('product')]
     protected ?Product $product = null;
 
-    protected ?Metric $metric = null;
-
     public function hasId(): bool
     {
         return isset($this->id);
@@ -63,12 +60,12 @@ class Price
         $this->id = $id;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }
 
-    public function setAmount(?int $amount): void
+    public function setAmount(int $amount): void
     {
         $this->amount = $amount;
     }
@@ -161,15 +158,5 @@ class Price
     public function setProduct(?Product $product): void
     {
         $this->product = $product;
-    }
-
-    public function getMetric(): ?Metric
-    {
-        return $this->metric;
-    }
-
-    public function setMetric(?Metric $metric): void
-    {
-        $this->metric = $metric;
     }
 }
