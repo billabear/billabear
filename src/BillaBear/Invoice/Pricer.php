@@ -38,7 +38,7 @@ class Pricer implements PricerInterface
             PriceType::TIERED_VOLUME => $this->getTieredVolumePrice($price, $seatNumber),
             PriceType::UNIT => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber)],
             PriceType::PACKAGE => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber / $price->getUnits()), $seatNumber)],
-            default => [new PriceCalculation($price->getAsMoney(), $seatNumber)],
+            default => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber)],
         };
 
         $output = [];
