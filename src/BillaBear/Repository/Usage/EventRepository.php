@@ -13,15 +13,15 @@ use BillaBear\Entity\Subscription;
 use BillaBear\Entity\Usage\Event;
 use BillaBear\Entity\Usage\Metric;
 use BillaBear\Enum\MetricFilterType;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
-use Parthenon\MultiTenancy\Dbal\TenantConnection;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class EventRepository implements EventRepositoryInterface
 {
     public function __construct(
         #[Autowire('@doctrine.dbal.default_connection')]
-        private TenantConnection $connection)
+        private Connection $connection)
     {
     }
 
