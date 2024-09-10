@@ -74,7 +74,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -125,7 +125,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -176,7 +176,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -227,7 +227,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -278,7 +278,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -333,7 +333,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -388,7 +388,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -443,7 +443,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -498,7 +498,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -553,7 +553,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -608,7 +608,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -663,7 +663,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
