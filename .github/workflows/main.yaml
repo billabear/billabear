@@ -485,6 +485,13 @@ jobs:
       - name: Behat
         run: |
           vendor/bin/behat -f progress features/Invoice
+        continue-on-error: true
+      - name: Behat logs
+        if: failure()
+        run: |
+          cat var/log/test.log
+          exit 1
+
 
   behat_app_background:
     needs: code_style
