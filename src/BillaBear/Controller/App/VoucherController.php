@@ -39,7 +39,7 @@ class VoucherController
         Request $request,
         SerializerInterface $serializer,
         VoucherDataMapper $voucherFactory,
-        VoucherRepositoryInterface $voucherRepository
+        VoucherRepositoryInterface $voucherRepository,
     ): Response {
         $this->getLogger()->info('Received request to list vouchers');
 
@@ -110,7 +110,7 @@ class VoucherController
         VoucherRepositoryInterface $voucherRepository,
         VoucherDataMapper $voucherFactory,
         UserProvider $userProvider,
-        VoucherRegister $voucherRegister
+        VoucherRegister $voucherRegister,
     ) {
         $this->getLogger()->info('Received request to write create voucher');
 

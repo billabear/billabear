@@ -21,7 +21,7 @@ use Parthenon\Billing\Entity\Subscription;
 class CancellationDataMapper
 {
     public function __construct(
-        private SubscriptionDataMapper $subscriptionDataMapper
+        private SubscriptionDataMapper $subscriptionDataMapper,
     ) {
     }
 

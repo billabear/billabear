@@ -49,7 +49,7 @@ class SubscriptionPlanController
         FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
         PriceDataMapper $priceFactory,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to read create plan', ['product_id' => $request->get('id')]);
 

@@ -41,7 +41,7 @@ class ReceiptController
         ReceiptGeneratorInterface $receiptGenerator,
         ReceiptDataMapper $receiptFactory,
         SerializerInterface $serializer,
-        TransactionManager $transactionManager
+        TransactionManager $transactionManager,
     ): Response {
         $this->getLogger()->info('Received request to generate receipt for payment', ['payment_id' => $request->get('id')]);
 

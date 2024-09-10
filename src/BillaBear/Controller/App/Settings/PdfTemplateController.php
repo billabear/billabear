@@ -50,7 +50,7 @@ class PdfTemplateController
         Request $request,
         TemplateRepositoryInterface $templateRepository,
         TemplateDataMapper $factory,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to read notification settings');
         $templates = $templateRepository->getByBrand($request->get('brand', 'default'));

@@ -38,7 +38,7 @@ class DatabaseCreator
 
     public function getTenant()
     {
-        return new class() implements TenantInterface {
+        return new class implements TenantInterface {
             public function getId()
             {
                 // TODO: Implement getId() method.

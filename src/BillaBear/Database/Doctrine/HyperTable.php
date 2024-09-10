@@ -12,7 +12,7 @@ namespace BillaBear\Database\Doctrine;
 class HyperTable
 {
     public function __construct(
-        public string $timeColumn
+        public string $timeColumn,
     ) {
     }
 }

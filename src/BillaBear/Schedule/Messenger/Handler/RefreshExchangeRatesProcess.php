@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class RefreshExchangeRatesProcess
 {
     public function __construct(
-        private ExchangeRatesFetchProcess $ratesFetchProcess
+        private ExchangeRatesFetchProcess $ratesFetchProcess,
     ) {
     }
 

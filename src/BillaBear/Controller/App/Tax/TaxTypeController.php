@@ -114,7 +114,7 @@ class TaxTypeController
         TaxTypeRepositoryInterface $taxTypeRepository,
         TaxTypeDataMapper $taxTypeDataMapper,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ) {
         $this->getLogger()->info('Received request to update tax type write');
 

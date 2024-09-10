@@ -59,7 +59,7 @@ class InstallController
         DataStep $dataStep,
         UserCreatorInterface $userCreator,
         UserRepositoryInterface $userRepository,
-        TransactionManager $transactionManager
+        TransactionManager $transactionManager,
     ): Response {
         /** @var InstallRequest $dto */
         $dto = $serializer->deserialize($request->getContent(), InstallRequest::class, 'json');

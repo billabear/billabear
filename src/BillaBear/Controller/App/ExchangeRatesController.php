@@ -19,7 +19,7 @@ class ExchangeRatesController
 
     #[Route('/app/exchange-rates', name: 'app_app_exchangerates_getexchangerates')]
     public function getExchangeRates(
-        ExchangeRatesRepositoryInterface $exchangeRatesRepository
+        ExchangeRatesRepositoryInterface $exchangeRatesRepository,
     ) {
         $this->getLogger()->info('Received request to see exchange rates');
 

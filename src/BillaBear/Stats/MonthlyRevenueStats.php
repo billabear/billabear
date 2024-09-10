@@ -23,7 +23,7 @@ class MonthlyRevenueStats
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
-        private CachedStatsRepositoryInterface $cachedStatsRepository
+        private CachedStatsRepositoryInterface $cachedStatsRepository,
     ) {
     }
 

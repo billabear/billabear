@@ -57,7 +57,7 @@ class CountryController
         CountryRepositoryInterface $countryRepository,
         CountryDataMapper $dataMapper,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $this->getLogger()->info('Received request to add country');
 
@@ -123,7 +123,7 @@ class CountryController
         CountryRepositoryInterface $countryRepository,
         CountryDataMapper $dataMapper,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $this->getLogger()->info('Received request to edit country', ['country_id' => $request->get('id')]);
 

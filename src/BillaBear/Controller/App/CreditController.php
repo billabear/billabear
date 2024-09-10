@@ -36,7 +36,7 @@ class CreditController
         ValidatorInterface $validator,
         CreditDataMapper $factory,
         UserProvider $userProvider,
-        CreditAdjustmentRecorder $creditAdjustmentRecorder
+        CreditAdjustmentRecorder $creditAdjustmentRecorder,
     ): Response {
         $this->getLogger()->info('Received request to create customer credit', ['customer_id' => $request->get('id')]);
 

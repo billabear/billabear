@@ -45,7 +45,7 @@ class StateController
         StateTaxRuleRepositoryInterface $stateTaxRuleRepository,
         StateTaxRuleTerminator $stateTaxRuleTerminator,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $this->getLogger()->info('Received request to update state tax rule', [
             'country_id' => $request->get('id'),
@@ -85,7 +85,7 @@ class StateController
         StateTaxRuleRepositoryInterface $stateTaxRuleRepository,
         StateTaxRuleTerminator $stateTaxRuleTerminator,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $this->getLogger()->info('Received request to create state tax rule', [
             'country_id' => $request->get('id'),
@@ -157,7 +157,7 @@ class StateController
         StateTaxRuleDataMapper $stateTaxRuleDataMapper,
         TaxTypeRepositoryInterface $taxTypeRepository,
         TaxTypeDataMapper $taxTypeDataMapper,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to read state', [
             'country_id' => $request->get('id'),
@@ -191,7 +191,7 @@ class StateController
         StateRepositoryInterface $stateRepository,
         StateDataMapper $stateDataMapper,
         ValidatorInterface $validator,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to edit state', [
             'country_id' => $request->get('id'),

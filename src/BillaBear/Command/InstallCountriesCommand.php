@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InstallCountriesCommand extends Command
 {
     public function __construct(
-        private DataStep $dataStep
+        private DataStep $dataStep,
     ) {
         parent::__construct(null);
     }

@@ -60,7 +60,7 @@ class InvoiceController
     public function chargeInvoice(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
-        InvoiceCharger $invoiceCharger
+        InvoiceCharger $invoiceCharger,
     ): Response {
         $this->getLogger()->info('Received an API request to charge invoice', ['invoice_id' => $request->get('id')]);
         try {
