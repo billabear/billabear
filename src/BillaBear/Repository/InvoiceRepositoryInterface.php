@@ -24,6 +24,8 @@ interface InvoiceRepositoryInterface extends CrudRepositoryInterface
 
     public function getLastTenForCustomer(Customer $customer): ResultSet;
 
+    public function getLastForCustomer(Customer $customer): ?Invoice;
+
     /**
      * @return Invoice[]
      */

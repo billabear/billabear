@@ -12,17 +12,21 @@ use BillaBear\Credit\CreditAdjustmentRecorder;
 use BillaBear\Entity\Credit;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
+use BillaBear\Entity\InvoicedMetricCounter;
 use BillaBear\Entity\InvoiceLine;
+use BillaBear\Entity\Price;
+use BillaBear\Entity\Subscription;
+use BillaBear\Enum\MetricType;
 use BillaBear\Event\InvoiceCreated;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
+use BillaBear\Invoice\Usage\MetricProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\Usage\MetricUsageRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
-use Parthenon\Billing\Entity\Price;
-use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,6 +43,8 @@ class InvoiceGenerator
         private VoucherApplicationRepositoryInterface $voucherApplicationRepository,
         private EventDispatcherInterface $eventDispatcher,
         private DueDateDecider $dateDecider,
+        private MetricProvider $metricProvider,
+        private MetricUsageRepositoryInterface $metricUsageRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
     ) {
         $this->currencyConverter = new CurrencyConverter($exchangeRateProvider);
@@ -109,38 +115,71 @@ class InvoiceGenerator
         foreach ($subscriptions as $subscription) {
             $price = $subscription->getPrice();
 
-            $line = new InvoiceLine();
-            $line->setInvoice($invoice);
             if ($price instanceof Price) {
+                $lastValue = null;
                 $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
-                $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $subscription->getSeats());
+                if ($price->getUsage()) {
+                    $metricUsage = $this->metricUsageRepository->getMetricUsageForCustomerAndMetric($customer, $price->getMetric());
+                    $invoicedMetricCounter = new InvoicedMetricCounter();
+                    $invoicedMetricCounter->setMetricUsage($metricUsage);
+                    $invoicedMetricCounter->setMetric($metricUsage->getMetric());
+                    $invoicedMetricCounter->setCreatedAt(new \DateTime());
+                    $invoicedMetricCounter->setInvoice($invoice);
+                    $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
 
-                $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
-                $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
-                $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
-                $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
-                $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
-                $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-                $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
-                if (null !== $subscription->getSeats() && $subscription->getSeats() > 1) {
-                    $line->setDescription(sprintf('%d x %s', $subscription->getSeats(), $subscription->getPlanName()));
+                    if (MetricType::RESETTABLE === $price->getMetricType()) {
+                        $metricUsage->setValue(0);
+                        $usage = $this->metricProvider->getMetric($subscription);
+                    } else {
+                        $lastInvoice = $this->invoiceRepository->getLastForCustomer($customer);
+                        $totalUsage = $this->metricProvider->getMetric($subscription);
+                        $lastValue = $lastInvoice?->getInvoicedMetricCounter()?->getValue() ?? 0.0;
+                        $usage = $totalUsage + $lastValue;
+                        $metricUsage->setValue($usage);
+                    }
+
+                    $invoicedMetricCounter->setValue($usage);
+                    $metricUsage->setUpdatedAt(new \DateTime());
+                    $this->metricUsageRepository->save($metricUsage);
                 } else {
-                    $line->setDescription($subscription->getPlanName());
+                    $usage = $subscription->getSeats();
                 }
-                $line->setTaxPercentage($priceInfo->taxInfo->rate);
-                $line->setTaxType($taxType);
-                $line->setTaxCountry($priceInfo->taxInfo->country);
-                $line->setTaxState($priceInfo->taxInfo->state);
-                $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                // Pass Metric Usage
+                $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
+
+                foreach ($priceInfos as $priceInfo) {
+                    $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
+                    $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
+                    $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
+                    $line = new InvoiceLine();
+                    $line->setInvoice($invoice);
+                    $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+                    $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
+                    $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                    $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+                    $line->setQuantity($priceInfo->quantity);
+                    if ($priceInfo->quantity > 1) {
+                        $line->setDescription(sprintf('%d x %s', $priceInfo->quantity, $subscription->getPlanName()));
+                    } else {
+                        $line->setDescription($subscription->getPlanName());
+                    }
+                    $line->setTaxPercentage($priceInfo->taxInfo->rate);
+                    $line->setTaxType($taxType);
+                    $line->setTaxCountry($priceInfo->taxInfo->country);
+                    $line->setTaxState($priceInfo->taxInfo->state);
+                    $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                    $lines[] = $line;
+                }
             } else {
+                $line = new InvoiceLine();
+                $line->setInvoice($invoice);
                 $line->setCurrency('USD');
                 $line->setTotal(0);
                 $line->setSubTotal(0);
                 $line->setTaxTotal(0);
                 $line->setDescription('Free trial');
+                $lines[] = $line;
             }
-
-            $lines[] = $line;
         }
         $invoice->setSubscriptions($subscriptions);
 

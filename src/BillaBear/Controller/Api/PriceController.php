@@ -11,7 +11,6 @@ namespace BillaBear\Controller\Api;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\Dto\Request\Api\CreatePrice;
 use BillaBear\Dto\Response\Api\ListResponse;
-use Obol\Exception\ProviderFailureException;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
@@ -69,13 +68,6 @@ class PriceController
         $price = $priceFactory->createPriceFromDto($dto);
         $price->setProduct($product);
 
-        if (!$price->getExternalReference()) {
-            try {
-                $priceRegister->registerPrice($price);
-            } catch (ProviderFailureException $e) {
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
-        }
         $priceRepository->save($price);
         $dto = $priceFactory->createApiDto($price);
         $jsonResponse = $serializer->serialize($dto, 'json');

@@ -70,4 +70,9 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
 
         return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
+
+    public function getLastForCustomer(Customer $customer): ?Invoice
+    {
+        return $this->entityRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+    }
 }

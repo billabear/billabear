@@ -11,9 +11,11 @@ namespace BillaBear\Invoice;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\TaxType;
+use BillaBear\Entity\TierComponent;
 use BillaBear\Tax\TaxRateProviderInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
+use Parthenon\Billing\Enum\PriceType;
 
 class Pricer implements PricerInterface
 {
@@ -21,34 +23,53 @@ class Pricer implements PricerInterface
     {
     }
 
-    public function getCustomerPriceInfo(Price $price, Customer $customer, ?TaxType $taxType, ?int $seatNumber = 1): PriceInfo
-    {
+    public function getCustomerPriceInfo(
+        Price $price,
+        Customer $customer,
+        ?TaxType $taxType,
+        int|float|null $seatNumber = 1,
+        int|float|null $alreadyBilled = null,
+    ): array {
         if (null === $seatNumber) {
             $seatNumber = 1;
         }
+        $monies = match ($price->getType()) {
+            PriceType::TIERED_GRADUATED => $this->getTierGraduatedPrice($price, $seatNumber, $alreadyBilled),
+            PriceType::TIERED_VOLUME => $this->getTieredVolumePrice($price, $seatNumber),
+            PriceType::UNIT => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber)],
+            PriceType::PACKAGE => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber / $price->getUnits()), $seatNumber)],
+            default => [new PriceCalculation($price->getAsMoney(), $seatNumber)],
+        };
 
-        $money = $price->getAsMoney();
-        $money = $money->multipliedBy($seatNumber);
-        $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, $price->getProduct(), $price->getAsMoney());
-        $rawRate = $taxInfo->rate;
-        if ($price->isIncludingTax()) {
-            $rate = ($rawRate / 100) + 1;
-            $total = $money;
-            $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);
-            $vat = $money->minus($subTotal, RoundingMode::HALF_DOWN);
-        } else {
-            $rate = ($rawRate / 100);
-            $subTotal = $money;
-            $vat = $money->multipliedBy($rate, RoundingMode::HALF_UP);
-            $total = $subTotal->plus($vat, RoundingMode::HALF_DOWN);
+        $output = [];
+
+        /* @var PriceCalculation $money */
+        foreach ($monies as $priceCalculation) {
+            $money = $priceCalculation->money;
+            $taxInfo = $this->taxRateProvider->getRateForCustomer($customer, $taxType, $price->getProduct(), $money);
+            $rawRate = $taxInfo->rate;
+            if ($price->isIncludingTax()) {
+                $rate = ($rawRate / 100) + 1;
+                $total = $money;
+                $subTotal = $money->dividedBy($rate, RoundingMode::HALF_UP);
+                $vat = $money->minus($subTotal, RoundingMode::HALF_DOWN);
+            } else {
+                $rate = ($rawRate / 100);
+                $subTotal = $money;
+                $vat = $money->multipliedBy($rate, RoundingMode::HALF_UP);
+                $total = $subTotal->plus($vat, RoundingMode::HALF_DOWN);
+            }
+
+            $output[] = new PriceInfo(
+                $total,
+                $subTotal,
+                $vat,
+                $taxInfo,
+                floatval($priceCalculation->quantity),
+            );
         }
 
-        return new PriceInfo(
-            $total,
-            $subTotal,
-            $vat,
-            $taxInfo,
-        );
+        return $output;
     }
 
     public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, ?TaxType $taxType): PriceInfo
@@ -73,6 +94,70 @@ class Pricer implements PricerInterface
             $subTotal,
             $vat,
             $taxInfo,
+            floatval(1)
         );
+    }
+
+    private function getTieredVolumePrice(Price $price, int $seatNumber): array
+    {
+        $money = Money::zero($price->getCurrency());
+        /** @var TierComponent $component */
+        foreach ($price->getTierComponents() as $component) {
+            if ($component->getFirstUnit() <= $seatNumber && (null === $component->getLastUnit() || $component->getLastUnit() >= $seatNumber)) {
+                $flatFee = Money::ofMinor($component->getFlatFee(), $price->getCurrency());
+
+                $money = $money->plus($flatFee);
+
+                $unitPrice = Money::ofMinor($component->getUnitPrice(), $price->getCurrency());
+                $unitPriceCalculated = $unitPrice->multipliedBy($seatNumber);
+                $money = $money->plus($unitPriceCalculated);
+
+                return [new PriceCalculation($money, $seatNumber)];
+            }
+        }
+
+        throw new \Exception('Invalid component setup');
+    }
+
+    /**
+     * @return PriceCalculation[]
+     */
+    private function getTierGraduatedPrice(Price $price, int $seatNumber, int|float|null $alreadyBilled): array
+    {
+        $output = [];
+        // Handle continuous metric
+        /** @var TierComponent $component */
+        $seatsLeft = $seatNumber - $alreadyBilled;
+        foreach ($price->getTierComponents() as $component) {
+            if (null !== $alreadyBilled && null !== $component->getLastUnit() && $alreadyBilled > $component->getLastUnit()) {
+                continue;
+            }
+            $componentMoney = Money::zero($price->getCurrency());
+
+            if ($component->getFirstUnit() <= $seatNumber) {
+                $flatFee = Money::ofMinor($component->getFlatFee(), $price->getCurrency());
+
+                $componentMoney = $componentMoney->plus($flatFee);
+                if (null !== $component->getLastUnit()) {
+                    $diff = ($component->getLastUnit() - $component->getFirstUnit()) + 1;
+                    if ($seatsLeft > $diff) {
+                        $seatsBillable = $diff;
+                    } else {
+                        $seatsBillable = $seatsLeft;
+                    }
+                } else {
+                    $seatsBillable = $seatsLeft;
+                }
+                $unitPrice = Money::ofMinor($component->getUnitPrice(), $price->getCurrency());
+                $unitPriceCalculated = $unitPrice->multipliedBy($seatsBillable);
+                $componentMoney = $componentMoney->plus($unitPriceCalculated);
+                $output[] = new PriceCalculation($componentMoney, $seatsBillable);
+                $seatsLeft -= $seatsBillable;
+            } else {
+                break;
+            }
+        }
+
+        return $output;
     }
 }

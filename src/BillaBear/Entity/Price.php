@@ -8,6 +8,8 @@
 
 namespace BillaBear\Entity;
 
+use BillaBear\Entity\Usage\Metric;
+use BillaBear\Enum\MetricType;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\Product;
 
@@ -18,6 +20,12 @@ use Parthenon\Billing\Entity\Product;
 #[ORM\Table('price')]
 class Price extends \Parthenon\Billing\Entity\Price
 {
+    #[ORM\ManyToOne(targetEntity: Metric::class)]
+    private ?Metric $metric = null;
+
+    #[ORM\Column(type: 'string', enumType: MetricType::class, nullable: true)]
+    private ?MetricType $metricType = null;
+
     public function isSameSchedule(Price $price): bool
     {
         if ($this->getSchedule() === $price->getSchedule()) {
@@ -25,5 +33,25 @@ class Price extends \Parthenon\Billing\Entity\Price
         }
 
         return false;
+    }
+
+    public function getMetric(): ?Metric
+    {
+        return $this->metric;
+    }
+
+    public function setMetric(?Metric $metric): void
+    {
+        $this->metric = $metric;
+    }
+
+    public function getMetricType(): ?MetricType
+    {
+        return $this->metricType;
+    }
+
+    public function setMetricType(?MetricType $metricType): void
+    {
+        $this->metricType = $metricType;
     }
 }

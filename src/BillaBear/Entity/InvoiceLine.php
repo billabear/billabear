@@ -57,6 +57,9 @@ class InvoiceLine
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $reverseCharge = false;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private float $quantity;
+
     public function getId()
     {
         return $this->id;
@@ -195,5 +198,15 @@ class InvoiceLine
     public function setReverseCharge(bool $reverseCharge): void
     {
         $this->reverseCharge = $reverseCharge;
+    }
+
+    public function getQuantity(): float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): void
+    {
+        $this->quantity = $quantity;
     }
 }

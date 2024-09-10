@@ -75,6 +75,9 @@
             <router-link :to="{name: 'app.product.list'}">{{ $t('app.product.menu.products_list') }}</router-link>
           </MenuSubItem>
           <MenuSubItem>
+            <router-link :to="{name: 'app.metric.list'}">{{ $t('app.product.menu.metrics') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
             <router-link :to="{name: 'app.feature.list'}">{{ $t('app.product.menu.features') }}</router-link>
           </MenuSubItem>
           <MenuSubItem>

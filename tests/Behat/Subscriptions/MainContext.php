@@ -29,6 +29,7 @@ use BillaBear\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 
@@ -368,7 +369,14 @@ class MainContext implements Context
                 $subscription->setPrice($price);
                 $subscription->setCurrency($price->getCurrency());
                 $subscription->setAmount($price->getAmount());
+            } elseif (isset($row['Type'])) {
+                $priceType = PriceType::from($row['Type']);
+                $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'type' => $priceType]);
+                $subscription->setPaymentSchedule($row['Price Schedule']);
+                $subscription->setPrice($price);
+                $subscription->setCurrency($price->getCurrency());
             }
+
             $statusText = strtolower($row['Status'] ?? 'Active');
             $status = SubscriptionStatus::from($statusText);
 
