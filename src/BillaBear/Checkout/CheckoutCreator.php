@@ -80,35 +80,46 @@ class CheckoutCreator
             /** @var \BillaBear\Entity\Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
 
-            $checkoutLine = new CheckoutLine();
-            $checkoutLine->setSubscriptionPlan($plan);
-            $checkoutLine->setPrice($price);
-            $checkoutLine->setSeatNumber($subscription->getSeatNumber());
-            $checkoutLine->setCheckout($checkout);
-            $checkoutLine->setTaxType($plan->getProduct()->getTaxType());
-            $checkoutLine->setDescription($plan->getProduct()->getName().' / '.$price->getSchedule());
             if (isset($customer)) {
-                $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);
-                $checkoutLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
-                $checkoutLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
-                $checkoutLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-                $checkoutLine->setTaxPercentage($priceInfo->taxInfo->rate);
-                $checkoutLine->setTaxCountry($priceInfo->taxInfo->country);
-                $checkoutLine->setTaxState($priceInfo->taxInfo->state);
-                $checkoutLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
-                $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
-                $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
-                $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
+                $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);
+                foreach ($priceInfos as $priceInfo) {
+                    $checkoutLine = new CheckoutLine();
+                    $checkoutLine->setSubscriptionPlan($plan);
+                    $checkoutLine->setPrice($price);
+                    $checkoutLine->setSeatNumber($subscription->getSeatNumber());
+                    $checkoutLine->setCheckout($checkout);
+                    $checkoutLine->setTaxType($plan->getProduct()->getTaxType());
+                    $checkoutLine->setDescription($plan->getProduct()->getName().' / '.$price->getSchedule());
+                    $checkoutLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+                    $checkoutLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
+                    $checkoutLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                    $checkoutLine->setTaxPercentage($priceInfo->taxInfo->rate);
+                    $checkoutLine->setTaxCountry($priceInfo->taxInfo->country);
+                    $checkoutLine->setTaxState($priceInfo->taxInfo->state);
+                    $checkoutLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                    $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
+                    $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
+                    $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
+                    $checkoutLine->setIncludeTax($price->isIncludingTax());
+                    $checkoutLine->setCurrency($price->getCurrency());
+                    $lines[] = $checkoutLine;
+                }
             } else {
+                $checkoutLine = new CheckoutLine();
+                $checkoutLine->setSubscriptionPlan($plan);
+                $checkoutLine->setPrice($price);
+                $checkoutLine->setSeatNumber($subscription->getSeatNumber());
+                $checkoutLine->setCheckout($checkout);
+                $checkoutLine->setTaxType($plan->getProduct()->getTaxType());
+                $checkoutLine->setDescription($plan->getProduct()->getName().' / '.$price->getSchedule());
                 $checkoutLine->setTotal($price->getAsMoney()->getMinorAmount()->toInt());
                 $totalAmount = $this->addAmount($totalAmount, $price->getAsMoney());
+                $checkoutLine->setIncludeTax($price->isIncludingTax());
+                $checkoutLine->setCurrency($price->getCurrency());
+                $lines[] = $checkoutLine;
             }
 
-            $checkoutLine->setIncludeTax($price->isIncludingTax());
-            $checkoutLine->setCurrency($price->getCurrency());
-
             $checkout->setCurrency($price->getCurrency());
-            $lines[] = $checkoutLine;
         }
 
         /** @var CreateInvoiceItem $item */
@@ -122,18 +133,18 @@ class CheckoutCreator
             $checkoutLine->setIncludeTax($item->getIncludeTax());
             $checkoutLine->setDescription($item->getDescription());
             if (isset($customer)) {
-                $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($money, $customer, $item->getIncludeTax(), $taxType);
-                $checkoutLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
-                $checkoutLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
-                $checkoutLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-                $checkoutLine->setTaxPercentage($priceInfo->taxInfo->rate);
-                $checkoutLine->setTaxCountry($priceInfo->taxInfo->country);
-                $checkoutLine->setTaxState($priceInfo->taxInfo->state);
-                $checkoutLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                $priceInfos = $this->pricer->getCustomerPriceInfoFromMoney($money, $customer, $item->getIncludeTax(), $taxType);
+                $checkoutLine->setTaxTotal($priceInfos->vat->getMinorAmount()->toInt());
+                $checkoutLine->setTotal($priceInfos->total->getMinorAmount()->toInt());
+                $checkoutLine->setSubTotal($priceInfos->subTotal->getMinorAmount()->toInt());
+                $checkoutLine->setTaxPercentage($priceInfos->taxInfo->rate);
+                $checkoutLine->setTaxCountry($priceInfos->taxInfo->country);
+                $checkoutLine->setTaxState($priceInfos->taxInfo->state);
+                $checkoutLine->setReverseCharge($priceInfos->taxInfo->reverseCharge);
 
-                $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
-                $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
-                $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
+                $totalAmount = $this->addAmount($totalAmount, $priceInfos->total);
+                $totalVat = $this->addAmount($totalVat, $priceInfos->vat);
+                $subTotal = $this->addAmount($subTotal, $priceInfos->subTotal);
             } else {
                 $checkoutLine->setTotal($money->getMinorAmount()->toInt());
                 $totalAmount = $this->addAmount($totalAmount, $money);

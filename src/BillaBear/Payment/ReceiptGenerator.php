@@ -72,27 +72,29 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $this->getLogger()->debug('Creating receipt from subscriptions', ['payment_id' => (string) $payment->getId()]);
             /** @var Subscription $subscription */
             foreach ($payment->getSubscriptions() as $subscription) {
-                /** @var \BillaBear\Entity\ReceiptLine $line */
-                $line = $this->entityFactory->getReceiptLine();
-                $line->setTotal($subscription->getAmount());
-                $line->setCurrency($subscription->getCurrency());
-                $line->setDescription($subscription->getPlanName());
-                $line->setReceipt($receipt);
                 $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
 
-                $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $taxType);
-                $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
-                $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-                $line->setVatPercentage($priceInfo->taxInfo->rate);
-                $line->setTaxType($taxType);
-                $line->setTaxCountry($priceInfo->taxInfo->country);
-                $line->setTaxState($priceInfo->taxInfo->state);
-                $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                $priceInfos = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $taxType);
+                foreach ($priceInfos as $priceInfo) {
+                    /** @var \BillaBear\Entity\ReceiptLine $line */
+                    $line = $this->entityFactory->getReceiptLine();
+                    $line->setTotal($subscription->getAmount());
+                    $line->setCurrency($subscription->getCurrency());
+                    $line->setDescription($subscription->getPlanName());
+                    $line->setReceipt($receipt);
+                    $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+                    $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                    $line->setVatPercentage($priceInfo->taxInfo->rate);
+                    $line->setTaxType($taxType);
+                    $line->setTaxCountry($priceInfo->taxInfo->country);
+                    $line->setTaxState($priceInfo->taxInfo->state);
+                    $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
 
-                $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
-                $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
+                    $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
+                    $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
 
-                $lines[] = $line;
+                    $lines[] = $line;
+                }
             }
         }
 
