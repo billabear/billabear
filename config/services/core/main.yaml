@@ -36,6 +36,9 @@ services:
     tags: ['controller.service_arguments']
 
 
+  BillaBear\Database\Doctrine\TimescalePlatform:
+    class: BillaBear\Database\Doctrine\TimescalePlatform
+    public: true
 
   #####
   ## Parthenon user services
@@ -548,6 +551,22 @@ services:
   app.repository.orm.customer_subscription_event:
     class: BillaBear\Repository\Orm\CustomerSubscriptionEventRepository
 
+  BillaBear\Repository\Usage\MetricRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.metric'
+  app.repository.orm.metric:
+    class: BillaBear\Repository\Orm\MetricRepository
+
+  BillaBear\Repository\Usage\MetricUsageRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.metric_usage'
+  app.repository.orm.metric_usage:
+    class: BillaBear\Repository\Orm\MetricUsageRepository
+
+  BillaBear\Repository\Usage\EventRepository:
+  app.repository.orm.event:
+    class: BillaBear\Repository\Orm\EventRepository
+
   BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\ObolRegister'
 
 
@@ -581,6 +600,11 @@ services:
 
   Parthenon\Billing\Factory\EntityFactoryInterface: '@BillaBear\Factory\EntityFactory'
   Parthenon\Billing\Subscription\SchedulerInterface: '@BillaBear\Subscription\Schedule\SchedulerHandler'
+
+  BillaBear\Database\Doctrine\HypertableSchemaListener:
+    tags:
+      - { name: doctrine.event_listener, event: postGenerateSchemaTable }
+
 
 when@dev:
   services:

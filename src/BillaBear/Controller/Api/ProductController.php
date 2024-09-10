@@ -12,7 +12,6 @@ use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\Dto\Request\Api\CreateProduct;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Filters\ProductList;
-use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
@@ -56,13 +55,7 @@ class ProductController
         }
 
         $product = $productFactory->createFromApiCreate($dto);
-        if (!$product->hasExternalReference()) {
-            try {
-                $product = $productRegister->registerProduct($product);
-            } catch (ProviderFailureException $e) {
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
-        }
+
         $productRepository->save($product);
         $productDto = $productFactory->createApiDtoFromProduct($product);
         $jsonResponse = $serializer->serialize($productDto, 'json');

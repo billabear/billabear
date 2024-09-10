@@ -15,7 +15,16 @@ use Brick\Money\Money;
 
 interface PricerInterface
 {
-    public function getCustomerPriceInfo(Price $price, Customer $customer, TaxType $taxType, int $seatNumber = 1): PriceInfo;
+    /**
+     * @return PriceInfo[]
+     */
+    public function getCustomerPriceInfo(
+        Price $price,
+        Customer $customer,
+        TaxType $taxType,
+        int|float|null $seatNumber = 1,
+        int|float|null $alreadyBilled = null,
+    ): array;
 
     public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, ?TaxType $taxType): PriceInfo;
 }

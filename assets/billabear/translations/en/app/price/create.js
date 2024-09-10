@@ -11,6 +11,9 @@ export const PRICE_CREATE_TRANSLATIONS = {
     recurring: "Is A Recurring?",
     including_tax: "Does Price includes tax?",
     public: "Public",
+    metric: "Metric",
+    metric_type: "Metric Type",
+    create_metric: "You need to create a Metric",
     help_info: {
         amount: "The price is the minor level currency. So 1.00 USD would be 100 and 9.99 would be 999.",
         display_amount: "This price would be {amount}.",
@@ -19,11 +22,34 @@ export const PRICE_CREATE_TRANSLATIONS = {
         currency: "The currency that the customer should be charged in",
         schedule: "How often the customer should be charged",
         including_tax: "If you want to hide the tax within the price or if you want to make the customer pay the tax themselves",
-        public: "If this is a publicly displayable price"
+        public: "If this is a publicly displayable price",
+        usage: "If the customer is billed based on their usage of a metric or by seat.",
+        metric_type: "If the usage metric is reset at the end of the payment schedule and is used fully for invoicing or continuous and the difference between the last invoice and next invoice is used."
+    },
+    metric_types: {
+        resettable: "Resettable",
+        continuous: "Continuous",
     },
     schedule: {
         week: "Weekly",
         month: "Monthly",
         year: "Yearly"
+    },
+    type: "Type",
+    types: {
+        fixed_price: "Fixed-Price",
+        package: "Package",
+        per_unit: "Per Unit/Per Seat",
+        tiered_volume: "Tiered Volume",
+        tiered_graduated: "Tiered Graduated",
+    },
+    usage: "Usage",
+    units: "Units",
+    tiers: "Tiers",
+    tiers_fields: {
+        first_unit: "First unit",
+        last_unit: "Last Unit",
+        unit_price: "Unit Price",
+        flat_fee: "Flat Fee",
     }
 }

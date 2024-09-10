@@ -20,7 +20,6 @@ use BillaBear\Dto\Response\App\ProductView;
 use BillaBear\Filters\ProductList;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
-use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -88,13 +87,7 @@ class ProductController
         }
 
         $product = $productFactory->createFromAppCreate($dto);
-        if (!$product->hasExternalReference()) {
-            try {
-                $product = $productRegister->registerProduct($product);
-            } catch (ProviderFailureException $e) {
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
-        }
+
         $productRepository->save($product);
         $productDto = $productFactory->createApiDtoFromProduct($product);
         $jsonResponse = $serializer->serialize($productDto, 'json');
@@ -135,7 +128,7 @@ class ProductController
             lastId: $lastKey,
         );
 
-        $dtos = array_map([$productFactory, 'createApiDtoFromProduct'], $resultSet->getResults());
+        $dtos = array_map([$productFactory, 'createAppDtoFromProduct'], $resultSet->getResults());
 
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());

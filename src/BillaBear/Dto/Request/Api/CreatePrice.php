@@ -8,12 +8,17 @@
 
 namespace BillaBear\Dto\Request\Api;
 
+use BillaBear\Dto\Request\Api\Price\CreateTier;
+use BillaBear\Enum\MetricType;
+use BillaBear\Validator\Constraints\MetricExists;
+use Parthenon\Billing\Enum\PriceType;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreatePrice
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type(type: 'integer')]
     #[Assert\Positive]
     #[SerializedName('amount')]
@@ -44,12 +49,46 @@ class CreatePrice
     #[SerializedName('public')]
     private $public = true;
 
-    public function getAmount(): int
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type(type: 'string')]
+    #[Assert\Choice(choices: [PriceType::ONE_OFF->value, PriceType::FIXED_PRICE->value, PriceType::PACKAGE->value, PriceType::TIERED_GRADUATED->value, PriceType::TIERED_VOLUME->value, PriceType::UNIT->value])]
+    private $type;
+
+    #[Assert\When(
+        expression: 'this.getUsage() == true',
+        constraints: [
+            new Assert\NotBlank(),
+            new Assert\Choice(choices: MetricType::TYPES),
+        ],
+    )]
+    private $metric_type;
+
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type(type: 'integer')]
+    #[Assert\Positive]
+    private $units;
+
+    #[Assert\Type(type: 'boolean')]
+    private $usage;
+
+    #[Assert\Valid]
+    private array $tiers = [];
+
+    #[Assert\When(
+        expression: 'this.getUsage() == true',
+        constraints: [
+            new Assert\NotBlank(),
+            new MetricExists(),
+        ],
+    )]
+    private $metric;
+
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): void
+    public function setAmount(?int $amount): void
     {
         $this->amount = $amount;
     }
@@ -117,5 +156,110 @@ class CreatePrice
     public function isIncludingTax(): bool
     {
         return true === $this->including_tax;
+    }
+
+    public function getUnits()
+    {
+        return $this->units;
+    }
+
+    public function setUnits($units): void
+    {
+        $this->units = $units;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+    public function getUsage()
+    {
+        return true === $this->usage;
+    }
+
+    public function setUsage($usage): void
+    {
+        $this->usage = $usage;
+    }
+
+    public function addTier(CreateTier $createTier)
+    {
+        $this->tiers[] = $createTier;
+    }
+
+    public function getTiers(): array
+    {
+        return $this->tiers;
+    }
+
+    public function setTiers(array $tiers): void
+    {
+        $this->tiers = $tiers;
+    }
+
+    public function getMetric()
+    {
+        return $this->metric;
+    }
+
+    public function setMetric($metric): void
+    {
+        $this->metric = $metric;
+    }
+
+    public function getMetricType()
+    {
+        return $this->metric_type;
+    }
+
+    public function setMetricType($metric_type): void
+    {
+        $this->metric_type = $metric_type;
+    }
+
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if (!isset($this->amount) && ($this->type !== PriceType::TIERED_VOLUME->value && $this->type !== PriceType::TIERED_GRADUATED->value)) {
+            $context->buildViolation('Amount must be provided if type is not tiered')
+                ->atPath('amount')
+                ->addViolation();
+        }
+
+        if (!isset($this->units) && $this->type === PriceType::PACKAGE->value) {
+            $context->buildViolation('Units must be provided if type is package')
+                ->atPath('units')
+                ->addViolation();
+        }
+
+        $lastUnit = 0;
+        if (count($this->tiers) > 0) {
+            /* @var CreateTier[] $tiers */
+            usort($this->tiers, function (CreateTier $a, CreateTier $b) {
+                return $a->getFirstUnit() <=> $b->getFirstUnit();
+            });
+            foreach ($this->tiers as $tier) {
+                if ($tier->getFirstUnit() <= $lastUnit) {
+                    $context->buildViolation('Tiers contain invalid first and last unit configuration')
+                        ->atPath('tiers')
+                        ->addViolation();
+                }
+
+                $expectedUnit = $lastUnit + 1;
+                if ($expectedUnit !== $tier->getFirstUnit()) {
+                    $context->buildViolation("Tiers don't align correctly")
+                        ->atPath('tiers')
+                        ->addViolation();
+                }
+
+                $lastUnit = $tier->getLastUnit();
+            }
+        }
     }
 }

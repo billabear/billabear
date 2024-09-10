@@ -11,13 +11,14 @@ namespace BillaBear\Invoice;
 use BillaBear\Tax\TaxInfo;
 use Brick\Money\Money;
 
-class PriceInfo
+readonly class PriceInfo
 {
     public function __construct(
         public readonly Money $total,
         public readonly Money $subTotal,
         public readonly Money $vat,
         public readonly TaxInfo $taxInfo,
+        public readonly float $quantity,
     ) {
     }
 }

@@ -43,6 +43,9 @@ class Invoice
     #[ORM\ManyToOne(targetEntity: Customer::class)]
     private Customer $customer;
 
+    #[ORM\ManyToOne(targetEntity: InvoicedMetricCounter::class, cascade: ['persist'])]
+    private ?InvoicedMetricCounter $invoicedMetricCounter = null;
+
     #[ORM\ManyToMany(targetEntity: Subscription::class)]
     private array|Collection $subscriptions;
 
@@ -150,6 +153,16 @@ class Invoice
     public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getInvoicedMetricCounter(): InvoicedMetricCounter
+    {
+        return $this->invoicedMetricCounter;
+    }
+
+    public function setInvoicedMetricCounter(InvoicedMetricCounter $invoicedMetricCounter): void
+    {
+        $this->invoicedMetricCounter = $invoicedMetricCounter;
     }
 
     public function addPayment(Payment $payment): void
@@ -269,16 +282,6 @@ class Invoice
     public function getSubTotalMoney(): Money
     {
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
-    }
-
-    public function getVatPercentage(): float
-    {
-        return $this->vatPercentage;
-    }
-
-    public function setVatPercentage(float $vatPercentage): void
-    {
-        $this->vatPercentage = $vatPercentage;
     }
 
     public function isPaid(): bool

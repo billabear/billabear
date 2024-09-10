@@ -68,7 +68,11 @@
 }
 
 .form-field-input, .form-field {
-    @apply rounded-lg border border-gray-300 ring-teal-500;
+    @apply rounded-lg border border-gray-300 ring-teal-500 p-2;
+}
+
+select.form-field-input, select.form-field {
+    @apply pr-10;
 }
 
 .form-field-help {

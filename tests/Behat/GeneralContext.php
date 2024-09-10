@@ -22,13 +22,10 @@ class GeneralContext implements Context
 {
     use SendRequestTrait;
 
-    private Session $session;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(Session $session, EntityManagerInterface $entityManager)
-    {
-        $this->session = $session;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private Session $session,
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
     /**

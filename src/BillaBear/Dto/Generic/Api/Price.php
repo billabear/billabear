@@ -16,7 +16,7 @@ class Price
     private string $id;
 
     #[SerializedName('amount')]
-    private int $amount;
+    private ?int $amount;
 
     #[SerializedName('currency')]
     private string $currency;
@@ -46,12 +46,12 @@ class Price
         $this->id = $id;
     }
 
-    public function getAmount(): int
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): void
+    public function setAmount(?int $amount): void
     {
         $this->amount = $amount;
     }
