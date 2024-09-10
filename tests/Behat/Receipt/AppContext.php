@@ -26,7 +26,7 @@ class AppContext implements Context
         private Session $session,
         private CustomerRepository $customerRepository,
         private PaymentRepository $paymentRepository,
-        private ReceiptServiceRepository $receiptRepository
+        private ReceiptServiceRepository $receiptRepository,
     ) {
     }
 

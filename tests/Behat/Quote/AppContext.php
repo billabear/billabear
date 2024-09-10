@@ -28,7 +28,7 @@ class AppContext implements Context
         private QuoteRepository $quoteRepository,
         private Session $session,
         private CustomerRepository $customerRepository,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
     ) {
     }
 

@@ -14,7 +14,7 @@ use BillaBear\Background\Payments\RetryPaymentsProcess;
 class MainContext implements Context
 {
     public function __construct(
-        private RetryPaymentsProcess $paymentsProcess
+        private RetryPaymentsProcess $paymentsProcess,
     ) {
     }
 

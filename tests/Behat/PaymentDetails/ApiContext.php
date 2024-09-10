@@ -24,7 +24,7 @@ class ApiContext implements Context
     public function __construct(
         private Session $session,
         private PaymentCardServiceRepository $paymentDetailsRepository,
-        protected CustomerRepository $customerRepository
+        protected CustomerRepository $customerRepository,
     ) {
     }
 

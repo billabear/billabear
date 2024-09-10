@@ -22,7 +22,7 @@ class PlacesProviderTest extends TestCase
         $repository = $this->createMock(WorkflowTransitionRepositoryInterface::class);
         $repository->expects($this->atLeastOnce())->method('findEnabledForWorkflow')->with($this->anything())->willReturn([]);
 
-        $placeOne = new class() implements PlaceInterface {
+        $placeOne = new class implements PlaceInterface {
             public function getName(): string
             {
                 return 'place_one';
@@ -49,7 +49,7 @@ class PlacesProviderTest extends TestCase
             }
         };
 
-        $placeTwo = new class() implements PlaceInterface {
+        $placeTwo = new class implements PlaceInterface {
             public function getName(): string
             {
                 return 'place_two';
@@ -75,7 +75,7 @@ class PlacesProviderTest extends TestCase
                 return true;
             }
         };
-        $placeThree = new class() implements PlaceInterface {
+        $placeThree = new class implements PlaceInterface {
             public function getName(): string
             {
                 return 'place_three';
@@ -128,7 +128,7 @@ class PlacesProviderTest extends TestCase
         $repository = $this->createMock(WorkflowTransitionRepositoryInterface::class);
         $repository->expects($this->atLeastOnce())->method('findEnabledForWorkflow')->with(WorkflowType::CANCEL_SUBSCRIPTION)->willReturn([$entity]);
 
-        $placeOne = new class() implements PlaceInterface {
+        $placeOne = new class implements PlaceInterface {
             public function getName(): string
             {
                 return 'place_one';
@@ -154,7 +154,7 @@ class PlacesProviderTest extends TestCase
                 return true;
             }
         };
-        $placeTwo = new class() implements PlaceInterface {
+        $placeTwo = new class implements PlaceInterface {
             public function getName(): string
             {
                 return 'place_two';
@@ -180,7 +180,7 @@ class PlacesProviderTest extends TestCase
                 return true;
             }
         };
-        $placeThree = new class() implements PlaceInterface {
+        $placeThree = new class implements PlaceInterface {
             public function getName(): string
             {
                 return 'place_three';
