@@ -8,7 +8,7 @@ services:
       - billabear
 
   database:
-    image: postgres:13.3-alpine3.14
+    image: timescale/timescaledb-ha:pg16
     environment:
       - POSTGRES_DB=${PSQGL_DATABASE_NAME}
       - POSTGRES_USER=${PSQGL_DATABASE_USER}
