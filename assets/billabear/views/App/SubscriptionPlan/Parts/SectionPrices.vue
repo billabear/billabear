@@ -121,7 +121,7 @@
 
           <div class="form-field-ctn" v-if="price.usage">
             <label class="form-field-lbl" for="name">
-              {{ $t('app.metric.create.metric_type') }}
+              {{ $t('app.price.create.metric_type') }}
             </label>
             <p class="form-field-error" v-if="errors.metric_type != undefined">{{ errors.metric_type }}</p>
             <select class="form-field" v-model="price.metric_type">
