@@ -73,7 +73,7 @@ class CreateTier
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, mixed $payload): void
     {
-        if ($this->first_unit > $this->last_unit) {
+        if ($this->first_unit > $this->last_unit && !is_null($this->last_unit)) {
             $context->buildViolation("First unit can't be more than the last unit")
                 ->atPath('last_unit')
                 ->addViolation();

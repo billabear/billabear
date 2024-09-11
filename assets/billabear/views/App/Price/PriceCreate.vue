@@ -5,7 +5,6 @@
     <form @submit.prevent="send">
       <div class="card-body">
         <div class="form-field-ctn">
-
           <label class="form-field-lbl" for="amount">
             {{ $t('app.price.create.type') }}
           </label>
@@ -58,7 +57,7 @@
                 <td>
                   <p class="form-field-error" v-if="errors.tiers != undefined && errors.tiers[key].last_unit != undefined">{{ errors.tiers[key].last_unit }}</p>
 
-                  <input v-model="tier.last_unit" class="form-field-input" type="number" v-if="key !== (tiers.length-1)" />
+                  <input v-model="tier.last_unit" class="form-field-input" :class="{'error-field': validTiers === false}" type="number" v-if="key !== (tiers.length-1)" />
                   <input disabled class="form-field-input" value="∞" v-else>
                 </td>
                 <td>
@@ -75,7 +74,7 @@
             </tbody>
           </table>
 
-          <button class="btn--main" @click="addTier">Add</button>
+          <button type="button" class="btn--main" @click="addTier">Add</button>
         </div>
 
 
@@ -121,7 +120,7 @@
             {{ $t('app.price.create.recurring') }}
           </label>
           <p class="form-field-error" v-if="errors.recurring != undefined">{{ errors.recurring }}</p>
-          <input type="checkbox" class="fodsrm-field-input" id="recurring" v-model="price.recurring" />
+          <input type="checkbox" class="form-field-input" id="recurring" v-model="price.recurring" />
           <p class="form-field-help">{{ $t('app.price.create.help_info.recurring') }}</p>
         </div>
         <div class="form-field-ctn" v-if="price.recurring">
@@ -190,6 +189,7 @@ import CurrencySelect from "../../../components/app/Forms/CurrencySelect.vue";
 import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
 import SectionFeatures from "../SubscriptionPlan/Parts/SectionFeatures.vue";
 import {Button, Select} from "flowbite-vue";
+import {timer} from "d3";
 
 export default {
   name: "PriceCreate",
@@ -198,7 +198,7 @@ export default {
     return {
       price: {
         amount: 0,
-        currency: 'USD',
+        currency: 'EUR',
         recurring: true,
         schedule: null,
         external_reference: null,
@@ -209,7 +209,8 @@ export default {
         units: null,
       },
       rawTiers: [
-        {first_unit: 1, last_unit: 1, unit_price: 0, flat_fee: 0}
+        {first_unit: 1, last_unit: 1, unit_price: 0, flat_fee: 0},
+        {first_unit: 1, last_unit: null, unit_price: 0, flat_fee: 0}
       ],
       errors: {},
       sendingInProgress: false,
@@ -231,6 +232,21 @@ export default {
     showUsage: function () {
       return (this.price.type !== 'fixed_price')
     },
+    validTiers: function() {
+      let valid = true;
+      this.rawTiers.forEach( tier => {
+        if (!valid) {
+          return;
+        }
+        if (tier.first_unit > tier.last_unit && tier.last_unit !== null) {
+          console.log(tier)
+          valid = false;
+          return;
+        }
+      })
+
+      return valid;
+    },
     tiers: function () {
       const output = [];
       let lastUnit = 0;
@@ -241,19 +257,25 @@ export default {
         lastUnit = tier.last_unit;
       });
 
-      output.push({first_unit: lastUnit+1, last_unit: null, unit_price: 0, flat_fee: 0});
+      const len = this.rawTiers.length-1;
+      this.rawTiers[len].last_unit = null;
       return output;
     }
   },
   methods: {
     addTier: function() {
-      let lastUnit = 1;
-
+      let firstUnit = 1;
+      let lastUnit = 2;
+      let secondLast = null;
       this.rawTiers.forEach( tier => {
+        secondLast = lastUnit;
+        firstUnit = tier.first_unit;
+        if (tier.last_unit === null) {
+          tier.last_unit = tier.first_unit+1;
+        }
         lastUnit = tier.last_unit;
       });
       this.rawTiers.push({first_unit: lastUnit+1, last_unit: lastUnit+2, unit_price: 0, flat_fee: 0});
-
     },
     currency: function (value) {
       return currency(value, { fromCents: true });
@@ -265,7 +287,7 @@ export default {
       this.errors = {};
 
       if (this.showTiers) {
-        this.price.tiers = this.rawTiers;
+        this.price.tiers = this.tiers;
         this.price.amount = null;
       }
 

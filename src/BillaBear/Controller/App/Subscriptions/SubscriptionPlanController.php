@@ -11,12 +11,14 @@ namespace BillaBear\Controller\App\Subscriptions;
 use BillaBear\DataMappers\FeatureDataMapper;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
+use BillaBear\DataMappers\Usage\MetricDataMapper;
 use BillaBear\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use BillaBear\Dto\Request\App\Subscription\PostSubscriptionPlan;
 use BillaBear\Dto\Response\App\SubscriptionPlanCreationInfo;
 use BillaBear\Dto\Response\App\SubscriptionPlanUpdateView;
 use BillaBear\Dto\Response\App\SubscriptionPlanView;
 use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Repository\Usage\MetricRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\PlanCreatedPayload;
 use BillaBear\Webhook\Outbound\Payload\PlanDeletePayload;
 use BillaBear\Webhook\Outbound\Payload\PlanUpdatedPayload;
@@ -49,6 +51,8 @@ class SubscriptionPlanController
         FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
         PriceDataMapper $priceFactory,
+        MetricRepositoryInterface $metricRepository,
+        MetricDataMapper $metricDataMapper,
         SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to read create plan', ['product_id' => $request->get('id')]);
@@ -62,13 +66,16 @@ class SubscriptionPlanController
 
         $features = $subscriptionFeatureRepository->getAll();
         $prices = $priceRepository->getAllForProduct($product);
+        $metrics = $metricRepository->getAll();
 
         $featureDtos = array_map([$featureFactory, 'createAppDto'], $features);
         $priceDtos = array_map([$priceFactory, 'createAppDto'], $prices);
+        $metricDtos = array_map([$metricDataMapper, 'createAppDto'], $metrics);
 
         $dto = new SubscriptionPlanCreationInfo();
         $dto->setPrices($priceDtos);
         $dto->setFeatures($featureDtos);
+        $dto->setMetrics($metricDtos);
 
         $json = $serializer->serialize($dto, 'json');
 

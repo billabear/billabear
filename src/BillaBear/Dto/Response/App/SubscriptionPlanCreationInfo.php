@@ -14,6 +14,8 @@ class SubscriptionPlanCreationInfo
 
     private array $features;
 
+    private array $metrics;
+
     public function getPrices(): array
     {
         return $this->prices;
@@ -32,5 +34,15 @@ class SubscriptionPlanCreationInfo
     public function setFeatures(array $features): void
     {
         $this->features = $features;
+    }
+
+    public function getMetrics(): array
+    {
+        return $this->metrics;
+    }
+
+    public function setMetrics(array $metrics): void
+    {
+        $this->metrics = $metrics;
     }
 }

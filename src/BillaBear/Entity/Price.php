@@ -10,6 +10,7 @@ namespace BillaBear\Entity;
 
 use BillaBear\Entity\Usage\Metric;
 use BillaBear\Enum\MetricType;
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\Product;
 
@@ -53,5 +54,35 @@ class Price extends \Parthenon\Billing\Entity\Price
     public function setMetricType(?MetricType $metricType): void
     {
         $this->metricType = $metricType;
+    }
+
+    public function getDisplayName(): string
+    {
+        $output = $this->type->value.' - ';
+        if ($this->amount) {
+            $output .= (string) $this->getAsMoney();
+        }
+
+        if (!empty($this->tierComponents)) {
+            /** @var TierComponent $tierComponent */
+            foreach ($this->getTierComponents() as $tierComponent) {
+                $unitPriceMoney = Money::ofMinor($tierComponent->getUnitPrice(), $this->getCurrency());
+                $flatFeeMoney = Money::ofMinor($tierComponent->getFlatFee(), $this->getCurrency());
+                $output .= sprintf(
+                    '[%s/%s]',
+                    (string) $unitPriceMoney,
+                    (string) $flatFeeMoney);
+                break;
+            }
+            $output = rtrim($output, '/').' - ';
+        }
+
+        if ($this->recurring) {
+            $output .= $this->schedule;
+        } else {
+            $output .= 'one-off';
+        }
+
+        return $output;
     }
 }

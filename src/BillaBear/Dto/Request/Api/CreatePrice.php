@@ -244,6 +244,7 @@ class CreatePrice
             usort($this->tiers, function (CreateTier $a, CreateTier $b) {
                 return $a->getFirstUnit() <=> $b->getFirstUnit();
             });
+            /** @var CreateTier $tier */
             foreach ($this->tiers as $tier) {
                 if ($tier->getFirstUnit() <= $lastUnit) {
                     $context->buildViolation('Tiers contain invalid first and last unit configuration')

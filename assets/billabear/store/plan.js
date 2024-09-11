@@ -8,7 +8,8 @@ const state = {
     selectedFeatures: [],
     selectedLimits: [],
     selectedPrices: [],
-    errors: {}
+    errors: {},
+    metrics: [],
 }
 
 const actions = {
@@ -101,6 +102,7 @@ const mutations = {
     setData(state, payload) {
         state.features = payload.features;
         state.prices = payload.prices;
+        state.metrics = payload.metrics;
         state.loaded = true;
     },
     setSubscriptionPlanData(state, payload) {

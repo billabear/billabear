@@ -128,9 +128,7 @@ class PriceDataMapper
         $dto->setSchedule($price->isRecurring() ? $price->getSchedule() : 'one-off');
         $dto->setPublic($price->isPublic());
         $dto->setPaymentProviderDetailsUrl($price->getPaymentProviderDetailsUrl());
-        if ($price->getAmount()) {
-            $dto->setDisplayValue((string) $price->getAsMoney());
-        }
+        $dto->setDisplayValue($price->getDisplayName());
         $dto->setProduct($this->productDataMapper->createAppDtoFromProduct($price->getProduct()));
         $dto->setIncludingTax($price->isIncludingTax());
         $dto->setMetric($this->metricDataMapper->createAppDto($price->getMetric()));

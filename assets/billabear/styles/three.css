@@ -111,3 +111,10 @@ a {
     @apply font-medium mt-1;
 }
 
+.error-field {
+    border-width: 1px;
+    border-color: red !important;
+    font-weight: bold;
+    color: red;
+}
+
