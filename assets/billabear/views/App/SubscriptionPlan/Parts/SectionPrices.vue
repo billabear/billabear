@@ -215,7 +215,8 @@ export default {
       },
       errors: {},
       rawTiers: [
-        {first_unit: 1, last_unit: 1, unit_price: 0, flat_fee: 0}
+        {first_unit: 1, last_unit: 1, unit_price: 0, flat_fee: 0},
+        {first_unit: 1, last_unit: null, unit_price: 0, flat_fee: 0}
       ],
     }
   },
@@ -234,6 +235,22 @@ export default {
     showUsage: function () {
       return (this.price.type !== 'fixed_price')
     },
+    validTiers: function() {
+      let valid = true;
+      this.rawTiers.forEach( tier => {
+        if (!valid) {
+          return;
+        }
+        if (tier.first_unit > tier.last_unit && tier.last_unit !== null) {
+          console.log(tier)
+          valid = false;
+          return;
+        }
+      })
+
+      return valid;
+    },
+
     tiers: function () {
       const output = [];
       let lastUnit = 0;
@@ -244,18 +261,34 @@ export default {
         lastUnit = tier.last_unit;
       });
 
-      output.push({first_unit: lastUnit+1, last_unit: null, unit_price: 0, flat_fee: 0});
+      const len = this.rawTiers.length-1;
+      this.rawTiers[len].last_unit = null;
       return output;
     }
   },
   methods: {
     ...mapActions('planStore', ['addPriceToSelected', 'removePriceFromSelected', 'createPrice']),
+
+    addTier: function() {
+      let firstUnit = 1;
+      let lastUnit = 2;
+      let secondLast = null;
+      this.rawTiers.forEach( tier => {
+        secondLast = lastUnit;
+        firstUnit = tier.first_unit;
+        if (tier.last_unit === null) {
+          tier.last_unit = tier.first_unit+1;
+        }
+        lastUnit = tier.last_unit;
+      });
+      this.rawTiers.push({first_unit: lastUnit+1, last_unit: lastUnit+2, unit_price: 0, flat_fee: 0});
+    },
     sendCreate: function() {
       var productId = this.$route.params.productId;
       var price = this.price;
 
       if (this.showTiers) {
-        price.tiers = this.rawTiers;
+        price.tiers = this.tiers;
         price.amount = null;
       }
 
