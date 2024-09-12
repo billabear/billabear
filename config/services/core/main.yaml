@@ -557,11 +557,11 @@ services:
   app.repository.orm.metric:
     class: BillaBear\Repository\Orm\MetricRepository
 
-  BillaBear\Repository\Usage\MetricUsageRepository:
+  BillaBear\Repository\Usage\MetricCounterRepository:
     arguments:
       $entityRepository: '@app.repository.orm.metric_usage'
   app.repository.orm.metric_usage:
-    class: BillaBear\Repository\Orm\MetricUsageRepository
+    class: BillaBear\Repository\Orm\MetricCounterRepository
 
   BillaBear\Repository\Usage\EventRepository:
   app.repository.orm.event:

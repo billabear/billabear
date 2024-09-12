@@ -23,8 +23,8 @@ use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
+use BillaBear\Repository\Orm\MetricCounterRepository;
 use BillaBear\Repository\Orm\MetricRepository;
-use BillaBear\Repository\Orm\MetricUsageRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
 use BillaBear\Repository\Orm\PaymentFailureProcessRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
@@ -58,7 +58,7 @@ class AppContext implements Context
         private TaxTypeRepository $taxTypeRepository,
         private InvoiceDeliverySettingsRepository $invoiceDeliveryRepository,
         private MetricRepository $metricRepository,
-        private MetricUsageRepository $metricUsageRepository,
+        private MetricCounterRepository $metricUsageRepository,
     ) {
     }
 
@@ -327,7 +327,7 @@ class AppContext implements Context
         $invoicedMetricCounter = new InvoicedMetricCounter();
         $invoicedMetricCounter->setMetric($metric);
         $invoicedMetricCounter->setValue(floatval($value));
-        $invoicedMetricCounter->setMetricUsage($metricUsage);
+        $invoicedMetricCounter->setMetricCounter($metricUsage);
         $invoicedMetricCounter->setCreatedAt($invoice->getCreatedAt());
 
         $invoice->setInvoicedMetricCounter($invoicedMetricCounter);

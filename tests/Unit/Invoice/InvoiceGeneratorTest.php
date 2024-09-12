@@ -24,7 +24,7 @@ use BillaBear\Invoice\Pricer;
 use BillaBear\Invoice\Usage\MetricProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
-use BillaBear\Repository\Usage\MetricUsageRepositoryInterface;
+use BillaBear\Repository\Usage\MetricCounterRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use BillaBear\Tax\TaxInfo;
 use Brick\Money\Money;
@@ -81,7 +81,7 @@ class InvoiceGeneratorTest extends TestCase
         $exchangeRateProvider = $this->createMock(BricksExchangeRateProvider::class);
 
         $metricProvider = $this->createMock(MetricProvider::class);
-        $metricUsage = $this->createMock(MetricUsageRepositoryInterface::class);
+        $metricUsage = $this->createMock(MetricCounterRepositoryInterface::class);
 
         $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $metricProvider, $metricUsage, $exchangeRateProvider);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);

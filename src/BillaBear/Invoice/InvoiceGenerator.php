@@ -22,7 +22,7 @@ use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Invoice\Usage\MetricProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
-use BillaBear\Repository\Usage\MetricUsageRepositoryInterface;
+use BillaBear\Repository\Usage\MetricCounterRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
@@ -44,7 +44,7 @@ class InvoiceGenerator
         private EventDispatcherInterface $eventDispatcher,
         private DueDateDecider $dateDecider,
         private MetricProvider $metricProvider,
-        private MetricUsageRepositoryInterface $metricUsageRepository,
+        private MetricCounterRepositoryInterface $metricUsageRepository,
         BricksExchangeRateProvider $exchangeRateProvider,
     ) {
         $this->currencyConverter = new CurrencyConverter($exchangeRateProvider);
@@ -121,7 +121,7 @@ class InvoiceGenerator
                 if ($price->getUsage()) {
                     $metricUsage = $this->metricUsageRepository->getMetricUsageForCustomerAndMetric($customer, $price->getMetric());
                     $invoicedMetricCounter = new InvoicedMetricCounter();
-                    $invoicedMetricCounter->setMetricUsage($metricUsage);
+                    $invoicedMetricCounter->setMetricCounter($metricUsage);
                     $invoicedMetricCounter->setMetric($metricUsage->getMetric());
                     $invoicedMetricCounter->setCreatedAt(new \DateTime());
                     $invoicedMetricCounter->setInvoice($invoice);

@@ -13,14 +13,14 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Usage\Metric;
+use BillaBear\Entity\Usage\MetricCounter;
 use BillaBear\Entity\Usage\MetricFilter;
-use BillaBear\Entity\Usage\MetricUsage;
 use BillaBear\Enum\MetricAggregationMethod;
 use BillaBear\Enum\MetricEventIngestion;
 use BillaBear\Enum\MetricFilterType;
 use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\MetricCounterRepository;
 use BillaBear\Repository\Orm\MetricRepository;
-use BillaBear\Repository\Orm\MetricUsageRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -37,7 +37,7 @@ class MetricContext implements Context
         private Session $session,
         private CustomerRepository $customerRepository,
         private MetricRepository $metricRepository,
-        private MetricUsageRepository $metricUsageRepository,
+        private MetricCounterRepository $metricUsageRepository,
     ) {
     }
 
@@ -228,7 +228,7 @@ class MetricContext implements Context
         $customer = $this->getCustomerByEmail($customerEmail);
         $metric = $this->getMetric($metricName);
         $usage = $this->metricUsageRepository->findOneBy(['customer' => $customer, 'metric' => $metric]);
-        if (!$usage instanceof MetricUsage) {
+        if (!$usage instanceof MetricCounter) {
             throw new \Exception("Can't find a metric usage for customer '$customerEmail'");
         }
 

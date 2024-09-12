@@ -9,7 +9,7 @@
 namespace BillaBear\Entity;
 
 use BillaBear\Entity\Usage\Metric;
-use BillaBear\Entity\Usage\MetricUsage;
+use BillaBear\Entity\Usage\MetricCounter;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -29,8 +29,8 @@ class InvoicedMetricCounter
     #[ORM\ManyToOne(targetEntity: Invoice::class)]
     private Invoice $invoice;
 
-    #[ORM\ManyToOne(targetEntity: MetricUsage::class)]
-    private MetricUsage $metricUsage;
+    #[ORM\ManyToOne(targetEntity: MetricCounter::class)]
+    private MetricCounter $metricCounter;
 
     #[ORM\Column(type: 'float')]
     private float $value;
@@ -58,14 +58,14 @@ class InvoicedMetricCounter
         $this->metric = $metric;
     }
 
-    public function getMetricUsage(): MetricUsage
+    public function getMetricCounter(): MetricCounter
     {
-        return $this->metricUsage;
+        return $this->metricCounter;
     }
 
-    public function setMetricUsage(MetricUsage $metricUsage): void
+    public function setMetricCounter(MetricCounter $metricCounter): void
     {
-        $this->metricUsage = $metricUsage;
+        $this->metricCounter = $metricCounter;
     }
 
     public function getValue(): float

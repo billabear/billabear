@@ -10,10 +10,10 @@ namespace BillaBear\Repository\Usage;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Usage\Metric;
-use BillaBear\Entity\Usage\MetricUsage;
+use BillaBear\Entity\Usage\MetricCounter;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
-interface MetricUsageRepositoryInterface extends CrudRepositoryInterface
+interface MetricCounterRepositoryInterface extends CrudRepositoryInterface
 {
-    public function getMetricUsageForCustomerAndMetric(Customer $customer, Metric $metric): MetricUsage;
+    public function getMetricUsageForCustomerAndMetric(Customer $customer, Metric $metric): MetricCounter;
 }

@@ -8,7 +8,7 @@
 
 namespace BillaBear\Tests\Behat\Usage;
 
-use BillaBear\Entity\Usage\MetricUsage;
+use BillaBear\Entity\Usage\MetricCounter;
 
 trait MetricUsageTrait
 {
@@ -20,7 +20,7 @@ trait MetricUsageTrait
         $usage = $this->metricUsageRepository->findOneBy(['customer' => $customer, 'metric' => $metric]);
 
         if (!$usage) {
-            $usage = new MetricUsage();
+            $usage = new MetricCounter();
             $usage->setCustomer($customer);
             $usage->setMetric($metric);
             $usage->setValue(0.0);

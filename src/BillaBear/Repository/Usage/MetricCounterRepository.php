@@ -10,17 +10,17 @@ namespace BillaBear\Repository\Usage;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Usage\Metric;
-use BillaBear\Entity\Usage\MetricUsage;
+use BillaBear\Entity\Usage\MetricCounter;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
-class MetricUsageRepository extends DoctrineCrudRepository implements MetricUsageRepositoryInterface
+class MetricCounterRepository extends DoctrineCrudRepository implements MetricCounterRepositoryInterface
 {
-    public function getMetricUsageForCustomerAndMetric(Customer $customer, Metric $metric): MetricUsage
+    public function getMetricUsageForCustomerAndMetric(Customer $customer, Metric $metric): MetricCounter
     {
         $usage = $this->entityRepository->findOneBy(['customer' => $customer, 'metric' => $metric]);
 
         if (!$usage) {
-            $usage = new MetricUsage();
+            $usage = new MetricCounter();
             $usage->setCustomer($customer);
             $usage->setMetric($metric);
             $usage->setValue(0);
