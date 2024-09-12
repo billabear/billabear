@@ -73,6 +73,11 @@ class MetricCounter
         $this->value = $value;
     }
 
+    public function hasBeenUpdated(): bool
+    {
+        return isset($this->updatedAt);
+    }
+
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
@@ -81,5 +86,11 @@ class MetricCounter
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function addValue(float $value): void
+    {
+        $this->value += $value;
+        $this->updatedAt = new \DateTime('now');
     }
 }

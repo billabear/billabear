@@ -12,6 +12,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use BillaBear\Background\Usage\CounterUpdate;
 use BillaBear\Entity\Usage\Metric;
 use BillaBear\Entity\Usage\MetricCounter;
 use BillaBear\Entity\Usage\MetricFilter;
@@ -38,6 +39,7 @@ class MetricContext implements Context
         private CustomerRepository $customerRepository,
         private MetricRepository $metricRepository,
         private MetricCounterRepository $metricUsageRepository,
+        private CounterUpdate $counterUpdate,
     ) {
     }
 
@@ -235,5 +237,13 @@ class MetricContext implements Context
         if ($usage->getValue() !== floatval($value)) {
             throw new \Exception(sprintf('Expected %f but got %f', $value, $usage->getValue()));
         }
+    }
+
+    /**
+     * @When the background task to update metric counters is ran
+     */
+    public function theBackgroundTaskToUpdateMetricCountersIsRan()
+    {
+        $this->counterUpdate->execute();
     }
 }

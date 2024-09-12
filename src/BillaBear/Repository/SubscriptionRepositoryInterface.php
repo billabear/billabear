@@ -82,4 +82,6 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getAllCancelledCountForCustomer(CustomerInterface $customer): int;
 
     public function getLastTenForCustomer($customer): ResultSet;
+
+    public function getSubscriptionWithUsage(): array;
 }

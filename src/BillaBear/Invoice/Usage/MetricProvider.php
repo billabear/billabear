@@ -36,6 +36,16 @@ class MetricProvider
         return $output;
     }
 
+    public function getMetricForDateTime(Subscription $subscription, \DateTime $dateTime): float
+    {
+        /** @var Price $price */
+        $price = $subscription->getPrice();
+        $calculator = $this->getCalculator($price->getMetric());
+        $output = $calculator->getDateTimeValue($subscription, $dateTime);
+
+        return $output;
+    }
+
     private function getCalculator(Metric $metric): MetricCalculatorInterface
     {
         /** @var MetricCalculatorInterface $calculator */

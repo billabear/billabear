@@ -119,7 +119,7 @@ class InvoiceGenerator
                 $lastValue = null;
                 $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
                 if ($price->getUsage()) {
-                    $metricUsage = $this->metricUsageRepository->getMetricUsageForCustomerAndMetric($customer, $price->getMetric());
+                    $metricUsage = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
                     $invoicedMetricCounter = new InvoicedMetricCounter();
                     $invoicedMetricCounter->setMetricCounter($metricUsage);
                     $invoicedMetricCounter->setMetric($metricUsage->getMetric());

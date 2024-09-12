@@ -43,4 +43,9 @@ class UniqueCountMetricCalculator implements MetricCalculatorInterface
     {
         return $this->eventRepository->getEventCountAfterDateTime($subscription->getCustomer(), $subscription->getPrice()->getMetric(), $subscription, $dateTime) > 0;
     }
+
+    public function getDateTimeValue(Subscription $subscription, \DateTime $dateTime): float
+    {
+        return $this->eventRepository->getUniqueCountForDateTime($subscription->getCustomer(), $subscription->getPrice()->getMetric(), $subscription, $dateTime);
+    }
 }

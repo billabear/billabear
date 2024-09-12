@@ -296,4 +296,15 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
 
         return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
+
+    public function getSubscriptionWithUsage(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->join('s.price', 'p')
+            ->where('p.usage = true')
+            ->andWhere('s.status in (:status)')
+            ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE, SubscriptionStatus::PENDING_CANCEL, SubscriptionStatus::OVERDUE_PAYMENT_OPEN]);
+
+        return $qb->getQuery()->getResult();
+    }
 }

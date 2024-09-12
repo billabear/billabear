@@ -19,11 +19,15 @@ interface EventRepositoryInterface
 
     public function getEventCountAfterDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): int;
 
+    public function getCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float;
+
     public function getCountForMonth(Customer $customer, Metric $metric, Subscription $subscription): float;
 
     public function getCountForWeek(Customer $customer, Metric $metric, Subscription $subscription): float;
 
     public function getCountForYear(Customer $customer, Metric $metric, Subscription $subscription): float;
+
+    public function getSumForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float;
 
     public function getSumForMonth(Customer $customer, Metric $metric, Subscription $subscription): float;
 
@@ -31,17 +35,23 @@ interface EventRepositoryInterface
 
     public function getSumForYear(Customer $customer, Metric $metric, Subscription $subscription): float;
 
+    public function getMaxForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float;
+
     public function getMaxForMonth(Customer $customer, Metric $metric, Subscription $subscription): float;
 
     public function getMaxForWeek(Customer $customer, Metric $metric, Subscription $subscription): float;
 
     public function getMaxForYear(Customer $customer, Metric $metric, Subscription $subscription): float;
 
+    public function getLatestForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float;
+
     public function getLatestForMonth(Customer $customer, Metric $metric, Subscription $subscription): float;
 
     public function getLatestForWeek(Customer $customer, Metric $metric, Subscription $subscription): float;
 
     public function getLatestForYear(Customer $customer, Metric $metric, Subscription $subscription): float;
+
+    public function getUniqueCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float;
 
     public function getUniqueCountForMonth(Customer $customer, Metric $metric, Subscription $subscription): float;
 

@@ -24,4 +24,6 @@ interface MetricCalculatorInterface
     public function getYearlyValue(Subscription $subscription): float;
 
     public function getWeeklyValue(Subscription $subscription): float;
+
+    public function getDateTimeValue(Subscription $subscription, \DateTime $dateTime): float;
 }

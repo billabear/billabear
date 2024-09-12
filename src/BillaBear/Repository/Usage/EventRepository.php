@@ -40,118 +40,154 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $query->execute();
     }
 
+    public function getCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
+    {
+        $result = $this->createCountSql($customer, $metric, $subscription, $dateTime);
+
+        return (float) $result->fetchAssociative()['count_val'];
+    }
+
     public function getCountForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createCountSql($customer, $metric, $subscription, 'month');
+        $result = $this->createCountSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
         return (float) $result->fetchAssociative()['count_val'];
     }
 
     public function getCountForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createCountSql($customer, $metric, $subscription, 'week');
+        $result = $this->createCountSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
         return (float) $result->fetchAssociative()['count_val'];
     }
 
     public function getCountForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createCountSql($customer, $metric, $subscription, 'year');
+        $result = $this->createCountSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
         return (float) $result->fetchAssociative()['count_val'];
     }
 
+    public function getSumForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
+    {
+        $result = $this->createSumSql($customer, $metric, $subscription, $dateTime);
+
+        return (float) $result->fetchAssociative()['sum_val'];
+    }
+
     public function getSumForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createSumSql($customer, $metric, $subscription, 'month');
+        $result = $this->createSumSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
         return (float) $result->fetchAssociative()['sum_val'];
     }
 
     public function getSumForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createSumSql($customer, $metric, $subscription, 'week');
+        $result = $this->createSumSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
         return (float) $result->fetchAssociative()['sum_val'];
     }
 
     public function getSumForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createSumSql($customer, $metric, $subscription, 'year');
+        $result = $this->createSumSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
         return (float) $result->fetchAssociative()['sum_val'];
     }
 
+    public function getMaxForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
+    {
+        $result = $this->createMaxSql($customer, $metric, $subscription, $dateTime);
+
+        return (float) $result->fetchAssociative()['max_val'];
+    }
+
     public function getMaxForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createMaxSql($customer, $metric, $subscription, 'month');
+        $result = $this->createMaxSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
         return (float) $result->fetchAssociative()['max_val'];
     }
 
     public function getMaxForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createMaxSql($customer, $metric, $subscription, 'week');
+        $result = $this->createMaxSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
         return (float) $result->fetchAssociative()['max_val'];
     }
 
     public function getMaxForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createMaxSql($customer, $metric, $subscription, 'year');
+        $result = $this->createMaxSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
         return (float) $result->fetchAssociative()['max_val'];
     }
 
+    public function getLatestForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
+    {
+        $result = $this->createLatestSql($customer, $metric, $subscription, $dateTime);
+
+        return (float) $result->fetchAssociative()['latest_val'];
+    }
+
     public function getLatestForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createLatestSql($customer, $metric, $subscription, 'month');
+        $result = $this->createLatestSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
         return (float) $result->fetchAssociative()['latest_val'];
     }
 
     public function getLatestForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createLatestSql($customer, $metric, $subscription, 'week');
+        $result = $this->createLatestSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
         return (float) $result->fetchAssociative()['latest_val'];
     }
 
     public function getLatestForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createLatestSql($customer, $metric, $subscription, 'year');
+        $result = $this->createLatestSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
         return (float) $result->fetchAssociative()['latest_val'];
     }
 
+    public function getUniqueCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
+    {
+        $result = $this->createCountUnique($customer, $metric, $subscription, $dateTime);
+
+        return (float) $result->fetchAssociative()['count_val'];
+    }
+
     public function getUniqueCountForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createCountUnique($customer, $metric, $subscription, 'month');
+        $result = $this->createCountUnique($customer, $metric, $subscription, new \DateTime('-1 month'));
 
         return (float) $result->fetchAssociative()['count_val'];
     }
 
     public function getUniqueCountForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createCountUnique($customer, $metric, $subscription, 'week');
+        $result = $this->createCountUnique($customer, $metric, $subscription, new \DateTime('-1 week'));
 
         return (float) $result->fetchAssociative()['count_val'];
     }
 
     public function getUniqueCountForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
-        $result = $this->createCountUnique($customer, $metric, $subscription, 'year');
+        $result = $this->createCountUnique($customer, $metric, $subscription, new \DateTime('-1 year'));
 
         return (float) $result->fetchAssociative()['count_val'];
     }
 
-    private function createCountSql(Customer $customer, Metric $metric, Subscription $subscription, string $time): Result
+    private function createCountSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
         $sql = 'SELECT COUNT(DISTINCT event_id) as count_val'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
-            .'AND subscription_id = :subscriptionId'.PHP_EOL;
+            .'AND subscription_id = :subscriptionId'.PHP_EOL
+            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
 
         $filters = $metric->getFilters();
         $counter = 1;
@@ -164,17 +200,11 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             ++$counter;
         }
 
-        $sql .= match ($time) {
-            'week' => 'AND created_at > NOW() - INTERVAL \'1 week\'',
-            'year' => 'AND created_at > NOW() - INTERVAL \'1 year\'',
-            'day' => 'AND created_at > NOW() - INTERVAL \'1 day\'',
-            default => 'AND created_at > NOW() - INTERVAL \'1 month\'',
-        };
-
         $query = $this->connection->prepare($sql);
         $query->bindValue('customerId', (string) $customer->getId());
         $query->bindValue('subscriptionId', (string) $subscription->getId());
         $query->bindValue('metricId', (string) $metric->getId());
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
 
         $counter = 1;
         foreach ($filters as $filter) {
@@ -185,13 +215,14 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         return $query->execute();
     }
 
-    private function createSumSql(Customer $customer, Metric $metric, Subscription $subscription, string $time): Result
+    private function createSumSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id, value'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
-            .'AND subscription_id = :subscriptionId'.PHP_EOL;
+            .'AND subscription_id = :subscriptionId'.PHP_EOL
+            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
 
         $filters = $metric->getFilters();
         $counter = 1;
@@ -203,13 +234,6 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             }
             ++$counter;
         }
-
-        $sql .= match ($time) {
-            'week' => 'AND created_at > NOW() - INTERVAL \'1 week\'',
-            'year' => 'AND created_at > NOW() - INTERVAL \'1 year\'',
-            'day' => 'AND created_at > NOW() - INTERVAL \'1 day\'',
-            default => 'AND created_at > NOW() - INTERVAL \'1 month\'',
-        };
 
         $finalSql = "SELECT customer_id, SUM(value) as sum_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
@@ -217,6 +241,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $query->bindValue('customerId', (string) $customer->getId());
         $query->bindValue('subscriptionId', (string) $subscription->getId());
         $query->bindValue('metricId', (string) $metric->getId());
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
 
         $counter = 1;
         foreach ($filters as $filter) {
@@ -227,13 +252,15 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         return $query->execute();
     }
 
-    private function createMaxSql(Customer $customer, Metric $metric, Subscription $subscription, string $time): Result
+    private function createMaxSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id, properties->>\'%s\'as value'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
-            .'AND subscription_id = :subscriptionId'.PHP_EOL;
+            .'AND subscription_id = :subscriptionId'.PHP_EOL
+            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
+
         $sql = sprintf($sql, $metric->getAggregationProperty());
 
         $filters = $metric->getFilters();
@@ -246,13 +273,6 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             }
             ++$counter;
         }
-
-        $sql .= match ($time) {
-            'week' => 'AND created_at > NOW() - INTERVAL \'1 week\'',
-            'year' => 'AND created_at > NOW() - INTERVAL \'1 year\'',
-            'day' => 'AND created_at > NOW() - INTERVAL \'1 day\'',
-            default => 'AND created_at > NOW() - INTERVAL \'1 month\'',
-        };
 
         $finalSql = "SELECT customer_id, MAX(value) as max_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
@@ -260,6 +280,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $query->bindValue('customerId', (string) $customer->getId());
         $query->bindValue('subscriptionId', (string) $subscription->getId());
         $query->bindValue('metricId', (string) $metric->getId());
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
 
         $counter = 1;
         foreach ($filters as $filter) {
@@ -270,13 +291,14 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         return $query->execute();
     }
 
-    private function createLatestSql(Customer $customer, Metric $metric, Subscription $subscription, string $time): Result
+    private function createLatestSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id, properties->>\'%s\'as value, created_at'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
-            .'AND subscription_id = :subscriptionId'.PHP_EOL;
+            .'AND subscription_id = :subscriptionId'.PHP_EOL
+            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
         $sql = sprintf($sql, $metric->getAggregationProperty());
 
         $filters = $metric->getFilters();
@@ -289,13 +311,6 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             }
             ++$counter;
         }
-
-        $sql .= match ($time) {
-            'week' => 'AND created_at > NOW() - INTERVAL \'1 week\'',
-            'year' => 'AND created_at > NOW() - INTERVAL \'1 year\'',
-            'day' => 'AND created_at > NOW() - INTERVAL \'1 day\'',
-            default => 'AND created_at > NOW() - INTERVAL \'1 month\'',
-        };
 
         $finalSql = "SELECT value as latest_val FROM ($sql) AS unique_events order by created_at desc limit 1";
 
@@ -303,6 +318,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $query->bindValue('customerId', (string) $customer->getId());
         $query->bindValue('subscriptionId', (string) $subscription->getId());
         $query->bindValue('metricId', (string) $metric->getId());
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
 
         $counter = 1;
         foreach ($filters as $filter) {
@@ -313,13 +329,14 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         return $query->execute();
     }
 
-    private function createCountUnique(Customer $customer, Metric $metric, Subscription $subscription, string $time): Result
+    private function createCountUnique(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id,  properties->>\'%s\'as value'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
-            .'AND subscription_id = :subscriptionId'.PHP_EOL;
+            .'AND subscription_id = :subscriptionId'.PHP_EOL
+            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
         $sql = sprintf($sql, $metric->getAggregationProperty());
 
         $filters = $metric->getFilters();
@@ -333,19 +350,13 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             ++$counter;
         }
 
-        $sql .= match ($time) {
-            'week' => 'AND created_at > NOW() - INTERVAL \'1 week\'',
-            'year' => 'AND created_at > NOW() - INTERVAL \'1 year\'',
-            'day' => 'AND created_at > NOW() - INTERVAL \'1 day\'',
-            default => 'AND created_at > NOW() - INTERVAL \'1 month\'',
-        };
-
         $finalSql = "SELECT customer_id, COUNT(DISTINCT value) as count_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
         $query = $this->connection->prepare($finalSql);
         $query->bindValue('customerId', (string) $customer->getId());
         $query->bindValue('subscriptionId', (string) $subscription->getId());
         $query->bindValue('metricId', (string) $metric->getId());
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
 
         $counter = 1;
         foreach ($filters as $filter) {

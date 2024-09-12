@@ -15,7 +15,7 @@ use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class MetricCounterRepository extends DoctrineCrudRepository implements MetricCounterRepositoryInterface
 {
-    public function getMetricUsageForCustomerAndMetric(Customer $customer, Metric $metric): MetricCounter
+    public function getForCustomerAndMetric(Customer $customer, Metric $metric): MetricCounter
     {
         $usage = $this->entityRepository->findOneBy(['customer' => $customer, 'metric' => $metric]);
 
