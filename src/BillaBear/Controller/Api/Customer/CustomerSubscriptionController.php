@@ -6,7 +6,7 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Controller\Api;
+namespace BillaBear\Controller\Api\Customer;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\Database\TransactionManager;

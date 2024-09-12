@@ -9,14 +9,44 @@
 namespace BillaBear\Tests\Behat\Usage;
 
 use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
+use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Tests\Behat\Customers\CustomerTrait;
+use BillaBear\Tests\Behat\SendRequestTrait;
 
 class EstimateContext implements Context
 {
+    use SendRequestTrait;
+    use CustomerTrait;
+
+    public function __construct(
+        private Session $session,
+        private CustomerRepository $customerRepository,
+    ) {
+    }
+
     /**
-     * @When then the estimate for the customer :arg1 will be for :arg3 :arg2
+     * @When I request the current cost estimate for :arg1
      */
-    public function thenTheEstimateForTheCustomerWillBeFor($arg1, $arg2, $arg3)
+    public function iRequestTheCurrentCostEstimateFor($customerEmail)
     {
-        throw new PendingException();
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $this->sendJsonRequest('GET', '/api/v1/customer/'.$customer->getId().'/costs');
+    }
+
+    /**
+     * @Then I will be told the cost estimate is :arg2 :arg1
+     */
+    public function iWillBeToldTheCostEstimateIs($amount, $currency)
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['total']['amount'] !== intval($amount)) {
+            var_dump($data);
+            throw new \Exception(sprintf('Expected %d but got %d', $amount, $data['total']['amount']));
+        }
+        if ($data['total']['currency'] !== $currency) {
+            throw new \Exception(sprintf('Expected %s but got %s as a currency', $currency, $data['total']['currency']));
+        }
     }
 }

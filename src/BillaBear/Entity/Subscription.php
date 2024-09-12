@@ -13,7 +13,7 @@ use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 
 /**
- * @method Price            getPrice()
+ * @method Price|null       getPrice()
  * @method Customer         getCustomer()
  * @method SubscriptionPlan getSubscriptionPlan()
  */

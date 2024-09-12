@@ -17,7 +17,8 @@ use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 /**
- * @method findById($id) \BillaBear\Entity\Subscription
+ * @method BillaSubscription   findById($id)
+ * @method BillaSubscription[] getAllActiveForCustomer(CustomerInterface $customer)
  */
 interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\SubscriptionRepositoryInterface
 {

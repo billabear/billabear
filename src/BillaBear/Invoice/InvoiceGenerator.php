@@ -119,28 +119,28 @@ class InvoiceGenerator
                 $lastValue = null;
                 $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
                 if ($price->getUsage()) {
-                    $metricUsage = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
+                    $metricCounter = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
                     $invoicedMetricCounter = new InvoicedMetricCounter();
-                    $invoicedMetricCounter->setMetricCounter($metricUsage);
-                    $invoicedMetricCounter->setMetric($metricUsage->getMetric());
+                    $invoicedMetricCounter->setMetricCounter($metricCounter);
+                    $invoicedMetricCounter->setMetric($metricCounter->getMetric());
                     $invoicedMetricCounter->setCreatedAt(new \DateTime());
                     $invoicedMetricCounter->setInvoice($invoice);
                     $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
 
                     if (MetricType::RESETTABLE === $price->getMetricType()) {
-                        $metricUsage->setValue(0);
+                        $metricCounter->setValue(0);
                         $usage = $this->metricProvider->getMetric($subscription);
                     } else {
                         $lastInvoice = $this->invoiceRepository->getLastForCustomer($customer);
                         $totalUsage = $this->metricProvider->getMetric($subscription);
                         $lastValue = $lastInvoice?->getInvoicedMetricCounter()?->getValue() ?? 0.0;
                         $usage = $totalUsage + $lastValue;
-                        $metricUsage->setValue($usage);
+                        $metricCounter->setValue($usage);
                     }
 
                     $invoicedMetricCounter->setValue($usage);
-                    $metricUsage->setUpdatedAt(new \DateTime());
-                    $this->metricUsageRepository->save($metricUsage);
+                    $metricCounter->setUpdatedAt(new \DateTime());
+                    $this->metricUsageRepository->save($metricCounter);
                 } else {
                     $usage = $subscription->getSeats();
                 }
