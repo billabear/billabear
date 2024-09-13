@@ -10,15 +10,15 @@ namespace BillaBear\Dto\Response\Api\Customer;
 
 class Costs
 {
-    private TotalCost $total;
+    private Cost $total;
     private array $costs;
 
-    public function getTotal(): TotalCost
+    public function getTotal(): Cost
     {
         return $this->total;
     }
 
-    public function setTotal(TotalCost $total): void
+    public function setTotal(Cost $total): void
     {
         $this->total = $total;
     }

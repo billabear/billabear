@@ -10,23 +10,9 @@ namespace BillaBear\Dto\Response\Api\Customer;
 
 class Cost
 {
-    private string $name;
-
     private int $amount;
 
     private string $currency;
-
-    private float $usage;
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
 
     public function getAmount(): int
     {
@@ -46,15 +32,5 @@ class Cost
     public function setCurrency(string $currency): void
     {
         $this->currency = $currency;
-    }
-
-    public function getUsage(): float
-    {
-        return $this->usage;
-    }
-
-    public function setUsage(float $usage): void
-    {
-        $this->usage = $usage;
     }
 }

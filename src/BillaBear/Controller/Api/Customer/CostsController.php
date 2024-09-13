@@ -10,7 +10,7 @@ namespace BillaBear\Controller\Api\Customer;
 
 use BillaBear\Dto\Response\Api\Customer\Cost;
 use BillaBear\Dto\Response\Api\Customer\Costs;
-use BillaBear\Dto\Response\Api\Customer\TotalCost;
+use BillaBear\Dto\Response\Api\Customer\MetricCost;
 use BillaBear\Invoice\Usage\CostEstimator;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -57,7 +57,7 @@ class CostsController
             }
             $money = $money->plus($estimate->cost);
 
-            $costDto = new Cost();
+            $costDto = new MetricCost();
             $costDto->setAmount($estimate->cost->getMinorAmount()->toInt());
             $costDto->setCurrency($estimate->cost->getCurrency());
             $costDto->setUsage($estimate->usage);
@@ -65,7 +65,7 @@ class CostsController
             $costs[] = $costDto;
         }
 
-        $totalCost = new TotalCost();
+        $totalCost = new Cost();
         $totalCost->setAmount($money?->getMinorAmount()->toInt() ?? 0);
         $totalCost->setCurrency($money?->getCurrency()->getCurrencyCode() ?? '');
         $cost = new Costs();
