@@ -8,6 +8,8 @@
 
 namespace BillaBear\DataMappers\Usage;
 
+use BillaBear\Dto\Generic\Api\Usage\Metric as ApiDto;
+use BillaBear\Dto\Generic\Api\Usage\MetricFilter as ApiFilterDto;
 use BillaBear\Dto\Generic\App\Usage\Metric as AppDto;
 use BillaBear\Dto\Generic\App\Usage\MetricFilter as AppFilterDto;
 use BillaBear\Dto\Request\App\Usage\CreateMetric;
@@ -72,6 +74,35 @@ class MetricDataMapper
     private function createFilterDto(FilterEntity $filter): AppFilterDto
     {
         $dto = new AppFilterDto();
+        $dto->setName($filter->getName());
+        $dto->setValue($filter->getValue());
+        $dto->setType($filter->getType()->value);
+
+        return $dto;
+    }
+
+    public function createApiDto(?Entity $entity): ?ApiDto
+    {
+        if (!$entity) {
+            return null;
+        }
+
+        $dto = new ApiDto();
+        $dto->setId((string) $entity->getId());
+        $dto->setName($entity->getName());
+        $dto->setCode($entity->getCode());
+        $dto->setAggregationMethod($entity->getAggregationMethod()->value);
+        $dto->setAggregationProperty($entity->getAggregationProperty());
+        $dto->setEventIngestion($entity->getEventIngestion()->value);
+        $dto->setCreatedAt($entity->getCreatedAt());
+        $dto->setFilters(array_map([$this, 'createApiFilterDto'], $entity->getFilters()->toArray()));
+
+        return $dto;
+    }
+
+    private function createApiFilterDto(FilterEntity $filter): ApiFilterDto
+    {
+        $dto = new ApiFilterDto();
         $dto->setName($filter->getName());
         $dto->setValue($filter->getValue());
         $dto->setType($filter->getType()->value);

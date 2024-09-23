@@ -8,6 +8,7 @@
 
 namespace BillaBear\Dto\Generic\Api;
 
+use BillaBear\Dto\Generic\Api\Usage\Metric;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Price
@@ -35,6 +36,15 @@ class Price
 
     #[SerializedName('public')]
     private bool $public = true;
+
+    #[SerializedName('usage')]
+    private bool $usage = false;
+
+    #[SerializedName('metric')]
+    private ?Metric $metric;
+
+    #[SerializedName('metric_type')]
+    private ?string $metricType;
 
     public function getId(): string
     {
@@ -114,5 +124,35 @@ class Price
     public function setPublic(bool $public): void
     {
         $this->public = $public;
+    }
+
+    public function isUsage(): bool
+    {
+        return $this->usage;
+    }
+
+    public function setUsage(bool $usage): void
+    {
+        $this->usage = $usage;
+    }
+
+    public function getMetric(): ?Metric
+    {
+        return $this->metric;
+    }
+
+    public function setMetric(?Metric $metric): void
+    {
+        $this->metric = $metric;
+    }
+
+    public function getMetricType(): ?string
+    {
+        return $this->metricType;
+    }
+
+    public function setMetricType(?string $metricType): void
+    {
+        $this->metricType = $metricType;
     }
 }

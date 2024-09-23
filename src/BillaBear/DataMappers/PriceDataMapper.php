@@ -94,6 +94,9 @@ class PriceDataMapper
         $dto->setSchedule($price->getSchedule());
         $dto->setPublic($price->isPublic());
         $dto->setIncludingTax($price->isIncludingTax());
+        $dto->setUsage($price->getUsage());
+        $dto->setMetric($this->metricDataMapper->createApiDto($price->getMetric()));
+        $dto->setMetricType($price->getMetricType());
 
         return $dto;
     }
