@@ -46,7 +46,7 @@ class CustomerController
         CreationHandler $creationHandler,
         WebhookDispatcherInterface $webhookDispatcher,
     ): Response {
-        $this->getLogger()->info('Start create customer API request');
+        $this->getLogger()->info('Start create customer API request', ['customer_id' => (string) $request->get('id')]);
 
         $dto = $serializer->deserialize($request->getContent(), CreateCustomerDto::class, 'json');
         $errors = $validator->validate($dto);
@@ -89,7 +89,7 @@ class CustomerController
         SerializerInterface $serializer,
         CustomerDataMapper $customerFactory,
     ): Response {
-        $this->getLogger()->info('Started list customer API request');
+        $this->getLogger()->info('Started list customer API request', ['customer_id' => (string) $request->get('id')]);
 
         $lastKey = $request->get('last_key');
         $resultsPerPage = (int) $request->get('limit', 10);
@@ -134,12 +134,12 @@ class CustomerController
         SerializerInterface $serializer,
         CustomerDataMapper $customerFactory,
     ): Response {
-        $this->getLogger()->info('Starting read customer API request');
+        $this->getLogger()->info('Starting read customer API request', ['customer_id' => (string) $request->get('id')]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $e) {
-            $this->getLogger()->info('Unable to find customer for read request', ['id' => (string) $request->get('id')]);
+            $this->getLogger()->info('Unable to find customer for read request', ['customer_id' => (string) $request->get('id')]);
 
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
@@ -157,7 +157,7 @@ class CustomerController
         SerializerInterface $serializer,
         LimitsFactory $factory,
     ): Response {
-        $this->getLogger()->info('Starting customer limits API request');
+        $this->getLogger()->info('Starting customer limits API request', ['customer_id' => (string) $request->get('id')]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
@@ -183,7 +183,7 @@ class CustomerController
         CustomerDataMapper $customerFactory,
         WebhookDispatcherInterface $webhookDispatcher,
     ): Response {
-        $this->getLogger()->info('Starting customer update API request');
+        $this->getLogger()->info('Starting customer update API request', ['customer_id' => (string) $request->get('id')]);
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
@@ -224,7 +224,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         WebhookDispatcherInterface $webhookDispatcher,
     ) {
-        $this->getLogger()->info('Starting customer disable API request');
+        $this->getLogger()->info('Starting customer disable API request', ['customer_id' => (string) $request->get('id')]);
 
         try {
             /** @var Customer $customer */
@@ -248,7 +248,7 @@ class CustomerController
         CustomerRepositoryInterface $customerRepository,
         WebhookDispatcherInterface $webhookDispatcher,
     ) {
-        $this->getLogger()->info('Starting customer enable API request');
+        $this->getLogger()->info('Starting customer enable API request', ['customer_id' => (string) $request->get('id')]);
 
         try {
             /** @var Customer $customer */
