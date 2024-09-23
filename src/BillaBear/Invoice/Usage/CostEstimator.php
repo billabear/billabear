@@ -66,4 +66,24 @@ class CostEstimator
 
         return new CostEstimate($money, $usage->getValue(), $price->getMetric()->getName());
     }
+
+    /**
+     * @param Subscription[] $subscriptions
+     *
+     * @return CostEstimate
+     */
+    public function getTotalEstimate(array $subscriptions): Money
+    {
+        $money = null;
+        foreach ($subscriptions as $subscription) {
+            $estimate = $this->getEstimate($subscription);
+            if (!$money) {
+                $money = $estimate->cost;
+            } else {
+                $money = $money->plus($estimate->cost);
+            }
+        }
+
+        return $money;
+    }
 }
