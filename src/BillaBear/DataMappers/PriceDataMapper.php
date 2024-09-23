@@ -96,7 +96,7 @@ class PriceDataMapper
         $dto->setIncludingTax($price->isIncludingTax());
         $dto->setUsage($price->getUsage());
         $dto->setMetric($this->metricDataMapper->createApiDto($price->getMetric()));
-        $dto->setMetricType($price->getMetricType());
+        $dto->setMetricType($price->getMetricType()?->value);
 
         return $dto;
     }
