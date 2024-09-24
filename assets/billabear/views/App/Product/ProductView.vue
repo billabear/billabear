@@ -117,7 +117,6 @@
                 <th class="text-left pb-2">{{ $t('app.product.view.price.list.amount') }}</th>
               <th>{{ $t('app.product.view.price.list.currency') }}</th>
               <th>{{ $t('app.product.view.price.list.recurring') }}</th>
-              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
               <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
               <th>{{ $t('app.product.view.price.list.public') }}</th>
               <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
@@ -126,10 +125,9 @@
             </thead>
             <tbody>
             <tr v-for="(price, key) in prices" class="mt-5">
-              <td>{{ currency(price.amount) }}</td>
+              <td>{{ price.display_value }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
-              <td>{{ price.schedule }}</td>
               <td>{{ price.including_tax }}</td>
               <td>{{ price.public }}</td>
               <td>

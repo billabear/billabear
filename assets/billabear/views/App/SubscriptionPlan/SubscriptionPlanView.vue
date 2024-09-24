@@ -70,7 +70,6 @@
                 <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.amount') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.currency') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.recurring') }}</th>
-              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.schedule') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.including_tax') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.public') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.external_reference') }}</th>
@@ -78,10 +77,9 @@
             </thead>
             <tbody>
             <tr v-for="price in subscription_plan.prices" class="mt-5">
-              <td class="py-3">{{ price.amount }}</td>
+              <td class="py-3">{{ price.display_value }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
-              <td>{{ price.schedule }}</td>
               <td>{{ price.including_tax }}</td>
               <td>{{ price.public }}</td>
               <td>
