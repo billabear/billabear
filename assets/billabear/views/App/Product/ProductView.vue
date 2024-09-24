@@ -119,7 +119,6 @@
               <th>{{ $t('app.product.view.price.list.recurring') }}</th>
               <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
               <th>{{ $t('app.product.view.price.list.public') }}</th>
-              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
               <th></th>
             </tr>
             </thead>
@@ -130,10 +129,6 @@
               <td>{{ price.recurring }}</td>
               <td>{{ price.including_tax }}</td>
               <td>{{ price.public }}</td>
-              <td>
-                <a v-if="price.payment_provider_details_url" target="_blank" :href="price.payment_provider_details_url">{{ price.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ price.external_reference }}</span>
-              </td>
               <td>
                 <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
                   <button class="btn--main" :title="$t('app.product.view.price.show')" @click="showPrice(price, key)" v-if="!price.public"><i class="fa-solid fa-eye"></i></button>

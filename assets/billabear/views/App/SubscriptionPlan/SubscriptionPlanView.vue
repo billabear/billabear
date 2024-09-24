@@ -72,7 +72,6 @@
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.recurring') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.including_tax') }}</th>
               <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.public') }}</th>
-              <th class="text-left pb-2">{{ $t('app.subscription_plan.view.price.list.external_reference') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -82,12 +81,6 @@
               <td>{{ price.recurring }}</td>
               <td>{{ price.including_tax }}</td>
               <td>{{ price.public }}</td>
-              <td>
-                <a v-if="price.payment_provider_details_url" target="_blank" :href="price.payment_provider_details_url">{{
-                    price.external_reference
-                  }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ price.external_reference }}</span>
-              </td>
             </tr>
             <tr v-if="subscription_plan.prices.length === 0">
               <td colspan="7" class="py-3 text-center">{{ $t('app.product.view.price.no_prices') }}</td>
