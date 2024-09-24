@@ -206,7 +206,7 @@ class InvoiceGenerator
             $lines[] = $line;
         }
 
-        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $subscription->getCurrency(), $vat);
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat);
     }
 
     /**
