@@ -299,6 +299,10 @@ class InvoiceGenerator
         $invoice->setPayeeAddress($customer->getBillingAddress());
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
 
+        if (0 === $invoice->getTotal()) {
+            $invoice->setPaid(true);
+        }
+
         $this->dateDecider->setDueAt($invoice);
 
         $this->invoiceRepository->save($invoice);
