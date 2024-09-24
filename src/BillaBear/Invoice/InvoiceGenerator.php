@@ -206,13 +206,13 @@ class InvoiceGenerator
             $lines[] = $line;
         }
 
-        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo, $vat);
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $subscription->getCurrency(), $vat);
     }
 
     /**
      * @throws \Brick\Money\Exception\MoneyMismatchException
      */
-    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?Money $total, array $lines, ?Money $subTotal, PriceInfo $priceInfo, ?Money $vat): Invoice
+    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?Money $total, array $lines, ?Money $subTotal, string $currencyCode, ?Money $vat): Invoice
     {
         if ($customer->hasCredit() && !$customer->getCreditAsMoney()->isZero()) {
             $line = new InvoiceLine();
@@ -261,7 +261,7 @@ class InvoiceGenerator
             $voucherApplication = $this->voucherApplicationRepository->findUnUsedForCustomer($customer);
 
             $line = new InvoiceLine();
-            $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+            $line->setCurrency($currencyCode);
             $line->setInvoice($invoice);
 
             $percentage = $voucherApplication->getVoucher()->getPercentage();
@@ -286,12 +286,12 @@ class InvoiceGenerator
         } catch (NoEntityFoundException $e) {
         }
 
-        $invoice->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+        $invoice->setCurrency($currencyCode);
         $invoice->setLines($lines);
-        $invoice->setTaxTotal($vat->getMinorAmount()->toInt());
-        $invoice->setTotal($total->getMinorAmount()->toInt());
-        $invoice->setAmountDue($total->getMinorAmount()->toInt());
-        $invoice->setSubTotal($subTotal->getMinorAmount()->toInt());
+        $invoice->setTaxTotal($vat?->getMinorAmount()?->toInt() ?? 0);
+        $invoice->setTotal($total?->getMinorAmount()?->toInt() ?? 0);
+        $invoice->setAmountDue($total?->getMinorAmount()?->toInt() ?? 0);
+        $invoice->setSubTotal($subTotal?->getMinorAmount()?->toInt() ?? 0);
         $invoice->setPaid(false);
         $invoice->setCreatedAt(new \DateTime('now'));
         $invoice->setUpdatedAt(new \DateTime('now'));

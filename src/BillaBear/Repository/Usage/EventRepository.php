@@ -44,140 +44,260 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
     {
         $result = $this->createCountSql($customer, $metric, $subscription, $dateTime);
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getCountForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createCountSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getCountForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createCountSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getCountForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createCountSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getSumForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
     {
         $result = $this->createSumSql($customer, $metric, $subscription, $dateTime);
 
-        return (float) $result->fetchAssociative()['sum_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['sum_val'];
     }
 
     public function getSumForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createSumSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
-        return (float) $result->fetchAssociative()['sum_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['sum_val'];
     }
 
     public function getSumForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createSumSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
-        return (float) $result->fetchAssociative()['sum_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['sum_val'];
     }
 
     public function getSumForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createSumSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
-        return (float) $result->fetchAssociative()['sum_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['sum_val'];
     }
 
     public function getMaxForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
     {
         $result = $this->createMaxSql($customer, $metric, $subscription, $dateTime);
 
-        return (float) $result->fetchAssociative()['max_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['max_val'];
     }
 
     public function getMaxForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createMaxSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
-        return (float) $result->fetchAssociative()['max_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['max_val'];
     }
 
     public function getMaxForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createMaxSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
-        return (float) $result->fetchAssociative()['max_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['max_val'];
     }
 
     public function getMaxForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createMaxSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
-        return (float) $result->fetchAssociative()['max_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['max_val'];
     }
 
     public function getLatestForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
     {
         $result = $this->createLatestSql($customer, $metric, $subscription, $dateTime);
 
-        return (float) $result->fetchAssociative()['latest_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['latest_val'];
     }
 
     public function getLatestForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createLatestSql($customer, $metric, $subscription, new \DateTime('-1 month'));
 
-        return (float) $result->fetchAssociative()['latest_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['latest_val'];
     }
 
     public function getLatestForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createLatestSql($customer, $metric, $subscription, new \DateTime('-1 week'));
 
-        return (float) $result->fetchAssociative()['latest_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['latest_val'];
     }
 
     public function getLatestForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createLatestSql($customer, $metric, $subscription, new \DateTime('-1 year'));
 
-        return (float) $result->fetchAssociative()['latest_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['latest_val'];
     }
 
     public function getUniqueCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float
     {
         $result = $this->createCountUnique($customer, $metric, $subscription, $dateTime);
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getUniqueCountForMonth(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createCountUnique($customer, $metric, $subscription, new \DateTime('-1 month'));
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getUniqueCountForWeek(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createCountUnique($customer, $metric, $subscription, new \DateTime('-1 week'));
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     public function getUniqueCountForYear(Customer $customer, Metric $metric, Subscription $subscription): float
     {
         $result = $this->createCountUnique($customer, $metric, $subscription, new \DateTime('-1 year'));
 
-        return (float) $result->fetchAssociative()['count_val'];
+        $array = $result->fetchAssociative();
+
+        if (!$array) {
+            return 0.0;
+        }
+
+        return $array['count_val'];
     }
 
     private function createCountSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
@@ -245,7 +365,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
         $counter = 1;
         foreach ($filters as $filter) {
-            $varName = sprintf(':filter%d', $counter);
+            $varName = sprintf('filter%d', $counter);
             $query->bindValue($varName, $filter->getValue());
         }
 
