@@ -16,4 +16,6 @@ use Parthenon\Athena\Repository\CrudRepositoryInterface;
 interface MetricCounterRepositoryInterface extends CrudRepositoryInterface
 {
     public function getForCustomerAndMetric(Customer $customer, Metric $metric): MetricCounter;
+
+    public function getAllForCustomer(Customer $customer): array;
 }

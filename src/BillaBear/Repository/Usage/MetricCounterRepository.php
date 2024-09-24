@@ -28,4 +28,9 @@ class MetricCounterRepository extends DoctrineCrudRepository implements MetricCo
 
         return $usage;
     }
+
+    public function getAllForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
+    }
 }

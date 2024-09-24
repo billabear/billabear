@@ -110,6 +110,31 @@
           </div>
 
           <div class="card-body">
+            <h2  class="section-header">{{ $t('app.customer.view.metric_counters.title') }}</h2>
+
+            <div class="mt-2">
+
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.customer.view.metric_counters.list.name') }}</th>
+                  <th>{{ $t('app.customer.view.metric_counters.list.usage') }}</th>
+                  <th>{{ $t('app.customer.view.metric_counters.list.cost') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="metric_counter in metric_counters">
+                    <td>{{ metric_counter.metric.code }}</td>
+                    <td>{{ metric_counter.usage}}</td>
+                    <td>{{ currency(metric_counter.estimated_cost) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-body">
             <CustomerSubscriptionEvent :subscription_events="subscription_events" />
           </div>
 
@@ -300,7 +325,8 @@ export default {
       credit: [],
       invoices: [],
       subscription_events: [],
-      invoice_delivery: {}
+      invoice_delivery: {},
+      metric_counters: []
     }
   },
   methods: {
@@ -355,6 +381,7 @@ export default {
       this.invoices = response.data.invoices;
       this.subscription_events = response.data.subscription_events;
       this.invoice_delivery = response.data.invoice_delivery;
+      this.metric_counters = response.data.metric_counters;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

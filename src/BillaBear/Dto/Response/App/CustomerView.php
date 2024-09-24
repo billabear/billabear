@@ -41,6 +41,9 @@ class CustomerView
     #[SerializedName('subscription_events')]
     protected array $subscriptionEvents;
 
+    #[SerializedName('metric_counters')]
+    protected array $metricCounters;
+
     public function getCustomer(): Customer
     {
         return $this->customer;
@@ -149,5 +152,15 @@ class CustomerView
     public function setInvoiceDelivery(ListResponse $invoiceDelivery): void
     {
         $this->invoiceDelivery = $invoiceDelivery;
+    }
+
+    public function getMetricCounters(): array
+    {
+        return $this->metricCounters;
+    }
+
+    public function setMetricCounters(array $metricCounters): void
+    {
+        $this->metricCounters = $metricCounters;
     }
 }

@@ -42,7 +42,7 @@ class Event
     private array $properties;
 
     #[ORM\Id]
-    #[ORM\Column(name: 'created_at', type: 'datetimetz')]
+    #[ORM\Column(name: 'created_at', type: 'datetime')]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     private \DateTime $createdAt;
 

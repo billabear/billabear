@@ -23,11 +23,13 @@ use BillaBear\DataMappers\RefundDataMapper;
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
+use BillaBear\DataMappers\Usage\MetricCounterDataMapper;
 use BillaBear\Dto\Request\App\CreateCustomerDto;
 use BillaBear\Dto\Response\App\Customer\CreateCustomerView;
 use BillaBear\Dto\Response\App\CustomerView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Subscription;
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
@@ -243,6 +245,7 @@ class CustomerController
         CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliverySettingsDataMapper $invoiceDeliveryDataMapper,
+        MetricCounterDataMapper $metricCounterDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
 
@@ -275,6 +278,14 @@ class CustomerController
 
         $subscriptions = $subscriptionRepository->getLastTenForCustomer($customer);
         $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions->getResults());
+
+        $metricCounterDtos = [];
+        /** @var Subscription $subscription */
+        foreach ($subscriptions->getResults() as $subscription) {
+            if ($subscription->isActive() && $subscription->getPrice()?->getUsage()) {
+                $metricCounterDtos[] = $metricCounterDataMapper->createAppDto($subscription);
+            }
+        }
 
         $subscriptionList = new ListResponse();
         $subscriptionList->setData($subscriptionDtos);
@@ -320,6 +331,7 @@ class CustomerController
         $dto->setInvoices($invoiceList);
         $dto->setInvoiceDelivery($invoiceDeliveryList);
         $dto->setSubscriptionEvents($subscriptionEventDtos);
+        $dto->setMetricCounters($metricCounterDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

@@ -35,7 +35,7 @@ class InvoicedMetricCounter
     #[ORM\Column(type: 'float')]
     private float $value;
 
-    #[ORM\Column(type: 'datetimetz')]
+    #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
     public function getId()

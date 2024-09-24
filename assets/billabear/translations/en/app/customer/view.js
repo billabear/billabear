@@ -150,5 +150,14 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             view: "View",
         },
         no_delivery_methods: "No delivery methods",
+    },
+    metric_counters: {
+        title: "Metric Counters",
+        list: {
+            name: "Name",
+            usage: "Usage",
+            cost: "Estimated Cost"
+        },
+        no_counters: "There are no metric counters"
     }
 }
