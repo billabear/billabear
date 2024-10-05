@@ -16,9 +16,16 @@ use BillaBear\Dto\Request\Api\CreatePrice;
 use BillaBear\Dto\Request\Api\Price\CreateTier;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\TierComponent;
+use BillaBear\Entity\Usage\Metric;
+use BillaBear\Enum\MetricAggregationMethod;
+use BillaBear\Enum\MetricEventIngestion;
 use BillaBear\Enum\MetricType;
 use BillaBear\Repository\Usage\MetricRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Obol\Model\Enum\TierMode;
+use Obol\Model\Enum\UsageType;
+use Obol\Model\Metric as ObolMetric;
+use Obol\Model\Tier;
 use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 
@@ -153,10 +160,91 @@ class PriceDataMapper
         $price->setSchedule($priceModel->getSchedule());
         $price->setExternalReference($priceModel->getId());
         $price->setPaymentProviderDetailsUrl($priceModel->getUrl());
+        $price->setUsage(UsageType::METERED === $priceModel->getUsageType());
+        $price->setMetricType($price->getUsage() ? MetricType::RESETTABLE : null);
+
+        if ($priceModel->getMetric()) {
+            $price->setMetric($this->createMetric($priceModel->getMetric()));
+        }
+        $tiers = [];
+        /** @var Tier $tierModel */
+        foreach ($priceModel->getTiers() as $tierModel) {
+            $tier = $this->createTier($tierModel);
+            $tier->setPrice($price);
+            $tiers[] = $tier;
+        }
+        usort($tiers, function ($a, $b) {
+            $a->getLastUnit() <=> $b->getLastUnit();
+        });
+        $lastTier = null;
+        foreach ($tiers as $tier) {
+            if ($lastTier) {
+                $lastTier->setFirstUnit($tier->getLastUnit() - 1);
+            }
+            $lastTier = $tier;
+        }
+
+        $price->setTierComponents($tiers);
+        $price->setType($this->decidePriceType($priceModel));
 
         $product = $this->productRepository->getByExternalReference($priceModel->getProductReference());
         $price->setProduct($product);
 
         return $price;
+    }
+
+    protected function decidePriceType(\Obol\Model\Price $price): PriceType
+    {
+        if (!$price->isRecurring()) {
+            return PriceType::ONE_OFF;
+        }
+        if (!empty($price->getTiers())) {
+            if (TierMode::GRADUATED === $price->getTierMode()) {
+                return PriceType::TIERED_GRADUATED;
+            } else {
+                return PriceType::TIERED_VOLUME;
+            }
+        }
+
+        if ($price->getUsageType()) {
+            if (UsageType::METERED === $price->getUsageType()) {
+                return PriceType::UNIT;
+            } else {
+                return PriceType::PACKAGE;
+            }
+        }
+
+        return PriceType::FIXED_PRICE;
+    }
+
+    protected function createTier(Tier $tier): TierComponent
+    {
+        $entity = new TierComponent();
+        $entity->setLastUnit($tier->getUpTo());
+        $entity->setUnitPrice($tier->getUnitAmount());
+        $entity->setFlatFee($tier->getFlatAmount());
+
+        return $entity;
+    }
+
+    protected function createMetric(ObolMetric $obolMetric): Metric
+    {
+        $metric = new Metric();
+        $metric->setName($obolMetric->getDisplayName());
+        $metric->setCode($obolMetric->getEventName());
+        $eventIngestion = match ($obolMetric->getEventTimeWindow()) {
+            'day' => MetricEventIngestion::DAILY,
+            'hour' => MetricEventIngestion::HOURLY,
+            default => MetricEventIngestion::REAL_TIME,
+        };
+        $metric->setEventIngestion($eventIngestion);
+        $aggregationMethod = match ($obolMetric->getAggregation()) {
+            'count' => MetricAggregationMethod::COUNT,
+            default => MetricAggregationMethod::SUM,
+        };
+        $metric->setAggregationMethod($aggregationMethod);
+        $metric->setCreatedAt(new \DateTime());
+
+        return $metric;
     }
 }
