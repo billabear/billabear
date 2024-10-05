@@ -50,7 +50,7 @@
         "js-file-download": "^0.4.12",
         "semver": "^7.5.3",
         "tailwindcss": "^3.1.8",
-        "vite": "^4.5.3",
+        "vite": "^4.5.5",
         "vitest": "^0.23.1",
         "vue": "^3.2.36",
         "vue-currency-input": "^3.1.0",
