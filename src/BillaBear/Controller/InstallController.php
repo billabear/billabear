@@ -33,7 +33,7 @@ class InstallController
 {
     use ValidationErrorResponseTrait;
 
-    #[Route('/install', name: 'app_install', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/install', name: 'app_install')]
     public function installDefault(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,

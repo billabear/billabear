@@ -18,16 +18,16 @@ use Twig\Environment;
 
 class FrontendController
 {
-    #[Route('/', name: 'app_index_landing', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/login', name: 'app_public', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/signup', name: 'app_signup', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/signup/{code}', name: 'app_invite', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/forgot-password', name: 'app_forgot_password', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/forgot-password/{code}', name: 'app_forgot_password_confirm', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/confirm-email/{code}', name: 'app_confirm_email', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/site/{vueRouting}', name: 'app_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/app/plan', name: 'app_plan', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/login-link', name: 'login_link_public', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/', name: 'app_index_landing')]
+    #[Route('/login', name: 'app_public')]
+    #[Route('/signup', name: 'app_signup')]
+    #[Route('/signup/{code}', name: 'app_invite')]
+    #[Route('/forgot-password', name: 'app_forgot_password')]
+    #[Route('/forgot-password/{code}', name: 'app_forgot_password_confirm')]
+    #[Route('/confirm-email/{code}', name: 'app_confirm_email')]
+    #[Route('/site/{vueRouting}', name: 'app_main')]
+    #[Route('/app/plan', name: 'app_plan')]
+    #[Route('/login-link', name: 'login_link_public')]
     public function home(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
@@ -45,8 +45,8 @@ class FrontendController
         return new Response($twig->render('index.html.twig'));
     }
 
-    #[Route('/error/stripe', name: 'app_site_error', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
-    #[Route('/error/stripe-invalid', name: 'app_site_error_invalid', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/error/stripe', name: 'app_site_error')]
+    #[Route('/error/stripe-invalid', name: 'app_site_error_invalid')]
     public function stripeError(
         Environment $twig,
         LoggerInterface $logger,
