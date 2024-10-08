@@ -9,6 +9,7 @@
 namespace BillaBear\Stats;
 
 use BillaBear\Entity\Stats\CachedStats;
+use BillaBear\Invoice\Usage\CostEstimator;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
@@ -24,6 +25,7 @@ class MonthlyRevenueStats
         private SettingsRepositoryInterface $settingsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private CachedStatsRepositoryInterface $cachedStatsRepository,
+        private CostEstimator $costEstimator,
     ) {
     }
 
@@ -42,9 +44,14 @@ class MonthlyRevenueStats
             if ('year' === $subscription->getPaymentSchedule()) {
                 continue;
             }
-            $originalFee = $subscription->getMoneyAmount();
-            if ('week' === $subscription->getPaymentSchedule()) {
-                $originalFee = $subscription->getMoneyAmount()->multipliedBy(4, RoundingMode::HALF_DOWN);
+            if ($subscription->getPrice()->getUsage()) {
+                $estimate = $this->costEstimator->getEstimate($subscription);
+                $originalFee = $estimate->cost;
+            } else {
+                $originalFee = $subscription->getMoneyAmount();
+                if ('week' === $subscription->getPaymentSchedule()) {
+                    $originalFee = $subscription->getMoneyAmount()->multipliedBy(4, RoundingMode::HALF_DOWN);
+                }
             }
 
             $amountToAdd = $currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
