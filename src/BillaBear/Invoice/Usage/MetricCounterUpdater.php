@@ -25,6 +25,8 @@ class MetricCounterUpdater
 
     public function updateForSubscription(Subscription $subscription): void
     {
+        $this->getLogger()->info('Updating metric counter for subscription', ['subscription_id' => (string) $subscription->getId()]);
+
         /** @var Price $price */
         $price = $subscription->getPrice();
         if (!$price->getUsage()) {
@@ -44,8 +46,16 @@ class MetricCounterUpdater
             $when = $subscription->getStartOfCurrentPeriod() ?? new \DateTime('now');
         }
 
-        $metric = $this->metricProvider->getMetricForDateTime($subscription, $when);
-        $counter->addValue($metric);
+        $metricValue = $this->metricProvider->getMetricForDateTime($subscription, $when);
+
+        $this->getLogger()->info('Updating metric counter for subscription', [
+            'subscription_id' => (string) $subscription->getId(),
+            'metric_id' => (string) $metric->getId(),
+            'metric_value' => (float) $metricValue,
+            'when' => (string) $when->format('Y-m-d H:i:s'),
+        ]
+        );
+        $counter->addValue($metricValue);
         $this->metricCounterRepository->save($counter);
     }
 }

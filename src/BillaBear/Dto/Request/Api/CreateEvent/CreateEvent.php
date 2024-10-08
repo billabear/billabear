@@ -17,7 +17,7 @@ class CreateEvent
 {
     #[Assert\NotBlank()]
     #[Assert\Type('string')]
-    private $eventId;
+    private $event_id;
 
     #[Assert\NotBlank()]
     #[Assert\Uuid]
@@ -43,12 +43,12 @@ class CreateEvent
 
     public function getEventId()
     {
-        return $this->eventId;
+        return $this->event_id;
     }
 
-    public function setEventId($eventId): void
+    public function setEventId($event_id): void
     {
-        $this->eventId = $eventId;
+        $this->event_id = $event_id;
     }
 
     public function getCustomer()

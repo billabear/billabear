@@ -46,6 +46,6 @@ class EventController
         $eventData = $eventDataMapper->createEntity($createDto);
         $eventRepository->save($eventData);
 
-        return new JsonResponse([], JsonResponse::HTTP_CREATED);
+        return new Response(null, JsonResponse::HTTP_CREATED);
     }
 }
