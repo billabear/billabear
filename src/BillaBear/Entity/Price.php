@@ -21,7 +21,7 @@ use Parthenon\Billing\Entity\Product;
 #[ORM\Table('price')]
 class Price extends \Parthenon\Billing\Entity\Price
 {
-    #[ORM\ManyToOne(targetEntity: Metric::class)]
+    #[ORM\ManyToOne(targetEntity: Metric::class, cascade: ['PERSIST'])]
     private ?Metric $metric = null;
 
     #[ORM\Column(type: 'string', enumType: MetricType::class, nullable: true)]

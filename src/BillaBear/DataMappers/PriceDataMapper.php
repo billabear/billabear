@@ -28,6 +28,7 @@ use Obol\Model\Metric as ObolMetric;
 use Obol\Model\Tier;
 use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class PriceDataMapper
 {
@@ -162,9 +163,15 @@ class PriceDataMapper
         $price->setPaymentProviderDetailsUrl($priceModel->getUrl());
         $price->setUsage(UsageType::METERED === $priceModel->getUsageType());
         $price->setMetricType($price->getUsage() ? MetricType::RESETTABLE : null);
+        $price->setUnits($priceModel->getPackageAmount());
 
         if ($priceModel->getMetric()) {
-            $price->setMetric($this->createMetric($priceModel->getMetric()));
+            try {
+                $metric = $this->metricRepository->getByCode($priceModel->getMetric()->getEventName());
+            } catch (NoEntityFoundException) {
+                $metric = $this->createMetric($priceModel->getMetric());
+            }
+            $price->setMetric($metric);
         }
         $tiers = [];
         /** @var Tier $tierModel */
@@ -179,11 +186,12 @@ class PriceDataMapper
         $lastTier = null;
         foreach ($tiers as $tier) {
             if ($lastTier) {
-                $lastTier->setFirstUnit($tier->getLastUnit() - 1);
+                $tier->setFirstUnit($lastTier->getLastUnit() + 1);
+            } else {
+                $tier->setFirstUnit(1);
             }
             $lastTier = $tier;
         }
-
         $price->setTierComponents($tiers);
         $price->setType($this->decidePriceType($priceModel));
 
@@ -207,7 +215,7 @@ class PriceDataMapper
         }
 
         if ($price->getUsageType()) {
-            if (UsageType::METERED === $price->getUsageType()) {
+            if (!$price->getPackageAmount()) {
                 return PriceType::UNIT;
             } else {
                 return PriceType::PACKAGE;
@@ -221,8 +229,8 @@ class PriceDataMapper
     {
         $entity = new TierComponent();
         $entity->setLastUnit($tier->getUpTo());
-        $entity->setUnitPrice($tier->getUnitAmount());
-        $entity->setFlatFee($tier->getFlatAmount());
+        $entity->setUnitPrice($tier->getUnitAmount() ?? 0);
+        $entity->setFlatFee($tier->getFlatAmount() ?? 0);
 
         return $entity;
     }
