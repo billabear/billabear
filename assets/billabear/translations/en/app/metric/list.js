@@ -6,4 +6,5 @@ export const METRIC_LIST_TRANSLATIONS = {
     filter: {
         name: "Name"
     },
+    view_btn: "View"
 }
