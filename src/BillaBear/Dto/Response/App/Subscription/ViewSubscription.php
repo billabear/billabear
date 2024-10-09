@@ -22,6 +22,9 @@ class ViewSubscription
 
     private ?Product $product;
 
+    #[SerializedName('usage_estimate')]
+    private ?UsageEstimate $usageEstimate;
+
     #[SerializedName('payment_details')]
     private PaymentMethod $paymentDetails;
 
@@ -88,5 +91,15 @@ class ViewSubscription
     public function setSubscriptionEvents(array $subscriptionEvents): void
     {
         $this->subscriptionEvents = $subscriptionEvents;
+    }
+
+    public function getUsageEstimate(): ?UsageEstimate
+    {
+        return $this->usageEstimate;
+    }
+
+    public function setUsageEstimate(?UsageEstimate $usageEstimate): void
+    {
+        $this->usageEstimate = $usageEstimate;
     }
 }

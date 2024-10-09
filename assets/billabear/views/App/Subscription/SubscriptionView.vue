@@ -164,6 +164,27 @@
               </table>
             </div>
           </div>
+
+          <div class="card-body" v-if="usageEstimate !== null">
+            <div>
+              <h2  class="section-header">{{ $t('app.subscription.view.usage_estimate.title') }}</h2>
+              <dl class="detail-list section-body">
+                <div>
+                  <dt>{{ $t('app.subscription.view.usage_estimate.metric') }}</dt>
+                  <dd>{{ usageEstimate.metric.name }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.subscription.view.usage_estimate.usage') }}</dt>
+                  <dd>{{ usageEstimate.usage }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.subscription.view.usage_estimate.estimate_cost') }}</dt>
+                  <dd><Currency :amount="usageEstimate.amount" /></dd>
+                </div>
+              </dl>
+            </div>
+
+          </div>
         </div>
         <div class="mt-5 mr-5 text-end">
 
@@ -386,10 +407,11 @@ import axios from "axios";
 import {VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import Currency from "../../../components/app/Currency.vue";
 
 export default {
   name: "SubscriptionView",
-  components: {RoleOnlyView, VueFinalModal},
+  components: {Currency, RoleOnlyView, VueFinalModal},
   data() {
     return {
       subscription: {},
@@ -398,6 +420,7 @@ export default {
       paymentDetails: {},
       payments: [],
       refunds: [],
+      usageEstimate: null,
       ready: false,
       error: false,
       errorMessage: undefined,
@@ -499,6 +522,7 @@ export default {
       this.paymentDetails = response.data.payment_details;
       this.payments = response.data.payments;
       this.subscription_events = response.data.subscription_events;
+      this.usageEstimate = response.data.usage_estimate;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {
