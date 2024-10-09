@@ -46,7 +46,7 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         no_subscription_events: "No Subscription Events"
     },
     usage_estimate: {
-        title: "Usage Cost",
+        title: "Usage Estimate Cost",
         usage: "Usage",
         estimate_cost: "Estimate Cost",
         metric: "Metric"
