@@ -9,6 +9,7 @@
 namespace BillaBear\Schedule;
 
 use BillaBear\Schedule\Messenger\Message\BeforeChargeWarning;
+use BillaBear\Schedule\Messenger\Message\CounterUpdate;
 use BillaBear\Schedule\Messenger\Message\DisableOverdueCustomers;
 use BillaBear\Schedule\Messenger\Message\ExpiredCardsDayBefore;
 use BillaBear\Schedule\Messenger\Message\ExpiredCardsFirstOfMonth;
@@ -36,6 +37,7 @@ class MainSchedule implements ScheduleProviderInterface
         $schedule->add(RecurringMessage::cron('* * * * *', new StripeImport()));
         $schedule->add(RecurringMessage::cron('* * * * *', new GenericTasks()));
         $schedule->add(RecurringMessage::cron('* * * * *', new RetryPayments()));
+        $schedule->add(RecurringMessage::cron('* * * * *', new CounterUpdate()));
         $schedule->add(RecurringMessage::cron('15 2 * * *', new VatSenseSync()));
         $schedule->add(RecurringMessage::cron('1 3 * * *', new RefreshExchangeRates())); // Every day at 03:01 - this avoids the standard midnight process rush.
         $schedule->add(RecurringMessage::cron('*/5 * * * *', new GenerateNewInvoices()));
