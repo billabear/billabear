@@ -14,7 +14,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'billabear:counter-update', description: 'Update Counter')]
+#[AsCommand(name: 'billabear:usage:counter-update', description: 'Update Counter')]
 class CounterUpdateCommand extends Command
 {
     public function __construct(private readonly CounterUpdate $counterUpdate)
