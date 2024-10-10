@@ -35,7 +35,7 @@ class MetricDataMapper
         }
         $entity->setAggregationMethod(MetricAggregationMethod::from($dto->getAggregationMethod()));
         $entity->setAggregationProperty($dto->getAggregationProperty());
-        $entity->setEventIngestion(MetricEventIngestion::from($dto->getEventIngestion()));
+        $entity->setEventIngestion(MetricEventIngestion::REAL_TIME);
 
         $filters = [];
         foreach ($dto->getFilters() as $createMetricFilter) {
@@ -93,7 +93,6 @@ class MetricDataMapper
         $dto->setCode($entity->getCode());
         $dto->setAggregationMethod($entity->getAggregationMethod()->value);
         $dto->setAggregationProperty($entity->getAggregationProperty());
-        $dto->setEventIngestion($entity->getEventIngestion()->value);
         $dto->setCreatedAt($entity->getCreatedAt());
         $dto->setFilters(array_map([$this, 'createApiFilterDto'], $entity->getFilters()->toArray()));
 

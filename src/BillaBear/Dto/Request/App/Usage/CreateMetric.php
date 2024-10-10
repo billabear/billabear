@@ -9,7 +9,6 @@
 namespace BillaBear\Dto\Request\App\Usage;
 
 use BillaBear\Enum\MetricAggregationMethod;
-use BillaBear\Enum\MetricEventIngestion;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,12 +38,6 @@ class CreateMetric
     )]
     #[SerializedName('aggregation_property')]
     private $aggregationProperty;
-
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[Assert\Choice(choices: MetricEventIngestion::TYPES)]
-    #[SerializedName('event_ingestion')]
-    private $eventIngestion;
 
     #[Assert\Type('array')]
     #[Assert\Valid]
@@ -78,16 +71,6 @@ class CreateMetric
     public function setAggregationMethod($aggregationMethod): void
     {
         $this->aggregationMethod = $aggregationMethod;
-    }
-
-    public function getEventIngestion()
-    {
-        return $this->eventIngestion;
-    }
-
-    public function setEventIngestion($eventIngestion): void
-    {
-        $this->eventIngestion = $eventIngestion;
     }
 
     public function getAggregationProperty()

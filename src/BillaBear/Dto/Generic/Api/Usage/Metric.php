@@ -24,9 +24,6 @@ class Metric
     #[SerializedName('aggregation_property')]
     private ?string $aggregationProperty;
 
-    #[SerializedName('event_ingestion')]
-    private string $eventIngestion;
-
     private array $filters;
 
     private \DateTime $createdAt;
@@ -79,16 +76,6 @@ class Metric
     public function setAggregationProperty(?string $aggregationProperty): void
     {
         $this->aggregationProperty = $aggregationProperty;
-    }
-
-    public function getEventIngestion(): string
-    {
-        return $this->eventIngestion;
-    }
-
-    public function setEventIngestion(string $eventIngestion): void
-    {
-        $this->eventIngestion = $eventIngestion;
     }
 
     public function getFilters(): array

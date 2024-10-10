@@ -60,20 +60,6 @@
 
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
-            {{ $t('app.metric.create.fields.ingestion') }}
-          </label>
-          <p class="form-field-error" v-if="errors.eventIngestion != undefined">{{ errors.eventIngestion }}</p>
-          <select class="form-field" v-model="metric.event_ingestion">
-            <option value="real_time">{{ $t('app.metric.create.ingestion.real_time') }}</option>
-            <option value="hourly">{{ $t('app.metric.create.ingestion.hourly') }}</option>
-            <option value="daily">{{ $t('app.metric.create.ingestion.daily') }}</option>
-          </select>
-          <p class="form-field-help">{{ $t('app.metric.create.help_info.ingestion') }}</p>
-        </div>
-
-        <div class="form-field-ctn">
-
-          <label class="form-field-lbl" for="name">
             {{ $t('app.metric.create.fields.filters') }}
           </label>
 
