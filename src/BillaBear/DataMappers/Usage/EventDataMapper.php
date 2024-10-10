@@ -10,7 +10,6 @@ namespace BillaBear\DataMappers\Usage;
 
 use BillaBear\Dto\Request\Api\CreateEvent\CreateEvent;
 use BillaBear\Entity\Usage\Event as Entity;
-use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Repository\Usage\MetricRepositoryInterface;
 use Ramsey\Uuid\Uuid;
@@ -18,7 +17,6 @@ use Ramsey\Uuid\Uuid;
 class EventDataMapper
 {
     public function __construct(
-        private CustomerRepositoryInterface $customerRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private MetricRepositoryInterface $metricRepository,
     ) {
@@ -26,11 +24,12 @@ class EventDataMapper
 
     public function createEntity(CreateEvent $event): Entity
     {
+        $subscription = $this->subscriptionRepository->findById($event->getSubscription());
         $entity = new Entity();
         $entity->setId(Uuid::uuid4());
         $entity->setEventId($event->getEventId());
-        $entity->setCustomer($this->customerRepository->findById($event->getCustomer()));
-        $entity->setSubscription($this->subscriptionRepository->findById($event->getSubscription()));
+        $entity->setCustomer($subscription->getCustomer());
+        $entity->setSubscription($subscription);
         $entity->setMetric($this->metricRepository->getByCode($event->getCode()));
         $entity->setValue(floatval($event->getValue()));
         $entity->setProperties($event->getProperties() ?? []);

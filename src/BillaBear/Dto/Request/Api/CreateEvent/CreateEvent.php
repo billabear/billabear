@@ -8,7 +8,6 @@
 
 namespace BillaBear\Dto\Request\Api\CreateEvent;
 
-use BillaBear\Validator\Constraints\CustomerExists;
 use BillaBear\Validator\Constraints\MetricCodeExists;
 use BillaBear\Validator\Constraints\SubscriptionExists;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,11 +17,6 @@ class CreateEvent
     #[Assert\NotBlank()]
     #[Assert\Type('string')]
     private $event_id;
-
-    #[Assert\NotBlank()]
-    #[Assert\Uuid]
-    #[CustomerExists]
-    private $customer;
 
     #[Assert\NotBlank()]
     #[Assert\Uuid]
@@ -49,16 +43,6 @@ class CreateEvent
     public function setEventId($event_id): void
     {
         $this->event_id = $event_id;
-    }
-
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer($customer): void
-    {
-        $this->customer = $customer;
     }
 
     public function getSubscription()
