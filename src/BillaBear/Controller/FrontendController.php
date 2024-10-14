@@ -25,7 +25,7 @@ class FrontendController
     #[Route('/forgot-password', name: 'app_forgot_password')]
     #[Route('/forgot-password/{code}', name: 'app_forgot_password_confirm')]
     #[Route('/confirm-email/{code}', name: 'app_confirm_email')]
-    #[Route('/site/{vueRouting}', name: 'app_main')]
+    #[Route('/site/{vueRouting}', name: 'app_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/app/plan', name: 'app_plan')]
     #[Route('/login-link', name: 'login_link_public')]
     public function home(
