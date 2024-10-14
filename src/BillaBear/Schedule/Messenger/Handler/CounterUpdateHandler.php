@@ -18,7 +18,7 @@ class CounterUpdateHandler
     {
     }
 
-    public function __invoke(\BillaBear\Schedule\Messenger\Message\BeforeChargeWarning $beforeChargeWarning)
+    public function __invoke(\BillaBear\Schedule\Messenger\Message\CounterUpdate $beforeChargeWarning)
     {
         $this->process->execute();
     }
