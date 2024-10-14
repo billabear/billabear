@@ -10,6 +10,7 @@ namespace BillaBear\Subscription;
 
 use BillaBear\Credit\CreditAdjustmentRecorder;
 use BillaBear\Entity\Customer;
+use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Security\ApiUser;
@@ -61,10 +62,13 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
             $this->trialManager->startTrialProcess($subscription);
         }
 
-        $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
+        try {
+            $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
-        if (Customer::BILLING_TYPE_CARD === $customer->getBillingType() && SubscriptionStatus::ACTIVE === $subscription->getStatus()) {
-            $this->invoiceCharger->chargeInvoice($invoice);
+            if (Customer::BILLING_TYPE_CARD === $customer->getBillingType() && SubscriptionStatus::ACTIVE === $subscription->getStatus()) {
+                $this->invoiceCharger->chargeInvoice($invoice);
+            }
+        } catch (NothingToInvoiceException) {
         }
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);

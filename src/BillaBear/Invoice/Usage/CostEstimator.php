@@ -54,7 +54,7 @@ class CostEstimator
 
         if (MetricType::CONTINUOUS === $price->getMetricType()) {
             $lastInvoice = $this->invoiceRepository->getLastForCustomer($customer);
-            $lastValue = $lastInvoice->getInvoicedMetricCounter()->getValue();
+            $lastValue = $lastInvoice?->getInvoicedMetricCounter()->getValue() ?? 0;
         }
 
         /** @var Product $plan */

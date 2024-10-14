@@ -18,6 +18,7 @@ use BillaBear\Entity\Price;
 use BillaBear\Entity\Subscription;
 use BillaBear\Enum\MetricType;
 use BillaBear\Event\InvoiceCreated;
+use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Invoice\Usage\MetricProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
@@ -204,6 +205,10 @@ class InvoiceGenerator
             $line->setTaxState($priceInfo->taxInfo->state);
             $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
             $lines[] = $line;
+        }
+
+        if (!$total || $total->isZero()) {
+            throw new NothingToInvoiceException('Nothing to invoice');
         }
 
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat);
