@@ -165,7 +165,7 @@
             </div>
           </div>
 
-          <div class="card-body" v-if="usageEstimate !== null">
+          <div class="card-body" v-if="usageEstimate !== null && usageEstimate !== undefined">
             <div>
               <h2  class="section-header">{{ $t('app.subscription.view.usage_estimate.title') }}</h2>
               <dl class="detail-list section-body">
