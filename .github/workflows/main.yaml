@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -69,7 +69,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -120,7 +120,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -171,7 +171,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -222,7 +222,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -273,7 +273,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -328,7 +328,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -383,7 +383,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -438,7 +438,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -500,7 +500,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -555,7 +555,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -610,7 +610,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -665,7 +665,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     services:
@@ -749,7 +749,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.2', '8.3', '8.4']
         experimental: [false]
 
     steps:
