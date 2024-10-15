@@ -360,7 +360,13 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
         $finalSql = "SELECT customer_id, SUM(value) as sum_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
-        $this->getLogger()->info('Getting sum usage data', ['sql' => $finalSql]);
+        $this->getLogger()->info('Getting sum usage data', [
+            'sql' => $finalSql,
+            'customer_id' => (string) $customer->getId(),
+            'subscription_id' => (string) $subscription->getId(),
+            'metric_id' => (string) $metric->getId(),
+            'datetime' => $dateTime->getTimestamp(),
+        ]);
 
         $query = $this->connection->prepare($finalSql);
         $query->bindValue('customerId', (string) $customer->getId());
