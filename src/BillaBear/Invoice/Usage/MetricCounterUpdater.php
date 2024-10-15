@@ -44,7 +44,7 @@ class MetricCounterUpdater
             $when = $counter->getUpdatedAt();
         } else {
             // Questions should be raised about why made that nullable in the first place...
-            $when = $subscription->getStartOfCurrentPeriod() ?? new \DateTime('-61 seconds');
+            $when = $subscription->getStartOfCurrentPeriod() ?? new \DateTime('-60 seconds');
         }
 
         $metricValue = $this->metricProvider->getMetricForDateTime($subscription, $when);
