@@ -39,6 +39,7 @@ class MetricCounterUpdater
         $metric = $price->getMetric();
 
         $counter = $this->metricCounterRepository->getForCustomerAndMetric($customer, $metric);
+        // Not updating
         if ($counter->hasBeenUpdated()) {
             $when = $counter->getUpdatedAt();
         } else {

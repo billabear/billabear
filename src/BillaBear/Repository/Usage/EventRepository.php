@@ -367,6 +367,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         foreach ($filters as $filter) {
             $varName = sprintf('filter%d', $counter);
             $query->bindValue($varName, $filter->getValue());
+            ++$counter;
         }
 
         return $query->execute();
@@ -406,6 +407,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         foreach ($filters as $filter) {
             $varName = sprintf(':filter%d', $counter);
             $query->bindValue($varName, $filter->getValue());
+            ++$counter;
         }
 
         return $query->execute();
@@ -444,6 +446,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         foreach ($filters as $filter) {
             $varName = sprintf(':filter%d', $counter);
             $query->bindValue($varName, $filter->getValue());
+            ++$counter;
         }
 
         return $query->execute();
@@ -482,6 +485,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         foreach ($filters as $filter) {
             $varName = sprintf(':filter%d', $counter);
             $query->bindValue($varName, $filter->getValue());
+            ++$counter;
         }
 
         return $query->execute();
