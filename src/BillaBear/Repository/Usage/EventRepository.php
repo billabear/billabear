@@ -15,10 +15,13 @@ use BillaBear\Entity\Usage\Metric;
 use BillaBear\Enum\MetricFilterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class EventRepository implements EventRepositoryInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         #[Autowire('@doctrine.dbal.default_connection')]
         private Connection $connection)
@@ -356,6 +359,8 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         }
 
         $finalSql = "SELECT customer_id, SUM(value) as sum_val FROM ($sql) AS unique_events GROUP BY customer_id";
+
+        $this->getLogger()->info('Getting sum usage data', ['sql' => $finalSql]);
 
         $query = $this->connection->prepare($finalSql);
         $query->bindValue('customerId', (string) $customer->getId());
