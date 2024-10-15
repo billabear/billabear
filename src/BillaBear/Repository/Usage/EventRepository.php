@@ -305,7 +305,8 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
     private function createCountSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
-        $sql = 'set time zone UTC;SELECT COUNT(DISTINCT event_id) as count_val'.PHP_EOL
+        $this->setTimezone();
+        $sql = 'SELECT COUNT(DISTINCT event_id) as count_val'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
@@ -340,6 +341,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
     private function createSumSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
+        $this->setTimezone();
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id, value'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
@@ -358,7 +360,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             ++$counter;
         }
 
-        $finalSql = "set time zone UTC;SELECT customer_id, SUM(value) as sum_val FROM ($sql) AS unique_events GROUP BY customer_id";
+        $finalSql = "SELECT customer_id, SUM(value) as sum_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
         $this->getLogger()->info('Getting sum usage data', [
             'sql' => $finalSql,
@@ -386,6 +388,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
     private function createMaxSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
+        $this->setTimezone();
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id, properties->>\'%s\'as value'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
@@ -406,7 +409,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             ++$counter;
         }
 
-        $finalSql = "set time zone UTC;SELECT customer_id, MAX(value) as max_val FROM ($sql) AS unique_events GROUP BY customer_id";
+        $finalSql = "SELECT customer_id, MAX(value) as max_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
         $query = $this->connection->prepare($finalSql);
         $query->bindValue('customerId', (string) $customer->getId());
@@ -426,6 +429,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
     private function createLatestSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
+        $this->setTimezone();
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id, properties->>\'%s\'as value, created_at'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
@@ -445,7 +449,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             ++$counter;
         }
 
-        $finalSql = "set time zone UTC;SELECT value as latest_val FROM ($sql) AS unique_events order by created_at desc limit 1";
+        $finalSql = "SELECT value as latest_val FROM ($sql) AS unique_events order by created_at desc limit 1";
 
         $query = $this->connection->prepare($finalSql);
         $query->bindValue('customerId', (string) $customer->getId());
@@ -465,6 +469,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
     private function createCountUnique(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
+        $this->setTimezone();
         $sql = 'SELECT DISTINCT ON (event_id) customer_id, event_id,  properties->>\'%s\'as value'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
@@ -484,7 +489,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
             ++$counter;
         }
 
-        $finalSql = "set time zone UTC;SELECT customer_id, COUNT(DISTINCT value) as count_val FROM ($sql) AS unique_events GROUP BY customer_id";
+        $finalSql = "SELECT customer_id, COUNT(DISTINCT value) as count_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
         $query = $this->connection->prepare($finalSql);
         $query->bindValue('customerId', (string) $customer->getId());
@@ -504,7 +509,8 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
 
     public function getEventCountAfterDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): int
     {
-        $sql = 'set time zone UTC;SELECT COUNT(event_id) as count_val'.PHP_EOL
+        $this->setTimezone();
+        $sql = 'SELECT COUNT(event_id) as count_val'.PHP_EOL
             .'FROM event'.PHP_EOL
             .'WHERE customer_id = :customerId'.PHP_EOL
             .'AND metric_id = :metricId'.PHP_EOL
@@ -518,5 +524,10 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $query->bindValue('dateTime', $dateTime->getTimestamp());
 
         return $query->execute()->fetchAssociative()['count_val'];
+    }
+
+    private function setTimezone()
+    {
+        $this->connection->exec('set time zone UTC;');
     }
 }
