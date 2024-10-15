@@ -363,7 +363,7 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $finalSql = "SELECT customer_id, SUM(value) as sum_val FROM ($sql) AS unique_events GROUP BY customer_id";
 
         $this->getLogger()->info('Getting sum usage data', [
-            'sql' => $finalSql,
+            'sql' => str_replace(':customerId', '"'.$customer->getId().'"', str_replace(':subscriptionId', '"'.$subscription->getId().'"', str_replace(':metricId', '"'.$metric->getId().'"', str_replace(':dateTime', $dateTime->getTimestamp(), $finalSql)))),
             'customer_id' => (string) $customer->getId(),
             'subscription_id' => (string) $subscription->getId(),
             'metric_id' => (string) $metric->getId(),
