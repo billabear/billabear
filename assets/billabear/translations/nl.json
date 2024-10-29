@@ -661,6 +661,15 @@
                         "view": "Bekijk"
                     },
                     "no_delivery_methods": "Geen leveringsmethoden"
+                },
+                "metric_counters": {
+                    "title": "Metrische tellers",
+                    "list": {
+                        "name": "Naam",
+                        "usage": "Gebruik",
+                        "cost": "Geschatte kosten"
+                    },
+                    "no_counters": "Er zijn geen metrische tellers"
                 }
             },
             "update": {
@@ -841,7 +850,8 @@
                 "products": "Producten",
                 "features": "Kenmerken",
                 "vouchers": "Bonnen",
-                "products_list": "Productlijst"
+                "products_list": "Productlijst",
+                "metrics": "Metriek"
             }
         },
         "price": {
@@ -866,12 +876,38 @@
                     "currency": "De valuta waarin de klant moet betalen",
                     "schedule": "Hoe vaak de klant moet betalen",
                     "including_tax": "Als je de belasting in de prijs wilt verbergen of als je de klant zelf de belasting wilt laten betalen",
-                    "public": "Als dit een openbaar weergegeven prijs is"
+                    "public": "Als dit een openbaar weergegeven prijs is",
+                    "usage": "Als de klant wordt gefactureerd op basis van het gebruik van een metriek of per stoel.",
+                    "metric_type": "Als de verbruiksmetriek wordt gereset aan het einde van het betalingsschema en volledig wordt gebruikt voor facturering of continu en het verschil tussen de laatste factuur en de volgende factuur wordt gebruikt."
                 },
                 "schedule": {
                     "week": "Wekelijks",
                     "month": "Maandelijks",
                     "year": "Jaarlijks"
+                },
+                "metric": "Metrisch",
+                "metric_type": "Metrisch type",
+                "create_metric": "U moet een Metric maken",
+                "metric_types": {
+                    "resettable": "Herinstelbaar",
+                    "continuous": "Doorlopend"
+                },
+                "type": "Type",
+                "types": {
+                    "fixed_price": "Vaste prijs",
+                    "package": "Pakket",
+                    "per_unit": "Per eenheid\/plaats",
+                    "tiered_volume": "Trapsgewijs volume",
+                    "tiered_graduated": "Trapsgewijs"
+                },
+                "usage": "Gebruik",
+                "units": "Eenheden",
+                "tiers": "Niveaus",
+                "tiers_fields": {
+                    "first_unit": "Eerste eenheid",
+                    "last_unit": "Laatste eenheid",
+                    "unit_price": "Prijs per eenheid",
+                    "flat_fee": "Vaste vergoeding"
                 }
             }
         },
@@ -1236,6 +1272,12 @@
                         },
                         "cancelled_message": "Succesvol geannuleerd"
                     }
+                },
+                "usage_estimate": {
+                    "title": "Gebruiksschatting Kosten",
+                    "usage": "Gebruik",
+                    "estimate_cost": "Kosten schatten",
+                    "metric": "Metrisch"
                 }
             },
             "list": {
@@ -3520,7 +3562,87 @@
                 }
             }
         },
-        "default_error_message": "Er ging iets mis!"
+        "default_error_message": "Er ging iets mis!",
+        "metric": {
+            "list": {
+                "title": "Metrisch",
+                "create": "Maak",
+                "name": "Naam",
+                "no_metrics": "Er zijn nog geen statistieken!",
+                "filter": {
+                    "name": "Naam"
+                },
+                "view_btn": "Bekijk"
+            },
+            "create": {
+                "title": "Metriek aanmaken",
+                "fields": {
+                    "name": "Naam",
+                    "code": "Code",
+                    "type": "Type",
+                    "aggregation_method": "Aggregatiemethode",
+                    "aggregation_property": "Samenvoegingseigenschap",
+                    "ingestion": "Inname",
+                    "filters": "Filters"
+                },
+                "help_info": {
+                    "name": "De naam van de metriek",
+                    "code": "De code die moet worden gebruikt in api-aanroepen. Alleen kleine letters, cijfers en underscore.",
+                    "type": "Als de teller voor de klant opnieuw moet worden ingesteld aan het einde van een abonnementsperiode",
+                    "aggregation_method": "Hoe de gebeurtenissen die naar BillaBear worden verzonden, moeten worden samengevoegd.",
+                    "aggregation_property": "Welke eigenschap in de gebeurtenisgegevens moet worden gebruikt voor aggregatie.",
+                    "ingestion": "Hoe vaak gebeurtenissen moeten worden verwerkt",
+                    "filters": "De filters die moeten worden toegepast op de payload van de gebeurtenis om te worden uitgesloten in aggregatie"
+                },
+                "aggregation_methods": {
+                    "count": "Graaf",
+                    "sum": "Som",
+                    "latest": "Nieuwste",
+                    "unique_count": "Unieke telling",
+                    "max": "Max"
+                },
+                "ingestion": {
+                    "real_time": "Echte tijd",
+                    "hourly": "Uurlijks",
+                    "daily": "Dagelijks"
+                },
+                "filter": {
+                    "name": "Naam",
+                    "value": "Waarde",
+                    "type": "Type",
+                    "no_filters": "Geen filters"
+                },
+                "filter_type": {
+                    "inclusive": "Inclusief",
+                    "exclusive": "Exclusief"
+                },
+                "create_button": "Maak"
+            },
+            "view": {
+                "title": "Bekijk metrisch",
+                "main": {
+                    "name": "Naam",
+                    "code": "Code",
+                    "type": "Type",
+                    "aggregation_method": "Aggregatiemethode",
+                    "aggregation_property": "Samenvoegingseigenschap",
+                    "event_ingestion": "Inname"
+                },
+                "filters": {
+                    "title": "Filters",
+                    "name": "Naam",
+                    "value": "Waarde",
+                    "type": "Type",
+                    "inclusive": "Inclusief",
+                    "exclusive": "Exclusief"
+                },
+                "update": "Update"
+            },
+            "update": {
+                "title": "Metriek bijwerken",
+                "update_button": "Sla"
+            }
+        }
     },
     "install": {
         "title": "Installeer",

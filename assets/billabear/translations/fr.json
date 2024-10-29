@@ -661,6 +661,15 @@
                         "view": "Voir"
                     },
                     "no_delivery_methods": "Aucune méthode de livraison"
+                },
+                "metric_counters": {
+                    "title": "Compteurs métriques",
+                    "list": {
+                        "name": "Nom",
+                        "usage": "Utilisation",
+                        "cost": "Coût estimé"
+                    },
+                    "no_counters": "Il n'y a pas de compteurs métriques"
                 }
             },
             "update": {
@@ -841,7 +850,8 @@
                 "products": "Produits",
                 "features": "Caractéristiques",
                 "vouchers": "Chèques",
-                "products_list": "Liste des produits"
+                "products_list": "Liste des produits",
+                "metrics": "Métriques"
             }
         },
         "price": {
@@ -866,12 +876,38 @@
                     "currency": "La devise dans laquelle le client doit être facturé",
                     "schedule": "Combien de fois le client doit-il être facturé ?",
                     "including_tax": "Si vous voulez cacher la taxe dans le prix ou si vous voulez que le client paie la taxe lui-même",
-                    "public": "S'il s'agit d'un prix affiché publiquement"
+                    "public": "S'il s'agit d'un prix affiché publiquement",
+                    "usage": "Si le client est facturé sur la base de son utilisation d'un paramètre ou par siège.",
+                    "metric_type": "Si la mesure de l'utilisation est réinitialisée à la fin de l'échéancier de paiement et est utilisée intégralement pour la facturation ou si elle est continue et que la différence entre la dernière facture et la facture suivante est utilisée."
                 },
                 "schedule": {
                     "week": "Hebdomadaire",
                     "month": "Mensuel",
                     "year": "Annuel"
+                },
+                "metric": "Métrique",
+                "metric_type": "Type métrique",
+                "create_metric": "Vous devez créer un indicateur",
+                "metric_types": {
+                    "resettable": "Réinitialisable",
+                    "continuous": "En continu"
+                },
+                "type": "Type",
+                "types": {
+                    "fixed_price": "Prix fixe",
+                    "package": "Paquet",
+                    "per_unit": "Par unité\/par siège",
+                    "tiered_volume": "Volume par paliers",
+                    "tiered_graduated": "Tiercé Gradué"
+                },
+                "usage": "Utilisation",
+                "units": "Unités",
+                "tiers": "Paliers",
+                "tiers_fields": {
+                    "first_unit": "Première unité",
+                    "last_unit": "Dernière unité",
+                    "unit_price": "Prix unitaire",
+                    "flat_fee": "Tarif forfaitaire"
                 }
             }
         },
@@ -1236,6 +1272,12 @@
                         },
                         "cancelled_message": "Annulation réussie"
                     }
+                },
+                "usage_estimate": {
+                    "title": "Utilisation Estimation du coût",
+                    "usage": "Utilisation",
+                    "estimate_cost": "Estimation du coût",
+                    "metric": "Métrique"
                 }
             },
             "list": {
@@ -3520,7 +3562,87 @@
                 }
             }
         },
-        "default_error_message": "Quelque chose n'a pas fonctionné !"
+        "default_error_message": "Quelque chose n'a pas fonctionné !",
+        "metric": {
+            "list": {
+                "title": "Métrique",
+                "create": "Créer",
+                "name": "Nom",
+                "no_metrics": "Il n'y a pas encore de métriques !",
+                "filter": {
+                    "name": "Nom"
+                },
+                "view_btn": "Voir"
+            },
+            "create": {
+                "title": "Créer une mesure",
+                "fields": {
+                    "name": "Nom",
+                    "code": "Code",
+                    "type": "Type",
+                    "aggregation_method": "Méthode d'agrégation",
+                    "aggregation_property": "Propriété d'agrégation",
+                    "ingestion": "Ingestion",
+                    "filters": "Filtres"
+                },
+                "help_info": {
+                    "name": "Le nom de la métrique",
+                    "code": "Le code qui doit être utilisé dans les appels à l'API. Lettres minuscules, chiffres et traits de soulignement uniquement.",
+                    "type": "Si le compteur du client doit être remis à zéro à la fin d'une période d'abonnement",
+                    "aggregation_method": "Comment les événements envoyés à BillaBear doivent être regroupés.",
+                    "aggregation_property": "Quelle propriété des données de l'événement doit être utilisée pour l'agrégation.",
+                    "ingestion": "Fréquence de traitement des événements",
+                    "filters": "Les filtres qui doivent être appliqués à la charge utile de l'événement à exclure dans l'agrégation."
+                },
+                "aggregation_methods": {
+                    "count": "Compter",
+                    "sum": "Somme",
+                    "latest": "Dernières nouvelles",
+                    "unique_count": "Nombre unique",
+                    "max": "Max"
+                },
+                "ingestion": {
+                    "real_time": "Temps réel",
+                    "hourly": "Horaire",
+                    "daily": "Quotidiennement"
+                },
+                "filter": {
+                    "name": "Nom",
+                    "value": "Valeur",
+                    "type": "Type",
+                    "no_filters": "Pas de filtre"
+                },
+                "filter_type": {
+                    "inclusive": "Inclusif",
+                    "exclusive": "Exclusif"
+                },
+                "create_button": "Créer"
+            },
+            "view": {
+                "title": "Voir métrique",
+                "main": {
+                    "name": "Nom",
+                    "code": "Code",
+                    "type": "Type",
+                    "aggregation_method": "Méthode d'agrégation",
+                    "aggregation_property": "Propriété d'agrégation",
+                    "event_ingestion": "Ingestion"
+                },
+                "filters": {
+                    "title": "Filtres",
+                    "name": "Nom",
+                    "value": "Valeur",
+                    "type": "Type",
+                    "inclusive": "Inclusif",
+                    "exclusive": "Exclusif"
+                },
+                "update": "Mise à jour"
+            },
+            "update": {
+                "title": "Mise à jour de la métrique",
+                "update_button": "Économiser"
+            }
+        }
     },
     "install": {
         "title": "Installer",
