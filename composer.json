@@ -7,7 +7,7 @@
             "email": "iain@billabear.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
@@ -26,19 +26,19 @@
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
         "rollbar/rollbar": "^4",
-        "symfony/console": "^7.1.1",
-        "symfony/doctrine-messenger": "^7.1.1",
-        "symfony/dotenv": "^7.1.1",
+        "symfony/console": "^7.2.0",
+        "symfony/doctrine-messenger": "^7.2.0",
+        "symfony/dotenv": "^7.2.0",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "^7.1.1",
-        "symfony/intl": "^7.1.1",
-        "symfony/mailer": "^7.1.1",
-        "symfony/messenger": "^7.1.1",
-        "symfony/runtime": "^7.1.1",
-        "symfony/scheduler": "^7.1.1",
+        "symfony/framework-bundle": "^7.2.0",
+        "symfony/intl": "^7.2.0",
+        "symfony/mailer": "^7.2.0",
+        "symfony/messenger": "^7.2.0",
+        "symfony/runtime": "^7.2.0",
+        "symfony/scheduler": "^7.2.0",
         "symfony/webpack-encore-bundle": "^2.1.1",
-        "symfony/workflow": "^7.1.1",
-        "symfony/yaml": "^7.1.1",
+        "symfony/workflow": "^7.2.0",
+        "symfony/yaml": "^7.2.0",
         "taxjar/taxjar-php": "^2.0",
         "wildbit/postmark-php": "^4.0",
         "writecrow/country_code_converter": "^1.2"
@@ -105,7 +105,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "^7.1.1",
+            "require": "^7.2.0",
             "docker": false
         }
     }

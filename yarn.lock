@@ -3047,7 +3047,7 @@ cookie-signature@1.0.6:
 
 cookie@0.7.0:
   version "0.7.0"
-  
+
 core-js-compat@^3.38.0, core-js-compat@^3.38.1:
   version "3.38.1"
   resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.38.1.tgz#2bc7a298746ca5a7bcb9c164bcb120f2ebc09a09"
