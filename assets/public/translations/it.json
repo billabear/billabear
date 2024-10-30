@@ -38,7 +38,7 @@
             "loading": "Caricamento dei dettagli della cassa",
             "error": "Cassa non disponibile",
             "title": "Cassa",
-            "tax_total": "Imposta : {importo} {valuta}",
+            "tax_total": "Imposta : {amount} {currency}",
             "schedule": {
                 "week": "Settimanale",
                 "month": "Mensile",

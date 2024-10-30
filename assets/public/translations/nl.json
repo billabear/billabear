@@ -38,7 +38,7 @@
             "loading": "Afrekengegevens laden",
             "error": "Afrekenen niet beschikbaar",
             "title": "Kassa",
-            "tax_total": "Belasting : {bedrag} {valuta}",
+            "tax_total": "Belasting : {amount} {currency}",
             "schedule": {
                 "week": "Wekelijks",
                 "month": "Maandelijks",

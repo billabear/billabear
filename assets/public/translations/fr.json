@@ -38,7 +38,7 @@
             "loading": "Chargement des détails de la caisse",
             "error": "Checkout indisponible",
             "title": "Sortie de caisse",
-            "tax_total": "Taxe : {montant} {monnaie}",
+            "tax_total": "Taxe : {amount} {currency}",
             "schedule": {
                 "week": "Hebdomadaire",
                 "month": "Mensuel",

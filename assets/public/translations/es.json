@@ -38,7 +38,7 @@
             "loading": "Carga de los datos de pago",
             "error": "Pedido no disponible",
             "title": "Pedido",
-            "tax_total": "Impuesto : {importe} {moneda}",
+            "tax_total": "Impuesto : {amount} {currency}",
             "schedule": {
                 "week": "Semanal",
                 "month": "Mensualmente",

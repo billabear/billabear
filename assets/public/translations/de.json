@@ -38,7 +38,7 @@
             "loading": "Laden der Checkout-Details",
             "error": "Checkout nicht verfügbar",
             "title": "Kasse",
-            "tax_total": "Steuer : {Betrag} {Währung}",
+            "tax_total": "Steuer : {amount} {currency}",
             "schedule": {
                 "week": "Wöchentlich",
                 "month": "Monatlich",
@@ -75,7 +75,7 @@
                 },
                 "totals": {
                     "total": "Insgesamt",
-                    "amount_due": "Fälliger Betrag"
+                    "amount_due": "Fälliger amount"
                 },
                 "loading": "Laden"
             }
