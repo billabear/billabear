@@ -16,7 +16,6 @@ class HypertableSchemaListener
     {
         $table = $eventArgs->getClassTable();
         $classMetadata = $eventArgs->getClassMetadata();
-        $schema = $eventArgs->getSchema();
 
         $reflectionClass = $classMetadata->getReflectionClass();
 
