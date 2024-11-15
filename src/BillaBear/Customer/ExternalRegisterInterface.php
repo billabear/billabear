@@ -12,5 +12,8 @@ use BillaBear\Entity\Customer;
 
 interface ExternalRegisterInterface
 {
+    /**
+     * @throws \Throwable
+     */
     public function register(Customer $customer): Customer;
 }

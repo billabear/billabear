@@ -20,7 +20,7 @@ use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
-class CreationHandler
+readonly class CreationHandler
 {
     public function __construct(
         private NotificationSender $notificationSender,

@@ -14,7 +14,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
-class Disabler
+readonly class Disabler
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,

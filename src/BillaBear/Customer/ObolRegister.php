@@ -16,10 +16,12 @@ use Obol\Provider\ProviderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
 #[Lazy]
-class ObolRegister implements ExternalRegisterInterface
+readonly class ObolRegister implements ExternalRegisterInterface
 {
-    public function __construct(private ProviderInterface $provider, private SettingsRepositoryInterface $settingsRepository)
-    {
+    public function __construct(
+        private ProviderInterface $provider,
+        private SettingsRepositoryInterface $settingsRepository,
+    ) {
     }
 
     public function register(Customer $customer): Customer
