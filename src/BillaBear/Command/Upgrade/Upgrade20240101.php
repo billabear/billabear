@@ -17,9 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:upgrade:20240101', description: 'Handles adding data that is needed after the upgrade')]
 class Upgrade20240101 extends Command
 {
-    public function __construct(private DataStep $dataStep)
+    public function __construct(private readonly DataStep $dataStep)
     {
-        parent::__construct(null);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

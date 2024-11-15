@@ -26,10 +26,10 @@ class DevChurnDataCommand extends Command
         protected CancellationRequestRepositoryInterface $cancellationRequestRepository,
         protected SubscriptionRepositoryInterface $subscriptionRepository,
     ) {
-        parent::__construct(null);
+        parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('date', mode: InputOption::VALUE_REQUIRED, description: 'The starting start churning', default: '-6 months')
             ->addOption('count', mode: InputOption::VALUE_REQUIRED, description: 'The number of users to add', default: 4);

@@ -23,8 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:dev:demo-data', description: 'Generate some demo data')]
 class DevDemoDataCommand extends Command
 {
-    public const NUMBER_OF_CUSTOMERS = 2000;
-
     private static int $count;
     private static \DateTime $date;
 
@@ -39,17 +37,17 @@ class DevDemoDataCommand extends Command
     }
 
     public function __construct(
-        private CustomerCreation $customerCreation,
-        private SubscriptionPlanCreation $subscriptionPlanCreation,
-        private SubscriptionCreation $subscriptionCreation,
-        private InvoiceCreation $invoiceCreation,
-        private RevenueEstimatesGeneration $estimatesGeneration,
-        private CreateSubscriptionCountStats $createSubscriptionCountStats,
+        private readonly CustomerCreation $customerCreation,
+        private readonly SubscriptionPlanCreation $subscriptionPlanCreation,
+        private readonly SubscriptionCreation $subscriptionCreation,
+        private readonly InvoiceCreation $invoiceCreation,
+        private readonly RevenueEstimatesGeneration $estimatesGeneration,
+        private readonly CreateSubscriptionCountStats $createSubscriptionCountStats,
     ) {
-        parent::__construct(null);
+        parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('date', mode: InputOption::VALUE_REQUIRED, description: 'The starting date to add new customers and subscriptions', default: '-18 months')
             ->addOption('count', mode: InputOption::VALUE_REQUIRED, description: 'The number of users to add', default: 3000)
