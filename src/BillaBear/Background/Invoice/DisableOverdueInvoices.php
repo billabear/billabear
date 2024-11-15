@@ -11,7 +11,7 @@ namespace BillaBear\Background\Invoice;
 use BillaBear\Invoice\InvoiceStateMachineProcessor;
 use BillaBear\Repository\Processes\InvoiceProcessRepositoryInterface;
 
-class DisableOverdueInvoices
+readonly class DisableOverdueInvoices
 {
     public function __construct(
         private InvoiceProcessRepositoryInterface $invoiceProcessRepository,

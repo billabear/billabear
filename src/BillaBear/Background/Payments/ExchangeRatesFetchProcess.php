@@ -12,7 +12,7 @@ use BillaBear\Payment\ExchangeRates\ProviderInterface;
 use BillaBear\Repository\ExchangeRatesRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 
-class ExchangeRatesFetchProcess
+readonly class ExchangeRatesFetchProcess
 {
     public function __construct(
         private ProviderInterface $provider,

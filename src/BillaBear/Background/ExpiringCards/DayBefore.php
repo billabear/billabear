@@ -18,9 +18,9 @@ class DayBefore
     use LoggerAwareTrait;
 
     public function __construct(
-        private ExpiringCardProcessRepositoryInterface $expiringCardProcessRepository,
-        private ExpiryChecker $expiryChecker,
-        private WorkflowInterface $expiringCardProcessStateMachine,
+        private readonly ExpiringCardProcessRepositoryInterface $expiringCardProcessRepository,
+        private readonly ExpiryChecker $expiryChecker,
+        private readonly WorkflowInterface $expiringCardProcessStateMachine,
     ) {
     }
 

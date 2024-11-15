@@ -15,7 +15,7 @@ use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 
-class MassChange
+readonly class MassChange
 {
     public function __construct(
         private MassSubscriptionChangeRepositoryInterface $massSubscriptionChangeRepository,

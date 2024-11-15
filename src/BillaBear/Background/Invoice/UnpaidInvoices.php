@@ -12,7 +12,7 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\Processes\InvoiceProcessRepositoryInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class UnpaidInvoices
+readonly class UnpaidInvoices
 {
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,

@@ -17,7 +17,7 @@ use Parthenon\Billing\Obol\SubscriptionFactory;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
 #[Lazy]
-class DisableStripeBilling implements ExecutorInterface
+readonly class DisableStripeBilling implements ExecutorInterface
 {
     public function __construct(
         private ProviderInterface $provider,

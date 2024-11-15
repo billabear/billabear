@@ -15,7 +15,7 @@ use BillaBear\Repository\Processes\ExpiringCardProcessRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class StartProcess
+readonly class StartProcess
 {
     public function __construct(
         private PaymentCardRepositoryInterface $paymentCardRepository,
@@ -24,7 +24,7 @@ class StartProcess
     ) {
     }
 
-    public function execute()
+    public function execute(): void
     {
         $cards = $this->paymentCardRepository->getExpiringDefaultThisMonth();
 

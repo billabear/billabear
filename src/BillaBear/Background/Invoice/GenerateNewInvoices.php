@@ -29,14 +29,14 @@ class GenerateNewInvoices
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
-        private InvoiceGenerator $invoiceGenerator,
-        private SchedulerProvider $schedulerProvider,
-        private InvoiceCharger $invoiceCharger,
-        private SettingsRepositoryInterface $settingsRepository,
-        private TransactionManager $transactionManager,
-        private TrialManager $trialEnder,
-        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly InvoiceGenerator $invoiceGenerator,
+        private readonly SchedulerProvider $schedulerProvider,
+        private readonly InvoiceCharger $invoiceCharger,
+        private readonly SettingsRepositoryInterface $settingsRepository,
+        private readonly TransactionManager $transactionManager,
+        private readonly TrialManager $trialEnder,
+        private readonly CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
     ) {
     }
 
@@ -90,8 +90,6 @@ class GenerateNewInvoices
 
     /**
      * @param Subscription[] $activeSubscriptions
-     *
-     * @throws \Exception
      */
     protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
     {

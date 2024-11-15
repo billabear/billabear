@@ -18,8 +18,8 @@ class RetryPaymentsProcess
     use LoggerAwareTrait;
 
     public function __construct(
-        private PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
-        private InvoiceCharger $invoiceCharger,
+        private readonly PaymentFailureProcessRepositoryInterface $paymentFailureProcessRepository,
+        private readonly InvoiceCharger $invoiceCharger,
     ) {
     }
 

@@ -12,7 +12,7 @@ use BillaBear\Enum\GenericTaskStatus;
 use BillaBear\Repository\GenericBackgroundTaskRepositoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
-class GenericTasks
+readonly class GenericTasks
 {
     /**
      * @param ExecutorInterface[]|iterable $executors
@@ -22,11 +22,6 @@ class GenericTasks
         private iterable $executors,
         private GenericBackgroundTaskRepositoryInterface $genericBackgroundTaskRepository,
     ) {
-    }
-
-    public function addExecutor(ExecutorInterface $executor): void
-    {
-        $this->executors[] = $executor;
     }
 
     public function execute(): void

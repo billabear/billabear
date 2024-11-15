@@ -15,10 +15,11 @@ use BillaBear\Entity\Customer;
 use BillaBear\Event\CheckoutSessionCreated;
 use BillaBear\Invoice\Pricer;
 use BillaBear\Repository\CheckoutSessionRepositoryInterface;
+use Brick\Money\Exception\MoneyException;
 use Brick\Money\Money;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CheckoutSessionCreator
+readonly class CheckoutSessionCreator
 {
     public function __construct(
         private CheckoutSessionRepositoryInterface $checkoutSessionRepository,
@@ -27,6 +28,9 @@ class CheckoutSessionCreator
     ) {
     }
 
+    /**
+     * @throws MoneyException
+     */
     public function createCheckoutSession(Checkout $checkout, Customer $customer): CheckoutSession
     {
         $checkoutSession = new CheckoutSession();
@@ -79,7 +83,10 @@ class CheckoutSessionCreator
         return $checkoutSession;
     }
 
-    public function addAmount(?Money $originalAmount, Money $additionalMoney): Money
+    /**
+     * @throws MoneyException
+     */
+    private function addAmount(?Money $originalAmount, Money $additionalMoney): Money
     {
         if (!$originalAmount) {
             return $additionalMoney;

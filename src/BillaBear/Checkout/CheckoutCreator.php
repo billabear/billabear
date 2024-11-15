@@ -27,7 +27,7 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CheckoutCreator
+readonly class CheckoutCreator
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,

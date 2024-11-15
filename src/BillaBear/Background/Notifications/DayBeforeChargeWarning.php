@@ -16,16 +16,17 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
+use Parthenon\Notification\Exception\UnableToSendMessageException;
 
 class DayBeforeChargeWarning
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
-        private BrandSettingsRepositoryInterface $brandSettingsRepository,
-        private EmailSenderInterface $sender,
-        private EmailBuilder $emailBuilder,
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly BrandSettingsRepositoryInterface $brandSettingsRepository,
+        private readonly EmailSenderInterface $sender,
+        private readonly EmailBuilder $emailBuilder,
     ) {
     }
 
@@ -67,7 +68,12 @@ class DayBeforeChargeWarning
             );
             $emailPayload = new DayBeforeChargeWarningEmail($subscription);
             $email = $this->emailBuilder->build($subscription->getCustomer(), $emailPayload);
-            $this->sender->send($email);
+            try {
+                $this->sender->send($email);
+            } catch (UnableToSendMessageException $e) {
+                $this->getLogger()->error('Failed to send day before charge warning email', ['exception_message' => $e->getMessage()]);
+                // We'll continue on and just squash this in case it's related to just this email,
+            }
         }
     }
 }

@@ -14,16 +14,17 @@ use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
+use Parthenon\Notification\Exception\UnableToSendMessageException;
 
 class TrialEndingWarning
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
-        private EmailSenderInterface $sender,
-        private EmailBuilder $emailBuilder,
-        private BrandSettingsRepositoryInterface $brandSettingsRepository,
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly EmailSenderInterface $sender,
+        private readonly EmailBuilder $emailBuilder,
+        private readonly BrandSettingsRepositoryInterface $brandSettingsRepository,
     ) {
     }
 
@@ -58,7 +59,11 @@ class TrialEndingWarning
             );
             $emailPayload = new TrialEndingWarningEmail($subscription);
             $email = $this->emailBuilder->build($subscription->getCustomer(), $emailPayload);
-            $this->sender->send($email);
+            try {
+                $this->sender->send($email);
+            } catch (UnableToSendMessageException $e) {
+                $this->getLogger()->error('Unable to send trial ending warning email', ['exception_message' => $e->getMessage()]);
+            }
         }
     }
 }

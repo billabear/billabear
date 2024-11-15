@@ -17,8 +17,8 @@ class CounterUpdate
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
-        private MetricCounterUpdater $metricCounterUpdater,
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly MetricCounterUpdater $metricCounterUpdater,
     ) {
     }
 
