@@ -31,7 +31,7 @@ class SubscriptionSeatsController
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
 
-    public function __construct(private WebhookDispatcherInterface $webhookDispatcher)
+    public function __construct(private readonly WebhookDispatcherInterface $webhookDispatcher)
     {
     }
 
@@ -42,13 +42,13 @@ class SubscriptionSeatsController
         SubscriptionRepositoryInterface $subscriptionRepository,
         AddSeatToSubscription $addSeatToSubscription,
         ValidatorInterface $validator,
-    ) {
+    ): Response {
         $this->getLogger()->info('Received API request to add seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $dto = $serializer->deserialize($request->getContent(), AddSeats::class, 'json');
@@ -72,13 +72,13 @@ class SubscriptionSeatsController
         SubscriptionRepositoryInterface $subscriptionRepository,
         RemoveSeatFromSubscription $removeSeatFromSubscription,
         ValidatorInterface $validator,
-    ) {
+    ): JsonResponse|Response {
         $this->getLogger()->info('Received API request to remove seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $dto = $serializer->deserialize($request->getContent(), RemoveSeats::class, 'json');

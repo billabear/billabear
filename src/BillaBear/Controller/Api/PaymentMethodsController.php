@@ -43,8 +43,8 @@ class PaymentMethodsController
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $token = $addCardByTokenDriver->startTokenProcess($customer);
@@ -68,8 +68,8 @@ class PaymentMethodsController
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $dto = $serializer->deserialize($request->getContent(), FrontendTokenComplete::class, 'json');
@@ -84,7 +84,7 @@ class PaymentMethodsController
 
             return new JsonResponse([
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $paymentDetails = $addCardByTokenDriver->createPaymentDetailsFromToken($customer, $dto->getToken());
@@ -92,14 +92,13 @@ class PaymentMethodsController
         $output = $paymentDetailsFactory->createApiDto($paymentDetails);
         $json = $serializer->serialize($output, 'json');
 
-        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+        return new JsonResponse($json, Response::HTTP_CREATED, json: true);
     }
 
     #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}/default', name: 'api_v1_customer_payment_details_default', methods: ['POST'])]
     #[Route('/api/v1/payment-methods/{paymentDetailsId}/default', name: 'api_v1_payment_details_default', methods: ['POST'])]
     public function makeDefault(
         Request $request,
-        CustomerRepositoryInterface $customerRepository,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
@@ -109,13 +108,13 @@ class PaymentMethodsController
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $defaultPaymentManager->makePaymentDetailsDefault($paymentDetails->getCustomer(), $paymentDetails);
 
-        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse([], Response::HTTP_ACCEPTED);
     }
 
     #[Route('/api/v1/payment-methods/{paymentDetailsId}', name: 'api_v1_payment_details_view', methods: ['GET'])]
@@ -131,20 +130,19 @@ class PaymentMethodsController
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
         $dto = $paymentMethodsDataMapper->createApiDto($paymentDetails);
         $json = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse($json, JsonResponse::HTTP_OK, [], true);
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     #[Route('/api/v1/customer/{customerId}/payment-methods/{paymentDetailsId}', name: 'api_v1_customer_payment_details_delete', methods: ['DELETE'])]
     #[Route('/api/v1/payment-methods/{paymentDetailsId}', name: 'api_v1_payment_details_delete', methods: ['DELETE'])]
     public function deletePaymentDetails(
         Request $request,
-        CustomerRepositoryInterface $customerRepository,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
@@ -155,13 +153,13 @@ class PaymentMethodsController
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $deleter->delete($paymentDetails);
 
-        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse([], Response::HTTP_ACCEPTED);
     }
 
     #[Route('/api/v1/customer/{customerId}/payment-methods', name: 'api_v1_payment_details_list', methods: ['GET'])]
@@ -178,8 +176,8 @@ class PaymentMethodsController
         try {
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('customerId'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
@@ -191,6 +189,6 @@ class PaymentMethodsController
 
         $json = $serializer->serialize($list, 'json');
 
-        return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
+        return new JsonResponse($json, Response::HTTP_ACCEPTED, json: true);
     }
 }

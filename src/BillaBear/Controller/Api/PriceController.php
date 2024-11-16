@@ -13,7 +13,6 @@ use BillaBear\Dto\Request\Api\CreatePrice;
 use BillaBear\Dto\Response\Api\ListResponse;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Entity\Product;
-use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -37,16 +36,15 @@ class PriceController
         PriceRepositoryInterface $priceRepository,
         ProductRepositoryInterface $productRepository,
         PriceDataMapper $priceFactory,
-        PriceRegisterInterface $priceRegister,
-    ) {
+    ): JsonResponse {
         $this->getLogger()->info('Received request to create price for product', [
             'product_id' => $request->get('id'),
         ]);
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         /** @var CreatePrice $dto */
@@ -62,7 +60,7 @@ class PriceController
 
             return new JsonResponse([
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $price = $priceFactory->createPriceFromDto($dto);
@@ -72,7 +70,7 @@ class PriceController
         $dto = $priceFactory->createApiDto($price);
         $jsonResponse = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+        return new JsonResponse($jsonResponse, Response::HTTP_CREATED, json: true);
     }
 
     #[Route('/api/v1/product/{id}/price', name: 'api_v1.0_product_price_list', methods: ['GET'])]
@@ -92,19 +90,19 @@ class PriceController
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
         if ($resultsPerPage < 1) {
             return new JsonResponse([
                 'reason' => 'limit is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'reason' => 'limit is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
         // TODO add filters
         $filters = [];

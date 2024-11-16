@@ -8,7 +8,6 @@
 
 namespace BillaBear\Controller\Api;
 
-use BillaBear\Dummy\Data\ReceiptProvider;
 use BillaBear\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
@@ -31,14 +30,13 @@ class ReceiptController
 
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptPdfGenerator $generator,
-        ReceiptProvider $provider,
     ): Response {
         $this->getLogger()->info('Received request to download receipt', ['receipt_id' => $request->get('id')]);
         try {
             /** @var Receipt $receipt */
             $receipt = $receiptRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
         $pdf = $generator->generate($receipt);
         $tmpFile = tempnam('/tmp', 'pdf');
