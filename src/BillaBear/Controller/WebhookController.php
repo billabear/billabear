@@ -14,12 +14,13 @@ use Parthenon\Billing\Webhook\RequestProcessor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class WebhookController
 {
     #[Route('/webhook', name: 'app_webhook')]
-    public function webhook(Request $request, RequestProcessor $requestProcessor, LoggerInterface $logger)
+    public function webhook(Request $request, RequestProcessor $requestProcessor, LoggerInterface $logger): Response
     {
         $logger->info('Webhook call received');
         $requestProcessor->processRequest($request);

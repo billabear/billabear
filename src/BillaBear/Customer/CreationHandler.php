@@ -19,6 +19,7 @@ use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
+use Obol\Exception\ProviderFailureException;
 
 readonly class CreationHandler
 {
@@ -32,6 +33,9 @@ readonly class CreationHandler
     ) {
     }
 
+    /**
+     * @throws ProviderFailureException|\Throwable
+     */
     public function handleCreation(Customer $customer): void
     {
         if (!$customer->hasExternalsCustomerReference()) {

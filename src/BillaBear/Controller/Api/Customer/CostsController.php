@@ -11,9 +11,11 @@ namespace BillaBear\Controller\Api\Customer;
 use BillaBear\Dto\Response\Api\Customer\Cost;
 use BillaBear\Dto\Response\Api\Customer\Costs;
 use BillaBear\Dto\Response\Api\Customer\MetricCost;
+use BillaBear\Exception\Invoice\CannotEstimateException;
 use BillaBear\Invoice\Usage\CostEstimator;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Money;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
@@ -38,8 +40,8 @@ class CostsController
         $this->getLogger()->info('Received an API request to read the customer costs', ['customer_id' => $request->get('id')]);
         try {
             $customer = $customerRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $exception) {
-            $this->getLogger()->warning('Received an API request to read customer costs for a non-existant customer', ['customer_id' => $request->get('id')]);
+        } catch (NoEntityFoundException) {
+            $this->getLogger()->warning('Received an API request to read customer costs for a non-existent customer', ['customer_id' => $request->get('id')]);
 
             return new Response(null, 404);
         }
@@ -51,11 +53,25 @@ class CostsController
             if (!$subscription->getPrice()?->getUsage()) {
                 continue;
             }
-            $estimate = $costEstimator->getEstimate($subscription);
+            try {
+                $estimate = $costEstimator->getEstimate($subscription);
+            } catch (CannotEstimateException) {
+                $this->getLogger()->info('Cannot estimate cost for subscription', ['subscription_id' => (string) $subscription->getId()]);
+
+                return new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
             if (!$money) {
                 $money = Money::zero($subscription->getCurrency());
             }
-            $money = $money->plus($estimate->cost);
+
+            try {
+                $money = $money->plus($estimate->cost);
+            } catch (MoneyMismatchException $e) {
+                $this->getLogger()->critical('Have a currency mismatch when creating estimate cost', ['exception_message' => $e->getMessage()]);
+
+                return new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
 
             $costDto = new MetricCost();
             $costDto->setAmount($estimate->cost->getMinorAmount()->toInt());

@@ -35,8 +35,8 @@ class FrontendController
     ): Response {
         $logger->info('A request was made to the frontend controller');
         try {
-            $settings = $settingsRepository->getDefaultSettings();
-        } catch (TableNotFoundException $exception) {
+            $settingsRepository->getDefaultSettings();
+        } catch (TableNotFoundException) {
             $logger->info('Redirected to install page');
 
             return new RedirectResponse('/install');

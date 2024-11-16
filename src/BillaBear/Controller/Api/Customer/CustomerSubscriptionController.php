@@ -16,6 +16,7 @@ use BillaBear\Dto\Request\Api\Subscription\CreateTrial;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
+use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\TrialManager;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
@@ -41,15 +42,15 @@ class CustomerSubscriptionController
     public function listCustomerSubscriptions(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        \BillaBear\Repository\SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionDataMapper $subscriptionFactory,
         SerializerInterface $serializer,
-    ) {
+    ): JsonResponse {
         $this->getLogger()->info('Received request to list customer subscriptions', ['customer_id' => $request->get('customerId')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
@@ -69,15 +70,15 @@ class CustomerSubscriptionController
     public function listCustomerSubscriptionsActive(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
-        \BillaBear\Repository\SubscriptionRepositoryInterface $subscriptionRepository,
+        SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionDataMapper $subscriptionFactory,
         SerializerInterface $serializer,
-    ) {
+    ): JsonResponse {
         $this->getLogger()->info('Received request to list customer subscriptions', ['customer_id' => $request->get('customerId')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $subscriptions = $subscriptionRepository->getAllActiveForCustomer($customer);
@@ -108,8 +109,8 @@ class CustomerSubscriptionController
 
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         /** @var CreateTrial $dto */
@@ -124,8 +125,8 @@ class CustomerSubscriptionController
         if ($dto->getCardToken()) {
             try {
                 $frontendAddProcessor->createPaymentDetailsFromToken($customer, $dto->getCardToken());
-            } catch (\Exception $exception) {
-                return new JsonResponse(['error' => 'Unable to add card via token'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+            } catch (\Exception) {
+                return new JsonResponse(['error' => 'Unable to add card via token'], Response::HTTP_NOT_ACCEPTABLE);
             }
         }
 
@@ -140,7 +141,7 @@ class CustomerSubscriptionController
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
-        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+        return new JsonResponse($json, Response::HTTP_CREATED, json: true);
     }
 
     #[Route('/api/v1/customer/{customerId}/subscription/start', name: 'api_v1_subscription_start', methods: ['POST'])]
@@ -160,8 +161,8 @@ class CustomerSubscriptionController
         $this->getLogger()->info('Received request to create a customer subscriptions', ['customer_id' => $request->get('customerId')]);
         try {
             $customer = $customerRepository->findById($request->get('customerId'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         /** @var CreateSubscription $dto */
@@ -177,7 +178,7 @@ class CustomerSubscriptionController
 
             return new JsonResponse([
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $planIdentifier = $dto->getSubscriptionPlan();
@@ -190,18 +191,18 @@ class CustomerSubscriptionController
         if ($dto->getCardToken()) {
             try {
                 $paymentDetails = $frontendAddProcessor->createPaymentDetailsFromToken($customer, $dto->getCardToken());
-            } catch (\Exception $exception) {
-                return new JsonResponse(['error' => 'Unable to add card via token'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+            } catch (\Exception) {
+                return new JsonResponse(['error' => 'Unable to add card via token'], Response::HTTP_NOT_ACCEPTABLE);
             }
         } elseif ($dto->hasPaymentDetails()) {
             $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         } else {
             try {
                 $paymentDetails = $paymentDetailsRepository->getDefaultPaymentCardForCustomer($customer);
-            } catch (NoEntityFoundException $e) {
+            } catch (NoEntityFoundException) {
                 $this->getLogger()->info('No default payment method found');
 
-                return new JsonResponse(['error' => 'No default payment method'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+                return new JsonResponse(['error' => 'No default payment method'], Response::HTTP_NOT_ACCEPTABLE);
             }
         }
         if ($dto->getPrice()) {
@@ -221,16 +222,16 @@ class CustomerSubscriptionController
             $this->getLogger()->warning('Payment failure during creation', ['reason' => $e->getReason()->value]);
             $transactionManager->abort();
 
-            return new JsonResponse(['reason' => $e->getReason()->value], JsonResponse::HTTP_PAYMENT_REQUIRED);
+            return new JsonResponse(['reason' => $e->getReason()->value], Response::HTTP_PAYMENT_REQUIRED);
         } catch (\Throwable $e) {
             $this->getLogger()->error('Error while creating subscription', ['exception_message' => $e->getMessage(), 'exception_file' => $e->getFile(), 'exception_line' => $e->getLine()]);
             $transactionManager->abort();
 
-            return new JsonResponse([], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($subscriptionDto, 'json');
 
-        return new JsonResponse($json, JsonResponse::HTTP_CREATED, json: true);
+        return new JsonResponse($json, Response::HTTP_CREATED, json: true);
     }
 }

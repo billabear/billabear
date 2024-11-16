@@ -39,8 +39,8 @@ class InstallController
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
         try {
-            $settings = $settingsRepository->getDefaultSettings();
-        } catch (DoctrineTableException $exception) {
+            $settingsRepository->getDefaultSettings();
+        } catch (DoctrineTableException) {
             return new Response($twig->render('index.html.twig'));
         }
 
@@ -48,7 +48,7 @@ class InstallController
     }
 
     #[Route('/install/process', name: 'app_install_post', methods: ['POST'])]
-    public function procesInstall(
+    public function processInstall(
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
@@ -93,7 +93,7 @@ class InstallController
         } catch (\Throwable $e) {
             $transactionManager->abort();
 
-            return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return new JsonResponse([]);
