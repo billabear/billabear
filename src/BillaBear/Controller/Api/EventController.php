@@ -13,7 +13,6 @@ use BillaBear\DataMappers\Usage\EventDataMapper;
 use BillaBear\Dto\Request\Api\CreateEvent\CreateEvent;
 use BillaBear\Repository\Usage\EventRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,6 +45,6 @@ class EventController
         $eventData = $eventDataMapper->createEntity($createDto);
         $eventRepository->save($eventData);
 
-        return new Response(null, JsonResponse::HTTP_CREATED);
+        return new Response(null, Response::HTTP_CREATED);
     }
 }

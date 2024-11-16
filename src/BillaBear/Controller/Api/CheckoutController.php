@@ -25,7 +25,7 @@ class CheckoutController
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
 
-    #[Route('/api/v1/checkout', name: 'app_api_checkout_createcheckout', methods: ['POST'])]
+    #[Route('/api/v1/checkout', name: 'app_api_checkout_create_checkout', methods: ['POST'])]
     public function createCheckout(
         Request $request,
         CheckoutCreator $checkoutCreator,
@@ -47,6 +47,6 @@ class CheckoutController
         $dto = $checkoutDataMapper->createAppDto($quote);
         $json = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse($json, status: JsonResponse::HTTP_CREATED, json: true);
+        return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
     }
 }

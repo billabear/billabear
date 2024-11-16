@@ -30,14 +30,14 @@ trait CrudListTrait
             return new JsonResponse([
                 'success' => false,
                 'reason' => 'per_page is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'success' => false,
                 'reason' => 'per_page is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
         if (null === $filterList) {

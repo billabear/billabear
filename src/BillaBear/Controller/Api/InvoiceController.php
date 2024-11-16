@@ -30,7 +30,7 @@ class InvoiceController
 {
     use LoggerAwareTrait;
 
-    #[Route('/api/v1/customer/{customerId}/invoices', name: 'billabear_api_invoice_getinvoicesforcustomer', methods: ['GET'])]
+    #[Route('/api/v1/customer/{customerId}/invoices', name: 'billabear_api_invoice_get_invoices_for_customer', methods: ['GET'])]
     public function getInvoicesForCustomer(
         Request $request,
         CustomerRepositoryInterface $customerRepository,
@@ -42,7 +42,7 @@ class InvoiceController
 
         try {
             $customer = $customerRepository->getById($request->get('customerId'));
-        } catch (NoEntityFoundException $e) {
+        } catch (NoEntityFoundException) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
@@ -56,7 +56,7 @@ class InvoiceController
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/api/v1/invoice/{id}/charge', name: 'billabear_api_invoice_chargeinvoice', methods: ['POST'])]
+    #[Route('/api/v1/invoice/{id}/charge', name: 'billabear_api_invoice_charge_invoice', methods: ['POST'])]
     public function chargeInvoice(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
@@ -66,23 +66,23 @@ class InvoiceController
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
 
         $failureReason = null;
-        $statusCode = JsonResponse::HTTP_OK;
+        $statusCode = Response::HTTP_OK;
         try {
             $invoiceCharger->chargeInvoice($invoice);
         } catch (PaymentFailureException $e) {
             $failureReason = $e->getReason()->value;
-            $statusCode = JsonResponse::HTTP_PAYMENT_REQUIRED;
+            $statusCode = Response::HTTP_PAYMENT_REQUIRED;
         }
 
         return new JsonResponse(['paid' => $invoice->isPaid(), 'failure_reason' => $failureReason], $statusCode);
     }
 
-    #[Route('/api/v1/invoice/{id}/download', name: 'billabear_api_invoice_downloadinvoice', methods: ['GET'])]
+    #[Route('/api/v1/invoice/{id}/download', name: 'billabear_api_invoice_download_invoice', methods: ['GET'])]
     public function downloadInvoice(
         Request $request,
         InvoiceRepositoryInterface $invoiceRepository,
@@ -92,8 +92,8 @@ class InvoiceController
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
         $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         $pdf = $generator->generate($invoice);
