@@ -17,6 +17,7 @@ use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
+use Obol\Exception\UnsupportedFunctionalityException;
 use Obol\Model\Events\ChargeSucceeded;
 use Obol\Model\Events\EventInterface;
 use Obol\Provider\ProviderInterface;
@@ -61,7 +62,7 @@ class PaymentInvoiceCreatorHandler implements HandlerInterface
     /**
      * @param ChargeSucceeded $event
      *
-     * @throws \Obol\Exception\UnsupportedFunctionalityException
+     * @throws UnsupportedFunctionalityException
      */
     public function handle(EventInterface $event): void
     {

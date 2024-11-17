@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateInvoiceSubscription
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[SubscriptionPlanExists]
     private $plan;
 

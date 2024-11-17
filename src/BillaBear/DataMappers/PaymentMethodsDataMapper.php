@@ -11,6 +11,7 @@ namespace BillaBear\DataMappers;
 use BillaBear\Dto\Generic\Api\PaymentMethod as ApiDto;
 use BillaBear\Dto\Generic\App\PaymentMethod as AppDto;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use Obol\Model\PaymentMethod\PaymentMethodCard;
 use Parthenon\Billing\Entity\PaymentCard;
 
 class PaymentMethodsDataMapper
@@ -49,7 +50,7 @@ class PaymentMethodsDataMapper
         return $dto;
     }
 
-    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
+    public function createFromObol(PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
     {
         if (!$entity) {
             $entity = new PaymentCard();

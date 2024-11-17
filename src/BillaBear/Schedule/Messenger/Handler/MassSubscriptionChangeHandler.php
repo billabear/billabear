@@ -9,6 +9,7 @@
 namespace BillaBear\Schedule\Messenger\Handler;
 
 use BillaBear\Background\Subscription\MassChange;
+use BillaBear\Schedule\Messenger\Message\MassSubscriptionChange;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,7 +19,7 @@ class MassSubscriptionChangeHandler
     {
     }
 
-    public function __invoke(\BillaBear\Schedule\Messenger\Message\MassSubscriptionChange $checker)
+    public function __invoke(MassSubscriptionChange $checker)
     {
         $this->massChange->execute();
     }

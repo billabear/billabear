@@ -14,11 +14,11 @@ use Brick\Money\Money;
 readonly class PriceInfo
 {
     public function __construct(
-        public readonly Money $total,
-        public readonly Money $subTotal,
-        public readonly Money $vat,
-        public readonly TaxInfo $taxInfo,
-        public readonly float $quantity,
+        public Money $total,
+        public Money $subTotal,
+        public Money $vat,
+        public TaxInfo $taxInfo,
+        public float $quantity,
     ) {
     }
 }

@@ -14,15 +14,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateSlackNotification
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[SlackWebhookExists]
     private $webhook;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[ValidSlackEvent]
     private $event;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $template;
 

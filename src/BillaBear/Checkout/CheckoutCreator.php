@@ -15,6 +15,8 @@ use BillaBear\Dto\Request\App\Invoice\CreateInvoiceItem;
 use BillaBear\Entity\Checkout;
 use BillaBear\Entity\CheckoutLine;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Price;
+use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Event\CheckoutCreated;
 use BillaBear\Invoice\Pricer;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
@@ -75,9 +77,9 @@ readonly class CheckoutCreator
         $subTotal = null;
         /** @var CreateCheckoutSubscription $subscription */
         foreach ($createCheckout->getSubscriptions() as $subscription) {
-            /** @var \BillaBear\Entity\SubscriptionPlan $plan */
+            /** @var SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
-            /** @var \BillaBear\Entity\Price $price */
+            /** @var Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
 
             if (isset($customer)) {

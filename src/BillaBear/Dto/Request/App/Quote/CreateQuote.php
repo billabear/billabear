@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateQuote
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[CustomerExists]
     private $customer;
 

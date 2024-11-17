@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreateVoucher
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['percentage', 'fixed_credit'])]
     private $type;
 
@@ -31,7 +31,7 @@ class CreateVoucher
     #[Assert\NotBlank]
     private $name;
 
-    #[Assert\Positive()]
+    #[Assert\Positive]
     #[Assert\LessThanOrEqual(100)]
     private $percentage;
 
@@ -119,7 +119,7 @@ class CreateVoucher
         $this->code = $code;
     }
 
-    #[Assert\Callback()]
+    #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, $payload)
     {
         if ('fixed_credit' === $this->type) {

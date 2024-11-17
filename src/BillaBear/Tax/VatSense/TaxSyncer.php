@@ -16,6 +16,7 @@ use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Brick\Math\BigDecimal;
+use Brick\Math\BigNumber;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 
@@ -116,7 +117,7 @@ class TaxSyncer
         return null;
     }
 
-    public function buildNewRule(Country $country, BigDecimal|\Brick\Math\BigNumber $newRate, TaxType $taxType, ?CountryTaxRule $taxRule = null): CountryTaxRule
+    public function buildNewRule(Country $country, BigDecimal|BigNumber $newRate, TaxType $taxType, ?CountryTaxRule $taxRule = null): CountryTaxRule
     {
         $newTaxRule = new CountryTaxRule();
         $newTaxRule->setCountry($country);

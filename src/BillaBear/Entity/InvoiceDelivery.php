@@ -12,7 +12,7 @@ use BillaBear\Enum\InvoiceDeliveryStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table('invoice_delivery')]
 class InvoiceDelivery
 {

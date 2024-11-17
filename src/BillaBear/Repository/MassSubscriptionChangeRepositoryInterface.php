@@ -12,7 +12,7 @@ use BillaBear\Entity\MassSubscriptionChange;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 /**
- * @method \BillaBear\Entity\MassSubscriptionChange findById($id)
+ * @method MassSubscriptionChange findById($id)
  */
 interface MassSubscriptionChangeRepositoryInterface extends CrudRepositoryInterface
 {

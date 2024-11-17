@@ -33,7 +33,7 @@ class EventRepository implements EventRepositoryInterface
         $query = $this->connection->prepare('INSERT INTO event (id, created_at, customer_id, subscription_id, metric_id, event_id, value, properties) 
 VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :value, :properties)');
         $query->bindValue('id', (string) $entity->getId());
-        $query->bindValue('createdAt', (string) $entity->getCreatedAt()->format(\DateTime::ATOM));
+        $query->bindValue('createdAt', (string) $entity->getCreatedAt()->format(\DateTimeInterface::ATOM));
         $query->bindValue('customerId', (string) $entity->getCustomer()->getId());
         $query->bindValue('subscriptionId', (string) $entity->getSubscription()->getId());
         $query->bindValue('metricId', (string) $entity->getMetric()->getId());

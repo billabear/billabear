@@ -8,6 +8,7 @@
 
 namespace BillaBear\Schedule\Messenger\Handler;
 
+use BillaBear\Schedule\Messenger\Message\SyncEstimates;
 use BillaBear\Stats\RevenueEstimatesGeneration;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -18,7 +19,7 @@ class SyncEstimatesHandler
     {
     }
 
-    public function __invoke(\BillaBear\Schedule\Messenger\Message\SyncEstimates $syncEstimates)
+    public function __invoke(SyncEstimates $syncEstimates)
     {
         $this->estimatesGeneration->generate();
     }

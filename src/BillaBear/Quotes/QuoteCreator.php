@@ -12,8 +12,10 @@ use BillaBear\Dto\Request\App\Invoice\CreateInvoiceItem;
 use BillaBear\Dto\Request\App\Quote\CreateQuote;
 use BillaBear\Dto\Request\App\Quote\CreateQuoteSubscription;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Price;
 use BillaBear\Entity\Quote;
 use BillaBear\Entity\QuoteLine;
+use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Event\QuoteCreated;
 use BillaBear\Invoice\Pricer;
 use BillaBear\Repository\CustomerRepositoryInterface;
@@ -57,9 +59,9 @@ class QuoteCreator
         $subTotal = null;
         /** @var CreateQuoteSubscription $subscription */
         foreach ($createQuote->getSubscriptions() as $subscription) {
-            /** @var \BillaBear\Entity\SubscriptionPlan $plan */
+            /** @var SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
-            /** @var \BillaBear\Entity\Price $price */
+            /** @var Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
 
             $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);

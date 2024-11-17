@@ -8,12 +8,13 @@
 
 namespace BillaBear\Repository\Processes;
 
+use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Processes\InvoiceProcess;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface InvoiceProcessRepositoryInterface extends RepositoryInterface
 {
-    public function getForInvoice(\BillaBear\Entity\Invoice $invoice): InvoiceProcess;
+    public function getForInvoice(Invoice $invoice): InvoiceProcess;
 
     /**
      * @return InvoiceProcess[]

@@ -33,8 +33,6 @@ class VatReportInvoiceRepository implements VatReportRepositoryInterface
             ->setParameter('paidAtStart', $start)
             ->setParameter('paidAtEnd', $end);
 
-        $result = $qb->getQuery()->getResult();
-
-        return $result;
+        return $qb->getQuery()->getResult();
     }
 }

@@ -8,13 +8,14 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\PaymentFailureProcess;
 use Doctrine\ORM\NoResultException;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class PaymentFailureProcessRepository extends DoctrineCrudRepository implements PaymentFailureProcessRepositoryInterface
 {
-    public function findActiveForCustomer(\BillaBear\Entity\Customer $customer): ?PaymentFailureProcess
+    public function findActiveForCustomer(Customer $customer): ?PaymentFailureProcess
     {
         $qb = $this->entityRepository->createQueryBuilder('pfp');
         $qb->where('pfp.customer = :customer')

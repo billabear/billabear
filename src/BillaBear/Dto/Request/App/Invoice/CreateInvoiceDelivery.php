@@ -46,7 +46,7 @@ class CreateInvoiceDelivery
     private $webhookMethod;
 
     #[Assert\Type('string')]
-    #[Assert\Email()]
+    #[Assert\Email]
     private $email;
 
     #[Assert\Callback]

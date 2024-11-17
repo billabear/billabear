@@ -68,8 +68,6 @@ class SecurityPolicyFactory
         $properties = [];
         $functions = ['range', 'max', 'min', 'random', 'date', 'cycle'];
 
-        $policy = new SecurityPolicy($tags, $filters, $methods, $properties, $functions);
-
-        return $policy;
+        return new SecurityPolicy($tags, $filters, $methods, $properties, $functions);
     }
 }

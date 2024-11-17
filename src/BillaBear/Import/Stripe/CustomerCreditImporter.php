@@ -20,8 +20,8 @@ class CustomerCreditImporter
     public function __construct(
         private ProviderInterface $provider,
         private CreditDataMapper $creditFactory,
-        private CreditRepositoryInterface $repository, )
-    {
+        private CreditRepositoryInterface $repository,
+    ) {
     }
 
     public function importForCustomer(Customer $customer): void

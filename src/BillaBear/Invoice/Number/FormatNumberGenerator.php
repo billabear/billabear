@@ -28,8 +28,7 @@ class FormatNumberGenerator implements InvoiceNumberGeneratorInterface
         $format = str_replace('%S', $count, $format);
 
         $randomString = bin2hex(random_bytes(4));
-        $format = str_replace('%R', $randomString, $format);
 
-        return $format;
+        return str_replace('%R', $randomString, $format);
     }
 }

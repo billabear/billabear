@@ -10,6 +10,7 @@ namespace BillaBear\Payment;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceLine;
+use BillaBear\Entity\ReceiptLine;
 use BillaBear\Invoice\PricerInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Brick\Math\RoundingMode;
@@ -50,7 +51,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $this->getLogger()->debug('Create receipt from invoice', ['payment_id' => (string) $payment->getId()]);
             /** @var InvoiceLine $invoiceLine */
             foreach ($payment->getInvoice()->getLines() as $invoiceLine) {
-                /** @var \BillaBear\Entity\ReceiptLine $line */
+                /** @var ReceiptLine $line */
                 $line = $this->entityFactory->getReceiptLine();
                 $line->setTotal($invoiceLine->getTotal());
                 $line->setCurrency($invoiceLine->getCurrency());
@@ -76,7 +77,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
 
                 $priceInfos = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $taxType);
                 foreach ($priceInfos as $priceInfo) {
-                    /** @var \BillaBear\Entity\ReceiptLine $line */
+                    /** @var ReceiptLine $line */
                     $line = $this->entityFactory->getReceiptLine();
                     $line->setTotal($subscription->getAmount());
                     $line->setCurrency($subscription->getCurrency());

@@ -20,6 +20,7 @@ use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
 use Obol\Exception\PaymentFailureException;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -51,7 +52,7 @@ class ManualInvoiceCreator
         foreach ($createInvoice->getSubscriptions() as $subscription) {
             /** @var SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
-            /** @var \Parthenon\Billing\Entity\Price $price */
+            /** @var Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
             $subscription = $this->subscriptionManager->create($customer, $plan, $price, seatNumber: $subscription->getSeatNumber());
             $subscriptions[] = $subscription;

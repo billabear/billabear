@@ -12,15 +12,15 @@ use Rollbar\RollbarLogger;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class RollbarFactory
+readonly class RollbarFactory
 {
     public function __construct(
         #[Autowire('%rollbar.api_key%')]
-        private readonly string $apiKey,
+        private string $apiKey,
         #[Autowire('%rollbar.env%')]
-        private readonly string $env,
+        private string $env,
         #[Autowire('%rollbar.commit_hash%')]
-        private readonly string $gitHash,
+        private string $gitHash,
     ) {
     }
 
@@ -38,7 +38,7 @@ class RollbarFactory
             'access_token' => $this->apiKey,
             'environment' => $this->env,
             'code_version' => $this->gitHash,
-            'root' => dirname(dirname(dirname(dirname(dirname(__FILE__))))),
+            'root' => dirname(__FILE__, 5),
             'check_ignore' => $checkIgnoreCallback,
         ];
 

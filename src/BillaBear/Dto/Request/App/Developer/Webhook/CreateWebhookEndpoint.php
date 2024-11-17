@@ -12,11 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateWebhookEndpoint
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     protected $name;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[Assert\Url]
     protected $url;

@@ -132,7 +132,7 @@ class MassChangeController
     ) {
         $this->getLogger()->info('Received request to list mass subscriptions');
 
-        return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper, 'createdAt');
+        return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper);
     }
 
     #[Route('/app/subscription/mass-change/{id}/view', name: 'app_app_subscriptions_masschange_viewcange', methods: ['GET'])]

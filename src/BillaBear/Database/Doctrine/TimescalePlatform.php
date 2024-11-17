@@ -17,11 +17,9 @@ class TimescalePlatform extends PostgreSQLPlatform
     public function getCreateTableSQL(Table $table, $createFlags = self::CREATE_INDEXES): array
     {
         // Generate the regular SQL for creating the table
-        $sqls = parent::getCreateTableSQL($table, $createFlags);
-
         // Check if the table should be a hypertable
 
-        return $sqls;
+        return parent::getCreateTableSQL($table, $createFlags);
     }
 
     public function getCreateTablesSQL(array $tables): array

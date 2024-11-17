@@ -18,7 +18,7 @@ class UpdateSettings
     #[SerializedName('invoice_number_generation')]
     private $invoiceNumberGeneration;
 
-    #[Assert\PositiveOrZero()]
+    #[Assert\PositiveOrZero]
     #[SerializedName('subsequential_number')]
     private $subsequentialNumber;
 

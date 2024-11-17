@@ -24,7 +24,7 @@ class CreatePrice
     #[SerializedName('amount')]
     private $amount;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Currency]
     #[SerializedName('currency')]
     private $currency;

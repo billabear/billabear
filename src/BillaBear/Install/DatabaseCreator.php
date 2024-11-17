@@ -9,6 +9,7 @@
 namespace BillaBear\Install;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\MultiTenancy\Database\MigrationsHandler;
 use Parthenon\MultiTenancy\Entity\TenantInterface;
@@ -27,7 +28,7 @@ class DatabaseCreator
         $em = $this->entityManager;
         $metaData = $em->getMetadataFactory()->getAllMetadata();
 
-        $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
+        $tool = new SchemaTool($em);
         $tool->createSchema($metaData);
         if (!$tenant) {
             $tenant = $this->getTenant();

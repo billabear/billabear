@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateVoucherAmount
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Currency]
     private $currency;
 
     #[Assert\NotBlank]
-    #[Assert\Positive()]
+    #[Assert\Positive]
     private $amount;
 
     public function getCurrency()

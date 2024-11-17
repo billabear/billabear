@@ -17,23 +17,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[DoesNotOverlap]
 class UpdateStateTaxRule
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private $id;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[CountryExists]
     private $country;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[StateExists]
     private $state;
 
     #[SerializedName('tax_type')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private $taxType;
 
     #[SerializedName('tax_rate')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('numeric')]
     private $taxRate;
 
@@ -41,7 +41,7 @@ class UpdateStateTaxRule
     private $default = false;
 
     #[SerializedName('valid_from')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
     private $validFrom;
 

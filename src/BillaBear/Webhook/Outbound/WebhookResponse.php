@@ -8,11 +8,11 @@
 
 namespace BillaBear\Webhook\Outbound;
 
-class WebhookResponse
+readonly class WebhookResponse
 {
     public function __construct(
-        public readonly int $statusCode,
-        public readonly string $body,
+        public int $statusCode,
+        public string $body,
     ) {
     }
 }

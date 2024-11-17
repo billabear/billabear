@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ChangePrice
 {
     #[Assert\NotBlank]
-    #[Assert\Uuid()]
+    #[Assert\Uuid]
     #[PriceExists]
     private $price;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[Assert\Choice(['next_cycle', 'instantly'])]
     private $when;

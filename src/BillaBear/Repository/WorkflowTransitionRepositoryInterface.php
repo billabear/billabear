@@ -13,7 +13,7 @@ use BillaBear\Enum\WorkflowType;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 /**
- * @method \BillaBear\Entity\WorkflowTransition findById($id)
+ * @method WorkflowTransition findById($id)
  */
 interface WorkflowTransitionRepositoryInterface extends RepositoryInterface
 {

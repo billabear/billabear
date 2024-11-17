@@ -27,13 +27,11 @@ class MetricProvider
         $price = $subscription->getPrice();
         $calculator = $this->getCalculator($price->getMetric());
 
-        $output = match ($price->getSchedule()) {
+        return match ($price->getSchedule()) {
             'year' => $calculator->getYearlyValue($subscription),
             'week' => $calculator->getWeeklyValue($subscription),
             default => $calculator->getMonthlyValue($subscription),
         };
-
-        return $output;
     }
 
     public function getMetricForDateTime(Subscription $subscription, \DateTime $dateTime): float
@@ -41,9 +39,8 @@ class MetricProvider
         /** @var Price $price */
         $price = $subscription->getPrice();
         $calculator = $this->getCalculator($price->getMetric());
-        $output = $calculator->getDateTimeValue($subscription, $dateTime);
 
-        return $output;
+        return $calculator->getDateTimeValue($subscription, $dateTime);
     }
 
     private function getCalculator(Metric $metric): MetricCalculatorInterface

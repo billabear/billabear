@@ -37,7 +37,7 @@ class SystemSettingsController
         $systemSettingsDto = $systemSettingsFactory->createAppDto($settingsRepository->getDefaultSettings()->getSystemSettings());
         $dto = new SystemSettingsView();
         $dto->setSystemSettings($systemSettingsDto);
-        $dto->setTimezones(\DateTimeZone::listIdentifiers(\DateTimeZone::ALL));
+        $dto->setTimezones(\DateTimeZone::listIdentifiers());
 
         $json = $serializer->serialize($dto, 'json');
 

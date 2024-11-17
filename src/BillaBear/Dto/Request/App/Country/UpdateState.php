@@ -12,11 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateState
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $name;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $code;
 

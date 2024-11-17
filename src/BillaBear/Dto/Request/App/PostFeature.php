@@ -14,12 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PostFeature
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[UniqueFeature]
     #[SerializedName('code')]
     private $code;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[SerializedName('name')]
     private $name;
 

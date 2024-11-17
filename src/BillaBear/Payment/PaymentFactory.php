@@ -60,9 +60,7 @@ class PaymentFactory implements PaymentFactoryInterface
             $customer = $this->customerProvider->getCurrentCustomer();
         }
 
-        $payment = $this->createFromPaymentDetails($paymentDetails, $customer);
-
-        return $payment;
+        return $this->createFromPaymentDetails($paymentDetails, $customer);
     }
 
     public function fromChargeEvent(AbstractCharge $charge): Payment

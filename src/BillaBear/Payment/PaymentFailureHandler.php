@@ -10,6 +10,7 @@ namespace BillaBear\Payment;
 
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
+use BillaBear\Entity\PaymentAttempt;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Event\PaymentFailed;
 use BillaBear\Repository\PaymentAttemptRepositoryInterface;
@@ -47,7 +48,7 @@ class PaymentFailureHandler
         $this->process($paymentAttempt);
     }
 
-    protected function process(\BillaBear\Entity\PaymentAttempt $paymentAttempt): void
+    protected function process(PaymentAttempt $paymentAttempt): void
     {
         $paymentFailureProcess = $this->paymentFailureProcessRepository->findActiveForCustomer($paymentAttempt->getCustomer());
 

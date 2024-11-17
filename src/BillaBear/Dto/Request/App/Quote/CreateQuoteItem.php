@@ -29,7 +29,7 @@ class CreateQuoteItem
     private $includeTax;
 
     #[SerializedName('tax_type')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[TaxTypeExists]
     private $taxType;
 

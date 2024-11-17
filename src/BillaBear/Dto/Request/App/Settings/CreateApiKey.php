@@ -20,7 +20,7 @@ class CreateApiKey
     private $name;
 
     #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[InTheFuture]
     private $expiresAt;
 

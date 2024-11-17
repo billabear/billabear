@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[Assert\Callback('validate')]
 class UpdateGeneratorSettings
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['mpdf', 'wkhtmltopdf', 'docraptor'])]
     private $generator;
 

@@ -29,7 +29,7 @@ class CreateCheckoutItem
     private $include_tax;
 
     #[SerializedName('tax_type')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[TaxTypeExists]
     private $tax_type;
 

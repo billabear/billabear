@@ -10,7 +10,7 @@ namespace BillaBear\Entity\Stats;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table('stats_payment_amount_daily')]
 class PaymentAmountDailyStats extends AbstractMoneyStat
 {

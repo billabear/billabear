@@ -26,7 +26,7 @@ class CancelSubscription
     #[Assert\Choice([self::WHEN_END_OF_RUN, self::WHEN_INSTANTLY, self::WHEN_DATE])]
     private $when = 'end-of-run';
 
-    #[Assert\Date()]
+    #[Assert\Date]
     private $date;
 
     #[SerializedName('refund_type')]

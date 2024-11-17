@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RegisterWebhook
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Url(protocols: ['https'])]
     private $url;
 

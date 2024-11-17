@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RefundPayment
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type(type: 'integer')]
     #[Assert\Positive]
     #[SerializedName('amount')]

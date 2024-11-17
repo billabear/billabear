@@ -9,6 +9,7 @@
 namespace BillaBear\Schedule\Messenger\Handler;
 
 use BillaBear\Background\Notifications\DayBeforeChargeWarning;
+use BillaBear\Schedule\Messenger\Message\BeforeChargeWarning;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,7 +19,7 @@ class BeforeChargeWarningHandler
     {
     }
 
-    public function __invoke(\BillaBear\Schedule\Messenger\Message\BeforeChargeWarning $beforeChargeWarning)
+    public function __invoke(BeforeChargeWarning $beforeChargeWarning)
     {
         $this->process->execute();
     }

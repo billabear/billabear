@@ -8,12 +8,13 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\PaymentFailureProcess;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface PaymentFailureProcessRepositoryInterface extends CrudRepositoryInterface
 {
-    public function findActiveForCustomer(\BillaBear\Entity\Customer $customer): ?PaymentFailureProcess;
+    public function findActiveForCustomer(Customer $customer): ?PaymentFailureProcess;
 
     /**
      * @return PaymentFailureProcess[]

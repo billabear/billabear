@@ -12,7 +12,7 @@ use BillaBear\Enum\CachedStatsType;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table('stats_cached_stats')]
 class CachedStats
 {

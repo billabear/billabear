@@ -11,6 +11,7 @@ namespace BillaBear\Controller\App\Subscriptions;
 use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\Database\TransactionManager;
+use BillaBear\DataMappers\CancellationDataMapper;
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
@@ -305,7 +306,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
-        \BillaBear\DataMappers\CancellationDataMapper $cancellationRequestFactory,
+        CancellationDataMapper $cancellationRequestFactory,
         UserProvider $userProvider,
     ): Response {
         $this->getLogger()->info('Received a request to cancel subscription', ['subscription_id' => $request->get('subscriptionId')]);

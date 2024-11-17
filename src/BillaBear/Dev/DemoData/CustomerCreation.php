@@ -16,6 +16,7 @@ use BillaBear\Enum\CustomerType;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
+use Faker\Factory;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Common\Address;
 use Stripe\StripeClient;
@@ -37,7 +38,7 @@ class CustomerCreation
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         /* @var StripeClient $stripe */
         if ($writeToStripe) {
             $stripe = new StripeClient($this->stripeConfig['api_key']);

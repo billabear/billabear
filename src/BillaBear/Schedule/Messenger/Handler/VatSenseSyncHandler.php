@@ -8,6 +8,7 @@
 
 namespace BillaBear\Schedule\Messenger\Handler;
 
+use BillaBear\Schedule\Messenger\Message\VatSenseSync;
 use BillaBear\Tax\VatSense\TaxSyncer;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -18,7 +19,7 @@ class VatSenseSyncHandler
     {
     }
 
-    public function __invoke(\BillaBear\Schedule\Messenger\Message\VatSenseSync $genericTasks)
+    public function __invoke(VatSenseSync $genericTasks)
     {
         $this->process->process();
     }

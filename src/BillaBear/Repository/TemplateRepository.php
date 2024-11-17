@@ -32,8 +32,6 @@ class TemplateRepository extends DoctrineRepository implements TemplateRepositor
 
     public function getByNameAndLocaleAndBrand(string $name, string $locale, string $brand): ?Template
     {
-        $template = $this->entityRepository->findOneBy(['name' => $name, 'brand' => $brand, 'locale' => $locale]);
-
-        return $template;
+        return $this->entityRepository->findOneBy(['name' => $name, 'brand' => $brand, 'locale' => $locale]);
     }
 }

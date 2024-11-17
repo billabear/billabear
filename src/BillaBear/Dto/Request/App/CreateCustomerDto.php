@@ -29,7 +29,7 @@ class CreateCustomerDto
     private $email;
 
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Locale()]
+    #[Assert\Locale]
     #[SerializedName('locale')]
     private $locale;
 

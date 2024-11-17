@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class FrontendTokenComplete
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type(type: 'string')]
     protected $token;
 

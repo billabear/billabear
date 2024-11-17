@@ -23,7 +23,7 @@ class VatSenseClient
     use LoggerAwareTrait;
 
     public function __construct(
-        private SettingsRepositoryInterface $settingsRepository, )
+        private SettingsRepositoryInterface $settingsRepository)
     {
     }
 

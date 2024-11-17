@@ -13,9 +13,9 @@ namespace BillaBear\Invoice\Delivery\Messenger;
  *
  * There is a free cookie to anyone who can give me a better name!
  */
-class InvoiceDeliveryRequest
+readonly class InvoiceDeliveryRequest
 {
-    public function __construct(public readonly string $invoiceId, public readonly string $invoiceDeliveryId)
+    public function __construct(public string $invoiceId, public string $invoiceDeliveryId)
     {
     }
 }

@@ -8,13 +8,13 @@
 
 namespace BillaBear\Tax;
 
-class TaxInfo
+readonly class TaxInfo
 {
     public function __construct(
-        public readonly ?float $rate,
-        public readonly ?string $country,
-        public readonly bool $reverseCharge,
-        public readonly ?string $state = null,
+        public ?float $rate,
+        public ?string $country,
+        public bool $reverseCharge,
+        public ?string $state = null,
     ) {
     }
 }

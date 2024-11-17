@@ -12,6 +12,7 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\SubscriptionPlan;
+use Doctrine\ORM\QueryBuilder;
 use Parthenon\Athena\ResultSet;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
@@ -192,7 +193,7 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function getMassChangableQueryBuilder(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): \Doctrine\ORM\QueryBuilder
+    public function getMassChangableQueryBuilder(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): QueryBuilder
     {
         $qb = $this->entityRepository->createQueryBuilder('s');
         $qb->innerJoin('s.customer', 'c')

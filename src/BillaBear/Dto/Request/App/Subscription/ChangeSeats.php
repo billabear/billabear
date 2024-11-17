@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ChangeSeats
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Positive]
     #[Assert\Type('integer')]
     private $seats;

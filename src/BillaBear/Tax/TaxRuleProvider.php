@@ -46,9 +46,8 @@ class TaxRuleProvider
                 return $rule;
             }
         }
-        $default = $this->countryTaxRuleRepository->getDefaultForCountryAndTaxType($country, $taxType);
 
-        return $default;
+        return $this->countryTaxRuleRepository->getDefaultForCountryAndTaxType($country, $taxType);
     }
 
     public function getStateRule(TaxType $taxType, Address $address, ?Money $amount, ?\DateTime $when = null): ?StateTaxRule

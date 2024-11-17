@@ -27,6 +27,7 @@ use BillaBear\Repository\Usage\MetricCounterRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
+use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -215,7 +216,7 @@ class InvoiceGenerator
     }
 
     /**
-     * @throws \Brick\Money\Exception\MoneyMismatchException
+     * @throws MoneyMismatchException
      */
     protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?Money $total, array $lines, ?Money $subTotal, string $currencyCode, ?Money $vat): Invoice
     {

@@ -15,8 +15,6 @@ class SettingsRepository extends DoctrineRepository implements SettingsRepositor
 {
     public function getDefaultSettings(): Settings
     {
-        $settings = $this->entityRepository->findOneBy(['tag' => Settings::DEFAULT_TAG]);
-
-        return $settings;
+        return $this->entityRepository->findOneBy(['tag' => Settings::DEFAULT_TAG]);
     }
 }

@@ -36,7 +36,7 @@ class NotificationSettings
     #[SerializedName('emsp_domain')]
     private $emspDomain;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Email]
     #[SerializedName('default_outgoing_email')]
     private $defaultOutgoingEmail;

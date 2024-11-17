@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RemoveSeats
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Positive]
     #[Assert\Type('integer')]
     private $seats;

@@ -9,10 +9,11 @@
 namespace BillaBear\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 trait ValidationErrorResponseTrait
 {
-    protected function handleErrors(\Symfony\Component\Validator\ConstraintViolationListInterface $errors): ?JsonResponse
+    protected function handleErrors(ConstraintViolationListInterface $errors): ?JsonResponse
     {
         if (count($errors) > 0) {
             $errorOutput = [];

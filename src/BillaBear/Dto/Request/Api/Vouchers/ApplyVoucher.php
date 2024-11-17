@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ApplyVoucher
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[VoucherCodeExists]
     private $code;

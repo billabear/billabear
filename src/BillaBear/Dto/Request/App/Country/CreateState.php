@@ -16,11 +16,11 @@ class CreateState
     #[CountryExists]
     private $country;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $name;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $code;
 

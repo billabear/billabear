@@ -11,7 +11,7 @@ namespace BillaBear\Entity\Stats;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\MappedSuperclass()]
+#[ORM\MappedSuperclass]
 #[ORM\Index(fields: ['year', 'month', 'day'])]
 class AbstractStats
 {

@@ -19,8 +19,8 @@ class StateDataMapper
 {
     public function __construct(
         private CountryRepositoryInterface $countryRepository,
-        private CountryDataMapper $dataMapper, )
-    {
+        private CountryDataMapper $dataMapper,
+    ) {
     }
 
     public function createEntity(CreateState|UpdateState $createState, ?Entity $entity = null): Entity

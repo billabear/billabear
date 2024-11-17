@@ -8,13 +8,14 @@
 
 namespace BillaBear\Repository\Processes;
 
+use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Processes\InvoiceProcess;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class InvoiceProcessRepository extends DoctrineRepository implements InvoiceProcessRepositoryInterface
 {
-    public function getForInvoice(\BillaBear\Entity\Invoice $invoice): InvoiceProcess
+    public function getForInvoice(Invoice $invoice): InvoiceProcess
     {
         $invoiceProcess = $this->entityRepository->findOneBy(['invoice' => $invoice]);
 

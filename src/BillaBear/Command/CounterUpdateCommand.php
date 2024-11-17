@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:usage:counter-update', description: 'Update Counter')]
 class CounterUpdateCommand extends Command
 {
-    public function __construct(private readonly CounterUpdate $counterUpdate)
+    public function __construct(private CounterUpdate $counterUpdate)
     {
         parent::__construct();
     }

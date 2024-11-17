@@ -10,6 +10,7 @@ namespace BillaBear;
 
 use BillaBear\DependencyInjection\Compiler\WorkflowPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 class Kernel extends BaseKernel
@@ -18,7 +19,7 @@ class Kernel extends BaseKernel
     public const VERSION = '2024.02.01';
     public const VERSION_ID = '20240201';
 
-    protected function build(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
+    protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new WorkflowPass());
     }

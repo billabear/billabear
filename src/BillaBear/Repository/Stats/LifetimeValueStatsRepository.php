@@ -33,9 +33,8 @@ ORDER BY m.month_date, s.currency;';
 
         $stmt = $conn->prepare($sql);
         $res = $stmt->executeQuery($filters);
-        $rows = $res->fetchAllAssociative();
 
-        return $rows;
+        return $res->fetchAllAssociative();
     }
 
     public function getAverageLifespan(array $filters = []): float

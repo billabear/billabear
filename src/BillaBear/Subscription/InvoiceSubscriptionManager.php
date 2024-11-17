@@ -15,6 +15,8 @@ use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Security\ApiUser;
 use Brick\Math\RoundingMode;
+use Brick\Money\Exception\MoneyMismatchException;
+use Brick\Money\Money;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -227,9 +229,9 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
     }
 
     /**
-     * @throws \Brick\Money\Exception\MoneyMismatchException
+     * @throws MoneyMismatchException
      */
-    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, Price|\BillaBear\Entity\Price $price): \Brick\Money\Money
+    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, Price|\BillaBear\Entity\Price $price): Money
     {
         $now = new \DateTime();
         $originalInterval = $subscription->getStartOfCurrentPeriod()->diff($subscription->getValidUntil());
@@ -242,8 +244,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
         $oldPriceMoney = $oldPrice->getAsMoney();
         $proRateAmount = $oldPriceMoney->minus($oldPriceMoney->multipliedBy($percentage, RoundingMode::DOWN));
-        $diff = $price->getAsMoney()->minus($proRateAmount);
 
-        return $diff;
+        return $price->getAsMoney()->minus($proRateAmount);
     }
 }

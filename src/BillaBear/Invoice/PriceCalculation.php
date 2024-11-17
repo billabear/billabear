@@ -13,8 +13,8 @@ use Brick\Money\Money;
 readonly class PriceCalculation
 {
     public function __construct(
-        public readonly Money $money,
-        public readonly int|float $quantity,
+        public Money $money,
+        public int|float $quantity,
     ) {
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateTaxType
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $name;
 

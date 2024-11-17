@@ -13,7 +13,7 @@ use BillaBear\Enum\InvoiceFormat;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table('invoice_delivery_settings')]
 class InvoiceDeliverySettings
 {

@@ -17,11 +17,11 @@ class CreateCreditAdjustment
     #[Assert\Choice(choices: [Credit::TYPE_CREDIT, Credit::TYPE_DEBIT])]
     private $type;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Positive]
     private $amount;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Currency]
     private $currency;
 

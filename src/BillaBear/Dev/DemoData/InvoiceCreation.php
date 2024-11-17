@@ -10,6 +10,7 @@ namespace BillaBear\Dev\DemoData;
 
 use BillaBear\Command\DevDemoDataCommand;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
 use BillaBear\Event\InvoicePaid;
 use BillaBear\Invoice\InvoiceGenerator;
@@ -19,6 +20,7 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
 use Doctrine\Common\Collections\ArrayCollection;
+use Faker\Factory;
 use Obol\Exception\PaymentFailureException;
 use Obol\Model\PaymentDetails;
 use Parthenon\Athena\Filters\GreaterThanFilter;
@@ -94,9 +96,9 @@ class InvoiceCreation
         $progressBar->finish();
     }
 
-    public function createPaymentLocally(\BillaBear\Entity\Invoice $invoice, Subscription $subscription, \DateTime $lastStart): void
+    public function createPaymentLocally(Invoice $invoice, Subscription $subscription, \DateTime $lastStart): void
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         $paymentDetails = new PaymentDetails();
         $paymentDetails->setPaymentReference('ch_'.$faker->text(8));
         $paymentDetails->setPaymentReferenceLink($faker->url());

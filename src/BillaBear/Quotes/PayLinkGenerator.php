@@ -23,8 +23,7 @@ class PayLinkGenerator implements PayLinkGeneratorInterface
     public function generatePayLink(Quote $quote): string
     {
         $payLink = $this->urlGenerator->generate('portal_pay_quote', ['hash' => $quote->getId()], UrlGeneratorInterface::ABSOLUTE_PATH);
-        $fullPayLink = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getSystemUrl().$payLink;
 
-        return $fullPayLink;
+        return $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getSystemUrl().$payLink;
     }
 }

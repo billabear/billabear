@@ -21,6 +21,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
+use Symfony\Component\Workflow\Metadata\InMemoryMetadataStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -55,7 +56,7 @@ class WorkflowBuilder
             $this->getPlaceNames($places),
             $this->getTransitions($places),
             [$this->getPlaceNames($places)[0]],
-            new \Symfony\Component\Workflow\Metadata\InMemoryMetadataStore([], [], new \SplObjectStorage())
+            new InMemoryMetadataStore([], [], new \SplObjectStorage())
         );
 
         $this->addEventHandlers($workflowType, $places);

@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ProductHasTax]
 class CreateProduct
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[SerializedName('name')]
     private string $name;
 

@@ -13,9 +13,9 @@ use Brick\Money\Money;
 readonly class CostEstimate
 {
     public function __construct(
-        public readonly Money $cost,
-        public readonly float $usage,
-        public readonly string $metricName,
+        public Money $cost,
+        public float $usage,
+        public string $metricName,
     ) {
     }
 }

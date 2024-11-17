@@ -16,6 +16,7 @@ use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
+use Faker\Factory;
 use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Enum\SubscriptionStatus;
@@ -38,7 +39,7 @@ class SubscriptionCreation
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $output->writeln("\nCreate Subscriptions");
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
 
         $totalCount = DevDemoDataCommand::getNumberOfCustomers();

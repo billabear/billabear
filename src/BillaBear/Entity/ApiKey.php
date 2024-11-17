@@ -22,10 +22,10 @@ class ApiKey
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private string $name;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private string $key;
 
     #[ORM\Column(type: 'datetime')]

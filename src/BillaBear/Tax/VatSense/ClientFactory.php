@@ -18,10 +18,6 @@ class ClientFactory
 
     public function build(): VatSenseClient
     {
-        $apiKey = $this->settings->getDefaultSettings()->getTaxSettings()->getVatSenseApiKey();
-        var_dump($apiKey);
-        exit;
-
-        return new VatSenseClient($apiKey);
+        return new VatSenseClient($this->settings);
     }
 }

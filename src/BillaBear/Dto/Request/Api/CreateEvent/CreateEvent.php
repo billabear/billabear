@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateEvent
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     private $event_id;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Uuid]
     #[SubscriptionExists]
     private $subscription;
@@ -26,11 +26,11 @@ class CreateEvent
     #[Assert\Type('array')]
     private $properties;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type(['integer', 'float'])]
     private $value;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[MetricCodeExists]
     private $code;

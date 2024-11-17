@@ -8,6 +8,7 @@
 
 namespace BillaBear\Controller\Interopt\Stripe;
 
+use BillaBear\DataMappers\CancellationDataMapper;
 use BillaBear\DataMappers\Interopt\Stripe\SubscriptionDataMapper;
 use BillaBear\Dto\Interopt\Stripe\Models\ListModel;
 use BillaBear\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
@@ -68,7 +69,7 @@ class SubscriptionsController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
-        \BillaBear\DataMappers\CancellationDataMapper $cancellationRequestFactory,
+        CancellationDataMapper $cancellationRequestFactory,
         SubscriptionDataMapper $subscriptionDataMapper,
         UserProvider $userProvider,
     ): Response {

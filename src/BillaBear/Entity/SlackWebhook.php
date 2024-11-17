@@ -11,7 +11,7 @@ namespace BillaBear\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table(name: 'slack_webhook')]
 class SlackWebhook
 {

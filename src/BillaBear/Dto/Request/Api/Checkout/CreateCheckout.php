@@ -20,7 +20,7 @@ class CreateCheckout
     #[Assert\Type('string')]
     private $name;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[SerializedName('brand')]
     #[BrandCodeExists]
     private $brand;
@@ -30,7 +30,7 @@ class CreateCheckout
     #[Assert\Regex('~[a-zA-Z0-9_-]+~isU')]
     private $slug;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('boolean')]
     private $permanent = false;
 

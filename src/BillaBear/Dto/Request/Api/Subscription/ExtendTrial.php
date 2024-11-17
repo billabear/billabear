@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ExtendTrial
 {
     #[Assert\NotBlank]
-    #[Assert\Uuid()]
+    #[Assert\Uuid]
     #[PriceExists]
     private $price;
 

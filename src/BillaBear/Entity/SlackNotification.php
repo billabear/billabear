@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Athena\Entity\DeletableInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table(name: 'slack_notification')]
 class SlackNotification implements DeletableInterface
 {

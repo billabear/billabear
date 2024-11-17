@@ -25,8 +25,6 @@ class PaymentCardRepository extends BaseRepository implements PaymentCardReposit
             ->setParameter(':year', (int) $now->format('Y'))
             ->setParameter(':month', (int) $now->format('m'));
 
-        $cards = $qb->getQuery()->getResult();
-
-        return $cards;
+        return $qb->getQuery()->getResult();
     }
 }

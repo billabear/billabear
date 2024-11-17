@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateProduct
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[SerializedName('name')]
     private string $name;
 

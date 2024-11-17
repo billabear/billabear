@@ -19,7 +19,7 @@ class PostSubscriptionPlan
 {
     protected $id;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[SerializedName('name')]
     protected $name;
@@ -49,7 +49,7 @@ class PostSubscriptionPlan
 
     #[Assert\Type('integer')]
     #[SerializedName('user_count')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
     protected $userCount;
 
