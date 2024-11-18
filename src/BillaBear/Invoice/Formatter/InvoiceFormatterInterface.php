@@ -12,7 +12,7 @@ use BillaBear\Entity\Invoice;
 
 interface InvoiceFormatterInterface
 {
-    public function generate(Invoice $invoice);
+    public function generate(Invoice $invoice): mixed;
 
     public function filename(Invoice $invoice): string;
 }

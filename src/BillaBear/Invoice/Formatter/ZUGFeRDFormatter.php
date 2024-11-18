@@ -35,9 +35,9 @@ use Easybill\ZUGFeRD\Model\Trade\Trade;
 use Easybill\ZUGFeRD\Model\Trade\TradeParty;
 use Parthenon\Common\Address;
 
-class ZUGFeRDFormatter implements InvoiceFormatterInterface
+readonly class ZUGFeRDFormatter implements InvoiceFormatterInterface
 {
-    public function generate(Invoice $invoice)
+    public function generate(Invoice $invoice): mixed
     {
         $document = new Document();
         $document->getHeader()->setId($invoice->getInvoiceNumber());

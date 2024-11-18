@@ -338,4 +338,9 @@ class Invoice
     {
         $this->dueAt = $dueAt;
     }
+
+    public function getBrandSettings(): BrandSettings
+    {
+        return $this->customer->getBrandSettings();
+    }
 }

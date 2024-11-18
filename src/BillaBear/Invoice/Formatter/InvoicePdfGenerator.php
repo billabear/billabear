@@ -29,7 +29,7 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
     ) {
     }
 
-    public function generate(Invoice $invoice)
+    public function generate(Invoice $invoice): mixed
     {
         $customer = $invoice->getCustomer();
 
