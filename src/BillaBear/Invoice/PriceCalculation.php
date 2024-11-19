@@ -15,6 +15,7 @@ readonly class PriceCalculation
     public function __construct(
         public Money $money,
         public int|float $quantity,
+        public Money $netPrice,
     ) {
     }
 }

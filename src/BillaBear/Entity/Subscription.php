@@ -9,7 +9,6 @@
 namespace BillaBear\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\SubscriptionPlan;
 
 /**
  * @method Price|null       getPrice()

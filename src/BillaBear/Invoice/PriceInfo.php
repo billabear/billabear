@@ -19,6 +19,7 @@ readonly class PriceInfo
         public Money $vat,
         public TaxInfo $taxInfo,
         public float $quantity,
+        public Money $netPrice,
     ) {
     }
 }

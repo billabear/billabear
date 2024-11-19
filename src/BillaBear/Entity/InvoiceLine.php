@@ -27,8 +27,14 @@ class InvoiceLine
     #[ORM\ManyToOne(targetEntity: Invoice::class)]
     private Invoice $invoice;
 
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    private ?Product $product = null;
+
     #[ORM\Column(type: 'string')]
     private string $currency;
+
+    #[ORM\Column(type: 'integer')]
+    private int $netPrice;
 
     #[ORM\Column(type: 'integer')]
     private int $total;
@@ -150,6 +156,21 @@ class InvoiceLine
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
+    public function getNetPrice(): int
+    {
+        return $this->netPrice;
+    }
+
+    public function setNetPrice(int $netPrice): void
+    {
+        $this->netPrice = $netPrice;
+    }
+
+    public function getNetPriceAsMoney(): Money
+    {
+        return Money::ofMinor($this->netPrice, strtoupper($this->currency));
+    }
+
     public function getTaxPercentage(): ?float
     {
         return $this->taxPercentage;
@@ -208,5 +229,15 @@ class InvoiceLine
     public function setQuantity(float $quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): void
+    {
+        $this->product = $product;
     }
 }

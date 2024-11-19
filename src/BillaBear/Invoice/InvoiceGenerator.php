@@ -159,6 +159,7 @@ class InvoiceGenerator
                     $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
                     $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
                     $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+                    $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
                     $line->setQuantity($priceInfo->quantity);
                     if ($priceInfo->quantity > 1) {
                         $line->setDescription(sprintf('%d x %s', $priceInfo->quantity, $subscription->getPlanName()));
@@ -170,6 +171,7 @@ class InvoiceGenerator
                     $line->setTaxCountry($priceInfo->taxInfo->country);
                     $line->setTaxState($priceInfo->taxInfo->state);
                     $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                    $line->setProduct($subscription->getSubscriptionPlan()->getProduct());
                     $lines[] = $line;
                 }
             } else {
@@ -179,6 +181,7 @@ class InvoiceGenerator
                 $line->setTotal(0);
                 $line->setSubTotal(0);
                 $line->setTaxTotal(0);
+                $line->setNetPrice(0);
                 $line->setDescription('Free trial');
                 $lines[] = $line;
             }
@@ -205,6 +208,7 @@ class InvoiceGenerator
             $line->setTaxCountry($priceInfo->taxInfo->country);
             $line->setTaxState($priceInfo->taxInfo->state);
             $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+
             $lines[] = $line;
         }
 
@@ -257,6 +261,7 @@ class InvoiceGenerator
 
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setSubTotal($amount->getMinorAmount()->toInt());
+            $line->setNetPrice($amount->getMinorAmount()->toInt());
             $line->setDescription($description);
             $lines[] = $line;
             $total = $total?->plus($amount, RoundingMode::HALF_CEILING) ?? $amount;
@@ -280,6 +285,7 @@ class InvoiceGenerator
             $line->setTaxPercentage($vatAmount->getMinorAmount()->toInt());
             $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setTotal($amount->getMinorAmount()->toInt());
+            $line->setNetPrice($amount->getMinorAmount()->toInt());
             $line->setTaxTotal(0);
 
             $vat = $vat?->plus($vatAmount, RoundingMode::HALF_CEILING);

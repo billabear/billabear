@@ -36,9 +36,9 @@ class Pricer implements PricerInterface
         $monies = match ($price->getType()) {
             PriceType::TIERED_GRADUATED => $this->getTierGraduatedPrice($price, $seatNumber, $alreadyBilled),
             PriceType::TIERED_VOLUME => $this->getTieredVolumePrice($price, $seatNumber),
-            PriceType::UNIT => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber)],
-            PriceType::PACKAGE => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber / $price->getUnits()), $seatNumber)],
-            default => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber)],
+            PriceType::UNIT => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber, $price->getAsMoney())],
+            PriceType::PACKAGE => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber / $price->getUnits()), $seatNumber, $price->getAsMoney())],
+            default => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber), $seatNumber, $price->getAsMoney())],
         };
 
         $output = [];
@@ -66,6 +66,7 @@ class Pricer implements PricerInterface
                 $vat,
                 $taxInfo,
                 floatval($priceCalculation->quantity),
+                $priceCalculation->netPrice
             );
         }
 
@@ -94,7 +95,8 @@ class Pricer implements PricerInterface
             $subTotal,
             $vat,
             $taxInfo,
-            floatval(1)
+            floatval(1),
+            $subTotal
         );
     }
 
@@ -112,7 +114,7 @@ class Pricer implements PricerInterface
                 $unitPriceCalculated = $unitPrice->multipliedBy($seatNumber);
                 $money = $money->plus($unitPriceCalculated);
 
-                return [new PriceCalculation($money, $seatNumber)];
+                return [new PriceCalculation($money, $seatNumber, $unitPrice)];
             }
         }
 
@@ -151,7 +153,7 @@ class Pricer implements PricerInterface
                 $unitPrice = Money::ofMinor($component->getUnitPrice(), $price->getCurrency());
                 $unitPriceCalculated = $unitPrice->multipliedBy($seatsBillable);
                 $componentMoney = $componentMoney->plus($unitPriceCalculated);
-                $output[] = new PriceCalculation($componentMoney, $seatsBillable);
+                $output[] = new PriceCalculation($componentMoney, $seatsBillable, $unitPrice);
                 $seatsLeft -= $seatsBillable;
             } else {
                 break;
