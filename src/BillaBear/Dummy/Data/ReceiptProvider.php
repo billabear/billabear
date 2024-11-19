@@ -141,6 +141,7 @@ class ReceiptProvider
         $lineOne->setTotal(10000);
         $lineOne->setSubTotal(8000);
         $lineOne->setTaxTotal(2000);
+        $lineOne->setNetPrice(8000);
         $lineOne->setDescription('Example Line One');
         $lineOne->setTaxCountry('DE');
         $lineOne->setTaxType($taxType);
@@ -150,6 +151,7 @@ class ReceiptProvider
         $lineTwo->setCurrency('EUR');
         $lineTwo->setTotal(20000);
         $lineTwo->setSubTotal(16000);
+        $lineTwo->setNetPrice(16000);
         $lineTwo->setTaxTotal(4000);
         $lineTwo->setDescription('Example Line Two');
         $lineTwo->setTaxCountry('DE');

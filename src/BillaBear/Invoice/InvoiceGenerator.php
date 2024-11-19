@@ -84,6 +84,7 @@ class InvoiceGenerator
         $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
         $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
         $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+        $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
         $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
         $line->setInvoice($invoice);
         $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
@@ -201,7 +202,7 @@ class InvoiceGenerator
             $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
-            $line->setNetPrice($priceInfo->subTotal->getMinorAmount()->toInt());
+            $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
             $line->setTaxPercentage($priceInfo->taxInfo->rate);

@@ -58,6 +58,7 @@ class QuoteConverter
             $invoiceLine->setCurrency($line->getCurrency());
             $invoiceLine->setTotal($line->getTotal());
             $invoiceLine->setSubTotal($line->getSubTotal());
+            $invoiceLine->setNetPrice($line->getSubTotal());
             $invoiceLine->setTaxTotal($line->getTaxTotal());
             $invoiceLine->setTaxType($line->getTaxType());
             $invoiceLine->setTaxPercentage($line->getTaxPercentage());
