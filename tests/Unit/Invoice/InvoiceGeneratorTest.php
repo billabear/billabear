@@ -61,8 +61,8 @@ class InvoiceGeneratorTest extends TestCase
         $invoiceNumberGeneratorProvider = $this->createMock(InvoiceNumberGeneratorProvider::class);
         $invoiceNumberGeneratorProvider->method('getGenerator')->willReturn($invoiceNumberGenerator);
 
-        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false), 1);
-        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false), 1);
+        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false), 1, Money::ofMinor(3200, 'USD'));
+        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false), 1, Money::ofMinor(3200, 'USD'));
 
         $pricer = $this->createMock(Pricer::class);
         $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls([$priceInfoOne], [$priceInfoTwo]);
