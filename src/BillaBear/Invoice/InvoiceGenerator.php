@@ -201,6 +201,7 @@ class InvoiceGenerator
             $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setNetPrice($priceInfo->subTotal->getMinorAmount()->toInt());
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
             $line->setTaxPercentage($priceInfo->taxInfo->rate);
