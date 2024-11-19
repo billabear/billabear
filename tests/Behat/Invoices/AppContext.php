@@ -371,6 +371,7 @@ class AppContext implements Context
         $line->setTaxPercentage(20.0);
         $line->setSubTotal(8000);
         $line->setTaxTotal(2000);
+        $line->setNetPrice(8000);
         $line->setDescription('A test line');
         $line->setCurrency('USD');
         if (isset($row['Tax Type'])) {
