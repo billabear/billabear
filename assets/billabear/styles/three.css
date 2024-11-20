@@ -3,7 +3,7 @@
 }
 
 .btn--secondary {
-    @apply rounded-lg p-2 border bg-white border-teal-500 text-teal-500 font-bold hover:bg-gray-100;
+    @apply rounded-lg p-2 border bg-white border-teal-500 text-teal-500 font-bold hover:bg-gray-100 cursor-pointer;
 }
 .btn--danger {
     @apply rounded-lg p-2 border text-white bg-red-500 font-bold hover:bg-red-400;

@@ -3,7 +3,7 @@
       class="rounded-xl p-5 my-5 border-2 border-gray-900 bg-white dark:bg-gray-800 dark:border-gray-300 dark:text-gray-200">
     <h2 class="text-2xl font-bold mb-5">{{ $t('app.onboarding.main.dialog.title') }}</h2>
 
-    <ul>
+    <ul class="space-y-3">
       <li>
         <svg v-if="!has_stripe_key" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
              height="50" width="50" class="size-6 text-red-500 inline">
@@ -45,7 +45,7 @@
         <router-link class="ml-3 btn--black" :to="{name: 'app.settings.import.stripe'}" v-if="!has_stripe_imports">
           {{ $t('app.onboarding.main.dialog.has_stripe_imports.button') }}
         </router-link>
-        <span class="text-blue-500 underline cursor-pointer ml-3" @click="dismissStripeImport" v-if="!has_stripe_imports">
+        <span class="btn--secondary ml-3" @click="dismissStripeImport" v-if="!has_stripe_imports">
           {{ $t('app.onboarding.main.dialog.has_stripe_imports.dismiss') }}
         </span>
       </li>
