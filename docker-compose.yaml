@@ -16,7 +16,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./docker/database/data:/var/lib/postgresql/data
+      - ./docker/database/data:/home/postgres/pgdata/data
       - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - billabear
