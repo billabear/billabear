@@ -4,7 +4,7 @@
     <div class="h-screen w-screen md:flex">
       <div class="hidden md:block sticky w-72 bg-teal-500 text-white overflow-auto">
         <div class="py-12 px-5 text-white">
-          <img src="/images/app-logo.png" class="h-12">
+          <img src="/images/app-logo.png" alt="BillaBear" class="h-12">
         </div>
         <MenuDesktop />
       </div>
