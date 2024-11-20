@@ -184,7 +184,9 @@
                 <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'webhook'">{{ invoiceDelivery.invoice_delivery_settings.webhook_url }}</td>
                 <td>{{ invoiceDelivery.status }}</td>
                 <td>{{ $filters.moment(invoiceDelivery.created_at, 'llll') }}</td>
-
+              </tr>
+              <tr>
+                <td colspan="5" class="text-center">{{ $t('app.invoices.view.invoice_delivery.no_invoice_deliveries') }}</td>
               </tr>
             </tbody>
           </table>

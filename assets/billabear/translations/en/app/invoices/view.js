@@ -67,6 +67,7 @@ export const INVOICES_VIEW_TRANSLATIONS = {
         method: "Method",
         detail: "Detail",
         status: "Status",
-        created_at: "Created At"
+        created_at: "Created At",
+        no_invoice_deliveries: "No invoice deliveries"
     }
 }
