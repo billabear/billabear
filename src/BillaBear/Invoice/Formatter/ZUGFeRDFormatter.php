@@ -37,6 +37,8 @@ use Parthenon\Common\Address;
 
 readonly class ZUGFeRDFormatter implements InvoiceFormatterInterface
 {
+    public const string FORMAT_NAME = 'app.invoices.delivery.format.zugferd_v1';
+
     public function generate(Invoice $invoice): mixed
     {
         $document = new Document();
@@ -165,5 +167,15 @@ readonly class ZUGFeRDFormatter implements InvoiceFormatterInterface
         $settlement->setMonetarySummation($moneySummary);
 
         return $settlement;
+    }
+
+    public function supports(string $type): bool
+    {
+        return self::FORMAT_NAME === $type;
+    }
+
+    public function name(): string
+    {
+        return self::FORMAT_NAME;
     }
 }

@@ -36,6 +36,8 @@ use Easybill\ZUGFeRD2\Model\TradeTax;
 
 class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 {
+    public const FORMAT_NAME = 'app.invoices.delivery.format.zugferd_v2';
+
     public function generate(Invoice $invoice): mixed
     {
         $document = new CrossIndustryInvoice();
@@ -146,5 +148,15 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $document->supplyChainTradeTransaction->lineItems[] = $item;
             ++$lineNumber;
         }
+    }
+
+    public function supports(string $type): bool
+    {
+        return self::FORMAT_NAME === $type;
+    }
+
+    public function name(): string
+    {
+        return self::FORMAT_NAME;
     }
 }

@@ -11,7 +11,10 @@ namespace BillaBear\Controller\App\Invoice;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Invoice\InvoiceDeliverySettingsDataMapper;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
+use BillaBear\Dto\Response\App\Invoice\InvoiceDeliveryInfo;
+use BillaBear\Dto\Response\App\Invoice\InvoiceDeliveryView;
 use BillaBear\Dto\Response\App\ListResponse;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -70,6 +73,7 @@ class InvoiceDeliveryController
         ValidatorInterface $validator,
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliverySettingsDataMapper $dataMapper,
+        InvoiceFormatterProvider $provider,
     ): Response {
         $this->getLogger()->info('Received a request to read an invoice_delivery');
         try {
@@ -79,7 +83,11 @@ class InvoiceDeliveryController
         }
 
         $appDto = $dataMapper->createAppDto($invoiceDelivery);
-        $json = $serializer->serialize($appDto, 'json');
+        $dto = new InvoiceDeliveryView();
+        $dto->setSettings($appDto);
+        $dto->setFormatters($provider->getFormattersNames());
+
+        $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_OK, json: true);
     }
@@ -149,5 +157,18 @@ class InvoiceDeliveryController
         $json = $serializer->serialize($listDto, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    #[Route('/app/invoice-delivery', name: 'get_invoice_delivery_info', methods: ['GET'])]
+    public function getInfo(
+        InvoiceFormatterProvider $provider,
+        SerializerInterface $serializer,
+    ): Response {
+        $dto = new InvoiceDeliveryInfo();
+        $dto->setFormatters($provider->getFormattersNames());
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, JsonResponse::HTTP_OK, json: true);
     }
 }

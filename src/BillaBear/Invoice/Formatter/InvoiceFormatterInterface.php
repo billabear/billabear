@@ -9,10 +9,16 @@
 namespace BillaBear\Invoice\Formatter;
 
 use BillaBear\Entity\Invoice;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
+#[AutoconfigureTag('billabear.invoice_formatter')]
 interface InvoiceFormatterInterface
 {
     public function generate(Invoice $invoice): mixed;
 
     public function filename(Invoice $invoice): string;
+
+    public function name(): string;
+
+    public function supports(string $type): bool;
 }

@@ -21,6 +21,8 @@ use Twig\Environment;
 
 class InvoicePdfGenerator implements InvoiceFormatterInterface
 {
+    public const FORMAT_NAME = 'app.invoices.delivery.format.pdf';
+
     public function __construct(
         private TemplateRepositoryInterface $templateRepository,
         #[Autowire('@template_twig')]
@@ -131,5 +133,15 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
     public function filename(Invoice $invoice): string
     {
         return sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber());
+    }
+
+    public function supports(string $type): bool
+    {
+        return self::FORMAT_NAME === $type;
+    }
+
+    public function name(): string
+    {
+        return self::FORMAT_NAME;
     }
 }

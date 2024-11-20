@@ -9,13 +9,16 @@
 namespace BillaBear\Invoice\Formatter;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\InvoiceFormat;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class InvoiceFormatterProvider
 {
     public function __construct(
-        private InvoicePdfGenerator $invoicePdfGenerator,
-        private ZUGFeRDFormatter $zugFeRDFormatter,
+        #[TaggedIterator('billabear.invoice_formatter')]
+        /**
+         * @var iterable<InvoiceFormatterInterface>
+         */
+        private iterable $formatters,
     ) {
     }
 
@@ -24,11 +27,24 @@ class InvoiceFormatterProvider
         return $this->getFormatterByType($customer->getInvoiceFormat());
     }
 
-    public function getFormatterByType(InvoiceFormat $format): InvoiceFormatterInterface
+    public function getFormatterByType(string $format): InvoiceFormatterInterface
     {
-        return match ($format) {
-            InvoiceFormat::ZUGFERD_V1 => $this->zugFeRDFormatter,
-            default => $this->invoicePdfGenerator,
-        };
+        foreach ($this->formatters as $formatter) {
+            if ($formatter->supports($format)) {
+                return $formatter;
+            }
+        }
+
+        throw new \RuntimeException('No formatter found for format '.$format);
+    }
+
+    public function getFormattersNames(): array
+    {
+        $names = [];
+        foreach ($this->formatters as $formatter) {
+            $names[] = $formatter->name();
+        }
+
+        return $names;
     }
 }

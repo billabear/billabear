@@ -22,7 +22,7 @@
         <tbody>
         <tr v-for="invoiceDeliveryMethod in invoiceDeliveryMethods">
           <td>{{ invoiceDeliveryMethod.type }}</td>
-          <td>{{ invoiceDeliveryMethod.format }}</td>
+          <td>{{ $t(invoiceDeliveryMethod.format) }}</td>
           <td v-if="invoiceDeliveryMethod.type === 'webhook'">
             {{ invoiceDeliveryMethod.webhook_url }}
           </td>

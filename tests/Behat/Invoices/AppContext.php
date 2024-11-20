@@ -582,7 +582,7 @@ class AppContext implements Context
             $invoiceDelivery = new InvoiceDeliverySettings();
             $invoiceDelivery->setCustomer($customer);
             $invoiceDelivery->setType(InvoiceDeliveryType::from(strtolower($row['Type'])));
-            $invoiceDelivery->setInvoiceFormat(InvoiceFormat::from(strtolower($row['Format'])));
+            $invoiceDelivery->setInvoiceFormat(strtolower($row['Format']));
             $invoiceDelivery->setEnabled(true);
             $invoiceDelivery->setCreatedAt(new \DateTime());
             $invoiceDelivery->setUpdatedAt(new \DateTime());

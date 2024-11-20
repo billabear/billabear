@@ -62,7 +62,7 @@ readonly class CreationHandler
         $invoiceDelivery->setEnabled(true);
         $invoiceDelivery->setCreatedAt(new \DateTime());
         $invoiceDelivery->setUpdatedAt(new \DateTime());
-        $invoiceDelivery->setInvoiceFormat(InvoiceFormat::PDF);
+        $invoiceDelivery->setInvoiceFormat(InvoiceFormat::PDF->value);
         $invoiceDelivery->setType(InvoiceDeliveryType::EMAIL);
 
         $this->invoiceDeliverySettingsRepository->save($invoiceDelivery);

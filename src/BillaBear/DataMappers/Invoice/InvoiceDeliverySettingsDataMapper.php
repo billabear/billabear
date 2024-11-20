@@ -12,7 +12,6 @@ use BillaBear\Dto\Generic\App\InvoiceDeliverySettings as AppDto;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
 use BillaBear\Entity\InvoiceDeliverySettings as Entity;
 use BillaBear\Enum\InvoiceDeliveryType;
-use BillaBear\Enum\InvoiceFormat;
 
 class InvoiceDeliverySettingsDataMapper
 {
@@ -26,10 +25,9 @@ class InvoiceDeliverySettingsDataMapper
         $invoiceDelivery->setUpdatedAt(new \DateTime());
 
         $type = InvoiceDeliveryType::from($createInvoiceDelivery->getType());
-        $format = InvoiceFormat::from($createInvoiceDelivery->getFormat());
 
         $invoiceDelivery->setType($type);
-        $invoiceDelivery->setInvoiceFormat($format);
+        $invoiceDelivery->setInvoiceFormat($createInvoiceDelivery->getFormat());
         $invoiceDelivery->setWebhookUrl($createInvoiceDelivery->getWebhookUrl());
         $invoiceDelivery->setWebhookMethod($createInvoiceDelivery->getWebhookMethod());
         $invoiceDelivery->setSftpHost($createInvoiceDelivery->getSftpHost());
@@ -42,12 +40,12 @@ class InvoiceDeliverySettingsDataMapper
         return $invoiceDelivery;
     }
 
-    public function createAppDto(Entity $delivery)
+    public function createAppDto(Entity $delivery): AppDto
     {
         $appDto = new AppDto();
         $appDto->setId($delivery->getId());
         $appDto->setType($delivery->getType()->value);
-        $appDto->setFormat($delivery->getInvoiceFormat()->value);
+        $appDto->setFormat($delivery->getInvoiceFormat());
         $appDto->setWebhookUrl($delivery->getWebhookUrl());
         $appDto->setWebhookMethod($delivery->getWebhookMethod());
         $appDto->setSftpHost($delivery->getSftpHost());

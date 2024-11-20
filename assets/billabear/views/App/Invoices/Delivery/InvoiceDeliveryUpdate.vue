@@ -21,8 +21,7 @@
             {{ $t('app.invoices.delivery.update.fields.format') }}
           </label>
           <select class="form-field" v-model="invoice_delivery.format">
-            <option value="pdf">PDF</option>
-            <option value="zugferd_v1">ZUGFeRD V1 - XRechung/Factur-X </option>
+            <option v-for="format in formatters" :value="format">{{ $t(format) }}</option>
           </select>
         </div>
       </div>
@@ -128,6 +127,7 @@ export default {
       errors: {},
       sending: false,
       loaded: false,
+      formatters: [],
     }
   },
   mounted() {
@@ -137,7 +137,8 @@ export default {
       var url = '/app/customer/'+customerId+'/invoice-delivery/'+invoiceDeliveryId;
       axios.get(url).then(response => {
         this.loaded = true;
-        this.invoice_delivery = response.data
+        this.invoice_delivery = response.data.settings;
+        this.formatters = response.data.formatters;
       })
   },
   methods: {
