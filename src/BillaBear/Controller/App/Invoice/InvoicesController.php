@@ -125,7 +125,7 @@ class InvoicesController
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
-        $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
+        $generator = $invoiceFormatterProvider->getFormatterByType($request->get('format'));
         $pdf = $generator->generate($invoice);
         $tmpFile = tempnam('/tmp', 'pdf');
         file_put_contents($tmpFile, $pdf);

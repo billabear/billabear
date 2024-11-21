@@ -136,7 +136,7 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
-        $dto->setInvoiceFormat($customer->getInvoiceFormat()?->value);
+        $dto->setInvoiceFormat($customer->getInvoiceFormat());
 
         return $dto;
     }
@@ -170,7 +170,7 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
-        $dto->setInvoiceFormat($customer->getInvoiceFormat()?->value);
+        $dto->setInvoiceFormat($customer->getInvoiceFormat());
 
         return $dto;
     }
