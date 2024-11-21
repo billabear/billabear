@@ -88,8 +88,10 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->postalTradeAddress->city = $brand->getAddress()->getCity();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->postalTradeAddress->countryCode = $brand->getAddress()->getCountry();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->postalTradeAddress->postcode = $brand->getAddress()->getPostcode();
-        $taxRegistration = TaxRegistration::create($brand->getTaxNumber(), 'VA');
-        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->taxRegistrations[] = $taxRegistration;
+        if ($brand->getTaxNumber()) {
+            $taxRegistration = TaxRegistration::create($brand->getTaxNumber(), 'VA');
+            $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->taxRegistrations[] = $taxRegistration;
+        }
     }
 
     private function buildBuyer(Invoice $invoice, CrossIndustryInvoice $document): void
@@ -97,7 +99,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $customer = $invoice->getCustomer();
 
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty = new TradeParty();
-        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->name = $customer->getName();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->name = (string) $customer->getName();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->postalTradeAddress = new TradeAddress();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->postalTradeAddress->lineOne = $customer->getBillingAddress()->getStreetLineOne();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->postalTradeAddress->lineTwo = $customer->getBillingAddress()->getStreetLineTwo();
@@ -130,7 +132,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $item->specifiedTradeProduct->sellerAssignedID = (string) $id;
 
             $item->tradeAgreement = new LineTradeAgreement();
-            $item->tradeAgreement->netPrice = TradePrice::create((string) $line->getNetPriceAsMoney()->getAmount(), $line->getQuantity());
+            $item->tradeAgreement->netPrice = TradePrice::create((string) $line->getNetPriceAsMoney()->getAmount(), Quantity::create((string) $line->getQuantity(), 'H87'));
             $item->tradeAgreement->grossPrice = TradePrice::create((string) $line->getTotalMoney()->getAmount());
 
             $item->delivery = new LineTradeDelivery();

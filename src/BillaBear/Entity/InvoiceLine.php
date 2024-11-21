@@ -223,6 +223,10 @@ class InvoiceLine
 
     public function getQuantity(): float
     {
+        if (!isset($this->quantity)) {
+            return 1;
+        }
+
         return $this->quantity;
     }
 

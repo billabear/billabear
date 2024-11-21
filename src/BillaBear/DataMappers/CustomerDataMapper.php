@@ -18,7 +18,6 @@ use BillaBear\Dto\Request\Public\CreateCustomerDto as PublicCreate;
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerType;
-use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Obol\Model\Customer as ObolCustomer;
 use Parthenon\Common\Address;
@@ -80,12 +79,6 @@ class CustomerDataMapper
             default => CustomerType::INDIVIDUAL,
         };
 
-        $invoiceFormat = match (strtolower($createCustomerDto->getInvoiceFormat() ?? '')) {
-            InvoiceFormat::PDF->value => InvoiceFormat::PDF,
-            InvoiceFormat::ZUGFERD_V1->value => InvoiceFormat::ZUGFERD_V1,
-            default => InvoiceFormat::PDF,
-        };
-
         $customer->setType($type);
         $customer->setBillingEmail($createCustomerDto->getEmail());
         $customer->setReference($createCustomerDto->getReference());
@@ -96,7 +89,7 @@ class CustomerDataMapper
         $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
         $customer->setStandardTaxRate($createCustomerDto->getStandardTaxrate());
-        $customer->setInvoiceFormat($invoiceFormat);
+        $customer->setInvoiceFormat($createCustomerDto->getInvoiceFormat());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
