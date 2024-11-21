@@ -155,7 +155,7 @@ class Invoice
         $this->customer = $customer;
     }
 
-    public function getInvoicedMetricCounter(): InvoicedMetricCounter
+    public function getInvoicedMetricCounter(): ?InvoicedMetricCounter
     {
         return $this->invoicedMetricCounter;
     }

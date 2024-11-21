@@ -211,6 +211,14 @@ class ApiContext implements Context
     }
 
     /**
+     * @Given the follow price :arg1 for :arg2 monthly price with a usage tiered graduated for a continuous metric :arg3 with these tiers:
+     */
+    public function theFollowPriceForMonthlyPriceWithAUsageTieredGraduatedForAContinuousMetricWithTheseTiers($productName, $currency, $metricName, TableNode $table)
+    {
+        $this->createMetricPrice($productName, $metricName, $currency, 'month', $table, MetricType::CONTINUOUS);
+    }
+
+    /**
      * @Given the follow price :arg1 for :arg2 weekly price with a usage tiered graduated for metric :arg3 with these tiers:
      */
     public function theFollowPriceForWeeklyPriceWithAUsageTieredGraduatedForMetricWithTheseTiers($productName, $currency, $metricName, TableNode $table)
