@@ -19,11 +19,13 @@ use Easybill\ZUGFeRD2\Model\DocumentLineDocument;
 use Easybill\ZUGFeRD2\Model\ExchangedDocument;
 use Easybill\ZUGFeRD2\Model\ExchangedDocumentContext;
 use Easybill\ZUGFeRD2\Model\HeaderTradeAgreement;
+use Easybill\ZUGFeRD2\Model\HeaderTradeDelivery;
 use Easybill\ZUGFeRD2\Model\HeaderTradeSettlement;
 use Easybill\ZUGFeRD2\Model\LineTradeAgreement;
 use Easybill\ZUGFeRD2\Model\LineTradeDelivery;
 use Easybill\ZUGFeRD2\Model\LineTradeSettlement;
 use Easybill\ZUGFeRD2\Model\Quantity;
+use Easybill\ZUGFeRD2\Model\SupplyChainEvent;
 use Easybill\ZUGFeRD2\Model\SupplyChainTradeLineItem;
 use Easybill\ZUGFeRD2\Model\SupplyChainTradeTransaction;
 use Easybill\ZUGFeRD2\Model\TaxRegistration;
@@ -52,6 +54,9 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 
         $document->supplyChainTradeTransaction = new SupplyChainTradeTransaction();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement = new HeaderTradeAgreement();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery = new HeaderTradeDelivery();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent = new SupplyChainEvent();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent->date = DateTime::create(102, $invoice->getCreatedAt()->format(\DateTime::ATOM));
 
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement = new HeaderTradeSettlement();
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = 'EUR';
