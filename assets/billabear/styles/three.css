@@ -92,7 +92,7 @@ select.form-field-input, select.form-field {
 }
 
 .alert-error {
-    @apply p-1 rounded-lg bg-white border border-red-500 text-red-500 font-medium p-1;
+    @apply m-2 rounded-lg bg-white border border-red-500 text-red-500 font-medium;
 }
 
 a {
