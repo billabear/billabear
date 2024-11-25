@@ -62,6 +62,7 @@ class SystemController
 
         $json = [
             'has_stripe_key' => $hasKey,
+            'has_company_data' => null !== $defaultBrand->getAddress()->getStreetLineOne(),
             'has_product' => $hasProduct,
             'has_customer' => $hasCustomer,
             'has_subscription' => $hasSubscription,
