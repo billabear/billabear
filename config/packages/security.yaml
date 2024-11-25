@@ -19,8 +19,10 @@ security:
             lazy: true
             provider: parthenon
             remember_me:
+                lifetime: 2592000
                 secret: '%kernel.secret%'
                 always_remember_me: true
+                name: REMEMBERME
             logout:
                 path: parthenon_user_logout
             json_login:
