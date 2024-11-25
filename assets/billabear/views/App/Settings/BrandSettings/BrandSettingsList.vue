@@ -1,26 +1,29 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.settings.brand_settings.list.title') }}</h1>
-
-    <LoadingScreen :ready="ready">
-      <div class="top-button-container">
+    <div class="grid grid-cols-2">
+      <h1 class="page-title">{{ $t('app.settings.brand_settings.list.title') }}</h1>
+      <div class="top-button-container text-end pt-6">
         <router-link :to="{name: 'app.settings.brand_settings.create'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.brand_settings.list.create_new') }}</router-link>
       </div>
-      <div class="mt-3">
-        <table class="list-table">
+
+    </div>
+
+    <LoadingScreen :ready="ready">
+      <div class="mt-3 rounded-lg bg-white shadow p-3">
+        <table class="w-full">
           <thead>
-          <tr>
-            <th>{{ $t('app.settings.brand_settings.list.name') }}</th>
+          <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.settings.brand_settings.list.name') }}</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="brand in brands" class="mt-5 cursor-pointer">
-            <td>{{ brand.name }}</td>
-            <td><router-link :to="{name: 'app.settings.brand_settings.update', params: {id: brand.id}}" class="list-btn">{{ $t('app.settings.brand_settings.list.edit_btn') }}</router-link></td>
+            <td  class="py-3">{{ brand.name }}</td>
+            <td class="py-3"><router-link :to="{name: 'app.settings.brand_settings.update', params: {id: brand.id}}" class="list-btn">{{ $t('app.settings.brand_settings.list.edit_btn') }}</router-link></td>
           </tr>
           <tr v-if="brands.length === 0">
-            <td colspan="2" class="text-center">{{ $t('app.settings.brand_settings.list.no_brands') }}</td>
+            <td colspan="2" class="py-3 text-center">{{ $t('app.settings.brand_settings.list.no_brands') }}</td>
           </tr>
           </tbody>
         </table>
