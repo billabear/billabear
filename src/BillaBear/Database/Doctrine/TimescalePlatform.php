@@ -26,10 +26,11 @@ class TimescalePlatform extends PostgreSQLPlatform
     {
         $sql = parent::getCreateTablesSQL($tables);
 
+        $sql[] = 'create extension if not exists timescaledb;';
+
         foreach ($tables as $table) {
             if ($this->isHypertable($table)) {
                 $primaryColumnName = $this->getPrimaryColumnName($table);
-
                 // Add TimescaleDB's `create_hypertable` SQL command
                 $hypertableSql = sprintf(
                     "SELECT create_hypertable('%s', by_range('%s'));",
