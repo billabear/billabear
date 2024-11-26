@@ -39,8 +39,10 @@ use Easybill\ZUGFeRD2\Model\TradeParty;
 use Easybill\ZUGFeRD2\Model\TradePaymentTerms;
 use Easybill\ZUGFeRD2\Model\TradePrice;
 use Easybill\ZUGFeRD2\Model\TradeProduct;
+use Easybill\ZUGFeRD2\Model\TradeSettlementFinancialCard;
 use Easybill\ZUGFeRD2\Model\TradeSettlementHeaderMonetarySummation;
 use Easybill\ZUGFeRD2\Model\TradeSettlementLineMonetarySummation;
+use Easybill\ZUGFeRD2\Model\TradeSettlementPaymentMeans;
 use Easybill\ZUGFeRD2\Model\TradeTax;
 use Easybill\ZUGFeRD2\Model\UniversalCommunication;
 
@@ -75,7 +77,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $monetarySummation->allowanceTotalAmount = Amount::create('0.00');
         $monetarySummation->totalPrepaidAmount = Amount::create('0.00');
         $monetarySummation->taxBasisTotalAmount[] = Amount::create((string) $invoice->getSubTotalMoney()->getAmount());
-        $monetarySummation->taxTotalAmount[] = Amount::create((string) $invoice->getVatTotalMoney()->getAmount());
+        $monetarySummation->taxTotalAmount[] = Amount::create((string) $invoice->getVatTotalMoney()->getAmount(), $invoice->getCurrency());
         $monetarySummation->grandTotalAmount[] = Amount::create((string) $invoice->getTotalMoney()->getAmount());
         $monetarySummation->duePayableAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
         $monetarySummation->lineTotalAmount = Amount::create((string) $invoice->getSubTotalMoney()->getAmount());
@@ -244,12 +246,23 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
     private function addPaymentTerms(Invoice $invoice, CrossIndustryInvoice $document): void
     {
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->specifiedTradePaymentTerms[] = $paymentTerms = new TradePaymentTerms();
+        $document->supplyChainTradeTransaction
+            ->applicableHeaderTradeSettlement
+            ->specifiedTradeSettlementPaymentMeans[] = $paymentMeans = new TradeSettlementPaymentMeans();
 
         if (Customer::BILLING_TYPE_INVOICE == $invoice->getCustomer()->getBillingType()) {
             $dueDate = $invoice->getDueAt()->format('d.m.Y');
             $paymentTerms->description = 'Zahlbar innerhalb 30 Tagen netto bis '.$dueDate;
+
+            $paymentMeans->typeCode = '30';
+            $paymentMeans->information = 'Zahlung per Überweisung.';
         } else {
-            $paymentTerms->description = 'Sofort zahlbar mit Karte';
+            $paymentMeans->typeCode = '48';
+            $paymentTerms->description = 'Zahlung per Karte';
+            $paymentMeans->information = 'Zahlung per Karte';
+            $paymentMeans->applicableTradeSettlementFinancialCard = $card = new TradeSettlementFinancialCard();
+            $card->cardholderName = $invoice->getCustomer()->getDisplayName();
+            $card->id = Id::create('4242');
         }
     }
 }
