@@ -132,6 +132,28 @@
               <p class="form-field-help">{{ $t('app.settings.brand_settings.update.help_info.postcode') }}</p>
             </div>
           </div>
+
+
+          <div class="card-body mt-5">
+            <h2 class="mb-3">{{ $t('app.settings.brand_settings.create.support') }}</h2>
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="support_email">
+                {{ $t('app.settings.brand_settings.create.fields.support_email') }}
+              </label>
+              <p class="form-field-error" v-if="errors['supportEmailAddress'] != undefined">{{ errors['supportEmailAddress'] }}</p>
+              <input type="text" class="form-field-input" id="support_email"  v-model="brand.support_email_address"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.create.help_info.support_email') }}</p>
+            </div>
+
+            <div class="form-field-ctn">
+              <label class="form-field-lbl" for="support_phone_number">
+                {{ $t('app.settings.brand_settings.update.fields.support_phone_number') }}
+              </label>
+              <p class="form-field-error" v-if="errors['supportPhoneNumber'] != undefined">{{ errors['supportPhoneNumber'] }}</p>
+              <input type="text" class="form-field-input" id="support_phone_number"  v-model="brand.support_phone_number"  />
+              <p class="form-field-help">{{ $t('app.settings.brand_settings.create.help_info.support_phone_number') }}</p>
+            </div>
+          </div>
         </div>
         <div v-if="view === 'notifications'">
           <div class="card-body">
@@ -242,6 +264,8 @@ export default {
           tax_number: this.brand.tax_number,
           tax_rate: this.brand.tax_rate != "" ? this.brand.tax_rate : null,
           digital_services_tax_rate: this.brand.digital_services_tax_rate != "" ? this.brand.digital_services_tax_rate : null,
+          support_email_address: this.brand.support_email_address,
+          support_phone_number: this.brand.support_phone_number
         };
 
         axios.post('/app/settings/brand/'+brandId, payload).then(response => {

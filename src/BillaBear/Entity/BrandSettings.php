@@ -51,6 +51,12 @@ class BrandSettings
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $digitalServicesRate = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $supportEmail = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $supportPhoneNumber = null;
+
     public function getId()
     {
         return $this->id;
@@ -158,5 +164,25 @@ class BrandSettings
     public function setDigitalServicesRate(?float $digitalServicesRate): void
     {
         $this->digitalServicesRate = $digitalServicesRate;
+    }
+
+    public function getSupportEmail(): ?string
+    {
+        return $this->supportEmail;
+    }
+
+    public function setSupportEmail(?string $supportEmail): void
+    {
+        $this->supportEmail = $supportEmail;
+    }
+
+    public function getSupportPhoneNumber(): ?string
+    {
+        return $this->supportPhoneNumber;
+    }
+
+    public function setSupportPhoneNumber(?string $supportPhoneNumber): void
+    {
+        $this->supportPhoneNumber = $supportPhoneNumber;
     }
 }

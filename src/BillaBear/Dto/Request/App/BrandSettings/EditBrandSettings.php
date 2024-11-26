@@ -40,6 +40,15 @@ class EditBrandSettings
     #[SerializedName('digital_services_tax_rate')]
     private $digitalServicesTaxRate;
 
+    #[Assert\Type('string')]
+    #[Assert\Email]
+    #[SerializedName('support_email_address')]
+    private $supportEmailAddress;
+
+    #[Assert\Type('string')]
+    #[SerializedName('support_phone_number')]
+    private $supportPhoneNumber;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -113,5 +122,25 @@ class EditBrandSettings
     public function setDigitalServicesTaxRate($digitalServicesTaxRate): void
     {
         $this->digitalServicesTaxRate = $digitalServicesTaxRate;
+    }
+
+    public function getSupportEmailAddress()
+    {
+        return $this->supportEmailAddress;
+    }
+
+    public function setSupportEmailAddress($supportEmailAddress): void
+    {
+        $this->supportEmailAddress = $supportEmailAddress;
+    }
+
+    public function getSupportPhoneNumber()
+    {
+        return $this->supportPhoneNumber;
+    }
+
+    public function setSupportPhoneNumber($supportPhoneNumber): void
+    {
+        $this->supportPhoneNumber = $supportPhoneNumber;
     }
 }

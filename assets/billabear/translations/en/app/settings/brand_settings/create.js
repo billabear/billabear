@@ -14,6 +14,8 @@ export const BRAND_SETTINGS_CREATE_TRANSLATIONS = {
         tax_number: "Tax Number",
         tax_rate: "Tax Rate",
         digital_services_tax_rate: "Digital Services Tax Rate",
+        support_email: "Support Email",
+        support_phone_number: "Support Phone Number",
     },
     help_info: {
         name: "The name of the brand",
@@ -28,9 +30,12 @@ export const BRAND_SETTINGS_CREATE_TRANSLATIONS = {
         country: "The customer's billing country - ISO 3166-1 alpha-2 country code.",
         postcode: "The post code for the billing address",
         tax_rate: "The tax rate that is to be used for your home country or when no other tax rate can be found",
-        digital_services_tax_rate: "The tax rate that is to be used for your home country or when no other tax rate can be found for digital services"
+        digital_services_tax_rate: "The tax rate that is to be used for your home country or when no other tax rate can be found for digital services",
+        support_email: "The email address for support contact",
+        support_phone_number: "The phone number for support contact",
     },
     address_title: "Billing Address",
     success_message: "Updated",
+    support: "Support Contact Details",
     submit_btn: "Create",
 };

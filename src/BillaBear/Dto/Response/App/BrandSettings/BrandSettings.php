@@ -38,6 +38,12 @@ class BrandSettings
     #[SerializedName('digital_services_tax_rate')]
     private ?float $digitalServicesTaxRate;
 
+    #[SerializedName('support_email_address')]
+    private ?string $supportEmailAddress;
+
+    #[SerializedName('support_phone_number')]
+    private ?string $supportPhoneNumber;
+
     public function __construct()
     {
         $this->notifications = new Notifications();
@@ -141,5 +147,25 @@ class BrandSettings
     public function setDigitalServicesTaxRate(?float $digitalServicesTaxRate): void
     {
         $this->digitalServicesTaxRate = $digitalServicesTaxRate;
+    }
+
+    public function getSupportEmailAddress(): ?string
+    {
+        return $this->supportEmailAddress;
+    }
+
+    public function setSupportEmailAddress(?string $supportEmailAddress): void
+    {
+        $this->supportEmailAddress = $supportEmailAddress;
+    }
+
+    public function getSupportPhoneNumber(): ?string
+    {
+        return $this->supportPhoneNumber;
+    }
+
+    public function setSupportPhoneNumber(?string $supportPhoneNumber): void
+    {
+        $this->supportPhoneNumber = $supportPhoneNumber;
     }
 }
