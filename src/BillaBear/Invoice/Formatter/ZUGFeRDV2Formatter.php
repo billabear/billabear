@@ -45,9 +45,12 @@ use Easybill\ZUGFeRD2\Model\TradeSettlementLineMonetarySummation;
 use Easybill\ZUGFeRD2\Model\TradeSettlementPaymentMeans;
 use Easybill\ZUGFeRD2\Model\TradeTax;
 use Easybill\ZUGFeRD2\Model\UniversalCommunication;
+use Parthenon\Common\LoggerAwareTrait;
 
 class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 {
+    use LoggerAwareTrait;
+
     public const string FORMAT_NAME = 'app.invoices.delivery.format.zugferd_v2';
 
     public function generate(Invoice $invoice): string
@@ -116,8 +119,10 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 
         $sellerTradeParty->definedTradeContact = new TradeContact();
         $sellerTradeParty->definedTradeContact->personName = 'Support';
+        $sellerTradeParty->definedTradeContact->telephoneUniversalCommunication = new UniversalCommunication();
+        $sellerTradeParty->definedTradeContact->telephoneUniversalCommunication->completeNumber = $invoice->getBrandSettings()->getSupportPhoneNumber();
         $sellerTradeParty->definedTradeContact->emailURIUniversalCommunication = new UniversalCommunication();
-        $sellerTradeParty->definedTradeContact->emailURIUniversalCommunication->uriid = Id::create($invoice->getBrandSettings()->getEmailAddress());
+        $sellerTradeParty->definedTradeContact->emailURIUniversalCommunication->uriid = Id::create($invoice->getBrandSettings()->getSupportEmail());
     }
 
     private function buildBuyer(Invoice $invoice, CrossIndustryInvoice $document): void
@@ -257,12 +262,23 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $paymentMeans->typeCode = '30';
             $paymentMeans->information = 'Zahlung per Überweisung.';
         } else {
+            $lastFour = null;
+
+            foreach ($invoice->getPayments() as $payment) {
+                $lastFour = $payment->getPaymentCard()?->getLastFour();
+            }
+
+            if (null === $lastFour) {
+                $lastFour = '4242';
+                $this->getLogger()->warning('Unable to find payment card for invoice', ['invoice_id' => (string) $invoice->getId()]);
+            }
+
             $paymentMeans->typeCode = '48';
             $paymentTerms->description = 'Zahlung per Karte';
             $paymentMeans->information = 'Zahlung per Karte';
             $paymentMeans->applicableTradeSettlementFinancialCard = $card = new TradeSettlementFinancialCard();
             $card->cardholderName = $invoice->getCustomer()->getDisplayName();
-            $card->id = Id::create('4242');
+            $card->id = Id::create($lastFour);
         }
     }
 }
