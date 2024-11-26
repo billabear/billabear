@@ -23,6 +23,7 @@ use Easybill\ZUGFeRD2\Model\ExchangedDocumentContext;
 use Easybill\ZUGFeRD2\Model\HeaderTradeAgreement;
 use Easybill\ZUGFeRD2\Model\HeaderTradeDelivery;
 use Easybill\ZUGFeRD2\Model\HeaderTradeSettlement;
+use Easybill\ZUGFeRD2\Model\Id;
 use Easybill\ZUGFeRD2\Model\LineTradeAgreement;
 use Easybill\ZUGFeRD2\Model\LineTradeDelivery;
 use Easybill\ZUGFeRD2\Model\LineTradeSettlement;
@@ -33,6 +34,7 @@ use Easybill\ZUGFeRD2\Model\SupplyChainTradeLineItem;
 use Easybill\ZUGFeRD2\Model\SupplyChainTradeTransaction;
 use Easybill\ZUGFeRD2\Model\TaxRegistration;
 use Easybill\ZUGFeRD2\Model\TradeAddress;
+use Easybill\ZUGFeRD2\Model\TradeContact;
 use Easybill\ZUGFeRD2\Model\TradeParty;
 use Easybill\ZUGFeRD2\Model\TradePaymentTerms;
 use Easybill\ZUGFeRD2\Model\TradePrice;
@@ -40,6 +42,7 @@ use Easybill\ZUGFeRD2\Model\TradeProduct;
 use Easybill\ZUGFeRD2\Model\TradeSettlementHeaderMonetarySummation;
 use Easybill\ZUGFeRD2\Model\TradeSettlementLineMonetarySummation;
 use Easybill\ZUGFeRD2\Model\TradeTax;
+use Easybill\ZUGFeRD2\Model\UniversalCommunication;
 
 class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 {
@@ -59,6 +62,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 
         $document->supplyChainTradeTransaction = new SupplyChainTradeTransaction();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement = new HeaderTradeAgreement();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerReference = $invoice->getInvoiceNumber();
         $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery = new HeaderTradeDelivery();
         $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent = new SupplyChainEvent();
         $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent->date = DateTime::create(102, $invoice->getCreatedAt()->format('Ymd'));
@@ -69,13 +73,11 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 
         $currency = $invoice->getTotalMoney()->getCurrency()->getCurrencyCode();
 
-        $monetarySummation->taxBasisTotalAmount[] = Amount::create((string) $invoice->getSubTotalMoney()->getAmount(), $currency);
+        $monetarySummation->taxBasisTotalAmount[] = Amount::create((string) $invoice->getSubTotalMoney()->getAmount());
         $monetarySummation->taxTotalAmount[] = Amount::create((string) $invoice->getVatTotalMoney()->getAmount(), $currency);
-        $monetarySummation->grandTotalAmount[] = Amount::create((string) $invoice->getTotalMoney()->getAmount(), $currency);
-        $monetarySummation->duePayableAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount(), $currency);
-
-        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement = new HeaderTradeSettlement();
-        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = $invoice->getCurrency();
+        $monetarySummation->grandTotalAmount[] = Amount::create((string) $invoice->getTotalMoney()->getAmount());
+        $monetarySummation->duePayableAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
+        $monetarySummation->lineTotalAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
 
         $this->addBillingPeriod($invoice, $document);
         $this->addPaymentTerms($invoice, $document);
@@ -96,7 +98,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
     {
         $brand = $invoice->getBrandSettings();
 
-        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty = new TradeParty();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty = $sellerTradeParty = new TradeParty();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->name = $brand->getBrandName();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->postalTradeAddress = new TradeAddress();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->postalTradeAddress->lineOne = $brand->getAddress()->getStreetLineOne();
@@ -108,6 +110,11 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $taxRegistration = TaxRegistration::create($brand->getTaxNumber(), 'VA');
             $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->sellerTradeParty->taxRegistrations[] = $taxRegistration;
         }
+
+        $sellerTradeParty->definedTradeContact = new TradeContact();
+        $sellerTradeParty->definedTradeContact->personName = 'Support';
+        $sellerTradeParty->definedTradeContact->emailURIUniversalCommunication = new UniversalCommunication();
+        $sellerTradeParty->definedTradeContact->emailURIUniversalCommunication->uriid = Id::create($invoice->getBrandSettings()->getEmailAddress());
     }
 
     private function buildBuyer(Invoice $invoice, CrossIndustryInvoice $document): void
@@ -160,11 +167,11 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $item->delivery->billedQuantity = Quantity::create($line->getQuantity(), 'H87');
 
             $item->specifiedLineTradeSettlement = new LineTradeSettlement();
-            $item->specifiedLineTradeSettlement->tradeTax[] = $item1tax = new TradeTax();
+            $item->specifiedLineTradeSettlement->tradeTax[] = $tradeTax = new TradeTax();
 
-            $item1tax->typeCode = 'VAT';
-            $item1tax->categoryCode = 'S';
-            $item1tax->rateApplicablePercent = $line->getTaxPercentage();
+            $tradeTax->typeCode = 'VAT';
+            $tradeTax->categoryCode = 'S';
+            $tradeTax->rateApplicablePercent = $line->getTaxPercentage();
 
             $item->specifiedLineTradeSettlement->monetarySummation = TradeSettlementLineMonetarySummation::create($line->getTotalMoney()->getAmount());
 
@@ -182,8 +189,8 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $tax->typeCode = 'VAT';
             $tax->categoryCode = 'S';
             $tax->rateApplicablePercent = $line->getTaxPercentage();
-            $tax->basisAmount = Amount::create((string) $line->getSubTotalMoney()->getAmount(), $currency);
-            $tax->calculatedAmount = Amount::create((string) $line->getVatTotalMoney()->getAmount(), $currency);
+            $tax->basisAmount = Amount::create((string) $line->getSubTotalMoney()->getAmount());
+            $tax->calculatedAmount = Amount::create((string) $line->getVatTotalMoney()->getAmount());
 
             $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->tradeTaxes[] = $tax;
         }
