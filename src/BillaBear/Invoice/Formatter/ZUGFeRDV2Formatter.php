@@ -68,13 +68,11 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent->date = DateTime::create(102, $invoice->getCreatedAt()->format('Ymd'));
 
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement = new HeaderTradeSettlement();
-        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = 'EUR';
+        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = $invoice->getCurrency();
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->specifiedTradeSettlementHeaderMonetarySummation = $monetarySummation = new TradeSettlementHeaderMonetarySummation();
 
-        $currency = $invoice->getTotalMoney()->getCurrency()->getCurrencyCode();
-
         $monetarySummation->taxBasisTotalAmount[] = Amount::create((string) $invoice->getSubTotalMoney()->getAmount());
-        $monetarySummation->taxTotalAmount[] = Amount::create((string) $invoice->getVatTotalMoney()->getAmount(), $currency);
+        $monetarySummation->taxTotalAmount[] = Amount::create((string) $invoice->getVatTotalMoney()->getAmount());
         $monetarySummation->grandTotalAmount[] = Amount::create((string) $invoice->getTotalMoney()->getAmount());
         $monetarySummation->duePayableAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
         $monetarySummation->lineTotalAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
@@ -182,8 +180,6 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 
     private function addTaxHeaders(Invoice $invoice, CrossIndustryInvoice $document): void
     {
-        $currency = $invoice->getCurrency();
-
         foreach ($invoice->getLines() as $line) {
             $tax = new TradeTax();
             $tax->typeCode = 'VAT';
@@ -219,6 +215,8 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         if ($line->isZeroRated()) {
             return 'Z';
         }
+
+        return 'S';
     }
 
     private function addBillingPeriod(Invoice $invoice, CrossIndustryInvoice $document): void
