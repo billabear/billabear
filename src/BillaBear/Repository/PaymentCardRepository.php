@@ -32,11 +32,7 @@ class PaymentCardRepository extends BaseRepository implements PaymentCardReposit
 
     public function getByStoredPaymentReference(string $reference): PaymentCard
     {
-        $qb = $this->entityRepository->createQueryBuilder('pc');
-        $qb->where('pc.storedPaymentReference = :reference')
-            ->setParameter(':reference', $reference);
-
-        $result = $qb->getQuery()->getOneOrNullResult();
+        $result = $this->entityRepository->findOneBy(['storedPaymentReference' => $reference]);
 
         if (!$result instanceof PaymentCard) {
             throw new NoEntityFoundException('No PaymentCard found with stored reference: '.$reference);

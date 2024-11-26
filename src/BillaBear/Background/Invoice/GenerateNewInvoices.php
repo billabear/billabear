@@ -121,8 +121,6 @@ class GenerateNewInvoices
                 }
             }
         } catch (\Throwable $exception) {
-            $this->transactionManager->abort();
-
             $this->getLogger()->critical('An error happened while generating invoice', [
                 'exception_message' => $exception->getMessage(),
                 'exception_line' => $exception->getLine(),
@@ -131,6 +129,8 @@ class GenerateNewInvoices
                 'subscriptions' => array_map(function ($item) {
                     return (string) $item->getId();
                 }, $activeSubscriptions)]);
+
+            $this->transactionManager->abort();
         }
     }
 }

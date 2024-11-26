@@ -29,7 +29,7 @@ class DueDateDecider
         try {
             $date = new \DateTime('+'.$databaseDueTime);
         } catch (\Throwable $e) {
-            $this->getLogger()->error('Using default due time', ['failed_due_time' => $databaseDueTime, 'exception' => $e->getMessage()]);
+            $this->getLogger()->warning('Using default due time', ['failed_due_time' => $databaseDueTime, 'exception' => $e->getMessage()]);
             $date = new \DateTime('+'.SystemSettings::DEFAULT_DUE_TIME);
         }
 
