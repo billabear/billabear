@@ -8,7 +8,9 @@
 
 namespace BillaBear\Repository;
 
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Repository\Orm\PaymentCardRepository as BaseRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class PaymentCardRepository extends BaseRepository implements PaymentCardRepositoryInterface
 {
@@ -26,5 +28,20 @@ class PaymentCardRepository extends BaseRepository implements PaymentCardReposit
             ->setParameter(':month', (int) $now->format('m'));
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getByStoredPaymentReference(string $reference): PaymentCard
+    {
+        $qb = $this->entityRepository->createQueryBuilder('pc');
+        $qb->where('pc.storedPaymentReference = :reference')
+            ->setParameter(':reference', $reference);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$result instanceof PaymentCard) {
+            throw new NoEntityFoundException('No PaymentCard found with stored reference: '.$reference);
+        }
+
+        return $result;
     }
 }

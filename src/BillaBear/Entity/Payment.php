@@ -9,6 +9,7 @@
 namespace BillaBear\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Parthenon\Billing\Entity\PaymentCard;
 
 #[ORM\Entity]
 #[ORM\Table('payment')]
@@ -23,6 +24,9 @@ class Payment extends \Parthenon\Billing\Entity\Payment
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $state = null;
+
+    #[ORM\ManyToOne(targetEntity: PaymentCard::class)]
+    private ?PaymentCard $paymentCard = null;
 
     public function getInvoice(): ?Invoice
     {
@@ -52,5 +56,15 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     public function setState(?string $state): void
     {
         $this->state = $state;
+    }
+
+    public function getPaymentCard(): ?PaymentCard
+    {
+        return $this->paymentCard;
+    }
+
+    public function setPaymentCard(?PaymentCard $paymentCard): void
+    {
+        $this->paymentCard = $paymentCard;
     }
 }

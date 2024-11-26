@@ -10,6 +10,7 @@ namespace BillaBear\Repository;
 
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface as BaseInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface PaymentCardRepositoryInterface extends BaseInterface
 {
@@ -17,4 +18,9 @@ interface PaymentCardRepositoryInterface extends BaseInterface
      * @return PaymentCard[]
      */
     public function getExpiringDefaultThisMonth(): array;
+
+    /**
+     * @throws NoEntityFoundException
+     */
+    public function getByStoredPaymentReference(string $reference): PaymentCard;
 }
