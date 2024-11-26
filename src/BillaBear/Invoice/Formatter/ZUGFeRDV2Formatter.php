@@ -170,7 +170,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $item->specifiedLineTradeSettlement->tradeTax[] = $tradeTax = new TradeTax();
 
             $tradeTax->typeCode = 'VAT';
-            $tradeTax->categoryCode = 'S';
+            $tradeTax->categoryCode = $this->getTaxCategoryCode($line);
             $tradeTax->rateApplicablePercent = $line->getTaxPercentage();
 
             $item->specifiedLineTradeSettlement->monetarySummation = TradeSettlementLineMonetarySummation::create($line->getTotalMoney()->getAmount());
