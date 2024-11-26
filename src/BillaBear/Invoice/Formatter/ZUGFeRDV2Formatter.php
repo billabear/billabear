@@ -71,11 +71,14 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = $invoice->getCurrency();
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->specifiedTradeSettlementHeaderMonetarySummation = $monetarySummation = new TradeSettlementHeaderMonetarySummation();
 
+        $monetarySummation->chargeTotalAmount = Amount::create('0.00');
+        $monetarySummation->allowanceTotalAmount = Amount::create('0.00');
+        $monetarySummation->totalPrepaidAmount = Amount::create('0.00');
         $monetarySummation->taxBasisTotalAmount[] = Amount::create((string) $invoice->getSubTotalMoney()->getAmount());
         $monetarySummation->taxTotalAmount[] = Amount::create((string) $invoice->getVatTotalMoney()->getAmount());
         $monetarySummation->grandTotalAmount[] = Amount::create((string) $invoice->getTotalMoney()->getAmount());
         $monetarySummation->duePayableAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
-        $monetarySummation->lineTotalAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount());
+        $monetarySummation->lineTotalAmount = Amount::create((string) $invoice->getSubTotalMoney()->getAmount());
 
         $this->addBillingPeriod($invoice, $document);
         $this->addPaymentTerms($invoice, $document);
@@ -158,8 +161,8 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $item->specifiedTradeProduct->sellerAssignedID = (string) $id;
 
             $item->tradeAgreement = new LineTradeAgreement();
-            $item->tradeAgreement->netPrice = TradePrice::create((string) $line->getNetPriceAsMoney()->getAmount(), Quantity::create((string) $line->getQuantity(), 'H87'));
-            $item->tradeAgreement->grossPrice = TradePrice::create((string) $line->getTotalMoney()->getAmount());
+            $item->tradeAgreement->netPrice = TradePrice::create((string) $line->getNetPriceAsMoney()->getAmount());
+            $item->tradeAgreement->grossPrice = TradePrice::create((string) $line->getSubTotalMoney()->getAmount());
 
             $item->delivery = new LineTradeDelivery();
             $item->delivery->billedQuantity = Quantity::create($line->getQuantity(), 'H87');
@@ -171,7 +174,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             $tradeTax->categoryCode = $this->getTaxCategoryCode($line);
             $tradeTax->rateApplicablePercent = $line->getTaxPercentage();
 
-            $item->specifiedLineTradeSettlement->monetarySummation = TradeSettlementLineMonetarySummation::create($line->getTotalMoney()->getAmount());
+            $item->specifiedLineTradeSettlement->monetarySummation = TradeSettlementLineMonetarySummation::create($line->getSubTotalMoney()->getAmount());
 
             $document->supplyChainTradeTransaction->lineItems[] = $item;
             ++$lineNumber;
