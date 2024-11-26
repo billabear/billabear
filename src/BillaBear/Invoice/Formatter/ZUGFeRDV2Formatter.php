@@ -8,8 +8,10 @@
 
 namespace BillaBear\Invoice\Formatter;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
+use BillaBear\Entity\Subscription;
 use Easybill\ZUGFeRD2\Builder;
 use Easybill\ZUGFeRD2\Model\Amount;
 use Easybill\ZUGFeRD2\Model\CrossIndustryInvoice;
@@ -24,6 +26,7 @@ use Easybill\ZUGFeRD2\Model\HeaderTradeSettlement;
 use Easybill\ZUGFeRD2\Model\LineTradeAgreement;
 use Easybill\ZUGFeRD2\Model\LineTradeDelivery;
 use Easybill\ZUGFeRD2\Model\LineTradeSettlement;
+use Easybill\ZUGFeRD2\Model\Period;
 use Easybill\ZUGFeRD2\Model\Quantity;
 use Easybill\ZUGFeRD2\Model\SupplyChainEvent;
 use Easybill\ZUGFeRD2\Model\SupplyChainTradeLineItem;
@@ -31,16 +34,18 @@ use Easybill\ZUGFeRD2\Model\SupplyChainTradeTransaction;
 use Easybill\ZUGFeRD2\Model\TaxRegistration;
 use Easybill\ZUGFeRD2\Model\TradeAddress;
 use Easybill\ZUGFeRD2\Model\TradeParty;
+use Easybill\ZUGFeRD2\Model\TradePaymentTerms;
 use Easybill\ZUGFeRD2\Model\TradePrice;
+use Easybill\ZUGFeRD2\Model\TradeProduct;
 use Easybill\ZUGFeRD2\Model\TradeSettlementHeaderMonetarySummation;
 use Easybill\ZUGFeRD2\Model\TradeSettlementLineMonetarySummation;
 use Easybill\ZUGFeRD2\Model\TradeTax;
 
 class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 {
-    public const FORMAT_NAME = 'app.invoices.delivery.format.zugferd_v2';
+    public const string FORMAT_NAME = 'app.invoices.delivery.format.zugferd_v2';
 
-    public function generate(Invoice $invoice): mixed
+    public function generate(Invoice $invoice): string
     {
         $document = new CrossIndustryInvoice();
         $document->exchangedDocumentContext = new ExchangedDocumentContext();
@@ -50,13 +55,13 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $document->exchangedDocument = new ExchangedDocument();
         $document->exchangedDocument->id = $invoice->getInvoiceNumber();
         $document->exchangedDocument->typeCode = '380';
-        $document->exchangedDocument->issueDateTime = DateTime::create(102, $invoice->getCreatedAt()->format(\DateTime::ATOM));
+        $document->exchangedDocument->issueDateTime = DateTime::create(102, $invoice->getCreatedAt()->format('Ymd'));
 
         $document->supplyChainTradeTransaction = new SupplyChainTradeTransaction();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement = new HeaderTradeAgreement();
         $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery = new HeaderTradeDelivery();
         $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent = new SupplyChainEvent();
-        $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent->date = DateTime::create(102, $invoice->getCreatedAt()->format(\DateTime::ATOM));
+        $document->supplyChainTradeTransaction->applicableHeaderTradeDelivery->chainEvent->date = DateTime::create(102, $invoice->getCreatedAt()->format('Ymd'));
 
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement = new HeaderTradeSettlement();
         $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = 'EUR';
@@ -69,9 +74,15 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         $monetarySummation->grandTotalAmount[] = Amount::create((string) $invoice->getTotalMoney()->getAmount(), $currency);
         $monetarySummation->duePayableAmount = Amount::create((string) $invoice->getTotalMoney()->getAmount(), $currency);
 
+        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement = new HeaderTradeSettlement();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->currency = $invoice->getCurrency();
+
+        $this->addBillingPeriod($invoice, $document);
+        $this->addPaymentTerms($invoice, $document);
         $this->buildSeller($invoice, $document);
         $this->buildBuyer($invoice, $document);
         $this->addLines($invoice, $document);
+        $this->addTaxHeaders($invoice, $document);
 
         return Builder::create()->transform($document);
     }
@@ -103,8 +114,13 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
     {
         $customer = $invoice->getCustomer();
 
+        $customerName = (string) $customer->getName();
+        if (empty($customerName)) {
+            $customerName = $customer->getBillingEmail();
+        }
+
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty = new TradeParty();
-        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->name = (string) $customer->getName();
+        $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->name = $customerName;
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->postalTradeAddress = new TradeAddress();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->postalTradeAddress->lineOne = $customer->getBillingAddress()->getStreetLineOne();
         $document->supplyChainTradeTransaction->applicableHeaderTradeAgreement->buyerTradeParty->postalTradeAddress->lineTwo = $customer->getBillingAddress()->getStreetLineTwo();
@@ -118,7 +134,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         }
     }
 
-    public function addLines(Invoice $invoice, CrossIndustryInvoice $document): void
+    private function addLines(Invoice $invoice, CrossIndustryInvoice $document): void
     {
         $lineNumber = 1;
         /** @var InvoiceLine $line */
@@ -132,7 +148,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
             }
 
             $item->associatedDocumentLineDocument = DocumentLineDocument::create((string) $lineNumber);
-            $item->specifiedTradeProduct = new \Easybill\ZUGFeRD2\Model\TradeProduct();
+            $item->specifiedTradeProduct = new TradeProduct();
             $item->specifiedTradeProduct->name = $line->getDescription();
             $item->specifiedTradeProduct->sellerAssignedID = (string) $id;
 
@@ -157,6 +173,22 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         }
     }
 
+    private function addTaxHeaders(Invoice $invoice, CrossIndustryInvoice $document): void
+    {
+        $currency = $invoice->getCurrency();
+
+        foreach ($invoice->getLines() as $line) {
+            $tax = new TradeTax();
+            $tax->typeCode = 'VAT';
+            $tax->categoryCode = 'S';
+            $tax->rateApplicablePercent = $line->getTaxPercentage();
+            $tax->basisAmount = Amount::create((string) $line->getSubTotalMoney()->getAmount(), $currency);
+            $tax->calculatedAmount = Amount::create((string) $line->getVatTotalMoney()->getAmount(), $currency);
+
+            $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->tradeTaxes[] = $tax;
+        }
+    }
+
     public function supports(string $type): bool
     {
         return self::FORMAT_NAME === $type;
@@ -165,5 +197,36 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
     public function name(): string
     {
         return self::FORMAT_NAME;
+    }
+
+    private function addBillingPeriod(Invoice $invoice, CrossIndustryInvoice $document): void
+    {
+        $startDate = null;
+        /** @var Subscription $subscriptionItem */
+        foreach ($invoice->getSubscriptions() as $subscriptionItem) {
+            if ($subscriptionItem->getStartOfCurrentPeriod() < $startDate || null === $startDate) {
+                $startDate = $subscriptionItem->getStartOfCurrentPeriod();
+            }
+        }
+
+        if (null === $startDate) {
+            return;
+        }
+
+        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->billingSpecifiedPeriod = $billingPeriod = new Period();
+        $billingPeriod->startDatetime = DateTime::create(102, $startDate->format('Ymd'));
+        $billingPeriod->endDatetime = DateTime::create(102, $invoice->getCreatedAt()->format('Ymd'));
+    }
+
+    private function addPaymentTerms(Invoice $invoice, CrossIndustryInvoice $document): void
+    {
+        $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->specifiedTradePaymentTerms[] = $paymentTerms = new TradePaymentTerms();
+
+        if (Customer::BILLING_TYPE_INVOICE == $invoice->getCustomer()->getBillingType()) {
+            $dueDate = $invoice->getDueAt()->format('d.m.Y');
+            $paymentTerms->description = 'Zahlbar innerhalb 30 Tagen netto bis '.$dueDate;
+        } else {
+            $paymentTerms->description = 'Sofort zahlbar mit Karte';
+        }
     }
 }
