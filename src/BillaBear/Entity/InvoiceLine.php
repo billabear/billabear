@@ -244,4 +244,13 @@ class InvoiceLine
     {
         $this->product = $product;
     }
+
+    public function isZeroRated()
+    {
+        if (0 === $this->taxPercentage || 0.0 === $this->taxPercentage) {
+            return true;
+        }
+
+        return false;
+    }
 }

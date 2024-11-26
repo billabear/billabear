@@ -187,7 +187,7 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         foreach ($invoice->getLines() as $line) {
             $tax = new TradeTax();
             $tax->typeCode = 'VAT';
-            $tax->categoryCode = 'S';
+            $tax->categoryCode = $this->getTaxCategoryCode($line);
             $tax->rateApplicablePercent = $line->getTaxPercentage();
             $tax->basisAmount = Amount::create((string) $line->getSubTotalMoney()->getAmount());
             $tax->calculatedAmount = Amount::create((string) $line->getVatTotalMoney()->getAmount());
@@ -204,6 +204,21 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
     public function name(): string
     {
         return self::FORMAT_NAME;
+    }
+
+    private function getTaxCategoryCode(InvoiceLine $line): string
+    {
+        if ($line->isReverseCharge()) {
+            return 'AE';
+        }
+
+        if (0 === $line->getTaxPercentage()) {
+            return 'G';
+        }
+
+        if ($line->isZeroRated()) {
+            return 'Z';
+        }
     }
 
     private function addBillingPeriod(Invoice $invoice, CrossIndustryInvoice $document): void
