@@ -1636,7 +1636,9 @@
                         "code": "Código",
                         "tax_number": "Número de identificación fiscal",
                         "tax_rate": "Tipo impositivo",
-                        "digital_services_tax_rate": "Tipo impositivo de los servicios digitales"
+                        "digital_services_tax_rate": "Tipo impositivo de los servicios digitales",
+                        "support_email": "Correo electrónico de asistencia",
+                        "support_phone_number": "Teléfono de asistencia"
                     },
                     "help_info": {
                         "name": "El nombre de la marca",
@@ -1651,7 +1653,9 @@
                         "postcode": "El código postal de la dirección de facturación",
                         "tax_number": "El número de identificación fiscal de la empresa\/marca",
                         "tax_rate": "El tipo impositivo que se utilizará en su país de origen o cuando no pueda encontrarse otro tipo impositivo",
-                        "digital_services_tax_rate": "El tipo impositivo que se utilizará para su país de origen o cuando no se pueda encontrar otro tipo impositivo para los servicios digitales"
+                        "digital_services_tax_rate": "El tipo impositivo que se utilizará para su país de origen o cuando no se pueda encontrar otro tipo impositivo para los servicios digitales",
+                        "support_email": "La dirección de correo electrónico para contactar con el servicio de asistencia",
+                        "support_phone_number": "El número de teléfono de contacto con el servicio de asistencia"
                     },
                     "general": "Ajustes generales",
                     "notifications": "Notificaciones",
@@ -1674,7 +1678,8 @@
                             "yearly": "Anualmente"
                         },
                         "payment_failure": "Falta de pago"
-                    }
+                    },
+                    "support": "Datos de contacto de asistencia"
                 },
                 "create": {
                     "title": "Crear ajustes de marca",
@@ -1691,7 +1696,9 @@
                         "code": "Código",
                         "tax_number": "Número de identificación fiscal",
                         "tax_rate": "Tipo impositivo",
-                        "digital_services_tax_rate": "Tipo impositivo de los servicios digitales"
+                        "digital_services_tax_rate": "Tipo impositivo de los servicios digitales",
+                        "support_email": "Correo electrónico de asistencia",
+                        "support_phone_number": "Teléfono de asistencia"
                     },
                     "help_info": {
                         "name": "El nombre de la marca",
@@ -1706,11 +1713,14 @@
                         "country": "El país de facturación del cliente - código de país ISO 3166-1 alfa-2.",
                         "postcode": "El código postal de la dirección de facturación",
                         "tax_rate": "El tipo impositivo que debe utilizarse para su país de origen o cuando no pueda encontrarse otro tipo impositivo",
-                        "digital_services_tax_rate": "El tipo impositivo que se utilizará para su país de origen o cuando no se pueda encontrar otro tipo impositivo para los servicios digitales"
+                        "digital_services_tax_rate": "El tipo impositivo que se utilizará para su país de origen o cuando no se pueda encontrar otro tipo impositivo para los servicios digitales",
+                        "support_email": "La dirección de correo electrónico para contactar con el servicio de asistencia",
+                        "support_phone_number": "El número de teléfono de contacto con el servicio de asistencia"
                     },
                     "address_title": "Dirección de facturación",
                     "success_message": "Actualizado",
-                    "submit_btn": "Cree"
+                    "submit_btn": "Cree",
+                    "support": "Datos de contacto de asistencia"
                 }
             },
             "email_template": {
@@ -2372,7 +2382,8 @@
                     "method": "Método",
                     "detail": "Detalle",
                     "status": "Estado",
-                    "created_at": "Creado en"
+                    "created_at": "Creado en",
+                    "no_invoice_deliveries": "Sin entrega de facturas"
                 }
             },
             "settings": {
@@ -2425,7 +2436,17 @@
                         }
                     },
                     "save": "Guardar"
+                },
+                "format": {
+                    "pdf": "PDF",
+                    "zugferd_v1": "ZUGFeRD V1",
+                    "zugferd_v2": "ZUGFeRD V2 - XRechnung"
                 }
+            },
+            "download": {
+                "loading_message": "Cargando...",
+                "format": "Elija el formato para descargar",
+                "download": "Descargar"
             }
         },
         "home": {

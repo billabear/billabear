@@ -1636,7 +1636,9 @@
                         "code": "Codice",
                         "tax_number": "Codice fiscale",
                         "tax_rate": "Aliquota fiscale",
-                        "digital_services_tax_rate": "Aliquota d'imposta sui servizi digitali"
+                        "digital_services_tax_rate": "Aliquota d'imposta sui servizi digitali",
+                        "support_email": "Supporto e-mail",
+                        "support_phone_number": "Numero di telefono dell'assistenza"
                     },
                     "help_info": {
                         "name": "Il nome del marchio",
@@ -1651,7 +1653,9 @@
                         "postcode": "Il codice postale dell'indirizzo di fatturazione",
                         "tax_number": "Il codice fiscale dell'azienda\/marchio",
                         "tax_rate": "L'aliquota fiscale da utilizzare per il paese d'origine o quando non è possibile trovare un'altra aliquota fiscale",
-                        "digital_services_tax_rate": "L'aliquota fiscale da utilizzare per il paese d'origine o quando non è possibile trovare un'altra aliquota fiscale per i servizi digitali"
+                        "digital_services_tax_rate": "L'aliquota fiscale da utilizzare per il paese d'origine o quando non è possibile trovare un'altra aliquota fiscale per i servizi digitali",
+                        "support_email": "L'indirizzo e-mail per il contatto con l'assistenza",
+                        "support_phone_number": "Il numero di telefono per il contatto con l'assistenza"
                     },
                     "general": "Impostazioni generali",
                     "notifications": "Notifiche",
@@ -1674,7 +1678,8 @@
                             "yearly": "Annuale"
                         },
                         "payment_failure": "Mancato pagamento"
-                    }
+                    },
+                    "support": "Dettagli di contatto dell'assistenza"
                 },
                 "create": {
                     "title": "Creare le impostazioni del marchio",
@@ -1691,7 +1696,9 @@
                         "code": "Codice",
                         "tax_number": "Codice fiscale",
                         "tax_rate": "Aliquota fiscale",
-                        "digital_services_tax_rate": "Aliquota d'imposta sui servizi digitali"
+                        "digital_services_tax_rate": "Aliquota d'imposta sui servizi digitali",
+                        "support_email": "Supporto e-mail",
+                        "support_phone_number": "Numero di telefono dell'assistenza"
                     },
                     "help_info": {
                         "name": "Il nome del marchio",
@@ -1706,11 +1713,14 @@
                         "country": "Paese di fatturazione del cliente - codice paese ISO 3166-1 alpha-2.",
                         "postcode": "Il codice postale dell'indirizzo di fatturazione",
                         "tax_rate": "L'aliquota fiscale da utilizzare per il paese d'origine o quando non è possibile trovare un'altra aliquota fiscale",
-                        "digital_services_tax_rate": "L'aliquota fiscale da utilizzare per il paese d'origine o quando non è possibile trovare un'altra aliquota fiscale per i servizi digitali"
+                        "digital_services_tax_rate": "L'aliquota fiscale da utilizzare per il paese d'origine o quando non è possibile trovare un'altra aliquota fiscale per i servizi digitali",
+                        "support_email": "L'indirizzo e-mail per il contatto con l'assistenza",
+                        "support_phone_number": "Il numero di telefono per il contatto con l'assistenza"
                     },
                     "address_title": "Indirizzo di fatturazione",
                     "success_message": "Aggiornato",
-                    "submit_btn": "Creare"
+                    "submit_btn": "Creare",
+                    "support": "Dettagli di contatto dell'assistenza"
                 }
             },
             "email_template": {
@@ -2372,7 +2382,8 @@
                     "method": "Metodo",
                     "detail": "Dettaglio",
                     "status": "Stato",
-                    "created_at": "Creato a"
+                    "created_at": "Creato a",
+                    "no_invoice_deliveries": "Nessuna consegna di fatture"
                 }
             },
             "settings": {
@@ -2425,7 +2436,17 @@
                         }
                     },
                     "save": "Risparmiare"
+                },
+                "format": {
+                    "pdf": "PDF",
+                    "zugferd_v1": "ZUGFeRD V1",
+                    "zugferd_v2": "ZUGFeRD V2 - XRechnung"
                 }
+            },
+            "download": {
+                "loading_message": "Caricamento...",
+                "format": "Scegliere il formato per il download",
+                "download": "Scaricare"
             }
         },
         "home": {

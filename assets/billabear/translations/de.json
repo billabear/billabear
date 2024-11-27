@@ -1636,7 +1636,9 @@
                         "code": "Code",
                         "tax_number": "Umsatzsteuer-Identifikationsnummer",
                         "tax_rate": "Steuersatz",
-                        "digital_services_tax_rate": "Steuersatz für digitale Dienstleistungen"
+                        "digital_services_tax_rate": "Steuersatz für digitale Dienstleistungen",
+                        "support_email": "Unterstützung E-Mail",
+                        "support_phone_number": "Support-Telefonnummer"
                     },
                     "help_info": {
                         "name": "Der Name der Marke",
@@ -1651,7 +1653,9 @@
                         "postcode": "Die Postleitzahl für die Rechnungsadresse",
                         "tax_number": "Die Umsatzsteuer-Identifikationsnummer für das Unternehmen\/die Marke",
                         "tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz gefunden werden kann",
-                        "digital_services_tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz für digitale Dienstleistungen gefunden werden kann"
+                        "digital_services_tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz für digitale Dienstleistungen gefunden werden kann",
+                        "support_email": "Die E-Mail-Adresse für den Supportkontakt",
+                        "support_phone_number": "Die Telefonnummer für den Supportkontakt"
                     },
                     "general": "Allgemeine Einstellungen",
                     "notifications": "Benachrichtigungen",
@@ -1674,7 +1678,8 @@
                             "yearly": "Jährlich"
                         },
                         "payment_failure": "Fehlgeschlagene Zahlung"
-                    }
+                    },
+                    "support": "Kontaktinformationen zum Support"
                 },
                 "create": {
                     "title": "Markeneinstellungen erstellen",
@@ -1691,7 +1696,9 @@
                         "code": "Code",
                         "tax_number": "Umsatzsteuer-Identifikationsnummer",
                         "tax_rate": "Steuersatz",
-                        "digital_services_tax_rate": "Steuersatz für digitale Dienstleistungen"
+                        "digital_services_tax_rate": "Steuersatz für digitale Dienstleistungen",
+                        "support_email": "Unterstützung E-Mail",
+                        "support_phone_number": "Support-Telefonnummer"
                     },
                     "help_info": {
                         "name": "Der Name der Marke",
@@ -1706,11 +1713,14 @@
                         "country": "Das Rechnungsland des Kunden - ISO 3166-1 Alpha-2 Ländercode.",
                         "postcode": "Die Postleitzahl für die Rechnungsadresse",
                         "tax_rate": "Der Steuersatz, der für Ihr Heimatland verwendet werden soll oder wenn kein anderer Steuersatz gefunden werden kann",
-                        "digital_services_tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz für digitale Dienstleistungen gefunden werden kann"
+                        "digital_services_tax_rate": "Der Steuersatz, der für Ihr Heimatland zu verwenden ist oder wenn kein anderer Steuersatz für digitale Dienstleistungen gefunden werden kann",
+                        "support_email": "Die E-Mail-Adresse für den Supportkontakt",
+                        "support_phone_number": "Die Telefonnummer für den Supportkontakt"
                     },
                     "address_title": "Rechnungsadresse",
                     "success_message": "Aktualisiert",
-                    "submit_btn": "Erstellen"
+                    "submit_btn": "Erstellen",
+                    "support": "Kontaktinformationen zum Support"
                 }
             },
             "email_template": {
@@ -2372,7 +2382,8 @@
                     "method": "Methode",
                     "detail": "Einzelheiten",
                     "status": "Status",
-                    "created_at": "Erstellt am"
+                    "created_at": "Erstellt am",
+                    "no_invoice_deliveries": "Keine Lieferungen auf Rechnung"
                 }
             },
             "settings": {
@@ -2425,7 +2436,17 @@
                         }
                     },
                     "save": "Speichern Sie"
+                },
+                "format": {
+                    "pdf": "PDF",
+                    "zugferd_v1": "ZUGFeRD V1",
+                    "zugferd_v2": "ZUGFeRD V2 - XRechnung"
                 }
+            },
+            "download": {
+                "loading_message": "Laden...",
+                "format": "Format zum Herunterladen wählen",
+                "download": "Herunterladen"
             }
         },
         "home": {
