@@ -111,8 +111,8 @@ class Pricer implements PricerInterface
                 $money = $money->plus($flatFee);
 
                 $unitPrice = Money::ofMinor($component->getUnitPrice(), $price->getCurrency());
-                $unitPriceCalculated = $unitPrice->multipliedBy($seatNumber);
-                $money = $money->plus($unitPriceCalculated);
+                $unitPriceCalculated = $unitPrice->multipliedBy($seatNumber, RoundingMode::HALF_CEILING);
+                $money = $money->plus($unitPriceCalculated, RoundingMode::HALF_CEILING);
 
                 return [new PriceCalculation($money, $seatNumber, $unitPrice)];
             }
@@ -151,8 +151,8 @@ class Pricer implements PricerInterface
                     $seatsBillable = $seatsLeft;
                 }
                 $unitPrice = Money::ofMinor($component->getUnitPrice(), $price->getCurrency());
-                $unitPriceCalculated = $unitPrice->multipliedBy($seatsBillable);
-                $componentMoney = $componentMoney->plus($unitPriceCalculated);
+                $unitPriceCalculated = $unitPrice->multipliedBy($seatsBillable, RoundingMode::HALF_CEILING);
+                $componentMoney = $componentMoney->plus($unitPriceCalculated, RoundingMode::HALF_CEILING);
                 $output[] = new PriceCalculation($componentMoney, $seatsBillable, $unitPrice);
                 $seatsLeft -= $seatsBillable;
             } else {
