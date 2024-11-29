@@ -31,6 +31,7 @@
             <option value="es">Español</option>
             <option value="nl">Nederlands</option>
             <option value="it">Italiano</option>
+            <option value="pt">Português</option>
           </select>
           <span class="error-message" v-if="errors.locale" v-for="error in errors.locale">{{ error }}</span>
         </div>
