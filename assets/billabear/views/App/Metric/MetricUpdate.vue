@@ -22,18 +22,6 @@
         </div>
 
         <div class="form-field-ctn">
-          <label class="form-field-lbl" for="name">
-            {{ $t('app.metric.create.fields.type') }}
-          </label>
-          <p class="form-field-error" v-if="errors.type != undefined">{{ errors.type }}</p>
-          <select class="form-field" v-model="metric.type">
-            <option value="resettable">{{ $t('app.metric.create.types.resettable') }}</option>
-            <option value="continuous">{{ $t('app.metric.create.types.continuous') }}</option>
-          </select>
-          <p class="form-field-help">{{ $t('app.metric.create.help_info.type') }}</p>
-        </div>
-
-        <div class="form-field-ctn">
           <label class="form-field-lbl" for="aggregation_method">
             {{ $t('app.metric.create.fields.aggregation_method') }}
           </label>
@@ -68,6 +56,7 @@
             <tr>
               <th>{{ $t('app.metric.create.filter.name') }}</th>
               <th>{{ $t('app.metric.create.filter.value') }}</th>
+              <th>{{ $t('app.metric.create.filter.type') }}</th>
               <th></th>
             </tr>
             </thead>
@@ -75,6 +64,10 @@
             <tr v-for="(filter, key) in metric.filters">
               <td><input type="text" class="form-field" v-model="filter.name"></td>
               <td><input type="text" class="form-field" v-model="filter.value"></td>
+              <td><select class="form-field" v-model="filter.type">
+                <option value="inclusive">{{ $t('app.metric.create.filter_type.inclusive') }}</option>
+                <option value="exclusive">{{ $t('app.metric.create.filter_type.exclusive') }}</option>
+              </select></td>
               <td><button class="btn--danger" @click="removeFilter(key)"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
             <tr v-if="metric.filters.length === 0">
