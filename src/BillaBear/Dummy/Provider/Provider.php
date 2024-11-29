@@ -94,4 +94,9 @@ class Provider implements ProviderInterface
     {
         return new VoucherService();
     }
+
+    public function isLive(): bool
+    {
+        return false;
+    }
 }
