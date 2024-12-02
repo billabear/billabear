@@ -3,7 +3,7 @@
   <div class="h-screen flex flex-col lg:flex-row" v-if="ready">
     <!-- Left Section -->
     <div class="bg-teal-500 w-full lg:w-1/2 h-full desktop-only text-center text-white pt-12">
-      <img src="/images/app-logo.svg" alt="BillaBear" class="w-72 mx-auto" />
+      <img src="/images/app-logo.png" alt="BillaBear" class="w-72 mx-auto" />
 
       <h1 class="my-3 text-4xl underline">{{ $t('portal.checkout.title') }}</h1>
 
