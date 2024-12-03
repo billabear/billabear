@@ -439,8 +439,5 @@ export default {
   @apply mt-5;
 }
 
-.chart-button-selected {
-  @apply bg-teal-500 text-white font-medium;
-}
 
 </style>

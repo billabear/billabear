@@ -118,3 +118,6 @@ a {
     color: red;
 }
 
+.chart-button-selected {
+    @apply bg-teal-500 text-white font-medium;
+}

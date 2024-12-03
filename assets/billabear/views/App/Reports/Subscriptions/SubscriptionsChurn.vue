@@ -6,14 +6,16 @@
 
 
       <div class="text-end my-5">
-        <div class="chart-button" @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
-          {{ $t('app.reports.subscriptions.churn.buttons.daily') }}
-        </div>
-        <div class="chart-button" @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
-          {{ $t('app.reports.subscriptions.churn.buttons.monthly') }}
-        </div>
-        <div class="chart-button" @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
-          {{ $t('app.reports.subscriptions.churn.buttons.yearly') }}
+        <div class="bg-white rounded-3xl inline p-3">
+          <div class="chart-button inline p-3 rounded-3xl" @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
+            {{ $t('app.reports.subscriptions.churn.buttons.daily') }}
+          </div>
+          <div class="chart-button inline p-3 rounded-3xl" @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
+            {{ $t('app.reports.subscriptions.churn.buttons.monthly') }}
+          </div>
+          <div class="chart-button inline p-3 rounded-3xl" @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
+            {{ $t('app.reports.subscriptions.churn.buttons.yearly') }}
+          </div>
         </div>
       </div>
         <div class="card-body">
@@ -34,12 +36,26 @@ import axios from "axios";
 export default {
   name: "SubscriptionsChurn",
   data() {
-      return {
-        chartData: {},
-        ready: false,
-        overview: {chartOptions: {xaxis: {categories: {}}}, series: {}},
-        viewName: 'daily',
-        loaded: false,
+    return {
+      chartData: {},
+      ready: false,
+      overview: {
+        chartOptions: {
+          chart: {
+            height: 350,
+            type: 'bar',
+            zoom: {
+              enabled: false
+            }
+          },
+          xaxis: {
+            categories: {}
+          }
+        },
+        series: {}
+      },
+      viewName: 'daily',
+      loaded: false,
       }
   },
   mounted() {
@@ -50,7 +66,6 @@ export default {
     })
   },
   methods: {
-
     setChartData: function (viewName) {
       this.viewName = viewName;
       const data = this.convertStatToChartData(this.chartData[viewName]);
