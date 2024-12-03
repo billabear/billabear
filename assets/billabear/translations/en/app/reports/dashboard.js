@@ -49,5 +49,13 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
             customer: "Customer",
             creation_date: "Creation Date"
         }
+    },
+    latest_payments: {
+        title: "Latest Payments",
+        list: {
+            amount: "Amount",
+            customer: "Customer",
+            creation_date: "Creation Date"
+        }
     }
 };

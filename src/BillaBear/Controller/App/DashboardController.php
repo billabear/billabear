@@ -9,6 +9,7 @@
 namespace BillaBear\Controller\App;
 
 use BillaBear\DataMappers\CustomerDataMapper;
+use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\Dto\Response\App\Stats\MainDashboardHeader;
 use BillaBear\Dto\Response\App\Stats\MainDashboardStats;
@@ -16,6 +17,7 @@ use BillaBear\Entity\Stats\CachedStats;
 use BillaBear\Invoice\UnpaidInvoiceStatsProvider;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
+use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -52,6 +54,8 @@ class DashboardController
         CustomerDataMapper $customerDataMapper,
         CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
         CustomerSubscriptionEventDataMapper $subscriptionEventDataMapper,
+        PaymentRepositoryInterface $paymentRepository,
+        PaymentDataMapper $paymentDataMapper,
     ): Response {
         $this->getLogger()->info('Received request for dashboard stats');
 
@@ -85,6 +89,10 @@ class DashboardController
         $subscriptionEvents = $customerSubscriptionEventRepository->getLatest();
         $eventDtos = array_map([$subscriptionEventDataMapper, 'createAppDto'], $subscriptionEvents);
         $mainDashboardStat->setSubscriptionEvents($eventDtos);
+
+        $payments = $paymentRepository->getLatest();
+        $paymentDtos = array_map([$paymentDataMapper, 'createAppDto'], $payments);
+        $mainDashboardStat->setLatestPayments($paymentDtos);
 
         $json = $serializer->serialize($mainDashboardStat, 'json');
 

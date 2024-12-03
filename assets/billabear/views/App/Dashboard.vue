@@ -98,6 +98,29 @@
                 </tbody>
               </table>
             </div>
+
+          </div>
+
+          <div class="card-body">
+            <h2 class="section-header">{{ $t('app.reports.dashboard.latest_payments.title') }}</h2>
+            <div class="mt-2">
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.reports.dashboard.latest_payments.list.amount') }}</th>
+                  <th>{{ $t('app.reports.dashboard.latest_payments.list.customer') }}</th>
+                  <th>{{ $t('app.reports.dashboard.latest_payments.list.creation_date') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="payment in payments">
+                  <td>{{ payment.currency }} {{ displayCurrency(payment.amount) }}</td>
+                  <td><router-link  :to="{name: 'app.customer.view', params: {id: payment.customer.id}}">{{ payment.customer.email }}</router-link></td>
+                  <td>{{ $filters.moment(payment.created_at, 'lll') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </LoadingScreen>
@@ -366,6 +389,7 @@ export default {
       responseData: {},
       customers: [],
       events: [],
+      payments: []
     }
   },
   mounted() {
@@ -425,6 +449,7 @@ export default {
       this.estimated_arr = this.responseData.estimated_arr;
       this.customers = this.responseData.latest_customers;
       this.events = this.responseData.subscription_events;
+      this.payments = this.responseData.latest_payments;
     },
     convertStatToChartData: function (input) {
       var categories = []

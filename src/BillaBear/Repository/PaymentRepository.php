@@ -49,4 +49,9 @@ class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentReposit
 
         return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
+
+    public function getLatest(int $limit = 10): array
+    {
+        return $this->entityRepository->findBy([], ['createdAt' => 'DESC'], $limit);
+    }
 }
