@@ -25,5 +25,5 @@ interface CustomerRepositoryInterface extends \Parthenon\Billing\Repository\Cust
 
     public function getCreatedCountForPeriod(\DateTime $startDate, \DateTime $endDate, BrandSettings $brandSettings): int;
 
-    public function getLatestCustomers(int $number = 10): array;
+    public function getLatestCustomers(int $number = 5): array;
 }
