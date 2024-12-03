@@ -1,7 +1,4 @@
-Feature: Customer Subscription List
-  In order to manage a customer's subscriptions
-  As an APP user
-  I need to be see customer's Subscription
+Feature: Customer Limits
 
   Background:
     Given the following accounts exist:
@@ -33,7 +30,6 @@ Feature: Customer Subscription List
       | Public     | True      |
       | Per Seat   | False     |
       | User Count | 10        |
-
 
   Scenario: Get customer info
     When I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"

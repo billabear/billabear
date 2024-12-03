@@ -10,6 +10,7 @@ namespace BillaBear\Entity;
 
 use BillaBear\Enum\CustomerStatus;
 use BillaBear\Enum\CustomerType;
+use BillaBear\Enum\WarningLevel;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -98,6 +99,9 @@ class Customer implements CustomerInterface
 
     #[ORM\Column(name: 'invoice_format', type: 'string', nullable: true)]
     protected ?string $invoiceFormat = null;
+
+    #[ORM\Column(name: 'warning_level', type: 'integer', enumType: WarningLevel::class, nullable: true)]
+    protected ?WarningLevel $warningLevel = null;
 
     public function getId()
     {
@@ -410,5 +414,19 @@ class Customer implements CustomerInterface
     public function setInvoiceFormat(?string $invoiceFormat): void
     {
         $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getWarningLevel(): WarningLevel
+    {
+        if (!isset($this->warningLevel)) {
+            return WarningLevel::NO_WARNING;
+        }
+
+        return $this->warningLevel;
+    }
+
+    public function setWarningLevel(?WarningLevel $warningLevel): void
+    {
+        $this->warningLevel = $warningLevel;
     }
 }

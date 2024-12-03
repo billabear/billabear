@@ -125,6 +125,7 @@ default:
                 - BillaBear\Tests\Behat\Usage\MetricContext
                 - BillaBear\Tests\Behat\Usage\EventContext
                 - BillaBear\Tests\Behat\Usage\EstimateContext
+                - BillaBear\Tests\Behat\Usage\CustomerContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension:

@@ -106,6 +106,12 @@ services:
   app.repository.orm.customer:
     class: BillaBear\Repository\Orm\CustomerRepository
 
+  BillaBear\Repository\UsageLimitRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.usage_limit'
+  app.repository.orm.usage_limit:
+    class: BillaBear\Repository\Orm\UsageLimitRepository
+
   BillaBear\Repository\RefundRepository:
     arguments:
       $entityRepository: '@app.repository.orm.refund'
