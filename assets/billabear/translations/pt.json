@@ -2096,6 +2096,29 @@
                     "customers": "Clientes",
                     "subscriptions": "Assinaturas",
                     "invoices": "Facturas"
+                },
+                "latest_customers": {
+                    "title": "Clientes mais recentes",
+                    "list": {
+                        "email": "Correio eletrónico",
+                        "creation_date": "Data de criação"
+                    }
+                },
+                "latest_events": {
+                    "title": "Últimos eventos",
+                    "list": {
+                        "event_type": "Tipo de evento",
+                        "customer": "Cliente",
+                        "creation_date": "Data de criação"
+                    }
+                },
+                "latest_payments": {
+                    "title": "Últimos pagamentos",
+                    "list": {
+                        "amount": "Montante",
+                        "customer": "Cliente",
+                        "creation_date": "Data de criação"
+                    }
                 }
             },
             "expiring_cards": {

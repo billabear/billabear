@@ -2102,6 +2102,29 @@
                     "customers": "Clientes",
                     "subscriptions": "Suscripciones",
                     "invoices": "Facturas"
+                },
+                "latest_customers": {
+                    "title": "Últimos clientes",
+                    "list": {
+                        "email": "Correo electrónico",
+                        "creation_date": "Fecha de creación"
+                    }
+                },
+                "latest_events": {
+                    "title": "Últimos acontecimientos",
+                    "list": {
+                        "event_type": "Tipo de evento",
+                        "customer": "Cliente",
+                        "creation_date": "Fecha de creación"
+                    }
+                },
+                "latest_payments": {
+                    "title": "Últimos pagos",
+                    "list": {
+                        "amount": "Importe",
+                        "customer": "Cliente",
+                        "creation_date": "Fecha de creación"
+                    }
                 }
             },
             "expiring_cards": {

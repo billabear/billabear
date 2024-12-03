@@ -2102,6 +2102,29 @@
                     "customers": "Klanten",
                     "subscriptions": "Abonnementen",
                     "invoices": "Facturen"
+                },
+                "latest_customers": {
+                    "title": "Laatste klanten",
+                    "list": {
+                        "email": "E-mail",
+                        "creation_date": "Aanmaakdatum"
+                    }
+                },
+                "latest_events": {
+                    "title": "Laatste gebeurtenissen",
+                    "list": {
+                        "event_type": "Type evenement",
+                        "customer": "Klant",
+                        "creation_date": "Aanmaakdatum"
+                    }
+                },
+                "latest_payments": {
+                    "title": "Laatste betalingen",
+                    "list": {
+                        "amount": "Bedrag",
+                        "customer": "Klant",
+                        "creation_date": "Aanmaakdatum"
+                    }
                 }
             },
             "expiring_cards": {
