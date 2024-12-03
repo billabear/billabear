@@ -60,7 +60,6 @@ const actions = {
                 commit('inviteSent');
             },
             error => {
-                console.log(error)
                 commit('inviteError', error)
             }
         )

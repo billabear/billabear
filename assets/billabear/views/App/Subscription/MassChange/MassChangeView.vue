@@ -139,7 +139,6 @@ export default {
             if (responseData) {
               if (typeof responseData === 'string') {
                 const jsonData = JSON.parse(responseData);
-                console.log('Response is JSON:', jsonData);
               }
             }
           })

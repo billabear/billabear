@@ -75,7 +75,6 @@ export default {
     save: function () {
       this.sending = true;
       this.errors = {};
-      console.log(this.tax_settings);
       axios.post("/app/settings/tax/vatsense", this.tax_settings).then(response => {
         this.success = true;
         this.sending = false;

@@ -142,7 +142,6 @@ onNodeDoubleClick(event => {
 
 onEdgeDoubleClick(edge => {
   useVfm().open('template')
-  console.log(edge);
 
   createModalValues = ref({
     name: '',

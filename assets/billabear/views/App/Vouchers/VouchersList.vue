@@ -134,7 +134,6 @@ export default {
         } else {
           this.filters[key].value = null;
             if (this.active_filters.indexOf(key) !== -1) {
-              console.log(key)
               this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
             }
         }

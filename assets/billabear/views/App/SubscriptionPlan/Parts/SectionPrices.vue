@@ -242,7 +242,6 @@ export default {
           return;
         }
         if (tier.first_unit > tier.last_unit && tier.last_unit !== null) {
-          console.log(tier)
           valid = false;
           return;
         }

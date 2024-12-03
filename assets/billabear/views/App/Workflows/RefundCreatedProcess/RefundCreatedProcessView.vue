@@ -55,7 +55,6 @@ export default {
     const id = this.$route.params.id;
     axios.get('/app/system/refund-created-process/'+id+'/view').then(response => {
       this.refund_created_process = response.data.refund_created_process;
-      console.log(response.data.refund_created_process)
       this.ready = true;
     })
   },

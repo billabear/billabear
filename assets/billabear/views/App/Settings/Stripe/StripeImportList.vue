@@ -253,7 +253,6 @@ export default {
           if (error.response) {
             this.errors = error.response.data.errors;
           } else {
-            console.log(error)
           }
         })
     }
@@ -279,7 +278,7 @@ export default {
       }
       this.ready = true;
     }).catch(error => {
-      console.log(error)
+
     })
   }
 }

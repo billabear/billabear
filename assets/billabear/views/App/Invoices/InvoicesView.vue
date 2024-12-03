@@ -263,7 +263,6 @@ export default {
         this.invoice.paid_at = Date.now();
         this.markingAsPaid = false;
       }).catch(error => {
-        console.log(error)
         this.failed.modelValue = true;
         this.markingAsPaid = false;
       })
@@ -281,7 +280,6 @@ export default {
         }
         this.chargingCard = false;
       }).catch(error => {
-        console.log(error)
         this.failed.modelValue = true;
         this.chargingCard = false;
       })

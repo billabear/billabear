@@ -54,7 +54,6 @@ export default {
     setChartData: function (viewName) {
       this.viewName = viewName;
       const data = this.convertStatToChartData(this.chartData[viewName]);
-      console.log(data)
       this.overview.series = [{name: 'churn', data: data.values}];
       this.overview.chartOptions.xaxis.categories = data.categories;
       this.loaded = true;

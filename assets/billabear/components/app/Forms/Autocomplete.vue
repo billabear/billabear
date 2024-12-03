@@ -51,10 +51,8 @@ export default {
   methods: {
     innerBlur: function (event) {
         const input = event.target.value;
-        console.log(this.autocompleteResults);
         for (var i = 0; i < this.autocompleteResults.length; i++) {
           var result = this.autocompleteResults[i];
-          console.log(result)
           if (result[this.displayKey] == input) {
               this.selectAutocompleteResult(result);
               return;

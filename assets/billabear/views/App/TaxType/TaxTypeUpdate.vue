@@ -96,7 +96,6 @@ export default {
       axios.post("/app/tax/type/"+taxTypeId+"/update", this.type).then(response => {
         this.sending = false;
       }).catch(error => {
-        console.log(error)
         this.errors = error.response.data.errors;
         this.sending = false;
       })

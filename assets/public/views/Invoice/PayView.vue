@@ -130,7 +130,6 @@ export default {
         }, 500)
       }
     }).catch(error => {
-      console.log(error)
       if (error.response !== undefined && error.response.status === 404) {
         this.not_found = true;
         return;
