@@ -43,6 +43,9 @@ class MainDashboardStats
     #[SerializedName('latest_customers')]
     private array $latestCustomers;
 
+    #[SerializedName('subscription_events')]
+    private array $subscriptionEvents;
+
     public function getSubscriptionCount(): DashboardStats
     {
         return $this->subscriptionCount;
@@ -151,5 +154,15 @@ class MainDashboardStats
     public function setLatestCustomers(array $latestCustomers): void
     {
         $this->latestCustomers = $latestCustomers;
+    }
+
+    public function getSubscriptionEvents(): array
+    {
+        return $this->subscriptionEvents;
+    }
+
+    public function setSubscriptionEvents(array $subscriptionEvents): void
+    {
+        $this->subscriptionEvents = $subscriptionEvents;
     }
 }

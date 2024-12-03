@@ -28,4 +28,9 @@ class CustomerSubscriptionEventRepository extends DoctrineCrudRepository impleme
     {
         return $this->entityRepository->findBy(['subscription' => $subscription]);
     }
+
+    public function getLatest(int $limit = 10): array
+    {
+        return $this->entityRepository->findBy([], ['createdAt' => 'DESC'], $limit);
+    }
 }

@@ -41,5 +41,13 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
             email: "Email",
             creation_date: "Creation Date"
         }
+    },
+    latest_events: {
+        title: "Latest Events",
+        list: {
+            event_type: "Event Type",
+            customer: "Customer",
+            creation_date: "Creation Date"
+        }
     }
 };

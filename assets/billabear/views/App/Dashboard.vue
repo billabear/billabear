@@ -54,7 +54,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 my-5">
+        <div class="grid grid-cols-3 my-5 gap-3">
           <div class="card-body">
             <h2 class="section-header">{{ $t('app.reports.dashboard.latest_customers.title') }}</h2>
 
@@ -71,6 +71,29 @@
                   <tr v-for="customer in customers">
                     <td><router-link  :to="{name: 'app.customer.view', params: {id: customer.id}}">{{ customer.email }}</router-link></td>
                     <td>{{ $filters.moment(customer.created_at, 'lll') }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <h2 class="section-header">{{ $t('app.reports.dashboard.latest_events.title') }}</h2>
+
+            <div class="mt-2">
+              <table class="list-table">
+                <thead>
+                  <tr>
+                    <th>{{ $t('app.reports.dashboard.latest_events.list.event_type') }}</th>
+                    <th>{{ $t('app.reports.dashboard.latest_events.list.customer') }}</th>
+                    <th>{{ $t('app.reports.dashboard.latest_events.list.creation_date') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="event in events">
+                    <td>{{ event.type }}</td>
+                    <td><router-link  :to="{name: 'app.customer.view', params: {id: event.subscription.customer.id}}">{{ event.subscription.customer.email }}</router-link></td>
+                    <td>{{ $filters.moment(event.created_at, 'lll') }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -342,6 +365,7 @@ export default {
       },
       responseData: {},
       customers: [],
+      events: [],
     }
   },
   mounted() {
@@ -400,6 +424,7 @@ export default {
       this.estimated_mrr = this.responseData.estimated_mrr;
       this.estimated_arr = this.responseData.estimated_arr;
       this.customers = this.responseData.latest_customers;
+      this.events = this.responseData.subscription_events;
     },
     convertStatToChartData: function (input) {
       var categories = []
