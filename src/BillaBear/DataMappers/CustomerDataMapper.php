@@ -164,6 +164,7 @@ class CustomerDataMapper
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
         $dto->setInvoiceFormat($customer->getInvoiceFormat());
+        $dto->setCreatedAt($customer->getCreatedAt());
 
         return $dto;
     }

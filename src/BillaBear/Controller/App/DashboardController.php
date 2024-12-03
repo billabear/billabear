@@ -8,10 +8,12 @@
 
 namespace BillaBear\Controller\App;
 
+use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\Dto\Response\App\Stats\MainDashboardHeader;
 use BillaBear\Dto\Response\App\Stats\MainDashboardStats;
 use BillaBear\Entity\Stats\CachedStats;
 use BillaBear\Invoice\UnpaidInvoiceStatsProvider;
+use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -44,6 +46,8 @@ class DashboardController
         CachedStatsRepositoryInterface $cachedStatsRepository,
         SettingsRepositoryInterface $settingsRepository,
         UnpaidInvoiceStatsProvider $invoiceStatsProvider,
+        CustomerRepositoryInterface $customerRepository,
+        CustomerDataMapper $customerDataMapper,
     ): Response {
         $this->getLogger()->info('Received request for dashboard stats');
 
@@ -69,6 +73,10 @@ class DashboardController
 
         $mainDashboardStat->setEstimatedAtt($arrCache->getValue());
         $mainDashboardStat->setEstimatedMrr($mrrCache->getValue());
+
+        $customers = $customerRepository->getLatestCustomers();
+        $customerDtos = array_map([$customerDataMapper, 'createAppDto'], $customers);
+        $mainDashboardStat->setLatestCustomers($customerDtos);
 
         $json = $serializer->serialize($mainDashboardStat, 'json');
 

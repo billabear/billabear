@@ -34,5 +34,12 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
         customers: "Customers",
         subscriptions: "Subscriptions",
         invoices: "Invoices"
+    },
+    latest_customers: {
+        title: "Latest Customers",
+        list: {
+            email: "Email",
+            creation_date: "Creation Date"
+        }
     }
 };

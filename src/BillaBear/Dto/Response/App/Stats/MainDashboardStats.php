@@ -40,6 +40,9 @@ class MainDashboardStats
 
     private string $currency;
 
+    #[SerializedName('latest_customers')]
+    private array $latestCustomers;
+
     public function getSubscriptionCount(): DashboardStats
     {
         return $this->subscriptionCount;
@@ -138,5 +141,15 @@ class MainDashboardStats
     public function setHeader(MainDashboardHeader $header): void
     {
         $this->header = $header;
+    }
+
+    public function getLatestCustomers(): array
+    {
+        return $this->latestCustomers;
+    }
+
+    public function setLatestCustomers(array $latestCustomers): void
+    {
+        $this->latestCustomers = $latestCustomers;
     }
 }

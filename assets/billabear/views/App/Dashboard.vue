@@ -53,6 +53,30 @@
             </div>
           </div>
         </div>
+
+        <div class="grid grid-cols-2 my-5">
+          <div class="card-body">
+            <h2 class="section-header">{{ $t('app.reports.dashboard.latest_customers.title') }}</h2>
+
+            <div class="mt-2">
+              <table class="list-table">
+                <thead>
+                  <tr>
+                    <th>{{ $t('app.reports.dashboard.latest_customers.list.email') }}</th>
+                    <th>{{ $t('app.reports.dashboard.latest_customers.list.creation_date') }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="customer in customers">
+                    <td><router-link  :to="{name: 'app.customer.view', params: {id: customer.id}}">{{ customer.email }}</router-link></td>
+                    <td>{{ $filters.moment(customer.created_at, 'lll') }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </LoadingScreen>
     </div>
     <div v-else class="grid grid-cols-3 gap-5">
@@ -75,10 +99,11 @@ import currency from "currency.js";
 import WorldMap from "../../components/app/Graphs/WorldMap.vue";
 import {mapState} from "vuex";
 import OnboardingMenu from "../../components/app/Onboarding/OnboardingMenu.vue";
+import {TableBody} from "flowbite-vue";
 
 export default {
   name: "Dashboard",
-  components: {OnboardingMenu, WorldMap},
+  components: {TableBody, OnboardingMenu, WorldMap},
   data() {
     return {
       ready: false,
@@ -315,7 +340,8 @@ export default {
           }
         ]
       },
-      responseData: {}
+      responseData: {},
+      customers: [],
     }
   },
   mounted() {
@@ -373,6 +399,7 @@ export default {
       this.currency = this.responseData.currency;
       this.estimated_mrr = this.responseData.estimated_mrr;
       this.estimated_arr = this.responseData.estimated_arr;
+      this.customers = this.responseData.latest_customers;
     },
     convertStatToChartData: function (input) {
       var categories = []

@@ -57,6 +57,9 @@ class Customer
     #[SerializedName('invoice_format')]
     protected ?string $invoiceFormat;
 
+    #[SerializedName('created_at')]
+    protected \DateTime $createdAt;
+
     public function getId(): string
     {
         return $this->id;
@@ -205,5 +208,15 @@ class Customer
     public function setInvoiceFormat(?string $invoiceFormat): void
     {
         $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }
