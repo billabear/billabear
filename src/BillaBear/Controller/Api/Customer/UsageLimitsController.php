@@ -12,6 +12,7 @@ use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Usage\UsageLimitDataMapper;
 use BillaBear\Dto\Request\Api\Usage\CreateUsageLimit;
 use BillaBear\Dto\Response\Api\ListResponse;
+use BillaBear\Entity\Customer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\UsageLimitRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -87,5 +88,31 @@ class UsageLimitsController
         $json = $serializer->serialize($outputDto, 'json');
 
         return new JsonResponse($json, Response::HTTP_CREATED, json: true);
+    }
+
+    #[Route('/api/v1/customer/{id}/usage-limit/{limitId}', name: 'api_customer_usage_limit_delete', methods: ['DELETE'])]
+    public function deleteUsageLimit(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        UsageLimitRepositoryInterface $usageLimitRepository,
+    ): Response {
+        $this->getLogger()->info('Received request via API to delete a customer usage limit', ['customer_id' => $request->get('id')]);
+
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(['success' => false], Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $usageLimit = $usageLimitRepository->findById($request->get('limitId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(['success' => false], Response::HTTP_NOT_FOUND);
+        }
+
+        $usageLimitRepository->delete($usageLimit);
+
+        return new Response(null, Response::HTTP_OK);
     }
 }

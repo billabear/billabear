@@ -129,6 +129,21 @@ class CustomerContext implements Context
         $this->sendJsonRequest('POST', sprintf('/app/customer/%s/usage-limit/%s/delete', $customer->getId(), $usageLimit->getId()));
     }
 
+    /**
+     * @When I delete the usage limit via the API for :limit for :customerEmail
+     */
+    public function iDeleteTheUsageLimitViaTheApiForFor($limit, $customerEmail): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $usageLimit = $this->usageLimitRepository->findOneBy(['customer' => $customer, 'amount' => intval($limit)]);
+
+        if (!$usageLimit instanceof UsageLimit) {
+            throw new \Exception('Usage Limit not found');
+        }
+
+        $this->sendJsonRequest('DELETE', sprintf('/api/v1/customer/%s/usage-limit/%s', $customer->getId(), $usageLimit->getId()));
+    }
+
     public function getLevel($warningType): WarningLevel
     {
         $warnLevel = match ($warningType) {
