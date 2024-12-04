@@ -154,13 +154,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="limit in usage_limits">
+                  <tr v-for="(limit, key) in usage_limits">
                     <td><Currency :amount="limit.amount" /></td>
                     <td>
                       <span v-if="limit.warn_level === 1000">{{ $t('app.customer.view.usage_limits.warn_levels.warn') }}</span>
                       <span v-else-if="limit.warn_level === 9999">{{ $t('app.customer.view.usage_limits.warn_levels.disable') }}</span>
                     </td>
-                    <td><button class="btn--danger"><i class="fa-solid fa-trash"></i></button></td>
+                    <td><button class="btn--danger" @click="deleteLimit(key)"><i class="fa-solid fa-trash"></i></button></td>
                   </tr>
                   <tr v-if="usage_limits.length === 0">
                     <td colspan="3" class="text-center">{{ $t('app.customer.view.usage_limits.no_limits') }}</td>
@@ -352,6 +352,7 @@ import Currency from "../../../components/app/Currency.vue";
 import {Button} from "flowbite-vue";
 import UsageLimitAdd from "../../../components/app/Customer/Modal/UsageLimitAdd.vue";
 import {VueFinalModal} from "vue-final-modal";
+import {handleResponse} from "../../../services/utils";
 
 export default {
   name: "CustomerView",
@@ -411,7 +412,7 @@ export default {
       })
     },
     defaultPayment: function (id) {
-      var customerId = this.$route.params.id
+      const customerId = this.$route.params.id
       axios.post('/app/customer/'+customerId+'/payment-card/'+id+'/default').then(response => {
         for (var i = 0; i < this.paymentDetails.length; i++) {
           if (this.paymentDetails[i].id == id) {
@@ -424,6 +425,13 @@ export default {
     },
     closeAddModal: function () {
       this.show_create_usage_limits = false;
+    },
+    deleteLimit: function (key) {
+      const customerId = this.$route.params.id
+      const limit = this.usage_limits[key];
+      axios.post('/app/customer/'+customerId+'/usage-limit/'+limit.id+'/delete').then(response => {
+        this.usage_limits.splice(key, 1);
+      })
     }
   },
   mounted() {
