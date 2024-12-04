@@ -71,4 +71,18 @@ class CustomerContext implements Context
             throw new \Exception(sprintf('Got %d instead of %d', $usageLimit->getAmount(), $limit));
         }
     }
+
+    /**
+     * @Then there should not be a limit to warn at :limit for :customerEmail
+     */
+    public function thereShouldNotBeALimitToWarnAtFor($limit, $customerEmail): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $usageLimit = $this->usageLimitRepository->findOneBy(['customer' => $customer, 'amount' => intval($limit)]);
+
+        if ($usageLimit instanceof UsageLimit) {
+            throw new \Exception('Usage Limit found');
+        }
+    }
 }

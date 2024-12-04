@@ -15,6 +15,7 @@ class CreateUsageLimit
 {
     #[Assert\NotBlank]
     #[Assert\Type('integer')]
+    #[Assert\Positive]
     private $amount;
 
     #[SerializedName('warn_level')]
