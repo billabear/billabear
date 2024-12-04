@@ -13,11 +13,7 @@ Feature: Add Usage Limit
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
-    And the following subscriptions exist:
-      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
-      | Test Plan         | 3000         | USD            | month          | customer.one@example.org |
-      | Test Plan         | 3000         | USD            | month          | customer.two@example.org |
-      | Test Two          | 3000         | USD            | month          | customer.one@example.org |
+
     When I add customer usage limit to "customer.one@example.org":
       | Amount        | 3000 |
       | Warning Type  | Warn |
