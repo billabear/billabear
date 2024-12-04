@@ -29,6 +29,7 @@ class UsageLimitDataMapper
     public function createAppDto(Entity $entity): AppDto
     {
         $dto = new AppDto();
+        $dto->setId((string) $entity->getId());
         $dto->setAmount($entity->getAmount());
         $dto->setWarnLevel($entity->getWarningLevel()->value);
 

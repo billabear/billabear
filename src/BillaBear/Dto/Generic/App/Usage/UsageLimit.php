@@ -12,10 +12,22 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 
 class UsageLimit
 {
+    private string $id;
+
     private int $amount;
 
     #[SerializedName('warn_level')]
     private int $warnLevel;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getAmount(): int
     {
