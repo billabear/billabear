@@ -25,6 +25,7 @@ use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\DataMappers\Usage\MetricCounterDataMapper;
 use BillaBear\DataMappers\Usage\UsageLimitDataMapper;
+use BillaBear\Dto\Generic\App\Usage\MetricCounter;
 use BillaBear\Dto\Request\App\CreateCustomerDto;
 use BillaBear\Dto\Response\App\Customer\CreateCustomerView;
 use BillaBear\Dto\Response\App\CustomerView;
@@ -283,11 +284,22 @@ class CustomerController
         $subscriptions = $subscriptionRepository->getLastTenForCustomer($customer);
         $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions->getResults());
 
+        /** @var MetricCounter $metricCounterDtos */
         $metricCounterDtos = [];
         /** @var Subscription $subscription */
         foreach ($subscriptions->getResults() as $subscription) {
             if ($subscription->isActive() && $subscription->getPrice()?->getUsage()) {
-                $metricCounterDtos[] = $metricCounterDataMapper->createAppDto($subscription);
+                $metric = $metricCounterDataMapper->createAppDto($subscription);
+                $found = false;
+                foreach ($metricCounterDtos as $dto) {
+                    if ($metric->getId() === $dto->getId()) {
+                        $found = true;
+                    }
+                }
+                if ($found) {
+                    continue;
+                }
+                $metricCounterDtos[] = $metric;
             }
         }
 

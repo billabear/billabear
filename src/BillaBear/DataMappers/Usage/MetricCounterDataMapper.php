@@ -25,7 +25,7 @@ class MetricCounterDataMapper
         $metric = $entity->getPrice()->getMetric();
 
         $dto = new AppDto();
-        $dto->setId((string) $entity->getId());
+        $dto->setId((string) $metric->getId());
         $dto->setMetric($this->metricDataMapper->createAppDto($metric));
 
         $costs = $this->costEstimator->getEstimate($entity);
