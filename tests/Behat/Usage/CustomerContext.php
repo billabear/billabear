@@ -122,4 +122,30 @@ class CustomerContext implements Context
 
         return $warnLevel;
     }
+
+    /**
+     * @When I request the usage limits for customer :arg1
+     */
+    public function iRequestTheUsageLimitsForCustomer($customerEmail): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $this->sendJsonRequest('GET', sprintf('/api/v1/customer/%s/usage-limits', $customer->getId()));
+    }
+
+    /**
+     * @Then there should be a usage limits list response should include a warn level limit for :arg1
+     */
+    public function thereShouldBeAUsageLimitsListResponseShouldIncludeAWarnLevelLimitFor(int $amount): void
+    {
+        $response = $this->getJsonContent();
+
+        foreach ($response['data'] as $limit) {
+            if ($limit['amount'] === $amount) {
+                return;
+            }
+        }
+
+        throw new \Exception('Limit not found');
+    }
 }

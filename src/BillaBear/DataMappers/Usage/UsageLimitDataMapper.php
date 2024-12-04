@@ -8,6 +8,7 @@
 
 namespace BillaBear\DataMappers\Usage;
 
+use BillaBear\Dto\Generic\Api\Usage\UsageLimit as ApiDto;
 use BillaBear\Dto\Generic\App\Usage\UsageLimit as AppDto;
 use BillaBear\Dto\Request\App\Usage\CreateUsageLimit;
 use BillaBear\Entity\Customer;
@@ -32,6 +33,16 @@ class UsageLimitDataMapper
         $dto->setId((string) $entity->getId());
         $dto->setAmount($entity->getAmount());
         $dto->setWarnLevel($entity->getWarningLevel()->value);
+
+        return $dto;
+    }
+
+    public function createApiDto(Entity $entity): ApiDto
+    {
+        $dto = new ApiDto();
+        $dto->setId((string) $entity->getId());
+        $dto->setAmount($entity->getAmount());
+        $dto->setAction($entity->getWarningLevel()->name);
 
         return $dto;
     }

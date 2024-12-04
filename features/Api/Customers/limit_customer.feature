@@ -1,4 +1,4 @@
-Feature: Customer Subscription List
+Feature: Customer Limit
   In order to manage a customer's subscriptions
   As an APP user
   I need to be see customer's Subscription
