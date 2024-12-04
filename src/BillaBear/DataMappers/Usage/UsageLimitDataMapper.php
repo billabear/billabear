@@ -8,6 +8,7 @@
 
 namespace BillaBear\DataMappers\Usage;
 
+use BillaBear\Dto\Generic\App\Usage\UsageLimit as AppDto;
 use BillaBear\Dto\Request\App\Usage\CreateUsageLimit;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit as Entity;
@@ -23,5 +24,14 @@ class UsageLimitDataMapper
         $entity->setWarningLevel(WarningLevel::from($createUsageLimit->getWarnLevel()));
 
         return $entity;
+    }
+
+    public function createAppDto(Entity $entity): AppDto
+    {
+        $dto = new AppDto();
+        $dto->setAmount($entity->getAmount());
+        $dto->setWarnLevel($entity->getWarningLevel()->value);
+
+        return $dto;
     }
 }
