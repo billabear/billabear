@@ -12,5 +12,5 @@ enum WarningLevel: int
 {
     case NO_WARNING = 0;
     case WARNED = 1000;
-    case DISABLED = 9000;
+    case DISABLED = 9999;
 }

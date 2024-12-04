@@ -135,6 +135,50 @@
           </div>
 
           <div class="card-body">
+
+            <div class="grid grid-cols-1 md:grid-cols-2">
+              <div>
+                <h2  class="section-header">{{ $t('app.customer.view.usage_limits.title') }}</h2>
+              </div>
+              <div class="text-end">
+                <button class="btn--main" @click="show_create_usage_limits = true">{{ $t('app.customer.view.usage_limits.add_new') }}</button>
+              </div>
+            </div>
+            <div class="mt-2">
+              <table class="list-table">
+                <thead>
+                <tr>
+                  <th>{{ $t('app.customer.view.usage_limits.list.amount') }}</th>
+                  <th>{{ $t('app.customer.view.usage_limits.list.warn_level') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="limit in usage_limits">
+                    <td><Currency :amount="limit.amount" /></td>
+                    <td>
+                      <span v-if="limit.warn_level === 1000">{{ $t('app.customer.view.usage_limits.warn_levels.warn') }}</span>
+                      <span v-else-if="limit.warn_level === 9999">{{ $t('app.customer.view.usage_limits.warn_levels.disable') }}</span>
+                    </td>
+                    <td><button class="btn--danger"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
+                  <tr v-if="usage_limits.length === 0">
+                    <td colspan="3" class="text-center">{{ $t('app.customer.view.usage_limits.no_limits') }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <VueFinalModal
+                v-model="show_create_usage_limits"
+                class="flex justify-center items-center"
+                content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+            >
+              <UsageLimitAdd :customer="customer" :limits="usage_limits" @close-modal="closeAddModal" />
+            </VueFinalModal>
+          </div>
+
+          <div class="card-body">
             <CustomerSubscriptionEvent :subscription_events="subscription_events" />
           </div>
 
@@ -211,6 +255,7 @@
               </table>
             </div>
           </div>
+
           <div class="card-body">
             <h2 class="section-header">{{ $t('app.customer.view.features.title') }}</h2>
             <div class="">
@@ -303,10 +348,18 @@ import CustomerSubscriptionEvent from "../../../components/app/Customer/View/Cus
 import CustomerPaymentList from "../../../components/app/Customer/View/CustomerPaymentList.vue";
 import CustomerRefundList from "../../../components/app/Customer/View/CustomerRefundList.vue";
 import CustomerInvoiceDelivery from "../../../components/app/Customer/View/CustomerInvoiceDelivery.vue";
+import Currency from "../../../components/app/Currency.vue";
+import {Button} from "flowbite-vue";
+import UsageLimitAdd from "../../../components/app/Customer/Modal/UsageLimitAdd.vue";
+import {VueFinalModal} from "vue-final-modal";
 
 export default {
   name: "CustomerView",
   components: {
+    VueFinalModal,
+    UsageLimitAdd,
+    Button,
+    Currency,
     CustomerInvoiceDelivery,
     CustomerRefundList,
     CustomerPaymentList, CustomerSubscriptionEvent, CustomerInvoiceList, SubscriptionList, RoleOnlyView},
@@ -326,7 +379,9 @@ export default {
       invoices: [],
       subscription_events: [],
       invoice_delivery: {},
-      metric_counters: []
+      metric_counters: [],
+      usage_limits: [],
+      show_create_usage_limits: false,
     }
   },
   methods: {
@@ -366,6 +421,9 @@ export default {
           }
         }
       })
+    },
+    closeAddModal: function () {
+      this.show_create_usage_limits = false;
     }
   },
   mounted() {
@@ -382,6 +440,7 @@ export default {
       this.subscription_events = response.data.subscription_events;
       this.invoice_delivery = response.data.invoice_delivery;
       this.metric_counters = response.data.metric_counters;
+      this.usage_limits = response.data.usage_limits;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

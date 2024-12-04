@@ -24,6 +24,7 @@ use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\DataMappers\Usage\MetricCounterDataMapper;
+use BillaBear\DataMappers\Usage\UsageLimitDataMapper;
 use BillaBear\Dto\Request\App\CreateCustomerDto;
 use BillaBear\Dto\Response\App\Customer\CreateCustomerView;
 use BillaBear\Dto\Response\App\CustomerView;
@@ -42,6 +43,7 @@ use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\RefundRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Repository\UsageLimitRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\Payload\CustomerEnabledPayload;
 use BillaBear\Webhook\Outbound\Payload\CustomerUpdatedPayload;
@@ -246,6 +248,8 @@ class CustomerController
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliverySettingsDataMapper $invoiceDeliveryDataMapper,
         MetricCounterDataMapper $metricCounterDataMapper,
+        UsageLimitRepositoryInterface $usageLimitRepository,
+        UsageLimitDataMapper $usageLimitDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
 
@@ -319,6 +323,9 @@ class CustomerController
         $invoiceDeliveryList->setData($invoiceDeliveryDtos);
         $invoiceDeliveryList->setHasMore(false);
 
+        $usageLimits = $usageLimitRepository->getForCustomer($customer);
+        $usageLimitsDto = array_map([$usageLimitDataMapper, 'createAppDto'], $usageLimits);
+
         $customerDto = $customerDataMapper->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
@@ -332,6 +339,7 @@ class CustomerController
         $dto->setInvoiceDelivery($invoiceDeliveryList);
         $dto->setSubscriptionEvents($subscriptionEventDtos);
         $dto->setMetricCounters($metricCounterDtos);
+        $dto->setUsageLimits($usageLimitsDto);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);

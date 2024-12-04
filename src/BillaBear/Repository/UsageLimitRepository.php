@@ -8,6 +8,7 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit;
 use Parthenon\Common\Repository\DoctrineRepository;
 
@@ -17,5 +18,10 @@ class UsageLimitRepository extends DoctrineRepository implements UsageLimitRepos
     {
         $this->entityRepository->getEntityManager()->remove($usageLimit);
         $this->entityRepository->getEntityManager()->flush();
+    }
+
+    public function getForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer]);
     }
 }

@@ -159,5 +159,18 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             cost: "Estimated Cost"
         },
         no_counters: "There are no metric counters"
+    },
+    usage_limits: {
+        title: "Usage Limits",
+        add_new: "Add New",
+        list: {
+            amount: "Amount",
+            warn_level: "Action"
+        },
+        warn_levels: {
+            warn: "Warn",
+            disable: "Disable"
+        },
+        no_limits: "There are no usage limits for this customer"
     }
 }

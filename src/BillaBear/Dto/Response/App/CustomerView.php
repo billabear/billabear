@@ -44,6 +44,9 @@ class CustomerView
     #[SerializedName('metric_counters')]
     protected array $metricCounters;
 
+    #[SerializedName('usage_limits')]
+    protected array $usageLimits;
+
     public function getCustomer(): Customer
     {
         return $this->customer;
@@ -162,5 +165,15 @@ class CustomerView
     public function setMetricCounters(array $metricCounters): void
     {
         $this->metricCounters = $metricCounters;
+    }
+
+    public function getUsageLimits(): array
+    {
+        return $this->usageLimits;
+    }
+
+    public function setUsageLimits(array $usageLimits): void
+    {
+        $this->usageLimits = $usageLimits;
     }
 }
