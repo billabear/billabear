@@ -39,11 +39,7 @@ class CustomerContext implements Context
 
         $data = $table->getRowsHash();
 
-        $warnLevel = match ($data['Warning Type']) {
-            'Disable' => WarningLevel::DISABLED,
-            'Warn' => WarningLevel::WARNED,
-            default => WarningLevel::NO_WARNING,
-        };
+        $warnLevel = $this->getLevel($data['Warning Type']);
 
         $payload = [
             'amount' => intval($data['Amount']),
@@ -60,15 +56,11 @@ class CustomerContext implements Context
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
-        $usageLimit = $this->usageLimitRepository->findOneBy(['customer' => $customer]);
+        $usageLimit = $this->usageLimitRepository->findOneBy(['customer' => $customer, 'amount' => intval($limit)]);
 
         if (!$usageLimit instanceof UsageLimit) {
             var_dump($this->getJsonContent());
             throw new \Exception('Usage Limit not found');
-        }
-
-        if (intval($limit) !== $usageLimit->getAmount()) {
-            throw new \Exception(sprintf('Got %d instead of %d', $usageLimit->getAmount(), $limit));
         }
     }
 
@@ -84,5 +76,50 @@ class CustomerContext implements Context
         if ($usageLimit instanceof UsageLimit) {
             throw new \Exception('Usage Limit found');
         }
+    }
+
+    /**
+     * @Given there should be a usage limits for :arg1:
+     */
+    public function thereShouldBeAUsageLimitsFor($customerEmail, TableNode $table): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        foreach ($table->getColumnsHash() as $row) {
+            $warnLevel = $this->getLevel($row['Warning Type']);
+            $usageLimit = new UsageLimit();
+            $usageLimit->setCustomer($customer);
+            $usageLimit->setAmount(intval($row['Amount']));
+            $usageLimit->setWarningLevel($warnLevel);
+
+            $this->usageLimitRepository->getEntityManager()->persist($usageLimit);
+        }
+        $this->usageLimitRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I delete the usage limit for :limit for :customerEmail
+     */
+    public function iDeleteTheUsageLimitForFor($limit, $customerEmail): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $usageLimit = $this->usageLimitRepository->findOneBy(['customer' => $customer, 'amount' => intval($limit)]);
+
+        if (!$usageLimit instanceof UsageLimit) {
+            throw new \Exception('Usage Limit not found');
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s/usage-limit/%s/delete', $customer->getId(), $usageLimit->getId()));
+    }
+
+    public function getLevel($warningType): WarningLevel
+    {
+        $warnLevel = match ($warningType) {
+            'Disable' => WarningLevel::DISABLED,
+            'Warn' => WarningLevel::WARNED,
+            default => WarningLevel::NO_WARNING,
+        };
+
+        return $warnLevel;
     }
 }

@@ -6,7 +6,7 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Controller\App\Customer;
+namespace BillaBear\Controller\App\Usage;
 
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Usage\UsageLimitDataMapper;
@@ -45,7 +45,7 @@ class UsageLimitController
             /** @var Customer $customer */
             $customer = $customerRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
-            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+            return new JsonResponse(['success' => false], Response::HTTP_NOT_FOUND);
         }
 
         $createDto = $serializer->deserialize($request->getContent(), CreateUsageLimit::class, 'json');
@@ -60,5 +60,32 @@ class UsageLimitController
         $usageLimitRepository->save($entity);
 
         return new Response(null, Response::HTTP_CREATED);
+    }
+
+    #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
+    #[Route('/app/customer/{id}/usage-limit/{limitId}/delete', name: 'app_customer_usage_limit_delete', methods: ['POST'])]
+    public function deleteUsageLimit(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        UsageLimitRepositoryInterface $usageLimitRepository,
+    ): Response {
+        $this->getLogger()->info('Received request to delete a customer usage limit', ['customer_id' => $request->get('id')]);
+
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(['success' => false], Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $usageLimit = $usageLimitRepository->findById($request->get('limitId'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(['success' => false], Response::HTTP_NOT_FOUND);
+        }
+
+        $usageLimitRepository->delete($usageLimit);
+
+        return new Response(null, Response::HTTP_OK);
     }
 }

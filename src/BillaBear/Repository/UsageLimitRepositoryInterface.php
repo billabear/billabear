@@ -8,8 +8,10 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\UsageLimit;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 interface UsageLimitRepositoryInterface extends RepositoryInterface
 {
+    public function delete(UsageLimit $usageLimit): void;
 }

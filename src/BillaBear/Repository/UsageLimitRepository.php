@@ -8,8 +8,14 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\UsageLimit;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class UsageLimitRepository extends DoctrineRepository implements UsageLimitRepositoryInterface
 {
+    public function delete(UsageLimit $usageLimit): void
+    {
+        $this->entityRepository->getEntityManager()->remove($usageLimit);
+        $this->entityRepository->getEntityManager()->flush();
+    }
 }
