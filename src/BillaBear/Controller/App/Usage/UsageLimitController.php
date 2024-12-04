@@ -56,7 +56,7 @@ class UsageLimitController
             return $errorResponse;
         }
 
-        $entity = $usageLimitDataMapper->createEntity($customer, $createDto);
+        $entity = $usageLimitDataMapper->createEntityFromApp($customer, $createDto);
         $usageLimitRepository->save($entity);
 
         return new Response(null, Response::HTTP_CREATED);

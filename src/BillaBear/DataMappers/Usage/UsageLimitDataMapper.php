@@ -10,19 +10,30 @@ namespace BillaBear\DataMappers\Usage;
 
 use BillaBear\Dto\Generic\Api\Usage\UsageLimit as ApiDto;
 use BillaBear\Dto\Generic\App\Usage\UsageLimit as AppDto;
-use BillaBear\Dto\Request\App\Usage\CreateUsageLimit;
+use BillaBear\Dto\Request\Api\Usage\CreateUsageLimit as ApiCreate;
+use BillaBear\Dto\Request\App\Usage\CreateUsageLimit as AppCreate;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit as Entity;
 use BillaBear\Enum\WarningLevel;
 
 class UsageLimitDataMapper
 {
-    public function createEntity(Customer $customer, CreateUsageLimit $createUsageLimit): Entity
+    public function createEntityFromApp(Customer $customer, AppCreate $createUsageLimit): Entity
     {
         $entity = new Entity();
         $entity->setCustomer($customer);
         $entity->setAmount($createUsageLimit->getAmount());
         $entity->setWarningLevel(WarningLevel::from($createUsageLimit->getWarnLevel()));
+
+        return $entity;
+    }
+
+    public function createEntityFromApi(Customer $customer, ApiCreate $createUsageLimit): Entity
+    {
+        $entity = new Entity();
+        $entity->setCustomer($customer);
+        $entity->setAmount($createUsageLimit->getAmount());
+        $entity->setWarningLevel(WarningLevel::fromName($createUsageLimit->getAction()));
 
         return $entity;
     }

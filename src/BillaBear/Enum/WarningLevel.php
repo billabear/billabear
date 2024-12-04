@@ -11,6 +11,17 @@ namespace BillaBear\Enum;
 enum WarningLevel: int
 {
     case NO_WARNING = 0;
-    case WARNED = 1000;
-    case DISABLED = 9999;
+    case WARNING = 1000;
+    case DISABLE = 9999;
+
+    public static function fromName(string $name): static
+    {
+        foreach (static::cases() as $case) {
+            if ($case->name === strtoupper($name)) {
+                return $case;
+            }
+        }
+
+        throw new \Exception('Unable to find value');
+    }
 }

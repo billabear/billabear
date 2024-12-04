@@ -13,7 +13,6 @@ Feature: Add Usage Limit
       | Email                    | Country | External Reference | Reference    |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
       | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
-
     When I add customer usage limit to "customer.one@example.org":
       | Amount        | 3000 |
       | Warning Type  | Warn |

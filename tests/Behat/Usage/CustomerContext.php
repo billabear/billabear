@@ -50,6 +50,23 @@ class CustomerContext implements Context
     }
 
     /**
+     * @When I add customer usage limit via API to :arg1:
+     */
+    public function iAddCustomerUsageLimitViaApiTo($customerEmail, TableNode $table): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'amount' => intval($data['Amount']),
+            'action' => strtoupper($data['Warning Type']),
+        ];
+
+        $this->sendJsonRequest('POST', sprintf('/api/v1/customer/%s/usage-limits', $customer->getId()), $payload);
+    }
+
+    /**
      * @Then there should be a limit to warn at :limit for :customerEmail
      */
     public function thereShouldBeALimitToWarnAtFor($limit, $customerEmail): void
@@ -115,8 +132,8 @@ class CustomerContext implements Context
     public function getLevel($warningType): WarningLevel
     {
         $warnLevel = match ($warningType) {
-            'Disable' => WarningLevel::DISABLED,
-            'Warn' => WarningLevel::WARNED,
+            'Disable' => WarningLevel::DISABLE,
+            'Warn' => WarningLevel::WARNING,
             default => WarningLevel::NO_WARNING,
         };
 
