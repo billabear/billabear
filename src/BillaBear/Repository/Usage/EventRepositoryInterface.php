@@ -17,6 +17,8 @@ interface EventRepositoryInterface
 {
     public function save(Event $entity);
 
+    public function getUniqueCustomerIdsSince(\DateTime $dateTime): array;
+
     public function getEventCountAfterDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): int;
 
     public function getCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float;

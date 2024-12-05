@@ -40,7 +40,16 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         $query->bindValue('eventId', (string) $entity->getEventId());
         $query->bindValue('value', (float) $entity->getValue());
         $query->bindValue('properties', json_encode($entity->getProperties()));
-        $query->execute();
+        $query->executeQuery();
+    }
+
+    public function getUniqueCustomerIdsSince(\DateTime $dateTime): array
+    {
+        $query = $this->connection->prepare('SELECT DISTINCT customer_id FROM event WHERE created_at > TO_TIMESTAMP(:dateTime)');
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
+        $result = $query->executeQuery();
+
+        return $result->fetchAllAssociative();
     }
 
     public function getCountForDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): float

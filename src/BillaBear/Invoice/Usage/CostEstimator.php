@@ -70,9 +70,8 @@ class CostEstimator
     }
 
     /**
-     * @param Subscription[] $subscriptions
-     *
-     * @return CostEstimate
+     * @throws CannotEstimateException
+     * @throws \Brick\Money\Exception\MoneyMismatchException
      */
     public function getTotalEstimate(array $subscriptions): Money
     {

@@ -563,6 +563,12 @@ services:
   app.repository.orm.metric:
     class: BillaBear\Repository\Orm\MetricRepository
 
+  BillaBear\Repository\Usage\UsageWarningRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.usage_warning'
+  app.repository.orm.usage_warning:
+    class: BillaBear\Repository\Orm\UsageWarningRepository
+
   BillaBear\Repository\Usage\MetricCounterRepository:
     arguments:
       $entityRepository: '@app.repository.orm.metric_usage'

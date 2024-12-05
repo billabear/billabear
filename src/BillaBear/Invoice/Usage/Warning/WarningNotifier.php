@@ -6,18 +6,19 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Repository;
+namespace BillaBear\Invoice\Usage\Warning;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit;
-use Parthenon\Common\Repository\RepositoryInterface;
+use Brick\Money\Money;
 
-interface UsageLimitRepositoryInterface extends RepositoryInterface
+class WarningNotifier
 {
-    /**
-     * @return UsageLimit[]
-     */
-    public function getForCustomer(Customer $customer): array;
+    public function __construct()
+    {
+    }
 
-    public function delete(UsageLimit $usageLimit): void;
+    public function notify(Customer $customer, UsageLimit $usageLimit, Money $amount): void
+    {
+    }
 }

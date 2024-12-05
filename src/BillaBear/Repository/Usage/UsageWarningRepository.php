@@ -1,0 +1,32 @@
+<?php
+
+/*
+ * Copyright Humbly Arrogant Software Limited 2023-2024.
+ *
+ * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ */
+
+namespace BillaBear\Repository\Usage;
+
+use BillaBear\Entity\UsageLimit;
+use Parthenon\Common\Repository\DoctrineRepository;
+
+class UsageWarningRepository extends DoctrineRepository implements UsageWarningRepositoryInterface
+{
+    public function hasOneForUsageLimitAndDates(UsageLimit $usageLimit, \DateTime $startOfPeriod, \DateTime $endOfPeriod): bool
+    {
+        $qb = $this->entityRepository->createQueryBuilder('uw');
+
+        $qb->where('uw.usageLimit = :usagelimit')
+            ->andWhere('uw.startOfPeriod >= :startOfPeriod')
+            ->andWhere('uw.endOfPeriod >= :endOfPeriod')
+            ->setParameter('usagelimit', $usageLimit)
+            ->setParameter('startOfPeriod', $startOfPeriod)
+            ->setParameter('endOfPeriod', $endOfPeriod);
+
+        $query = $qb->getQuery();
+        $query->execute();
+
+        return null !== $query->getResult();
+    }
+}

@@ -26,10 +26,14 @@ class CounterUpdate
     {
         $this->getLogger()->info('Executing metric counter updater');
 
+        // TODO: Change to find unqiue customer ids for events sent in last 60 seconds
         $subscriptions = $this->subscriptionRepository->getSubscriptionWithUsage();
 
+        // TODO: Loop through customers and update all counters and estimates.
         foreach ($subscriptions as $subscription) {
             $this->metricCounterUpdater->updateForSubscription($subscription);
         }
+
+        // TODO: Estimate cost for all subscriptions
     }
 }

@@ -6,18 +6,12 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Repository;
+namespace BillaBear\Repository\Usage;
 
-use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit;
 use Parthenon\Common\Repository\RepositoryInterface;
 
-interface UsageLimitRepositoryInterface extends RepositoryInterface
+interface UsageWarningRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return UsageLimit[]
-     */
-    public function getForCustomer(Customer $customer): array;
-
-    public function delete(UsageLimit $usageLimit): void;
+    public function hasOneForUsageLimitAndDates(UsageLimit $usageLimit, \DateTime $startOfPeriod, \DateTime $endOfPeriod): bool;
 }
