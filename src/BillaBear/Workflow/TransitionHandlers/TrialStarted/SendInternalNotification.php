@@ -10,7 +10,6 @@ namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
 use BillaBear\Notification\Slack\Data\TrialStarted;
 use BillaBear\Notification\Slack\NotificationSender;
-use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,8 +21,7 @@ class SendInternalNotification implements EventSubscriberInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private SlackNotificationRepositoryInterface $slackNotificationRepository,
-        private NotificationSender $notificationSender,
+        private readonly NotificationSender $notificationSender,
     ) {
     }
 

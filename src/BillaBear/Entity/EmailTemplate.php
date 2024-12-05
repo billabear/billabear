@@ -40,6 +40,8 @@ class EmailTemplate
 
     public const NAME_SUBSCRIPTION_RENEWAL_WARNING = 'subscription_renewal_warning';
 
+    public const NAME_USAGE_WARNING = 'usage_warning';
+
     public const TEMPLATE_NAMES = [
         self::NAME_SUBSCRIPTION_CREATED,
         self::NAME_SUBSCRIPTION_PAUSED,
@@ -54,6 +56,7 @@ class EmailTemplate
         self::NAME_QUOTE_CREATED,
         self::NAME_TRIAL_ENDING_WARNING,
         self::NAME_SUBSCRIPTION_RENEWAL_WARNING,
+        self::NAME_USAGE_WARNING,
     ];
 
     #[ORM\Id]

@@ -10,15 +10,29 @@ namespace BillaBear\Invoice\Usage\Warning;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit;
+use BillaBear\Notification\Email\Data\UsageWarningEmail;
+use BillaBear\Notification\Email\EmailBuilder;
+use BillaBear\Notification\Slack\Data\UsageWarning;
+use BillaBear\Notification\Slack\NotificationSender;
 use Brick\Money\Money;
+use Parthenon\Notification\EmailSenderInterface;
 
 class WarningNotifier
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly EmailBuilder $emailBuilder,
+        private readonly EmailSenderInterface $emailSender,
+        private readonly NotificationSender $notificationSender,
+    ) {
     }
 
     public function notify(Customer $customer, UsageLimit $usageLimit, Money $amount): void
     {
+        $emailNotification = new UsageWarningEmail($usageLimit, $amount);
+        $email = $this->emailBuilder->build($customer, $emailNotification);
+        $this->emailSender->send($email);
+
+        $slackNotification = new UsageWarning($customer, $usageLimit, $amount);
+        $this->notificationSender->sendNotification($slackNotification);
     }
 }

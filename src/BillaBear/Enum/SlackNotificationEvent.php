@@ -18,4 +18,6 @@ enum SlackNotificationEvent: string
     case TRIAL_STARTED = 'trial_started';
     case TRIAL_ENDED = 'trial_ended';
     case TRIAL_CONVERTED = 'trial_converted';
+    case USAGE_WARNING = 'usage_warning';
+    case USAGE_DISABLE = 'usage_disable';
 }
