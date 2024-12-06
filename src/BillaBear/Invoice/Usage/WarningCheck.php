@@ -82,7 +82,7 @@ class WarningCheck
             if (WarningLevel::DISABLE === $limit->getWarningLevel()) {
                 $this->disabler->disable($customer);
             } elseif (WarningLevel::WARNING === $limit->getWarningLevel()) {
-                $this->warningNotifier->notify($customer, $limit, $costEstimate);
+                $this->warningNotifier->notifyOfWarning($customer, $limit, $costEstimate);
             }
 
             $warning = new UsageWarning();

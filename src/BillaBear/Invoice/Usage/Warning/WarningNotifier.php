@@ -17,16 +17,16 @@ use BillaBear\Notification\Slack\NotificationSender;
 use Brick\Money\Money;
 use Parthenon\Notification\EmailSenderInterface;
 
-class WarningNotifier
+readonly class WarningNotifier
 {
     public function __construct(
-        private readonly EmailBuilder $emailBuilder,
-        private readonly EmailSenderInterface $emailSender,
-        private readonly NotificationSender $notificationSender,
+        private EmailBuilder $emailBuilder,
+        private EmailSenderInterface $emailSender,
+        private NotificationSender $notificationSender,
     ) {
     }
 
-    public function notify(Customer $customer, UsageLimit $usageLimit, Money $amount): void
+    public function notifyOfWarning(Customer $customer, UsageLimit $usageLimit, Money $amount): void
     {
         $emailNotification = new UsageWarningEmail($usageLimit, $amount);
         $email = $this->emailBuilder->build($customer, $emailNotification);
