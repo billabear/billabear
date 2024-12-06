@@ -15,7 +15,9 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Repository\UsageLimitRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class UpdateCustomerCountersHandler
 {
     use LoggerAwareTrait;

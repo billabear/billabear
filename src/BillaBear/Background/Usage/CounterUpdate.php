@@ -35,7 +35,7 @@ class CounterUpdate
         foreach ($customerIds as $customerId) {
             // Send to another process to process the updating of the counters.
             // This should allow it to scale and process quickly.
-            $message = new UpdateCustomerCounters($customerId);
+            $message = new UpdateCustomerCounters($customerId['customer_id']);
             $this->messageBus->dispatch($message);
         }
     }

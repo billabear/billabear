@@ -35,9 +35,9 @@ Feature: Fetch Estimate
       | Subscription Plan | Type             | Price Currency | Price Schedule | Customer                 | Started Current Period | Next Charge | Status | Seats |
       | Test Plan         | tiered_graduated | USD            | month          | customer.one@example.org | -15 days               | +15 days    | Active | 5     |
     And the following events exist:
-      | Metric   | Customer                 | Subscription Plan | Value | Repeated | Created At |
-      | Test One | customer.one@example.org | Test Plan         | 2     | 15       | -20 days   |
-      | Test One | customer.one@example.org | Test Plan         | 2     | 15       | -10 days   |
+      | Metric   | Customer                 | Subscription Plan | Value | Repeated | Created At  |
+      | Test One | customer.one@example.org | Test Plan         | 2     | 15       | -20 days    |
+      | Test One | customer.one@example.org | Test Plan         | 2     | 15       | -10 seconds |
     And stripe billing is disabled
     And the background task to update metric counters is ran
     When I request the current cost estimate for "customer.one@example.org"
