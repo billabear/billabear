@@ -22,7 +22,7 @@ Feature: Fetch Estimate
       | Email                    | Country | External Reference | Reference    | Billing Type |
       | customer.one@example.org | DE      | cust_jf9j545       | Customer One | invoice      |
 
-  Scenario: (20 * 10) + (5 * 10)
+  Scenario: Warning
     Given I have authenticated to the API
     Given the follow metrics exist:
       | Name     | Code     | Type       | Aggregation Method | Aggregation Property | Ingestion |
@@ -41,6 +41,30 @@ Feature: Fetch Estimate
     And stripe billing is disabled
     And there are usage limits for "customer.one@example.org":
       | Amount | Warning Type |
-      | 100    | Warn          |
+      | 100    | Warn         |
     When the background task to update customer events is ran for "customer.one@example.org"
     Then there should be a usage warning for "customer.one@example.org"
+
+  Scenario: Disable
+    Given I have authenticated to the API
+    Given the follow metrics exist:
+      | Name     | Code     | Type       | Aggregation Method | Aggregation Property | Ingestion |
+      | Test One | test_one | Resettable | Sum                |                      | Real Time |
+    Given the follow price "Product One" for "USD" monthly price with a usage tiered graduated for metric "Test One" with these tiers:
+      | First Unit | Last Unit | Unit Price | Flat Fee |
+      | 1          | 20        | 10         | 0        |
+      | 21         | -1        | 5          | 0        |
+    Given the following subscriptions exist:
+      | Subscription Plan | Type             | Price Currency | Price Schedule | Customer                 | Started Current Period | Next Charge | Status | Seats |
+      | Test Plan         | tiered_graduated | USD            | month          | customer.one@example.org | -15 days               | +15 days    | Active | 5     |
+    And the following events exist:
+      | Metric   | Customer                 | Subscription Plan | Value | Repeated | Created At |
+      | Test One | customer.one@example.org | Test Plan         | 2     | 15       | -20 days   |
+      | Test One | customer.one@example.org | Test Plan         | 2     | 15       | -10 days   |
+    And stripe billing is disabled
+    And there are usage limits for "customer.one@example.org":
+      | Amount | Warning Type |
+      | 100    | Disable      |
+    When the background task to update customer events is ran for "customer.one@example.org"
+    Then there should be a usage warning for "customer.one@example.org"
+    Then the customer "customer.one@example.org" is disabled
