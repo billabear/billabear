@@ -25,10 +25,13 @@ framework:
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': main
             'BillaBear\Invoice\Delivery\Messenger\InvoiceDeliveryRequest': main
 
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+when@test:
+    framework:
+        messenger:
+            transports:
+                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+                sync: 'sync://'
+            routing:
+                'BillaBear\Invoice\Usage\Messenger\Message\UpdateCustomerCounters': sync
+
