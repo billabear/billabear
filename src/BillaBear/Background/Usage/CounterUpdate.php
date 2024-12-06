@@ -8,17 +8,18 @@
 
 namespace BillaBear\Background\Usage;
 
-use BillaBear\Invoice\Usage\MetricCounterUpdater;
-use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Invoice\Usage\Messenger\Message\UpdateCustomerCounters;
+use BillaBear\Repository\Usage\EventRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CounterUpdate
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
-        private readonly MetricCounterUpdater $metricCounterUpdater,
+        private EventRepositoryInterface $eventRepository,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -26,14 +27,16 @@ class CounterUpdate
     {
         $this->getLogger()->info('Executing metric counter updater');
 
-        // TODO: Change to find unqiue customer ids for events sent in last 60 seconds
-        $subscriptions = $this->subscriptionRepository->getSubscriptionWithUsage();
+        // Make sure we don't lose any and it doesn't matter if we reprocess some.
+        $past = new \DateTime('-62 seconds');
 
-        // TODO: Loop through customers and update all counters and estimates.
-        foreach ($subscriptions as $subscription) {
-            $this->metricCounterUpdater->updateForSubscription($subscription);
+        $customerIds = $this->eventRepository->getUniqueCustomerIdsSince($past);
+
+        foreach ($customerIds as $customerId) {
+            // Send to another process to process the updating of the counters.
+            // This should allow it to scale and process quickly.
+            $message = new UpdateCustomerCounters($customerId);
+            $this->messageBus->dispatch($message);
         }
-
-        // TODO: Estimate cost for all subscriptions
     }
 }
