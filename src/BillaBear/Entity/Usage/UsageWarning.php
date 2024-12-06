@@ -26,7 +26,7 @@ class UsageWarning
     #[ORM\ManyToOne(targetEntity: Customer::class)]
     private Customer $customer;
 
-    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    #[ORM\ManyToOne(targetEntity: UsageLimit::class)]
     private UsageLimit $usageLimit;
 
     #[ORM\Column(type: 'datetime')]

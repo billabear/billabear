@@ -12,6 +12,8 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Usage\Event;
+use BillaBear\Invoice\Usage\Messenger\Handler\UpdateCustomerCountersHandler;
+use BillaBear\Invoice\Usage\Messenger\Message\UpdateCustomerCounters;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\EventRepository as OrmEventRepository;
 use BillaBear\Repository\Orm\MetricRepository;
@@ -40,6 +42,7 @@ class EventContext implements Context
         private SubscriptionPlanRepository $planRepository,
         private SubscriptionRepository $subscriptionRepository,
         private MetricRepository $metricRepository,
+        private UpdateCustomerCountersHandler $customerCountersHandler,
     ) {
     }
 
@@ -126,5 +129,15 @@ class EventContext implements Context
                 $this->eventRepository->save($event);
             }
         }
+    }
+
+    /**
+     * @When the background task to update customer events is ran for :customerEmail
+     */
+    public function theBackgroundTaskToUpdateCustomerEventsIsRan(string $customerEmail): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        $message = new UpdateCustomerCounters((string) $customer->getId());
+        $this->customerCountersHandler->__invoke($message);
     }
 }

@@ -17,7 +17,8 @@ class UsageWarningRepository extends DoctrineRepository implements UsageWarningR
     {
         $qb = $this->entityRepository->createQueryBuilder('uw');
 
-        $qb->where('uw.usageLimit = :usagelimit')
+        $qb->select('COUNT(uw) as warning_count')
+            ->where('uw.usageLimit = :usagelimit')
             ->andWhere('uw.startOfPeriod >= :startOfPeriod')
             ->andWhere('uw.endOfPeriod >= :endOfPeriod')
             ->setParameter('usagelimit', $usageLimit)
@@ -26,7 +27,8 @@ class UsageWarningRepository extends DoctrineRepository implements UsageWarningR
 
         $query = $qb->getQuery();
         $query->execute();
+        $result = $query->getResult();
 
-        return null !== $query->getResult();
+        return 0 !== $result[0]['warning_count'];
     }
 }

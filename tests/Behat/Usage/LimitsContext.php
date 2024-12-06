@@ -11,14 +11,16 @@ namespace BillaBear\Tests\Behat\Usage;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use BillaBear\Entity\Usage\UsageWarning;
 use BillaBear\Entity\UsageLimit;
 use BillaBear\Enum\WarningLevel;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\UsageLimitRepository;
+use BillaBear\Repository\Orm\UsageWarningRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
-class CustomerContext implements Context
+class LimitsContext implements Context
 {
     use SendRequestTrait;
     use CustomerTrait;
@@ -27,6 +29,7 @@ class CustomerContext implements Context
         private Session $session,
         private CustomerRepository $customerRepository,
         private UsageLimitRepository $usageLimitRepository,
+        private UsageWarningRepository $usageWarningRepository,
     ) {
     }
 
@@ -97,6 +100,7 @@ class CustomerContext implements Context
 
     /**
      * @Given there should be a usage limits for :arg1:
+     * @Given there are usage limits for :arg1:
      */
     public function thereShouldBeAUsageLimitsFor($customerEmail, TableNode $table): void
     {
@@ -179,5 +183,19 @@ class CustomerContext implements Context
         }
 
         throw new \Exception('Limit not found');
+    }
+
+    /**
+     * @Then there should be a usage warning for :customerEmail
+     */
+    public function thereShouldBeAUsageWarningForCustomer(string $customerEmail): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $usageWarning = $this->usageWarningRepository->findOneBy(['customer' => $customer]);
+
+        if (!$usageWarning instanceof UsageWarning) {
+            throw new \Exception("Didn't find a usage warning");
+        }
     }
 }
