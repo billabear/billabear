@@ -6,14 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Invoice\Usage;
+namespace BillaBear\Invoice\Usage\Warning;
 
 use BillaBear\Customer\Disabler;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\Usage\UsageWarning;
 use BillaBear\Enum\WarningLevel;
-use BillaBear\Invoice\Usage\Warning\WarningNotifier;
+use BillaBear\Invoice\Usage\CostEstimator;
 use BillaBear\Repository\Usage\UsageWarningRepositoryInterface;
 use BillaBear\Repository\UsageLimitRepositoryInterface;
 use Brick\Money\Money;
@@ -70,6 +70,7 @@ class WarningCheck
 
         foreach ($limits as $limit) {
             if ($this->usageWarningRepository->hasOneForUsageLimitAndDates($limit, $startOfPeriod, $endOfPeriod)) {
+                // Already warned
                 continue;
             }
 
@@ -81,6 +82,7 @@ class WarningCheck
 
             if (WarningLevel::DISABLE === $limit->getWarningLevel()) {
                 $this->disabler->disable($customer);
+                $this->warningNotifier->notifyOfDisable($customer, $limit, $costEstimate);
             } elseif (WarningLevel::WARNING === $limit->getWarningLevel()) {
                 $this->warningNotifier->notifyOfWarning($customer, $limit, $costEstimate);
             }

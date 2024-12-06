@@ -10,7 +10,7 @@ namespace BillaBear\Invoice\Usage\Messenger\Handler;
 
 use BillaBear\Invoice\Usage\Messenger\Message\UpdateCustomerCounters;
 use BillaBear\Invoice\Usage\MetricCounterUpdater;
-use BillaBear\Invoice\Usage\WarningCheck;
+use BillaBear\Invoice\Usage\Warning\WarningCheck;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Repository\UsageLimitRepositoryInterface;
