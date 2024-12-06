@@ -42,6 +42,8 @@ class EmailTemplate
 
     public const NAME_USAGE_WARNING = 'usage_warning';
 
+    public const NAME_USAGE_DISABLED = 'usage_disabled';
+
     public const TEMPLATE_NAMES = [
         self::NAME_SUBSCRIPTION_CREATED,
         self::NAME_SUBSCRIPTION_PAUSED,
@@ -57,6 +59,7 @@ class EmailTemplate
         self::NAME_TRIAL_ENDING_WARNING,
         self::NAME_SUBSCRIPTION_RENEWAL_WARNING,
         self::NAME_USAGE_WARNING,
+        self::NAME_USAGE_DISABLED,
     ];
 
     #[ORM\Id]

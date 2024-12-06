@@ -113,11 +113,21 @@ class GeneralContext implements Context
         $usageWarning->setName(EmailTemplate::NAME_USAGE_WARNING);
         $usageWarning->setBrand($brand);
         $usageWarning->setLocale('en');
-        $usageWarning->setSubject('Payment card Expiring');
+        $usageWarning->setSubject('Usage Warning');
         $usageWarning->setTemplateBody('Body here');
         $usageWarning->setUseEmspTemplate(false);
 
         $em->persist($usageWarning);
+
+        $usageDisable = new EmailTemplate();
+        $usageDisable->setName(EmailTemplate::NAME_USAGE_DISABLED);
+        $usageDisable->setBrand($brand);
+        $usageDisable->setLocale('en');
+        $usageDisable->setSubject('Usage Disabled');
+        $usageDisable->setTemplateBody('Body here');
+        $usageDisable->setUseEmspTemplate(false);
+
+        $em->persist($usageDisable);
 
         $taxType = new TaxType();
         $taxType->setName('default');

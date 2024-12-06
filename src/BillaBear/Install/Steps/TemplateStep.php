@@ -758,6 +758,24 @@ SOFTWARE. #}
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
         $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_USAGE_WARNING);
+        $emailTemplate->setSubject('Usage Warning');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('<p>Just to let you know, your account currently has the usage of {{ current_amount }}.</p>'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_USAGE_DISABLED);
+        $emailTemplate->setSubject('Usage Warning');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('<p>Just to let you know, your account currently has the usage of {{ current_amount }} and to stop unexpected high usage costs we\'ve disabled your account.</p>'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
     }
 
     private function getEmailTemplate(string $content): string
