@@ -17,7 +17,7 @@ use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\Subscription;
 use BillaBear\Enum\MetricType;
-use BillaBear\Event\InvoiceCreated;
+use BillaBear\Event\Invoice\InvoiceCreated;
 use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Invoice\Usage\MetricProvider;

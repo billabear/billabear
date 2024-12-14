@@ -9,8 +9,9 @@
 namespace BillaBear\Event\Customer;
 
 use BillaBear\Entity\Customer;
+use Symfony\Component\Workflow\Event\Event;
 
-class CustomerEnabled
+class CustomerEnabled extends Event
 {
     public const string NAME = 'billabear.customer.enabled';
 

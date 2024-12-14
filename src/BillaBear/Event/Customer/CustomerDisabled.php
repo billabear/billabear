@@ -9,8 +9,9 @@
 namespace BillaBear\Event\Customer;
 
 use BillaBear\Entity\Customer;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class CustomerDisabled
+class CustomerDisabled extends Event
 {
     public const string  NAME = 'billabear.customer.disabled';
 

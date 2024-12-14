@@ -9,7 +9,7 @@
 namespace BillaBear\EventSubscriber;
 
 use BillaBear\Entity\Processes\InvoiceProcess;
-use BillaBear\Event\InvoiceCreated;
+use BillaBear\Event\Invoice\InvoiceCreated;
 use BillaBear\Invoice\InvoiceStateMachineProcessor;
 use BillaBear\Repository\Processes\InvoiceProcessRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -33,7 +33,7 @@ class InvoiceCreatedSubscriber implements EventSubscriberInterface
 
     public function handleNewInvoice(InvoiceCreated $created)
     {
-        $invoice = $created->getInvoice();
+        $invoice = $created->invoice;
 
         $invoiceProcess = new InvoiceProcess();
         $invoiceProcess->setState('started');

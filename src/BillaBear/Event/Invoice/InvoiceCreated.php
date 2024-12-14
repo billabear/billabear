@@ -6,21 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Event;
+namespace BillaBear\Event\Invoice;
 
 use BillaBear\Entity\Invoice;
-use Symfony\Contracts\EventDispatcher\Event;
 
-class InvoicePaid extends Event
+class InvoiceCreated
 {
-    public const NAME = 'billabear.invoice.paid';
+    public const string NAME = 'billabear.invoice.created';
 
-    public function __construct(private Invoice $invoice)
+    public function __construct(public readonly Invoice $invoice)
     {
-    }
-
-    public function getInvoice(): Invoice
-    {
-        return $this->invoice;
     }
 }

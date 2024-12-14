@@ -10,7 +10,7 @@ namespace BillaBear\Payment;
 
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
-use BillaBear\Event\InvoicePaid;
+use BillaBear\Event\Invoice\InvoicePaid;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Obol\Exception\PaymentFailureException;

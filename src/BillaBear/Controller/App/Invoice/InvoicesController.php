@@ -16,7 +16,7 @@ use BillaBear\Dto\Request\App\Invoice\CreateInvoice;
 use BillaBear\Dto\Response\App\Invoice\ViewInvoice;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Invoice;
-use BillaBear\Event\InvoicePaid;
+use BillaBear\Event\Invoice\InvoicePaid;
 use BillaBear\Filters\InvoiceList;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Invoice\ManualInvoiceCreator;

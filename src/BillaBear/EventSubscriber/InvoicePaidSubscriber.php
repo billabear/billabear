@@ -8,7 +8,7 @@
 
 namespace BillaBear\EventSubscriber;
 
-use BillaBear\Event\InvoiceCreated;
+use BillaBear\Event\Invoice\InvoicePaid;
 use BillaBear\Invoice\InvoiceStateMachineProcessor;
 use BillaBear\Repository\Processes\InvoiceProcessRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,15 +24,15 @@ class InvoicePaidSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InvoiceCreated::NAME => [
+            InvoicePaid::NAME => [
                 'handlePaidInvoice',
             ],
         ];
     }
 
-    public function handlePaidInvoice(InvoiceCreated $created)
+    public function handlePaidInvoice(InvoicePaid $created)
     {
-        $invoice = $created->getInvoice();
+        $invoice = $created->invoice;
         $invoiceProcess = $this->invoiceProcessRepository->getForInvoice($invoice);
 
         $this->invoiceStateMachineProcessor->processPaid($invoiceProcess);

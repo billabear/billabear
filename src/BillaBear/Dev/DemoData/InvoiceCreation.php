@@ -12,7 +12,7 @@ use BillaBear\Command\DevDemoDataCommand;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
-use BillaBear\Event\InvoicePaid;
+use BillaBear\Event\Invoice\InvoicePaid;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
