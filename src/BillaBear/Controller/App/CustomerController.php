@@ -33,7 +33,7 @@ use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Enum\CustomerStatus;
-use BillaBear\Event\CustomerEnabled;
+use BillaBear\Event\Customer\CustomerEnabled;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CreditRepositoryInterface;
@@ -224,7 +224,7 @@ class CustomerController
         $customer->setStatus(CustomerStatus::ACTIVE);
         $customerRepository->save($customer);
         $eventProcessor->dispatch(new CustomerEnabledPayload($customer));
-        $eventDispatcher->dispatch(new CustomerEnabled($customer));
+        $eventDispatcher->dispatch(new CustomerEnabled($customer), CustomerEnabled::NAME);
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }

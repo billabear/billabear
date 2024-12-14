@@ -10,7 +10,7 @@ namespace BillaBear\Customer;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
-use BillaBear\Event\CustomerDisabled;
+use BillaBear\Event\Customer\CustomerDisabled;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
