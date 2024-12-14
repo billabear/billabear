@@ -9,8 +9,9 @@
 namespace BillaBear\Event\Checkout;
 
 use BillaBear\Entity\Checkout;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class CheckoutCreated
+class CheckoutCreated extends Event
 {
     public const string NAME = 'billabear.checkout.created';
 

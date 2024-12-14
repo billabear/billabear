@@ -9,8 +9,9 @@
 namespace BillaBear\Event\Quote;
 
 use BillaBear\Entity\Quote;
+use Symfony\Contracts\EventDispatcher\Event;
 
-class QuoteCreated
+class QuoteCreated extends Event
 {
     public const string NAME = 'billabear.quote.created';
 

@@ -9,8 +9,9 @@
 namespace BillaBear\Event\Invoice;
 
 use BillaBear\Entity\Invoice;
+use Symfony\Component\Workflow\Event\Event;
 
-class InvoiceCreated
+class InvoiceCreated extends Event
 {
     public const string NAME = 'billabear.invoice.created';
 

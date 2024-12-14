@@ -9,7 +9,7 @@
 namespace BillaBear\Event\Customer;
 
 use BillaBear\Entity\Customer;
-use Symfony\Component\Workflow\Event\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class CustomerEnabled extends Event
 {
