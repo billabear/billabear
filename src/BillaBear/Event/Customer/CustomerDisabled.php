@@ -12,7 +12,7 @@ use BillaBear\Entity\Customer;
 
 class CustomerDisabled
 {
-    public const NAME = 'billabear.customer.disabled';
+    public const string  NAME = 'billabear.customer.disabled';
 
     public function __construct(public readonly Customer $customer)
     {

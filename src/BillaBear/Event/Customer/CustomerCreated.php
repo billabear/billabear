@@ -12,7 +12,7 @@ use BillaBear\Entity\Customer;
 
 class CustomerCreated
 {
-    public const NAME = 'billabear.customer.created';
+    public const string  NAME = 'billabear.customer.created';
 
     public function __construct(public readonly Customer $customer)
     {
