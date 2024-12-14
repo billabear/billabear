@@ -8,7 +8,7 @@
 
 namespace BillaBear\EventSubscriber;
 
-use BillaBear\Event\QuoteCreated;
+use BillaBear\Event\Quote\QuoteCreated;
 use BillaBear\Notification\Email\Data\QuoteCreatedEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Pdf\QuotePdfGenerator;

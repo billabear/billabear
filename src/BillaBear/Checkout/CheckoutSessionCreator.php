@@ -12,7 +12,7 @@ use BillaBear\Entity\Checkout;
 use BillaBear\Entity\CheckoutSession;
 use BillaBear\Entity\CheckoutSessionLine;
 use BillaBear\Entity\Customer;
-use BillaBear\Event\CheckoutSessionCreated;
+use BillaBear\Event\Checkout\CheckoutSessionCreated;
 use BillaBear\Invoice\Pricer;
 use BillaBear\Repository\CheckoutSessionRepositoryInterface;
 use Brick\Money\Exception\MoneyException;

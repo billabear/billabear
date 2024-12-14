@@ -6,20 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Event;
+namespace BillaBear\Event\Quote;
 
-use BillaBear\Entity\Checkout;
+use BillaBear\Entity\Quote;
 
-class CheckoutCreated
+class QuoteCreated
 {
-    public const NAME = 'billabear.checkout.created';
+    public const string NAME = 'billabear.quote.created';
 
-    public function __construct(private Checkout $checkout)
+    public function __construct(public readonly Quote $quote)
     {
-    }
-
-    public function getCheckout(): Checkout
-    {
-        return $this->checkout;
     }
 }

@@ -12,7 +12,7 @@ use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\PaymentAttempt;
 use BillaBear\Entity\PaymentFailureProcess;
-use BillaBear\Event\PaymentFailed;
+use BillaBear\Event\Payment\PaymentFailed;
 use BillaBear\Repository\PaymentAttemptRepositoryInterface;
 use BillaBear\Repository\PaymentFailureProcessRepositoryInterface;
 use Obol\Model\Enum\ChargeFailureReasons;
