@@ -9,7 +9,7 @@
 namespace BillaBear\Event\Invoice;
 
 use BillaBear\Entity\Invoice;
-use Symfony\Component\Workflow\Event\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class InvoiceCreated extends Event
 {
