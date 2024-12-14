@@ -10,15 +10,18 @@ namespace BillaBear\Customer;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Enum\CustomerStatus;
+use BillaBear\Event\CustomerDisabled;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class Disabler
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
         private WebhookDispatcherInterface $eventProcessor,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -27,5 +30,6 @@ readonly class Disabler
         $customer->setStatus(CustomerStatus::DISABLED);
         $this->customerRepository->save($customer);
         $this->eventProcessor->dispatch(new CustomerDisabledPayload($customer));
+        $this->eventDispatcher->dispatch(new CustomerDisabled($customer));
     }
 }

@@ -33,6 +33,7 @@ use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Enum\CustomerStatus;
+use BillaBear\Event\CustomerEnabled;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CreditRepositoryInterface;
@@ -51,6 +52,7 @@ use BillaBear\Webhook\Outbound\Payload\CustomerUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -204,6 +206,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         WebhookDispatcherInterface $eventProcessor,
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->getLogger()->info('Received request to enable customer', ['customer_id' => $request->get('id')]);
 
@@ -221,6 +224,7 @@ class CustomerController
         $customer->setStatus(CustomerStatus::ACTIVE);
         $customerRepository->save($customer);
         $eventProcessor->dispatch(new CustomerEnabledPayload($customer));
+        $eventDispatcher->dispatch(new CustomerEnabled($customer));
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }

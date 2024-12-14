@@ -12,7 +12,8 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Enum\InvoiceDeliveryType;
 use BillaBear\Enum\InvoiceFormat;
-use BillaBear\Notification\Slack\Data\CustomerCreated;
+use BillaBear\Event\CustomerCreated as CustomerCreatedEvent;
+use BillaBear\Notification\Slack\Data\CustomerCreated as CustomerCreatedSlack;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
@@ -20,6 +21,7 @@ use BillaBear\Stats\CustomerCreationStats;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\ProviderFailureException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class CreationHandler
 {
@@ -30,6 +32,7 @@ readonly class CreationHandler
         private CustomerRepositoryInterface $customerRepository,
         private CustomerCreationStats $customerCreationStats,
         private InvoiceDeliverySettingsRepositoryInterface $invoiceDeliverySettingsRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -47,11 +50,12 @@ readonly class CreationHandler
         $this->eventProcessor->dispatch(new CustomerCreatedPayload($customer));
         $this->handleSlackNotifications($customer);
         $this->handleExtraEntities($customer);
+        $this->eventDispatcher->dispatch(new CustomerCreatedEvent($customer));
     }
 
     public function handleSlackNotifications(Customer $customer): void
     {
-        $notificationMessage = new CustomerCreated($customer);
+        $notificationMessage = new CustomerCreatedSlack($customer);
         $this->notificationSender->sendNotification($notificationMessage);
     }
 
