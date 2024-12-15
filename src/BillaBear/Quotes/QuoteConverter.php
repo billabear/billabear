@@ -11,10 +11,12 @@ namespace BillaBear\Quotes;
 use BillaBear\Entity\ConvertableToInvoiceInterface;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
+use BillaBear\Event\Invoice\InvoiceCreated;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class QuoteConverter
 {
@@ -22,6 +24,7 @@ class QuoteConverter
         private InvoiceRepositoryInterface $invoiceRepository,
         private SubscriptionFactory $subscriptionFactory,
         private InvoiceNumberGeneratorProvider $provider,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -90,6 +93,7 @@ class QuoteConverter
         $quote->setPaidAt(new \DateTime('now'));
 
         $this->invoiceRepository->save($invoice);
+        $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
 
         return $invoice;
     }

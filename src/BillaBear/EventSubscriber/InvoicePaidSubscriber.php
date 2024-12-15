@@ -30,7 +30,7 @@ class InvoicePaidSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function handlePaidInvoice(InvoicePaid $created)
+    public function handlePaidInvoice(InvoicePaid $created): void
     {
         $invoice = $created->invoice;
         $invoiceProcess = $this->invoiceProcessRepository->getForInvoice($invoice);
