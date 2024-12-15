@@ -11,7 +11,6 @@ namespace BillaBear\Entity;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -26,7 +25,7 @@ class CheckoutSession implements ConvertableToInvoiceInterface
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
-    private ?CustomerInterface $customer = null;
+    private ?Customer $customer = null;
 
     #[ORM\ManyToOne(targetEntity: Checkout::class)]
     private Checkout $checkout;
@@ -74,12 +73,12 @@ class CheckoutSession implements ConvertableToInvoiceInterface
         $this->id = $id;
     }
 
-    public function getCustomer(): ?CustomerInterface
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(?CustomerInterface $customer): void
+    public function setCustomer(?Customer $customer): void
     {
         $this->customer = $customer;
     }

@@ -15,7 +15,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -90,7 +89,7 @@ class Quote implements ConvertableToInvoiceInterface
         $this->id = $id;
     }
 
-    public function getCustomer(): ?CustomerInterface
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
