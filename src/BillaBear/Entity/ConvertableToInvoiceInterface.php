@@ -9,11 +9,10 @@
 namespace BillaBear\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Parthenon\Billing\Entity\CustomerInterface;
 
 interface ConvertableToInvoiceInterface
 {
-    public function getCustomer(): ?CustomerInterface;
+    public function getCustomer(): ?Customer;
 
     public function getCurrency(): string;
 

@@ -75,9 +75,9 @@ class QuoteConverter
             $invoiceLines[] = $invoiceLine;
         }
 
-        $numbrer = $this->provider->getGenerator()->generate();
+        $number = $this->provider->getGenerator()->generate();
 
-        $invoice->setInvoiceNumber($numbrer);
+        $invoice->setInvoiceNumber($number);
         $invoice->setLines($invoiceLines);
         $invoice->setTotal($total->getMinorAmount()->toInt());
         $invoice->setSubTotal($subTotal->getMinorAmount()->toInt());
