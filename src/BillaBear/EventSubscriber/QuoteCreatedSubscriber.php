@@ -38,7 +38,7 @@ class QuoteCreatedSubscriber implements EventSubscriberInterface
 
     public function handleNewQuote(QuoteCreated $created)
     {
-        $quote = $created->getQuote();
+        $quote = $created->quote;
         $customer = $quote->getCustomer();
         $brand = $customer->getBrandSettings();
 
