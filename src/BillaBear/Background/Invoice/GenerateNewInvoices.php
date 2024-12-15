@@ -13,6 +13,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Enum\CustomerSubscriptionEventType;
+use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -111,7 +112,14 @@ class GenerateNewInvoices
                 $activeSubscription->setStatus(SubscriptionStatus::ACTIVE);
                 $this->subscriptionRepository->save($activeSubscription);
             }
-            $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+            try {
+                $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+            } catch (NothingToInvoiceException) {
+                $this->transactionManager->finish();
+
+                return;
+            }
+
             $this->transactionManager->finish();
             if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
                 try {
