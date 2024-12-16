@@ -103,6 +103,8 @@ ORDER BY m.month_date, s.currency;';
             $parts[] = 'c.brand_settings_id = :brand';
         }
 
+        $parts[] = 's.currency != \'\'';
+
         if (0 === count($parts)) {
             return $output;
         }
