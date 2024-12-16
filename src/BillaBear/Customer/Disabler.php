@@ -8,12 +8,15 @@
 
 namespace BillaBear\Customer;
 
+use BillaBear\Customer\Messenger\CustomerEvent;
+use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\Entity\Customer;
 use BillaBear\Event\Customer\CustomerDisabled;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 readonly class Disabler
 {
@@ -21,6 +24,7 @@ readonly class Disabler
         private CustomerRepositoryInterface $customerRepository,
         private WebhookDispatcherInterface $eventProcessor,
         private EventDispatcherInterface $eventDispatcher,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -30,5 +34,6 @@ readonly class Disabler
         $this->customerRepository->save($customer);
         $this->eventProcessor->dispatch(new CustomerDisabledPayload($customer));
         $this->eventDispatcher->dispatch(new CustomerDisabled($customer));
+        $this->messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
     }
 }

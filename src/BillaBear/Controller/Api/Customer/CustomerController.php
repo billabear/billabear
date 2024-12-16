@@ -11,6 +11,8 @@ namespace BillaBear\Controller\Api\Customer;
 use BillaBear\Customer\CreationHandler;
 use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\LimitsFactory;
+use BillaBear\Customer\Messenger\CustomerEvent;
+use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\Dto\Request\Api\CreateCustomerDto;
 use BillaBear\Dto\Response\Api\ListResponse;
@@ -29,6 +31,7 @@ use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -182,6 +185,7 @@ class CustomerController
         ValidatorInterface $validator,
         CustomerDataMapper $customerFactory,
         WebhookDispatcherInterface $webhookDispatcher,
+        MessageBusInterface $messageBus,
     ): Response {
         $this->getLogger()->info('Starting customer update API request', ['customer_id' => (string) $request->get('id')]);
         try {
@@ -215,6 +219,8 @@ class CustomerController
         $jsonResponse = $serializer->serialize($dto, 'json');
         $webhookDispatcher->dispatch(new CustomerUpdatedPayload($customer));
 
+        $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
+
         return new JsonResponse($jsonResponse, Response::HTTP_ACCEPTED, json: true);
     }
 
@@ -223,6 +229,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         WebhookDispatcherInterface $webhookDispatcher,
+        MessageBusInterface $messageBus,
     ): JsonResponse {
         $this->getLogger()->info('Starting customer disable API request', ['customer_id' => (string) $request->get('id')]);
 
@@ -238,6 +245,7 @@ class CustomerController
         $customer->setStatus(CustomerStatus::DISABLED);
         $customerRepository->save($customer);
         $webhookDispatcher->dispatch(new CustomerDisabledPayload($customer));
+        $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
 
         return new JsonResponse(status: Response::HTTP_ACCEPTED);
     }
@@ -247,6 +255,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         WebhookDispatcherInterface $webhookDispatcher,
+        MessageBusInterface $messageBus,
     ): JsonResponse {
         $this->getLogger()->info('Starting customer enable API request', ['customer_id' => (string) $request->get('id')]);
 
@@ -262,6 +271,7 @@ class CustomerController
         $customer->setStatus(CustomerStatus::ACTIVE);
         $customerRepository->save($customer);
         $webhookDispatcher->dispatch(new CustomerEnabledPayload($customer));
+        $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
 
         return new JsonResponse(status: Response::HTTP_ACCEPTED);
     }
