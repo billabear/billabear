@@ -8,8 +8,8 @@
 
 namespace BillaBear\Subscription;
 
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;

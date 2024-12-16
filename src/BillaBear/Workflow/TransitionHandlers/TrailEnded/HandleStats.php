@@ -8,9 +8,9 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\TrailEnded;
 
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\Processes\TrialEndedProcess;
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\TrialEndedStats;

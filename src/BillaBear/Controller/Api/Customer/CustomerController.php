@@ -9,12 +9,12 @@
 namespace BillaBear\Controller\Api\Customer;
 
 use BillaBear\Customer\CreationHandler;
+use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\LimitsFactory;
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\Dto\Request\Api\CreateCustomerDto;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerStatus;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;

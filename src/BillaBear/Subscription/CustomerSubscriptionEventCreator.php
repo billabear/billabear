@@ -8,9 +8,9 @@
 
 namespace BillaBear\Subscription;
 
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\CustomerSubscriptionEvent;
 use BillaBear\Entity\Subscription;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\CustomerInterface;

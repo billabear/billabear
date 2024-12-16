@@ -9,6 +9,7 @@
 namespace BillaBear\Controller\App;
 
 use BillaBear\Customer\CreationHandler;
+use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\Disabler;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Customer\LimitsFactory;
@@ -32,7 +33,6 @@ use BillaBear\Dto\Response\App\CustomerView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
-use BillaBear\Enum\CustomerStatus;
 use BillaBear\Event\Customer\CustomerEnabled;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;

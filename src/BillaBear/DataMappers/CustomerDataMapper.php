@@ -8,6 +8,8 @@
 
 namespace BillaBear\DataMappers;
 
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerType;
 use BillaBear\Dto\Generic\Address as AddressDto;
 use BillaBear\Dto\Generic\Api\Customer as CustomerApiDto;
 use BillaBear\Dto\Generic\App\Customer as CustomerAppDto;
@@ -16,8 +18,6 @@ use BillaBear\Dto\Request\Api\CreateCustomerDto as ApiCreate;
 use BillaBear\Dto\Request\App\CreateCustomerDto as AppCreate;
 use BillaBear\Dto\Request\Public\CreateCustomerDto as PublicCreate;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerType;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Obol\Model\Customer as ObolCustomer;
 use Parthenon\Common\Address;

@@ -8,8 +8,8 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerType;
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerType;
 use BillaBear\Enum\WarningLevel;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;

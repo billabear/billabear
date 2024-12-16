@@ -8,11 +8,11 @@
 
 namespace BillaBear\Background\Invoice;
 
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Database\TransactionManager;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;

@@ -8,6 +8,7 @@
 
 namespace BillaBear\Subscription;
 
+use BillaBear\Customer\CustomerStatus;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\Processes\TrialConvertedProcess;
@@ -15,7 +16,6 @@ use BillaBear\Entity\Processes\TrialEndedProcess;
 use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Enum\CustomerStatus;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\Processes\TrialEndedProcessRepositoryInterface;
 use BillaBear\Repository\Processes\TrialStartedProcessRepositoryInterface;

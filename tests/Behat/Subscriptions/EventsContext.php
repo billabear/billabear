@@ -10,8 +10,8 @@ namespace BillaBear\Tests\Behat\Subscriptions;
 
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\CustomerSubscriptionEvent;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\CustomerSubscriptionEventRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;

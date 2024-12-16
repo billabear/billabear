@@ -9,10 +9,10 @@
 namespace BillaBear\Dev\DemoData;
 
 use BillaBear\Command\DevDemoDataCommand;
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerType;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerType;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;

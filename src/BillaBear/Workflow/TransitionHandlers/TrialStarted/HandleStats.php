@@ -8,10 +8,10 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Processes\TrialStartedProcess;
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerSubscriptionEventType;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\TrialStartedStats;
