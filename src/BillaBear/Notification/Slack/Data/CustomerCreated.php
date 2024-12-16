@@ -9,7 +9,7 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 
 class CustomerCreated extends AbstractNotification
 {

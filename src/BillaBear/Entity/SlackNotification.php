@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Athena\Entity\DeletableInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;

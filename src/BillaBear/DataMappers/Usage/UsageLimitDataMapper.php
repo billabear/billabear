@@ -14,7 +14,7 @@ use BillaBear\Dto\Request\Api\Usage\CreateUsageLimit as ApiCreate;
 use BillaBear\Dto\Request\App\Usage\CreateUsageLimit as AppCreate;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit as Entity;
-use BillaBear\Enum\WarningLevel;
+use BillaBear\Pricing\Usage\WarningLevel;
 
 class UsageLimitDataMapper
 {

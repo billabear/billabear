@@ -34,7 +34,7 @@ use BillaBear\Dto\Response\App\Subscription\UsageEstimate;
 use BillaBear\Dto\Response\App\Subscription\ViewSubscription;
 use BillaBear\Entity\Subscription;
 use BillaBear\Filters\SubscriptionList;
-use BillaBear\Invoice\Usage\CostEstimator;
+use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;

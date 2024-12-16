@@ -11,7 +11,7 @@ namespace BillaBear\Tests\Unit\Invoice;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\Product;
-use BillaBear\Invoice\Pricer;
+use BillaBear\Pricing\Pricer;
 use BillaBear\Tax\TaxInfo;
 use BillaBear\Tax\TaxRateProviderInterface;
 use Parthenon\Billing\Enum\PriceType;

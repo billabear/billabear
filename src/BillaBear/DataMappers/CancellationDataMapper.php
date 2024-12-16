@@ -14,7 +14,7 @@ use BillaBear\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription as ApiInputDto;
 use BillaBear\Dto\Request\App\CancelSubscription as AppInputDto;
 use BillaBear\Entity\CancellationRequest as Entity;
-use BillaBear\Enum\CancellationType;
+use BillaBear\Subscription\CancellationType;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 

@@ -13,11 +13,11 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Voucher;
 use BillaBear\Entity\VoucherAmount;
-use BillaBear\Enum\VoucherEntryType;
-use BillaBear\Enum\VoucherEvent;
-use BillaBear\Enum\VoucherType;
 use BillaBear\Repository\Orm\VoucherRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
+use BillaBear\Voucher\VoucherEntryType;
+use BillaBear\Voucher\VoucherEvent;
+use BillaBear\Voucher\VoucherType;
 
 class AppContext implements Context
 {

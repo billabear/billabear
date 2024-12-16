@@ -10,7 +10,7 @@ namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\UsageLimit;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use Brick\Money\Money;
 
 class UsageWarning extends AbstractNotification

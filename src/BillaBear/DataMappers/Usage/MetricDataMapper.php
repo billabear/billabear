@@ -16,9 +16,9 @@ use BillaBear\Dto\Request\App\Usage\CreateMetric;
 use BillaBear\Dto\Request\App\Usage\UpdateMetric;
 use BillaBear\Entity\Usage\Metric as Entity;
 use BillaBear\Entity\Usage\MetricFilter as FilterEntity;
-use BillaBear\Enum\MetricAggregationMethod;
-use BillaBear\Enum\MetricEventIngestion;
-use BillaBear\Enum\MetricFilterType;
+use BillaBear\Pricing\Usage\MetricAggregationMethod;
+use BillaBear\Pricing\Usage\MetricEventIngestion;
+use BillaBear\Pricing\Usage\MetricFilterType;
 
 class MetricDataMapper
 {

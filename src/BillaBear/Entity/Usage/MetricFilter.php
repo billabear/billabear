@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity\Usage;
 
-use BillaBear\Enum\MetricFilterType;
+use BillaBear\Pricing\Usage\MetricFilterType;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 

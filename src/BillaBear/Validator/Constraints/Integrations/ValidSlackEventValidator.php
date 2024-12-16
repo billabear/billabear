@@ -8,7 +8,7 @@
 
 namespace BillaBear\Validator\Constraints\Integrations;
 
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

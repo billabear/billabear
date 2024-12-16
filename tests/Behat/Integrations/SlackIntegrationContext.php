@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\SlackNotification;
 use BillaBear\Entity\SlackWebhook;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use BillaBear\Repository\Orm\SlackNotificationRepository;
 use BillaBear\Repository\Orm\SlackWebhookRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;

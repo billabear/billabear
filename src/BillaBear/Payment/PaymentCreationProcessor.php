@@ -9,9 +9,9 @@
 namespace BillaBear\Payment;
 
 use BillaBear\Entity\PaymentCreation;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\PaymentCreationRepositoryInterface;
 use BillaBear\Workflow\WorkflowProcessor;
+use BillaBear\Workflow\WorkflowType;
 
 class PaymentCreationProcessor
 {

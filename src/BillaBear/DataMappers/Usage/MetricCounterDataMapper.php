@@ -10,7 +10,7 @@ namespace BillaBear\DataMappers\Usage;
 
 use BillaBear\Dto\Generic\App\Usage\MetricCounter as AppDto;
 use BillaBear\Entity\Subscription;
-use BillaBear\Invoice\Usage\CostEstimator;
+use BillaBear\Pricing\Usage\CostEstimator;
 
 class MetricCounterDataMapper
 {

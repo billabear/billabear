@@ -8,8 +8,8 @@
 
 namespace BillaBear\Workflow\Places\TrialConverted;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\WorkflowType;
 
 class Started implements PlaceInterface
 {

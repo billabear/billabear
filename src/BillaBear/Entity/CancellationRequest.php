@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\CancellationType;
+use BillaBear\Subscription\CancellationType;
 use BillaBear\Workflow\WorkflowProcessInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;

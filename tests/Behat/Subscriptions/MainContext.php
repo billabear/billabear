@@ -16,13 +16,13 @@ use BillaBear\Entity\Payment;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Entity\SubscriptionSeatModification;
-use BillaBear\Enum\SubscriptionSeatModificationType;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
 use BillaBear\Repository\Orm\SubscriptionRepository;
 use BillaBear\Repository\Orm\SubscriptionSeatModificationRepository;
+use BillaBear\Subscription\SubscriptionSeatModificationType;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
@@ -32,8 +32,6 @@ use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
-
-use function Symfony\Component\String\s;
 
 class MainContext implements Context
 {

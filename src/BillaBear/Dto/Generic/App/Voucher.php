@@ -8,9 +8,9 @@
 
 namespace BillaBear\Dto\Generic\App;
 
-use BillaBear\Enum\VoucherEntryType;
-use BillaBear\Enum\VoucherEvent;
-use BillaBear\Enum\VoucherType;
+use BillaBear\Voucher\VoucherEntryType;
+use BillaBear\Voucher\VoucherEvent;
+use BillaBear\Voucher\VoucherType;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Voucher

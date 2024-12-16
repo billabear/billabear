@@ -9,7 +9,7 @@
 namespace BillaBear\Repository\Stats;
 
 use BillaBear\Entity\Stats\CachedStats;
-use BillaBear\Enum\CachedStatsType;
+use BillaBear\Stats\CachedStatsType;
 use Parthenon\Common\Repository\DoctrineRepository;
 
 class CachedStatsRepository extends DoctrineRepository implements CachedStatsRepositoryInterface

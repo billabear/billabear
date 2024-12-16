@@ -9,7 +9,7 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\Payment;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 
 class PaymentProcessed extends AbstractNotification
 {

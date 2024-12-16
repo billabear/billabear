@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\SubscriptionSeatModificationType;
+use BillaBear\Subscription\SubscriptionSeatModificationType;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\SubscriptionInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;

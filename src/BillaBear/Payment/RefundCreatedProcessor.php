@@ -9,9 +9,9 @@
 namespace BillaBear\Payment;
 
 use BillaBear\Entity\RefundCreatedProcess;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\RefundCreatedProcessRepositoryInterface;
 use BillaBear\Workflow\WorkflowProcessor;
+use BillaBear\Workflow\WorkflowType;
 
 class RefundCreatedProcessor
 {

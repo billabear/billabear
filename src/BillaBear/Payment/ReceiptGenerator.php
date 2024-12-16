@@ -11,7 +11,7 @@ namespace BillaBear\Payment;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\ReceiptLine;
-use BillaBear\Invoice\PricerInterface;
+use BillaBear\Pricing\PricerInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;

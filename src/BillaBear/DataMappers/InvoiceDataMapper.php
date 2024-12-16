@@ -8,6 +8,7 @@
 
 namespace BillaBear\DataMappers;
 
+use BillaBear\Checkout\PayLinkGeneratorInterface;
 use BillaBear\Dto\Generic\Api\Invoice as ApiDto;
 use BillaBear\Dto\Generic\Api\InvoiceLine as ApiInvoiceLine;
 use BillaBear\Dto\Generic\App\Invoice as AppDto;
@@ -16,7 +17,6 @@ use BillaBear\Dto\Generic\App\InvoiceQuickView as AppQuickViewDto;
 use BillaBear\Dto\Response\Portal\Invoice\Invoice as PublicDto;
 use BillaBear\Dto\Response\Portal\Invoice\InvoiceLine;
 use BillaBear\Entity\Invoice as Entity;
-use BillaBear\Invoice\PayLinkGeneratorInterface;
 
 class InvoiceDataMapper
 {

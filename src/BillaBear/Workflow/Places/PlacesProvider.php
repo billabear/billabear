@@ -8,8 +8,8 @@
 
 namespace BillaBear\Workflow\Places;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\WorkflowTransitionRepositoryInterface;
+use BillaBear\Workflow\WorkflowType;
 
 class PlacesProvider
 {

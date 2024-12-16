@@ -8,9 +8,9 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\VoucherEntryType;
-use BillaBear\Enum\VoucherEvent;
-use BillaBear\Enum\VoucherType;
+use BillaBear\Voucher\VoucherEntryType;
+use BillaBear\Voucher\VoucherEvent;
+use BillaBear\Voucher\VoucherType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

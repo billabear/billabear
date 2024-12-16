@@ -18,7 +18,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Event\Checkout\CheckoutCreated;
-use BillaBear\Invoice\Pricer;
+use BillaBear\Pricing\Pricer;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CheckoutRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;

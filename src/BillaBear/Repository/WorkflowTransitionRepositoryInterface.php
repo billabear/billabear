@@ -9,7 +9,7 @@
 namespace BillaBear\Repository;
 
 use BillaBear\Entity\WorkflowTransition;
-use BillaBear\Enum\WorkflowType;
+use BillaBear\Workflow\WorkflowType;
 use Parthenon\Common\Repository\RepositoryInterface;
 
 /**

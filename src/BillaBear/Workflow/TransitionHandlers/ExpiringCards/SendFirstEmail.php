@@ -9,11 +9,11 @@
 namespace BillaBear\Workflow\TransitionHandlers\ExpiringCards;
 
 use BillaBear\Entity\Processes\ExpiringCardProcess;
-use BillaBear\Enum\VoucherEvent;
 use BillaBear\Notification\Email\Data\ExpiringCardEmai;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\VoucherRepositoryInterface;
+use BillaBear\Voucher\VoucherEvent;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;

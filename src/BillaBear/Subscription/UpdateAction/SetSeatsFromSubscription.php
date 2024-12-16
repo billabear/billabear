@@ -11,10 +11,10 @@ namespace BillaBear\Subscription\UpdateAction;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionSeatModification;
-use BillaBear\Enum\SubscriptionSeatModificationType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Repository\SubscriptionSeatModificationRepositoryInterface;
+use BillaBear\Subscription\SubscriptionSeatModificationType;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Billing\Obol\SubscriptionFactoryInterface;
 

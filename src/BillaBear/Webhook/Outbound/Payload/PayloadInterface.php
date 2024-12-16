@@ -8,7 +8,7 @@
 
 namespace BillaBear\Webhook\Outbound\Payload;
 
-use BillaBear\Enum\WebhookEventType;
+use BillaBear\Webhook\Outbound\WebhookEventType;
 
 interface PayloadInterface
 {

@@ -8,7 +8,7 @@
 
 namespace BillaBear\Background\Usage;
 
-use BillaBear\Invoice\Usage\Messenger\Message\UpdateCustomerCounters;
+use BillaBear\Pricing\Usage\Messenger\Message\UpdateCustomerCounters;
 use BillaBear\Repository\Usage\EventRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Messenger\MessageBusInterface;

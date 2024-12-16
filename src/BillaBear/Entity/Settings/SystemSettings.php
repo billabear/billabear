@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity\Settings;
 
-use BillaBear\Enum\PdfGeneratorType;
+use BillaBear\Pdf\PdfGeneratorType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]

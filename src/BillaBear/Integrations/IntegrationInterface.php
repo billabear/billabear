@@ -8,6 +8,8 @@
 
 namespace BillaBear\Integrations;
 
+use BillaBear\Exception\Integrations\UnsupportedFeatureException;
+
 interface IntegrationInterface
 {
     public function getType(): IntegrationType;
@@ -15,4 +17,9 @@ interface IntegrationInterface
     public function getName(): string;
 
     public function getAuthenticationType(): AuthenticationType;
+
+    /**
+     * @throws UnsupportedFeatureException
+     */
+    public function getOauthConfig(): OAuthConfig;
 }

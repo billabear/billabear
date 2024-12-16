@@ -9,7 +9,7 @@
 namespace BillaBear\Repository;
 
 use BillaBear\Entity\Voucher;
-use BillaBear\Enum\VoucherEvent;
+use BillaBear\Voucher\VoucherEvent;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface VoucherRepositoryInterface extends CrudRepositoryInterface

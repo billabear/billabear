@@ -9,9 +9,9 @@
 namespace BillaBear\Subscription;
 
 use BillaBear\Entity\CancellationRequest;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Workflow\WorkflowProcessor;
+use BillaBear\Workflow\WorkflowType;
 use Parthenon\Common\LoggerAwareTrait;
 
 class CancellationRequestProcessor

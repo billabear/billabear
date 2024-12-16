@@ -11,7 +11,7 @@ namespace BillaBear\DataMappers\Integrations;
 use BillaBear\Dto\Generic\App\Integrations\SlackNotification as AppDto;
 use BillaBear\Dto\Request\App\Integrations\Slack\CreateSlackNotification;
 use BillaBear\Entity\SlackNotification as Entity;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
 
 class SlackNotificationDataMapper

@@ -8,7 +8,7 @@
 
 namespace BillaBear\Repository;
 
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class SlackNotificationRepository extends DoctrineCrudRepository implements SlackNotificationRepositoryInterface

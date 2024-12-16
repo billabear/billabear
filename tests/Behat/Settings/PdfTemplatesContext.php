@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\Template;
-use BillaBear\Enum\PdfGeneratorType;
+use BillaBear\Pdf\PdfGeneratorType;
 use BillaBear\Repository\Orm\SettingsRepository;
 use BillaBear\Repository\Orm\TemplateRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;

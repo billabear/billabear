@@ -13,7 +13,6 @@ use BillaBear\Entity\Credit;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Voucher;
 use BillaBear\Entity\VoucherApplication;
-use BillaBear\Enum\VoucherType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;

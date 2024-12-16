@@ -9,8 +9,8 @@
 namespace BillaBear\Stats;
 
 use BillaBear\Entity\Stats\CachedStats;
-use BillaBear\Invoice\Usage\CostEstimator;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
+use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;

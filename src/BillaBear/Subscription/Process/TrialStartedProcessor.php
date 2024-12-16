@@ -9,9 +9,9 @@
 namespace BillaBear\Subscription\Process;
 
 use BillaBear\Entity\Processes\TrialStartedProcess;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\Processes\TrialStartedProcessRepositoryInterface;
 use BillaBear\Workflow\WorkflowProcessor;
+use BillaBear\Workflow\WorkflowType;
 
 class TrialStartedProcessor
 {

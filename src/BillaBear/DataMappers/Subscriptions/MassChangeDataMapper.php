@@ -14,9 +14,9 @@ use BillaBear\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use BillaBear\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use BillaBear\Dto\Response\App\Subscription\MassChange\MassSubscriptionChange as AppDto;
 use BillaBear\Entity\MassSubscriptionChange as Entity;
-use BillaBear\Enum\MassSubscriptionChangeStatus;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
+use BillaBear\Subscription\MassSubscriptionChangeStatus;
 use BillaBear\User\UserProvider;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 

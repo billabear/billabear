@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Usage\UsageWarning;
 use BillaBear\Entity\UsageLimit;
-use BillaBear\Enum\WarningLevel;
+use BillaBear\Pricing\Usage\WarningLevel;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\UsageLimitRepository;
 use BillaBear\Repository\Orm\UsageWarningRepository;

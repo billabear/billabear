@@ -8,8 +8,8 @@
 
 namespace BillaBear\Dto\Request\App\Usage;
 
-use BillaBear\Enum\MetricAggregationMethod;
-use BillaBear\Enum\MetricEventIngestion;
+use BillaBear\Pricing\Usage\MetricAggregationMethod;
+use BillaBear\Pricing\Usage\MetricEventIngestion;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -9,7 +9,7 @@
 namespace BillaBear\Dto\Request\Api;
 
 use BillaBear\Dto\Request\Api\Price\CreateTier;
-use BillaBear\Enum\MetricType;
+use BillaBear\Pricing\Usage\MetricType;
 use BillaBear\Validator\Constraints\MetricExists;
 use Parthenon\Billing\Enum\PriceType;
 use Symfony\Component\Serializer\Annotation\SerializedName;

@@ -8,9 +8,9 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
+use BillaBear\Checkout\PayLinkGeneratorInterface;
 use BillaBear\Entity\Processes\InvoiceProcess;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
-use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceOverdueEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use Parthenon\Notification\Attachment;

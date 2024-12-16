@@ -8,7 +8,6 @@
 
 namespace BillaBear\Pdf;
 
-use BillaBear\Enum\PdfGeneratorType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use DocRaptor\Configuration;
 use DocRaptor\DocApi;

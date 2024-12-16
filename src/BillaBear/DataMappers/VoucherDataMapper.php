@@ -12,9 +12,9 @@ use BillaBear\Dto\Generic\App\Voucher as AppDto;
 use BillaBear\Dto\Request\App\Voucher\CreateVoucher;
 use BillaBear\Entity\Voucher as Entity;
 use BillaBear\Entity\VoucherAmount;
-use BillaBear\Enum\VoucherEntryType;
-use BillaBear\Enum\VoucherEvent;
-use BillaBear\Enum\VoucherType;
+use BillaBear\Voucher\VoucherEntryType;
+use BillaBear\Voucher\VoucherEvent;
+use BillaBear\Voucher\VoucherType;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class VoucherDataMapper

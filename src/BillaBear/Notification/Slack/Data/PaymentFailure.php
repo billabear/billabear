@@ -9,7 +9,7 @@
 namespace BillaBear\Notification\Slack\Data;
 
 use BillaBear\Entity\PaymentAttempt;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use Brick\Money\Money;
 
 class PaymentFailure extends AbstractNotification

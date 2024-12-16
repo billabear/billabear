@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\TierComponent;
-use BillaBear\Enum\MetricType;
+use BillaBear\Pricing\Usage\MetricType;
 use BillaBear\Repository\Orm\MetricRepository;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\ProductRepository;

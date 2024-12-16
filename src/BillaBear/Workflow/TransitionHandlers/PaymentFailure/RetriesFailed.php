@@ -10,9 +10,9 @@ namespace BillaBear\Workflow\TransitionHandlers\PaymentFailure;
 
 use BillaBear\Entity\CancellationRequest;
 use BillaBear\Entity\PaymentFailureProcess;
-use BillaBear\Enum\CancellationType;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
+use BillaBear\Subscription\CancellationType;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;

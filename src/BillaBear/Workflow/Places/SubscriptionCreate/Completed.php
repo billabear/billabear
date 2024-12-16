@@ -8,8 +8,8 @@
 
 namespace BillaBear\Workflow\Places\SubscriptionCreate;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\WorkflowType;
 
 class Completed implements PlaceInterface
 {

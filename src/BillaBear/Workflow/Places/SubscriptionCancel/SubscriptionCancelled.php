@@ -8,8 +8,8 @@
 
 namespace BillaBear\Workflow\Places\SubscriptionCancel;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\WorkflowType;
 
 class SubscriptionCancelled implements PlaceInterface
 {

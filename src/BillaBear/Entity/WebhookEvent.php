@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\WebhookEventType;
+use BillaBear\Webhook\Outbound\WebhookEventType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;

@@ -12,8 +12,8 @@ use BillaBear\Dto\Generic\App\Workflows\Place as AppDto;
 use BillaBear\Dto\Request\App\Workflows\CreateTransition;
 use BillaBear\Entity\WorkflowTransition;
 use BillaBear\Entity\WorkflowTransition as Entity;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\WorkflowType;
 
 class PlaceDataMapper
 {

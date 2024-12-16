@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\WarningLevel;
+use BillaBear\Pricing\Usage\WarningLevel;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;

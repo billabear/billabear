@@ -9,12 +9,12 @@
 namespace BillaBear\Tests\Unit\Workflow;
 
 use BillaBear\Entity\WorkflowTransition;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use BillaBear\Workflow\WorkflowBuilder;
+use BillaBear\Workflow\WorkflowType;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;

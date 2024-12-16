@@ -9,10 +9,10 @@
 namespace BillaBear\Tests\Unit\Workflow\Places;
 
 use BillaBear\Entity\WorkflowTransition;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\WorkflowTransitionRepositoryInterface;
 use BillaBear\Workflow\Places\PlaceInterface;
 use BillaBear\Workflow\Places\PlacesProvider;
+use BillaBear\Workflow\WorkflowType;
 use PHPUnit\Framework\TestCase;
 
 class PlacesProviderTest extends TestCase

@@ -9,7 +9,7 @@
 namespace BillaBear\Repository;
 
 use BillaBear\Entity\SlackNotification;
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface SlackNotificationRepositoryInterface extends CrudRepositoryInterface

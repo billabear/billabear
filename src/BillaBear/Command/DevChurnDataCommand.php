@@ -9,9 +9,9 @@
 namespace BillaBear\Command;
 
 use BillaBear\Entity\CancellationRequest;
-use BillaBear\Enum\CancellationType;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Subscription\CancellationType;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

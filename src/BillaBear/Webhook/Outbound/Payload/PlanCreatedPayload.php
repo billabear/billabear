@@ -9,8 +9,8 @@
 namespace BillaBear\Webhook\Outbound\Payload;
 
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Enum\WebhookEventType;
 use BillaBear\Webhook\Outbound\Payload\Parts\PlanPayloadTrait;
+use BillaBear\Webhook\Outbound\WebhookEventType;
 
 class PlanCreatedPayload implements PayloadInterface
 {

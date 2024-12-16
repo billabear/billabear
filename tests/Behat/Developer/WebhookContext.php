@@ -12,10 +12,10 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\WebhookEndpoint;
-use BillaBear\Enum\WebhookEventType;
 use BillaBear\Repository\Orm\WebhookEndpointRepository;
 use BillaBear\Repository\Orm\WebhookEventRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
+use BillaBear\Webhook\Outbound\WebhookEventType;
 
 class WebhookContext implements Context
 {

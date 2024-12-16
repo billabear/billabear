@@ -8,8 +8,8 @@
 
 namespace BillaBear\Webhook\Outbound\Messenger;
 
-use BillaBear\Enum\WebhookEventType;
 use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
+use BillaBear\Webhook\Outbound\WebhookEventType;
 
 class EventMessage implements PayloadInterface
 {

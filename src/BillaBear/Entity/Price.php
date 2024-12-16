@@ -9,7 +9,7 @@
 namespace BillaBear\Entity;
 
 use BillaBear\Entity\Usage\Metric;
-use BillaBear\Enum\MetricType;
+use BillaBear\Pricing\Usage\MetricType;
 use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\Product;

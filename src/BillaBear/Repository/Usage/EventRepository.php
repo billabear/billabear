@@ -12,7 +12,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\Usage\Event;
 use BillaBear\Entity\Usage\Metric;
-use BillaBear\Enum\MetricFilterType;
+use BillaBear\Pricing\Usage\MetricFilterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 use Parthenon\Common\LoggerAwareTrait;

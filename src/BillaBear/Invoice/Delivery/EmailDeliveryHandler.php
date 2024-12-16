@@ -8,10 +8,10 @@
 
 namespace BillaBear\Invoice\Delivery;
 
+use BillaBear\Checkout\PayLinkGeneratorInterface;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
-use BillaBear\Invoice\PayLinkGeneratorInterface;
 use BillaBear\Notification\Email\Data\InvoiceCreatedEmail;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Repository\SettingsRepositoryInterface;

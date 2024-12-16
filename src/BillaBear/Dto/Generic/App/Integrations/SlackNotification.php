@@ -8,7 +8,7 @@
 
 namespace BillaBear\Dto\Generic\App\Integrations;
 
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 
 class SlackNotification
 {

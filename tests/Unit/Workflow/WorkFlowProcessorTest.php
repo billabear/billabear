@@ -8,10 +8,10 @@
 
 namespace BillaBear\Tests\Unit\Workflow;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\WorkflowBuilder;
 use BillaBear\Workflow\WorkflowProcessInterface;
 use BillaBear\Workflow\WorkflowProcessor;
+use BillaBear\Workflow\WorkflowType;
 use Parthenon\Common\Repository\RepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Workflow\Definition;

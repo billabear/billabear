@@ -12,7 +12,7 @@ use BillaBear\Dto\Response\Api\Customer\Cost;
 use BillaBear\Dto\Response\Api\Customer\Costs;
 use BillaBear\Dto\Response\Api\Customer\MetricCost;
 use BillaBear\Exception\Invoice\CannotEstimateException;
-use BillaBear\Invoice\Usage\CostEstimator;
+use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Brick\Money\Exception\MoneyMismatchException;

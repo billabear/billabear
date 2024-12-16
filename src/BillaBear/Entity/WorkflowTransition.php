@@ -8,8 +8,8 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\WorkflowType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;

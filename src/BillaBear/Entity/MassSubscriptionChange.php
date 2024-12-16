@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\MassSubscriptionChangeStatus;
+use BillaBear\Subscription\MassSubscriptionChangeStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;

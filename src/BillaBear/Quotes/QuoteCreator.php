@@ -17,7 +17,7 @@ use BillaBear\Entity\Quote;
 use BillaBear\Entity\QuoteLine;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Event\Quote\QuoteCreated;
-use BillaBear\Invoice\Pricer;
+use BillaBear\Pricing\Pricer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\QuoteRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;

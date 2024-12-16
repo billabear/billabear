@@ -9,8 +9,8 @@
 namespace BillaBear\EventSubscriber\Subscription;
 
 use BillaBear\Entity\SubscriptionSeatModification;
-use BillaBear\Enum\SubscriptionSeatModificationType;
 use BillaBear\Repository\SubscriptionSeatModificationRepositoryInterface;
+use BillaBear\Subscription\SubscriptionSeatModificationType;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

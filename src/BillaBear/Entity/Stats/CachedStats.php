@@ -8,7 +8,7 @@
 
 namespace BillaBear\Entity\Stats;
 
-use BillaBear\Enum\CachedStatsType;
+use BillaBear\Stats\CachedStatsType;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 

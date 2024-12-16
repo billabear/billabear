@@ -13,4 +13,6 @@ use BillaBear\Entity\Invoice;
 interface InvoiceInterface
 {
     public function register(Invoice $invoice): void;
+
+    public function isPaid(Invoice $invoice): bool;
 }

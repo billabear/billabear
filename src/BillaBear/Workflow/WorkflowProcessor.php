@@ -8,7 +8,6 @@
 
 namespace BillaBear\Workflow;
 
-use BillaBear\Enum\WorkflowType;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Common\Repository\RepositoryInterface;
 use Symfony\Component\Workflow\Transition;

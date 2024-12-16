@@ -13,11 +13,11 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Background\Subscription\MassChange;
 use BillaBear\Entity\MassSubscriptionChange;
-use BillaBear\Enum\MassSubscriptionChangeStatus;
 use BillaBear\Repository\Orm\BrandSettingsRepository;
 use BillaBear\Repository\Orm\MassSubscriptionChangeRepository;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
+use BillaBear\Subscription\MassSubscriptionChangeStatus;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
 

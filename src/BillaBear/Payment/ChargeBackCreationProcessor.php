@@ -9,9 +9,9 @@
 namespace BillaBear\Payment;
 
 use BillaBear\Entity\ChargeBackCreation;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Repository\ChargeBackCreationRepositoryInterface;
 use BillaBear\Workflow\WorkflowProcessor;
+use BillaBear\Workflow\WorkflowType;
 use Parthenon\Common\LoggerAwareTrait;
 
 class ChargeBackCreationProcessor

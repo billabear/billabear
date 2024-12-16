@@ -10,9 +10,9 @@ namespace BillaBear\Workflow\TransitionHandlers\ExpiringCards;
 
 use BillaBear\Entity\Processes\ExpiringCardProcess;
 use BillaBear\Entity\Voucher;
-use BillaBear\Enum\VoucherEvent;
 use BillaBear\Repository\VoucherRepositoryInterface;
 use BillaBear\Voucher\VoucherApplier;
+use BillaBear\Voucher\VoucherEvent;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

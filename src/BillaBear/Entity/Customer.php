@@ -10,7 +10,7 @@ namespace BillaBear\Entity;
 
 use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\CustomerType;
-use BillaBear\Enum\WarningLevel;
+use BillaBear\Pricing\Usage\WarningLevel;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

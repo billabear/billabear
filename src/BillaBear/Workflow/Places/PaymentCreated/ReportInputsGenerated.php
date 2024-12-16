@@ -8,8 +8,8 @@
 
 namespace BillaBear\Workflow\Places\PaymentCreated;
 
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
+use BillaBear\Workflow\WorkflowType;
 
 class ReportInputsGenerated implements PlaceInterface
 {
