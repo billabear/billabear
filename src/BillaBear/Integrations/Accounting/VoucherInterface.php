@@ -6,10 +6,11 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Enum;
+namespace BillaBear\Integrations\Accounting;
 
-enum InvoiceFormat: string
+use BillaBear\Entity\VoucherApplication;
+
+interface VoucherInterface
 {
-    case PDF = 'pdf';
-    case ZUGFERD_V1 = 'zugferd_v1';
+    public function register(VoucherApplication $voucher): void;
 }

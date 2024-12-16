@@ -10,9 +10,9 @@ namespace BillaBear\Customer;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceDeliverySettings;
-use BillaBear\Enum\InvoiceDeliveryType;
-use BillaBear\Enum\InvoiceFormat;
 use BillaBear\Event\Customer\CustomerCreated as CustomerCreatedEvent;
+use BillaBear\Invoice\InvoiceDeliveryType;
+use BillaBear\Invoice\InvoiceFormat;
 use BillaBear\Notification\Slack\Data\CustomerCreated as CustomerCreatedSlack;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\CustomerRepositoryInterface;

@@ -11,7 +11,7 @@ namespace BillaBear\DataMappers\Invoice;
 use BillaBear\Dto\Generic\App\InvoiceDeliverySettings as AppDto;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
 use BillaBear\Entity\InvoiceDeliverySettings as Entity;
-use BillaBear\Enum\InvoiceDeliveryType;
+use BillaBear\Invoice\InvoiceDeliveryType;
 
 class InvoiceDeliverySettingsDataMapper
 {

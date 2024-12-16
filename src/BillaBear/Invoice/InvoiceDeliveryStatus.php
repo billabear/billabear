@@ -6,11 +6,10 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Enum;
+namespace BillaBear\Invoice;
 
-enum InvoiceDeliveryType: string
+enum InvoiceDeliveryStatus: string
 {
-    case EMAIL = 'email';
-    case SFTP = 'sftp';
-    case WEBHOOK = 'webhook';
+    case SUCCESS = 'success';
+    case FAILED = 'failed';
 }

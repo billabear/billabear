@@ -9,7 +9,7 @@
 namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\InvoiceDeliverySettings;
-use BillaBear\Enum\InvoiceDeliveryType;
+use BillaBear\Invoice\InvoiceDeliveryType;
 
 class DeliveryHandlerProvider
 {

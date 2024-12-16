@@ -9,8 +9,8 @@
 namespace BillaBear\Invoice\Delivery\Messenger;
 
 use BillaBear\Entity\InvoiceDelivery;
-use BillaBear\Enum\InvoiceDeliveryStatus;
 use BillaBear\Invoice\Delivery\DeliveryHandlerProvider;
+use BillaBear\Invoice\InvoiceDeliveryStatus;
 use BillaBear\Repository\InvoiceDeliveryRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
