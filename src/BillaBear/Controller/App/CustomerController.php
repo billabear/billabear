@@ -13,6 +13,8 @@ use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\Disabler;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Customer\LimitsFactory;
+use BillaBear\Customer\Messenger\CustomerEvent;
+use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\Customer\ObolRegister;
 use BillaBear\DataMappers\CreditDataMapper;
 use BillaBear\DataMappers\CustomerDataMapper;
@@ -288,7 +290,7 @@ class CustomerController
         $subscriptions = $subscriptionRepository->getLastTenForCustomer($customer);
         $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions->getResults());
 
-        /** @var MetricCounter $metricCounterDtos */
+        /** @var MetricCounter[] $metricCounterDtos */
         $metricCounterDtos = [];
         /** @var Subscription $subscription */
         foreach ($subscriptions->getResults() as $subscription) {
@@ -371,6 +373,7 @@ class CustomerController
         CustomerDataMapper $customerFactory,
         ObolRegister $obolRegister,
         WebhookDispatcherInterface $webhookDispatcher,
+        MessageBusInterface $messageBus,
     ): Response {
         $this->getLogger()->info('Received request to update customer', ['customer_id' => $request->get('id')]);
 
@@ -402,6 +405,7 @@ class CustomerController
         $customerRepository->save($newCustomer);
 
         $webhookDispatcher->dispatch(new CustomerUpdatedPayload($customer));
+        $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
 
         $dto = $customerFactory->createAppDto($newCustomer);
         $jsonResponse = $serializer->serialize($dto, 'json');

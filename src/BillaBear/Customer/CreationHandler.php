@@ -8,6 +8,8 @@
 
 namespace BillaBear\Customer;
 
+use BillaBear\Customer\Messenger\CustomerEvent;
+use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Event\Customer\CustomerCreated as CustomerCreatedEvent;
@@ -22,6 +24,7 @@ use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\ProviderFailureException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 readonly class CreationHandler
 {
@@ -33,6 +36,7 @@ readonly class CreationHandler
         private CustomerCreationStats $customerCreationStats,
         private InvoiceDeliverySettingsRepositoryInterface $invoiceDeliverySettingsRepository,
         private EventDispatcherInterface $eventDispatcher,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -50,7 +54,8 @@ readonly class CreationHandler
         $this->eventProcessor->dispatch(new CustomerCreatedPayload($customer));
         $this->handleSlackNotifications($customer);
         $this->handleExtraEntities($customer);
-        $this->eventDispatcher->dispatch(new CustomerCreatedEvent($customer));
+        $this->eventDispatcher->dispatch(new CustomerCreatedEvent($customer), CustomerCreatedEvent::NAME);
+        $this->messageBus->dispatch(new CustomerEvent(CustomerEventType::CREATION, (string) $customer->getId()));
     }
 
     public function handleSlackNotifications(Customer $customer): void
