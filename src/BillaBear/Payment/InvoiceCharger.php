@@ -24,6 +24,7 @@ use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,7 +49,13 @@ class InvoiceCharger
     public function chargeInvoice(Invoice $invoice, ?PaymentCard $paymentCard = null, ?\DateTime $createdAt = null): bool
     {
         if (!$paymentCard) {
-            $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
+            try {
+                $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
+            } catch (NoEntityFoundException) {
+                $this->getLogger()->warning('Failed to get default payment card for customer', ['customer_id' => $invoice->getCustomer()->getId()]);
+
+                return false;
+            }
         }
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($invoice->getCustomer(), $paymentCard);
 
