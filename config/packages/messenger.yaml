@@ -34,5 +34,5 @@ when@test:
                 # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
                 sync: 'sync://'
             routing:
-                'BillaBear\Invoice\Usage\Messenger\Message\UpdateCustomerCounters': sync
+                'BillaBear\Pricing\Usage\Messenger\Message\UpdateCustomerCounters': sync
 
