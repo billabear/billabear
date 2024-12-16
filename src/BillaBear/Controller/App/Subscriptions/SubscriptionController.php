@@ -219,8 +219,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         $dto = $subscriptionFactory->createAppDto($subscription);
@@ -269,8 +269,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         /** @var UpdatePaymentMethod $dto */
@@ -314,8 +314,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         /** @var CancelSubscription $dto */
