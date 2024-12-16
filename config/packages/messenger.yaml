@@ -24,7 +24,7 @@ framework:
             'BillaBear\Schedule\Messenger\Message\GenericTasks': main
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': main
             'BillaBear\Invoice\Delivery\Messenger\InvoiceDeliveryRequest': main
-            'BillaBear\Pricing\Usage\Messenger\Message\UpdateCustomerCounters': main
+           # 'BillaBear\Pricing\Usage\Messenger\Message\UpdateCustomerCounters': main
 
 when@test:
     framework:
