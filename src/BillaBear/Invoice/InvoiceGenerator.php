@@ -174,6 +174,8 @@ class InvoiceGenerator
                     $line->setTaxState($priceInfo->taxInfo->state);
                     $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
                     $line->setProduct($subscription->getSubscriptionPlan()->getProduct());
+                    $line->setMetadata($subscription->getMetadata());
+
                     $lines[] = $line;
                 }
             } else {

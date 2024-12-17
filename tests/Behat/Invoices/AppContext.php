@@ -304,6 +304,28 @@ class AppContext implements Context
     }
 
     /**
+     * @Then the latest invoice for :customerEmail should have metadata :json
+     */
+    public function theLatestInvoiceForShouldHaveMetadata($customerEmail, $json): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+        $jsonData = json_encode(json_decode($json, true));
+        foreach ($invoice->getLines() as $line) {
+            if ($jsonData === json_encode($line->getMetadata())) {
+                return;
+            }
+        }
+
+        throw new \Exception("Didn't find metadata");
+    }
+
+    /**
      * @Given the last invoice for :arg1 had a metric usage for :arg2 that was :arg3
      */
     public function theLastInvoiceForHadAMetricUsageForThatWas($customerEmail, $metricName, $value)
