@@ -116,7 +116,8 @@
               <tr class="border-b border-black">
                 <th class="text-left pb-2">{{ $t('app.product.view.price.list.amount') }}</th>
               <th>{{ $t('app.product.view.price.list.currency') }}</th>
-              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
+                <th>{{ $t('app.product.view.price.list.recurring') }}</th>
+                <th>{{ $t('app.product.view.price.list.usage') }}</th>
               <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
               <th>{{ $t('app.product.view.price.list.public') }}</th>
               <th></th>
@@ -127,6 +128,7 @@
               <td>{{ price.display_value }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
+              <td>{{ price.usage }}</td>
               <td>{{ price.including_tax }}</td>
               <td>{{ price.public }}</td>
               <td>
