@@ -19,4 +19,20 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table('subscription')]
 class Subscription extends \Parthenon\Billing\Entity\Subscription
 {
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $metadata = null;
+
+    public function getMetadata(): array
+    {
+        if (!is_array($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata(?array $metadata): void
+    {
+        $this->metadata = $metadata;
+    }
 }

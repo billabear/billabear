@@ -51,6 +51,9 @@ class CreateSubscription
     #[Assert\Type('boolean')]
     private $deny_trial;
 
+    #[Assert\Type('array')]
+    private $metadata;
+
     public function getSubscriptionPlan()
     {
         return $this->subscription_plan;
@@ -134,5 +137,19 @@ class CreateSubscription
     public function setDenyTrial($deny_trial): void
     {
         $this->deny_trial = $deny_trial;
+    }
+
+    public function getMetadata()
+    {
+        if (!isset($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata($metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }

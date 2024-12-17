@@ -149,6 +149,7 @@ class CustomerSubscriptionController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         SubscriptionManagerInterface $subscriptionManager,
+        SubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PriceRepositoryInterface $priceRepository,
@@ -217,6 +218,8 @@ class CustomerSubscriptionController
                 $hasTrial = false;
             }
             $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumber(), $hasTrial);
+            $subscription->setMetadata($dto->getMetadata());
+            $subscriptionRepository->save($subscription);
             $transactionManager->finish();
         } catch (PaymentFailureException $e) {
             $this->getLogger()->warning('Payment failure during creation', ['reason' => $e->getReason()->value]);

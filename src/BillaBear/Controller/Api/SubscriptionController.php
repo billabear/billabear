@@ -208,10 +208,10 @@ class SubscriptionController
 
         try {
             $cancellationRequestProcessor->process($cancellationRequest);
-        } catch (\Throwable) {
+        } catch (\Throwable $exception) {
             $cancellationRequestRepository->save($cancellationRequest);
 
-            // return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
+            return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
         }
 
         $cancellationRequestRepository->save($cancellationRequest);

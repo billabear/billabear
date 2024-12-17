@@ -141,6 +141,18 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the subscription for the user :arg1 should have the metadata :arg2
+     */
+    public function theSubscriptionForTheUserShouldHaveTheMetadataRegion($customerEmail, $jsonRaw): void
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        if (json_encode(json_decode($jsonRaw, true)) !== json_encode($subscription->getMetadata())) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", json_encode(json_decode($jsonRaw, true)), json_encode($subscription->getMetadata())));
+        }
+    }
+
+    /**
      * @Then the trial for the subscription for :arg1 should end in :arg2 days
      */
     public function theTrialForTheSubscriptionForShouldEndInDays($customerEmail, $days)

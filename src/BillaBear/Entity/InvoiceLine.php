@@ -66,6 +66,9 @@ class InvoiceLine
     #[ORM\Column(type: 'float', nullable: true)]
     private float $quantity;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $metadata = null;
+
     public function getId()
     {
         return $this->id;
@@ -252,5 +255,19 @@ class InvoiceLine
         }
 
         return false;
+    }
+
+    public function getMetadata(): array
+    {
+        if (!isset($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata(?array $metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }
