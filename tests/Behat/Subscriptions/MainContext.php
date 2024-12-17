@@ -415,6 +415,7 @@ class MainContext implements Context
             $subscription->setPaymentDetails($paymentDetails);
             $subscription->setValidUntil($end);
             $subscription->setActive($active);
+            $subscription->setMetadata(json_decode($row['Metadata'] ?? '[]', true));
 
             if (isset($row['Ended At'])) {
                 $subscription->setEndedAt(new \DateTime($row['Ended At']));

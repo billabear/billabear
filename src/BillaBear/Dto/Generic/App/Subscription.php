@@ -49,6 +49,8 @@ class Subscription
 
     private Customer $customer;
 
+    private array $metadata;
+
     public function getId(): string
     {
         return $this->id;
@@ -187,5 +189,15 @@ class Subscription
     public function setSeatNumber(?int $seatNumber): void
     {
         $this->seatNumber = $seatNumber;
+    }
+
+    public function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata(array $metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }

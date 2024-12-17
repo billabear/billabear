@@ -12,9 +12,9 @@ use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\Dto\Generic\Api\Subscription as ApiDto;
 use BillaBear\Dto\Generic\App\Subscription as AppDto;
+use BillaBear\Entity\Subscription as Entity;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use Obol\Model\Subscription as ObolModel;
-use Parthenon\Billing\Entity\Subscription as Entity;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -105,6 +105,7 @@ class SubscriptionDataMapper
         $dto->setSeatNumber($subscription->getSeats());
         $dto->setValidUntil($subscription->getValidUntil());
         $dto->setCustomer($this->customerFactory->createAppDto($subscription->getCustomer()));
+        $dto->setMetadata($subscription->getMetadata());
 
         return $dto;
     }
@@ -125,6 +126,7 @@ class SubscriptionDataMapper
         $dto->setUpdatedAt($subscription->getUpdatedAt());
         $dto->setValidUntil($subscription->getValidUntil());
         $dto->setStatus($subscription->getStatus()->value);
+        $dto->setMetadata($subscription->getMetadata());
 
         return $dto;
     }

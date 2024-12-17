@@ -44,6 +44,8 @@ class Subscription
     #[SerializedName('seat_number')]
     private ?int $seatNumber = null;
 
+    private array $metadata;
+
     private string $status;
 
     public function getId(): string
@@ -164,5 +166,15 @@ class Subscription
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata(array $metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }
