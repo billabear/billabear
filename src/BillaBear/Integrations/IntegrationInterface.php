@@ -9,7 +9,9 @@
 namespace BillaBear\Integrations;
 
 use BillaBear\Exception\Integrations\UnsupportedFeatureException;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
+#[AutoconfigureTag('billabear.integration')]
 interface IntegrationInterface
 {
     public function getType(): IntegrationType;

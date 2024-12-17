@@ -11,9 +11,12 @@ namespace BillaBear\Integrations;
 readonly class OauthConfig
 {
     public function __construct(
+        public string $clientId,
+        public string $clientSecret,
         public string $urlAuthorize,
         public string $urlAccessToken,
         public string $urlResourceOwnerDetails,
+        public string $scope,
     ) {
     }
 }
