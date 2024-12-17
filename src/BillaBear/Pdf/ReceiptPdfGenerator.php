@@ -104,6 +104,7 @@ class ReceiptPdfGenerator
             'tax_total' => $receiptLine->getVatTotal(),
             'tax_percentage' => $receiptLine->getVatPercentage(),
             'description' => $receiptLine->getDescription(),
+            'metadata' => $receiptLine->getMetadata(),
         ];
     }
 

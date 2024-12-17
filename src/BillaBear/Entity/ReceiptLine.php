@@ -26,6 +26,9 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $reverseCharge = false;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $metadata = null;
+
     public function getTaxType(): ?TaxType
     {
         return $this->taxType;
@@ -74,5 +77,19 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     public function setReverseCharge(bool $reverseCharge): void
     {
         $this->reverseCharge = $reverseCharge;
+    }
+
+    public function getMetadata(): array
+    {
+        if (!isset($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata(?array $metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }

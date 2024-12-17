@@ -63,6 +63,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setTaxType($invoiceLine->getTaxType());
                 $line->setReverseCharge($invoiceLine->isReverseCharge());
                 $line->setTaxCountry($invoiceLine->getTaxCountry());
+                $line->setMetadata($invoiceLine->getMetadata());
 
                 $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
                 $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
@@ -90,6 +91,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                     $line->setTaxCountry($priceInfo->taxInfo->country);
                     $line->setTaxState($priceInfo->taxInfo->state);
                     $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                    $line->setMetadata($subscription->getMetadata());
 
                     $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
                     $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());

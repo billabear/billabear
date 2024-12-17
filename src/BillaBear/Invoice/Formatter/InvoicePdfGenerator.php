@@ -105,6 +105,7 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
             'description' => $invoiceLine->getDescription(),
             'tax_type' => $invoiceLine->getTaxType()?->getName(),
             'tax_country' => $invoiceLine->getTaxCountry(),
+            'metadata' => $invoiceLine->getMetadata(),
         ];
     }
 
