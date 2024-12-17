@@ -145,7 +145,7 @@ class CreatePrice
 
     public function isRecurring(): bool
     {
-        return $this->recurring;
+        return true === $this->recurring;
     }
 
     public function getSchedule(): ?string
