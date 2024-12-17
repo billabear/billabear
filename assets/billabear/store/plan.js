@@ -51,6 +51,9 @@ const actions = {
     removePriceFromSelected({commit}, {key}) {
         commit('removePrice', key)
     },
+    reset({commit}) {
+        commit('resetEverything', []);
+    },
     createFeature({commit}, {feature}) {
         commit('markAsSendingRequest')
         return new Promise((resolve, reject) => {
@@ -140,6 +143,11 @@ const mutations = {
     },
     removePrice(state, key){
         state.selectedPrices.splice(key, 1);
+    },
+    resetEverything(state, key){
+        state.selectedPrices = [];
+        state.selectedFeatures = [];
+        state.selectedLimits = [];
     }
 }
 

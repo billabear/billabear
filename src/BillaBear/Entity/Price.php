@@ -81,6 +81,8 @@ class Price extends \Parthenon\Billing\Entity\Price
             $output .= ' - '.$this->schedule;
         } elseif (!$this->getUsage()) {
             $output .= ' - one-off';
+        } elseif ($this->getUsage()) {
+            $output .= ' - '.$this->metric->getName();
         }
 
         return $output;
