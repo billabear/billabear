@@ -48,6 +48,8 @@ class Price
 
     protected ?Metric $metric = null;
 
+    protected bool $usage = false;
+
     public function hasId(): bool
     {
         return isset($this->id);
@@ -171,5 +173,15 @@ class Price
     public function setMetric(?Metric $metric): void
     {
         $this->metric = $metric;
+    }
+
+    public function isUsage(): bool
+    {
+        return $this->usage;
+    }
+
+    public function setUsage(bool $usage): void
+    {
+        $this->usage = $usage;
     }
 }

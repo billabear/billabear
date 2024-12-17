@@ -143,6 +143,7 @@ class PriceDataMapper
         $dto->setProduct($this->productDataMapper->createAppDtoFromProduct($price->getProduct()));
         $dto->setIncludingTax($price->isIncludingTax());
         $dto->setMetric($this->metricDataMapper->createAppDto($price->getMetric()));
+        $dto->setUsage($price->getUsage());
 
         return $dto;
     }

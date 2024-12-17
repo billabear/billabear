@@ -41,7 +41,8 @@ export const SUBSCRIPTION_PLAN_VIEW_TRANSLATIONS = {
             schedule: "Payment Schedule",
             including_tax: "Price Includes Tax",
             public: "Public Price",
-            external_reference: "External Reference"
+            external_reference: "External Reference",
+            usage: "Usage"
         }
     }
 }

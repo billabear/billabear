@@ -74,13 +74,13 @@ class Price extends \Parthenon\Billing\Entity\Price
                     (string) $flatFeeMoney);
                 break;
             }
-            $output = rtrim($output, '/').' - ';
+            $output = rtrim($output, '/');
         }
 
         if ($this->recurring) {
-            $output .= $this->schedule;
-        } else {
-            $output .= 'one-off';
+            $output .= ' - '.$this->schedule;
+        } elseif (!$this->getUsage()) {
+            $output .= ' - one-off';
         }
 
         return $output;
