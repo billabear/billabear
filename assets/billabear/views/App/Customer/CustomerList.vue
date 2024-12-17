@@ -21,6 +21,7 @@
               <thead>
               <tr class="border-b border-black">
                 <th class="text-left pb-2">{{ $t('app.customer.list.email') }}</th>
+                <th class="text-left pb-2">{{ $t('app.customer.list.company_name')}}</th>
                 <th class="text-left pb-2">{{ $t('app.customer.list.country')}}</th>
                 <th class="text-left pb-2">{{ $t('app.customer.list.reference') }}</th>
                 <th></th>
@@ -29,6 +30,7 @@
               <tbody v-if="loaded">
               <tr v-for="customer in customers" class="cursor-pointer hover:bg-gray-50" @click="$router.push({name: 'app.customer.view', params: {id: customer.id}})">
                 <td class="py-3">{{ customer.email }}</td>
+                <td class="py-3">{{ customer.address.company_name }}</td>
                 <td class="py-3">{{ customer.address.country }}</td>
                 <td class="py-3">{{ customer.reference }}</td>
                 <td class="py-3"><router-link :to="{name: 'app.customer.view', params: {id: customer.id}}" class="rounded-lg w-full p-2 bg-teal-500 text-white font-bold">{{ $t('app.customer.list.view_btn') }}</router-link></td>
@@ -110,6 +112,11 @@ export default {
         },
         external_reference: {
           label: 'app.customer.list.filter.external_reference',
+          type: 'text',
+          value: null
+        },
+        company_name: {
+          label: 'app.customer.list.filter.company_name',
           type: 'text',
           value: null
         }

@@ -2,6 +2,7 @@
 export const CUSTOMER_LIST_TRANSLATIONS = {
     title: "Customers",
     email: "Email",
+    company_name: "Company Name",
     country: "Country",
     reference: "Reference",
     no_customers: "There are currently no customers existing",
@@ -14,6 +15,8 @@ export const CUSTOMER_LIST_TRANSLATIONS = {
         email: "Email",
         reference: "Reference",
         external_reference: "External Reference",
+        country: "Country",
+        company_name: "Company Name",
         button: "Filters",
         search: "Filter",
         no_filters: "No Filters"

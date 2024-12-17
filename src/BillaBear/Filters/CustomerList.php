@@ -24,6 +24,10 @@ class CustomerList extends AbstractFilterList
                 'field' => '.billingAddress.country',
                 'filter' => ExactChoiceFilter::class,
             ],
+            'company_name' => [
+                'field' => '.billingAddress.companyName',
+                'filter' => ContainsFilter::class,
+            ],
             'reference' => [
                 'field' => 'reference',
                 'filter' => ContainsFilter::class,
