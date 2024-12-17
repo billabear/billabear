@@ -9,14 +9,8 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
         title: "Main Details",
         name: "Name",
         physical: "Physical",
-        external_reference: "External Reference",
         tax_rate: "Tax Rate",
         tax_type: "Tax Type",
-        tax_types: {
-            digital_services: "Digital Services",
-            digital_goods: "Digital Goods",
-            physical: "Physical Goods/Services"
-        },
     },
     price: {
         title: "Prices",
@@ -31,7 +25,6 @@ export const PRODUCT_VIEW_TRANSLATIONS = {
             schedule: "Payment Schedule",
             including_tax: "Price Includes Tax",
             public: "Public Price",
-            external_reference: "External Reference",
             usage: "Usage"
         }
     },

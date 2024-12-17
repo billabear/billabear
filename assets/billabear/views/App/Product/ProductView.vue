@@ -36,13 +36,6 @@
                 <dt>{{ $t('app.product.view.main.tax_type') }}</dt>
                 <dd><span v-if="product.tax_type">{{ product.tax_type.name }}</span></dd>
               </div>
-              <div>
-                <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
-                <dd>
-                  <a v-if="product.payment_provider_details_url" target="_blank" :href="product.payment_provider_details_url">{{ product.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                  <span v-else>{{ product.external_reference }}</span>
-                </dd>
-              </div>
             </dl>
           </div>
         </div>
@@ -67,7 +60,6 @@
               <tr class="border-b border-black">
                 <th class="text-left pb-2">{{ $t('app.product.view.subscription_plan.list.name') }}</th>
               <th class="text-left pb-2">{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
-              <th class="text-left pb-2">{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
               <th></th>
               <th></th>
             </tr>
@@ -76,10 +68,6 @@
             <tr v-for="(plan, key) in subscriptionPlans" class="mt-5">
               <td class="py-3">{{ plan.name }}</td>
               <td>{{ plan.code_name }}</td>
-              <td>
-                <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ plan.external_reference }}</span>
-              </td>
               <td>
                 <router-link :to="{name: 'app.subscription_plan.view', params: {productId: id, subscriptionPlanId: plan.id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.view') }}</router-link>
               </td>
