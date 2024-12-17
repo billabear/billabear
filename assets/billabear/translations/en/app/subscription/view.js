@@ -51,6 +51,10 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         estimate_cost: "Estimate Cost",
         metric: "Metric"
     },
+    metadata: {
+        title: "Metadata",
+        no_metadata: "No Metadata"
+    },
     buttons: {
         cancel: "Cancel",
         payment_method: "Update Payment Details"
