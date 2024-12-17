@@ -19,6 +19,7 @@ class InviteCodeDataMapper
         $appDto->setEmail($entity->getEmail());
         $appDto->setSentAt($entity->getCreatedAt());
         $appDto->setCode($entity->getCode());
+        $appDto->setRole($entity->getRole());
 
         return $appDto;
     }

@@ -58,28 +58,30 @@
       </div>
 
       <div class="" v-if="invites.length > 0">
-        <h3>{{ $t('app.settings.user.list.invite_title') }}</h3>
-        <table class="list-table">
-          <thead>
-          <tr>
-            <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
-            <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(invite, key) in invites">
-            <td>{{ invite.email }}</td>
-            <td>{{ invite.role }}</td>
-            <td>
-              <button class="btn--main" v-if="copied === key" disabled><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copied_link') }}</button>
-              <button class="btn--main" @click="copyInviteToClipboard(invite, key)" v-else><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copy_link') }}</button>
+        <h3 class="text-3xl mb-3">{{ $t('app.settings.user.list.invite_title') }}</h3>
+        <div class="rounded-lg bg-white shadow p-3">
+          <table class="list-table">
+            <thead>
+            <tr>
+              <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
+              <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(invite, key) in invites">
+              <td>{{ invite.email }}</td>
+              <td><span class="badge--green">{{ invite.role }}</span></td>
+              <td>
+                <button class="btn--main" v-if="copied === key" disabled><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copied_link') }}</button>
+                <button class="btn--main" @click="copyInviteToClipboard(invite, key)" v-else><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copy_link') }}</button>
 
-            </td>
+              </td>
 
-          </tr>
-          </tbody>
-        </table>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </LoadingScreen>
   </div>
