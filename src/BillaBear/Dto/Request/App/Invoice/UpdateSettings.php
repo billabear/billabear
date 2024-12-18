@@ -31,6 +31,10 @@ class UpdateSettings
     #[SerializedName('default_invoice_due_time')]
     private $defaultInvoiceDueTime;
 
+    #[Assert\Choice(choices: ['monthly', 'end_of_month'])]
+    #[SerializedName('invoice_generation')]
+    private $invoiceGeneration;
+
     public function getInvoiceNumberGeneration()
     {
         return $this->invoiceNumberGeneration;
@@ -69,5 +73,15 @@ class UpdateSettings
     public function setDefaultInvoiceDueTime($defaultInvoiceDueTime): void
     {
         $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
+    }
+
+    public function getInvoiceGeneration()
+    {
+        return $this->invoiceGeneration;
+    }
+
+    public function setInvoiceGeneration($invoiceGeneration): void
+    {
+        $this->invoiceGeneration = $invoiceGeneration;
     }
 }

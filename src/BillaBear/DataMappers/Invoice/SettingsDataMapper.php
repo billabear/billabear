@@ -11,6 +11,7 @@ namespace BillaBear\DataMappers\Invoice;
 use BillaBear\Dto\Request\App\Invoice\UpdateSettings;
 use BillaBear\Dto\Response\App\Invoice\InvoiceSettings as AppDto;
 use BillaBear\Entity\Settings\SystemSettings;
+use BillaBear\Invoice\InvoiceGenerationType;
 
 class SettingsDataMapper
 {
@@ -20,6 +21,7 @@ class SettingsDataMapper
         $settings->setSubsequentialNumber($dto->getSubsequentialNumber());
         $settings->setDefaultInvoiceDueTime($dto->getDefaultInvoiceDueTime());
         $settings->setInvoiceNumberFormat($dto->getFormat());
+        $settings->setInvoiceGenerationType(InvoiceGenerationType::from($dto->getInvoiceGeneration()));
 
         return $settings;
     }
@@ -31,6 +33,7 @@ class SettingsDataMapper
         $dto->setSubsequentialNumber($settings->getSubsequentialNumber());
         $dto->setDefaultInvoiceDueTime($settings->getDefaultInvoiceDueTime());
         $dto->setFormat($settings->getInvoiceNumberFormat());
+        $dto->setInvoiceGeneration($settings->getInvoiceGenerationType()->value);
 
         return $dto;
     }

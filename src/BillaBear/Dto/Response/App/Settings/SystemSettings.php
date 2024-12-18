@@ -37,44 +37,4 @@ class SystemSettings
     {
         $this->timezone = $timezone;
     }
-
-    public function getInvoiceNumberGeneration(): ?string
-    {
-        return $this->invoiceNumberGeneration;
-    }
-
-    public function setInvoiceNumberGeneration(?string $invoiceNumberGeneration): void
-    {
-        $this->invoiceNumberGeneration = $invoiceNumberGeneration;
-    }
-
-    public function getSubsequentialNumber(): ?int
-    {
-        return $this->subsequentialNumber;
-    }
-
-    public function setSubsequentialNumber(?int $subsequentialNumber): void
-    {
-        $this->subsequentialNumber = $subsequentialNumber;
-    }
-
-    public function getDefaultInvoiceDueTime(): ?string
-    {
-        return $this->defaultInvoiceDueTime;
-    }
-
-    public function setDefaultInvoiceDueTime(?string $defaultInvoiceDueTime): void
-    {
-        $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
-    }
-
-    public function getFormat(): ?string
-    {
-        return $this->format;
-    }
-
-    public function setFormat(?string $format): void
-    {
-        $this->format = $format;
-    }
 }

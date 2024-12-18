@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity\Settings;
 
+use BillaBear\Invoice\InvoiceGenerationType;
 use BillaBear\Pdf\PdfGeneratorType;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,6 +25,9 @@ class SystemSettings
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $defaultInvoiceDueTime = null;
+
+    #[ORM\Column(type: 'string', nullable: true, enumType: InvoiceGenerationType::class)]
+    private ?InvoiceGenerationType $invoiceGenerationType = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $subsequentialNumber = null;
@@ -261,5 +265,15 @@ class SystemSettings
     public function setInvoiceNumberFormat(?string $invoiceNumberFormat): void
     {
         $this->invoiceNumberFormat = $invoiceNumberFormat;
+    }
+
+    public function getInvoiceGenerationType(): InvoiceGenerationType
+    {
+        return $this->invoiceGenerationType ?? InvoiceGenerationType::PERIODICALLY;
+    }
+
+    public function setInvoiceGenerationType(?InvoiceGenerationType $invoiceGenerationType): void
+    {
+        $this->invoiceGenerationType = $invoiceGenerationType;
     }
 }

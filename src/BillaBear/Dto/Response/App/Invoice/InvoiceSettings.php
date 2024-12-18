@@ -24,6 +24,9 @@ class InvoiceSettings
     #[SerializedName('format')]
     private ?string $format = null;
 
+    #[SerializedName('invoice_generation')]
+    private string $invoiceGeneration;
+
     public function getInvoiceNumberGeneration(): ?string
     {
         return $this->invoiceNumberGeneration;
@@ -62,5 +65,15 @@ class InvoiceSettings
     public function setFormat(?string $format): void
     {
         $this->format = $format;
+    }
+
+    public function getInvoiceGeneration(): string
+    {
+        return $this->invoiceGeneration;
+    }
+
+    public function setInvoiceGeneration(string $invoiceGeneration): void
+    {
+        $this->invoiceGeneration = $invoiceGeneration;
     }
 }

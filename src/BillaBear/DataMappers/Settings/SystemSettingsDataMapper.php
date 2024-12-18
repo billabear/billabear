@@ -27,10 +27,6 @@ class SystemSettingsDataMapper
         $dto = new AppDto();
         $dto->setSystemUrl($settings->getSystemUrl());
         $dto->setTimezone($settings->getTimezone());
-        $dto->setInvoiceNumberGeneration($settings->getInvoiceNumberGeneration());
-        $dto->setSubsequentialNumber($settings->getSubsequentialNumber());
-        $dto->setDefaultInvoiceDueTime($settings->getDefaultInvoiceDueTime());
-        $dto->setFormat($settings->getInvoiceNumberFormat());
 
         return $dto;
     }

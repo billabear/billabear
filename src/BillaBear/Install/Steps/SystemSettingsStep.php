@@ -10,6 +10,7 @@ namespace BillaBear\Install\Steps;
 
 use BillaBear\Entity\Settings;
 use BillaBear\Install\Dto\InstallRequest;
+use BillaBear\Invoice\InvoiceGenerationType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 
 class SystemSettingsStep
@@ -27,6 +28,7 @@ class SystemSettingsStep
         $systemSettings->setInvoiceNumberGeneration('random');
         $systemSettings->setUseStripeBilling(false);
         $systemSettings->setDefaultInvoiceDueTime('30 days');
+        $systemSettings->setInvoiceNumberGeneration(InvoiceGenerationType::PERIODICALLY);
 
         $notification = new Settings\NotificationSettings();
         $notification->setEmsp(Settings\NotificationSettings::EMSP_SYSTEM);
