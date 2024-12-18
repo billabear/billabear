@@ -48,6 +48,7 @@ class InvoiceGenerator
         private DueDateDecider $dateDecider,
         private MetricProvider $metricProvider,
         private MetricCounterRepositoryInterface $metricUsageRepository,
+        private QuantityProvider $quantityProvider,
         BricksExchangeRateProvider $exchangeRateProvider,
     ) {
         $this->currencyConverter = new CurrencyConverter($exchangeRateProvider);
@@ -147,6 +148,7 @@ class InvoiceGenerator
                     $this->metricUsageRepository->save($metricCounter);
                 } else {
                     $usage = $subscription->getSeats();
+                    $usage = $this->quantityProvider->getQuantity($usage, new \DateTime(), $subscription);
                 }
                 // Pass Metric Usage
                 $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);

@@ -8,12 +8,24 @@
 
 namespace BillaBear\Subscription\Schedule;
 
+use BillaBear\Invoice\InvoiceGenerationType;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 
 class SchedulerProvider
 {
+    public function __construct(private SettingsRepositoryInterface $settingsRepository)
+    {
+    }
+
     public function getScheduler(Price $price): SchedulerInterface
     {
+        $settings = $this->settingsRepository->getDefaultSettings();
+
+        if (InvoiceGenerationType::END_OF_MONTH === $settings->getSystemSettings()->getInvoiceGenerationType()) {
+            return new EndOfMonthScheduler();
+        }
+
         if ('week' === $price->getSchedule()) {
             return new WeekScheduler();
         }

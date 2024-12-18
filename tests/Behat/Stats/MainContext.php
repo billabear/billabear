@@ -283,6 +283,31 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the payment amount stats for the day should be more than :arg2 and less than :arg3 in the currency :arg1
+     */
+    public function thePaymentAmountStatsForTheDayShouldBeMoreThanAndLessThanInTheCurrency($amount, $higherAmount, $currency): void
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->paymentAmountDailyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => $dateTime->format('d'),
+        ]);
+
+        if (!$statEntity instanceof PaymentAmountDailyStats && 0 != $amount) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity?->getAmount() <= $amount || $statEntity->getAmount() >= $higherAmount) {
+            throw new \Exception(sprintf('Expected between %d and %d but got %d', $amount, $higherAmount, $statEntity->getAmount()));
+        }
+
+        if ($statEntity?->getCurrency() != $currency && 0 != $amount) {
+            throw new \Exception('Currency is wrong');
+        }
+    }
+
+    /**
      * @Then there will be a refund amount daily stat for :arg2 in the currency :arg1
      */
     public function thereWillBeARefundAmountDailyStatForInTheCurrency($amount, $currency)
