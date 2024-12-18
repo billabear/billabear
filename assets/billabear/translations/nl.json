@@ -455,10 +455,13 @@
                     "external_reference": "Externe referentie",
                     "button": "Filters",
                     "search": "Filter",
-                    "no_filters": "Geen filters"
+                    "no_filters": "Geen filters",
+                    "country": "Land",
+                    "company_name": "Bedrijfsnaam"
                 },
                 "loading": "Resultaten laden",
-                "error_message": "Er is een fout opgetreden"
+                "error_message": "Er is een fout opgetreden",
+                "company_name": "Bedrijfsnaam"
             },
             "create": {
                 "title": "Nieuwe klant aanmaken",
@@ -670,6 +673,19 @@
                         "cost": "Geschatte kosten"
                     },
                     "no_counters": "Er zijn geen metrische tellers"
+                },
+                "usage_limits": {
+                    "title": "Gebruiksbeperkingen",
+                    "add_new": "Nieuw toevoegen",
+                    "list": {
+                        "amount": "Bedrag",
+                        "warn_level": "Actie"
+                    },
+                    "warn_levels": {
+                        "warn": "Waarschuw",
+                        "disable": "uitschakelen"
+                    },
+                    "no_limits": "Er zijn geen gebruikslimieten voor deze klant"
                 }
             },
             "update": {
@@ -803,7 +819,8 @@
                         "schedule": "Betalingsschema",
                         "including_tax": "Prijs inclusief belasting",
                         "public": "Openbare prijs",
-                        "external_reference": "Externe referentie"
+                        "external_reference": "Externe referentie",
+                        "usage": "Gebruik"
                     }
                 },
                 "subscription_plan": {
@@ -1083,7 +1100,8 @@
                         "schedule": "Betalingsschema",
                         "including_tax": "Prijs inclusief belasting",
                         "public": "Openbare prijs",
-                        "external_reference": "Externe referentie"
+                        "external_reference": "Externe referentie",
+                        "usage": "Gebruik"
                     }
                 }
             },
@@ -1278,6 +1296,10 @@
                     "usage": "Gebruik",
                     "estimate_cost": "Kosten schatten",
                     "metric": "Metrisch"
+                },
+                "metadata": {
+                    "title": "Metagegevens",
+                    "no_metadata": "Geen metagegevens"
                 }
             },
             "list": {
@@ -1828,7 +1850,8 @@
                         "invoice_number_generation": "Factuurnummer genereren",
                         "subsequential_number": "Volgnummer",
                         "default_invoice_due_time": "Standaard vervaldatum factuur",
-                        "format": "Formaat"
+                        "format": "Formaat",
+                        "invoice_generation": "Factuur genereren"
                     },
                     "help_info": {
                         "system_url": "De basis url waarop BillaBear te vinden is.",
@@ -1836,7 +1859,8 @@
                         "invoice_number_generation": "Hoe het factuurnummer wordt gegenereerd. Random is een willekeurige tekenreeks en subsequent betekent dat het een getal is dat oploopt",
                         "subsequential_number": "Het laatst gebruikte factuurnummer. Het volgende factuurnummer is één cijfer hoger",
                         "default_invoice_due_time": "Hoe lang er zit tussen het aanmaken van een factuur en de vervaldatum",
-                        "format": "Het formaat dat moet worden gebruikt voor het genereren van factuurnummers. %S is het volgnummer en %R voor 8 willekeurige tekens."
+                        "format": "Het formaat dat moet worden gebruikt voor het genereren van factuurnummers. %S is het volgnummer en %R voor 8 willekeurige tekens.",
+                        "invoice_generation": "Wanneer nieuwe facturen voor abonnementen moeten worden gegenereerd"
                     },
                     "invoice_number_generation": {
                         "random": "Willekeurig getal",
@@ -1848,6 +1872,10 @@
                         "60_days": "60 dagen",
                         "90_days": "90 dagen",
                         "120_days": "120 dagen"
+                    },
+                    "invoice_generation_types": {
+                        "periodically": "Periodiek",
+                        "end_of_month": "Einde maand"
                     }
                 }
             },
@@ -3685,6 +3713,24 @@
             "update": {
                 "title": "Metriek bijwerken",
                 "update_button": "Sla"
+            }
+        },
+        "usage_limit": {
+            "create": {
+                "title": "Gebruikslimiet aanmaken",
+                "fields": {
+                    "amount": "Bedrag",
+                    "action": "Actie"
+                },
+                "help_info": {
+                    "amount": "Het bedrag waartoe u de klant wilt beperken voordat er actie wordt ondernomen",
+                    "action": "De actie die moet gebeuren als de limiet wordt overschreden."
+                },
+                "actions": {
+                    "warn": "Waarschuw",
+                    "disable": "uitschakelen"
+                },
+                "submit": "Maak"
             }
         }
     },

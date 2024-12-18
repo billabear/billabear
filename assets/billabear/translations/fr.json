@@ -455,10 +455,13 @@
                     "external_reference": "Référence externe",
                     "button": "Filtres",
                     "search": "Filtre",
-                    "no_filters": "Pas de filtre"
+                    "no_filters": "Pas de filtre",
+                    "country": "Pays",
+                    "company_name": "Nom de l'entreprise"
                 },
                 "loading": "Chargement des résultats",
-                "error_message": "Une erreur s'est produite"
+                "error_message": "Une erreur s'est produite",
+                "company_name": "Nom de l'entreprise"
             },
             "create": {
                 "title": "Créer un nouveau client",
@@ -670,6 +673,19 @@
                         "cost": "Coût estimé"
                     },
                     "no_counters": "Il n'y a pas de compteurs métriques"
+                },
+                "usage_limits": {
+                    "title": "Limites d'utilisation",
+                    "add_new": "Ajouter un nouveau",
+                    "list": {
+                        "amount": "Montant",
+                        "warn_level": "Action"
+                    },
+                    "warn_levels": {
+                        "warn": "Avertir",
+                        "disable": "Désactiver"
+                    },
+                    "no_limits": "Il n'y a pas de limite d'utilisation pour ce client"
                 }
             },
             "update": {
@@ -803,7 +819,8 @@
                         "schedule": "Calendrier de paiement",
                         "including_tax": "Prix TTC",
                         "public": "Prix public",
-                        "external_reference": "Référence externe"
+                        "external_reference": "Référence externe",
+                        "usage": "Utilisation"
                     }
                 },
                 "subscription_plan": {
@@ -1083,7 +1100,8 @@
                         "schedule": "Calendrier de paiement",
                         "including_tax": "Prix TTC",
                         "public": "Prix public",
-                        "external_reference": "Référence externe"
+                        "external_reference": "Référence externe",
+                        "usage": "Utilisation"
                     }
                 }
             },
@@ -1278,6 +1296,10 @@
                     "usage": "Utilisation",
                     "estimate_cost": "Estimation du coût",
                     "metric": "Métrique"
+                },
+                "metadata": {
+                    "title": "Métadonnées",
+                    "no_metadata": "Pas de métadonnées"
                 }
             },
             "list": {
@@ -1828,7 +1850,8 @@
                         "invoice_number_generation": "Génération de numéros de factures",
                         "subsequential_number": "Numéro ultérieur",
                         "default_invoice_due_time": "Délai de facturation par défaut",
-                        "format": "Format"
+                        "format": "Format",
+                        "invoice_generation": "Génération de factures"
                     },
                     "help_info": {
                         "system_url": "L'url de base de BillaBear se trouve à l'adresse suivante.",
@@ -1836,7 +1859,8 @@
                         "invoice_number_generation": "Comment le numéro de facture est généré. Random est une chaîne aléatoire et subsequent signifie qu'il s'agit d'un nombre qui s'incrémente",
                         "subsequential_number": "Le dernier numéro de facture utilisé. Le numéro de facture suivant sera supérieur d'un chiffre",
                         "default_invoice_due_time": "Combien de temps s'écoule entre la création de la facture et la date d'échéance ?",
-                        "format": "Le format à utiliser pour la génération du numéro de facture. %S correspond au numéro séquentiel et %R à 8 caractères aléatoires."
+                        "format": "Le format à utiliser pour la génération du numéro de facture. %S correspond au numéro séquentiel et %R à 8 caractères aléatoires.",
+                        "invoice_generation": "Lorsque de nouvelles factures pour des abonnements doivent être générées"
                     },
                     "invoice_number_generation": {
                         "random": "Nombre aléatoire",
@@ -1848,6 +1872,10 @@
                         "60_days": "60 jours",
                         "90_days": "90 jours",
                         "120_days": "120 jours"
+                    },
+                    "invoice_generation_types": {
+                        "periodically": "Périodiquement",
+                        "end_of_month": "Fin du mois"
                     }
                 }
             },
@@ -3685,6 +3713,24 @@
             "update": {
                 "title": "Mise à jour de la métrique",
                 "update_button": "Économiser"
+            }
+        },
+        "usage_limit": {
+            "create": {
+                "title": "Créer une limite d'utilisation",
+                "fields": {
+                    "amount": "Montant",
+                    "action": "Action"
+                },
+                "help_info": {
+                    "amount": "Montant auquel vous souhaitez limiter le client avant qu'une action ne soit entreprise.",
+                    "action": "L'action qui doit se produire lorsque la limite est dépassée."
+                },
+                "actions": {
+                    "warn": "Avertir",
+                    "disable": "Désactiver"
+                },
+                "submit": "Créer"
             }
         }
     },

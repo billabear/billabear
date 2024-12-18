@@ -455,10 +455,13 @@
                     "external_reference": "Externe Referenz",
                     "button": "Filter",
                     "search": "Filter",
-                    "no_filters": "Keine Filter"
+                    "no_filters": "Keine Filter",
+                    "country": "Land",
+                    "company_name": "Name des Unternehmens"
                 },
                 "loading": "Ergebnisse laden",
-                "error_message": "Es ist ein Fehler aufgetreten"
+                "error_message": "Es ist ein Fehler aufgetreten",
+                "company_name": "Name des Unternehmens"
             },
             "create": {
                 "title": "Neuen Kunden anlegen",
@@ -670,6 +673,19 @@
                         "cost": "Geschätzte Kosten"
                     },
                     "no_counters": "Es gibt keine metrischen Zähler"
+                },
+                "usage_limits": {
+                    "title": "Grenzen der Nutzung",
+                    "add_new": "Neu hinzufügen",
+                    "list": {
+                        "amount": "Betrag",
+                        "warn_level": "Aktion"
+                    },
+                    "warn_levels": {
+                        "warn": "Warnung",
+                        "disable": "Deaktivieren Sie"
+                    },
+                    "no_limits": "Für diesen Kunden gibt es keine Nutzungsbeschränkungen"
                 }
             },
             "update": {
@@ -803,7 +819,8 @@
                         "schedule": "Zahlungszeitplan",
                         "including_tax": "Preis inkl. Steuer",
                         "public": "Öffentlicher Preis",
-                        "external_reference": "Externe Referenz"
+                        "external_reference": "Externe Referenz",
+                        "usage": "Verwendung"
                     }
                 },
                 "subscription_plan": {
@@ -1083,7 +1100,8 @@
                         "schedule": "Zahlungszeitplan",
                         "including_tax": "Preis inkl. Steuer",
                         "public": "Öffentlicher Preis",
-                        "external_reference": "Externe Referenz"
+                        "external_reference": "Externe Referenz",
+                        "usage": "Verwendung"
                     }
                 }
             },
@@ -1278,6 +1296,10 @@
                     "usage": "Verwendung",
                     "estimate_cost": "Kostenvoranschlag",
                     "metric": "Metrisch"
+                },
+                "metadata": {
+                    "title": "Metadaten",
+                    "no_metadata": "Keine Metadaten"
                 }
             },
             "list": {
@@ -1828,7 +1850,8 @@
                         "invoice_number_generation": "Generierung von Rechnungsnummern",
                         "subsequential_number": "Fortlaufende Nummer",
                         "default_invoice_due_time": "Standard-Rechnungsfälligkeitszeit",
-                        "format": "Format"
+                        "format": "Format",
+                        "invoice_generation": "Erstellung von Rechnungen"
                     },
                     "help_info": {
                         "system_url": "Die Basis-URL, unter der BillaBear zu finden ist.",
@@ -1836,7 +1859,8 @@
                         "invoice_number_generation": "Wie die Rechnungsnummer generiert wird. Random ist eine zufällige Zeichenkette und subsequent bedeutet, dass es eine Zahl ist, die inkrementiert",
                         "subsequential_number": "Die zuletzt verwendete Rechnungsnummer. Die nächste Rechnungsnummer wird eine Stelle höher sein",
                         "default_invoice_due_time": "Wie viel Zeit zwischen der Rechnungserstellung und dem Fälligkeitsdatum liegt",
-                        "format": "Das Format, das für die Generierung von Rechnungsnummern verwendet werden soll. %S ist die fortlaufende Nummer und %R steht für 8 zufällige Zeichen."
+                        "format": "Das Format, das für die Generierung von Rechnungsnummern verwendet werden soll. %S ist die fortlaufende Nummer und %R steht für 8 zufällige Zeichen.",
+                        "invoice_generation": "Wenn neue Rechnungen für Abonnements erstellt werden sollen"
                     },
                     "invoice_number_generation": {
                         "random": "Zufallszahl",
@@ -1848,6 +1872,10 @@
                         "60_days": "60 Tage",
                         "90_days": "90 Tage",
                         "120_days": "120 Tage"
+                    },
+                    "invoice_generation_types": {
+                        "periodically": "Regelmäßig",
+                        "end_of_month": "Ende des Monats"
                     }
                 }
             },
@@ -3685,6 +3713,24 @@
             "update": {
                 "title": "Metrik aktualisieren",
                 "update_button": "Speichern Sie"
+            }
+        },
+        "usage_limit": {
+            "create": {
+                "title": "Verwendungsbeschränkung erstellen",
+                "fields": {
+                    "amount": "Betrag",
+                    "action": "Aktion"
+                },
+                "help_info": {
+                    "amount": "Der Betrag, auf den Sie den Kunden beschränken wollen, bevor Maßnahmen ergriffen werden",
+                    "action": "Die Aktion, die bei Überschreiten des Limits erfolgen soll."
+                },
+                "actions": {
+                    "warn": "Warnung",
+                    "disable": "Deaktivieren Sie"
+                },
+                "submit": "erstellen."
             }
         }
     },
