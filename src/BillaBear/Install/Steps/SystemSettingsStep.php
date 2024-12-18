@@ -28,7 +28,7 @@ class SystemSettingsStep
         $systemSettings->setInvoiceNumberGeneration('random');
         $systemSettings->setUseStripeBilling(false);
         $systemSettings->setDefaultInvoiceDueTime('30 days');
-        $systemSettings->setInvoiceNumberGeneration(InvoiceGenerationType::PERIODICALLY);
+        $systemSettings->setInvoiceGenerationType(InvoiceGenerationType::PERIODICALLY);
 
         $notification = new Settings\NotificationSettings();
         $notification->setEmsp(Settings\NotificationSettings::EMSP_SYSTEM);

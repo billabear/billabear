@@ -15,6 +15,7 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\EmailTemplate;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\TaxType;
+use BillaBear\Invoice\InvoiceGenerationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Common\Address;
 
@@ -73,6 +74,8 @@ class GeneralContext implements Context
         $settings->getSystemSettings()->setInvoiceNumberGeneration('random');
         $settings->getSystemSettings()->setStripePrivateKey('private-key');
         $settings->getSystemSettings()->setStripePublicKey('public-key');
+        $settings->getSystemSettings()->setInvoiceGenerationType(InvoiceGenerationType::PERIODICALLY);
+        $settings->getSystemSettings()->setDefaultInvoiceDueTime('30 days');
         $settings->setTaxSettings(new Settings\TaxSettings());
         $settings->getTaxSettings()->setTaxCustomersWithTaxNumbers(true);
 
