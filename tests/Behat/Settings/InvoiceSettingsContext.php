@@ -193,7 +193,7 @@ class InvoiceSettingsContext implements Context
     {
         $this->sendJsonRequest('GET', '/app/invoice/settings');
         $settings = $this->getJsonContent()['invoice_settings'];
-        $settings['invoice_generation'] = 'monthly';
+        $settings['invoice_generation'] = 'periodically';
         $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
     }
 

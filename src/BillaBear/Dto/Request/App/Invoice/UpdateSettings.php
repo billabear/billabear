@@ -31,7 +31,7 @@ class UpdateSettings
     #[SerializedName('default_invoice_due_time')]
     private $defaultInvoiceDueTime;
 
-    #[Assert\Choice(choices: ['monthly', 'end_of_month'])]
+    #[Assert\Choice(choices: ['periodically', 'end_of_month'])]
     #[SerializedName('invoice_generation')]
     private $invoiceGeneration;
 
