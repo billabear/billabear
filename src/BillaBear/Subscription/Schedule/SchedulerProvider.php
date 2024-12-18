@@ -20,17 +20,17 @@ class SchedulerProvider
 
     public function getScheduler(Price $price): SchedulerInterface
     {
-        $settings = $this->settingsRepository->getDefaultSettings();
-
-        if (InvoiceGenerationType::END_OF_MONTH === $settings->getSystemSettings()->getInvoiceGenerationType()) {
-            return new EndOfMonthScheduler();
-        }
-
         if ('week' === $price->getSchedule()) {
             return new WeekScheduler();
         }
 
         if ('month' === $price->getSchedule()) {
+            $settings = $this->settingsRepository->getDefaultSettings();
+
+            if (InvoiceGenerationType::END_OF_MONTH === $settings->getSystemSettings()->getInvoiceGenerationType()) {
+                return new EndOfMonthScheduler();
+            }
+
             return new MonthScheduler();
         }
 
