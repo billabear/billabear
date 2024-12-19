@@ -19,6 +19,7 @@ use BillaBear\Invoice\DueDateDecider;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
+use BillaBear\Invoice\QuantityProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Pricing\PriceInfo;
 use BillaBear\Pricing\Pricer;
@@ -48,11 +49,13 @@ class InvoiceGeneratorTest extends TestCase
         $subscriptionOne->method('getPrice')->willReturn($mockPrice);
         $subscriptionOne->method('getPlanName')->willReturn('Plan Name One');
         $subscriptionOne->method('getSubscriptionPlan')->willReturn($subscriptionPlan);
+        $subscriptionOne->method('getSeats')->willReturn(1);
 
         $subscriptionTwo = $this->createMock(Subscription::class);
         $subscriptionTwo->method('getPrice')->willReturn($mockPrice);
         $subscriptionTwo->method('getPlanName')->willReturn('Plan Name Two');
         $subscriptionTwo->method('getSubscriptionPlan')->willReturn($subscriptionPlan);
+        $subscriptionTwo->method('getSeats')->willReturn(1);
 
         $customer = $this->createMock(Customer::class);
         $invoiceNumberGenerator = $this->createMock(InvoiceNumberGeneratorInterface::class);
@@ -83,7 +86,10 @@ class InvoiceGeneratorTest extends TestCase
         $metricProvider = $this->createMock(MetricProvider::class);
         $metricUsage = $this->createMock(MetricCounterRepositoryInterface::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $metricProvider, $metricUsage, $exchangeRateProvider);
+        $quantityProvider = $this->createMock(QuantityProvider::class);
+        $quantityProvider->method('getQuantity')->willReturn(1);
+
+        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $metricProvider, $metricUsage, $quantityProvider, $exchangeRateProvider);
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
