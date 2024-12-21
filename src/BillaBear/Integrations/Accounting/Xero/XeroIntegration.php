@@ -23,6 +23,8 @@ class XeroIntegration implements IntegrationInterface
         private string $clientId,
         #[Autowire(env: 'XERO_CLIENT_SECRET')]
         private string $cientSecret,
+        #[Autowire(env: 'XERO_REDIRECT_URI')]
+        private string $redirectUri,
     ) {
     }
 
@@ -46,6 +48,7 @@ class XeroIntegration implements IntegrationInterface
         return new OAuthConfig(
             $this->clientId,
             $this->cientSecret,
+            $this->redirectUri,
             'https://login.xero.com/identity/connect/authorize',
             'https://login.xero.com/identity/connect/token',
             'https://api.xero.com/api.xro/2.0/Organisation',

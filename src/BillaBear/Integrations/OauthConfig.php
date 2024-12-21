@@ -13,6 +13,7 @@ readonly class OauthConfig
     public function __construct(
         public string $clientId,
         public string $clientSecret,
+        public string $redirectUri,
         public string $urlAuthorize,
         public string $urlAccessToken,
         public string $urlResourceOwnerDetails,

@@ -10,3 +10,4 @@ services:
   BillaBear\Tax\VatSense\VatSenseClient:
     class: BillaBear\Tax\VatSense\VatSenseClient
     factory: [ '@BillaBear\Tax\VatSense\ClientFactory', 'build' ]
+

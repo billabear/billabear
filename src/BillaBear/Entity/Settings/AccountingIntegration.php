@@ -22,6 +22,9 @@ class AccountingIntegration
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $apiKey = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $updatedAt = null;
+
     public function getEnabled(): bool
     {
         return true === $this->enabled;
@@ -50,5 +53,15 @@ class AccountingIntegration
     public function setApiKey(?string $apiKey): void
     {
         $this->apiKey = $apiKey;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 }
