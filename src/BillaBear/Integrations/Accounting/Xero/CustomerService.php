@@ -9,6 +9,7 @@
 namespace BillaBear\Integrations\Accounting\Xero;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 use BillaBear\Integrations\Accounting\CustomerInterface;
 use BillaBear\Integrations\Accounting\CustomerRegistration;
 use GuzzleHttp\ClientInterface;
@@ -35,20 +36,35 @@ class CustomerService implements CustomerInterface
 
     public function register(Customer $customer): CustomerRegistration
     {
+        $this->getLogger()->info('Registering customer to xero', ['customer_id' => (string) $customer->getId()]);
         $contacts = $this->buildContacts($customer);
 
-        $output = $this->accountingApi->createContacts($this->tenantId, $contacts);
+        try {
+            $output = $this->accountingApi->createContacts($this->tenantId, $contacts);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to create contact to xero', ['exception_message' => $e->getMessage()]);
+            throw new UnexpectedErrorException($e->getMessage(), previous: $e);
+        }
         /** @var Contact $contactData */
         $contactData = $output->getContacts()[0];
         $id = $contactData->getContactId();
+
+        $this->getLogger()->info('Customer registered to xero', ['customer_id' => (string) $customer->getId(), 'accounting_reference' => $id]);
 
         return new CustomerRegistration($id);
     }
 
     public function update(Customer $customer): void
     {
+        $this->getLogger()->info('Updating customer in xero', ['customer_id' => (string) $customer->getId()]);
         $contacts = $this->buildContacts($customer);
-        $this->accountingApi->updateContact($this->tenantId, $customer->getAccountingReference(), $contacts);
+        try {
+            $this->accountingApi->updateContact($this->tenantId, $customer->getAccountingReference(), $contacts);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to update contact to xero', ['exception_message' => $e->getMessage()]);
+            throw new UnexpectedErrorException($e->getMessage(), previous: $e);
+        }
+        $this->getLogger()->info('Customer updated in xero', ['customer_id' => (string) $customer->getId(), 'accounting_reference' => $id]);
     }
 
     public function delete(Customer $customer): void

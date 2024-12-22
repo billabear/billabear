@@ -9,10 +9,17 @@
 namespace BillaBear\Integrations\Accounting;
 
 use BillaBear\Entity\Invoice;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 
 interface InvoiceInterface
 {
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function register(Invoice $invoice): void;
 
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function isPaid(Invoice $invoice): bool;
 }

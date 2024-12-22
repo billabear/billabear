@@ -9,14 +9,27 @@
 namespace BillaBear\Integrations\Accounting;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 
 interface CustomerInterface
 {
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function register(Customer $customer): CustomerRegistration;
 
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function update(Customer $customer): void;
 
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function delete(Customer $customer): void;
 
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function findCustomer(Customer $customer): ?CustomerRegistration;
 }

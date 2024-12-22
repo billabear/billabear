@@ -9,8 +9,12 @@
 namespace BillaBear\Integrations\Accounting;
 
 use BillaBear\Entity\VoucherApplication;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 
 interface VoucherInterface
 {
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function register(VoucherApplication $voucher): void;
 }
