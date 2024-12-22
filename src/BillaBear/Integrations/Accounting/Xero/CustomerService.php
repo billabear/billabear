@@ -15,6 +15,9 @@ use GuzzleHttp\ClientInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use XeroAPI\XeroPHP\Api\AccountingApi;
 use XeroAPI\XeroPHP\Configuration;
+use XeroAPI\XeroPHP\Models\Accounting\Address;
+use XeroAPI\XeroPHP\Models\Accounting\Contact;
+use XeroAPI\XeroPHP\Models\Accounting\Contacts;
 
 class CustomerService implements CustomerInterface
 {
@@ -32,19 +35,62 @@ class CustomerService implements CustomerInterface
 
     public function register(Customer $customer): CustomerRegistration
     {
+        $contacts = $this->buildContacts($customer);
+
+        $output = $this->accountingApi->createContacts($this->tenantId, $contacts);
+        /** @var Contact $contactData */
+        $contactData = $output->getContacts()[0];
+        $id = $contactData->getContactId();
+
+        return new CustomerRegistration($id);
     }
 
     public function update(Customer $customer): void
     {
-        // TODO: Implement update() method.
+        $contacts = $this->buildContacts($customer);
+        $this->accountingApi->updateContact($this->tenantId, $customer->getAccountingReference(), $contacts);
     }
 
     public function delete(Customer $customer): void
     {
-        // TODO: Implement delete() method.
+        $customer->setAccountingReference(null);
     }
 
-    public function findCustomer(Customer $customer): CustomerRegistration
+    public function findCustomer(Customer $customer): ?CustomerRegistration
     {
+        /** @var Contacts $contacts */
+        $contacts = $this->accountingApi->getContacts($this->tenantId, search_term: $customer->getBillingEmail());
+        if (1 === $contacts->getIterator()->count()) {
+            /** @var Contact $contact */
+            $contact = $contacts->getContacts()[0];
+
+            return new CustomerRegistration($contact->getContactId());
+        }
+
+        return null;
+    }
+
+    public function buildContacts(Customer $customer): Contacts
+    {
+        $contact = new Contact();
+        $contact->setName($customer->getName());
+        $contact->setEmailAddress($customer->getBillingEmail());
+        if ($customer->getAccountingReference()) {
+            $contact->setContactId($customer->getAccountingReference());
+        }
+
+        $address = new Address();
+        $address->setAddressLine1($customer->getBillingAddress()->getStreetLineOne());
+        $address->setAddressLine2($customer->getBillingAddress()->getStreetLineTwo());
+        $address->setCity($customer->getBillingAddress()->getCity());
+        $address->setCountry($customer->getBillingAddress()->getCountry());
+        $address->setPostalCode($customer->getBillingAddress()->getPostcode());
+
+        $contact->setAddresses([$address]);
+
+        $contacts = new Contacts();
+        $contacts->setContacts([$contact]);
+
+        return $contacts;
     }
 }

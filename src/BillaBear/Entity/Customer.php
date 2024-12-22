@@ -103,6 +103,9 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'warning_level', type: 'integer', enumType: WarningLevel::class, nullable: true)]
     protected ?WarningLevel $warningLevel = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference;
+
     public function getId()
     {
         return $this->id;
@@ -428,5 +431,15 @@ class Customer implements CustomerInterface
     public function setWarningLevel(?WarningLevel $warningLevel): void
     {
         $this->warningLevel = $warningLevel;
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
     }
 }

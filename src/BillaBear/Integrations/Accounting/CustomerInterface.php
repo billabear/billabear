@@ -18,5 +18,5 @@ interface CustomerInterface
 
     public function delete(Customer $customer): void;
 
-    public function findCustomer(Customer $customer): CustomerRegistration;
+    public function findCustomer(Customer $customer): ?CustomerRegistration;
 }
