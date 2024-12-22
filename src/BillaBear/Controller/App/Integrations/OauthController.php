@@ -6,7 +6,7 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Controller\Integration;
+namespace BillaBear\Controller\App\Integrations;
 
 use BillaBear\Integrations\Oauth\OauthManager;
 use Parthenon\Common\LoggerAwareTrait;
@@ -18,13 +18,17 @@ class OauthController
 {
     use LoggerAwareTrait;
 
-    #[Route('/integration/{integrationName}/oauth/redirect', name: 'integration_oauth_redirect')]
-    public function oauthRedirect(
+    #[Route('/app/{integrationName}/oauth/start', name: 'integration_oauth_start')]
+    public function oauthStart(
         Request $request,
         OauthManager $oauthManager,
     ): Response {
-        $this->getLogger()->info('Handling oauth redirect');
+        $integrationName = $request->get('integrationName');
 
-        return $oauthManager->handleRedirect($request);
+        $this->getLogger()->info('Starting oauth flow for integration', ['integration' => $integrationName]);
+
+        $redirect = $oauthManager->sendToIntegration($integrationName);
+
+        return $redirect;
     }
 }

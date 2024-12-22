@@ -1,3 +1,7 @@
-export const FINANCE_TRANSLATIONS = {
+import {FINANCE_INTEGRATION_TRANSLATIONS} from "./integration";
+import {FINANCE_MENU_TRANSLATIONS} from "./menu";
 
+export const FINANCE_TRANSLATIONS = {
+    integration: FINANCE_INTEGRATION_TRANSLATIONS,
+    menu: FINANCE_MENU_TRANSLATIONS,
 };

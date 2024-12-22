@@ -9,23 +9,28 @@
 namespace BillaBear\Integrations\Oauth;
 
 use BillaBear\Integrations\AuthenticationType;
-use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationManager;
+use BillaBear\Integrations\Messenger\Accounting\EnableIntegration;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\Config;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class OauthManager
 {
     use LoggerAwareTrait;
+    use ProviderTrait;
 
     public function __construct(
         private IntegrationManager $integrationManager,
         private RequestStack $requestStack,
         private AuthorizationUrlProviderInterface $redirectUrlProvider,
         private Config $siteConfig,
+        private SettingsRepositoryInterface $settingsRepository,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -42,6 +47,12 @@ class OauthManager
         $provider = $this->getProvider($integration);
         $randomString = bin2hex(random_bytes(16));
         $state = ['random' => $randomString];
+
+        $settings = $this->settingsRepository->getDefaultSettings();
+        $settings->getAccountingIntegration()->setIntegration($integrationName);
+        $settings->getAccountingIntegration()->getOauthSettings()->setStateSecret($randomString);
+        $this->settingsRepository->save($settings);
+
         $authorizationUrl = $this->redirectUrlProvider->getAuthUrl($provider, $integration->getOauthConfig()->scope, $state);
 
         $this->requestStack->getCurrentRequest()->getSession()->set('oauth_state', $randomString);
@@ -62,13 +73,14 @@ class OauthManager
         $rawState = $request->get('state');
         $stateData = json_decode(base64_decode($rawState), true);
         $state = $stateData['random'];
-        /*$sessionState = $this->requestStack->getCurrentRequest()->getSession()->get('oauth_state');
+        $settings = $this->settingsRepository->getDefaultSettings();
+        $sessionState = $settings->getAccountingIntegration()->getOauthSettings()->getStateSecret();
 
         if ($state !== $sessionState) {
             $this->getLogger()->critical('State mismatch', ['state' => $state, 'session_state' => $sessionState]);
 
             throw new \LogicException('State mismatch in oauth redirect request');
-        }*/
+        }
 
         $integrationName = $request->get('integrationName');
         $integration = $this->integrationManager->getIntegration($integrationName);
@@ -77,25 +89,23 @@ class OauthManager
         $accessToken = $provider->getAccessToken('authorization_code', [
             'code' => $code,
         ]);
+        $expiresAt = new \DateTime();
+        $expiresAt->setTimestamp($accessToken->getExpires());
 
-        $redirectUrl = sprintf('%s/integration/%s/oauth/finish', $this->siteConfig->getSiteUrl(), $integrationName);
+        $settings->getAccountingIntegration()->setIntegration($integrationName);
+        $settings->getAccountingIntegration()->setEnabled(true);
+        $settings->getAccountingIntegration()->getOauthSettings()->setAccessToken($accessToken->getToken());
+        $settings->getAccountingIntegration()->getOauthSettings()->setRefreshToken($accessToken->getRefreshToken());
+        $settings->getAccountingIntegration()->getOauthSettings()->setExpiresAt($expiresAt);
+        $settings->getAccountingIntegration()->getOauthSettings()->setStateSecret(null);
+        $settings->getAccountingIntegration()->setUpdatedAt(new \DateTime());
+
+        $this->settingsRepository->save($settings);
+
+        $redirectUrl = sprintf('%s/site/integration', $this->siteConfig->getSiteUrl());
+
+        $this->messageBus->dispatch(new EnableIntegration());
 
         return new RedirectResponse($redirectUrl);
-    }
-
-    private function getProvider(IntegrationInterface $integration): \League\OAuth2\Client\Provider\GenericProvider
-    {
-        $oauthConfig = $integration->getOauthConfig();
-
-        $provider = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId' => $oauthConfig->clientId,
-            'clientSecret' => $oauthConfig->clientSecret,
-            'redirectUri' => $oauthConfig->redirectUri,
-            'urlAuthorize' => $oauthConfig->urlAuthorize,
-            'urlAccessToken' => $oauthConfig->urlAccessToken,
-            'urlResourceOwnerDetails' => $oauthConfig->urlResourceOwnerDetails,
-        ]);
-
-        return $provider;
     }
 }

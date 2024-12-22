@@ -8,15 +8,30 @@
 
 namespace BillaBear\Integrations\Accounting\Xero;
 
+use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
+use BillaBear\Integrations\Accounting\CustomerInterface;
+use BillaBear\Integrations\Accounting\InvoiceInterface;
+use BillaBear\Integrations\Accounting\VoucherInterface;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
+use BillaBear\Integrations\Oauth\OauthConnectionProvider;
 use BillaBear\Integrations\OAuthConfig;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use XeroAPI\XeroPHP\Configuration;
 
-class XeroIntegration implements IntegrationInterface
+class XeroIntegration implements IntegrationInterface, AccountingIntegrationInterface
 {
+    use LoggerAwareTrait;
+
     public const INTEGRATION_NAME = 'xero';
+
+    private ClientInterface $client;
+
+    private string $tenantId;
 
     public function __construct(
         #[Autowire(env: 'XERO_CLIENT_ID')]
@@ -25,6 +40,7 @@ class XeroIntegration implements IntegrationInterface
         private string $cientSecret,
         #[Autowire(env: 'XERO_REDIRECT_URI')]
         private string $redirectUri,
+        private OauthConnectionProvider $oauthConnectionProvider,
     ) {
     }
 
@@ -54,5 +70,53 @@ class XeroIntegration implements IntegrationInterface
             'https://api.xero.com/api.xro/2.0/Organisation',
             'openid email profile offline_access accounting.transactions accounting.contacts accounting.attachments'
         );
+    }
+
+    public function getInvoiceService(): InvoiceInterface
+    {
+    }
+
+    public function getVoucherService(): VoucherInterface
+    {
+        // TODO: Implement getVoucherService() method.
+    }
+
+    public function getCustomerService(): CustomerInterface
+    {
+        $config = $this->createConfig();
+
+        $customerService = new CustomerService($config, $this->createClient());
+        $customerService->setLogger($this->getLogger());
+
+        return $customerService;
+    }
+
+    private function createConfig(): Configuration
+    {
+        return Configuration::getDefaultConfiguration()->setAccessToken($this->oauthConnectionProvider->getAccessToken());
+    }
+
+    private function createClient(): ClientInterface
+    {
+        if (!isset($this->client)) {
+            $this->client = new Client();
+        }
+
+        return $this->client;
+    }
+
+    private function getTenantId(): string
+    {
+        if (!isset($this->tenantId)) {
+            $identityApi = new \XeroAPI\XeroPHP\Api\IdentityApi(
+                $this->createClient(),
+                $this->createConfig()
+            );
+
+            $result = $identityApi->getConnections();
+            $this->tenantId = $result[0]->getTenantId();
+        }
+
+        return $this->tenantId;
     }
 }

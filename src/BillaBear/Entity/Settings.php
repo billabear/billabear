@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use BillaBear\Entity\Settings\AccountingIntegration;
 use BillaBear\Entity\Settings\NotificationSettings;
 use BillaBear\Entity\Settings\OnboardingSettings;
 use BillaBear\Entity\Settings\SystemSettings;
@@ -32,6 +33,9 @@ class Settings
 
     #[ORM\Embedded(class: NotificationSettings::class)]
     private NotificationSettings $notificationSettings;
+
+    #[ORM\Embedded(class: AccountingIntegration::class)]
+    private AccountingIntegration $accountingIntegration;
 
     #[ORM\Embedded(class: SystemSettings::class)]
     private SystemSettings $systemSettings;
@@ -100,5 +104,19 @@ class Settings
     public function setTaxSettings(TaxSettings $taxSettings): void
     {
         $this->taxSettings = $taxSettings;
+    }
+
+    public function getAccountingIntegration(): AccountingIntegration
+    {
+        if (!isset($this->accountingIntegration)) {
+            $this->accountingIntegration = new AccountingIntegration();
+        }
+
+        return $this->accountingIntegration;
+    }
+
+    public function setAccountingIntegration(AccountingIntegration $accountingIntegration): void
+    {
+        $this->accountingIntegration = $accountingIntegration;
     }
 }

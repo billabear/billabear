@@ -25,6 +25,9 @@ class AccountingIntegration
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $updatedAt = null;
 
+    #[ORM\Embedded(class: OauthSettings::class)]
+    private OauthSettings $oauthSettings;
+
     public function getEnabled(): bool
     {
         return true === $this->enabled;
@@ -63,5 +66,15 @@ class AccountingIntegration
     public function setUpdatedAt(?\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getOauthSettings(): OauthSettings
+    {
+        return $this->oauthSettings;
+    }
+
+    public function setOauthSettings(OauthSettings $oauthSettings): void
+    {
+        $this->oauthSettings = $oauthSettings;
     }
 }
