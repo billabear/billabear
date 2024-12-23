@@ -100,7 +100,7 @@ a {
 }
 
 .menu a {
-    @apply no-underline text-white;
+    @apply block no-underline text-white w-full h-full;
 }
 
 .form-field-error {
