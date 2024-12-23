@@ -120,6 +120,11 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.checkout.list'}">{{ $t('app.transactions.menu.checkout') }}</router-link>
           </MenuSubItem>
+          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+            <MenuSubItem>
+              <router-link :to="{name: 'app.finance.integration'}">{{ $t('app.finance.menu.integration') }}</router-link>
+            </MenuSubItem>
+          </RoleOnlyView>
         </template>
       </MenuTopItem>
     </RoleOnlyView>
