@@ -9,15 +9,16 @@
 namespace BillaBear\Command\Integration\Accounting;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
-use BillaBear\Integrations\IntegrationManager;
+use BillaBear\Integrations\Messenger\Accounting\SyncCustomer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'billabear:integration:accounting:customer-sync',
@@ -30,7 +31,7 @@ class CustomerSyncCommand extends Command
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
         private SettingsRepositoryInterface $settingsRepository,
-        private IntegrationManager $integrationManager,
+        private MessageBusInterface $messageBus,
     ) {
         parent::__construct(null);
     }
@@ -46,24 +47,17 @@ class CustomerSyncCommand extends Command
             return Command::FAILURE;
         }
 
-        /** @var AccountingIntegrationInterface $integration */
-        $integration = $this->integrationManager->getIntegration($settings->getAccountingIntegration()->getIntegration());
-
+        $max = $this->customerRepository->getTotalCount();
+        $progressBar = new ProgressBar($output, $max);
         $lastId = null;
         do {
-            $output->writeln('Syncing batch of customers to accounting system');
             $resultList = $this->customerRepository->getList([], lastId: $lastId);
             $lastId = $resultList->getLastKey();
 
             /** @var Customer $customer */
             foreach ($resultList->getResults() as $customer) {
-                if ($customer->getAccountingReference()) {
-                    $integration->getCustomerService()->update($customer);
-                } else {
-                    $registration = $integration->getCustomerService()->register($customer);
-                    $customer->setAccountingReference($registration->reference);
-                }
-                $this->customerRepository->save($customer);
+                $this->messageBus->dispatch(new SyncCustomer((string) $customer->getId()));
+                $progressBar->advance();
             }
         } while ($resultList->hasMore());
 
