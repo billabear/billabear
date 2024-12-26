@@ -11,11 +11,13 @@ namespace BillaBear\Tests\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
+use Behat\Step\Given;
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\EmailTemplate;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\TaxType;
 use BillaBear\Invoice\InvoiceGenerationType;
+use BillaBear\Repository\Orm\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Common\Address;
 
@@ -26,6 +28,7 @@ class GeneralContext implements Context
     public function __construct(
         private Session $session,
         private EntityManagerInterface $entityManager,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -142,6 +145,17 @@ class GeneralContext implements Context
 
         $this->authenticate(null);
         $this->isStripe(false);
+    }
+
+    #[Given('there are no stripe api keys configured')]
+    public function thereAreNoStripeApiKeysConfigured(): void
+    {
+        /** @var Settings $settings */
+        $settings = $this->settingsRepository->findOneBy(['tag' => Settings::DEFAULT_TAG]);
+        $settings->getSystemSettings()->setStripePrivateKey(null);
+        $settings->getSystemSettings()->setStripePublicKey(null);
+        $this->entityManager->persist($settings);
+        $this->entityManager->flush();
     }
 
     /**
