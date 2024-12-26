@@ -9,10 +9,12 @@
 namespace BillaBear\Dto\Request\Api;
 
 use BillaBear\Dto\Generic\Address;
+use BillaBear\Validator\Constraints\Integrations\StripeIsConfigured;
 use BillaBear\Validator\Constraints\ValidVatNumber;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[StripeIsConfigured]
 class CreateCustomerDto
 {
     #[Assert\NotBlank(allowNull: true)]

@@ -55,7 +55,7 @@
         </div>
 
         <div class="grid grid-cols-3 my-5 gap-3">
-          <div class="card-body">
+          <div class="card-body overflow-auto">
             <h2 class="section-header">{{ $t('app.reports.dashboard.latest_customers.title') }}</h2>
 
             <div class="mt-2">
@@ -77,7 +77,7 @@
             </div>
           </div>
 
-          <div class="card-body">
+          <div class="card-body overflow-auto">
             <h2 class="section-header">{{ $t('app.reports.dashboard.latest_events.title') }}</h2>
 
             <div class="mt-2">
@@ -101,7 +101,7 @@
 
           </div>
 
-          <div class="card-body">
+          <div class="card-body overflow-auto">
             <h2 class="section-header">{{ $t('app.reports.dashboard.latest_payments.title') }}</h2>
             <div class="mt-2">
               <table class="list-table">

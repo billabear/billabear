@@ -8,6 +8,7 @@
 
 namespace BillaBear\Integrations;
 
+use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class IntegrationManager
@@ -32,6 +33,9 @@ class IntegrationManager
         throw new \RuntimeException(sprintf('Integration "%s" not found', $name));
     }
 
+    /**
+     * @return AccountingIntegrationInterface[]
+     */
     public function getAccountingIntegrations(): array
     {
         $output = [];

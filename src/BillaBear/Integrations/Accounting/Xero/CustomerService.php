@@ -36,7 +36,7 @@ class CustomerService implements CustomerInterface
 
     public function register(Customer $customer): CustomerRegistration
     {
-        $this->getLogger()->info('Registering customer to xero', ['customer_id' => (string) $customer->getId()]);
+        $this->getLogger()->info('Registering customer to xero', ['tenant_id' => $this->tenantId, 'customer_id' => (string) $customer->getId()]);
         $contacts = $this->buildContacts($customer);
 
         try {
@@ -47,16 +47,20 @@ class CustomerService implements CustomerInterface
         }
         /** @var Contact $contactData */
         $contactData = $output->getContacts()[0];
+        if ($contactData->getHasValidationErrors()) {
+            $this->logger->error('Failed to create contact to xero due to validation errors', ['tenant_id' => $this->tenantId, 'customer_id' => (string) $customer->getId(), 'validation_errors' => $contactData->getValidationErrors()]);
+            throw new UnexpectedErrorException('Failed to create contact to xero due to validation errors');
+        }
         $id = $contactData->getContactId();
 
-        $this->getLogger()->info('Customer registered to xero', ['customer_id' => (string) $customer->getId(), 'accounting_reference' => $id]);
+        $this->getLogger()->info('Customer registered to xero', ['tenant_id' => $this->tenantId, 'customer_id' => (string) $customer->getId(), 'accounting_reference' => $id]);
 
         return new CustomerRegistration($id);
     }
 
     public function update(Customer $customer): void
     {
-        $this->getLogger()->info('Updating customer in xero', ['customer_id' => (string) $customer->getId()]);
+        $this->getLogger()->info('Updating customer in xero', ['tenant_id' => $this->tenantId, 'customer_id' => (string) $customer->getId()]);
         $contacts = $this->buildContacts($customer);
         try {
             $this->accountingApi->updateContact($this->tenantId, $customer->getAccountingReference(), $contacts);
@@ -64,7 +68,7 @@ class CustomerService implements CustomerInterface
             $this->logger->error('Failed to update contact to xero', ['exception_message' => $e->getMessage()]);
             throw new UnexpectedErrorException($e->getMessage(), previous: $e);
         }
-        $this->getLogger()->info('Customer updated in xero', ['customer_id' => (string) $customer->getId(), 'accounting_reference' => $id]);
+        $this->getLogger()->info('Customer updated in xero', ['customer_id' => (string) $customer->getId(), 'accounting_reference' => $customer->getAccountingReference()]);
     }
 
     public function delete(Customer $customer): void
@@ -89,7 +93,7 @@ class CustomerService implements CustomerInterface
     public function buildContacts(Customer $customer): Contacts
     {
         $contact = new Contact();
-        $contact->setName($customer->getName());
+        $contact->setName($customer->getName() ?? $customer->getBillingAddress()->getCompanyName() ?? $customer->getBillingEmail());
         $contact->setEmailAddress($customer->getBillingEmail());
         if ($customer->getAccountingReference()) {
             $contact->setContactId($customer->getAccountingReference());

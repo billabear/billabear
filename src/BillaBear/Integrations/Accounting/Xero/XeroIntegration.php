@@ -85,7 +85,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
     {
         $config = $this->createConfig();
 
-        $customerService = new CustomerService($config, $this->createClient());
+        $customerService = new CustomerService($this->getTenantId(), $config, $this->createClient());
         $customerService->setLogger($this->getLogger());
 
         return $customerService;

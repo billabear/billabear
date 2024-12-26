@@ -6,6 +6,7 @@
       {{ $t('app.customer.create.failed_message') }}
     </div>
 
+    <p class="form-field-error" v-if="errors.stripe != undefined">{{ errors.stripe }}</p>
     <form @submit.prevent="send">
     <div class="mt-3 card-body">
         <div class="form-field-ctn">
@@ -178,6 +179,7 @@
 
     </div>
 
+      <p class="form-field-error" v-if="errors.stripe != undefined">{{ errors.stripe }}</p>
     <div class="form-field-submit-ctn">
       <SubmitButton :in-progress="sendingInProgress">{{ $t('app.customer.create.submit_btn') }}</SubmitButton>
     </div>

@@ -16,6 +16,9 @@
           <TopMenu />
         </div>
         <div class="pt-2 ">
+          <div class="rounded-xl p-3 bg-red-500 text-white font-bold" v-if="!has_stripe_key">
+            {{ $t('app.onboarding.main.bar.message') }}
+          </div>
           <router-view></router-view>
         </div>
       </div>
@@ -24,7 +27,7 @@
 
   </LoadingScreen>
   <div v-else class="h-screen flex w-screen items-center justify-center">
-    {{ $t('app.onboarding.error') }}
+    {{ $t('app.onboarding.main.error') }}
   </div>
 </template>
 
