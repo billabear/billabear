@@ -78,11 +78,14 @@ class CustomerService implements CustomerInterface
 
     public function findCustomer(Customer $customer): ?CustomerRegistration
     {
+        $this->getLogger()->info('Finding customer in xero', ['tenant_id' => $this->tenantId, 'customer_id' => (string) $customer->getId()]);
         /** @var Contacts $contacts */
         $contacts = $this->accountingApi->getContacts($this->tenantId, search_term: $customer->getBillingEmail());
         if (1 === $contacts->getIterator()->count()) {
             /** @var Contact $contact */
             $contact = $contacts->getContacts()[0];
+
+            $this->getLogger()->info('Found customer in xero', ['tenant_id' => $this->tenantId, 'customer_id' => (string) $customer->getId(), 'accounting_reference' => $contact->getContactId()]);
 
             return new CustomerRegistration($contact->getContactId());
         }
@@ -93,7 +96,7 @@ class CustomerService implements CustomerInterface
     public function buildContacts(Customer $customer): Contacts
     {
         $contact = new Contact();
-        $contact->setName($customer->getName() ?? $customer->getBillingAddress()->getCompanyName() ?? $customer->getBillingEmail());
+        $contact->setName($customer->getBillingAddress()->getCompanyName() ?? $customer->getName() ?? $customer->getBillingEmail());
         $contact->setEmailAddress($customer->getBillingEmail());
         if ($customer->getAccountingReference()) {
             $contact->setContactId($customer->getAccountingReference());
@@ -105,6 +108,7 @@ class CustomerService implements CustomerInterface
         $address->setCity($customer->getBillingAddress()->getCity());
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostalCode($customer->getBillingAddress()->getPostcode());
+        $address->setRegion($customer->getBillingAddress()->getRegion());
 
         $contact->setAddresses([$address]);
 
