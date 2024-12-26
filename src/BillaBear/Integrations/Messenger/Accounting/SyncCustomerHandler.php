@@ -8,7 +8,6 @@
 
 namespace BillaBear\Integrations\Messenger\Accounting;
 
-use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -36,8 +35,7 @@ class SyncCustomerHandler
             return;
         }
 
-        /** @var AccountingIntegrationInterface $integration */
-        $integration = $this->integrationManager->getIntegration($settings->getAccountingIntegration()->getIntegration());
+        $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
         if ($customer->getAccountingReference()) {
             $integration->getCustomerService()->update($customer);
         } else {
