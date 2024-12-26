@@ -33,6 +33,14 @@ Feature: Customer Creation
     Then there should be an error for "email"
     And there should not be an error for "country"
 
+  Scenario: Stripe not configured
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And there are no stripe api keys configured
+    When I create a customer via the app with the following info
+      | Email   | a-word   |
+      | Country | DE |
+    Then there should be an error for "stripe"
+
   Scenario: Successfully create customer with references
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info
