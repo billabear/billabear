@@ -98,6 +98,9 @@ class CustomerService implements CustomerInterface
         $contact = new Contact();
         $contact->setName($customer->getBillingAddress()->getCompanyName() ?? $customer->getName() ?? $customer->getBillingEmail());
         $contact->setEmailAddress($customer->getBillingEmail());
+        $contact->setIsCustomer(true);
+        $contact->setIsSupplier(false);
+        $contact->setTaxNumber($customer->getTaxNumber());
         if ($customer->getAccountingReference()) {
             $contact->setContactId($customer->getAccountingReference());
         }
