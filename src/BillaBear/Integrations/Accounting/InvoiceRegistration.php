@@ -8,13 +8,9 @@
 
 namespace BillaBear\Integrations\Accounting;
 
-interface AccountingIntegrationInterface
+readonly class InvoiceRegistration
 {
-    public function getInvoiceService(): InvoiceInterface;
-
-    public function getVoucherService(): VoucherInterface;
-
-    public function getCustomerService(): CustomerInterface;
-
-    public function getPaymentService(): PaymentInterface;
+    public function __construct(public string $invoiceReference)
+    {
+    }
 }

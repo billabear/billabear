@@ -16,7 +16,12 @@ interface InvoiceInterface
     /**
      * @throws UnexpectedErrorException
      */
-    public function register(Invoice $invoice): void;
+    public function register(Invoice $invoice): InvoiceRegistration;
+
+    /**
+     * @throws UnexpectedErrorException
+     */
+    public function update(Invoice $invoice): void;
 
     /**
      * @throws UnexpectedErrorException

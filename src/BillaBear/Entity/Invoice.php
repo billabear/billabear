@@ -88,6 +88,9 @@ class Invoice
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $dueAt = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection([]);
@@ -342,5 +345,15 @@ class Invoice
     public function getBrandSettings(): BrandSettings
     {
         return $this->customer->getBrandSettings();
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
     }
 }

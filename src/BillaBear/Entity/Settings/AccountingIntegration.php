@@ -28,6 +28,9 @@ class AccountingIntegration
     #[ORM\Embedded(class: OauthSettings::class)]
     private OauthSettings $oauthSettings;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $settings = null;
+
     public function getEnabled(): bool
     {
         return true === $this->enabled;
@@ -76,5 +79,19 @@ class AccountingIntegration
     public function setOauthSettings(OauthSettings $oauthSettings): void
     {
         $this->oauthSettings = $oauthSettings;
+    }
+
+    public function getSettings(): array
+    {
+        if (!isset($this->settings)) {
+            return [];
+        }
+
+        return $this->settings;
+    }
+
+    public function setSettings(?array $settings): void
+    {
+        $this->settings = $settings;
     }
 }

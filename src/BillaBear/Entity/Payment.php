@@ -28,6 +28,9 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     #[ORM\ManyToOne(targetEntity: PaymentCard::class)]
     private ?PaymentCard $paymentCard = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
+
     public function getInvoice(): ?Invoice
     {
         return $this->invoice;
@@ -66,5 +69,15 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     public function setPaymentCard(?PaymentCard $paymentCard): void
     {
         $this->paymentCard = $paymentCard;
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
     }
 }

@@ -10,11 +10,12 @@ namespace BillaBear\Controller\App\Integrations;
 
 use BillaBear\DataMappers\Integrations\IntegrationDataMapper;
 use BillaBear\Dto\Response\App\Integrations\AccountingIntegrationView;
+use BillaBear\Integrations\Accounting\Messenger\DisableIntegration;
 use BillaBear\Integrations\IntegrationManager;
-use BillaBear\Integrations\Messenger\Accounting\DisableIntegration;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +25,7 @@ class AccountingController
 {
     use LoggerAwareTrait;
 
-    #[Route('/app/integrations/accounting/settings', name: 'accounting_settings')]
+    #[Route('/app/integrations/accounting/settings', name: 'accounting_settings', methods: ['GET'])]
     public function readAccountingSettings(
         IntegrationManager $integrationManager,
         IntegrationDataMapper $integrationDataMapper,
@@ -37,15 +38,32 @@ class AccountingController
         $integrations = $integrationManager->getAccountingIntegrations();
         $integrationDtos = array_map([$integrationDataMapper, 'createAppDto'], $integrations);
 
+        $integration = $integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
+
         $viewDto = new AccountingIntegrationView(
             $integrationDtos,
             $settings->getAccountingIntegration()->getEnabled(),
             $settings->getAccountingIntegration()->getIntegration(),
             $settings->getAccountingIntegration()->getApiKey(),
+            $settings->getAccountingIntegration()->getSettings(),
         );
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/integrations/accounting/settings', name: 'accounting_settings_write', methods: ['POST'])]
+    public function writeAccountingSettings(
+        Request $request,
+        SettingsRepositoryInterface $settingsRepository,
+    ): Response {
+        $this->getLogger()->info('Writing accounting integration settings');
+        $data = json_decode($request->getContent(), true);
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getAccountingIntegration()->setSettings($data['settings']);
+        $settingsRepository->save($settings);
+
+        return new JsonResponse(['settings' => $data['settings']]);
     }
 
     #[Route('/app/integrations/accounting/disable', name: 'accounting_settings_disable', methods: ['POST'])]

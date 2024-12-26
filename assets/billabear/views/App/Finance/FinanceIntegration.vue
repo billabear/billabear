@@ -25,6 +25,16 @@
           <button class="btn--main" @click="disconnectOauth()">{{ $t('app.finance.integration.buttons.disconnect') }}</button>
         </div>
       </div>
+
+      <div class="card-body mt-3" v-if="integration.settings.length > 0">
+        <h2 class="text-2xl">{{ $t('app.finance.integration.settings.title') }}</h2>
+        <div class="form-field-ctn" v-for="setting in integration.settings">
+          <label class="form-field-lbl">{{ $t(setting.label) }}</label>
+          <input v-model="setting.value" class="form-field" type="text" v-if="setting.type === 'text'" />
+        </div>
+
+        <SubmitButton :in-progress="send_request" class="btn--main mt-3" @click="saveSettings()">{{ $t('app.finance.integration.buttons.save') }}</SubmitButton>
+      </div>
     </LoadingScreen>
   </div>
 
@@ -42,7 +52,9 @@ export default {
       api_key: '',
       integration_name: '',
       integration: null,
-      ready: false
+      ready: false,
+      settings: {},
+      send_request: false,
     }
   },
   mounted() {
@@ -51,11 +63,21 @@ export default {
       this.enabled = response.data.enabled;
       this.integration_name = response.data.integration_name;
       this.api_key = response.data.api_key;
+      this.settings = response.data.settings;
 
       for (let i = 0;  i < this.integrations.length; i++) {
-
         if (this.integrations[i].name === this.integration_name) {
           this.integration = this.integrations[i];
+          for (const key in this.settings) {
+            if (this.settings.hasOwnProperty(key)) {
+              const value = this.settings[key];
+              for (let j = 0; j < this.integration.settings.length; j++) {
+                if (this.integration.settings[j].name === key) {
+                  this.integration.settings[j].value = value;
+                }
+              }
+            }
+          }
         }
       }
       this.ready = true;
@@ -70,6 +92,19 @@ export default {
     disableIntegration() {
       axios.post('/app/integrations/accounting/disable').then(response => {
         this.enabled = false;
+      })
+    },
+    saveSettings() {
+      this.send_request = true;
+      let settings = {};
+      for (let i = 0; i < this.integration.settings.length; i++) {
+        let setting = this.integration.settings[i];
+        settings[setting.name] = setting.value;
+      }
+
+      axios.post('/app/integrations/accounting/settings', {settings: settings}).then(response => {
+        console.log(response);
+        this.send_request = false;
       })
     }
   }

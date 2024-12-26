@@ -40,4 +40,6 @@ interface InvoiceRepositoryInterface extends CrudRepositoryInterface
      * @throws NoEntityFoundException
      */
     public function getLatestForSubscription(Subscription $subscription): Invoice;
+
+    public function getTotalCount(): int;
 }

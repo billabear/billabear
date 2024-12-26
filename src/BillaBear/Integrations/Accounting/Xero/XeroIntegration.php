@@ -11,6 +11,7 @@ namespace BillaBear\Integrations\Accounting\Xero;
 use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
 use BillaBear\Integrations\Accounting\CustomerInterface;
 use BillaBear\Integrations\Accounting\InvoiceInterface;
+use BillaBear\Integrations\Accounting\PaymentInterface;
 use BillaBear\Integrations\Accounting\VoucherInterface;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
@@ -74,6 +75,11 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
 
     public function getInvoiceService(): InvoiceInterface
     {
+        $config = $this->createConfig();
+        $invoiceService = new InvoiceService($this->getTenantId(), $config, $this->createClient());
+        $invoiceService->setLogger($this->getLogger());
+
+        return $invoiceService;
     }
 
     public function getVoucherService(): VoucherInterface
@@ -118,5 +124,27 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         }
 
         return $this->tenantId;
+    }
+
+    public function getPaymentService(): PaymentInterface
+    {
+        $config = $this->createConfig();
+
+        $paymentService = new PaymentService($this->getTenantId(), $config, $this->createClient());
+        $paymentService->setLogger($this->getLogger());
+
+        return $paymentService;
+    }
+
+    public function getSettings(): array
+    {
+        return [
+            [
+                'name' => 'account_id',
+                'label' => 'app.finance.integration.xero.account_id',
+                'type' => 'text',
+                'required' => true,
+            ],
+        ];
     }
 }

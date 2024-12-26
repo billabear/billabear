@@ -7,6 +7,13 @@ export const FINANCE_INTEGRATION_TRANSLATIONS = {
     },
     buttons: {
         connect: "Connect via OAuth",
-        disconnect: "Disconnect"
+        disconnect: "Disconnect",
+        save: "Save",
+    },
+    settings: {
+        title: "Settings",
+    },
+    xero: {
+        account_id: "Account ID for Payments",
     }
 };

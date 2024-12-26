@@ -8,13 +8,9 @@
 
 namespace BillaBear\Integrations\Accounting;
 
-interface AccountingIntegrationInterface
+use BillaBear\Entity\Payment;
+
+interface PaymentInterface
 {
-    public function getInvoiceService(): InvoiceInterface;
-
-    public function getVoucherService(): VoucherInterface;
-
-    public function getCustomerService(): CustomerInterface;
-
-    public function getPaymentService(): PaymentInterface;
+    public function register(Payment $payment): PaymentRegistration;
 }

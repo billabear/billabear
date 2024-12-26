@@ -8,9 +8,9 @@
 
 namespace BillaBear\Command\Integration\Accounting;
 
-use BillaBear\Entity\Customer;
-use BillaBear\Integrations\Accounting\Messenger\SyncCustomer;
-use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Entity\Invoice;
+use BillaBear\Integrations\Accounting\Messenger\SyncInvoice;
+use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,15 +21,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'billabear:integration:accounting:customer-sync',
-    description: 'Sync customers to accounting system'
+    name: 'billabear:integration:accounting:invoice-sync',
+    description: 'Sync invoices to accounting system'
 )]
-class CustomerSyncCommand extends Command
+class InvoiceSyncCommand extends Command
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private CustomerRepositoryInterface $customerRepository,
+        private InvoiceRepositoryInterface $invoiceRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private MessageBusInterface $messageBus,
     ) {
@@ -38,7 +38,7 @@ class CustomerSyncCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('Syncing customers to accounting system');
+        $output->writeln('Syncing invoices to accounting system');
         $settings = $this->settingsRepository->getDefaultSettings();
 
         if (!$settings->getAccountingIntegration()->getEnabled()) {
@@ -46,17 +46,16 @@ class CustomerSyncCommand extends Command
 
             return Command::FAILURE;
         }
-
-        $max = $this->customerRepository->getTotalCount();
+        $max = $this->invoiceRepository->getTotalCount();
         $progressBar = new ProgressBar($output, $max);
         $lastId = null;
         do {
-            $resultList = $this->customerRepository->getList([], lastId: $lastId);
+            $resultList = $this->invoiceRepository->getList([], lastId: $lastId);
             $lastId = $resultList->getLastKey();
 
-            /** @var Customer $customer */
-            foreach ($resultList->getResults() as $customer) {
-                $this->messageBus->dispatch(new SyncCustomer((string) $customer->getId()));
+            /** @var Invoice $invoice */
+            foreach ($resultList->getResults() as $invoice) {
+                $this->messageBus->dispatch(new SyncInvoice((string) $invoice->getId()));
                 $progressBar->advance();
             }
         } while ($resultList->hasMore());

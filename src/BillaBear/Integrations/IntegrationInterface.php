@@ -24,4 +24,6 @@ interface IntegrationInterface
      * @throws UnsupportedFeatureException
      */
     public function getOauthConfig(): OAuthConfig;
+
+    public function getSettings(): array;
 }

@@ -27,4 +27,6 @@ interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\Payme
     public function getLastTenForCustomer(Customer $customer): ResultSet;
 
     public function getLatest(int $limit = 5): array;
+
+    public function getTotalCount(): int;
 }

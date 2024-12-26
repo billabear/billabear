@@ -8,9 +8,9 @@
 
 namespace BillaBear\Integrations\Oauth;
 
+use BillaBear\Integrations\Accounting\Messenger\EnableIntegration;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationManager;
-use BillaBear\Integrations\Messenger\Accounting\EnableIntegration;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\Config;
 use Parthenon\Common\LoggerAwareTrait;

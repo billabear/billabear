@@ -16,6 +16,7 @@ readonly class Integration
         public string $name,
         #[SerializedName('authentication_type')]
         public string $authenticationType,
+        public array $settings,
     ) {
     }
 }

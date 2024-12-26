@@ -18,6 +18,7 @@ class IntegrationDataMapper
         return new AppDto(
             $integration->getName(),
             $integration->getAuthenticationType()->value,
+            $integration->getSettings(),
         );
     }
 }

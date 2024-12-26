@@ -19,6 +19,7 @@ readonly class AccountingIntegrationView
         public ?string $integrationName,
         #[SerializedName('api_key')]
         public ?string $apiKey,
+        public array $settings,
     ) {
     }
 }

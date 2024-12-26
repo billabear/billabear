@@ -75,4 +75,9 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
     {
         return $this->entityRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
     }
+
+    public function getTotalCount(): int
+    {
+        return $this->entityRepository->count([]);
+    }
 }

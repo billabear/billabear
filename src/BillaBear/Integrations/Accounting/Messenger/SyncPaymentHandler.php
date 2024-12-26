@@ -6,29 +6,26 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Integrations\Messenger\Accounting;
+namespace BillaBear\Integrations\Accounting\Messenger;
 
 use BillaBear\Integrations\IntegrationManager;
-use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class SyncCustomerHandler
+class SyncPaymentHandler
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private CustomerRepositoryInterface $customerRepository,
+        private PaymentRepositoryInterface $paymentRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
     ) {
     }
 
-    public function __invoke(SyncCustomer $syncCustomer): void
+    public function __invoke(SyncPayment $message)
     {
-        $customer = $this->customerRepository->findById($syncCustomer->customerId);
+        $payment = $this->paymentRepository->findById($message->paymentId);
         $settings = $this->settingsRepository->getDefaultSettings();
 
         if (!$settings->getAccountingIntegration()->getEnabled()) {
@@ -36,12 +33,12 @@ class SyncCustomerHandler
         }
 
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
-        if ($customer->getAccountingReference()) {
-            $integration->getCustomerService()->update($customer);
-        } else {
-            $registration = $integration->getCustomerService()->register($customer);
-            $customer->setAccountingReference($registration->reference);
+        $paymentService = $integration->getPaymentService();
+
+        if (!$payment->getAccountingReference()) {
+            $registration = $paymentService->register($payment);
+            $payment->setAccountingReference($registration->paymentReference);
+            $this->paymentRepository->save($payment);
         }
-        $this->customerRepository->save($customer);
     }
 }
