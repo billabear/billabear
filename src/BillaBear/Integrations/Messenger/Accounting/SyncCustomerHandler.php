@@ -31,6 +31,11 @@ class SyncCustomerHandler
     {
         $customer = $this->customerRepository->findById($syncCustomer->customerId);
         $settings = $this->settingsRepository->getDefaultSettings();
+
+        if (!$settings->getAccountingIntegration()->getEnabled()) {
+            return;
+        }
+
         /** @var AccountingIntegrationInterface $integration */
         $integration = $this->integrationManager->getIntegration($settings->getAccountingIntegration()->getIntegration());
         if ($customer->getAccountingReference()) {
