@@ -19,4 +19,9 @@ class RefundRepository extends \Parthenon\Billing\Repository\Orm\RefundRepositor
 
         return new ResultSet($results, 'createdAt', 'DESC', 10);
     }
+
+    public function getTotalCount(): int
+    {
+        return $this->entityRepository->count([]);
+    }
 }

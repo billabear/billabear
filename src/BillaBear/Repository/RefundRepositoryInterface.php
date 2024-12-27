@@ -13,5 +13,7 @@ use Parthenon\Athena\ResultSet;
 
 interface RefundRepositoryInterface extends \Parthenon\Billing\Repository\RefundRepositoryInterface
 {
+    public function getTotalCount(): int;
+
     public function getLastTenForCustomer(Customer $customer): ResultSet;
 }

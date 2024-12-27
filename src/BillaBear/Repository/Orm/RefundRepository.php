@@ -8,8 +8,8 @@
 
 namespace BillaBear\Repository\Orm;
 
+use BillaBear\Entity\Refund;
 use Doctrine\Persistence\ManagerRegistry;
-use Parthenon\Billing\Entity\Refund;
 use Parthenon\Common\Repository\CustomServiceRepository;
 
 class RefundRepository extends CustomServiceRepository

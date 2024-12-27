@@ -41,5 +41,5 @@ interface AccountingIntegrationInterface
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getRefundService(): CreditServiceInterface;
+    public function getCreditService(): CreditServiceInterface;
 }

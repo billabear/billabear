@@ -74,7 +74,14 @@ class CreditService implements CreditServiceInterface
         $refundDto = $refundData->getPayments()[0];
 
         if ($refundDto->getHasValidationErrors()) {
-            $this->logger->error('Failed to create payment to xero due to validation errors', ['tenant_id' => $this->tenantId, 'refund_id' => (string) $refund->getId(), 'validation_errors' => $paymentData->getValidationErrors()]);
+            $this->logger->error(
+                'Failed to create payment to xero due to validation errors',
+                [
+                    'tenant_id' => $this->tenantId,
+                    'refund_id' => (string) $refund->getId(),
+                    'validation_errors' => array_map(fn ($e) => $e->getMessage(), $refundDto->getValidationErrors()),
+                ]
+            );
             throw new UnexpectedErrorException('Failed to create payment to xero due to validation errors');
         }
         $this->logger->info('Refund registered with Xero', ['tenant_id' => $this->tenantId, 'refund_id' => (string) $refund->getId()]);
@@ -112,8 +119,8 @@ class CreditService implements CreditServiceInterface
 
         $creditNote = $response->getCreditNotes()[0];
 
-        if (!$creditNote->getHasErrors()) {
-            $this->getLogger()->error('Validation error while creating credit note in xero', ['errors' => $creditNote->getErrors()]);
+        if ($creditNote->getHasErrors()) {
+            $this->getLogger()->error('Validation error while creating credit note in xero', ['errors' => $creditNote->getValidationErrors()]);
 
             throw new UnexpectedErrorException('Error creating credit note in xero');
         }
@@ -139,6 +146,7 @@ class CreditService implements CreditServiceInterface
         $creditNote->setContact($contact);
         $creditNote->setDate($refund->getCreatedAt()->format('Y-m-d'));
         $creditNote->setLineItems([$line]);
+        $creditNote->setStatus(CreditNote::STATUS_AUTHORISED);
 
         $creditNotes = new CreditNotes();
         $creditNotes->setCreditNotes([$creditNote]);
@@ -162,6 +170,7 @@ class CreditService implements CreditServiceInterface
         $creditNote->setContact($contact);
         $creditNote->setDate($credit->getCreatedAt()->format('Y-m-d'));
         $creditNote->setLineItems([$line]);
+        $creditNote->setStatus(CreditNote::STATUS_AUTHORISED);
 
         $creditNotes = new CreditNotes();
         $creditNotes->setCreditNotes([$creditNote]);

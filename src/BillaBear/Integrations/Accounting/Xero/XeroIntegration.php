@@ -128,7 +128,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         ];
     }
 
-    public function getRefundService(): CreditServiceInterface
+    public function getCreditService(): CreditServiceInterface
     {
         $config = $this->createConfig();
         $settings = $this->settingsRepository->getDefaultSettings();
