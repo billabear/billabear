@@ -23,12 +23,6 @@ interface AccountingIntegrationInterface
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getVoucherService(): VoucherServiceInterface;
-
-    /**
-     * @throws UnsupportedFeatureException
-     * @throws MissingConfigurationException
-     */
     public function getCustomerService(): CustomerServiceInterface;
 
     /**
