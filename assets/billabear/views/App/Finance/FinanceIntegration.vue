@@ -103,7 +103,6 @@ export default {
       }
 
       axios.post('/app/integrations/accounting/settings', {settings: settings}).then(response => {
-        console.log(response);
         this.send_request = false;
       })
     }
