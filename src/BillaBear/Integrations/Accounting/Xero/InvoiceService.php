@@ -11,8 +11,8 @@ namespace BillaBear\Integrations\Accounting\Xero;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Exception\Integrations\UnexpectedErrorException;
-use BillaBear\Integrations\Accounting\InvoiceInterface;
 use BillaBear\Integrations\Accounting\InvoiceRegistration;
+use BillaBear\Integrations\Accounting\InvoiceServiceInterface;
 use GuzzleHttp\ClientInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use XeroAPI\XeroPHP\Api\AccountingApi;
@@ -23,7 +23,7 @@ use XeroAPI\XeroPHP\Models\Accounting\Invoice as XeroInvoice;
 use XeroAPI\XeroPHP\Models\Accounting\Invoices;
 use XeroAPI\XeroPHP\Models\Accounting\LineItem;
 
-class InvoiceService implements InvoiceInterface
+class InvoiceService implements InvoiceServiceInterface
 {
     use LoggerAwareTrait;
 

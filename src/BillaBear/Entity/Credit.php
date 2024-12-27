@@ -107,6 +107,11 @@ class Credit
         $this->amount = $amount;
     }
 
+    public function getAmountAsMoney(): Money
+    {
+        return Money::ofMinor($this->amount, $this->currency);
+    }
+
     public function getCurrency(): string
     {
         return $this->currency;

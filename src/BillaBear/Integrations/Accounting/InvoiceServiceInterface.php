@@ -11,7 +11,7 @@ namespace BillaBear\Integrations\Accounting;
 use BillaBear\Entity\Invoice;
 use BillaBear\Exception\Integrations\UnexpectedErrorException;
 
-interface InvoiceInterface
+interface InvoiceServiceInterface
 {
     /**
      * @throws UnexpectedErrorException

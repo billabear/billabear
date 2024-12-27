@@ -9,11 +9,11 @@
 namespace BillaBear\Integrations\Accounting\Xero;
 
 use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
-use BillaBear\Integrations\Accounting\CustomerInterface;
-use BillaBear\Integrations\Accounting\InvoiceInterface;
-use BillaBear\Integrations\Accounting\PaymentInterface;
-use BillaBear\Integrations\Accounting\RefundServiceInterface;
-use BillaBear\Integrations\Accounting\VoucherInterface;
+use BillaBear\Integrations\Accounting\CreditServiceInterface;
+use BillaBear\Integrations\Accounting\CustomerServiceInterface;
+use BillaBear\Integrations\Accounting\InvoiceServiceInterface;
+use BillaBear\Integrations\Accounting\PaymentServiceInterface;
+use BillaBear\Integrations\Accounting\VoucherServiceInterface;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
@@ -76,7 +76,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         );
     }
 
-    public function getInvoiceService(): InvoiceInterface
+    public function getInvoiceService(): InvoiceServiceInterface
     {
         $config = $this->createConfig();
         $invoiceService = new InvoiceService($this->getTenantId(), $config, $this->createClient());
@@ -85,12 +85,12 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         return $invoiceService;
     }
 
-    public function getVoucherService(): VoucherInterface
+    public function getVoucherService(): VoucherServiceInterface
     {
         // TODO: Implement getVoucherService() method.
     }
 
-    public function getCustomerService(): CustomerInterface
+    public function getCustomerService(): CustomerServiceInterface
     {
         $config = $this->createConfig();
 
@@ -129,7 +129,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         return $this->tenantId;
     }
 
-    public function getPaymentService(): PaymentInterface
+    public function getPaymentService(): PaymentServiceInterface
     {
         $config = $this->createConfig();
         $settings = $this->settingsRepository->getDefaultSettings();
@@ -157,7 +157,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         ];
     }
 
-    public function getRefundService(): RefundServiceInterface
+    public function getRefundService(): CreditServiceInterface
     {
         $config = $this->createConfig();
         $settings = $this->settingsRepository->getDefaultSettings();
@@ -167,7 +167,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
             throw new \Exception('Account code is not set');
         }
 
-        $refundService = new RefundService($this->getTenantId(), (string) $accountCode, $config, $this->createClient());
+        $refundService = new CreditService($this->getTenantId(), (string) $accountCode, $config, $this->createClient());
         $refundService->setLogger($this->getLogger());
 
         return $refundService;

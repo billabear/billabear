@@ -10,8 +10,8 @@ namespace BillaBear\Integrations\Accounting\Xero;
 
 use BillaBear\Entity\Payment;
 use BillaBear\Exception\Integrations\UnexpectedErrorException;
-use BillaBear\Integrations\Accounting\PaymentInterface;
 use BillaBear\Integrations\Accounting\PaymentRegistration;
+use BillaBear\Integrations\Accounting\PaymentServiceInterface;
 use GuzzleHttp\ClientInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use XeroAPI\XeroPHP\Api\AccountingApi;
@@ -21,7 +21,7 @@ use XeroAPI\XeroPHP\Models\Accounting\Invoice;
 use XeroAPI\XeroPHP\Models\Accounting\Payment as XeroPayment;
 use XeroAPI\XeroPHP\Models\Accounting\Payments;
 
-class PaymentService implements PaymentInterface
+class PaymentService implements PaymentServiceInterface
 {
     use LoggerAwareTrait;
 

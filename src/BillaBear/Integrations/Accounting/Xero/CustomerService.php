@@ -10,8 +10,8 @@ namespace BillaBear\Integrations\Accounting\Xero;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Exception\Integrations\UnexpectedErrorException;
-use BillaBear\Integrations\Accounting\CustomerInterface;
 use BillaBear\Integrations\Accounting\CustomerRegistration;
+use BillaBear\Integrations\Accounting\CustomerServiceInterface;
 use GuzzleHttp\ClientInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use XeroAPI\XeroPHP\Api\AccountingApi;
@@ -20,7 +20,7 @@ use XeroAPI\XeroPHP\Models\Accounting\Address;
 use XeroAPI\XeroPHP\Models\Accounting\Contact;
 use XeroAPI\XeroPHP\Models\Accounting\Contacts;
 
-class CustomerService implements CustomerInterface
+class CustomerService implements CustomerServiceInterface
 {
     use LoggerAwareTrait;
 

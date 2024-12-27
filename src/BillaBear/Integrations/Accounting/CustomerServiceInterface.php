@@ -11,7 +11,7 @@ namespace BillaBear\Integrations\Accounting;
 use BillaBear\Entity\Customer;
 use BillaBear\Exception\Integrations\UnexpectedErrorException;
 
-interface CustomerInterface
+interface CustomerServiceInterface
 {
     /**
      * @throws UnexpectedErrorException

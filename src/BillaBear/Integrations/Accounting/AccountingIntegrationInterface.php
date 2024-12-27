@@ -17,29 +17,29 @@ interface AccountingIntegrationInterface
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getInvoiceService(): InvoiceInterface;
+    public function getInvoiceService(): InvoiceServiceInterface;
 
     /**
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getVoucherService(): VoucherInterface;
+    public function getVoucherService(): VoucherServiceInterface;
 
     /**
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getCustomerService(): CustomerInterface;
+    public function getCustomerService(): CustomerServiceInterface;
 
     /**
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getPaymentService(): PaymentInterface;
+    public function getPaymentService(): PaymentServiceInterface;
 
     /**
      * @throws UnsupportedFeatureException
      * @throws MissingConfigurationException
      */
-    public function getRefundService(): RefundServiceInterface;
+    public function getRefundService(): CreditServiceInterface;
 }

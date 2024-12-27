@@ -8,9 +8,12 @@
 
 namespace BillaBear\Integrations\Accounting;
 
-use BillaBear\Entity\Payment;
+use BillaBear\Entity\Credit;
+use BillaBear\Entity\Refund;
 
-interface PaymentInterface
+interface CreditServiceInterface
 {
-    public function register(Payment $payment): PaymentRegistration;
+    public function registerRefund(Refund $refund): RefundRegistration;
+
+    public function registeredCreditNote(Credit $credit): CreditRegistration;
 }

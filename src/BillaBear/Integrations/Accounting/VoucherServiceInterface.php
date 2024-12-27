@@ -11,7 +11,7 @@ namespace BillaBear\Integrations\Accounting;
 use BillaBear\Entity\VoucherApplication;
 use BillaBear\Exception\Integrations\UnexpectedErrorException;
 
-interface VoucherInterface
+interface VoucherServiceInterface
 {
     /**
      * @throws UnexpectedErrorException

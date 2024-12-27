@@ -8,9 +8,9 @@
 
 namespace BillaBear\Integrations\Accounting;
 
-use Parthenon\Billing\Entity\Refund;
+use BillaBear\Entity\Payment;
 
-interface RefundServiceInterface
+interface PaymentServiceInterface
 {
-    public function register(Refund $refund): RefundRegistration;
+    public function register(Payment $payment): PaymentRegistration;
 }
