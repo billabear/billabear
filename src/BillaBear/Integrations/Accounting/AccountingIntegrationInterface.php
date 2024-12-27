@@ -36,4 +36,10 @@ interface AccountingIntegrationInterface
      * @throws MissingConfigurationException
      */
     public function getPaymentService(): PaymentInterface;
+
+    /**
+     * @throws UnsupportedFeatureException
+     * @throws MissingConfigurationException
+     */
+    public function getRefundService(): RefundServiceInterface;
 }

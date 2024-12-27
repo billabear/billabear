@@ -12,6 +12,7 @@ use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
 use BillaBear\Integrations\Accounting\CustomerInterface;
 use BillaBear\Integrations\Accounting\InvoiceInterface;
 use BillaBear\Integrations\Accounting\PaymentInterface;
+use BillaBear\Integrations\Accounting\RefundServiceInterface;
 use BillaBear\Integrations\Accounting\VoucherInterface;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
@@ -154,5 +155,21 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
                 'required' => true,
             ],
         ];
+    }
+
+    public function getRefundService(): RefundServiceInterface
+    {
+        $config = $this->createConfig();
+        $settings = $this->settingsRepository->getDefaultSettings();
+        $accountCode = $settings->getAccountingIntegration()->getSettings()['account_id'] ?? null;
+
+        if (!isset($accountCode)) {
+            throw new \Exception('Account code is not set');
+        }
+
+        $refundService = new RefundService($this->getTenantId(), (string) $accountCode, $config, $this->createClient());
+        $refundService->setLogger($this->getLogger());
+
+        return $refundService;
     }
 }

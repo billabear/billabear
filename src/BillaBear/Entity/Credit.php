@@ -64,6 +64,9 @@ class Credit
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $validUntil = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
+
     public function getId()
     {
         return $this->id;
@@ -192,6 +195,16 @@ class Credit
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
     }
 
     public function asMoney(): Money

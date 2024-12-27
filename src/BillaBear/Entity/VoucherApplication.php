@@ -37,6 +37,9 @@ class VoucherApplication
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
+
     public function getId()
     {
         return $this->id;
@@ -85,5 +88,15 @@ class VoucherApplication
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
     }
 }
