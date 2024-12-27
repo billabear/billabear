@@ -13,12 +13,11 @@ use BillaBear\Integrations\Accounting\CreditServiceInterface;
 use BillaBear\Integrations\Accounting\CustomerServiceInterface;
 use BillaBear\Integrations\Accounting\InvoiceServiceInterface;
 use BillaBear\Integrations\Accounting\PaymentServiceInterface;
-use BillaBear\Integrations\Accounting\VoucherServiceInterface;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
 use BillaBear\Integrations\Oauth\OauthConnectionProvider;
-use BillaBear\Integrations\OAuthConfig;
+use BillaBear\Integrations\OauthConfig;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -63,9 +62,9 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         return AuthenticationType::OAUTH;
     }
 
-    public function getOauthConfig(): OAuthConfig
+    public function getOauthConfig(): OauthConfig
     {
-        return new OAuthConfig(
+        return new OauthConfig(
             $this->clientId,
             $this->cientSecret,
             $this->redirectUri,

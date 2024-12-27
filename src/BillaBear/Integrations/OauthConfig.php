@@ -8,7 +8,7 @@
 
 namespace BillaBear\Integrations;
 
-class OauthConfig
+readonly class OauthConfig
 {
     public function __construct(
         public string $clientId,
