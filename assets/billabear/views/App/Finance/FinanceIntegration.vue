@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="card-body mt-3" v-if="integration.settings.length > 0">
+      <div class="card-body mt-3" v-if="integration !== null && integration.settings.length > 0">
         <h2 class="text-2xl">{{ $t('app.finance.integration.settings.title') }}</h2>
         <div class="form-field-ctn" v-for="setting in integration.settings">
           <label class="form-field-lbl">{{ $t(setting.label) }}</label>
