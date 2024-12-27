@@ -9,6 +9,7 @@
 namespace BillaBear\Schedule;
 
 use BillaBear\Schedule\Messenger\Message\BeforeChargeWarning;
+use BillaBear\Schedule\Messenger\Message\CheckIfInvoicesPaid;
 use BillaBear\Schedule\Messenger\Message\CounterUpdate;
 use BillaBear\Schedule\Messenger\Message\DisableOverdueCustomers;
 use BillaBear\Schedule\Messenger\Message\ExpiredCardsDayBefore;
@@ -51,6 +52,7 @@ class MainSchedule implements ScheduleProviderInterface
         $schedule->add(RecurringMessage::cron('1 3 * * *', new InvoiceOverdueWarning()));
         $schedule->add(RecurringMessage::cron('1 4 * * *', new DisableOverdueCustomers()));
         $schedule->add(RecurringMessage::cron('*/5 * * * *', new MassSubscriptionChange()));
+        $schedule->add(RecurringMessage::cron('0 */12 * * *', new CheckIfInvoicesPaid()));
 
         return $schedule;
     }
