@@ -22,7 +22,7 @@
         </div>
         <div class="form-field-ctn mt-3" v-if="integration!== null && integration.authentication_type == 'oauth'">
           <a :href="'/app/'+integration.name+'/oauth/start'" class="btn--main" v-if="enabled == false">{{ $t('app.finance.integration.buttons.connect') }}</a>
-          <button class="btn--main" @click="disconnectOauth()">{{ $t('app.finance.integration.buttons.disconnect') }}</button>
+          <button class="btn--main" @click="disconnectOauth()" v-else>{{ $t('app.finance.integration.buttons.disconnect') }}</button>
         </div>
       </div>
 
