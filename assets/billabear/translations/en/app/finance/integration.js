@@ -14,6 +14,10 @@ export const FINANCE_INTEGRATION_TRANSLATIONS = {
         title: "Settings",
     },
     xero: {
-        account_id: "Account ID for Payments",
+        account_id: "Account Code for Payments",
+    },
+    errors: {
+        required: "This field is required",
+        invalid: "This field is invalid",
     }
 };

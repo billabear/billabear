@@ -30,7 +30,9 @@
         <h2 class="text-2xl">{{ $t('app.finance.integration.settings.title') }}</h2>
         <div class="form-field-ctn" v-for="setting in integration.settings">
           <label class="form-field-lbl">{{ $t(setting.label) }}</label>
+          <span class="form-field-error block" v-if="errors[setting.name] != undefined">{{ $t(errors[setting.name]) }}</span>
           <input v-model="setting.value" class="form-field" type="text" v-if="setting.type === 'text'" />
+          <Toggle v-model="setting.value" v-if="setting.type === 'checkbox'" />
         </div>
 
         <SubmitButton :in-progress="send_request" class="btn--main mt-3" @click="saveSettings()">{{ $t('app.finance.integration.buttons.save') }}</SubmitButton>
@@ -42,9 +44,11 @@
 
 <script>
 import axios from "axios";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "FinanceIntegration",
+  components: {Toggle},
   data() {
     return {
       integrations: [],
@@ -55,6 +59,7 @@ export default {
       ready: false,
       settings: {},
       send_request: false,
+      errors: {},
     }
   },
   mounted() {
@@ -97,9 +102,20 @@ export default {
     saveSettings() {
       this.send_request = true;
       let settings = {};
+      this.errors = {};
       for (let i = 0; i < this.integration.settings.length; i++) {
         let setting = this.integration.settings[i];
+        if ((setting.value === null || setting.value === undefined || setting.value === "") && setting.required === true) {
+          this.errors[setting.name] = 'app.finance.integration.errors.required';
+          continue;
+        }
+
         settings[setting.name] = setting.value;
+      }
+
+      if (Object.keys(this.errors).length !== 0) {
+        this.send_request = false;
+        return;
       }
 
       axios.post('/app/integrations/accounting/settings', {settings: settings}).then(response => {
