@@ -38,8 +38,6 @@ class AccountingController
         $integrations = $integrationManager->getAccountingIntegrations();
         $integrationDtos = array_map([$integrationDataMapper, 'createAppDto'], $integrations);
 
-        $integration = $integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
-
         $viewDto = new AccountingIntegrationView(
             $integrationDtos,
             $settings->getAccountingIntegration()->getEnabled(),
