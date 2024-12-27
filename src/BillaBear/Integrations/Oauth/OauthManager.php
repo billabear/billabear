@@ -8,7 +8,6 @@
 
 namespace BillaBear\Integrations\Oauth;
 
-use BillaBear\Integrations\Accounting\Messenger\EnableIntegration;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -103,8 +102,6 @@ class OauthManager
         $this->settingsRepository->save($settings);
 
         $redirectUrl = sprintf('%s/site/integration', $this->siteConfig->getSiteUrl());
-
-        $this->messageBus->dispatch(new EnableIntegration());
 
         return new RedirectResponse($redirectUrl);
     }
