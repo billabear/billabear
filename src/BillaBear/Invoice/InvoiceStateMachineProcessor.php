@@ -17,7 +17,7 @@ class InvoiceStateMachineProcessor
 {
     use LoggerAwareTrait;
 
-    public const TRANSITIONS = ['send_customer_notifications', 'send_internal_notifications'];
+    public const TRANSITIONS = ['send_customer_notifications', 'send_internal_notifications', 'sync_with_integration'];
 
     public function __construct(
         private WorkflowInterface $invoiceProcessStateMachine,

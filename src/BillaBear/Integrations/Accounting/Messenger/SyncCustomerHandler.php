@@ -8,9 +8,7 @@
 
 namespace BillaBear\Integrations\Accounting\Messenger;
 
-use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -21,28 +19,13 @@ class SyncCustomerHandler
 
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
-        private SettingsRepositoryInterface $settingsRepository,
-        private IntegrationManager $integrationManager,
+        private \BillaBear\Integrations\Accounting\Action\SyncCustomer $syncCustomer,
     ) {
     }
 
     public function __invoke(SyncCustomer $syncCustomer): void
     {
         $customer = $this->customerRepository->findById($syncCustomer->customerId);
-        $settings = $this->settingsRepository->getDefaultSettings();
-
-        if (!$settings->getAccountingIntegration()->getEnabled()) {
-            return;
-        }
-
-        $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
-        $customerService = $integration->getCustomerService();
-        if ($customer->getAccountingReference()) {
-            $customerService->update($customer);
-        } else {
-            $registration = $customerService->register($customer);
-            $customer->setAccountingReference($registration->reference);
-        }
-        $this->customerRepository->save($customer);
+        $this->syncCustomer->sync($customer);
     }
 }

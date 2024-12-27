@@ -8,9 +8,7 @@
 
 namespace BillaBear\Integrations\Accounting\Messenger;
 
-use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\PaymentRepositoryInterface;
-use BillaBear\Repository\SettingsRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,28 +16,13 @@ class SyncPaymentHandler
 {
     public function __construct(
         private PaymentRepositoryInterface $paymentRepository,
-        private SettingsRepositoryInterface $settingsRepository,
-        private IntegrationManager $integrationManager,
+        private \BillaBear\Integrations\Accounting\Action\SyncPayment $syncPayment,
     ) {
     }
 
     public function __invoke(SyncPayment $message)
     {
         $payment = $this->paymentRepository->findById($message->paymentId);
-        $settings = $this->settingsRepository->getDefaultSettings();
-
-        if (!$settings->getAccountingIntegration()->getEnabled()) {
-            return;
-        }
-
-        $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
-        $paymentService = $integration->getPaymentService();
-        $invoiceService = $integration->getInvoiceService();
-
-        if (!$payment->getAccountingReference() && !$invoiceService->isPaid($payment->getInvoice())) {
-            $registration = $paymentService->register($payment);
-            $payment->setAccountingReference($registration->paymentReference);
-            $this->paymentRepository->save($payment);
-        }
+        $this->syncPayment->sync($payment);
     }
 }
