@@ -130,7 +130,7 @@ class CreditService implements CreditServiceInterface
 
         $line = new LineItem();
         $line->setAccountCode($this->accountCode);
-        $line->setDescription('Refund');
+        $line->setDescription($refund->getReason());
         $line->setQuantity(1);
         $line->setUnitAmount((string) $refund->getAsMoney()->getAmount());
 

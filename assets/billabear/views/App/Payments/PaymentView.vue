@@ -173,7 +173,7 @@
         <div>
           <span class="block text-lg font-medium">{{ $t('app.payment.view.modal.refund.amount.title') }}</span>
           <p class="text-red-500" v-if="refundValues.errors.amount != undefined">{{ refundValues.errors.amount }}</p>
-          <input type="number" v-model="refundValues.refundValue" class="form-field" />
+          <CurrencyInput v-model="refundValues.refundValue" />
         </div>
         <div class="mt-4">
           <span class="block text-lg font-medium">{{ $t('app.payment.view.modal.refund.reason.title') }}</span>
@@ -207,10 +207,11 @@ import {VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import Autocomplete from "../../../components/app/Forms/Autocomplete.vue";
+import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
 
 export default {
   name: "PaymentView",
-  components: {Autocomplete, RoleOnlyView, VueFinalModal},
+  components: {CurrencyInput, Autocomplete, RoleOnlyView, VueFinalModal},
   data() {
     return {
       ready: false,
