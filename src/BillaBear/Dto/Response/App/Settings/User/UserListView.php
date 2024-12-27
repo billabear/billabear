@@ -12,10 +12,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class UserListView
 {
-    private array $users;
-
-    private array $invites;
-
     #[SerializedName('has_more')]
     protected bool $hasMore;
 
@@ -24,6 +20,9 @@ class UserListView
 
     #[SerializedName('first_key')]
     protected ?string $firstKey;
+    private array $users;
+
+    private array $invites;
 
     public function getUsers(): array
     {

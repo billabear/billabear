@@ -10,6 +10,11 @@ namespace BillaBear\Pricing\Usage;
 
 enum MetricAggregationMethod: string
 {
+    case COUNT = 'count';
+    case SUM = 'sum';
+    case LATEST = 'latest';
+    case UNIQUE_COUNT = 'unique_count';
+    case MAX = 'max';
     public const METHODS_STRING = [
         self::COUNT->value,
         self::SUM->value,
@@ -17,10 +22,4 @@ enum MetricAggregationMethod: string
         self::UNIQUE_COUNT->value,
         self::MAX->value,
     ];
-
-    case COUNT = 'count';
-    case SUM = 'sum';
-    case LATEST = 'latest';
-    case UNIQUE_COUNT = 'unique_count';
-    case MAX = 'max';
 }

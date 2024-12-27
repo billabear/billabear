@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\PaymentCard;
 
 #[ORM\Entity]
-#[ORM\Table('payment')]
 #[ORM\Index(name: 'threshold_idx', columns: ['country', 'created_at'])]
+#[ORM\Table('payment')]
 class Payment extends \Parthenon\Billing\Entity\Payment
 {
     #[ORM\ManyToOne(targetEntity: Invoice::class)]

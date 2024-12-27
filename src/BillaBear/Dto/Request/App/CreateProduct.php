@@ -23,15 +23,15 @@ class CreateProduct
     #[SerializedName('external_reference')]
     private ?string $externalReference = null;
 
-    #[SerializedName('tax_type')]
     #[Assert\NotBlank(allowNull: true)]
+    #[SerializedName('tax_type')]
     #[TaxTypeExists]
     private $taxType;
 
-    #[SerializedName('tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type('numeric')]
     #[Assert\PositiveOrZero]
+    #[Assert\Type('numeric')]
+    #[SerializedName('tax_rate')]
     private $taxRate;
 
     #[Assert\Type('boolean')]

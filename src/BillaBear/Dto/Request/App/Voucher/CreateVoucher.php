@@ -14,12 +14,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreateVoucher
 {
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['percentage', 'fixed_credit'])]
+    #[Assert\NotBlank]
     private $type;
 
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['manual', 'automatic'])]
+    #[Assert\NotBlank]
     #[SerializedName('entry_type')]
     private $entryType;
 
@@ -27,12 +27,12 @@ class CreateVoucher
     #[SerializedName('entry_event')]
     private $entryEvent;
 
-    #[Assert\Type(type: 'string')]
     #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     private $name;
 
-    #[Assert\Positive]
     #[Assert\LessThanOrEqual(100)]
+    #[Assert\Positive]
     private $percentage;
 
     #[Assert\Valid]

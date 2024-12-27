@@ -19,7 +19,7 @@ interface ConvertableToInvoiceInterface
     /**
      * @return Collection|ConvertableToInvoiceLineInterface[]
      */
-    public function getLines(): Collection|array;
+    public function getLines(): array|Collection;
 
     public function setSubscriptions(array|Collection $subscriptions);
 

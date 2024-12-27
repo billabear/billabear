@@ -14,14 +14,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateUsageLimit
 {
     #[Assert\NotBlank]
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     private $amount;
 
-    #[SerializedName('warn_level')]
     #[Assert\NotBlank]
-    #[Assert\Type('integer')]
     #[Assert\Range(min: 0, max: 9000)]
+    #[Assert\Type('integer')]
+    #[SerializedName('warn_level')]
     private $warnLevel;
 
     public function getAmount()

@@ -31,6 +31,12 @@ class CreateInvoiceContext implements Context
     use SubscriptionTrait;
     use QuoteTrait;
 
+    private ?Customer $customer = null;
+    private array $subscriptions = [];
+    private array $items = [];
+    private ?\DateTime $expiresAt = null;
+    private ?\DateTime $dueAt = null;
+
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
@@ -40,12 +46,6 @@ class CreateInvoiceContext implements Context
         private TaxTypeRepository $taxTypeRepository,
     ) {
     }
-
-    private ?Customer $customer = null;
-    private array $subscriptions = [];
-    private array $items = [];
-    private ?\DateTime $expiresAt = null;
-    private ?\DateTime $dueAt = null;
 
     /**
      * @BeforeScenario

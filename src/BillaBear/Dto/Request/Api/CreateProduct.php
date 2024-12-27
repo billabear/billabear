@@ -21,8 +21,8 @@ class CreateProduct
     #[SerializedName('external_reference')]
     private ?string $external_reference = null;
 
-    #[SerializedName('tax_type')]
     #[Assert\NotBlank(allowNull: true)]
+    #[SerializedName('tax_type')]
     #[TaxTypeExists]
     private $tax_type;
 

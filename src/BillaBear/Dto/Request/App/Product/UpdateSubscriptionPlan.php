@@ -42,30 +42,30 @@ class UpdateSubscriptionPlan
     #[SerializedName('has_trial')]
     protected $hasTrial;
 
-    #[Assert\Type('integer')]
     #[Assert\PositiveOrZero]
+    #[Assert\Type('integer')]
     #[SerializedName('trial_length_days')]
     protected $trialLengthDays;
 
-    #[Assert\Type('integer')]
-    #[SerializedName('user_count')]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
+    #[Assert\Type('integer')]
+    #[SerializedName('user_count')]
     protected $userCount;
 
     #[Assert\Type('boolean')]
     #[SerializedName('per_seat')]
     protected $perSeat;
 
-    #[SerializedName('limits')]
     #[Assert\Valid]
+    #[SerializedName('limits')]
     protected $limits = [];
 
     #[SerializedName('features')]
     protected $features = [];
 
-    #[SerializedName('prices')]
     #[Assert\Count(min: 1)]
+    #[SerializedName('prices')]
     protected array $prices = [];
 
     #[SerializedName('is_trial_standalone')]

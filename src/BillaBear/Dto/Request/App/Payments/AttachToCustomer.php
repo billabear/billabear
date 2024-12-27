@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AttachToCustomer
 {
-    #[CustomerExists]
     #[Assert\NotBlank]
+    #[CustomerExists]
     private $customer;
 
     public function getCustomer()

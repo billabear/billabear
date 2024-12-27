@@ -100,35 +100,6 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         return $customerService;
     }
 
-    private function createConfig(): Configuration
-    {
-        return Configuration::getDefaultConfiguration()->setAccessToken($this->oauthConnectionProvider->getAccessToken());
-    }
-
-    private function createClient(): ClientInterface
-    {
-        if (!isset($this->client)) {
-            $this->client = new Client();
-        }
-
-        return $this->client;
-    }
-
-    private function getTenantId(): string
-    {
-        if (!isset($this->tenantId)) {
-            $identityApi = new \XeroAPI\XeroPHP\Api\IdentityApi(
-                $this->createClient(),
-                $this->createConfig()
-            );
-
-            $result = $identityApi->getConnections();
-            $this->tenantId = $result[0]->getTenantId();
-        }
-
-        return $this->tenantId;
-    }
-
     public function getPaymentService(): PaymentServiceInterface
     {
         $config = $this->createConfig();
@@ -171,5 +142,34 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         $refundService->setLogger($this->getLogger());
 
         return $refundService;
+    }
+
+    private function createConfig(): Configuration
+    {
+        return Configuration::getDefaultConfiguration()->setAccessToken($this->oauthConnectionProvider->getAccessToken());
+    }
+
+    private function createClient(): ClientInterface
+    {
+        if (!isset($this->client)) {
+            $this->client = new Client();
+        }
+
+        return $this->client;
+    }
+
+    private function getTenantId(): string
+    {
+        if (!isset($this->tenantId)) {
+            $identityApi = new \XeroAPI\XeroPHP\Api\IdentityApi(
+                $this->createClient(),
+                $this->createConfig()
+            );
+
+            $result = $identityApi->getConnections();
+            $this->tenantId = $result[0]->getTenantId();
+        }
+
+        return $this->tenantId;
     }
 }

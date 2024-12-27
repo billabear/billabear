@@ -13,16 +13,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Invoice
 {
-    #[SerializedName('biller_address')]
-    private ?Address $billerAddress = null;
-
-    #[SerializedName('payee_address')]
-    private ?Address $payeeAddress = null;
-
     protected string $number;
-
-    #[SerializedName('email_address')]
-    private string $emailAddress;
 
     protected string $currency;
 
@@ -30,10 +21,18 @@ class Invoice
 
     protected bool $paid;
 
-    private array $lines = [];
-
     #[SerializedName('created_at')]
     protected \DateTime $createdAt;
+    #[SerializedName('biller_address')]
+    private ?Address $billerAddress = null;
+
+    #[SerializedName('payee_address')]
+    private ?Address $payeeAddress = null;
+
+    #[SerializedName('email_address')]
+    private string $emailAddress;
+
+    private array $lines = [];
 
     public function getNumber(): string
     {

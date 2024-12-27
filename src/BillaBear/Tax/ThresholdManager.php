@@ -32,11 +32,6 @@ class ThresholdManager
         $this->currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
     }
 
-    protected function isEuStopShopEnabled(): bool
-    {
-        return $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getOneStopShopTaxRules();
-    }
-
     public function isThresholdReached(string $countryCode, ?Money $money): bool
     {
         if (!$money) {
@@ -120,5 +115,10 @@ class ThresholdManager
         }
 
         return $money;
+    }
+
+    protected function isEuStopShopEnabled(): bool
+    {
+        return $this->settingsRepository->getDefaultSettings()->getTaxSettings()->getOneStopShopTaxRules();
     }
 }

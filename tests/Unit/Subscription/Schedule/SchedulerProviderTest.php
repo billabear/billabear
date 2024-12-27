@@ -49,7 +49,7 @@ class SchedulerProviderTest extends TestCase
         $this->assertInstanceOf(YearScheduler::class, $subject->getScheduler($price));
     }
 
-    public function buildSettings(): SettingsRepositoryInterface&MockObject
+    public function buildSettings(): MockObject&SettingsRepositoryInterface
     {
         $systemSettings = new SystemSettings();
         $systemSettings->setInvoiceGenerationType(InvoiceGenerationType::PERIODICALLY);

@@ -17,10 +17,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'webhook_event')]
 class WebhookEvent
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(enumType: WebhookEventType::class)]
@@ -75,12 +75,12 @@ class WebhookEvent
         $this->createdAt = $createdAt;
     }
 
-    public function getResponses(): Collection|array
+    public function getResponses(): array|Collection
     {
         return $this->responses;
     }
 
-    public function setResponses(Collection|array $responses): void
+    public function setResponses(array|Collection $responses): void
     {
         $this->responses = $responses;
     }

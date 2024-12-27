@@ -18,9 +18,9 @@ class ChangePrice
     #[PriceExists]
     private $price;
 
+    #[Assert\Choice(['next_cycle', 'instantly'])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(['next_cycle', 'instantly'])]
     private $when;
 
     public function getPrice()

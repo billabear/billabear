@@ -18,10 +18,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'workflow_transition')]
 class WorkflowTransition implements PlaceInterface
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', enumType: WorkflowType::class)]
@@ -40,7 +40,7 @@ class WorkflowTransition implements PlaceInterface
     private array $handlerOptions = [];
 
     #[ORM\OneToMany(targetEntity: WorkflowTransitionRule::class, mappedBy: 'workflowTransition', cascade: ['persist', 'remove'])]
-    private Collection|array $rules;
+    private array|Collection $rules;
 
     #[ORM\Column(type: 'boolean')]
     private bool $enabled;
@@ -111,12 +111,12 @@ class WorkflowTransition implements PlaceInterface
         $this->handlerOptions = $handlerOptions;
     }
 
-    public function getRules(): Collection|array
+    public function getRules(): array|Collection
     {
         return $this->rules;
     }
 
-    public function setRules(Collection|array $rules): void
+    public function setRules(array|Collection $rules): void
     {
         $this->rules = $rules;
     }

@@ -13,13 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreateUsageLimit
 {
     #[Assert\NotBlank]
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     private $amount;
 
+    #[Assert\Choice(['WARNING', 'DISABLE'])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(['WARNING', 'DISABLE'])]
     private $action;
 
     public function getAmount()

@@ -17,17 +17,17 @@ class CreateTrial
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]
+    #[SerializedName('subscription_plan')]
     #[SubscriptionPlanExists]
     #[SubscriptionPlanHasStandaloneTrial]
-    #[SerializedName('subscription_plan')]
     private $subscription_plan;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     private $trial_length_days;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     #[SerializedName('seat_number')]
     private $seat_number;
 

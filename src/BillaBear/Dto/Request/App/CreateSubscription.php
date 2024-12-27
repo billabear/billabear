@@ -18,8 +18,8 @@ class CreateSubscription
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[SubscriptionPlanExists]
     #[SerializedName('subscription_plan')]
+    #[SubscriptionPlanExists]
     private $subscriptionPlan;
 
     #[Assert\NotBlank]
@@ -34,18 +34,18 @@ class CreateSubscription
     #[SerializedName('payment_details')]
     private $paymentDetails;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     #[SerializedName('seat_number')]
     private $seatNumber = 1;
 
-    #[SerializedName('has_trial')]
     #[Assert\Type('boolean')]
+    #[SerializedName('has_trial')]
     private $hasTrial;
 
-    #[SerializedName('trial_length_days')]
     #[Assert\PositiveOrZero]
     #[Assert\Type('integer')]
+    #[SerializedName('trial_length_days')]
     private $trialLengthDays;
 
     public function getSubscriptionPlan()

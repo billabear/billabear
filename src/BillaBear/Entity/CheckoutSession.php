@@ -18,10 +18,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'checkout_session')]
 class CheckoutSession implements ConvertableToInvoiceInterface
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
@@ -138,12 +138,12 @@ class CheckoutSession implements ConvertableToInvoiceInterface
         $this->taxTotal = $taxTotal;
     }
 
-    public function getLines(): Collection|array
+    public function getLines(): array|Collection
     {
         return $this->lines;
     }
 
-    public function setLines(Collection|array $lines): void
+    public function setLines(array|Collection $lines): void
     {
         $this->lines = $lines;
     }
@@ -178,12 +178,12 @@ class CheckoutSession implements ConvertableToInvoiceInterface
         $this->checkout = $checkout;
     }
 
-    public function getSubscriptions(): Collection|array
+    public function getSubscriptions(): array|Collection
     {
         return $this->subscriptions;
     }
 
-    public function setSubscriptions(Collection|array $subscriptions): void
+    public function setSubscriptions(array|Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }

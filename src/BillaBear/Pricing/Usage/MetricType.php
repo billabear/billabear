@@ -10,8 +10,7 @@ namespace BillaBear\Pricing\Usage;
 
 enum MetricType: string
 {
-    public const TYPES = [self::RESETTABLE->value, self::CONTINUOUS->value];
-
     case RESETTABLE = 'resettable';
     case CONTINUOUS = 'continuous';
+    public const TYPES = [self::RESETTABLE->value, self::CONTINUOUS->value];
 }

@@ -19,9 +19,9 @@ use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'customers')]
 #[ORM\Index(name: 'email_idx', fields: ['billingEmail'])]
 #[ORM\Index(name: 'external_ref_idx', fields: ['externalCustomerReference'])]
+#[ORM\Table(name: 'customers')]
 class Customer implements CustomerInterface
 {
     public const BILLING_TYPE_CARD = 'card';
@@ -31,10 +31,46 @@ class Customer implements CustomerInterface
     public const DEFAULT_LOCALE = 'en';
     public const DEFAULT_BILLING_TYPE = self::BILLING_TYPE_CARD;
 
-    #[ORM\Id]
+    #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
+    protected ?string $paymentProviderDetailsUrl = null;
+
+    #[ORM\Column(name: 'status', type: 'string', nullable: true, enumType: CustomerStatus::class)]
+    protected CustomerStatus $status;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    protected ?bool $disabled = false;
+
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
+    protected Collection $subscriptions;
+
+    #[ORM\Column(name: 'credit_amount', type: 'integer', nullable: true)]
+    protected ?int $creditAmount = null;
+
+    #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
+    protected ?string $creditCurrency = null;
+
+    #[ORM\Column(name: 'tax_number', type: 'string', nullable: true)]
+    protected ?string $taxNumber = null;
+
+    #[ORM\Column(name: 'tax_exempt', type: 'boolean', nullable: true)]
+    protected ?bool $taxExempt = false;
+
+    #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
+    protected ?float $standardTaxRate = null;
+
+    #[ORM\Column(enumType: CustomerType::class)]
+    protected CustomerType $type;
+
+    #[ORM\Column(name: 'invoice_format', type: 'string', nullable: true)]
+    protected ?string $invoiceFormat = null;
+
+    #[ORM\Column(name: 'warning_level', type: 'integer', enumType: WarningLevel::class, nullable: true)]
+    protected ?WarningLevel $warningLevel = null;
+
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Embedded(class: Address::class)]
@@ -64,44 +100,8 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'locale', type: 'string', nullable: false)]
     private string $locale = self::DEFAULT_LOCALE;
 
-    #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
-    protected ?string $paymentProviderDetailsUrl = null;
-
-    #[ORM\Column(name: 'status', type: 'string', nullable: true, enumType: CustomerStatus::class)]
-    protected CustomerStatus $status;
-
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    protected ?bool $disabled = false;
-
-    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
-    protected Collection $subscriptions;
-
-    #[ORM\Column(name: 'credit_amount', type: 'integer', nullable: true)]
-    protected ?int $creditAmount = null;
-
-    #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
-    protected ?string $creditCurrency = null;
-
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
-
-    #[ORM\Column(name: 'tax_number', type: 'string', nullable: true)]
-    protected ?string $taxNumber = null;
-
-    #[ORM\Column(name: 'tax_exempt', type: 'boolean', nullable: true)]
-    protected ?bool $taxExempt = false;
-
-    #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
-    protected ?float $standardTaxRate = null;
-
-    #[ORM\Column(enumType: CustomerType::class)]
-    protected CustomerType $type;
-
-    #[ORM\Column(name: 'invoice_format', type: 'string', nullable: true)]
-    protected ?string $invoiceFormat = null;
-
-    #[ORM\Column(name: 'warning_level', type: 'integer', enumType: WarningLevel::class, nullable: true)]
-    protected ?WarningLevel $warningLevel = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $accountingReference;

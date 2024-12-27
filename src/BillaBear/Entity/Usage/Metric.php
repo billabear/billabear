@@ -18,10 +18,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Entity]
 class Metric
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -121,7 +121,7 @@ class Metric
         return $this->filters;
     }
 
-    public function setFilters(Collection|array $filters): void
+    public function setFilters(array|Collection $filters): void
     {
         $this->filters = $filters;
     }

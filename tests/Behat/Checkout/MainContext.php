@@ -37,6 +37,15 @@ class MainContext implements Context
     use SubscriptionTrait;
     use QuoteTrait;
 
+    private ?string $name = null;
+    private ?Customer $customer = null;
+    private array $subscriptions = [];
+    private array $items = [];
+    private ?\DateTime $expiresAt = null;
+    private ?\DateTime $dueAt = null;
+    private bool $permanent = false;
+    private ?BrandSettings $brandSettings = null;
+
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
@@ -50,15 +59,6 @@ class MainContext implements Context
         private TaxTypeRepository $taxTypeRepository,
     ) {
     }
-
-    private ?string $name = null;
-    private ?Customer $customer = null;
-    private array $subscriptions = [];
-    private array $items = [];
-    private ?\DateTime $expiresAt = null;
-    private ?\DateTime $dueAt = null;
-    private bool $permanent = false;
-    private ?BrandSettings $brandSettings = null;
 
     /**
      * @BeforeScenario

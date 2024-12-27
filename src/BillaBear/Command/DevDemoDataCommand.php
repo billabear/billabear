@@ -26,16 +26,6 @@ class DevDemoDataCommand extends Command
     private static int $count;
     private static \DateTime $date;
 
-    public static function getNumberOfCustomers(): int
-    {
-        return self::$count;
-    }
-
-    public static function getStartDate(): \DateTime
-    {
-        return clone self::$date;
-    }
-
     public function __construct(
         private readonly CustomerCreation $customerCreation,
         private readonly SubscriptionPlanCreation $subscriptionPlanCreation,
@@ -45,6 +35,16 @@ class DevDemoDataCommand extends Command
         private readonly CreateSubscriptionCountStats $createSubscriptionCountStats,
     ) {
         parent::__construct();
+    }
+
+    public static function getNumberOfCustomers(): int
+    {
+        return self::$count;
+    }
+
+    public static function getStartDate(): \DateTime
+    {
+        return clone self::$date;
     }
 
     protected function configure(): void

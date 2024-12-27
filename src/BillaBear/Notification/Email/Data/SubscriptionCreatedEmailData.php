@@ -29,6 +29,11 @@ class SubscriptionCreatedEmailData extends AbstractEmailData
         ];
     }
 
+    public function getTemplateName(): string
+    {
+        return EmailTemplate::NAME_SUBSCRIPTION_CREATED;
+    }
+
     protected function getSubscriptionData(Subscription $subscription): array
     {
         return [
@@ -39,10 +44,5 @@ class SubscriptionCreatedEmailData extends AbstractEmailData
             'amount' => (string) $subscription->getMoneyAmount(),
             'next_payment_due' => $subscription->getValidUntil()->format(\DATE_ATOM),
         ];
-    }
-
-    public function getTemplateName(): string
-    {
-        return EmailTemplate::NAME_SUBSCRIPTION_CREATED;
     }
 }

@@ -18,14 +18,14 @@ use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'invoice')]
 #[ORM\Index(name: 'paid_idx', columns: ['paid'])]
+#[ORM\Table(name: 'invoice')]
 class Invoice
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -176,12 +176,12 @@ class Invoice
     /**
      * @return Collection|Payment[]
      */
-    public function getPayments(): Collection|array
+    public function getPayments(): array|Collection
     {
         return $this->payments;
     }
 
-    public function setPayments(Collection|array $payments): void
+    public function setPayments(array|Collection $payments): void
     {
         $this->payments = $payments;
     }
@@ -249,12 +249,12 @@ class Invoice
     /**
      * @return Collection|InvoiceLine[]
      */
-    public function getLines(): Collection|array
+    public function getLines(): array|Collection
     {
         return $this->lines;
     }
 
-    public function setLines(Collection|array $lines): void
+    public function setLines(array|Collection $lines): void
     {
         $this->lines = $lines;
     }
@@ -262,12 +262,12 @@ class Invoice
     /**
      * @return Subscription[]|Collection
      */
-    public function getSubscriptions(): Collection|array
+    public function getSubscriptions(): array|Collection
     {
         return $this->subscriptions;
     }
 
-    public function setSubscriptions(Collection|array $subscriptions): void
+    public function setSubscriptions(array|Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }

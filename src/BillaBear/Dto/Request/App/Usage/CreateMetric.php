@@ -19,14 +19,14 @@ class CreateMetric
     private $name;
 
     #[Assert\NotBlank]
-    #[Assert\Type('string')]
     #[Assert\Regex(pattern: '|^[a-z0-9_]+$|')]
+    #[Assert\Type('string')]
     private $code;
 
+    #[Assert\Choice(choices: MetricAggregationMethod::METHODS_STRING)]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[SerializedName('aggregation_method')]
-    #[Assert\Choice(choices: MetricAggregationMethod::METHODS_STRING)]
     private $aggregationMethod;
 
     #[Assert\When(

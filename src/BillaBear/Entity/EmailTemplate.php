@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'email_templates')]
 #[ORM\Index(name: 'name_locale', fields: ['name', 'locale'])]
+#[ORM\Table(name: 'email_templates')]
 #[ORM\UniqueConstraint(name: 'name_locale_brand', fields: ['name', 'locale', 'brand'])]
 class EmailTemplate
 {
@@ -62,10 +62,10 @@ class EmailTemplate
         self::NAME_USAGE_DISABLED,
     ];
 
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', nullable: false)]

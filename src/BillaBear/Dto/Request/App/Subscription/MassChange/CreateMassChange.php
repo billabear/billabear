@@ -21,18 +21,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[ValidPriceChange]
 class CreateMassChange
 {
-    #[Assert\NotBlank]
-    #[SerializedName('change_date')]
     #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
+    #[Assert\NotBlank]
     #[InTheFuture]
+    #[SerializedName('change_date')]
     private $changeDate;
 
-    #[SubscriptionPlanExists]
     #[SerializedName('target_plan')]
+    #[SubscriptionPlanExists]
     private $targetPlan;
 
-    #[SubscriptionPlanExists]
     #[SerializedName('new_plan')]
+    #[SubscriptionPlanExists]
     private $newPlan;
 
     #[PriceExists]

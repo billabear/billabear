@@ -14,15 +14,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class VatSense
 {
+    #[SerializedName('validate_vat_ids')]
+    public $validateVatIds;
     #[SerializedName('vat_sense_enabled')]
     private $vatSenseEnabled;
 
-    #[SerializedName('vat_sense_api_key')]
     #[Assert\Type('string')]
+    #[SerializedName('vat_sense_api_key')]
     private $vatSenseApiKey;
-
-    #[SerializedName('validate_vat_ids')]
-    public $validateVatIds;
 
     public function getVatSenseEnabled()
     {

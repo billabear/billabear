@@ -133,19 +133,6 @@ class WebhookContext implements Context
         }
     }
 
-    protected function getWebhookEndpoint(string $name): WebhookEndpoint
-    {
-        $entity = $this->webhookEndpointRepository->findOneBy(['name' => $name]);
-
-        if (!$entity instanceof WebhookEndpoint) {
-            throw new \Exception('Unable to find webhook for '.$name);
-        }
-
-        $this->webhookEndpointRepository->getEntityManager()->refresh($entity);
-
-        return $entity;
-    }
-
     /**
      * @Then there should be a webhook event for payment received
      */
@@ -216,5 +203,18 @@ class WebhookContext implements Context
         if (!$entity) {
             throw new \Exception("Can't find event");
         }
+    }
+
+    protected function getWebhookEndpoint(string $name): WebhookEndpoint
+    {
+        $entity = $this->webhookEndpointRepository->findOneBy(['name' => $name]);
+
+        if (!$entity instanceof WebhookEndpoint) {
+            throw new \Exception('Unable to find webhook for '.$name);
+        }
+
+        $this->webhookEndpointRepository->getEntityManager()->refresh($entity);
+
+        return $entity;
     }
 }

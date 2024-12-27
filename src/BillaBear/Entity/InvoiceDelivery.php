@@ -16,10 +16,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table('invoice_delivery')]
 class InvoiceDelivery
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class)]

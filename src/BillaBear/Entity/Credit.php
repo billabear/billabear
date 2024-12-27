@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'credit')]
 #[ORM\Index(name: 'customer_idx', fields: ['customer'])]
+#[ORM\Table(name: 'credit')]
 class Credit
 {
     public const CREATION_TYPE_AUTOMATED = 'automated';
@@ -22,10 +22,10 @@ class Credit
     public const TYPE_CREDIT = 'credit';
     public const TYPE_DEBIT = 'debit';
 
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]

@@ -15,8 +15,8 @@ class PostLimit
 {
     protected Feature $feature;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     protected $limit;
 
     public function getFeature(): Feature

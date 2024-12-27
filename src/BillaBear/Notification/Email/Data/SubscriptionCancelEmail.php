@@ -29,16 +29,16 @@ class SubscriptionCancelEmail extends AbstractEmailData
         ];
     }
 
+    public function getTemplateName(): string
+    {
+        return EmailTemplate::NAME_SUBSCRIPTION_CANCELLED;
+    }
+
     protected function getSubscriptionData(Subscription $subscription): array
     {
         return [
             'plan_name' => $subscription->getPlanName(),
             'finishes_at' => $subscription->getValidUntil()->format(\DATE_ATOM),
         ];
-    }
-
-    public function getTemplateName(): string
-    {
-        return EmailTemplate::NAME_SUBSCRIPTION_CANCELLED;
     }
 }

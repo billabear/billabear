@@ -20,16 +20,16 @@ class TrialExtended extends AbstractNotification
     {
     }
 
+    public function getEvent(): SlackNotificationEvent
+    {
+        return SlackNotificationEvent::TRIAL_CONVERTED;
+    }
+
     protected function getData(): array
     {
         return [
             'customer' => $this->buildCustomerData($this->subscription->getCustomer()),
             'subscription' => $this->buildSubscriptionData($this->subscription),
         ];
-    }
-
-    public function getEvent(): SlackNotificationEvent
-    {
-        return SlackNotificationEvent::TRIAL_CONVERTED;
     }
 }

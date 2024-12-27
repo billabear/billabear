@@ -12,6 +12,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Payment
 {
+    #[SerializedName('payment_provider_details_url')]
+    protected ?string $paymentProviderDetailsUrl = null;
     private string $id;
 
     private int $amount;
@@ -22,9 +24,6 @@ class Payment
 
     #[SerializedName('external_reference')]
     private string $externalReference;
-
-    #[SerializedName('payment_provider_details_url')]
-    protected ?string $paymentProviderDetailsUrl = null;
 
     private ?Customer $customer = null;
 

@@ -92,7 +92,7 @@ class GenerateNewInvoices
     /**
      * @param Subscription[] $activeSubscriptions
      */
-    protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
+    protected function generateInvoice(array|Subscription $activeSubscriptions, Customer $customer): void
     {
         $this->transactionManager->start();
         try {

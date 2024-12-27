@@ -22,8 +22,8 @@ interface PricerInterface
         Price $price,
         Customer $customer,
         TaxType $taxType,
-        int|float|null $seatNumber = 1,
-        int|float|null $alreadyBilled = null,
+        null|float|int $seatNumber = 1,
+        null|float|int $alreadyBilled = null,
     ): array;
 
     public function getCustomerPriceInfoFromMoney(Money $money, Customer $customer, bool $includeTax, ?TaxType $taxType): PriceInfo;

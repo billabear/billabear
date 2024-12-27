@@ -147,6 +147,11 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         return $receipt;
     }
 
+    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): ReceiptInterface
+    {
+        throw new \Exception('TODO fix ISP breakage');
+    }
+
     private function addToTotal(?Money $total, Money $money): Money
     {
         if (null === $total) {
@@ -156,10 +161,5 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         }
 
         return $total;
-    }
-
-    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): ReceiptInterface
-    {
-        throw new \Exception('TODO fix ISP breakage');
     }
 }

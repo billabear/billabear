@@ -15,8 +15,8 @@ class CancellationDetails
     #[Assert\Type('string')]
     private $comment;
 
-    #[Assert\Type('string')]
     #[Assert\Choice(['too_expensive', 'missing_features', 'switched_service', 'unused', 'customer_service', 'too_complex', 'low_quality', 'other'])]
+    #[Assert\Type('string')]
     private $feedback;
 
     public function getComment()

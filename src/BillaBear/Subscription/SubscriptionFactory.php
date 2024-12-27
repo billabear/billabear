@@ -31,8 +31,8 @@ class SubscriptionFactory
 
     public function create(
         CustomerInterface $customer,
-        SubscriptionPlan|Plan $plan,
-        Price|PlanPrice|null $planPrice = null,
+        Plan|SubscriptionPlan $plan,
+        null|PlanPrice|Price $planPrice = null,
         ?PaymentCard $paymentDetails = null,
         ?int $seatNumber = 1,
         ?bool $hasTrial = null,

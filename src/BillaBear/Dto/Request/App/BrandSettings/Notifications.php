@@ -44,9 +44,9 @@ class Notifications
     #[SerializedName('payment_failure')]
     private $paymentFailure;
 
+    #[Assert\Choice(choices: ['none', 'all', 'yearly'])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['none', 'all', 'yearly'])]
     #[SerializedName('before_charge_warning')]
     private $beforeChargeWarnings;
 

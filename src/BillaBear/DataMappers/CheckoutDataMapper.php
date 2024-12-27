@@ -47,6 +47,24 @@ class CheckoutDataMapper
         return $appDto;
     }
 
+    public function createPublicDto(Entity $entity): PublicDto
+    {
+        $appDto = new PublicDto();
+        $appDto->setName($entity->getName());
+        $appDto->setCreatedAt($entity->getCreatedAt());
+        $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
+        $appDto->setId((string) $entity->getId());
+        $appDto->setCurrency($entity->getCurrency());
+        $appDto->setTotal($entity->getTotal());
+        $appDto->setTaxTotal($entity->getTaxTotal());
+        $appDto->setSubTotal($entity->getSubTotal());
+        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
+        $appDto->setExpiresAt($entity->getExpiresAt());
+        $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
+
+        return $appDto;
+    }
+
     protected function createAppLineDto(EntityLine $quoteLine): AppLineDto
     {
         $appLineDto = new AppLineDto();
@@ -66,24 +84,6 @@ class CheckoutDataMapper
         $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
 
         return $appLineDto;
-    }
-
-    public function createPublicDto(Entity $entity): PublicDto
-    {
-        $appDto = new PublicDto();
-        $appDto->setName($entity->getName());
-        $appDto->setCreatedAt($entity->getCreatedAt());
-        $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
-        $appDto->setId((string) $entity->getId());
-        $appDto->setCurrency($entity->getCurrency());
-        $appDto->setTotal($entity->getTotal());
-        $appDto->setTaxTotal($entity->getTaxTotal());
-        $appDto->setSubTotal($entity->getSubTotal());
-        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
-        $appDto->setExpiresAt($entity->getExpiresAt());
-        $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
-
-        return $appDto;
     }
 
     protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto

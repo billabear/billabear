@@ -41,7 +41,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
     /**
      * @param Customer $customer
      */
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = null): Subscription
+    public function startSubscription(CustomerInterface $customer, Plan|SubscriptionPlan $plan, PlanPrice|Price $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = null): Subscription
     {
         if (!$this->stripeBillingEnabled || Customer::BILLING_TYPE_INVOICE === $customer->getBillingType()) {
             return $this->invoiceSubscriptionManager->startSubscription($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
@@ -100,7 +100,7 @@ class SubscriptionManagerInterchange implements SubscriptionManagerInterface
         $this->stripeBillingManager->changeSubscriptionPrice($subscription, $price, $billingChangeTiming);
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, Plan|SubscriptionPlan $plan, PlanPrice|Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         if ($subscription->getPrice()->getAsMoney()->isLessThan($price->getAsMoney())) {
             $eventType = CustomerSubscriptionEventType::UPGRADED;

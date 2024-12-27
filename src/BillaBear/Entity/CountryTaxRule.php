@@ -16,10 +16,15 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'country_tax_rule')]
 class CountryTaxRule implements DeletableInterface
 {
-    #[ORM\Id]
+    #[ORM\Column(type: 'boolean')]
+    protected bool $deleted = false;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    protected ?\DateTimeInterface $deletedAt = null;
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Country::class)]
@@ -42,12 +47,6 @@ class CountryTaxRule implements DeletableInterface
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $validUntil = null;
-
-    #[ORM\Column(type: 'boolean')]
-    protected bool $deleted = false;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    protected ?\DateTimeInterface $deletedAt = null;
 
     public function getId()
     {

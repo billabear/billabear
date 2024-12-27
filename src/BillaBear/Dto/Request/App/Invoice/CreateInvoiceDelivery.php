@@ -13,12 +13,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreateInvoiceDelivery
 {
-    #[Assert\Type('string')]
     #[Assert\Choice(['email', 'sftp', 'webhook'])]
+    #[Assert\Type('string')]
     private $type;
 
-    #[Assert\Type('string')]
     #[Assert\Choice(['pdf', 'zugferd_v1'])]
+    #[Assert\Type('string')]
     private $format;
 
     #[Assert\Type('string')]
@@ -33,20 +33,20 @@ class CreateInvoiceDelivery
     #[Assert\Type('string')]
     private $sftpDir;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     private $sftpPort;
 
     #[Assert\Type('string')]
     #[Assert\Url(protocols: ['http', 'https'])]
     private $webhookUrl;
 
-    #[Assert\Type('string')]
     #[Assert\Choice(['POST', 'PUT'])]
+    #[Assert\Type('string')]
     private $webhookMethod;
 
-    #[Assert\Type('string')]
     #[Assert\Email]
+    #[Assert\Type('string')]
     private $email;
 
     #[Assert\Callback]

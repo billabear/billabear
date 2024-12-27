@@ -12,16 +12,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'payment_failure_process')]
 #[ORM\Index(fields: ['customer', 'state'])]
 #[ORM\Index(fields: ['state', 'nextAttemptAt'])]
+#[ORM\Table(name: 'payment_failure_process')]
 class PaymentFailureProcess
 {
     public const DEFAULT_NEXT_ATTEMPT = '+3 days';
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: PaymentAttempt::class)]

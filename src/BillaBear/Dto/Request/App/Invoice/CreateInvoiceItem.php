@@ -24,12 +24,12 @@ class CreateInvoiceItem
     #[Assert\Currency]
     private $currency;
 
-    #[SerializedName('include_tax')]
     #[Assert\Type('bool')]
+    #[SerializedName('include_tax')]
     private $includeTax;
 
-    #[SerializedName('tax_type')]
     #[Assert\NotBlank]
+    #[SerializedName('tax_type')]
     #[TaxTypeExists]
     private $taxType;
 

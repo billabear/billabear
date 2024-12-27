@@ -21,9 +21,9 @@ class UpdatePlan
     public const WHEN_INSTANTLY = 'instantly';
     public const WHEN_DATE = 'specific-date';
 
+    #[Assert\Choice([self::NEXT_CYCLE, self::WHEN_INSTANTLY, self::WHEN_DATE])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice([self::NEXT_CYCLE, self::WHEN_INSTANTLY, self::WHEN_DATE])]
     private $when;
 
     #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
@@ -35,8 +35,8 @@ class UpdatePlan
     private $price;
 
     #[Assert\NotBlank]
-    #[SubscriptionPlanExists]
     #[SerializedName('plan')]
+    #[SubscriptionPlanExists]
     private $plan;
 
     public function getPrice()

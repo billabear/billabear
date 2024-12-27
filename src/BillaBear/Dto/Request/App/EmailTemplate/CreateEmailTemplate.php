@@ -19,14 +19,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[UniqueEmailTemplate]
 class CreateEmailTemplate
 {
+    #[Assert\Choice(choices: EmailTemplate::TEMPLATE_NAMES)]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: EmailTemplate::TEMPLATE_NAMES)]
     private $name;
 
+    #[Assert\Locale]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Locale]
     private $locale;
 
     #[Assert\NotBlank]

@@ -21,13 +21,13 @@ class CreateCheckout
     private $name;
 
     #[Assert\NotBlank]
-    #[SerializedName('brand')]
     #[BrandCodeExists]
+    #[SerializedName('brand')]
     private $brand;
 
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type('string')]
     #[Assert\Regex('~[a-zA-Z0-9_-]+~isU')]
+    #[Assert\Type('string')]
     private $slug;
 
     #[Assert\NotBlank]

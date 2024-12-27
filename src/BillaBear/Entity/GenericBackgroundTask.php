@@ -14,14 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'generic_background_task')]
 #[ORM\Index(fields: ['status'])]
+#[ORM\Table(name: 'generic_background_task')]
 class GenericBackgroundTask
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     protected $id;
 
     #[ORM\Column(enumType: GenericTaskStatus::class)]

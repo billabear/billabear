@@ -14,8 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RefundPayment
 {
     #[Assert\NotBlank]
-    #[Assert\Type(type: 'integer')]
     #[Assert\Positive]
+    #[Assert\Type(type: 'integer')]
     #[SerializedName('amount')]
     private $amount;
 

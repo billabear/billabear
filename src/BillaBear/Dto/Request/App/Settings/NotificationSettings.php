@@ -20,8 +20,8 @@ class NotificationSettings
     #[SerializedName('send_customer_notifications')]
     private $sendCustomerNotifications;
 
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: Entity::EMSP_CHOICES)]
+    #[Assert\NotBlank]
     private $emsp;
 
     #[Assert\NotBlank(allowNull: true)]
@@ -36,8 +36,8 @@ class NotificationSettings
     #[SerializedName('emsp_domain')]
     private $emspDomain;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[SerializedName('default_outgoing_email')]
     private $defaultOutgoingEmail;
 

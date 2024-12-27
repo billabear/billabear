@@ -23,9 +23,9 @@ class CreateCheckoutSubscription
     #[PriceExists]
     private $price;
 
-    #[SerializedName('seat_number')]
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
+    #[SerializedName('seat_number')]
     private $seatNumber;
 
     public function getPlan()

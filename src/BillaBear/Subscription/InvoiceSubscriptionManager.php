@@ -58,8 +58,8 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
     public function startSubscription(
         CustomerInterface $customer,
-        SubscriptionPlan|Plan $plan,
-        Price|PlanPrice $planPrice,
+        Plan|SubscriptionPlan $plan,
+        PlanPrice|Price $planPrice,
         ?PaymentCard $paymentDetails = null,
         int $seatNumbers = 1,
         ?bool $hasTrial = null,
@@ -190,7 +190,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPaymentSchedule($price->getSchedule());
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, Plan|SubscriptionPlan $plan, PlanPrice|Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         /** @var \BillaBear\Entity\Price $oldPrice */
         $oldPrice = $subscription->getPrice();
@@ -238,7 +238,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
     /**
      * @throws MoneyMismatchException
      */
-    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, Price|\BillaBear\Entity\Price $price): Money
+    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, \BillaBear\Entity\Price|Price $price): Money
     {
         $now = new \DateTime();
         $originalInterval = $subscription->getStartOfCurrentPeriod()->diff($subscription->getValidUntil());

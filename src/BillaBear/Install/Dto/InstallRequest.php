@@ -17,12 +17,12 @@ class InstallRequest
     #[SerializedName('default_brand')]
     private $defaultBrand;
 
-    #[Assert\NotBlank]
     #[Assert\Country]
+    #[Assert\NotBlank]
     private $country;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[SerializedName('from_email')]
     private $fromEmail;
 
@@ -35,15 +35,15 @@ class InstallRequest
     #[SerializedName('webhook_url')]
     private $webhookUrl;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     private $email;
 
     #[Assert\NotBlank]
     private $password;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
     public function getDefaultBrand()

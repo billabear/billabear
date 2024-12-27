@@ -13,6 +13,18 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Price
 {
+    #[SerializedName('payment_provider_details_url')]
+    protected ?string $paymentProviderDetailsUrl = null;
+
+    #[SerializedName('display_value')]
+    protected string $displayValue;
+
+    #[SerializedName('product')]
+    protected ?Product $product = null;
+
+    protected ?Metric $metric = null;
+
+    protected bool $usage = false;
     #[SerializedName('id')]
     private string $id;
 
@@ -36,19 +48,6 @@ class Price
 
     #[SerializedName('public')]
     private bool $public = true;
-
-    #[SerializedName('payment_provider_details_url')]
-    protected ?string $paymentProviderDetailsUrl = null;
-
-    #[SerializedName('display_value')]
-    protected string $displayValue;
-
-    #[SerializedName('product')]
-    protected ?Product $product = null;
-
-    protected ?Metric $metric = null;
-
-    protected bool $usage = false;
 
     public function hasId(): bool
     {

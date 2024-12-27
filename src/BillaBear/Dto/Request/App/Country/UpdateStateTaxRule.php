@@ -28,25 +28,25 @@ class UpdateStateTaxRule
     #[StateExists]
     private $state;
 
-    #[SerializedName('tax_type')]
     #[Assert\NotBlank]
+    #[SerializedName('tax_type')]
     private $taxType;
 
-    #[SerializedName('tax_rate')]
     #[Assert\NotBlank]
     #[Assert\Type('numeric')]
+    #[SerializedName('tax_rate')]
     private $taxRate;
 
     #[Assert\Type('boolean')]
     private $default = false;
 
-    #[SerializedName('valid_from')]
-    #[Assert\NotBlank]
     #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
+    #[Assert\NotBlank]
+    #[SerializedName('valid_from')]
     private $validFrom;
 
-    #[SerializedName('valid_until')]
     #[Assert\AtLeastOneOf([new Assert\DateTime(format: \DATE_RFC3339_EXTENDED), new Assert\DateTime(format: \DATE_ATOM)])]
+    #[SerializedName('valid_until')]
     private $validUntil;
 
     public function getId()

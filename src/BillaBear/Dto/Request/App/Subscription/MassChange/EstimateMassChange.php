@@ -20,12 +20,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[ValidPriceChange]
 class EstimateMassChange
 {
-    #[SubscriptionPlanExists]
     #[SerializedName('target_plan')]
+    #[SubscriptionPlanExists]
     private $targetPlan;
 
-    #[SubscriptionPlanExists]
     #[SerializedName('new_plan')]
+    #[SubscriptionPlanExists]
     private $newPlan;
 
     #[PriceExists]

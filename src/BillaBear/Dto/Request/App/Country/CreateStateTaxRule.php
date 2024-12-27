@@ -25,22 +25,22 @@ class CreateStateTaxRule
     #[StateExists]
     private $state;
 
-    #[SerializedName('tax_type')]
     #[Assert\NotBlank]
+    #[SerializedName('tax_type')]
     private $taxType;
 
-    #[SerializedName('tax_rate')]
     #[Assert\NotBlank]
     #[Assert\Type(['float', 'integer'])]
+    #[SerializedName('tax_rate')]
     private $taxRate;
 
-    #[SerializedName('valid_from')]
-    #[Assert\NotBlank]
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    #[Assert\NotBlank]
+    #[SerializedName('valid_from')]
     private $validFrom;
 
-    #[SerializedName('valid_until')]
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    #[SerializedName('valid_until')]
     private $validUntil;
 
     private $default;

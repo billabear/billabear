@@ -24,12 +24,12 @@ class CreateCheckoutItem
     #[Assert\Currency]
     private $currency;
 
-    #[SerializedName('include_tax')]
     #[Assert\Type('bool')]
+    #[SerializedName('include_tax')]
     private $include_tax;
 
-    #[SerializedName('tax_type')]
     #[Assert\NotBlank]
+    #[SerializedName('tax_type')]
     #[TaxTypeExists]
     private $tax_type;
 

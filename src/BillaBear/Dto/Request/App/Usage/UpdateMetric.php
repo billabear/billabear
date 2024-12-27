@@ -19,10 +19,10 @@ class UpdateMetric
     #[Assert\Type('string')]
     private $name;
 
+    #[Assert\Choice(choices: MetricAggregationMethod::METHODS_STRING)]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     #[SerializedName('aggregation_method')]
-    #[Assert\Choice(choices: MetricAggregationMethod::METHODS_STRING)]
     private $aggregationMethod;
 
     #[Assert\When(
@@ -35,9 +35,9 @@ class UpdateMetric
     #[SerializedName('aggregation_property')]
     private $aggregationProperty;
 
+    #[Assert\Choice(choices: MetricEventIngestion::TYPES)]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: MetricEventIngestion::TYPES)]
     #[SerializedName('event_ingestion')]
     private $eventIngestion;
 

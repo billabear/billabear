@@ -214,19 +214,6 @@ class PdfTemplatesContext implements Context
         }
     }
 
-    protected function getTemplate(string $templateName, string $customerGroup): Template
-    {
-        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'brand' => $customerGroup]);
-
-        if (!$template instanceof Template) {
-            throw new \Exception("Can't find template");
-        }
-
-        $this->templateRepository->getEntityManager()->refresh($template);
-
-        return $template;
-    }
-
     /**
      * @When I update the pdf template for :arg1 in brand :arg2 with:
      */
@@ -246,5 +233,18 @@ class PdfTemplatesContext implements Context
         if ($template->getContent() !== $contentBody) {
             throw new \Exception('Wrong content');
         }
+    }
+
+    protected function getTemplate(string $templateName, string $customerGroup): Template
+    {
+        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'brand' => $customerGroup]);
+
+        if (!$template instanceof Template) {
+            throw new \Exception("Can't find template");
+        }
+
+        $this->templateRepository->getEntityManager()->refresh($template);
+
+        return $template;
     }
 }

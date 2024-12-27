@@ -28,9 +28,9 @@ class Address
     #[SerializedName('region')]
     private ?string $region = null;
 
-    #[SerializedName('country')]
-    #[Assert\NotBlank]
     #[Assert\Country]
+    #[Assert\NotBlank]
+    #[SerializedName('country')]
     private ?string $country = null;
 
     #[SerializedName('postcode')]

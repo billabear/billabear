@@ -20,8 +20,8 @@ class CreateSubscription
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[SubscriptionPlanExists]
     #[SerializedName('subscription_plan')]
+    #[SubscriptionPlanExists]
     private $subscription_plan;
 
     #[Assert\Type('string')]
@@ -35,16 +35,16 @@ class CreateSubscription
     #[Assert\Type('string')]
     private $card_token;
 
-    #[Assert\Type('string')]
     #[Assert\Choice(choices: ['week', 'month', 'year'])]
+    #[Assert\Type('string')]
     private $schedule;
 
     #[PaymentMethodExists]
     #[SerializedName('payment_details')]
     private $payment_details;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     #[SerializedName('seat_number')]
     private $seat_number = 1;
 

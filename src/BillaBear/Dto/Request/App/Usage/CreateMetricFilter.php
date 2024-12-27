@@ -20,9 +20,9 @@ class CreateMetricFilter
     #[Assert\Type('string')]
     private string $value;
 
+    #[Assert\Choice(choices: ['inclusive', 'exclusive'])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['inclusive', 'exclusive'])]
     private string $type;
 
     public function getName(): string

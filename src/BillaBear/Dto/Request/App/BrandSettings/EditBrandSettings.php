@@ -17,9 +17,9 @@ class EditBrandSettings
     #[Assert\Type('string')]
     private $name;
 
+    #[Assert\Email]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Email]
     #[SerializedName('email_address')]
     private $emailAddress;
 
@@ -28,8 +28,8 @@ class EditBrandSettings
 
     private Notifications $notifications;
 
-    #[SerializedName('tax_number')]
     #[Assert\Type('string')]
+    #[SerializedName('tax_number')]
     private $taxNumber;
 
     #[Assert\Type(['numeric'])]
@@ -40,8 +40,8 @@ class EditBrandSettings
     #[SerializedName('digital_services_tax_rate')]
     private $digitalServicesTaxRate;
 
-    #[Assert\Type('string')]
     #[Assert\Email]
+    #[Assert\Type('string')]
     #[SerializedName('support_email_address')]
     private $supportEmailAddress;
 

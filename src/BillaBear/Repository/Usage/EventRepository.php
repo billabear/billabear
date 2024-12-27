@@ -312,6 +312,25 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         return $array['count_val'];
     }
 
+    public function getEventCountAfterDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): int
+    {
+        $this->setTimezone();
+        $sql = 'SELECT COUNT(event_id) as count_val'.PHP_EOL
+            .'FROM event'.PHP_EOL
+            .'WHERE customer_id = :customerId'.PHP_EOL
+            .'AND metric_id = :metricId'.PHP_EOL
+            .'AND subscription_id = :subscriptionId'.PHP_EOL
+            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
+
+        $query = $this->connection->prepare($sql);
+        $query->bindValue('customerId', (string) $customer->getId());
+        $query->bindValue('subscriptionId', (string) $subscription->getId());
+        $query->bindValue('metricId', (string) $metric->getId());
+        $query->bindValue('dateTime', $dateTime->getTimestamp());
+
+        return $query->execute()->fetchAssociative()['count_val'];
+    }
+
     private function createCountSql(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): Result
     {
         $this->setTimezone();
@@ -506,25 +525,6 @@ VALUES (:id, :createdAt, :customerId, :subscriptionId, :metricId, :eventId, :val
         }
 
         return $query->execute();
-    }
-
-    public function getEventCountAfterDateTime(Customer $customer, Metric $metric, Subscription $subscription, \DateTime $dateTime): int
-    {
-        $this->setTimezone();
-        $sql = 'SELECT COUNT(event_id) as count_val'.PHP_EOL
-            .'FROM event'.PHP_EOL
-            .'WHERE customer_id = :customerId'.PHP_EOL
-            .'AND metric_id = :metricId'.PHP_EOL
-            .'AND subscription_id = :subscriptionId'.PHP_EOL
-            .'AND created_at > TO_TIMESTAMP(:dateTime)'.PHP_EOL;
-
-        $query = $this->connection->prepare($sql);
-        $query->bindValue('customerId', (string) $customer->getId());
-        $query->bindValue('subscriptionId', (string) $subscription->getId());
-        $query->bindValue('metricId', (string) $metric->getId());
-        $query->bindValue('dateTime', $dateTime->getTimestamp());
-
-        return $query->execute()->fetchAssociative()['count_val'];
     }
 
     private function setTimezone()

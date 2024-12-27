@@ -19,14 +19,14 @@ class CreateBrandSettings
     private $name;
 
     #[Assert\NotBlank]
-    #[Assert\Type('string')]
     #[Assert\Regex('~[a-z0-9_]+~', message: 'Code must be lower case alphanumeric with underscores only')]
+    #[Assert\Type('string')]
     #[UniqueBrandCode]
     private $code;
 
+    #[Assert\Email]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Email]
     #[SerializedName('email_address')]
     private $emailAddress;
 
@@ -47,8 +47,8 @@ class CreateBrandSettings
     #[SerializedName('digital_services_tax_rate')]
     private $digitalServicesTaxRate;
 
-    #[Assert\Type('string')]
     #[Assert\Email]
+    #[Assert\Type('string')]
     #[SerializedName('support_email_address')]
     private $supportEmailAddress;
 

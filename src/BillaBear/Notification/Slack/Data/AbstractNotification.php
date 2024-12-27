@@ -16,8 +16,6 @@ abstract class AbstractNotification implements SlackNotificationInterface
 {
     abstract public function getEvent(): SlackNotificationEvent;
 
-    abstract protected function getData(): array;
-
     final public function getMessage(SlackNotification $slackNotification): array
     {
         $template = $slackNotification->getMessageTemplate();
@@ -48,4 +46,6 @@ abstract class AbstractNotification implements SlackNotificationInterface
 
         return $messageBuilder->build();
     }
+
+    abstract protected function getData(): array;
 }

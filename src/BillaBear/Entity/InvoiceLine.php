@@ -18,10 +18,12 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'invoice_line')]
 class InvoiceLine
 {
-    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: TaxType::class)]
+    protected ?TaxType $taxType = null;
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class)]
@@ -50,9 +52,6 @@ class InvoiceLine
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
-
-    #[ORM\ManyToOne(targetEntity: TaxType::class)]
-    protected ?TaxType $taxType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $taxCountry;

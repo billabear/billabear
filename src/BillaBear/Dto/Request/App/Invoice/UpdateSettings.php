@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateSettings
 {
-    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Choice(choices: ['random', 'subsequential', 'format'])]
+    #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('invoice_number_generation')]
     private $invoiceNumberGeneration;
 

@@ -48,6 +48,26 @@ class QuoteDataMapper
         return $appDto;
     }
 
+    public function createPublicDto(Entity $entity): PublicDto
+    {
+        $now = new \DateTime();
+
+        $publicDto = new PublicDto();
+        $publicDto->setCreatedAt($entity->getCreatedAt());
+        $publicDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
+        $publicDto->setId((string) $entity->getId());
+        $publicDto->setCurrency($entity->getCurrency());
+        $publicDto->setTotal($entity->getTotal());
+        $publicDto->setTaxTotal($entity->getTaxTotal());
+        $publicDto->setSubTotal($entity->getSubTotal());
+        $publicDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
+        $publicDto->setPaid($entity->isPaid());
+        $publicDto->setExpiresAt($entity->getExpiresAt());
+        $publicDto->setExpired(null !== $entity->getExpiresAt() && $now > $entity->getExpiresAt());
+
+        return $publicDto;
+    }
+
     protected function createAppLineDto(EntityLine $quoteLine): AppLineDto
     {
         $appLineDto = new AppLineDto();
@@ -67,26 +87,6 @@ class QuoteDataMapper
         $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
 
         return $appLineDto;
-    }
-
-    public function createPublicDto(Entity $entity): PublicDto
-    {
-        $now = new \DateTime();
-
-        $publicDto = new PublicDto();
-        $publicDto->setCreatedAt($entity->getCreatedAt());
-        $publicDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
-        $publicDto->setId((string) $entity->getId());
-        $publicDto->setCurrency($entity->getCurrency());
-        $publicDto->setTotal($entity->getTotal());
-        $publicDto->setTaxTotal($entity->getTaxTotal());
-        $publicDto->setSubTotal($entity->getSubTotal());
-        $publicDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
-        $publicDto->setPaid($entity->isPaid());
-        $publicDto->setExpiresAt($entity->getExpiresAt());
-        $publicDto->setExpired(null !== $entity->getExpiresAt() && $now > $entity->getExpiresAt());
-
-        return $publicDto;
     }
 
     protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto

@@ -21,18 +21,18 @@ class CancelSubscription
     public const REFUND_PRORATE = 'prorate';
     public const REFUND_FULL = 'full';
 
+    #[Assert\Choice([self::WHEN_END_OF_RUN, self::WHEN_INSTANTLY, self::WHEN_DATE])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice([self::WHEN_END_OF_RUN, self::WHEN_INSTANTLY, self::WHEN_DATE])]
     private $when = 'end-of-run';
 
     #[Assert\Date]
     private $date;
 
-    #[SerializedName('refund_type')]
+    #[Assert\Choice([self::REFUND_NONE, self::REFUND_PRORATE, self::REFUND_FULL])]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice([self::REFUND_NONE, self::REFUND_PRORATE, self::REFUND_FULL])]
+    #[SerializedName('refund_type')]
     private $refund_type = 'none';
 
     private $comment;

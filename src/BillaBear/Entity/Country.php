@@ -18,10 +18,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'country')]
 class Country
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string')]
@@ -161,7 +161,7 @@ class Country
         return $this->states;
     }
 
-    public function setStates(Collection|array $states): void
+    public function setStates(array|Collection $states): void
     {
         $this->states = $states;
     }

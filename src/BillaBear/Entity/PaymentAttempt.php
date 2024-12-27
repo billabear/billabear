@@ -15,14 +15,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'payment_attempt')]
 #[ORM\Index(fields: ['customer'])]
+#[ORM\Table(name: 'payment_attempt')]
 class PaymentAttempt
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
@@ -124,12 +124,12 @@ class PaymentAttempt
     /**
      * @return Collection|Subscription[]
      */
-    public function getSubscriptions(): Collection|array
+    public function getSubscriptions(): array|Collection
     {
         return $this->subscriptions;
     }
 
-    public function setSubscriptions(Collection|array $subscriptions): void
+    public function setSubscriptions(array|Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }

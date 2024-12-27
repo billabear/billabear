@@ -10,13 +10,12 @@ namespace BillaBear\Pricing\Usage;
 
 enum MetricEventIngestion: string
 {
+    case REAL_TIME = 'real_time';
+    case HOURLY = 'hourly';
+    case DAILY = 'daily';
     public const TYPES = [
         self::REAL_TIME->value,
         self::HOURLY->value,
         self::DAILY->value,
     ];
-
-    case REAL_TIME = 'real_time';
-    case HOURLY = 'hourly';
-    case DAILY = 'daily';
 }

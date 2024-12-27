@@ -59,13 +59,19 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
         return $this->pdfGenerator->generate($content);
     }
 
-    private function getData(Invoice $invoice): array
+    public function filename(Invoice $invoice): string
     {
-        return [
-            'customer' => $this->getCustomerData($invoice->getCustomer()),
-            'brand' => $this->getBrandData($invoice->getCustomer()->getBrandSettings()),
-            'invoice' => $this->getInvoiceData($invoice),
-        ];
+        return sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber());
+    }
+
+    public function supports(string $type): bool
+    {
+        return self::FORMAT_NAME === $type;
+    }
+
+    public function name(): string
+    {
+        return self::FORMAT_NAME;
     }
 
     protected function getCustomerData(Customer $customer): array
@@ -73,6 +79,37 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
         return [
             'name' => $customer->getName(),
             'email' => $customer->getBillingEmail(),
+        ];
+    }
+
+    protected function getBrandData(BrandSettings $brandSettings): array
+    {
+        return [
+            'name' => $brandSettings->getBrandName(),
+            'address' => $this->getAddress($brandSettings->getAddress()),
+            'tax_number' => $brandSettings->getTaxNumber(),
+        ];
+    }
+
+    protected function getAddress(Address $address): array
+    {
+        return [
+            'company_name' => $address->getCompanyName(),
+            'street_line_one' => $address->getStreetLineOne(),
+            'street_line_two' => $address->getStreetLineTwo(),
+            'city' => $address->getCity(),
+            'region' => $address->getRegion(),
+            'country' => $address->getCountry(),
+            'postcode' => $address->getPostcode(),
+        ];
+    }
+
+    private function getData(Invoice $invoice): array
+    {
+        return [
+            'customer' => $this->getCustomerData($invoice->getCustomer()),
+            'brand' => $this->getBrandData($invoice->getCustomer()->getBrandSettings()),
+            'invoice' => $this->getInvoiceData($invoice),
         ];
     }
 
@@ -107,42 +144,5 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
             'tax_country' => $invoiceLine->getTaxCountry(),
             'metadata' => $invoiceLine->getMetadata(),
         ];
-    }
-
-    protected function getBrandData(BrandSettings $brandSettings): array
-    {
-        return [
-            'name' => $brandSettings->getBrandName(),
-            'address' => $this->getAddress($brandSettings->getAddress()),
-            'tax_number' => $brandSettings->getTaxNumber(),
-        ];
-    }
-
-    protected function getAddress(Address $address): array
-    {
-        return [
-            'company_name' => $address->getCompanyName(),
-            'street_line_one' => $address->getStreetLineOne(),
-            'street_line_two' => $address->getStreetLineTwo(),
-            'city' => $address->getCity(),
-            'region' => $address->getRegion(),
-            'country' => $address->getCountry(),
-            'postcode' => $address->getPostcode(),
-        ];
-    }
-
-    public function filename(Invoice $invoice): string
-    {
-        return sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber());
-    }
-
-    public function supports(string $type): bool
-    {
-        return self::FORMAT_NAME === $type;
-    }
-
-    public function name(): string
-    {
-        return self::FORMAT_NAME;
     }
 }

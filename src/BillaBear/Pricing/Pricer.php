@@ -27,8 +27,8 @@ class Pricer implements PricerInterface
         Price $price,
         Customer $customer,
         ?TaxType $taxType,
-        int|float|null $seatNumber = 1,
-        int|float|null $alreadyBilled = null,
+        null|float|int $seatNumber = 1,
+        null|float|int $alreadyBilled = null,
     ): array {
         if (null === $seatNumber) {
             $seatNumber = 1;
@@ -124,7 +124,7 @@ class Pricer implements PricerInterface
     /**
      * @return PriceCalculation[]
      */
-    private function getTierGraduatedPrice(Price $price, int $seatNumber, int|float|null $alreadyBilled): array
+    private function getTierGraduatedPrice(Price $price, int $seatNumber, null|float|int $alreadyBilled): array
     {
         $output = [];
         // Handle continuous metric

@@ -95,18 +95,6 @@ class BrandsContext implements Context
         }
     }
 
-    protected function getBrandSettings(string $brandName): BrandSettings
-    {
-        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $brandName]);
-
-        if (!$brand instanceof BrandSettings) {
-            throw new \Exception('No brand found');
-        }
-        $this->brandSettingsRepository->getEntityManager()->refresh($brand);
-
-        return $brand;
-    }
-
     /**
      * @When I go to update the brand :arg1 with:
      */
@@ -187,5 +175,17 @@ class BrandsContext implements Context
         ];
 
         $this->sendJsonRequest('POST', '/app/settings/brand', $payload);
+    }
+
+    protected function getBrandSettings(string $brandName): BrandSettings
+    {
+        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $brandName]);
+
+        if (!$brand instanceof BrandSettings) {
+            throw new \Exception('No brand found');
+        }
+        $this->brandSettingsRepository->getEntityManager()->refresh($brand);
+
+        return $brand;
     }
 }

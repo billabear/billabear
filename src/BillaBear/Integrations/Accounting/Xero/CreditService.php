@@ -82,6 +82,22 @@ class CreditService implements CreditServiceInterface
         return new RefundRegistration($refundDto->getPaymentID());
     }
 
+    public function registeredCreditNote(Credit $credit): CreditRegistration
+    {
+        if (Credit::TYPE_CREDIT === $credit->getType()) {
+            throw new UnsupportedFeatureException('Credit type debit is not supported');
+        }
+
+        $this->logger->info('Registering credit note with Xero', ['tenant_id' => $this->tenantId, 'credit_id' => (string) $credit->getId()]);
+
+        $creditNotes = $this->buildCreditNotesFromCredit($credit);
+        $creditNote = $this->createCreditNote($creditNotes);
+
+        $this->logger->info('Credit note registered with Xero', ['tenant_id' => $this->tenantId, 'credit_id' => (string) $credit->getId()]);
+
+        return new CreditRegistration($creditNote->getCreditNoteID());
+    }
+
     private function createCreditNote(CreditNotes $creditNotes): CreditNote
     {
         $this->logger->info('Creating credit note in xero');
@@ -151,21 +167,5 @@ class CreditService implements CreditServiceInterface
         $creditNotes->setCreditNotes([$creditNote]);
 
         return $creditNotes;
-    }
-
-    public function registeredCreditNote(Credit $credit): CreditRegistration
-    {
-        if (Credit::TYPE_CREDIT === $credit->getType()) {
-            throw new UnsupportedFeatureException('Credit type debit is not supported');
-        }
-
-        $this->logger->info('Registering credit note with Xero', ['tenant_id' => $this->tenantId, 'credit_id' => (string) $credit->getId()]);
-
-        $creditNotes = $this->buildCreditNotesFromCredit($credit);
-        $creditNote = $this->createCreditNote($creditNotes);
-
-        $this->logger->info('Credit note registered with Xero', ['tenant_id' => $this->tenantId, 'credit_id' => (string) $credit->getId()]);
-
-        return new CreditRegistration($creditNote->getCreditNoteID());
     }
 }

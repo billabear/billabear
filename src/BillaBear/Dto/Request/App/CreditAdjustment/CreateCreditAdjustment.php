@@ -13,16 +13,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateCreditAdjustment
 {
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: [Credit::TYPE_CREDIT, Credit::TYPE_DEBIT])]
+    #[Assert\NotBlank]
     private $type;
 
     #[Assert\NotBlank]
     #[Assert\Positive]
     private $amount;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
     #[Assert\NotBlank(allowNull: true)]

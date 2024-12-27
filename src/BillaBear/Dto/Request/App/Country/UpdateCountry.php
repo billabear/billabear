@@ -17,17 +17,17 @@ class UpdateCountry
     #[Assert\Type('string')]
     private $name;
 
-    #[SerializedName('iso_code')]
-    #[Assert\NotBlank]
     #[Assert\Country]
+    #[Assert\NotBlank]
+    #[SerializedName('iso_code')]
     private $isoCode;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
-    #[Assert\Type('integer')]
     #[Assert\PositiveOrZero]
+    #[Assert\Type('integer')]
     private $threshold;
 
     #[SerializedName('in_eu')]

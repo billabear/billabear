@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateVoucherAmount
 {
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
     #[Assert\NotBlank]

@@ -19,7 +19,7 @@ class RollbarHandler extends BaseRollbarHandler
     public function __construct(
         #[Autowire('%rollbar.enabled%')]
         private bool $enabled,
-        RollbarLogger $rollbarLogger, int|string|Level $level = Level::Error, bool $bubble = true)
+        RollbarLogger $rollbarLogger, int|Level|string $level = Level::Error, bool $bubble = true)
     {
         parent::__construct($rollbarLogger, $level, $bubble);
     }

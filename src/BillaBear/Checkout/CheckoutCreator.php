@@ -44,7 +44,7 @@ readonly class CheckoutCreator
     ) {
     }
 
-    public function createCheckout(AppRequest|ApiRequest $createCheckout): Checkout
+    public function createCheckout(ApiRequest|AppRequest $createCheckout): Checkout
     {
         $checkout = new Checkout();
 

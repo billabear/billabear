@@ -71,16 +71,6 @@ class MetricDataMapper
         return $dto;
     }
 
-    private function createFilterDto(FilterEntity $filter): AppFilterDto
-    {
-        $dto = new AppFilterDto();
-        $dto->setName($filter->getName());
-        $dto->setValue($filter->getValue());
-        $dto->setType($filter->getType()->value);
-
-        return $dto;
-    }
-
     public function createApiDto(?Entity $entity): ?ApiDto
     {
         if (!$entity) {
@@ -95,6 +85,16 @@ class MetricDataMapper
         $dto->setAggregationProperty($entity->getAggregationProperty());
         $dto->setCreatedAt($entity->getCreatedAt());
         $dto->setFilters(array_map([$this, 'createApiFilterDto'], $entity->getFilters()->toArray()));
+
+        return $dto;
+    }
+
+    private function createFilterDto(FilterEntity $filter): AppFilterDto
+    {
+        $dto = new AppFilterDto();
+        $dto->setName($filter->getName());
+        $dto->setValue($filter->getValue());
+        $dto->setType($filter->getType()->value);
 
         return $dto;
     }

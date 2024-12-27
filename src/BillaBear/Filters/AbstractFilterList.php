@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractFilterList
 {
-    abstract protected function getFilters(): array;
-
     public function buildFilters(Request $request): array
     {
         $output = [];
@@ -61,4 +59,6 @@ abstract class AbstractFilterList
 
         return $filter;
     }
+
+    abstract protected function getFilters(): array;
 }

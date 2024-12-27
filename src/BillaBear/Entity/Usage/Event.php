@@ -13,14 +13,14 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use Doctrine\ORM\Mapping as ORM;
 
+#[HyperTable(timeColumn: 'created_at')]
 #[ORM\Entity]
 #[ORM\Table(name: 'event')]
-#[HyperTable(timeColumn: 'created_at')]
 class Event
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
@@ -41,9 +41,9 @@ class Event
     #[ORM\Column(type: 'json')]
     private array $properties;
 
-    #[ORM\Id]
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\Id]
     private \DateTime $createdAt;
 
     public function getId()

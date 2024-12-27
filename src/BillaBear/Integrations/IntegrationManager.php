@@ -33,7 +33,7 @@ class IntegrationManager
         throw new \RuntimeException(sprintf('Integration "%s" not found', $name));
     }
 
-    public function getAccountingIntegration(string $name): IntegrationInterface&AccountingIntegrationInterface
+    public function getAccountingIntegration(string $name): AccountingIntegrationInterface&IntegrationInterface
     {
         foreach ($this->integrations as $integration) {
             if ($integration->getName() === $name && $integration instanceof AccountingIntegrationInterface) {

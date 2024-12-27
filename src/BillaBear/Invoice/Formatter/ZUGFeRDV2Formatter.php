@@ -100,6 +100,16 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
         return sprintf('invoice-%s.xml', $invoice->getInvoiceNumber());
     }
 
+    public function supports(string $type): bool
+    {
+        return self::FORMAT_NAME === $type;
+    }
+
+    public function name(): string
+    {
+        return self::FORMAT_NAME;
+    }
+
     private function buildSeller(Invoice $invoice, CrossIndustryInvoice $document): void
     {
         $brand = $invoice->getBrandSettings();
@@ -200,16 +210,6 @@ class ZUGFeRDV2Formatter implements InvoiceFormatterInterface
 
             $document->supplyChainTradeTransaction->applicableHeaderTradeSettlement->tradeTaxes[] = $tax;
         }
-    }
-
-    public function supports(string $type): bool
-    {
-        return self::FORMAT_NAME === $type;
-    }
-
-    public function name(): string
-    {
-        return self::FORMAT_NAME;
     }
 
     private function getTaxCategoryCode(InvoiceLine $line): string

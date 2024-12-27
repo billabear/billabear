@@ -12,6 +12,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TaxSettings
 {
+    #[SerializedName('validate_vat_ids')]
+    public $validateVatIds;
     #[SerializedName('tax_customers_with_tax_number')]
     private bool $taxCustomersWithTaxNumber;
 
@@ -26,9 +28,6 @@ class TaxSettings
 
     #[SerializedName('vat_sense_api_key')]
     private $vatSenseApiKey;
-
-    #[SerializedName('validate_vat_ids')]
-    public $validateVatIds;
 
     public function getTaxCustomersWithTaxNumber(): bool
     {

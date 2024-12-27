@@ -60,6 +60,16 @@ readonly class ZUGFeRDFormatter implements InvoiceFormatterInterface
         return sprintf('invoice-%s.xml', $invoice->getInvoiceNumber());
     }
 
+    public function supports(string $type): bool
+    {
+        return self::FORMAT_NAME === $type;
+    }
+
+    public function name(): string
+    {
+        return self::FORMAT_NAME;
+    }
+
     private function buildDate(\DateTime $dateTime): Date
     {
         return new Date($dateTime->format('Ymd'));
@@ -167,15 +177,5 @@ readonly class ZUGFeRDFormatter implements InvoiceFormatterInterface
         $settlement->setMonetarySummation($moneySummary);
 
         return $settlement;
-    }
-
-    public function supports(string $type): bool
-    {
-        return self::FORMAT_NAME === $type;
-    }
-
-    public function name(): string
-    {
-        return self::FORMAT_NAME;
     }
 }

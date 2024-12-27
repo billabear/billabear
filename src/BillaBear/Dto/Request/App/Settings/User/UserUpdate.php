@@ -15,8 +15,8 @@ class UserUpdate
     #[Assert\NotBlank]
     private $roles = [];
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     private $email;
 
     public function getRoles(): array

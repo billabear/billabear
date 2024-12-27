@@ -11,16 +11,10 @@ namespace BillaBear\Entity\Stats;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\MappedSuperclass]
 #[ORM\Index(fields: ['year', 'month', 'day'])]
+#[ORM\MappedSuperclass]
 class AbstractStats
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'integer')]
     protected int $count = 0;
 
@@ -38,6 +32,11 @@ class AbstractStats
 
     #[ORM\Column(type: 'string')]
     protected string $brandCode;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
+    private $id;
 
     public function getId()
     {

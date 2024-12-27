@@ -19,13 +19,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class CreatePrice
 {
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(type: 'integer')]
     #[Assert\Positive]
+    #[Assert\Type(type: 'integer')]
     #[SerializedName('amount')]
     private $amount;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     #[SerializedName('currency')]
     private $currency;
 
@@ -37,21 +37,21 @@ class CreatePrice
     #[SerializedName('recurring')]
     private $recurring;
 
-    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Choice(['week', 'month', 'year'])]
+    #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('schedule')]
     private $schedule;
 
-    #[SerializedName('including_tax')]
     #[Assert\Type(type: 'boolean')]
+    #[SerializedName('including_tax')]
     private $including_tax;
 
     #[SerializedName('public')]
     private $public = true;
 
+    #[Assert\Choice(choices: [PriceType::ONE_OFF->value, PriceType::FIXED_PRICE->value, PriceType::PACKAGE->value, PriceType::TIERED_GRADUATED->value, PriceType::TIERED_VOLUME->value, PriceType::UNIT->value])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type(type: 'string')]
-    #[Assert\Choice(choices: [PriceType::ONE_OFF->value, PriceType::FIXED_PRICE->value, PriceType::PACKAGE->value, PriceType::TIERED_GRADUATED->value, PriceType::TIERED_VOLUME->value, PriceType::UNIT->value])]
     private $type;
 
     #[Assert\When(
@@ -64,8 +64,8 @@ class CreatePrice
     private $metric_type;
 
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(type: 'integer')]
     #[Assert\Positive]
+    #[Assert\Type(type: 'integer')]
     private $units;
 
     #[Assert\Type(type: 'boolean')]

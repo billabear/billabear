@@ -22,13 +22,13 @@ class CreateCustomerDto
     #[SerializedName('brand')]
     private $brand;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[SerializedName('email')]
     private $email;
 
-    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Locale]
+    #[Assert\NotBlank(allowNull: true)]
     #[SerializedName('locale')]
     private $locale;
 
@@ -38,41 +38,41 @@ class CreateCustomerDto
     #[SerializedName('external_reference')]
     private $externalReference;
 
-    #[SerializedName('billing_type')]
+    #[Assert\Choice(choices: ['invoice', 'card'])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['invoice', 'card'])]
+    #[SerializedName('billing_type')]
     private $billingType;
 
     #[Assert\Valid]
     #[SerializedName('address')]
     private ?Address $address = null;
 
-    #[SerializedName('tax_number')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
+    #[SerializedName('tax_number')]
     private $taxNumber;
 
-    #[SerializedName('digital_tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(['integer', 'float'])]
     #[Assert\PositiveOrZero]
+    #[Assert\Type(['integer', 'float'])]
+    #[SerializedName('digital_tax_rate')]
     private $digitalTaxRate;
 
-    #[SerializedName('standard_tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(['integer', 'float'])]
     #[Assert\PositiveOrZero]
+    #[Assert\Type(['integer', 'float'])]
+    #[SerializedName('standard_tax_rate')]
     private $standardTaxRate;
 
+    #[Assert\Choice(choices: ['individual', 'business'])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['individual', 'business'])]
     private $type;
 
+    #[Assert\Choice(['pdf'])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    #[Assert\Choice(['pdf'])]
     private $invoiceFormat;
 
     public function getEmail(): ?string

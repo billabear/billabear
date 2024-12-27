@@ -13,13 +13,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreateTier
 {
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     private $first_unit;
 
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     private $last_unit;
 
     #[Assert\NotBlank(allowNull: true)]

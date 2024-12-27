@@ -13,13 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateSlackWebhook
 {
-    #[Assert\Type('string')]
     #[Assert\NotBlank]
+    #[Assert\Type('string')]
     #[SlackWebhookUnique]
     private $name;
 
-    #[Assert\Type('string')]
     #[Assert\NotBlank]
+    #[Assert\Type('string')]
     #[Assert\Url]
     private $webhook;
 

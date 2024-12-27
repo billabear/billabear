@@ -18,10 +18,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Entity]
 class Checkout
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', nullable: false)]
@@ -196,12 +196,12 @@ class Checkout
     /**
      * @return Collection|array|CheckoutLine[]
      */
-    public function getLines(): Collection|array
+    public function getLines(): array|Collection
     {
         return $this->lines;
     }
 
-    public function setLines(Collection|array $lines): void
+    public function setLines(array|Collection $lines): void
     {
         $this->lines = $lines;
     }

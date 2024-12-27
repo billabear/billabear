@@ -15,9 +15,6 @@ use Parthenon\Billing\Entity\BillingAdminInterface;
 #[ORM\Table(name: 'users')]
 class User extends \Parthenon\User\Entity\User implements BillingAdminInterface
 {
-    #[ORM\Column(name: 'locale', type: 'string', length: 255, nullable: true)]
-    private ?string $locale = self::DEFAULT_LOCALE;
-
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_DEVELOPER = 'ROLE_DEVELOPER';
     public const ROLE_CUSTOMER_SUPPORT = 'ROLE_CUSTOMER_SUPPORT';
@@ -31,6 +28,8 @@ class User extends \Parthenon\User\Entity\User implements BillingAdminInterface
         self::ROLE_CUSTOMER_SUPPORT,
         self::ROLE_USER,
     ];
+    #[ORM\Column(name: 'locale', type: 'string', length: 255, nullable: true)]
+    private ?string $locale = self::DEFAULT_LOCALE;
 
     public function getDisplayName(): string
     {

@@ -377,75 +377,6 @@ class AppContext implements Context
     }
 
     /**
-     * @return void
-     *
-     * @throws \Exception
-     */
-    protected function createInvoice(mixed $row): Invoice
-    {
-        $customer = $this->getCustomerByEmail($row['Customer']);
-
-        $invoice = new Invoice();
-
-        $line = new InvoiceLine();
-        $line->setInvoice($invoice);
-        $line->setTotal(10000);
-        $line->setTaxPercentage(20.0);
-        $line->setSubTotal(8000);
-        $line->setTaxTotal(2000);
-        $line->setNetPrice(8000);
-        $line->setDescription('A test line');
-        $line->setCurrency('USD');
-        if (isset($row['Tax Type'])) {
-            $taxType = $this->taxTypeRepository->findOneBy(['name' => $row['Tax Type']]);
-            $line->setTaxType($taxType);
-        }
-
-        $lines = [$line];
-
-        $invoice->setCustomer($customer);
-        $invoice->setInvoiceNumber($row['Invoice Number'] ?? bin2hex(random_bytes(16)));
-        $invoice->setCreatedAt(new \DateTime($row['Created At'] ?? 'now'));
-        $invoice->setUpdatedAt(new \DateTime($row['Created At'] ?? 'now'));
-        $invoice->setCurrency('USD');
-        $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
-        $invoice->setValid(true);
-        $invoice->setLines($lines);
-        $invoice->setTotal(10000);
-        $invoice->setSubTotal(8000);
-        $invoice->setTaxTotal(2000);
-        $invoice->setAmountDue(10000);
-        $invoice->setBillerAddress($customer->getBillingAddress());
-        $invoice->setPayeeAddress($customer->getBillingAddress());
-
-        if (isset($row['Due Date'])) {
-            $invoice->setDueAt(new \DateTime($row['Due Date']));
-        }
-
-        $this->invoiceRepository->getEntityManager()->persist($invoice);
-        $this->invoiceRepository->getEntityManager()->flush();
-
-        $invoiceProcess = new InvoiceProcess();
-        if (isset($row['State'])) {
-            $state = $row['State'];
-        } else {
-            $state = $invoice->isPaid() ? 'paid' : 'internal_notification_sent';
-        }
-
-        $invoiceProcess->setState($state);
-        $invoiceProcess->setCustomer($invoice->getCustomer());
-        $invoiceProcess->setInvoice($invoice);
-        $invoiceProcess->setCreatedAt(new \DateTime('now'));
-        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
-        $invoiceProcess->setDueAt($invoice->getDueAt());
-
-        $this->invoiceRepository->getEntityManager()->persist($invoiceProcess);
-        $this->invoiceRepository->getEntityManager()->flush();
-
-        return $invoice;
-    }
-
-    /**
      * @When I create a delivery method for :arg1 with the following settings:
      */
     public function iCreateADeliveryMethodForWithTheFollowingSettings($email, TableNode $table)
@@ -693,5 +624,74 @@ class AppContext implements Context
                 throw new \Exception('Found invoice delivery');
             }
         }
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
+    protected function createInvoice(mixed $row): Invoice
+    {
+        $customer = $this->getCustomerByEmail($row['Customer']);
+
+        $invoice = new Invoice();
+
+        $line = new InvoiceLine();
+        $line->setInvoice($invoice);
+        $line->setTotal(10000);
+        $line->setTaxPercentage(20.0);
+        $line->setSubTotal(8000);
+        $line->setTaxTotal(2000);
+        $line->setNetPrice(8000);
+        $line->setDescription('A test line');
+        $line->setCurrency('USD');
+        if (isset($row['Tax Type'])) {
+            $taxType = $this->taxTypeRepository->findOneBy(['name' => $row['Tax Type']]);
+            $line->setTaxType($taxType);
+        }
+
+        $lines = [$line];
+
+        $invoice->setCustomer($customer);
+        $invoice->setInvoiceNumber($row['Invoice Number'] ?? bin2hex(random_bytes(16)));
+        $invoice->setCreatedAt(new \DateTime($row['Created At'] ?? 'now'));
+        $invoice->setUpdatedAt(new \DateTime($row['Created At'] ?? 'now'));
+        $invoice->setCurrency('USD');
+        $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
+        $invoice->setValid(true);
+        $invoice->setLines($lines);
+        $invoice->setTotal(10000);
+        $invoice->setSubTotal(8000);
+        $invoice->setTaxTotal(2000);
+        $invoice->setAmountDue(10000);
+        $invoice->setBillerAddress($customer->getBillingAddress());
+        $invoice->setPayeeAddress($customer->getBillingAddress());
+
+        if (isset($row['Due Date'])) {
+            $invoice->setDueAt(new \DateTime($row['Due Date']));
+        }
+
+        $this->invoiceRepository->getEntityManager()->persist($invoice);
+        $this->invoiceRepository->getEntityManager()->flush();
+
+        $invoiceProcess = new InvoiceProcess();
+        if (isset($row['State'])) {
+            $state = $row['State'];
+        } else {
+            $state = $invoice->isPaid() ? 'paid' : 'internal_notification_sent';
+        }
+
+        $invoiceProcess->setState($state);
+        $invoiceProcess->setCustomer($invoice->getCustomer());
+        $invoiceProcess->setInvoice($invoice);
+        $invoiceProcess->setCreatedAt(new \DateTime('now'));
+        $invoiceProcess->setUpdatedAt(new \DateTime('now'));
+        $invoiceProcess->setDueAt($invoice->getDueAt());
+
+        $this->invoiceRepository->getEntityManager()->persist($invoiceProcess);
+        $this->invoiceRepository->getEntityManager()->flush();
+
+        return $invoice;
     }
 }

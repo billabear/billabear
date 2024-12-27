@@ -18,25 +18,25 @@ class CreateCountry
     #[Assert\Type('string')]
     private $name;
 
-    #[SerializedName('iso_code')]
-    #[Assert\NotBlank]
     #[Assert\Country]
+    #[Assert\NotBlank]
+    #[SerializedName('iso_code')]
     #[UniqueCountryCode]
     private $isoCode;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
-    #[Assert\Type('integer')]
     #[Assert\PositiveOrZero]
+    #[Assert\Type('integer')]
     private $threshold;
 
     #[Assert\Type('boolean')]
     private $default;
 
-    #[SerializedName('in_eu')]
     #[Assert\Type('boolean')]
+    #[SerializedName('in_eu')]
     private $inEu = false;
 
     #[SerializedName('start_of_tax_year')]

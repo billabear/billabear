@@ -355,30 +355,6 @@ class CountryContext implements Context
         }
     }
 
-    protected function getCountryByName(string $name): Country
-    {
-        $country = $this->countryRepository->findOneBy(['name' => $name]);
-
-        if (!$country) {
-            throw new \Exception("Can't find country");
-        }
-        $this->countryRepository->getEntityManager()->refresh($country);
-
-        return $country;
-    }
-
-    protected function getStateByCountryAndName(Country $country, string $name): State
-    {
-        $state = $this->stateRepository->findOneBy(['country' => $country, 'name' => $name]);
-
-        if (!$state) {
-            throw new \Exception("Can't find state");
-        }
-        $this->stateRepository->getEntityManager()->refresh($state);
-
-        return $state;
-    }
-
     /**
      * @When I create a state tax rule with the following data:
      */
@@ -667,5 +643,29 @@ class CountryContext implements Context
             throw new \Exception('No tax rule found');
         }
         $this->countryTaxRuleRepository->getEntityManager()->refresh($countryTaxRule);
+    }
+
+    protected function getCountryByName(string $name): Country
+    {
+        $country = $this->countryRepository->findOneBy(['name' => $name]);
+
+        if (!$country) {
+            throw new \Exception("Can't find country");
+        }
+        $this->countryRepository->getEntityManager()->refresh($country);
+
+        return $country;
+    }
+
+    protected function getStateByCountryAndName(Country $country, string $name): State
+    {
+        $state = $this->stateRepository->findOneBy(['country' => $country, 'name' => $name]);
+
+        if (!$state) {
+            throw new \Exception("Can't find state");
+        }
+        $this->stateRepository->getEntityManager()->refresh($state);
+
+        return $state;
     }
 }

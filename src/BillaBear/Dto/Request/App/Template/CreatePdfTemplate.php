@@ -16,14 +16,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniquePdfTemplate]
 class CreatePdfTemplate
 {
+    #[Assert\Locale]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Locale]
     private $locale;
 
+    #[Assert\Choice(choices: Template::NAMES)]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: Template::NAMES)]
     private $type;
 
     #[Assert\NotBlank]
