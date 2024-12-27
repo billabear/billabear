@@ -29,6 +29,7 @@ class PaymentService implements PaymentInterface
 
     public function __construct(
         private string $tenantId,
+        private string $accountCode,
         Configuration $config,
         ClientInterface $client,
     ) {
@@ -46,8 +47,13 @@ class PaymentService implements PaymentInterface
             throw new UnexpectedErrorException($e->getMessage(), previous: $e);
         }
 
+        /** @var XeroPayment $paymentData */
         $paymentData = $output->getPayments()[0];
-        var_dump($paymentData);
+
+        if ($paymentData->getHasValidationErrors()) {
+            $this->logger->error('Failed to create payment to xero due to validation errors', ['tenant_id' => $this->tenantId, 'payment_id' => (string) $payment->getId(), 'validation_errors' => $paymentData->getValidationErrors()]);
+            throw new UnexpectedErrorException('Failed to create payment to xero due to validation errors');
+        }
 
         $this->getLogger()->info('Payment registered to xero', ['tenant_id' => $this->tenantId, 'payment_id' => (string) $payment->getId(), 'accounting_reference' => $paymentData->getPaymentId()]);
 
@@ -60,7 +66,7 @@ class PaymentService implements PaymentInterface
         $xeroInvoice->setInvoiceId($payment->getInvoice()->getAccountingReference());
 
         $account = new Account();
-        $account->setCode('200');
+        $account->setCode($this->accountCode);
 
         $xeroPayment = new XeroPayment();
         $xeroPayment->setInvoice($xeroInvoice);

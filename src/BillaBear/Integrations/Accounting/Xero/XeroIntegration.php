@@ -18,6 +18,7 @@ use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
 use BillaBear\Integrations\Oauth\OauthConnectionProvider;
 use BillaBear\Integrations\OAuthConfig;
+use BillaBear\Repository\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Parthenon\Common\LoggerAwareTrait;
@@ -42,6 +43,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         #[Autowire(env: 'XERO_REDIRECT_URI')]
         private string $redirectUri,
         private OauthConnectionProvider $oauthConnectionProvider,
+        private SettingsRepositoryInterface $settingsRepository,
     ) {
     }
 
@@ -129,8 +131,14 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
     public function getPaymentService(): PaymentInterface
     {
         $config = $this->createConfig();
+        $settings = $this->settingsRepository->getDefaultSettings();
+        $accountCode = $settings->getAccountingIntegration()->getSettings()['account_id'] ?? null;
 
-        $paymentService = new PaymentService($this->getTenantId(), $config, $this->createClient());
+        if (!isset($accountCode)) {
+            throw new \Exception('Account code is not set');
+        }
+
+        $paymentService = new PaymentService($this->getTenantId(), (string) $accountCode, $config, $this->createClient());
         $paymentService->setLogger($this->getLogger());
 
         return $paymentService;

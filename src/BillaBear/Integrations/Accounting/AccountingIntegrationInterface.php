@@ -8,13 +8,32 @@
 
 namespace BillaBear\Integrations\Accounting;
 
+use BillaBear\Exception\Integrations\MissingConfigurationException;
+use BillaBear\Exception\Integrations\UnsupportedFeatureException;
+
 interface AccountingIntegrationInterface
 {
+    /**
+     * @throws UnsupportedFeatureException
+     * @throws MissingConfigurationException
+     */
     public function getInvoiceService(): InvoiceInterface;
 
+    /**
+     * @throws UnsupportedFeatureException
+     * @throws MissingConfigurationException
+     */
     public function getVoucherService(): VoucherInterface;
 
+    /**
+     * @throws UnsupportedFeatureException
+     * @throws MissingConfigurationException
+     */
     public function getCustomerService(): CustomerInterface;
 
+    /**
+     * @throws UnsupportedFeatureException
+     * @throws MissingConfigurationException
+     */
     public function getPaymentService(): PaymentInterface;
 }

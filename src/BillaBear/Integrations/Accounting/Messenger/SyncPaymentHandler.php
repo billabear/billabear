@@ -34,8 +34,9 @@ class SyncPaymentHandler
 
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
         $paymentService = $integration->getPaymentService();
+        $invoiceService = $integration->getInvoiceService();
 
-        if (!$payment->getAccountingReference()) {
+        if (!$payment->getAccountingReference() && !$invoiceService->isPaid($payment->getInvoice())) {
             $registration = $paymentService->register($payment);
             $payment->setAccountingReference($registration->paymentReference);
             $this->paymentRepository->save($payment);

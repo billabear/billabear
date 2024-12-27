@@ -45,7 +45,7 @@ class InvoiceService implements InvoiceInterface
         try {
             $output = $this->accountingApi->createInvoices($this->tenantId, $invoices, true);
         } catch (ApiException $e) {
-            $this->logger->error('Failed to create invoice to xero', ['exception_message' => $e->getResponseBody()]);
+            $this->logger->error('Failed to create invoice to xero with api error response', ['exception_message' => $e->getResponseBody()]);
             throw new UnexpectedErrorException($e->getMessage(), previous: $e);
         } catch (\Exception $e) {
             $this->logger->error('Failed to create invoice to xero', ['exception_message' => $e->getMessage()]);
@@ -71,10 +71,7 @@ class InvoiceService implements InvoiceInterface
         try {
             $this->accountingApi->updateInvoice($this->tenantId, $invoice->getAccountingReference(), $invoices);
         } catch (ApiException $e) {
-            print_r($e->getResponseBody());
-            exit;
-
-            $this->logger->error('Failed to create invoice to xero', ['exception_message' => $e->getResponseBody()]);
+            $this->logger->error('Failed to update invoice to xero with api error response', ['exception_message' => $e->getResponseBody()]);
             throw new UnexpectedErrorException($e->getMessage(), previous: $e);
         } catch (\Exception $e) {
             $this->logger->error('Failed to update invoice to xero', ['exception_message' => $e->getMessage()]);
@@ -126,6 +123,7 @@ class InvoiceService implements InvoiceInterface
             $lineItem->setUnitAmount((string) $line->getNetPriceAsMoney()->getAmount());
             $lineItem->setTaxType('OUTPUT');
             $lineItem->setAccountCode('200');
+            $lineItem->setTaxAmount((string) $line->getTaxTotalAsMoney()->getAmount());
             $lines[] = $lineItem;
         }
         $xeroInvoice->setLineItems($lines);
