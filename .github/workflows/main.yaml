@@ -52,7 +52,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -104,7 +104,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -155,7 +155,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -205,7 +205,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -256,7 +256,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -307,7 +307,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -362,7 +362,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -417,7 +417,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -472,7 +472,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -527,7 +527,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -589,7 +589,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -644,7 +644,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -699,7 +699,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -754,7 +754,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
@@ -822,7 +822,7 @@ jobs:
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
           composer install
