@@ -10,15 +10,18 @@ namespace BillaBear\Credit;
 
 use BillaBear\Entity\Credit;
 use BillaBear\Entity\Customer;
+use BillaBear\Integrations\Accounting\Messenger\SyncCredit;
 use BillaBear\Repository\CreditRepositoryInterface;
 use Brick\Money\Money;
 use Parthenon\Billing\Entity\BillingAdminInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreditAdjustmentRecorder
 {
     public function __construct(
         private CreditRepositoryInterface $creditRepository,
         private StripeBillingRegister $stripeBillingRegister,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -37,8 +40,8 @@ class CreditAdjustmentRecorder
         $credit->setUpdatedAt(new \DateTime());
 
         $this->stripeBillingRegister->register($credit);
-
         $this->creditRepository->save($credit);
+        $this->messageBus->dispatch(new SyncCredit((string) $credit->getId()));
 
         return $credit;
     }

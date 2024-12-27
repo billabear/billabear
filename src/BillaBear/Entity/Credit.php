@@ -219,4 +219,9 @@ class Credit
 
         return Money::ofMinor($amount, $this->currency);
     }
+
+    public function isCredit(): bool
+    {
+        return self::TYPE_CREDIT === $this->type;
+    }
 }

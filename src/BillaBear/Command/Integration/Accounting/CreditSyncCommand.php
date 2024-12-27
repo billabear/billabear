@@ -8,9 +8,9 @@
 
 namespace BillaBear\Command\Integration\Accounting;
 
-use BillaBear\Entity\Refund;
-use BillaBear\Integrations\Accounting\Messenger\SyncRefund;
-use BillaBear\Repository\RefundRepositoryInterface;
+use BillaBear\Entity\Credit;
+use BillaBear\Integrations\Accounting\Messenger\SyncCredit;
+use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -20,13 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'billabear:integration:accounting:refund-sync',
-    description: 'Sync refunds with accounting system'
+    name: 'billabear:integration:accounting:credit-sync',
+    description: 'Sync credit with accounting system'
 )]
-class RefundSyncCommand extends Command
+class CreditSyncCommand extends Command
 {
     public function __construct(
-        private RefundRepositoryInterface $refundRepository,
+        private CreditRepositoryInterface $creditRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private MessageBusInterface $messageBus,
     ) {
@@ -35,7 +35,7 @@ class RefundSyncCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('Syncing refunds to accounting system');
+        $output->writeln('Syncing credit to accounting system');
         $settings = $this->settingsRepository->getDefaultSettings();
 
         if (!$settings->getAccountingIntegration()->getEnabled()) {
@@ -43,16 +43,16 @@ class RefundSyncCommand extends Command
 
             return Command::FAILURE;
         }
-        $max = $this->refundRepository->getTotalCount();
+        $max = $this->creditRepository->getTotalCount();
         $progressBar = new ProgressBar($output, $max);
         $lastId = null;
         do {
-            $resultList = $this->refundRepository->getList([], lastId: $lastId);
+            $resultList = $this->creditRepository->getList([], lastId: $lastId);
             $lastId = $resultList->getLastKey();
 
-            /** @var Refund $refund */
-            foreach ($resultList->getResults() as $refund) {
-                $this->messageBus->dispatch(new SyncRefund((string) $refund->getId()));
+            /** @var Credit $credit */
+            foreach ($resultList->getResults() as $credit) {
+                $this->messageBus->dispatch(new SyncCredit((string) $credit->getId()));
                 $progressBar->advance();
             }
         } while ($resultList->hasMore());

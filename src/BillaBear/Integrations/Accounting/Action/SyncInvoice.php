@@ -13,7 +13,7 @@ use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 
-class SyncInvoice
+readonly class SyncInvoice
 {
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,

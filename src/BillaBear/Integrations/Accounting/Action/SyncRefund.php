@@ -13,7 +13,7 @@ use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\RefundRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 
-class SyncRefund
+readonly class SyncRefund
 {
     public function __construct(
         private RefundRepositoryInterface $refundRepository,

@@ -17,4 +17,9 @@ class CreditRepository extends DoctrineCrudRepository implements CreditRepositor
     {
         return $this->entityRepository->findBy(['customer' => $customer]);
     }
+
+    public function getTotalCount(): int
+    {
+        return $this->entityRepository->count([]);
+    }
 }

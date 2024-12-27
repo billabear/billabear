@@ -13,7 +13,7 @@ use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 
-class SyncCustomer
+readonly class SyncCustomer
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,

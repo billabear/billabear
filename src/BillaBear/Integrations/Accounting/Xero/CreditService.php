@@ -91,7 +91,7 @@ class CreditService implements CreditServiceInterface
 
     public function registeredCreditNote(Credit $credit): CreditRegistration
     {
-        if (Credit::TYPE_CREDIT === $credit->getType()) {
+        if (Credit::TYPE_CREDIT !== $credit->getType()) {
             throw new UnsupportedFeatureException('Credit type debit is not supported');
         }
 

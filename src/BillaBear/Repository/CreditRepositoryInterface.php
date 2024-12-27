@@ -14,4 +14,6 @@ use Parthenon\Athena\Repository\CrudRepositoryInterface;
 interface CreditRepositoryInterface extends CrudRepositoryInterface
 {
     public function getForCustomer(Customer $customer): array;
+
+    public function getTotalCount(): int;
 }

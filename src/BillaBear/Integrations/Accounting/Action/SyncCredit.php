@@ -8,22 +8,29 @@
 
 namespace BillaBear\Integrations\Accounting\Action;
 
-use BillaBear\Entity\Payment;
+use BillaBear\Entity\Credit;
 use BillaBear\Integrations\IntegrationManager;
-use BillaBear\Repository\PaymentRepositoryInterface;
+use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 
-readonly class SyncPayment
+readonly class SyncCredit
 {
     public function __construct(
-        private PaymentRepositoryInterface $paymentRepository,
+        private CreditRepositoryInterface $creditRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
     ) {
     }
 
-    public function sync(Payment $payment): void
+    public function sync(Credit $credit): void
     {
+        if (!$credit->isCredit()) {
+            return;
+        }
+        if ($credit->getAccountingReference()) {
+            return;
+        }
+
         $settings = $this->settingsRepository->getDefaultSettings();
 
         if (!$settings->getAccountingIntegration()->getEnabled()) {
@@ -31,13 +38,10 @@ readonly class SyncPayment
         }
 
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
-        $paymentService = $integration->getPaymentService();
-        $invoiceService = $integration->getInvoiceService();
+        $customerService = $integration->getCreditService();
+        $registration = $customerService->registeredCreditNote($credit);
+        $credit->setAccountingReference($registration->creditReference);
 
-        if (!$payment->getAccountingReference() && !$invoiceService->isPaid($payment->getInvoice())) {
-            $registration = $paymentService->register($payment);
-            $payment->setAccountingReference($registration->paymentReference);
-            $this->paymentRepository->save($payment);
-        }
+        $this->creditRepository->save($credit);
     }
 }
