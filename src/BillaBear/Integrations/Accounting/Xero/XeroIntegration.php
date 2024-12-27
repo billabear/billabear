@@ -84,11 +84,6 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         return $invoiceService;
     }
 
-    public function getVoucherService(): VoucherServiceInterface
-    {
-        // TODO: Implement getVoucherService() method.
-    }
-
     public function getCustomerService(): CustomerServiceInterface
     {
         $config = $this->createConfig();
