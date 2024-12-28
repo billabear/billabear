@@ -3518,7 +3518,34 @@
                 "update_button": "Mise à jour"
             }
         },
-        "finance": [],
+        "finance": {
+            "integration": {
+                "title": "Intégrations",
+                "fields": {
+                    "integration": "Intégration",
+                    "api_key": "Clé API",
+                    "enabled": "Activé"
+                },
+                "buttons": {
+                    "connect": "Connexion via OAuth",
+                    "disconnect": "Déconnexion",
+                    "save": "Économiser"
+                },
+                "settings": {
+                    "title": "Paramètres"
+                },
+                "xero": {
+                    "account_id": "Code de compte pour les paiements"
+                },
+                "errors": {
+                    "required": "Ce champ est obligatoire",
+                    "invalid": "Ce champ n'est pas valide"
+                }
+            },
+            "menu": {
+                "integration": "Intégration"
+            }
+        },
         "tax": [],
         "state": {
             "view": {
@@ -3631,7 +3658,8 @@
                         "text": "Créer le premier abonnement",
                         "button": "Créer"
                     }
-                }
+                },
+                "error": "Quelque chose n'a pas fonctionné !"
             }
         },
         "default_error_message": "Quelque chose n'a pas fonctionné !",
@@ -3732,7 +3760,8 @@
                 },
                 "submit": "Créer"
             }
-        }
+        },
+        "customer_support": []
     },
     "install": {
         "title": "Installer",

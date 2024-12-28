@@ -33,6 +33,7 @@ import {STATE_TRANSLATIONS} from "./state";
 import {ONBOARDING_TRANSLATIONS} from "./onboarding";
 import {METRIC_TRANSLATIONS} from "./metric";
 import {USAGE_LIMIT_TRANSLATION} from "./usage_limit";
+import {CUSTOMER_SUPPORT_TRANSLATIONS} from "./customer_support";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -70,5 +71,6 @@ export const APP_TRANSLATIONS = {
     onboarding: ONBOARDING_TRANSLATIONS,
     default_error_message: "Something went wrong!",
     metric: METRIC_TRANSLATIONS,
-    usage_limit: USAGE_LIMIT_TRANSLATION
+    usage_limit: USAGE_LIMIT_TRANSLATION,
+    customer_support: CUSTOMER_SUPPORT_TRANSLATIONS,
 };
