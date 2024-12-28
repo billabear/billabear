@@ -55,6 +55,13 @@ class ContactService
         return $this->sendRequest('/contact_fields', 'POST', $customField);
     }
 
+    public function allCustomFields(): array
+    {
+        $endpoint = '/contact_fields';
+
+        return $this->sendRequest($endpoint);
+    }
+
     private function buildUrl(string $endpoint): string
     {
         return sprintf('https://%s.freshdesk.com/api/v2/%s', $this->subdomain, $endpoint);

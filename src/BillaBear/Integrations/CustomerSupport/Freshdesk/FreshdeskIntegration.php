@@ -34,15 +34,24 @@ class FreshdeskIntegration implements IntegrationInterface, CustomerSupportInteg
     {
         $client = $this->buildClient();
 
-        $contact = $client->createCustomField([
-            'label' => 'Billabear URL',
-            'label_for_customers' => 'Billabear URL',
-            'type' => 'custom_text',
-            'customers_can_edit' => false,
-            'displayed_for_customers' => false,
-        ]);
+        $customFields = $client->allCustomFields();
+        $found = false;
+        foreach ($customFields as $customField) {
+            if ('billabear_url' === $customField['name']) {
+                $found = true;
+                break;
+            }
+        }
 
-        var_dump($contact);
+        if (!$found) {
+            $client->createCustomField([
+                'label' => 'Billabear URL',
+                'label_for_customers' => 'Billabear URL',
+                'type' => 'custom_text',
+                'customers_can_edit' => false,
+                'displayed_for_customers' => false,
+            ]);
+        }
     }
 
     public function getType(): IntegrationType
