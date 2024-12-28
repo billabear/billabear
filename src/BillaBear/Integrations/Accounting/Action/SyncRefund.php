@@ -29,7 +29,6 @@ readonly class SyncRefund
         if (!$settings->getAccountingIntegration()->getEnabled()) {
             return;
         }
-
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
         $customerService = $integration->getCreditService();
         if ($refund->getAccountingReference()) {

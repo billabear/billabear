@@ -8,7 +8,7 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\RefundCreated;
 
-use BillaBear\Entity\Refund;
+use BillaBear\Entity\RefundCreatedProcess;
 use BillaBear\Integrations\Accounting\Action\SyncRefund;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -21,8 +21,9 @@ class SyncIntegrationTransition implements EventSubscriberInterface
 
     public function transition(Event $event)
     {
-        /** @var Refund $refund */
-        $refund = $event->getSubject();
+        /** @var RefundCreatedProcess $refundCreatedProcess */
+        $refundCreatedProcess = $event->getSubject();
+        $refund = $refundCreatedProcess->getRefund();
         $this->syncRefund->sync($refund);
     }
 
