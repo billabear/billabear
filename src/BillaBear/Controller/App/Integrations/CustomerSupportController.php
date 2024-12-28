@@ -10,12 +10,14 @@ namespace BillaBear\Controller\App\Integrations;
 
 use BillaBear\DataMappers\Integrations\IntegrationDataMapper;
 use BillaBear\Dto\Response\App\Integrations\AccountingIntegrationView;
+use BillaBear\Integrations\CustomerSupport\Messenger\EnableIntegration;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -55,14 +57,22 @@ class CustomerSupportController
     public function writeAccountingSettings(
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
+        MessageBusInterface $messageBus,
     ): Response {
         $this->getLogger()->info('Writing customer support integration settings');
         $data = json_decode($request->getContent(), true);
         $settings = $settingsRepository->getDefaultSettings();
+
+        $currentEnable = $settings->getCustomerSupportIntegration()->getEnabled();
+
         $settings->getCustomerSupportIntegration()->setEnabled($data['enabled']);
         $settings->getCustomerSupportIntegration()->setIntegration($data['integration_name']);
         $settings->getCustomerSupportIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);
+
+        if (false === $currentEnable && true === $settings->getCustomerSupportIntegration()->getEnabled()) {
+            $messageBus->dispatch(new EnableIntegration());
+        }
 
         return new JsonResponse(['settings' => $data['settings']]);
     }

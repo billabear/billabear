@@ -8,8 +8,7 @@
 
 namespace BillaBear\Command\Integration\CustomerSupport;
 
-use BillaBear\Integrations\IntegrationManager;
-use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Integrations\CustomerSupport\Action\Setup;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,8 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SetupCommand extends Command
 {
     public function __construct(
-        private SettingsRepositoryInterface $settingsRepository,
-        private IntegrationManager $integrationManager,
+        private Setup $setup,
     ) {
         parent::__construct(null);
     }
@@ -31,9 +29,7 @@ class SetupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Setting up customer support integration');
-        $settings = $this->settingsRepository->getDefaultSettings();
-        $integration = $this->integrationManager->getCustomerSupportIntegration($settings->getCustomerSupportIntegration()->getIntegration());
-        $integration->setup();
+        $this->setup->setup();
 
         return Command::SUCCESS;
     }

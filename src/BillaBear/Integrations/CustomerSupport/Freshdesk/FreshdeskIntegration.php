@@ -78,8 +78,8 @@ class FreshdeskIntegration implements IntegrationInterface, CustomerSupportInteg
     {
         return [
             [
-                'name' => 'api_endpoint',
-                'label' => 'app.customer_support.integration.freshdesk.api_endpoint',
+                'name' => 'subdomain',
+                'label' => 'app.customer_support.integration.freshdesk.subdomain',
                 'type' => 'text',
                 'required' => true,
             ],
@@ -108,7 +108,7 @@ class FreshdeskIntegration implements IntegrationInterface, CustomerSupportInteg
 
         $client = new ContactService(
             $customerSupportSettings['api_key'],
-            $customerSupportSettings['api_endpoint'],
+            $customerSupportSettings['subdomain'],
         );
         $client->setLogger($this->getLogger());
 

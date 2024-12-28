@@ -36,6 +36,17 @@ class ZendeskIntegration implements IntegrationInterface, CustomerSupportIntegra
         $this->getLogger()->info('Setting up Zendesk integration');
 
         $client = $this->buildZendeskClient();
+        $found = false;
+        $contactFields = $client->userFields()->findAll();
+        foreach ($contactFields->user_fields as $field) {
+            if ('billabear_url' === $field->key) {
+                $found = true;
+                break;
+            }
+        }
+        if ($found) {
+            return;
+        }
 
         $response = $client->userFields()->create([
             'key' => 'billabear_url',

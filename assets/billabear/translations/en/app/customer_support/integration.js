@@ -23,7 +23,7 @@ export const CUSTOMER_SUPPORT_INTEGRATION_TRANSLATIONS = {
         username: "Username",
     },
     freshdesk: {
-        api_endpoint: "API Endpoint",
+        subdomain: "Subdomain",
         api_key: "API Key",
     }
 }
