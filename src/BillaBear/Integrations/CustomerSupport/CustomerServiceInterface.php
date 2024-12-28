@@ -8,7 +8,18 @@
 
 namespace BillaBear\Integrations\CustomerSupport;
 
+use BillaBear\Entity\Customer;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
+
 interface CustomerServiceInterface
 {
+    /**
+     * @throws UnexpectedErrorException
+     */
     public function register(Customer $customer): CustomerRegistration;
+
+    /**
+     * @throws UnexpectedErrorException
+     */
+    public function update(Customer $customer): void;
 }

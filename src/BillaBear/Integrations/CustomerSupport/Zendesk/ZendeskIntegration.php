@@ -17,22 +17,49 @@ use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
 use BillaBear\Integrations\OauthConfig;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use Parthenon\Common\Config;
+use Parthenon\Common\LoggerAwareTrait;
 use Zendesk\API\HttpClient as ZendeskAPI;
 
 class ZendeskIntegration implements IntegrationInterface, CustomerSupportIntegrationInterface
 {
-    public function __construct(private SettingsRepositoryInterface $settingsRepository)
-    {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private SettingsRepositoryInterface $settingsRepository,
+        private Config $config,
+    ) {
     }
 
     public function setup(): void
     {
-        // TODO: Implement setup() method.
+        $this->getLogger()->info('Setting up Zendesk integration');
+
+        $client = $this->buildZendeskClient();
+
+        $response = $client->userFields()->create([
+            'key' => 'billabear_url',
+            'title' => 'BillaBear URL',
+            'type' => 'text',
+            'description' => 'The URL to BillaBear',
+            'active' => true,
+        ]);
+        $response = $client->userFields()->create([
+            'key' => 'billing_reference',
+            'title' => 'Billing Reference',
+            'type' => 'text',
+            'description' => 'The reference for the customer in the billing system',
+            'active' => true,
+        ]);
     }
 
     public function getCustomerService(): CustomerServiceInterface
     {
-        // TODO: Implement getCustomerService() method.
+        $client = $this->buildZendeskClient();
+        $service = new CustomerService($client, $this->config);
+        $service->setLogger($this->getLogger());
+
+        return $service;
     }
 
     public function getType(): IntegrationType

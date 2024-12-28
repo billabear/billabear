@@ -8,12 +8,18 @@
 
 namespace BillaBear\Integrations;
 
+use BillaBear\Exception\Integrations\MissingConfigurationException;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 use BillaBear\Exception\Integrations\UnsupportedFeatureException;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('billabear.integration')]
 interface IntegrationInterface
 {
+    /**
+     * @throws UnexpectedErrorException
+     * @throws MissingConfigurationException
+     */
     public function setup(): void;
 
     public function getType(): IntegrationType;
