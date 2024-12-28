@@ -47,6 +47,10 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
     ) {
     }
 
+    public function setup(): void
+    {
+    }
+
     public function getType(): IntegrationType
     {
         return IntegrationType::ACCOUNTING;

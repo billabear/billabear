@@ -3518,7 +3518,34 @@
                 "update_button": "Update"
             }
         },
-        "finance": [],
+        "finance": {
+            "integration": {
+                "title": "Integraties",
+                "fields": {
+                    "integration": "Integratie",
+                    "api_key": "API-sleutel",
+                    "enabled": "Ingeschakeld"
+                },
+                "buttons": {
+                    "connect": "Verbinding maken via OAuth",
+                    "disconnect": "Ontkoppelen",
+                    "save": "Sla"
+                },
+                "settings": {
+                    "title": "Instellingen"
+                },
+                "xero": {
+                    "account_id": "Rekeningcode voor betalingen"
+                },
+                "errors": {
+                    "required": "Dit veld is verplicht",
+                    "invalid": "Dit veld is ongeldig"
+                }
+            },
+            "menu": {
+                "integration": "Integratie"
+            }
+        },
         "tax": [],
         "state": {
             "view": {
@@ -3631,7 +3658,8 @@
                         "text": "Eerste abonnement aanmaken",
                         "button": "Maak"
                     }
-                }
+                },
+                "error": "Er ging iets mis!"
             }
         },
         "default_error_message": "Er ging iets mis!",
@@ -3732,7 +3760,8 @@
                 },
                 "submit": "Maak"
             }
-        }
+        },
+        "customer_support": []
     },
     "install": {
         "title": "Installeer",

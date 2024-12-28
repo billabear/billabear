@@ -9,6 +9,7 @@
 namespace BillaBear\Entity;
 
 use BillaBear\Entity\Settings\AccountingIntegration;
+use BillaBear\Entity\Settings\CustomerSupportIntegration;
 use BillaBear\Entity\Settings\NotificationSettings;
 use BillaBear\Entity\Settings\OnboardingSettings;
 use BillaBear\Entity\Settings\SystemSettings;
@@ -36,6 +37,9 @@ class Settings
 
     #[ORM\Embedded(class: AccountingIntegration::class)]
     private AccountingIntegration $accountingIntegration;
+
+    #[ORM\Embedded(class: CustomerSupportIntegration::class)]
+    private CustomerSupportIntegration $customerSupportIntegration;
 
     #[ORM\Embedded(class: SystemSettings::class)]
     private SystemSettings $systemSettings;
@@ -118,5 +122,19 @@ class Settings
     public function setAccountingIntegration(AccountingIntegration $accountingIntegration): void
     {
         $this->accountingIntegration = $accountingIntegration;
+    }
+
+    public function getCustomerSupportIntegration(): CustomerSupportIntegration
+    {
+        if (!isset($this->customerSupportIntegration)) {
+            $this->customerSupportIntegration = new CustomerSupportIntegration();
+        }
+
+        return $this->customerSupportIntegration;
+    }
+
+    public function setCustomerSupportIntegration(CustomerSupportIntegration $customerSupportIntegration): void
+    {
+        $this->customerSupportIntegration = $customerSupportIntegration;
     }
 }

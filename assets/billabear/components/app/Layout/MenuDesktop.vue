@@ -17,6 +17,11 @@
         <MenuSubItem>
           <router-link :to="{name: 'app.customer.list'}">{{ $t('app.menu.main.customer_list') }}</router-link>
         </MenuSubItem>
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <MenuSubItem>
+            <router-link :to="{name: 'app.customer.integration'}">{{ $t('app.menu.main.customer_support_integrations') }}</router-link>
+          </MenuSubItem>
+        </RoleOnlyView>
       </template>
     </MenuTopItem>
     <MenuTopItem>

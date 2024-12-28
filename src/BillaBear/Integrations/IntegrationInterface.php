@@ -14,6 +14,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('billabear.integration')]
 interface IntegrationInterface
 {
+    public function setup(): void;
+
     public function getType(): IntegrationType;
 
     public function getName(): string;

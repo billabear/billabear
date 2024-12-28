@@ -3518,7 +3518,34 @@
                 "update_button": "Update"
             }
         },
-        "finance": [],
+        "finance": {
+            "integration": {
+                "title": "Integrationen",
+                "fields": {
+                    "integration": "Integration",
+                    "api_key": "API-Schlüssel",
+                    "enabled": "Aktiviert"
+                },
+                "buttons": {
+                    "connect": "Verbindung über OAuth",
+                    "disconnect": "Trennen Sie die Verbindung",
+                    "save": "Speichern Sie"
+                },
+                "settings": {
+                    "title": "Einstellungen"
+                },
+                "xero": {
+                    "account_id": "Kontocode für Zahlungen"
+                },
+                "errors": {
+                    "required": "Dieses Feld ist erforderlich",
+                    "invalid": "Dieses Feld ist ungültig"
+                }
+            },
+            "menu": {
+                "integration": "Integration"
+            }
+        },
         "tax": [],
         "state": {
             "view": {
@@ -3631,7 +3658,8 @@
                         "text": "Erstes Abonnement erstellen",
                         "button": "Erstellen"
                     }
-                }
+                },
+                "error": "Etwas ist schief gelaufen!"
             }
         },
         "default_error_message": "Etwas ist schief gelaufen!",
@@ -3732,7 +3760,8 @@
                 },
                 "submit": "erstellen."
             }
-        }
+        },
+        "customer_support": []
     },
     "install": {
         "title": "Installieren Sie",

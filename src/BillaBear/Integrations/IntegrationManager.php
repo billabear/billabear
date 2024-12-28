@@ -9,6 +9,7 @@
 namespace BillaBear\Integrations;
 
 use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
+use BillaBear\Integrations\CustomerSupport\CustomerSupportIntegrationInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class IntegrationManager
@@ -71,5 +72,16 @@ class IntegrationManager
         }
 
         return $output;
+    }
+
+    public function getCustomerSupportIntegration(string $name): CustomerSupportIntegrationInterface&IntegrationInterface
+    {
+        foreach ($this->integrations as $integration) {
+            if ($integration->getName() === $name && $integration instanceof CustomerSupportIntegrationInterface) {
+                return $integration;
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Integration "%s" not found', $name));
     }
 }

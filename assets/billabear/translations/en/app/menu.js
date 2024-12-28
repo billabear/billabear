@@ -7,6 +7,7 @@ export const MENU_TRANSLATIONS = {
         settings: "Settings",
         customers: "Customers",
         customer_list: "Customer List",
+        customer_support_integrations: "Support Integrations",
         products: "Products",
         invoices: "Invoices",
         system: "System",

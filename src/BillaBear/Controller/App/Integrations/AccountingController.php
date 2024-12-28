@@ -58,6 +58,7 @@ class AccountingController
         $this->getLogger()->info('Writing accounting integration settings');
         $data = json_decode($request->getContent(), true);
         $settings = $settingsRepository->getDefaultSettings();
+        $settings->getAccountingIntegration()->setIntegration($data['integration_name']);
         $settings->getAccountingIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);
 

@@ -1,25 +1,19 @@
 <template>
+
   <div>
-    <h1 class="page-title ml-5 mt-5">{{ $t('app.finance.integration.title') }}</h1>
+    <h1 class="page-title ml-5 mt-5">{{ $t('app.customer_support.integration.title') }}</h1>
 
     <LoadingScreen :ready="ready">
       <div class="card-body">
 
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
-            {{ $t('app.finance.integration.fields.integration') }}
+            {{ $t('app.customer_support.integration.fields.integration') }}
           </label>
           <span class="form-field-error block" v-if="errors.integration != undefined">{{ $t(errors.integration) }}</span>
           <select v-model="integration" class="form-field">
             <option v-for="integration in integrations" :value="integration">{{ integration.name }}</option>
           </select>
-        </div>
-
-        <div class="form-field-ctn" v-if="integration!== null && integration.authentication_type == 'api_key'">
-          <label class="form-field-lbl" for="api_key">
-            {{ $t('app.finance.integration.fields.api_key') }}
-          </label>
-          <input v-model="api_key" class="form-field" type="text" id="api_key" name="api_key">
         </div>
         <div class="form-field-ctn mt-3" v-if="integration!== null && integration.authentication_type == 'oauth'">
           <a :href="'/app/'+integration.name+'/oauth/start'" class="btn--main" v-if="enabled == false">{{ $t('app.finance.integration.buttons.connect') }}</a>
@@ -28,7 +22,7 @@
       </div>
 
       <div class="card-body mt-3" v-if="integration !== null && integration.settings.length > 0">
-        <h2 class="text-2xl">{{ $t('app.finance.integration.settings.title') }}</h2>
+        <h2 class="text-2xl">{{ $t('app.customer_support.integration.settings.title') }}</h2>
         <div class="form-field-ctn" v-for="setting in integration.settings">
           <label class="form-field-lbl">{{ $t(setting.label) }}</label>
           <span class="form-field-error block" v-if="errors[setting.name] != undefined">{{ $t(errors[setting.name]) }}</span>
@@ -36,19 +30,18 @@
           <Toggle v-model="setting.value" v-if="setting.type === 'checkbox'" />
         </div>
       </div>
-      <SubmitButton :in-progress="send_request" class="btn--main mt-3" @click="saveSettings()">{{ $t('app.finance.integration.buttons.save') }}</SubmitButton>
+
+      <SubmitButton :in-progress="send_request" class="btn--main mt-3" @click="saveSettings()">{{ $t('app.customer_support.integration.buttons.save') }}</SubmitButton>
 
     </LoadingScreen>
   </div>
-
 </template>
 
-<script>
-import axios from "axios";
+<script>import axios from "axios";
 import {Toggle} from "flowbite-vue";
 
 export default {
-  name: "FinanceIntegration",
+  name: "CustomerSupportIntegrations",
   components: {Toggle},
   data() {
     return {
@@ -64,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('/app/integrations/accounting/settings').then(response => {
+    axios.get('/app/integrations/customer-support/settings').then(response => {
       this.integrations = response.data.integrations;
       this.enabled = response.data.enabled;
       this.integration_name = response.data.integration_name;
@@ -91,12 +84,12 @@ export default {
   },
   methods: {
     disconnectOauth() {
-      axios.post('/app/integrations/accounting/disconnect').then(response => {
+      axios.post('/app/integrations/customer-support/disconnect').then(response => {
         this.enabled = false;
       })
     },
     disableIntegration() {
-      axios.post('/app/integrations/accounting/disable').then(response => {
+      axios.post('/app/integrations/customer-support/disable').then(response => {
         this.enabled = false;
       })
     },
@@ -109,6 +102,7 @@ export default {
         this.errors['integration'] = 'app.customer_support.integration.errors.required';
         return;
       }
+
       for (let i = 0; i < this.integration.settings.length; i++) {
         let setting = this.integration.settings[i];
         if ((setting.value === null || setting.value === undefined || setting.value === "") && setting.required === true) {
@@ -124,7 +118,8 @@ export default {
         return;
       }
 
-      axios.post('/app/integrations/accounting/settings', {integration_name: this.integration.name, settings: settings}).then(response => {
+
+      axios.post('/app/integrations/customer-support/settings', {integration_name: this.integration.name,  settings: settings}).then(response => {
         this.send_request = false;
       })
     }

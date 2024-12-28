@@ -106,6 +106,9 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $accountingReference;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $customerSupportReference;
+
     public function getId()
     {
         return $this->id;
@@ -441,5 +444,15 @@ class Customer implements CustomerInterface
     public function setAccountingReference(?string $accountingReference): void
     {
         $this->accountingReference = $accountingReference;
+    }
+
+    public function getCustomerSupportReference(): ?string
+    {
+        return $this->customerSupportReference;
+    }
+
+    public function setCustomerSupportReference(?string $customerSupportReference): void
+    {
+        $this->customerSupportReference = $customerSupportReference;
     }
 }

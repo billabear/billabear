@@ -3518,7 +3518,34 @@
                 "update_button": "Aggiornamento"
             }
         },
-        "finance": [],
+        "finance": {
+            "integration": {
+                "title": "Integrazioni",
+                "fields": {
+                    "integration": "Integrazione",
+                    "api_key": "Chiave API",
+                    "enabled": "Abilitato"
+                },
+                "buttons": {
+                    "connect": "Connettersi tramite OAuth",
+                    "disconnect": "Disconnessione",
+                    "save": "Risparmiare"
+                },
+                "settings": {
+                    "title": "Impostazioni"
+                },
+                "xero": {
+                    "account_id": "Codice conto per i pagamenti"
+                },
+                "errors": {
+                    "required": "Questo campo è obbligatorio",
+                    "invalid": "Questo campo non è valido"
+                }
+            },
+            "menu": {
+                "integration": "Integrazione"
+            }
+        },
         "tax": [],
         "state": {
             "view": {
@@ -3631,7 +3658,8 @@
                         "text": "Creare la prima sottoscrizione",
                         "button": "Creare"
                     }
-                }
+                },
+                "error": "Qualcosa è andato storto!"
             }
         },
         "default_error_message": "Qualcosa è andato storto!",
@@ -3732,7 +3760,8 @@
                 },
                 "submit": "Creare"
             }
-        }
+        },
+        "customer_support": []
     },
     "install": {
         "title": "Installare",

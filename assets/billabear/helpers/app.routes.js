@@ -77,6 +77,7 @@ import MetricList from "../views/App/Metric/MetricList.vue";
 import MetricCreate from "../views/App/Metric/MetricCreate.vue";
 import MetricView from "../views/App/Metric/MetricView.vue";
 import MetricUpdate from "../views/App/Metric/MetricUpdate.vue";
+import CustomerSupportIntegrations from "../views/App/Customer/CustomerSupportIntegrations.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -109,6 +110,11 @@ export const APP_ROUTES = [
         name: 'app.customer.update',
         path: 'customer/update/:id',
         component: CustomerUpdate
+    },
+    {
+        name: 'app.customer.integration',
+        path: 'customer/integration',
+        component: CustomerSupportIntegrations
     },
     {
         name: 'app.customer.payment_details.add',
