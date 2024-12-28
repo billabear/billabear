@@ -86,12 +86,6 @@ class ZendeskIntegration implements IntegrationInterface, CustomerSupportIntegra
     {
         return [
             [
-                'name' => 'token',
-                'label' => 'app.customer_support.integration.zendesk.token',
-                'type' => 'text',
-                'required' => true,
-            ],
-            [
                 'name' => 'subdomain',
                 'label' => 'app.customer_support.integration.zendesk.subdomain',
                 'type' => 'text',
@@ -100,6 +94,12 @@ class ZendeskIntegration implements IntegrationInterface, CustomerSupportIntegra
             [
                 'name' => 'username',
                 'label' => 'app.customer_support.integration.zendesk.username',
+                'type' => 'text',
+                'required' => true,
+            ],
+            [
+                'name' => 'token',
+                'label' => 'app.customer_support.integration.zendesk.token',
                 'type' => 'text',
                 'required' => true,
             ],
