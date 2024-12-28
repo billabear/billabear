@@ -15,12 +15,6 @@
           </select>
         </div>
 
-        <div class="form-field-ctn" v-if="integration!== null && integration.authentication_type == 'api_key'">
-          <label class="form-field-lbl" for="api_key">
-            {{ $t('app.finance.integration.fields.api_key') }}
-          </label>
-          <input v-model="api_key" class="form-field" type="text" id="api_key" name="api_key">
-        </div>
         <div class="form-field-ctn mt-3" v-if="integration!== null && integration.authentication_type == 'oauth'">
           <a :href="'/app/'+integration.name+'/oauth/start'" class="btn--main" v-if="enabled == false">{{ $t('app.finance.integration.buttons.connect') }}</a>
           <button class="btn--main" @click="disconnectOauth()" v-else>{{ $t('app.finance.integration.buttons.disconnect') }}</button>
@@ -29,6 +23,12 @@
 
       <div class="card-body mt-3" v-if="integration !== null && integration.settings.length > 0">
         <h2 class="text-2xl">{{ $t('app.finance.integration.settings.title') }}</h2>
+        <div class="form-field-ctn" >
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.customer_support.integration.fields.enabled') }}
+          </label>
+          <Toggle v-model="enabled" />
+        </div>
         <div class="form-field-ctn" v-for="setting in integration.settings">
           <label class="form-field-lbl">{{ $t(setting.label) }}</label>
           <span class="form-field-error block" v-if="errors[setting.name] != undefined">{{ $t(errors[setting.name]) }}</span>
@@ -124,7 +124,7 @@ export default {
         return;
       }
 
-      axios.post('/app/integrations/accounting/settings', {integration_name: this.integration.name, settings: settings}).then(response => {
+      axios.post('/app/integrations/accounting/settings', {enabled: this.enabled, integration_name: this.integration.name, settings: settings}).then(response => {
         this.send_request = false;
       })
     }

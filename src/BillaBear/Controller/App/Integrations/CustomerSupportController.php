@@ -59,6 +59,7 @@ class CustomerSupportController
         $this->getLogger()->info('Writing customer support integration settings');
         $data = json_decode($request->getContent(), true);
         $settings = $settingsRepository->getDefaultSettings();
+        $settings->getCustomerSupportIntegration()->setEnabled($data['enabled']);
         $settings->getCustomerSupportIntegration()->setIntegration($data['integration_name']);
         $settings->getCustomerSupportIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);

@@ -23,6 +23,12 @@
 
       <div class="card-body mt-3" v-if="integration !== null && integration.settings.length > 0">
         <h2 class="text-2xl">{{ $t('app.customer_support.integration.settings.title') }}</h2>
+        <div class="form-field-ctn" >
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.customer_support.integration.fields.enabled') }}
+          </label>
+          <Toggle v-model="enabled" />
+        </div>
         <div class="form-field-ctn" v-for="setting in integration.settings">
           <label class="form-field-lbl">{{ $t(setting.label) }}</label>
           <span class="form-field-error block" v-if="errors[setting.name] != undefined">{{ $t(errors[setting.name]) }}</span>
@@ -119,7 +125,7 @@ export default {
       }
 
 
-      axios.post('/app/integrations/customer-support/settings', {integration_name: this.integration.name,  settings: settings}).then(response => {
+      axios.post('/app/integrations/customer-support/settings', {enabled: this.enabled, integration_name: this.integration.name,  settings: settings}).then(response => {
         this.send_request = false;
       })
     }
