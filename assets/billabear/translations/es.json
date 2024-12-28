@@ -318,7 +318,8 @@
                     "show": "Mostrar menú",
                     "hide": "Ocultar menú"
                 },
-                "tax": "Impuesto"
+                "tax": "Impuesto",
+                "customer_support_integrations": "Apoyo a las integraciones"
             }
         },
         "team": {
@@ -3761,7 +3762,37 @@
                 "submit": "Cree"
             }
         },
-        "customer_support": []
+        "customer_support": {
+            "integration": {
+                "title": "Integraciones de atención al cliente",
+                "fields": {
+                    "integration": "Integración",
+                    "api_key": "Clave API",
+                    "enabled": "Activado"
+                },
+                "buttons": {
+                    "connect": "Conectar mediante OAuth",
+                    "disconnect": "Desconecte",
+                    "save": "Guardar"
+                },
+                "settings": {
+                    "title": "Ajustes"
+                },
+                "errors": {
+                    "required": "Este campo es obligatorio",
+                    "invalid": "Este campo no es válido"
+                },
+                "zendesk": {
+                    "token": "Ficha",
+                    "subdomain": "Subdominio",
+                    "username": "Nombre de usuario"
+                },
+                "freshdesk": {
+                    "subdomain": "Subdominio",
+                    "api_key": "Clave API"
+                }
+            }
+        }
     },
     "install": {
         "title": "Instale",

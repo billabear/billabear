@@ -318,7 +318,8 @@
                     "show": "Menu weergeven",
                     "hide": "Menu verbergen"
                 },
-                "tax": "Belasting"
+                "tax": "Belasting",
+                "customer_support_integrations": "Ondersteuning Integraties"
             }
         },
         "team": {
@@ -3761,7 +3762,37 @@
                 "submit": "Maak"
             }
         },
-        "customer_support": []
+        "customer_support": {
+            "integration": {
+                "title": "Integraties voor klantenondersteuning",
+                "fields": {
+                    "integration": "Integratie",
+                    "api_key": "API-sleutel",
+                    "enabled": "Ingeschakeld"
+                },
+                "buttons": {
+                    "connect": "Verbinding maken via OAuth",
+                    "disconnect": "Ontkoppelen",
+                    "save": "Sla"
+                },
+                "settings": {
+                    "title": "Instellingen"
+                },
+                "errors": {
+                    "required": "Dit veld is verplicht",
+                    "invalid": "Dit veld is ongeldig"
+                },
+                "zendesk": {
+                    "token": "Penning",
+                    "subdomain": "Subdomein",
+                    "username": "Gebruikersnaam"
+                },
+                "freshdesk": {
+                    "subdomain": "Subdomein",
+                    "api_key": "API-sleutel"
+                }
+            }
+        }
     },
     "install": {
         "title": "Installeer",

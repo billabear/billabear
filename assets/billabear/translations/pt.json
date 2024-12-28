@@ -318,7 +318,8 @@
                 "mobile": {
                     "show": "Menu Mostrar",
                     "hide": "Ocultar menu"
-                }
+                },
+                "customer_support_integrations": "Integrações de suporte"
             }
         },
         "team": {
@@ -3754,7 +3755,37 @@
                 "submit": "Criar"
             }
         },
-        "customer_support": []
+        "customer_support": {
+            "integration": {
+                "title": "Integrações de suporte ao cliente",
+                "fields": {
+                    "integration": "Integração",
+                    "api_key": "Chave API",
+                    "enabled": "Ativado"
+                },
+                "buttons": {
+                    "connect": "Ligar através de OAuth",
+                    "disconnect": "Desligar",
+                    "save": "Guardar"
+                },
+                "settings": {
+                    "title": "Definições"
+                },
+                "errors": {
+                    "required": "Este campo é obrigatório",
+                    "invalid": "Este campo é inválido"
+                },
+                "zendesk": {
+                    "token": "Ficha",
+                    "subdomain": "Subdomínio",
+                    "username": "Nome de utilizador"
+                },
+                "freshdesk": {
+                    "subdomain": "Subdomínio",
+                    "api_key": "Chave API"
+                }
+            }
+        }
     },
     "install": {
         "title": "Instalar",
