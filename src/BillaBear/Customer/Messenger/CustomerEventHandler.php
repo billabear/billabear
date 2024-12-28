@@ -9,6 +9,7 @@
 namespace BillaBear\Customer\Messenger;
 
 use BillaBear\Integrations\Accounting\Action\SyncCustomer as AccountingSyncCustomer;
+use BillaBear\Integrations\CustomerSupport\Action\SyncCustomer as CustomerSupportSyncCustomer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,7 +21,8 @@ class CustomerEventHandler
 
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
-        private AccountingSyncCustomer $syncCustomer,
+        private AccountingSyncCustomer $accountingSyncCustomer,
+        private CustomerSupportSyncCustomer $customerSupportSyncCustomer,
     ) {
     }
 
@@ -32,6 +34,7 @@ class CustomerEventHandler
         ]);
 
         $customer = $this->customerRepository->findById($event->customerId);
-        $this->syncCustomer->sync($customer);
+        $this->accountingSyncCustomer->sync($customer);
+        $this->customerSupportSyncCustomer->sync($customer);
     }
 }
