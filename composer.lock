@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75c91ba2f91eee508b2f3ccba49ee14f",
+    "content-hash": "d9be971a823cedcd6e8954c283714241",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -2493,6 +2493,60 @@
                 "source": "https://github.com/mailgun/mailgun-php/tree/v3.6.3"
             },
             "time": "2023-12-01T10:04:01+00:00"
+        },
+        {
+            "name": "mmucklo/inflect",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mmucklo/inflect.git",
+                "reference": "b665bcd3d4c23b6aa1990b6405ff96dd437689e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mmucklo/inflect/zipball/b665bcd3d4c23b6aa1990b6405ff96dd437689e9",
+                "reference": "b665bcd3d4c23b6aa1990b6405ff96dd437689e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.17"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Inflect": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sho Kuwamoto",
+                    "email": "sho@kuwamoto.org"
+                },
+                {
+                    "name": "Matthew J. Mucklo",
+                    "email": "mmucklo@gmail.com"
+                }
+            ],
+            "description": "inflect - a memoizing inflector for php",
+            "keywords": [
+                "inflect",
+                "inflector",
+                "pluralize",
+                "singularize",
+                "urlify"
+            ],
+            "support": {
+                "issues": "https://github.com/mmucklo/inflect/issues",
+                "source": "https://github.com/mmucklo/inflect/tree/v0.3.0"
+            },
+            "time": "2015-05-16T04:16:08+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -9970,6 +10024,52 @@
                 "source": "https://github.com/XeroAPI/xero-php-oauth2/tree/7.3.0"
             },
             "time": "2024-09-16T10:32:08+00:00"
+        },
+        {
+            "name": "zendesk/zendesk_api_client_php",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendesk/zendesk_api_client_php.git",
+                "reference": "638625c348569ce00ecddbf9f0b5cbfc1d9e6285"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendesk/zendesk_api_client_php/zipball/638625c348569ce00ecddbf9f0b5cbfc1d9e6285",
+                "reference": "638625c348569ce00ecddbf9f0b5cbfc1d9e6285",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0 || ^7.0",
+                "guzzlehttp/psr7": "^1.7 || ^2.0",
+                "mmucklo/inflect": "0.3.*",
+                "php": ">=8.2.0"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.24.1",
+                "phpmd/phpmd": "@stable",
+                "phpunit/phpunit": "11.5.0",
+                "psy/psysh": "@stable",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Zendesk\\API\\": "src/",
+                    "Zendesk\\Console\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP Client for Zendesk REST API. See https://developer.zendesk.com/rest_api/docs/core/introduction .",
+            "homepage": "https://github.com/zendesk/zendesk_api_client_php",
+            "support": {
+                "issues": "https://github.com/zendesk/zendesk_api_client_php/issues",
+                "source": "https://github.com/zendesk/zendesk_api_client_php/tree/v4.0.0"
+            },
+            "time": "2024-12-18T04:07:04+00:00"
         }
     ],
     "packages-dev": [
