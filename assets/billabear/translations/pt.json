@@ -3511,34 +3511,7 @@
                 "update_button": "Atualização"
             }
         },
-        "finance": {
-            "integration": {
-                "title": "Integrações",
-                "fields": {
-                    "integration": "Integração",
-                    "api_key": "Chave API",
-                    "enabled": "Ativado"
-                },
-                "buttons": {
-                    "connect": "Ligar através de OAuth",
-                    "disconnect": "Desligar",
-                    "save": "Guardar"
-                },
-                "settings": {
-                    "title": "Definições"
-                },
-                "xero": {
-                    "account_id": "Código de conta para pagamentos"
-                },
-                "errors": {
-                    "required": "Este campo é obrigatório",
-                    "invalid": "Este campo é inválido"
-                }
-            },
-            "menu": {
-                "integration": "Integração"
-            }
-        },
+        "finance": [],
         "tax": [],
         "state": {
             "view": {
@@ -3651,8 +3624,7 @@
                         "text": "Criar a primeira subscrição",
                         "button": "Criar"
                     }
-                },
-                "error": "Alguma coisa correu mal!"
+                }
             }
         },
         "default_error_message": "Alguma coisa correu mal!",
@@ -3753,8 +3725,7 @@
                 },
                 "submit": "Criar"
             }
-        },
-        "customer_support": []
+        }
     },
     "install": {
         "title": "Instalar",
