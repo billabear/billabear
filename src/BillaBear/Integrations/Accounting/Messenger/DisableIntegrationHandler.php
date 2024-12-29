@@ -8,13 +8,12 @@
 
 namespace BillaBear\Integrations\Accounting\Messenger;
 
-use Symfony\Component\Messenger\Attribute\AsMessage;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessage]
-readonly class EnableIntegration
+#[AsMessageHandler]
+class DisableIntegrationHandler
 {
-    public function __construct(
-        public bool $newIntegration,
-    ) {
+    public function __invoke(DisableIntegration $disableIntegration)
+    {
     }
 }

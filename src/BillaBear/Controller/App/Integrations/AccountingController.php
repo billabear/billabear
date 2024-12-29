@@ -11,6 +11,7 @@ namespace BillaBear\Controller\App\Integrations;
 use BillaBear\DataMappers\Integrations\IntegrationDataMapper;
 use BillaBear\Dto\Response\App\Integrations\AccountingIntegrationView;
 use BillaBear\Integrations\Accounting\Messenger\DisableIntegration;
+use BillaBear\Integrations\Accounting\Messenger\EnableIntegration;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
@@ -54,14 +55,24 @@ class AccountingController
     public function writeAccountingSettings(
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
+        MessageBusInterface $messageBus,
     ): Response {
         $this->getLogger()->info('Writing accounting integration settings');
         $data = json_decode($request->getContent(), true);
         $settings = $settingsRepository->getDefaultSettings();
+
+        $currentEnable = $settings->getAccountingIntegration()->getEnabled();
+        $currentIntegration = $settings->getAccountingIntegration()->getIntegration();
+
         $settings->getAccountingIntegration()->setEnabled($data['enabled']);
         $settings->getAccountingIntegration()->setIntegration($data['integration_name']);
         $settings->getAccountingIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);
+        $newIntegration = $settings->getAccountingIntegration()->getIntegration() !== $currentIntegration;
+
+        if ((false === $currentEnable || $newIntegration) && $settings->getAccountingIntegration()->getEnabled()) {
+            $messageBus->dispatch(new EnableIntegration($newIntegration));
+        }
 
         return new JsonResponse(['settings' => $data['settings']]);
     }
