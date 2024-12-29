@@ -533,7 +533,8 @@
                     "billing_type": "Type de facturation",
                     "tax_number": "Numéro d'identification fiscale",
                     "standard_tax_rate": "Taux d'imposition normal",
-                    "type": "Type"
+                    "type": "Type",
+                    "marketing_opt_in": "Marketing Opt In"
                 },
                 "address": {
                     "company_name": "Nom de l'entreprise",
@@ -735,9 +736,11 @@
                     "tax_number": "Le numéro d'identification fiscale du client",
                     "standard_tax_rate": "Le taux d'imposition à appliquer au client pour tout ce qui n'est pas des services numériques",
                     "type": "Si le client est une entreprise ou un particulier",
-                    "invoice_format": "Le format à utiliser pour la création et la livraison d'une facture"
+                    "invoice_format": "Le format à utiliser pour la création et la livraison d'une facture",
+                    "marketing_opt_in": "Si le client a choisi de recevoir des courriels de marketing. Cela concerne les intégrations de newsletters."
                 },
-                "invoice_format": "Format de la facture"
+                "invoice_format": "Format de la facture",
+                "marketing_opt_in": "Marketing Opt In"
             },
             "menu": {
                 "title": "Clients",
@@ -3540,7 +3543,8 @@
                 },
                 "errors": {
                     "required": "Ce champ est obligatoire",
-                    "invalid": "Ce champ n'est pas valide"
+                    "invalid": "Ce champ n'est pas valide",
+                    "complete_error": "Une erreur s'est produite lors de l'enregistrement de ces paramètres. Veuillez réessayer."
                 }
             },
             "menu": {
@@ -3780,7 +3784,8 @@
                 },
                 "errors": {
                     "required": "Ce champ est obligatoire",
-                    "invalid": "Ce champ n'est pas valide"
+                    "invalid": "Ce champ n'est pas valide",
+                    "complete_error": "Une erreur s'est produite lors de l'enregistrement de ces paramètres. Veuillez réessayer."
                 },
                 "zendesk": {
                     "token": "Jeton",
@@ -3790,6 +3795,51 @@
                 "freshdesk": {
                     "subdomain": "Sous-domaine",
                     "api_key": "Clé API"
+                }
+            }
+        },
+        "integrations": {
+            "newsletter": {
+                "title": "Intégration du bulletin d'information",
+                "fields": {
+                    "marketing_list": "Liste de marketing",
+                    "announcement_list": "Liste des annonces"
+                },
+                "no_lists": "Aucune liste n'est disponible. Entrez d'abord les détails de la connexion.",
+                "errors": {
+                    "list_required": "Vous ne pouvez pas activer tant que vous n'avez pas sélectionné une liste. Entrez les détails de la connexion et sauvegardez, puis choisissez une liste."
+                },
+                "mailchimp": {
+                    "fields": {
+                        "server_prefix": "Préfixe du serveur"
+                    }
+                }
+            },
+            "menu": {
+                "main": "Intégrations",
+                "accounting": "Comptabilité",
+                "customer_support": "Soutien à la clientèle",
+                "newsletter": "Bulletin d'information",
+                "notifications": "Notifications"
+            },
+            "general": {
+                "fields": {
+                    "integration": "Intégration",
+                    "api_key": "Clé API",
+                    "enabled": "Activé"
+                },
+                "buttons": {
+                    "connect": "Connexion via OAuth",
+                    "disconnect": "Déconnexion",
+                    "save": "Économiser"
+                },
+                "settings": {
+                    "title": "Paramètres"
+                },
+                "errors": {
+                    "required": "Ce champ est obligatoire",
+                    "invalid": "Ce champ n'est pas valide",
+                    "complete_error": "Une erreur s'est produite lors de l'enregistrement de ces paramètres. Veuillez réessayer."
                 }
             }
         }

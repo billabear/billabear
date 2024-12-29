@@ -533,7 +533,8 @@
                     "billing_type": "Type factuur",
                     "tax_number": "Belastingnummer",
                     "standard_tax_rate": "Standaard belastingtarief",
-                    "type": "Type"
+                    "type": "Type",
+                    "marketing_opt_in": "Marketing Opt-in"
                 },
                 "address": {
                     "company_name": "Bedrijfsnaam",
@@ -735,9 +736,11 @@
                     "tax_number": "Het belastingnummer voor de klant",
                     "standard_tax_rate": "Het belastingtarief dat moet worden toegepast voor de klant voor alles behalve digitale diensten",
                     "type": "Als de klant een bedrijf of particulier is",
-                    "invoice_format": "Het formaat dat moet worden gebruikt bij het maken en afleveren van een factuur"
+                    "invoice_format": "Het formaat dat moet worden gebruikt bij het maken en afleveren van een factuur",
+                    "marketing_opt_in": "Als de klant zich heeft aangemeld voor marketinge-mails. Dit heeft invloed op nieuwsbriefintegraties."
                 },
-                "invoice_format": "Factuurformaat"
+                "invoice_format": "Factuurformaat",
+                "marketing_opt_in": "Marketing Opt-in"
             },
             "menu": {
                 "title": "Klanten",
@@ -3540,7 +3543,8 @@
                 },
                 "errors": {
                     "required": "Dit veld is verplicht",
-                    "invalid": "Dit veld is ongeldig"
+                    "invalid": "Dit veld is ongeldig",
+                    "complete_error": "Er is een fout opgetreden tijdens het opslaan van deze instellingen. Probeer het opnieuw."
                 }
             },
             "menu": {
@@ -3780,7 +3784,8 @@
                 },
                 "errors": {
                     "required": "Dit veld is verplicht",
-                    "invalid": "Dit veld is ongeldig"
+                    "invalid": "Dit veld is ongeldig",
+                    "complete_error": "Er is een fout opgetreden tijdens het opslaan van deze instellingen. Probeer het opnieuw."
                 },
                 "zendesk": {
                     "token": "Penning",
@@ -3790,6 +3795,51 @@
                 "freshdesk": {
                     "subdomain": "Subdomein",
                     "api_key": "API-sleutel"
+                }
+            }
+        },
+        "integrations": {
+            "newsletter": {
+                "title": "Integratie nieuwsbrief",
+                "fields": {
+                    "marketing_list": "Marketinglijst",
+                    "announcement_list": "Bekendmakingslijst"
+                },
+                "no_lists": "Geen lijsten beschikbaar. Voer eerst de verbindingsgegevens in.",
+                "errors": {
+                    "list_required": "Je kunt pas inschakelen als je een lijst hebt geselecteerd. Voer verbindingsgegevens in en sla op en kies vervolgens een lijst."
+                },
+                "mailchimp": {
+                    "fields": {
+                        "server_prefix": "Server voorvoegsel"
+                    }
+                }
+            },
+            "menu": {
+                "main": "Integraties",
+                "accounting": "Boekhouding",
+                "customer_support": "Klantenservice",
+                "newsletter": "Nieuwsbrief",
+                "notifications": "Meldingen"
+            },
+            "general": {
+                "fields": {
+                    "integration": "Integratie",
+                    "api_key": "API-sleutel",
+                    "enabled": "Ingeschakeld"
+                },
+                "buttons": {
+                    "connect": "Verbinding maken via OAuth",
+                    "disconnect": "Ontkoppelen",
+                    "save": "Sla"
+                },
+                "settings": {
+                    "title": "Instellingen"
+                },
+                "errors": {
+                    "required": "Dit veld is verplicht",
+                    "invalid": "Dit veld is ongeldig",
+                    "complete_error": "Er is een fout opgetreden tijdens het opslaan van deze instellingen. Probeer het opnieuw."
                 }
             }
         }

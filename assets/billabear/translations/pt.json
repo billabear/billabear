@@ -533,7 +533,8 @@
                     "billing_type": "Tipo de faturação",
                     "tax_number": "Número de identificação fiscal",
                     "standard_tax_rate": "Taxa de imposto normal",
-                    "type": "Tipo"
+                    "type": "Tipo",
+                    "marketing_opt_in": "Marketing Opt In"
                 },
                 "address": {
                     "company_name": "Nome da empresa",
@@ -736,8 +737,10 @@
                     "tax_number": "O número de identificação fiscal do cliente",
                     "standard_tax_rate": "A taxa de imposto a aplicar ao cliente para tudo o que não seja serviços digitais",
                     "type": "Se o cliente for uma empresa ou um particular",
-                    "invoice_format": "O formato que deve ser utilizado para criar e entregar uma fatura"
-                }
+                    "invoice_format": "O formato que deve ser utilizado para criar e entregar uma fatura",
+                    "marketing_opt_in": "Se o cliente tiver optado por receber mensagens de correio eletrónico de marketing. Isto afecta as integrações de boletins informativos."
+                },
+                "marketing_opt_in": "Marketing Opt In"
             },
             "menu": {
                 "title": "Clientes",
@@ -3533,7 +3536,8 @@
                 },
                 "errors": {
                     "required": "Este campo é obrigatório",
-                    "invalid": "Este campo é inválido"
+                    "invalid": "Este campo é inválido",
+                    "complete_error": "Ocorreu um erro ao tentar guardar estas definições. Por favor, tente novamente."
                 }
             },
             "menu": {
@@ -3773,7 +3777,8 @@
                 },
                 "errors": {
                     "required": "Este campo é obrigatório",
-                    "invalid": "Este campo é inválido"
+                    "invalid": "Este campo é inválido",
+                    "complete_error": "Ocorreu um erro ao tentar guardar estas definições. Por favor, tente novamente."
                 },
                 "zendesk": {
                     "token": "Ficha",
@@ -3783,6 +3788,51 @@
                 "freshdesk": {
                     "subdomain": "Subdomínio",
                     "api_key": "Chave API"
+                }
+            }
+        },
+        "integrations": {
+            "newsletter": {
+                "title": "Integração de boletins informativos",
+                "fields": {
+                    "marketing_list": "Lista de marketing",
+                    "announcement_list": "Lista de anúncios"
+                },
+                "no_lists": "Não existem listas disponíveis. Introduzir primeiro os dados de ligação.",
+                "errors": {
+                    "list_required": "Não é possível ativar até ter selecionado uma lista. Introduza os detalhes da ligação, guarde e, em seguida, selecione uma lista."
+                },
+                "mailchimp": {
+                    "fields": {
+                        "server_prefix": "Prefixo do servidor"
+                    }
+                }
+            },
+            "menu": {
+                "main": "Integrações",
+                "accounting": "Contabilidade",
+                "customer_support": "Apoio ao cliente",
+                "newsletter": "Boletim informativo",
+                "notifications": "Notificações"
+            },
+            "general": {
+                "fields": {
+                    "integration": "Integração",
+                    "api_key": "Chave API",
+                    "enabled": "Ativado"
+                },
+                "buttons": {
+                    "connect": "Ligar através de OAuth",
+                    "disconnect": "Desligar",
+                    "save": "Guardar"
+                },
+                "settings": {
+                    "title": "Definições"
+                },
+                "errors": {
+                    "required": "Este campo é obrigatório",
+                    "invalid": "Este campo é inválido",
+                    "complete_error": "Ocorreu um erro ao tentar guardar estas definições. Por favor, tente novamente."
                 }
             }
         }

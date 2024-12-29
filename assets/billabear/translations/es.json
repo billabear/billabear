@@ -533,7 +533,8 @@
                     "billing_type": "Tipo de facturación",
                     "tax_number": "Número de identificación fiscal",
                     "standard_tax_rate": "Tipo impositivo normal",
-                    "type": "Tipo"
+                    "type": "Tipo",
+                    "marketing_opt_in": "Marketing Opt In"
                 },
                 "address": {
                     "company_name": "Nombre de la empresa",
@@ -735,9 +736,11 @@
                     "tax_number": "El número de identificación fiscal del cliente",
                     "standard_tax_rate": "El tipo impositivo que debe aplicarse al cliente para todo excepto los servicios digitales",
                     "type": "Si el cliente es una empresa o un particular",
-                    "invoice_format": "El formato que debe utilizarse al crear y entregar una factura"
+                    "invoice_format": "El formato que debe utilizarse al crear y entregar una factura",
+                    "marketing_opt_in": "Si el cliente ha optado por recibir correos electrónicos de marketing. Esto afecta a las integraciones de boletines."
                 },
-                "invoice_format": "Formato de factura"
+                "invoice_format": "Formato de factura",
+                "marketing_opt_in": "Marketing Opt In"
             },
             "menu": {
                 "title": "Clientes",
@@ -3540,7 +3543,8 @@
                 },
                 "errors": {
                     "required": "Este campo es obligatorio",
-                    "invalid": "Este campo no es válido"
+                    "invalid": "Este campo no es válido",
+                    "complete_error": "Se ha producido un error al intentar guardar estos ajustes. Por favor, inténtelo de nuevo."
                 }
             },
             "menu": {
@@ -3780,7 +3784,8 @@
                 },
                 "errors": {
                     "required": "Este campo es obligatorio",
-                    "invalid": "Este campo no es válido"
+                    "invalid": "Este campo no es válido",
+                    "complete_error": "Se ha producido un error al intentar guardar estos ajustes. Por favor, inténtelo de nuevo."
                 },
                 "zendesk": {
                     "token": "Ficha",
@@ -3790,6 +3795,51 @@
                 "freshdesk": {
                     "subdomain": "Subdominio",
                     "api_key": "Clave API"
+                }
+            }
+        },
+        "integrations": {
+            "newsletter": {
+                "title": "Integración de boletines",
+                "fields": {
+                    "marketing_list": "Lista de marketing",
+                    "announcement_list": "Lista de anuncios"
+                },
+                "no_lists": "No hay listas disponibles. Introduzca primero los datos de conexión.",
+                "errors": {
+                    "list_required": "No puedes activar hasta que hayas seleccionado una lista. Introduzca los datos de conexión, guárdelos y seleccione una lista."
+                },
+                "mailchimp": {
+                    "fields": {
+                        "server_prefix": "Prefijo del servidor"
+                    }
+                }
+            },
+            "menu": {
+                "main": "Integraciones",
+                "accounting": "Contabilidad",
+                "customer_support": "Atención al cliente",
+                "newsletter": "Boletín",
+                "notifications": "Notificaciones"
+            },
+            "general": {
+                "fields": {
+                    "integration": "Integración",
+                    "api_key": "Clave API",
+                    "enabled": "Activado"
+                },
+                "buttons": {
+                    "connect": "Conectar mediante OAuth",
+                    "disconnect": "Desconecte",
+                    "save": "Guardar"
+                },
+                "settings": {
+                    "title": "Ajustes"
+                },
+                "errors": {
+                    "required": "Este campo es obligatorio",
+                    "invalid": "Este campo no es válido",
+                    "complete_error": "Se ha producido un error al intentar guardar estos ajustes. Por favor, inténtelo de nuevo."
                 }
             }
         }

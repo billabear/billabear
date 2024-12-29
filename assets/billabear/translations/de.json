@@ -533,7 +533,8 @@
                     "billing_type": "Art der Abrechnung",
                     "tax_number": "Umsatzsteuer-Identifikationsnummer",
                     "standard_tax_rate": "Standard-Steuersatz",
-                    "type": "Typ"
+                    "type": "Typ",
+                    "marketing_opt_in": "Marketing Opt-In"
                 },
                 "address": {
                     "company_name": "Name des Unternehmens",
@@ -735,9 +736,11 @@
                     "tax_number": "Die Umsatzsteuer-Identifikationsnummer des Kunden",
                     "standard_tax_rate": "Der für den Kunden anzuwendende Steuersatz für alles außer digitalen Dienstleistungen",
                     "type": "Wenn der Kunde ein Unternehmen oder eine Privatperson ist",
-                    "invoice_format": "Das Format, das bei der Erstellung und Übermittlung einer Rechnung zu verwenden ist"
+                    "invoice_format": "Das Format, das bei der Erstellung und Übermittlung einer Rechnung zu verwenden ist",
+                    "marketing_opt_in": "Wenn sich der Kunde für Marketing-E-Mails entschieden hat. Dies betrifft Newsletter-Integrationen."
                 },
-                "invoice_format": "Rechnungsformat"
+                "invoice_format": "Rechnungsformat",
+                "marketing_opt_in": "Marketing Opt-In"
             },
             "menu": {
                 "title": "Kunden",
@@ -3540,7 +3543,8 @@
                 },
                 "errors": {
                     "required": "Dieses Feld ist erforderlich",
-                    "invalid": "Dieses Feld ist ungültig"
+                    "invalid": "Dieses Feld ist ungültig",
+                    "complete_error": "Beim Versuch, diese Einstellungen zu speichern, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
                 }
             },
             "menu": {
@@ -3780,7 +3784,8 @@
                 },
                 "errors": {
                     "required": "Dieses Feld ist erforderlich",
-                    "invalid": "Dieses Feld ist ungültig"
+                    "invalid": "Dieses Feld ist ungültig",
+                    "complete_error": "Beim Versuch, diese Einstellungen zu speichern, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
                 },
                 "zendesk": {
                     "token": "Token",
@@ -3790,6 +3795,51 @@
                 "freshdesk": {
                     "subdomain": "Subdomain",
                     "api_key": "API-Schlüssel"
+                }
+            }
+        },
+        "integrations": {
+            "newsletter": {
+                "title": "Newsletter-Integration",
+                "fields": {
+                    "marketing_list": "Marketing-Liste",
+                    "announcement_list": "Ankündigungsliste"
+                },
+                "no_lists": "Keine Listen verfügbar. Geben Sie zuerst die Verbindungsdaten ein.",
+                "errors": {
+                    "list_required": "Sie können erst dann aktivieren, wenn Sie eine Liste ausgewählt haben. Geben Sie die Verbindungsdaten ein, speichern Sie und wählen Sie dann eine Liste aus."
+                },
+                "mailchimp": {
+                    "fields": {
+                        "server_prefix": "Server-Präfix"
+                    }
+                }
+            },
+            "menu": {
+                "main": "Integrationen",
+                "accounting": "Buchhaltung",
+                "customer_support": "Kundenbetreuung",
+                "newsletter": "Newsletter",
+                "notifications": "Benachrichtigungen"
+            },
+            "general": {
+                "fields": {
+                    "integration": "Integration",
+                    "api_key": "API-Schlüssel",
+                    "enabled": "Aktiviert"
+                },
+                "buttons": {
+                    "connect": "Verbindung über OAuth",
+                    "disconnect": "Trennen Sie die Verbindung",
+                    "save": "Speichern Sie"
+                },
+                "settings": {
+                    "title": "Einstellungen"
+                },
+                "errors": {
+                    "required": "Dieses Feld ist erforderlich",
+                    "invalid": "Dieses Feld ist ungültig",
+                    "complete_error": "Beim Versuch, diese Einstellungen zu speichern, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
                 }
             }
         }

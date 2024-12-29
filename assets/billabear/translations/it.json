@@ -533,7 +533,8 @@
                     "billing_type": "Tipo di fatturazione",
                     "tax_number": "Codice fiscale",
                     "standard_tax_rate": "Aliquota fiscale standard",
-                    "type": "Tipo"
+                    "type": "Tipo",
+                    "marketing_opt_in": "Marketing Opt In"
                 },
                 "address": {
                     "company_name": "Nome della società",
@@ -735,9 +736,11 @@
                     "tax_number": "Il codice fiscale del cliente",
                     "standard_tax_rate": "L'aliquota d'imposta da applicare per il cliente per tutto ciò che non è servizio digitale",
                     "type": "Se il cliente è un'azienda o un privato",
-                    "invoice_format": "Il formato da utilizzare per la creazione e la consegna di una fattura."
+                    "invoice_format": "Il formato da utilizzare per la creazione e la consegna di una fattura.",
+                    "marketing_opt_in": "Se il cliente ha scelto di ricevere e-mail di marketing. Questo riguarda le integrazioni di newsletter."
                 },
-                "invoice_format": "Formato della fattura"
+                "invoice_format": "Formato della fattura",
+                "marketing_opt_in": "Marketing Opt In"
             },
             "menu": {
                 "title": "Clienti",
@@ -3540,7 +3543,8 @@
                 },
                 "errors": {
                     "required": "Questo campo è obbligatorio",
-                    "invalid": "Questo campo non è valido"
+                    "invalid": "Questo campo non è valido",
+                    "complete_error": "Si è verificato un errore durante il tentativo di salvare queste impostazioni. Riprovare."
                 }
             },
             "menu": {
@@ -3780,7 +3784,8 @@
                 },
                 "errors": {
                     "required": "Questo campo è obbligatorio",
-                    "invalid": "Questo campo non è valido"
+                    "invalid": "Questo campo non è valido",
+                    "complete_error": "Si è verificato un errore durante il tentativo di salvare queste impostazioni. Riprovare."
                 },
                 "zendesk": {
                     "token": "Gettone",
@@ -3790,6 +3795,51 @@
                 "freshdesk": {
                     "subdomain": "Sottodominio",
                     "api_key": "Chiave API"
+                }
+            }
+        },
+        "integrations": {
+            "newsletter": {
+                "title": "Integrazione della newsletter",
+                "fields": {
+                    "marketing_list": "Elenco di marketing",
+                    "announcement_list": "Elenco annunci"
+                },
+                "no_lists": "Non ci sono elenchi disponibili. Inserire prima i dettagli della connessione.",
+                "errors": {
+                    "list_required": "L'abilitazione è possibile solo dopo aver selezionato un elenco. Immettere i dettagli della connessione e salvare, quindi scegliere un elenco."
+                },
+                "mailchimp": {
+                    "fields": {
+                        "server_prefix": "Prefisso del server"
+                    }
+                }
+            },
+            "menu": {
+                "main": "Integrazioni",
+                "accounting": "Contabilità",
+                "customer_support": "Assistenza clienti",
+                "newsletter": "Newsletter",
+                "notifications": "Notifiche"
+            },
+            "general": {
+                "fields": {
+                    "integration": "Integrazione",
+                    "api_key": "Chiave API",
+                    "enabled": "Abilitato"
+                },
+                "buttons": {
+                    "connect": "Connettersi tramite OAuth",
+                    "disconnect": "Disconnessione",
+                    "save": "Risparmiare"
+                },
+                "settings": {
+                    "title": "Impostazioni"
+                },
+                "errors": {
+                    "required": "Questo campo è obbligatorio",
+                    "invalid": "Questo campo non è valido",
+                    "complete_error": "Si è verificato un errore durante il tentativo di salvare queste impostazioni. Riprovare."
                 }
             }
         }
