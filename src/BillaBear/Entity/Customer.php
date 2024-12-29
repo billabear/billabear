@@ -113,7 +113,10 @@ class Customer implements CustomerInterface
     private ?bool $marketingOptIn = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $newsletterReference;
+    private ?string $newsletterMarketingReference;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $newsletterAnnouncementReference;
 
     public function getId()
     {
@@ -477,13 +480,23 @@ class Customer implements CustomerInterface
         $this->marketingOptIn = $marketingOptIn;
     }
 
-    public function getNewsletterReference(): ?string
+    public function getNewsletterMarketingReference(): ?string
     {
-        return $this->newsletterReference;
+        return $this->newsletterMarketingReference;
     }
 
-    public function setNewsletterReference(?string $newsletterReference): void
+    public function setNewsletterMarketingReference(?string $newsletterMarketingReference): void
     {
-        $this->newsletterReference = $newsletterReference;
+        $this->newsletterMarketingReference = $newsletterMarketingReference;
+    }
+
+    public function getNewsletterAnnouncementReference(): ?string
+    {
+        return $this->newsletterAnnouncementReference;
+    }
+
+    public function setNewsletterAnnouncementReference(?string $newsletterAnnouncementReference): void
+    {
+        $this->newsletterAnnouncementReference = $newsletterAnnouncementReference;
     }
 }

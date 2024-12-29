@@ -20,7 +20,10 @@ class NewsletterIntegration
     private ?string $integration = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $listId = null;
+    private ?string $marketingListId = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $announcementListId = null;
 
     #[ORM\Embedded(class: OauthSettings::class)]
     private OauthSettings $oauthSettings;
@@ -72,13 +75,23 @@ class NewsletterIntegration
         $this->settings = $settings;
     }
 
-    public function getListId(): ?string
+    public function getMarketingListId(): ?string
     {
-        return $this->listId;
+        return $this->marketingListId;
     }
 
-    public function setListId(?string $listId): void
+    public function setMarketingListId(?string $marketingListId): void
     {
-        $this->listId = $listId;
+        $this->marketingListId = $marketingListId;
+    }
+
+    public function getAnnouncementListId(): ?string
+    {
+        return $this->announcementListId;
+    }
+
+    public function setAnnouncementListId(?string $announcementListId): void
+    {
+        $this->announcementListId = $announcementListId;
     }
 }

@@ -12,9 +12,12 @@ use BillaBear\Entity\Customer;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
-readonly class SyncCustomer
+class SyncCustomer
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
         private SettingsRepositoryInterface $settingsRepository,
@@ -25,21 +28,34 @@ readonly class SyncCustomer
     public function sync(Customer $customer): void
     {
         $settings = $this->settingsRepository->getDefaultSettings();
-
-        if (!$settings->getNewsletterIntegration()->getEnabled()) {
+        $newsletterSettings = $settings->getNewsletterIntegration();
+        if (!$newsletterSettings->getEnabled()) {
             return;
         }
 
-        $integration = $this->integrationManager->getNewsletterIntegration($settings->getNewsletterIntegration()->getIntegration());
+        $integration = $this->integrationManager->getNewsletterIntegration($newsletterSettings->getIntegration());
 
         $customerService = $integration->getCustomerService();
-        if ($customer->getNewsletterReference()) {
-            $customerService->update($customer);
-        } elseif ($customer->getMarketingOptIn()) {
-            // Only register them if they've opted in for marketing.
-            $registration = $customerService->register($customer);
-            $customer->setNewsletterReference($registration->reference);
+        if ($newsletterSettings->getMarketingListId()) {
+            if ($customer->getNewsletterMarketingReference()) {
+                $customerService->update($newsletterSettings->getMarketingListId(), $customer);
+            } elseif ($customer->getMarketingOptIn()) {
+                // Only register them if they've opted in for marketing.
+                $registration = $customerService->register($newsletterSettings->getMarketingListId(), $customer);
+                $customer->setNewsletterMarketingReference($registration->reference);
+            }
         }
+
+        if ($newsletterSettings->getAnnouncementListId()) {
+            if ($customer->getNewsletterAnnouncementReference()) {
+                $customerService->update($newsletterSettings->getAnnouncementListId(), $customer);
+            } else {
+                // These aren't meant to be marketing emails therefore it's not necessary to check if they've opted in.
+                $registration = $customerService->register($newsletterSettings->getAnnouncementListId(), $customer);
+                $customer->setNewsletterAnnouncementReference($registration->reference);
+            }
+        }
+
         $this->customerRepository->save($customer);
     }
 }

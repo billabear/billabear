@@ -66,7 +66,7 @@ class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegra
 
     public function getCustomerService(): CustomerServiceInterface
     {
-        return new CustomerService($this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getListId(), $this->createClient());
+        return new CustomerService($this->createClient());
     }
 
     public function getListService(): ListServiceInterface

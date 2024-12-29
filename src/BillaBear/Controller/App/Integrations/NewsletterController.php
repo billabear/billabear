@@ -65,7 +65,8 @@ class NewsletterController
         $settings->getNewsletterIntegration()->setEnabled($data['enabled']);
         $settings->getNewsletterIntegration()->setIntegration($data['integration_name']);
         $settings->getNewsletterIntegration()->setSettings($data['settings']);
-        $settings->getNewsletterIntegration()->setListId($data['list_id']);
+        $settings->getNewsletterIntegration()->setMarketingListId($data['marketing_list_id']);
+        $settings->getNewsletterIntegration()->setAnnouncementListId($data['announcement_list_id']);
         $settingsRepository->save($settings);
 
         $newIntegration = $settings->getNewsletterIntegration()->getIntegration() !== $currentIntegration;
@@ -101,7 +102,8 @@ class NewsletterController
             $settings->getNewsletterIntegration()->getIntegration(),
             $settings->getNewsletterIntegration()->getSettings(),
             $listDtos,
-            $settings->getNewsletterIntegration()->getListId(),
+            $settings->getNewsletterIntegration()->getMarketingListId(),
+            $settings->getNewsletterIntegration()->getAnnouncementListId(),
         );
         $json = $serializer->serialize($viewDto, 'json');
 

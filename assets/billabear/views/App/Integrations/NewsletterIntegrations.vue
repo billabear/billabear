@@ -35,10 +35,27 @@
         </div>
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
-            {{ $t('app.integrations.newsletter.fields.list') }}
+            {{ $t('app.integrations.newsletter.fields.marketing_list') }}
           </label>
           <div v-if="lists.length > 0">
-            <select v-model="list_id" class="form-field">
+            <select v-model="marketing_list_id" class="form-field">
+              <option :value="null"></option>
+              <option v-for="list in lists" :value="list.id">{{ list.name }}</option>
+            </select>
+          </div>
+          <div v-else>
+            <select class="form-field" disabled>
+              <option>{{ $t('app.integrations.newsletter.no_lists') }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.integrations.newsletter.fields.announcement_list') }}
+          </label>
+          <div v-if="lists.length > 0">
+            <select v-model="announcement_list_id" class="form-field">
+              <option :value="null"></option>
               <option v-for="list in lists" :value="list.id">{{ list.name }}</option>
             </select>
           </div>
@@ -64,10 +81,11 @@
 
 <script>import axios from "axios";
 import {Toggle} from "flowbite-vue";
+import {ComboboxOption} from "@headlessui/vue";
 
 export default {
   name: "CustomerSupportIntegrations",
-  components: {Toggle},
+  components: {ComboboxOption, Toggle},
   data() {
     return {
       integrations: [],
@@ -80,7 +98,8 @@ export default {
       send_request: false,
       errors: {},
       complete_error: false,
-      list_id: null
+      marketing_list_id: null,
+      announcement_list_id: null,
     }
   },
   mounted() {
@@ -96,7 +115,8 @@ export default {
       this.integration_name = response.data.integration_name;
       this.settings = response.data.settings;
       this.lists = response.data.lists;
-      this.list_id = response.data.list_id;
+      this.marketing_list_id = response.data.marketing_list_id;
+      this.announcement_list_id = response.data.announcement_list_id;
 
       for (let i = 0;  i < this.integrations.length; i++) {
         if (this.integrations[i].name === this.integration_name) {
@@ -129,7 +149,7 @@ export default {
         return;
       }
 
-      if (this.list_id === null && this.enabled) {
+      if (this.marketing_list_id === null && this.announcement_list_id === null && this.enabled) {
         this.send_request = false;
         this.errors['enabled'] = 'app.integrations.newsletter.errors.list_required';
         return;
@@ -154,7 +174,8 @@ export default {
         enabled: this.enabled,
         integration_name: this.integration.name,
         settings: settings,
-        list_id: this.list_id,
+        marketing_list_id: this.marketing_list_id,
+        announcement_list_id: this.announcement_list_id,
       };
 
       axios.post('/app/integrations/newsletter/settings', payload).then(response => {

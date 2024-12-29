@@ -1,7 +1,8 @@
 export const INTEGRATIONS_NEWSLETTER_TRANSLATIONS = {
     title: "Newsletter Integration",
     fields: {
-        list: "List"
+        marketing_list: "Marketing List",
+        announcement_list: "Announcement List"
     },
     no_lists: "No lists available. Enter connection details first.",
     errors: {

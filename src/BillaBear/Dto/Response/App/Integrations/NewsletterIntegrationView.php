@@ -19,8 +19,10 @@ readonly class NewsletterIntegrationView
         public ?string $integrationName,
         public array $settings,
         public array $lists,
-        #[SerializedName('list_id')]
-        public ?string $listId,
+        #[SerializedName('marketing_list_id')]
+        public ?string $marketingListId,
+        #[SerializedName('announcement_list_id')]
+        public ?string $announcementListId,
     ) {
     }
 }

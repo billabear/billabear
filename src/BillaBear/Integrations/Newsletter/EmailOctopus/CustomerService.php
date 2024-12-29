@@ -20,49 +20,48 @@ class CustomerService implements CustomerServiceInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private ?string $listId,
         private Client $client,
     ) {
     }
 
-    public function register(Customer $customer): CustomerRegistration
+    public function register(string $listId, Customer $customer): CustomerRegistration
     {
         $this->getLogger()->info('Registering customer to EmailOctopus', ['customer_id' => (string) $customer->getId()]);
 
         try {
-            $response = $this->client->lists()->createContact($this->listId,
+            $response = $this->client->lists()->createContact($listId,
                 [
                     'email_address' => $customer->getBillingEmail(),
                     'status' => $customer->getMarketingOptIn() ? 'SUBSCRIBED' : 'UNSUBSCRIBED',
                 ]
             );
         } catch (\Exception $e) {
-            $this->getLogger()->error('Failed to register customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'error' => $e->getMessage()]);
+            $this->getLogger()->error('Failed to register customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId, 'error' => $e->getMessage()]);
 
             throw new UnexpectedErrorException('Failed to register customer to EmailOctopus', previous: $e);
         }
 
-        $this->getLogger()->info('Registered customer to EmailOctopus', ['customer_id' => (string) $customer->getId()]);
+        $this->getLogger()->info('Registered customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId]);
 
         return new CustomerRegistration($response['id']);
     }
 
-    public function update(Customer $customer): void
+    public function update(string $listId, Customer $customer): void
     {
-        $this->getLogger()->info('Updating customer to EmailOctopus', ['customer_id' => (string) $customer->getId()]);
+        $this->getLogger()->info('Updating customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId]);
 
         try {
-            $this->client->lists()->updateContact($this->listId, $customer->getNewsletterReference(),
+            $this->client->lists()->updateContact($listId, $customer->getNewsletterMarketingReference(),
                 [
                     'email_address' => $customer->getBillingEmail(),
                     'status' => $customer->getMarketingOptIn() ? 'SUBSCRIBED' : 'UNSUBSCRIBED',
                 ]
             );
         } catch (\Exception $e) {
-            $this->getLogger()->error('Failed to update customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'error' => $e->getMessage()]);
+            $this->getLogger()->error('Failed to update customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId, 'error' => $e->getMessage()]);
 
             throw new UnexpectedErrorException('Failed to update customer to EmailOctopus', previous: $e);
         }
-        $this->getLogger()->info('Updating customer to EmailOctopus', ['customer_id' => (string) $customer->getId()]);
+        $this->getLogger()->info('Updating customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId]);
     }
 }
