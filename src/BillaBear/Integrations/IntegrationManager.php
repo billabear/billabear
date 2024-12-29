@@ -10,6 +10,7 @@ namespace BillaBear\Integrations;
 
 use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
 use BillaBear\Integrations\CustomerSupport\CustomerSupportIntegrationInterface;
+use BillaBear\Integrations\Newsletter\NewsletterIntegrationInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class IntegrationManager
@@ -78,6 +79,30 @@ class IntegrationManager
     {
         foreach ($this->integrations as $integration) {
             if ($integration->getName() === $name && $integration instanceof CustomerSupportIntegrationInterface) {
+                return $integration;
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Integration "%s" not found', $name));
+    }
+
+    public function getNewsletterIntegrations(): array
+    {
+        $output = [];
+
+        foreach ($this->integrations as $integration) {
+            if (IntegrationType::NEWSLETTER === $integration->getType()) {
+                $output[] = $integration;
+            }
+        }
+
+        return $output;
+    }
+
+    public function getNewsletterIntegration(string $name): IntegrationInterface&NewsletterIntegrationInterface
+    {
+        foreach ($this->integrations as $integration) {
+            if ($integration->getName() === $name && $integration instanceof NewsletterIntegrationInterface) {
                 return $integration;
             }
         }

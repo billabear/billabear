@@ -5,12 +5,12 @@ import WebhookEndpointView from "../views/App/Developer/Webhook/WebhookEndpoint/
 import WebhookEventView from "../views/App/Developer/Webhook/WebhookEvent/WebhookEventView.vue";
 import CancellationRequestList from "../views/App/Workflows/CancellationRequest/CancellationRequestList.vue";
 import CancellationRequestView from "../views/App/Workflows/CancellationRequest/CancellationRequestView.vue";
-import IntegrationsList from "../views/App/Developer/Integrations/IntegrationsList.vue";
-import SlackWebhookList from "../views/App/Developer/Integrations/Slack/SlackWebhookList.vue";
-import SlackWebhookCreate from "../views/App/Developer/Integrations/Slack/SlackWebhookCreate.vue";
-import SlackGroup from "../views/App/Developer/Integrations/Slack/SlackGroup.vue";
-import SlackNotificationList from "../views/App/Developer/Integrations/Slack/SlackNotificationList.vue";
-import SlackNotificationCreate from "../views/App/Developer/Integrations/Slack/SlackNotificationCreate.vue";
+import IntegrationsList from "../views/App/Integrations/IntegrationsList.vue";
+import SlackWebhookList from "../views/App/Integrations/Slack/SlackWebhookList.vue";
+import SlackWebhookCreate from "../views/App/Integrations/Slack/SlackWebhookCreate.vue";
+import SlackGroup from "../views/App/Integrations/Slack/SlackGroup.vue";
+import SlackNotificationList from "../views/App/Integrations/Slack/SlackNotificationList.vue";
+import SlackNotificationCreate from "../views/App/Integrations/Slack/SlackNotificationCreate.vue";
 
 
 export const SYSTEM_ROUTES = [

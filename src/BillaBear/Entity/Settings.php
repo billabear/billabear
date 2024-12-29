@@ -10,6 +10,7 @@ namespace BillaBear\Entity;
 
 use BillaBear\Entity\Settings\AccountingIntegration;
 use BillaBear\Entity\Settings\CustomerSupportIntegration;
+use BillaBear\Entity\Settings\NewsletterIntegration;
 use BillaBear\Entity\Settings\NotificationSettings;
 use BillaBear\Entity\Settings\OnboardingSettings;
 use BillaBear\Entity\Settings\SystemSettings;
@@ -40,6 +41,9 @@ class Settings
 
     #[ORM\Embedded(class: CustomerSupportIntegration::class)]
     private CustomerSupportIntegration $customerSupportIntegration;
+
+    #[ORM\Embedded(class: NewsletterIntegration::class)]
+    private NewsletterIntegration $newsletterIntegration;
 
     #[ORM\Embedded(class: SystemSettings::class)]
     private SystemSettings $systemSettings;
@@ -136,5 +140,15 @@ class Settings
     public function setCustomerSupportIntegration(CustomerSupportIntegration $customerSupportIntegration): void
     {
         $this->customerSupportIntegration = $customerSupportIntegration;
+    }
+
+    public function getNewsletterIntegration(): NewsletterIntegration
+    {
+        return $this->newsletterIntegration;
+    }
+
+    public function setNewsletterIntegration(NewsletterIntegration $newsletterIntegration): void
+    {
+        $this->newsletterIntegration = $newsletterIntegration;
     }
 }

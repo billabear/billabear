@@ -34,6 +34,7 @@ import {ONBOARDING_TRANSLATIONS} from "./onboarding";
 import {METRIC_TRANSLATIONS} from "./metric";
 import {USAGE_LIMIT_TRANSLATION} from "./usage_limit";
 import {CUSTOMER_SUPPORT_TRANSLATIONS} from "./customer_support";
+import {INTEGRATION_TRANSLATIONS} from "./integrations";
 
 export const APP_TRANSLATIONS = {
     menu: MENU_TRANSLATIONS,
@@ -73,4 +74,5 @@ export const APP_TRANSLATIONS = {
     metric: METRIC_TRANSLATIONS,
     usage_limit: USAGE_LIMIT_TRANSLATION,
     customer_support: CUSTOMER_SUPPORT_TRANSLATIONS,
+    integrations: INTEGRATION_TRANSLATIONS,
 };

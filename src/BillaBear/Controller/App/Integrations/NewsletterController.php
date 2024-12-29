@@ -22,29 +22,29 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class CustomerSupportController
+class NewsletterController
 {
     use LoggerAwareTrait;
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
-    #[Route('/app/integrations/customer-support/settings', name: 'customer_support_settings', methods: ['GET'])]
+    #[Route('/app/integrations/newsletter/settings', name: 'newsletter_settings', methods: ['GET'])]
     public function readAccountingSettings(
         IntegrationManager $integrationManager,
         IntegrationDataMapper $integrationDataMapper,
         SettingsRepositoryInterface $settingsRepository,
         SerializerInterface $serializer,
     ): Response {
-        $this->getLogger()->info('Reading customer support integration settings');
+        $this->getLogger()->info('Reading newsletter integration settings');
 
         $settings = $settingsRepository->getDefaultSettings();
-        $integrations = $integrationManager->getCustomerSupportIntegrations();
+        $integrations = $integrationManager->getNewsletterIntegrations();
         $integrationDtos = array_map([$integrationDataMapper, 'createAppDto'], $integrations);
 
         $viewDto = new AccountingIntegrationView(
             $integrationDtos,
-            $settings->getCustomerSupportIntegration()->getEnabled(),
-            $settings->getCustomerSupportIntegration()->getIntegration(),
-            $settings->getCustomerSupportIntegration()->getSettings(),
+            $settings->getNewsletterIntegration()->getEnabled(),
+            $settings->getNewsletterIntegration()->getIntegration(),
+            $settings->getNewsletterIntegration()->getSettings(),
         );
         $json = $serializer->serialize($viewDto, 'json');
 
@@ -52,27 +52,27 @@ class CustomerSupportController
     }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
-    #[Route('/app/integrations/customer-support/settings', name: 'customer_support_settings_write', methods: ['POST'])]
+    #[Route('/app/integrations/newsletter/settings', name: 'newsletter_settings_write', methods: ['POST'])]
     public function writeAccountingSettings(
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
         MessageBusInterface $messageBus,
     ): Response {
-        $this->getLogger()->info('Writing customer support integration settings');
+        $this->getLogger()->info('Writing newsletter integration settings');
         $data = json_decode($request->getContent(), true);
         $settings = $settingsRepository->getDefaultSettings();
 
-        $currentEnable = $settings->getCustomerSupportIntegration()->getEnabled();
-        $currentIntegration = $settings->getCustomerSupportIntegration()->getIntegration();
+        $currentEnable = $settings->getNewsletterIntegration()->getEnabled();
+        $currentIntegration = $settings->getNewsletterIntegration()->getIntegration();
 
-        $settings->getCustomerSupportIntegration()->setEnabled($data['enabled']);
-        $settings->getCustomerSupportIntegration()->setIntegration($data['integration_name']);
-        $settings->getCustomerSupportIntegration()->setSettings($data['settings']);
+        $settings->getNewsletterIntegration()->setEnabled($data['enabled']);
+        $settings->getNewsletterIntegration()->setIntegration($data['integration_name']);
+        $settings->getNewsletterIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);
 
-        $newIntegration = $settings->getCustomerSupportIntegration()->getIntegration() !== $currentIntegration;
+        $newIntegration = $settings->getNewsletterIntegration()->getIntegration() !== $currentIntegration;
 
-        if ((false === $currentEnable || $newIntegration) && $settings->getCustomerSupportIntegration()->getEnabled()) {
+        if ((false === $currentEnable || $newIntegration) && $settings->getNewsletterIntegration()->getEnabled()) {
             $messageBus->dispatch(new EnableIntegration($newIntegration));
         }
 

@@ -17,11 +17,6 @@ import SubscriptionPlanView from "../views/App/SubscriptionPlan/SubscriptionPlan
 import SubscriptionPlanUpdate from "../views/App/SubscriptionPlan/SubscriptionPlanUpdate.vue";
 import AddPaymentDetails from "../views/App/PaymentDetails/AddPaymentDetails.vue";
 import SubscriptionCreate from "../views/App/Subscription/SubscriptionCreate.vue";
-import TransactionView from "../views/App/transactions/TransactionView.vue";
-import SettingsGroup from "../views/App/Settings/SettingsGroup.vue";
-import SubscriptionGroup from "../views/App/Subscription/SubscriptionGroup.vue";
-import ProductGroup from "../views/App/Product/ProductGroup.vue";
-import CustomerGroup from "../views/App/Customer/CustomerGroup.vue";
 import BrandSettingsList from "../views/App/Settings/BrandSettings/BrandSettingsList.vue";
 import BrandSettingsUpdate from "../views/App/Settings/BrandSettings/BrandSettingsUpdate.vue";
 import BrandSettingsCreate from "../views/App/Settings/BrandSettings/BrandSettingsCreate.vue";
@@ -46,30 +41,26 @@ import VouchersList from "../views/App/Vouchers/VouchersList.vue";
 import VouchersCreate from "../views/App/Vouchers/VouchersCreate.vue";
 import VouchersView from "../views/App/Vouchers/VouchersView.vue";
 import TaxSettings from "../views/App/Settings/TaxSettings/TaxSettings.vue";
-import InvoiceGroup from "../views/App/Invoices/InvoiceGroup.vue";
 import InvoiceCreate from "../views/App/Invoices/InvoiceCreate.vue";
 import QuotesList from "../views/App/Quotes/QuotesList.vue";
 import QuotesView from "../views/App/Quotes/QuotesView.vue";
 import QuoteCreate from "../views/App/Quotes/QuoteCreate.vue";
 import InvoicesView from "../views/App/Invoices/InvoicesView.vue";
 import {SYSTEM_ROUTES} from "./app.system.routes";
-import SystemGroup from "../views/App/Developer/SystemGroup.vue";
 import {AppSubscriptionsRoutes} from "./app.subscriptions.routes";
 import {WORKFLOWS_ROUTES} from "./app.workflows.routes";
-import WorkflowsGroup from "../views/App/Workflows/WorkflowsGroup.vue";
 import PdfGeneratorSettings from "../views/App/Settings/PdfTemplates/PdfGeneratorSettings.vue";
 import {AppFinanceRoutes} from "./app.finance.routes";
 import {REPORT_ROUTES} from "./app.reports.routes";
 import PdfTemplateCreate from "../views/App/Settings/PdfTemplates/PdfTemplateCreate.vue";
-import IntegrationsList from "../views/App/Developer/Integrations/IntegrationsList.vue";
-import SlackGroup from "../views/App/Developer/Integrations/Slack/SlackGroup.vue";
-import SlackNotificationList from "../views/App/Developer/Integrations/Slack/SlackNotificationList.vue";
-import SlackNotificationCreate from "../views/App/Developer/Integrations/Slack/SlackNotificationCreate.vue";
-import SlackWebhookList from "../views/App/Developer/Integrations/Slack/SlackWebhookList.vue";
-import SlackWebhookCreate from "../views/App/Developer/Integrations/Slack/SlackWebhookCreate.vue";
+import IntegrationsList from "../views/App/Integrations/IntegrationsList.vue";
+import SlackGroup from "../views/App/Integrations/Slack/SlackGroup.vue";
+import SlackNotificationList from "../views/App/Integrations/Slack/SlackNotificationList.vue";
+import SlackNotificationCreate from "../views/App/Integrations/Slack/SlackNotificationCreate.vue";
+import SlackWebhookList from "../views/App/Integrations/Slack/SlackWebhookList.vue";
+import SlackWebhookCreate from "../views/App/Integrations/Slack/SlackWebhookCreate.vue";
 import AddWithToken from "../views/App/PaymentDetails/AddWithToken.vue";
 import InvoiceSettings from "../views/App/Invoices/InvoiceSettings.vue";
-import CustomerInvoiceDelivery from "../components/app/Customer/View/CustomerInvoiceDelivery.vue";
 import InvoiceDeliveryCreate from "../views/App/Invoices/Delivery/InvoiceDeliveryCreate.vue";
 import InvoiceDeliveryUpdate from "../views/App/Invoices/Delivery/InvoiceDeliveryUpdate.vue";
 import VatSenseSettings from "../views/App/Settings/TaxSettings/VatSenseSettings.vue";
@@ -77,7 +68,7 @@ import MetricList from "../views/App/Metric/MetricList.vue";
 import MetricCreate from "../views/App/Metric/MetricCreate.vue";
 import MetricView from "../views/App/Metric/MetricView.vue";
 import MetricUpdate from "../views/App/Metric/MetricUpdate.vue";
-import CustomerSupportIntegrations from "../views/App/Customer/CustomerSupportIntegrations.vue";
+import {AppIntegrationsRoutes} from "./app.integrations.routes";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -91,6 +82,7 @@ export const APP_ROUTES = [
     ...WORKFLOWS_ROUTES,
     ...AppSubscriptionsRoutes,
     ...AppFinanceRoutes,
+    ...AppIntegrationsRoutes,
     {
         name: 'app.customer.list',
         path: 'customer',
@@ -110,11 +102,6 @@ export const APP_ROUTES = [
         name: 'app.customer.update',
         path: 'customer/update/:id',
         component: CustomerUpdate
-    },
-    {
-        name: 'app.customer.integration',
-        path: 'customer/integration',
-        component: CustomerSupportIntegrations
     },
     {
         name: 'app.customer.payment_details.add',

@@ -43,7 +43,6 @@ class AccountingController
             $integrationDtos,
             $settings->getAccountingIntegration()->getEnabled(),
             $settings->getAccountingIntegration()->getIntegration(),
-            $settings->getAccountingIntegration()->getApiKey(),
             $settings->getAccountingIntegration()->getSettings(),
         );
         $json = $serializer->serialize($viewDto, 'json');

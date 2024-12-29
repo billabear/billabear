@@ -17,11 +17,6 @@
         <MenuSubItem>
           <router-link :to="{name: 'app.customer.list'}">{{ $t('app.menu.main.customer_list') }}</router-link>
         </MenuSubItem>
-        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-          <MenuSubItem>
-            <router-link :to="{name: 'app.customer.integration'}">{{ $t('app.menu.main.customer_support_integrations') }}</router-link>
-          </MenuSubItem>
-        </RoleOnlyView>
       </template>
     </MenuTopItem>
     <MenuTopItem>
@@ -125,11 +120,6 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.checkout.list'}">{{ $t('app.transactions.menu.checkout') }}</router-link>
           </MenuSubItem>
-          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-            <MenuSubItem>
-              <router-link :to="{name: 'app.finance.integration'}">{{ $t('app.finance.menu.integration') }}</router-link>
-            </MenuSubItem>
-          </RoleOnlyView>
         </template>
       </MenuTopItem>
     </RoleOnlyView>
@@ -151,9 +141,6 @@
           </MenuSubItem>
           <MenuSubItem>
             <router-link :to="{name: 'app.settings.exchange_rates.list'}" class="submenu-link">{{ $t('app.settings.menu.exchange_rates') }}</router-link>
-          </MenuSubItem>
-          <MenuSubItem>
-            <router-link :to="{name: 'app.settings.integrations.list'}" class="submenu-link">{{ $t('app.settings.menu.integrations') }}</router-link>
           </MenuSubItem>
           <MenuSubItem>
             <router-link :to="{name: 'app.settings.import.stripe'}" class="submenu-link">{{ $t('app.settings.menu.stripe') }}</router-link>
@@ -217,6 +204,26 @@
           </MenuSubItem>
           <MenuSubItem>
             <router-link :to="{name: 'app.workflows.payment_failure_process.list'}" class="submenu-link">{{ $t('app.workflows.menu.payment_failure_process') }}</router-link>
+          </MenuSubItem>
+        </template>
+      </MenuTopItem>
+      <MenuTopItem>
+        <template v-slot:default>
+          <i class="fa-solid fa-code-compare"></i>
+          <span class="ml-3" sidebar-toggle-item>{{ $t('app.integrations.menu.main') }}</span>
+        </template>
+        <template v-slot:submenu>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.settings.integrations.list'}" class="submenu-link">{{ $t('app.integrations.menu.notifications') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.integrations.accounting'}">{{ $t('app.integrations.menu.accounting') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.integrations.customer_support'}">{{ $t('app.integrations.menu.customer_support') }}</router-link>
+          </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.integrations.newsletter'}">{{ $t('app.integrations.menu.newsletter') }}</router-link>
           </MenuSubItem>
         </template>
       </MenuTopItem>

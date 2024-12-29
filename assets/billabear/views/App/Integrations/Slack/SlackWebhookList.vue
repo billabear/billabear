@@ -65,11 +65,11 @@
 
 <script>
 import axios from "axios";
-import InternalApp from "../../../InternalApp.vue";
+import InternalApp from "../../InternalApp.vue";
 import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
-import ErrorBear from "../../../../../components/app/ErrorBear.vue";
-import RoleOnlyView from "../../../../../components/app/RoleOnlyView.vue";
+import ErrorBear from "../../../../components/app/ErrorBear.vue";
+import RoleOnlyView from "../../../../components/app/RoleOnlyView.vue";
 
 export default {
   name: "InvoiceList.vue",

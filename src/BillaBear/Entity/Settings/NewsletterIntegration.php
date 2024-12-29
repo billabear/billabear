@@ -11,13 +11,16 @@ namespace BillaBear\Entity\Settings;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
-class CustomerSupportIntegration
+class NewsletterIntegration
 {
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $enabled = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $integration = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $listId = null;
 
     #[ORM\Embedded(class: OauthSettings::class)]
     private OauthSettings $oauthSettings;
@@ -67,5 +70,15 @@ class CustomerSupportIntegration
     public function setSettings(?array $settings): void
     {
         $this->settings = $settings;
+    }
+
+    public function getListId(): ?string
+    {
+        return $this->listId;
+    }
+
+    public function setListId(?string $listId): void
+    {
+        $this->listId = $listId;
     }
 }

@@ -19,12 +19,6 @@ class AccountingIntegration
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $integration = null;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private ?string $apiKey = null;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $updatedAt = null;
-
     #[ORM\Embedded(class: OauthSettings::class)]
     private OauthSettings $oauthSettings;
 
@@ -49,26 +43,6 @@ class AccountingIntegration
     public function setIntegration(?string $integration): void
     {
         $this->integration = $integration;
-    }
-
-    public function getApiKey(): ?string
-    {
-        return $this->apiKey;
-    }
-
-    public function setApiKey(?string $apiKey): void
-    {
-        $this->apiKey = $apiKey;
-    }
-
-    public function getUpdatedAt(): ?\DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTime $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
     }
 
     public function getOauthSettings(): OauthSettings
