@@ -30,7 +30,23 @@
           <label class="form-field-lbl" for="name">
             {{ $t('app.customer_support.integration.fields.enabled') }}
           </label>
+          <span class="form-field-error block" v-if="errors.enabled != undefined">{{ $t(errors.enabled) }}</span>
           <Toggle v-model="enabled" />
+        </div>
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="name">
+            {{ $t('app.integrations.newsletter.fields.list') }}
+          </label>
+          <div v-if="lists.length > 0">
+            <select v-model="list_id" class="form-field">
+              <option v-for="list in lists" :value="list.id">{{ list.name }}</option>
+            </select>
+          </div>
+          <div v-else>
+            <select class="form-field" disabled>
+              <option>{{ $t('app.integrations.newsletter.no_lists') }}</option>
+            </select>
+          </div>
         </div>
         <div class="form-field-ctn" v-for="setting in integration.settings">
           <label class="form-field-lbl">{{ $t(setting.label) }}</label>
@@ -55,6 +71,7 @@ export default {
   data() {
     return {
       integrations: [],
+      lists: [],
       enabled: false,
       integration_name: '',
       integration: null,
@@ -63,14 +80,23 @@ export default {
       send_request: false,
       errors: {},
       complete_error: false,
+      list_id: null
     }
   },
   mounted() {
     axios.get('/app/integrations/newsletter/settings').then(response => {
+      this.handleResponse(response);
+      this.ready = true;
+    })
+  },
+  methods: {
+    handleResponse(response) {
       this.integrations = response.data.integrations;
       this.enabled = response.data.enabled;
       this.integration_name = response.data.integration_name;
       this.settings = response.data.settings;
+      this.lists = response.data.lists;
+      this.list_id = response.data.list_id;
 
       for (let i = 0;  i < this.integrations.length; i++) {
         if (this.integrations[i].name === this.integration_name) {
@@ -87,10 +113,7 @@ export default {
           }
         }
       }
-      this.ready = true;
-    })
-  },
-  methods: {
+    },
     disconnectOauth() {
       axios.post('/app/integrations/customer-support/disconnect').then(response => {
         this.enabled = false;
@@ -102,7 +125,13 @@ export default {
       this.errors = {};
       if (this.integration === null) {
         this.send_request = false;
-        this.errors['integration'] = 'app.customer_support.integration.errors.required';
+        this.errors['integration'] = 'app.integration.general.errors.required';
+        return;
+      }
+
+      if (this.list_id === null && this.enabled) {
+        this.send_request = false;
+        this.errors['enabled'] = 'app.integrations.newsletter.errors.list_required';
         return;
       }
 
@@ -121,8 +150,16 @@ export default {
         return;
       }
 
+      let payload = {
+        enabled: this.enabled,
+        integration_name: this.integration.name,
+        settings: settings,
+        list_id: this.list_id,
+      };
 
-      axios.post('/app/integrations/newsletter/settings', {enabled: this.enabled, integration_name: this.integration.name,  settings: settings}).then(response => {
+      axios.post('/app/integrations/newsletter/settings', payload).then(response => {
+        this.handleResponse(response);
+
         this.send_request = false;
       }).catch(error => {
         this.complete_error = true;

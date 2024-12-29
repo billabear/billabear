@@ -8,13 +8,18 @@
 
 namespace BillaBear\Integrations\Newsletter\EmailOctopus;
 
+use BillaBear\Exception\Integrations\MissingConfigurationException;
 use BillaBear\Exception\Integrations\UnsupportedFeatureException;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
+use BillaBear\Integrations\Newsletter\CustomerServiceInterface;
+use BillaBear\Integrations\Newsletter\ListServiceInterface;
 use BillaBear\Integrations\Newsletter\NewsletterIntegrationInterface;
 use BillaBear\Integrations\OauthConfig;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use GoranPopovic\EmailOctopus\Client;
+use GoranPopovic\EmailOctopus\EmailOctopus;
 
 class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegrationInterface
 {
@@ -59,13 +64,24 @@ class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegra
         ];
     }
 
-    public function getCustomerService()
+    public function getCustomerService(): CustomerServiceInterface
     {
-        // TODO: Implement getCustomerService() method.
+        return new CustomerService($this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getListId(), $this->createClient());
     }
 
-    public function getListService()
+    public function getListService(): ListServiceInterface
     {
-        // TODO: Implement getListService() method.
+        return new ListService($this->createClient());
+    }
+
+    private function createClient(): Client
+    {
+        $settings = $this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getSettings();
+
+        if (!isset($settings['api_key'])) {
+            throw new MissingConfigurationException('Email Octopus API Key is required. Please set it in your .env file.');
+        }
+
+        return EmailOctopus::client($settings['api_key']);
     }
 }

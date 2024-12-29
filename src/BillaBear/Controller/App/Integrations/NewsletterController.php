@@ -9,9 +9,10 @@
 namespace BillaBear\Controller\App\Integrations;
 
 use BillaBear\DataMappers\Integrations\IntegrationDataMapper;
-use BillaBear\Dto\Response\App\Integrations\AccountingIntegrationView;
-use BillaBear\Integrations\CustomerSupport\Messenger\EnableIntegration;
+use BillaBear\DataMappers\Integrations\NewsletterListsDataMapper;
+use BillaBear\Dto\Response\App\Integrations\NewsletterIntegrationView;
 use BillaBear\Integrations\IntegrationManager;
+use BillaBear\Integrations\Newsletter\Messenger\EnableIntegration;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,35 +29,31 @@ class NewsletterController
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/integrations/newsletter/settings', name: 'newsletter_settings', methods: ['GET'])]
-    public function readAccountingSettings(
+    public function readNewsletterSettings(
         IntegrationManager $integrationManager,
         IntegrationDataMapper $integrationDataMapper,
+        NewsletterListsDataMapper $newsletterListsDataMapper,
         SettingsRepositoryInterface $settingsRepository,
         SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Reading newsletter integration settings');
 
         $settings = $settingsRepository->getDefaultSettings();
-        $integrations = $integrationManager->getNewsletterIntegrations();
-        $integrationDtos = array_map([$integrationDataMapper, 'createAppDto'], $integrations);
-
-        $viewDto = new AccountingIntegrationView(
-            $integrationDtos,
-            $settings->getNewsletterIntegration()->getEnabled(),
-            $settings->getNewsletterIntegration()->getIntegration(),
-            $settings->getNewsletterIntegration()->getSettings(),
-        );
-        $json = $serializer->serialize($viewDto, 'json');
+        $json = $this->buildView($integrationManager, $integrationDataMapper, $settings, $newsletterListsDataMapper, $serializer);
 
         return new JsonResponse($json, json: true);
     }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/integrations/newsletter/settings', name: 'newsletter_settings_write', methods: ['POST'])]
-    public function writeAccountingSettings(
+    public function writeNewsletterSettings(
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
+        IntegrationManager $integrationManager,
+        IntegrationDataMapper $integrationDataMapper,
+        NewsletterListsDataMapper $newsletterListsDataMapper,
         MessageBusInterface $messageBus,
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Writing newsletter integration settings');
         $data = json_decode($request->getContent(), true);
@@ -68,6 +65,7 @@ class NewsletterController
         $settings->getNewsletterIntegration()->setEnabled($data['enabled']);
         $settings->getNewsletterIntegration()->setIntegration($data['integration_name']);
         $settings->getNewsletterIntegration()->setSettings($data['settings']);
+        $settings->getNewsletterIntegration()->setListId($data['list_id']);
         $settingsRepository->save($settings);
 
         $newIntegration = $settings->getNewsletterIntegration()->getIntegration() !== $currentIntegration;
@@ -76,6 +74,37 @@ class NewsletterController
             $messageBus->dispatch(new EnableIntegration($newIntegration));
         }
 
-        return new JsonResponse(['settings' => $data['settings']]);
+        $json = $this->buildView($integrationManager, $integrationDataMapper, $settings, $newsletterListsDataMapper, $serializer);
+
+        return new JsonResponse($json, json: true);
+    }
+
+    public function buildView(
+        IntegrationManager $integrationManager,
+        IntegrationDataMapper $integrationDataMapper,
+        \BillaBear\Entity\Settings $settings,
+        NewsletterListsDataMapper $newsletterListsDataMapper,
+        SerializerInterface $serializer,
+    ): string {
+        $integrations = $integrationManager->getNewsletterIntegrations();
+        $integrationDtos = array_map([$integrationDataMapper, 'createAppDto'], $integrations);
+        $lists = [];
+        if (null !== $settings->getNewsletterIntegration()->getIntegration()) {
+            $integration = $integrationManager->getNewsletterIntegration($settings->getNewsletterIntegration()->getIntegration());
+            $lists = $integration->getListService()->getLists();
+        }
+
+        $listDtos = array_map([$newsletterListsDataMapper, 'createAppDto'], $lists);
+        $viewDto = new NewsletterIntegrationView(
+            $integrationDtos,
+            $settings->getNewsletterIntegration()->getEnabled(),
+            $settings->getNewsletterIntegration()->getIntegration(),
+            $settings->getNewsletterIntegration()->getSettings(),
+            $listDtos,
+            $settings->getNewsletterIntegration()->getListId(),
+        );
+        $json = $serializer->serialize($viewDto, 'json');
+
+        return $json;
     }
 }

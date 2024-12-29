@@ -113,4 +113,14 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
             ->getQuery()
             ->execute();
     }
+
+    public function wipeNewsletterReferences(): void
+    {
+        $this->entityRepository->createQueryBuilder('s')
+            ->update()
+            ->set('s.newsletterReference', ':newsletterReference')
+            ->setParameter('newsletterReference', null)
+            ->getQuery()
+            ->execute();
+    }
 }
