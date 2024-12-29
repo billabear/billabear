@@ -100,6 +100,7 @@ export default {
       complete_error: false,
       marketing_list_id: null,
       announcement_list_id: null,
+      original_lists: [],
     }
   },
   mounted() {
@@ -108,6 +109,15 @@ export default {
       this.ready = true;
     })
   },
+  watch: {
+    integration: function (newVal, oldVal) {
+      if (newVal.name !== this.integration_name) {
+        this.lists = [];
+      } else {
+        this.lists = this.original_lists;
+      }
+    },
+  },
   methods: {
     handleResponse(response) {
       this.integrations = response.data.integrations;
@@ -115,6 +125,7 @@ export default {
       this.integration_name = response.data.integration_name;
       this.settings = response.data.settings;
       this.lists = response.data.lists;
+      this.original_lists = response.data.lists;
       this.marketing_list_id = response.data.marketing_list_id;
       this.announcement_list_id = response.data.announcement_list_id;
 
