@@ -144,6 +144,10 @@ class Settings
 
     public function getNewsletterIntegration(): NewsletterIntegration
     {
+        if (!isset($this->newsletterIntegration)) {
+            $this->newsletterIntegration = new NewsletterIntegration();
+        }
+
         return $this->newsletterIntegration;
     }
 
