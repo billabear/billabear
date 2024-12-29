@@ -18,6 +18,7 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
     tax_number: "Tax Number",
     standard_tax_rate: "Standard Tax Rate",
     locale: "Locale",
+    marketing_opt_in: "Marketing Opt In",
     error: {
         not_found: "No such customer found",
         unknown: "An unknown error has occurred"
@@ -46,5 +47,6 @@ export const CUSTOMER_UPDATE_TRANSLATIONS = {
         standard_tax_rate: "The tax rate to be applied for the customer for everything but digital services",
         type: "If the customer is a business or individual",
         invoice_format: "The format that should be used when creating and delivering an invoice",
+        marketing_opt_in: "If the customer has opted in to marketing emails. This affects newsletter integrations.",
     }
 }

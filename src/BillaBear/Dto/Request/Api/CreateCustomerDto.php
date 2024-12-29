@@ -79,6 +79,11 @@ class CreateCustomerDto
     #[Assert\Type('string')]
     private $invoiceFormat;
 
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('boolean')]
+    #[SerializedName('marketing_opt_in')]
+    private $marketingOptIn;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -207,5 +212,15 @@ class CreateCustomerDto
     public function setInvoiceFormat($invoiceFormat): void
     {
         $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getMarketingOptIn(): bool
+    {
+        return true === $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn($marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
     }
 }

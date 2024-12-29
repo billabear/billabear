@@ -115,7 +115,7 @@ export default {
 
       for (let i = 0; i < this.integration.settings.length; i++) {
         let setting = this.integration.settings[i];
-        if ((setting.value === null || setting.value === undefined || setting.value === "") && setting.required === true) {
+        if ((setting.value === null || setting.value === undefined || setting.value === "") && setting.required === true && this.enabled) {
           this.errors[setting.name] = 'app.finance.integration.errors.required';
           continue;
         }

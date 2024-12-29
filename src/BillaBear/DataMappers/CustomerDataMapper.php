@@ -90,6 +90,7 @@ class CustomerDataMapper
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
         $customer->setStandardTaxRate($createCustomerDto->getStandardTaxrate());
         $customer->setInvoiceFormat($createCustomerDto->getInvoiceFormat());
+        $customer->setMarketingOptIn($createCustomerDto->getMarketingOptIn());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
@@ -130,6 +131,7 @@ class CustomerDataMapper
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
         $dto->setInvoiceFormat($customer->getInvoiceFormat());
+        $dto->setMarketingOptIn($customer->getMarketingOptIn());
 
         return $dto;
     }
@@ -165,6 +167,7 @@ class CustomerDataMapper
         $dto->setType($customer->getType()->value);
         $dto->setInvoiceFormat($customer->getInvoiceFormat());
         $dto->setCreatedAt($customer->getCreatedAt());
+        $dto->setMarketingOptIn($customer->getMarketingOptIn());
 
         return $dto;
     }

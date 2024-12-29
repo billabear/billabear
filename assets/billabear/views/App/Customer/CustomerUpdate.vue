@@ -54,6 +54,15 @@
               </select>
               <p class="form-field-help">{{ $t('app.customer.update.help_info.billing_type') }}</p>
             </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="type">
+              {{ $t('app.customer.update.marketing_opt_in') }}
+            </label>
+            <p class="form-field-error" v-if="errors.marketing_opt_in != undefined">{{ errors.marketing_opt_in }}</p>
+            <Toggle v-model="customer.marketing_opt_in" />
+            <p class="form-field-help">{{ $t('app.customer.update.help_info.marketing_opt_in') }}</p>
+          </div>
+
         </div>
 
         <div class="card-body mt-5">
@@ -184,9 +193,11 @@
 
 <script>
 import axios from "axios";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "CustomerUpdate",
+  components: {Toggle},
   data() {
     return {
       customer: {
@@ -244,6 +255,7 @@ export default {
           response => {
             this.sendingInProgress = false;
             this.success = true;
+            this.$router.push({name: 'app.customer.view', params: {id: customerId}});
           }
       ).catch(error => {
         this.errors = error.response.data.errors;

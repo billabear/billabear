@@ -13,4 +13,5 @@ enum IntegrationType: string
     case ACCOUNTING = 'accounting';
     case NOTIFICATION = 'notification';
     case CUSTOMER_SUPPORT = 'customer_support';
+    case NEWSLETTER = 'newsletter';
 }

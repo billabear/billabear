@@ -57,6 +57,9 @@ class Customer
     #[SerializedName('invoice_format')]
     protected ?string $invoiceFormat;
 
+    #[SerializedName('marketing_opt_in')]
+    protected bool $marketingOptIn;
+
     #[SerializedName('created_at')]
     protected \DateTime $createdAt;
 
@@ -218,5 +221,15 @@ class Customer
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function isMarketingOptIn(): bool
+    {
+        return $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn(bool $marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
     }
 }

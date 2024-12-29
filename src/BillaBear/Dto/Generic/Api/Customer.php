@@ -54,6 +54,8 @@ class Customer
 
     protected string $type;
 
+    protected bool $marketingOptIn;
+
     public function getId(): string
     {
         return $this->id;
@@ -192,5 +194,15 @@ class Customer
     public function setInvoiceFormat(?string $invoiceFormat): void
     {
         $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function isMarketingOptIn(): bool
+    {
+        return $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn(bool $marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
     }
 }

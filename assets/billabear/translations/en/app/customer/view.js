@@ -18,7 +18,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         billing_type: "Billing Type",
         tax_number: "Tax Number",
         standard_tax_rate: "Standard Tax Rate",
-        type: "Type"
+        type: "Type",
+        marketing_opt_in: "Marketing Opt In",
     },
     address: {
         company_name: "Company Name",

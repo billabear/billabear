@@ -109,6 +109,9 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $customerSupportReference;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $marketingOptIn = null;
+
     public function getId()
     {
         return $this->id;
@@ -454,5 +457,20 @@ class Customer implements CustomerInterface
     public function setCustomerSupportReference(?string $customerSupportReference): void
     {
         $this->customerSupportReference = $customerSupportReference;
+    }
+
+    public function getMarketingOptIn(): bool
+    {
+        if (!isset($this->marketingOptIn)) {
+            // If they've not opted in they've not opted in.
+            return false;
+        }
+
+        return $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn(?bool $marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
     }
 }

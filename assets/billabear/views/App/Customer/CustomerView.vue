@@ -50,6 +50,10 @@
                   <dt>{{ $t('app.customer.view.main.tax_number') }}</dt>
                   <dd>{{ customer.tax_number }}</dd>
                 </div>
+                <div>
+                  <dt>{{ $t('app.customer.view.main.marketing_opt_in') }}</dt>
+                  <dd>{{ customer.marketing_opt_in }}</dd>
+                </div>
                 <div v-if="customer.standard_tax_rate">
                   <dt>{{ $t('app.customer.view.main.standard_tax_rate') }}</dt>
                   <dd>{{ customer.standard_tax_rate }}</dd>
