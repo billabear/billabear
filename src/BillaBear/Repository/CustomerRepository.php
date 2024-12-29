@@ -93,4 +93,24 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
     {
         return $this->entityRepository->findBy([], ['createdAt' => 'DESC'], $number);
     }
+
+    public function wipeCustomerSupportReferences(): void
+    {
+        $this->entityRepository->createQueryBuilder('s')
+            ->update()
+            ->set('s.customerSupportReference', ':customerSupportReference')
+            ->setParameter('customerSupportReference', null)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function wipeAccountingReferences(): void
+    {
+        $this->entityRepository->createQueryBuilder('s')
+            ->update()
+            ->set('s.accountingReference', ':accountingReference')
+            ->setParameter('accountingReference', null)
+            ->getQuery()
+            ->execute();
+    }
 }

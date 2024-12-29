@@ -8,6 +8,9 @@
 
 namespace BillaBear\Integrations\CustomerSupport\Messenger;
 
-class EnableIntegration
+readonly class EnableIntegration
 {
+    public function __construct(public bool $newIntegration)
+    {
+    }
 }

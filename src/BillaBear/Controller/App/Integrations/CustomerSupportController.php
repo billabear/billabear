@@ -64,14 +64,17 @@ class CustomerSupportController
         $settings = $settingsRepository->getDefaultSettings();
 
         $currentEnable = $settings->getCustomerSupportIntegration()->getEnabled();
+        $currentIntegration = $settings->getCustomerSupportIntegration()->getIntegration();
 
         $settings->getCustomerSupportIntegration()->setEnabled($data['enabled']);
         $settings->getCustomerSupportIntegration()->setIntegration($data['integration_name']);
         $settings->getCustomerSupportIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);
 
-        if (false === $currentEnable && true === $settings->getCustomerSupportIntegration()->getEnabled()) {
-            $messageBus->dispatch(new EnableIntegration());
+        $newIntegration = $settings->getCustomerSupportIntegration()->getIntegration() !== $currentIntegration;
+
+        if ((false === $currentEnable || $newIntegration) && $settings->getCustomerSupportIntegration()->getEnabled()) {
+            $messageBus->dispatch(new EnableIntegration($newIntegration));
         }
 
         return new JsonResponse(['settings' => $data['settings']]);

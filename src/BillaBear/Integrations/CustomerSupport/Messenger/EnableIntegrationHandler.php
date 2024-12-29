@@ -8,18 +8,44 @@
 
 namespace BillaBear\Integrations\CustomerSupport\Messenger;
 
+use BillaBear\Entity\Customer;
 use BillaBear\Integrations\CustomerSupport\Action\Setup;
+use BillaBear\Repository\CustomerRepositoryInterface;
+use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class EnableIntegrationHandler
 {
-    public function __construct(private Setup $setup)
-    {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private Setup $setup,
+        private CustomerRepositoryInterface $customerRepository,
+        private MessageBusInterface $messageBus,
+    ) {
     }
 
     public function __invoke(EnableIntegration $enableIntegration): void
     {
         $this->setup->setup();
+        if (!$enableIntegration->newIntegration) {
+            return;
+        }
+        $this->getLogger()->info('Enabling a new customer support integration');
+
+        $this->customerRepository->wipeCustomerSupportReferences();
+
+        $lastId = null;
+        do {
+            $resultList = $this->customerRepository->getList([], lastId: $lastId);
+            $lastId = $resultList->getLastKey();
+
+            /** @var Customer $customer */
+            foreach ($resultList->getResults() as $customer) {
+                $this->messageBus->dispatch(new SyncCustomer((string) $customer->getId()));
+            }
+        } while ($resultList->hasMore());
     }
 }

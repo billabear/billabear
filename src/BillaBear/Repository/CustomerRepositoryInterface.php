@@ -28,4 +28,8 @@ interface CustomerRepositoryInterface extends \Parthenon\Billing\Repository\Cust
     public function getTotalCount(): int;
 
     public function getLatestCustomers(int $number = 5): array;
+
+    public function wipeCustomerSupportReferences(): void;
+
+    public function wipeAccountingReferences(): void;
 }
