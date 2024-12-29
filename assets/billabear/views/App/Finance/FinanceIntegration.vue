@@ -5,6 +5,8 @@
     <LoadingScreen :ready="ready">
       <div class="card-body">
 
+        <div class="alert-error mb-3" v-if="complete_error">{{ $t('app.finance.integration.errors.complete_error') }}</div>
+
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="name">
             {{ $t('app.finance.integration.fields.integration') }}
@@ -61,6 +63,7 @@ export default {
       settings: {},
       send_request: false,
       errors: {},
+      complete_error: false,
     }
   },
   mounted() {
@@ -125,6 +128,9 @@ export default {
       }
 
       axios.post('/app/integrations/accounting/settings', {enabled: this.enabled, integration_name: this.integration.name, settings: settings}).then(response => {
+        this.send_request = false;
+      }).catch(error => {
+        this.complete_error = true;
         this.send_request = false;
       })
     }

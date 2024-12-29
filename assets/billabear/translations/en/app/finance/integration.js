@@ -16,6 +16,7 @@ export const FINANCE_INTEGRATION_TRANSLATIONS = {
     errors: {
         required: "This field is required",
         invalid: "This field is invalid",
+        complete_error: "An error occurred while trying to save these settings. Please try again.",
     },
     xero: {
         account_id: "Account Code for Payments",

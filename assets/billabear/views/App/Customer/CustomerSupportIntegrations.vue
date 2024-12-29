@@ -4,6 +4,9 @@
     <h1 class="page-title ml-5 mt-5">{{ $t('app.customer_support.integration.title') }}</h1>
 
     <LoadingScreen :ready="ready">
+
+      <div class="alert-error mb-3" v-if="complete_error">{{ $t('app.customer_support.integration.errors.complete_error') }}</div>
+
       <div class="card-body">
 
         <div class="form-field-ctn">
@@ -60,6 +63,7 @@ export default {
       settings: {},
       send_request: false,
       errors: {},
+      complete_error: false,
     }
   },
   mounted() {
@@ -126,6 +130,9 @@ export default {
 
 
       axios.post('/app/integrations/customer-support/settings', {enabled: this.enabled, integration_name: this.integration.name,  settings: settings}).then(response => {
+        this.send_request = false;
+      }).catch(error => {
+        this.complete_error = true;
         this.send_request = false;
       })
     }
