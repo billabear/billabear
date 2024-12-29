@@ -38,7 +38,12 @@ class SyncCustomer
         $customerService = $integration->getCustomerService();
         if ($newsletterSettings->getMarketingListId()) {
             if ($customer->getNewsletterMarketingReference()) {
-                $customerService->update($newsletterSettings->getMarketingListId(), $customer);
+                $customerService->update(
+                    $newsletterSettings->getMarketingListId(),
+                    $customer->getNewsletterMarketingReference(),
+                    $customer->getMarketingOptIn(),
+                    $customer
+                );
             } elseif ($customer->getMarketingOptIn()) {
                 // Only register them if they've opted in for marketing.
                 $registration = $customerService->register($newsletterSettings->getMarketingListId(), $customer);
@@ -47,12 +52,18 @@ class SyncCustomer
         }
 
         if ($newsletterSettings->getAnnouncementListId()) {
-            if ($customer->getNewsletterAnnouncementReference()) {
-                $customerService->update($newsletterSettings->getAnnouncementListId(), $customer);
-            } else {
+            if (!$customer->getNewsletterAnnouncementReference()) {
                 // These aren't meant to be marketing emails therefore it's not necessary to check if they've opted in.
                 $registration = $customerService->register($newsletterSettings->getAnnouncementListId(), $customer);
                 $customer->setNewsletterAnnouncementReference($registration->reference);
+            } else {
+                $isSubscribed = $customerService->isSubscribed($newsletterSettings->getAnnouncementListId(), $customer->getNewsletterAnnouncementReference());
+                $customerService->update(
+                    $newsletterSettings->getAnnouncementListId(),
+                    $customer->getNewsletterAnnouncementReference(),
+                    $isSubscribed,
+                    $customer
+                );
             }
         }
 

@@ -6,9 +6,8 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Integrations\Newsletter\EmailOctopus;
+namespace BillaBear\Integrations\Newsletter\Mailchimp;
 
-use BillaBear\Exception\Integrations\MissingConfigurationException;
 use BillaBear\Exception\Integrations\UnsupportedFeatureException;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationInterface;
@@ -18,11 +17,10 @@ use BillaBear\Integrations\Newsletter\ListServiceInterface;
 use BillaBear\Integrations\Newsletter\NewsletterIntegrationInterface;
 use BillaBear\Integrations\OauthConfig;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use GoranPopovic\EmailOctopus\Client;
-use GoranPopovic\EmailOctopus\EmailOctopus;
+use MailchimpMarketing\ApiClient;
 use Parthenon\Common\LoggerAwareTrait;
 
-class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegrationInterface
+class MailchimpIntegration implements IntegrationInterface, NewsletterIntegrationInterface
 {
     use LoggerAwareTrait;
 
@@ -42,7 +40,7 @@ class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegra
 
     public function getName(): string
     {
-        return 'emailoctopus';
+        return 'mailchimp';
     }
 
     public function getAuthenticationType(): AuthenticationType
@@ -52,7 +50,7 @@ class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegra
 
     public function getOauthConfig(): OauthConfig
     {
-        throw new UnsupportedFeatureException('Oauth is not supported for this integration');
+        throw new UnsupportedFeatureException('Mailchimp does not support OAuth');
     }
 
     public function getSettings(): array
@@ -64,33 +62,42 @@ class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegra
                 'type' => 'text',
                 'required' => true,
             ],
+            [
+                'name' => 'server_prefix',
+                'label' => 'app.integrations.newsletter.mailchimp.fields.server_prefix',
+                'type' => 'text',
+                'required' => true,
+            ],
         ];
     }
 
     public function getCustomerService(): CustomerServiceInterface
     {
-        $customerService = new CustomerService($this->createClient());
-        $customerService->setLogger($this->getLogger());
-
-        return $customerService;
+        // TODO: Implement getCustomerService() method.
     }
 
     public function getListService(): ListServiceInterface
     {
-        $listService = new ListService($this->createClient());
+        $listService = new ListService($this->buildClient());
         $listService->setLogger($this->getLogger());
 
         return $listService;
     }
 
-    private function createClient(): Client
+    private function buildClient(): ApiClient
     {
-        $settings = $this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getSettings();
+        $newsletterSettings = $this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getSettings();
+        $mailchimp = new ApiClient();
 
-        if (!isset($settings['api_key'])) {
-            throw new MissingConfigurationException('Email Octopus API Key is required. Please set it in your .env file.');
+        if (!isset($newsletterSettings['api_key']) || !isset($newsletterSettings['server_prefix'])) {
+            throw new \InvalidArgumentException('Mailchimp API key and server prefix must be set');
         }
 
-        return EmailOctopus::client($settings['api_key']);
+        $mailchimp->setConfig([
+            'apiKey' => $newsletterSettings['api_key'],
+            'server' => $newsletterSettings['server_prefix'],
+        ]);
+
+        return $mailchimp;
     }
 }

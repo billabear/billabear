@@ -14,5 +14,12 @@ interface CustomerServiceInterface
 {
     public function register(string $listId, Customer $customer): CustomerRegistration;
 
-    public function update(string $listId, Customer $customer): void;
+    /**
+     * Reference and subscribe are passed because there is the announcement list and marketing.
+     *
+     * In theory both should be usable.
+     */
+    public function update(string $listId, string $reference, bool $subscribe, Customer $customer): void;
+
+    public function isSubscribed(string $listId, string $reference): bool;
 }

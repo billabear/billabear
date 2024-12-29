@@ -32,7 +32,7 @@ class CustomerService implements CustomerServiceInterface
             $response = $this->client->lists()->createContact($listId,
                 [
                     'email_address' => $customer->getBillingEmail(),
-                    'status' => $customer->getMarketingOptIn() ? 'SUBSCRIBED' : 'UNSUBSCRIBED',
+                    'status' => 'SUBSCRIBED',
                 ]
             );
         } catch (\Exception $e) {
@@ -46,15 +46,15 @@ class CustomerService implements CustomerServiceInterface
         return new CustomerRegistration($response['id']);
     }
 
-    public function update(string $listId, Customer $customer): void
+    public function update(string $listId, string $reference, bool $subscribe, Customer $customer): void
     {
         $this->getLogger()->info('Updating customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId]);
 
         try {
-            $this->client->lists()->updateContact($listId, $customer->getNewsletterMarketingReference(),
+            $this->client->lists()->updateContact($listId, $reference,
                 [
                     'email_address' => $customer->getBillingEmail(),
-                    'status' => $customer->getMarketingOptIn() ? 'SUBSCRIBED' : 'UNSUBSCRIBED',
+                    'status' => $subscribe ? 'SUBSCRIBED' : 'UNSUBSCRIBED',
                 ]
             );
         } catch (\Exception $e) {
@@ -63,5 +63,14 @@ class CustomerService implements CustomerServiceInterface
             throw new UnexpectedErrorException('Failed to update customer to EmailOctopus', previous: $e);
         }
         $this->getLogger()->info('Updating customer to EmailOctopus', ['customer_id' => (string) $customer->getId(), 'list_id' => $listId]);
+    }
+
+    public function isSubscribed(string $listId, string $reference): bool
+    {
+        $this->getLogger()->info('Checking if customer is subscribed to EmailOctopus', ['list_id' => $listId, 'reference' => $reference]);
+
+        $data = $this->client->lists()->getContact($listId, $reference);
+
+        return 'SUBSCRIBED' === strtoupper($data['status']);
     }
 }
