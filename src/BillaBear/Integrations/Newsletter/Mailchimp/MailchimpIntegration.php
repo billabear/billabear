@@ -73,7 +73,10 @@ class MailchimpIntegration implements IntegrationInterface, NewsletterIntegratio
 
     public function getCustomerService(): CustomerServiceInterface
     {
-        // TODO: Implement getCustomerService() method.
+        $customerService = new CustomerService($this->buildClient());
+        $customerService->setLogger($this->getLogger());
+
+        return $customerService;
     }
 
     public function getListService(): ListServiceInterface

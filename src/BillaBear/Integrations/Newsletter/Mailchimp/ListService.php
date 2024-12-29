@@ -26,6 +26,6 @@ class ListService implements ListServiceInterface
         $this->getLogger()->info('Getting lists from Mailchimp');
         $lists = $this->client->lists->getAllLists();
 
-        return array_map(fn ($list) => new NewsletterList((string) $list['id'], $list['name']), $lists['lists']);
+        return array_map(fn ($list) => new NewsletterList((string) $list->id, $list->name), $lists->lists);
     }
 }

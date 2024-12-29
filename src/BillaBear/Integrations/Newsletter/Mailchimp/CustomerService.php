@@ -9,8 +9,10 @@
 namespace BillaBear\Integrations\Newsletter\Mailchimp;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 use BillaBear\Integrations\Newsletter\CustomerRegistration;
 use BillaBear\Integrations\Newsletter\CustomerServiceInterface;
+use GuzzleHttp\Exception\RequestException;
 use MailchimpMarketing\ApiClient;
 use Parthenon\Common\LoggerAwareTrait;
 
@@ -26,13 +28,19 @@ class CustomerService implements CustomerServiceInterface
     {
         $this->getLogger()->info('Registering customer to Mailchimp list', ['listId' => $listId, 'customer' => $customer]);
 
-        $response = $this->client->lists->addListMember($listId, [
-            'email_address' => $customer->getBillingEmail(),
-            'status' => 'subscribed',
-        ]);
+        try {
+            $response = $this->client->lists->addListMember($listId, [
+                'email_address' => $customer->getBillingEmail(),
+                'status' => 'subscribed',
+            ]);
+        } catch (RequestException $e) {
+            var_dump($e->getResponse()->getBody()->getContents(), $customer->getBillingEmail());
+
+            throw new UnexpectedErrorException('Failed to register customer to Mailchimp list', previous: $e);
+        }
         $this->getLogger()->info('Registering customer to Mailchimp list', ['listId' => $listId, 'customer' => $customer]);
 
-        return new CustomerRegistration($response['id']);
+        return new CustomerRegistration($response->id);
     }
 
     public function update(string $listId, string $reference, bool $subscribe, Customer $customer): void
@@ -52,6 +60,6 @@ class CustomerService implements CustomerServiceInterface
 
         $response = $this->client->lists->getListMember($listId, $reference);
 
-        return 'subscribed' === strtolower($response['status']);
+        return 'subscribed' === strtolower($response->status);
     }
 }
