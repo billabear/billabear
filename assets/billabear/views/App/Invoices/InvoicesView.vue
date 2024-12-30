@@ -140,10 +140,10 @@
           </table>
         </div>
         <div class="mt-3 text-end">
-          <div class="w-full text-end">
+          <div class="w-full text-end relative">
             <h3 class="text-xl dark:text-gray-500">{{ $t('app.invoices.view.total.title') }}</h3>
 
-            <dl class="total-list">
+            <dl class="total-list w-1/4 ml-auto">
               <div>
                 <dt>{{ $t('app.invoices.view.total.tax_total') }}</dt>
                 <dd>

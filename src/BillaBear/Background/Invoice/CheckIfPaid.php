@@ -36,7 +36,8 @@ class CheckIfPaid
 
         $this->getLogger()->info('Checking with the accounting integration if invoices are paid');
         $invoiceService = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration())->getInvoiceService();
-        $invoices = $this->invoiceRepository->getUnpaidInvoices();
+        $invoices = $this->invoiceRepository->getList();
+        $invoices = $invoices->getResults();
         foreach ($invoices as $invoice) {
             $isPaid = $invoiceService->isPaid($invoice);
             if ($isPaid) {
