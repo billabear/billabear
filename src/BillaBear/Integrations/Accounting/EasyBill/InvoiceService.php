@@ -35,7 +35,7 @@ class InvoiceService implements InvoiceServiceInterface
             throw new UnexpectedErrorException('Failed to register invoice to EasyBill', previous: $e);
         }
 
-        // $this->client->request('PUT', 'documents/'.$response['id'].'/done');
+        $this->client->request('PUT', 'documents/'.$response['id'].'/done');
         $this->getLogger()->info('Invoice registered to EasyBill', ['invoice_id' => (string) $invoice->getId()]);
 
         return new InvoiceRegistration((string) $response['id']);
@@ -52,7 +52,7 @@ class InvoiceService implements InvoiceServiceInterface
 
             throw new UnexpectedErrorException('Failed to update invoice to EasyBill', previous: $e);
         }
-        // $this->client->request('PUT', 'documents/'.$invoice->getAccountingReference().'/done');
+        $this->client->request('PUT', 'documents/'.$invoice->getAccountingReference().'/done');
 
         $this->getLogger()->info('Invoice Updated to EasyBill', ['invoice_id' => (string) $invoice->getId()]);
     }
@@ -76,7 +76,7 @@ class InvoiceService implements InvoiceServiceInterface
                 'single_price_net' => $line->getNetPrice(),
                 'total_gross_price' => $line->getTotal(),
                 'total_vat' => $line->getTaxTotal(),
-                'vat_percentage' => $line->getTaxPercentage(),
+                'vat_percent' => $line->getTaxPercentage(),
             ];
         }
 

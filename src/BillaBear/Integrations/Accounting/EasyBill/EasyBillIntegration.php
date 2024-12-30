@@ -86,12 +86,18 @@ class EasyBillIntegration implements IntegrationInterface, AccountingIntegration
 
     public function getPaymentService(): PaymentServiceInterface
     {
-        // TODO: Implement getPaymentService() method.
+        $paymentService = new PaymentService($this->createClient());
+        $paymentService->setLogger($this->getLogger());
+
+        return $paymentService;
     }
 
     public function getCreditService(): CreditServiceInterface
     {
-        // TODO: Implement getCreditService() method.
+        $client = new CreditService($this->createClient());
+        $client->setLogger($this->getLogger());
+
+        return $client;
     }
 
     private function createClient(): Client
