@@ -15,7 +15,7 @@ use BillaBear\Entity\Subscription;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\UpdateAction\AddSeatToSubscription;
 use BillaBear\Subscription\UpdateAction\RemoveSeatFromSubscription;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;

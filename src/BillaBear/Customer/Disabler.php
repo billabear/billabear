@@ -13,7 +13,7 @@ use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\Entity\Customer;
 use BillaBear\Event\Customer\CustomerDisabled;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\CustomerDisabledPayload;
+use BillaBear\Webhook\Outbound\Payload\Customer\CustomerDisabledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

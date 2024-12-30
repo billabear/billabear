@@ -10,7 +10,7 @@ namespace BillaBear\Background\Subscription;
 
 use BillaBear\Repository\MassSubscriptionChangeRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;

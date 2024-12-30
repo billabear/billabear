@@ -6,14 +6,15 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Webhook\Outbound\Payload;
+namespace BillaBear\Webhook\Outbound\Payload\Subscription;
 
 use BillaBear\Entity\Subscription;
 use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
 use BillaBear\Webhook\Outbound\Payload\Parts\SubscriptionPayloadTrait;
+use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 use BillaBear\Webhook\Outbound\WebhookEventType;
 
-class SubscriptionUpdatedPayload implements PayloadInterface
+class TrialExtendedPayload implements PayloadInterface
 {
     use CustomerPayloadTrait;
     use SubscriptionPayloadTrait;
@@ -25,13 +26,13 @@ class SubscriptionUpdatedPayload implements PayloadInterface
 
     public function getType(): WebhookEventType
     {
-        return WebhookEventType::SUBSCRIPTION_UPDATED;
+        return WebhookEventType::TRIAL_EXTENDED;
     }
 
     public function getPayload(): array
     {
         return [
-            'type' => WebhookEventType::SUBSCRIPTION_UPDATED->value,
+            'type' => WebhookEventType::TRIAL_EXTENDED->value,
             'subscription' => $this->getSubscriptionData($this->subscription),
             'customer' => $this->getCustomerData($this->subscription->getCustomer()),
         ];

@@ -6,13 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Webhook\Outbound\Payload;
+namespace BillaBear\Webhook\Outbound\Payload\Customer;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
+use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 use BillaBear\Webhook\Outbound\WebhookEventType;
 
-class CustomerDisabledPayload implements PayloadInterface
+class CustomerCreatedPayload implements PayloadInterface
 {
     use CustomerPayloadTrait;
 
@@ -22,13 +23,13 @@ class CustomerDisabledPayload implements PayloadInterface
 
     public function getType(): WebhookEventType
     {
-        return WebhookEventType::CUSTOMER_DISABLED;
+        return WebhookEventType::CUSTOMER_CREATED;
     }
 
     public function getPayload(): array
     {
         return [
-            'type' => WebhookEventType::CUSTOMER_DISABLED->value,
+            'type' => WebhookEventType::CUSTOMER_CREATED->value,
             'customer' => $this->getCustomerData($this->customer),
         ];
     }

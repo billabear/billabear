@@ -9,7 +9,7 @@
 namespace BillaBear\Workflow\TransitionHandlers\TrailEnded;
 
 use BillaBear\Entity\Processes\TrialEndedProcess;
-use BillaBear\Webhook\Outbound\Payload\TrialEndedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\TrialEndedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;

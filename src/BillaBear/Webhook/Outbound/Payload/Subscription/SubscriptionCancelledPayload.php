@@ -6,11 +6,12 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Webhook\Outbound\Payload;
+namespace BillaBear\Webhook\Outbound\Payload\Subscription;
 
 use BillaBear\Entity\Subscription;
 use BillaBear\Webhook\Outbound\Payload\Parts\CustomerPayloadTrait;
 use BillaBear\Webhook\Outbound\Payload\Parts\SubscriptionPayloadTrait;
+use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 use BillaBear\Webhook\Outbound\WebhookEventType;
 
 class SubscriptionCancelledPayload implements PayloadInterface

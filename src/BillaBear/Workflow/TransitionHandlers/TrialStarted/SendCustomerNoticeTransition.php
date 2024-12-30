@@ -11,7 +11,7 @@ namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\TrialStartedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\TrialStartedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;

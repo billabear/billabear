@@ -42,7 +42,7 @@ use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\User\UserProvider;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Enum\BillingChangeTiming;

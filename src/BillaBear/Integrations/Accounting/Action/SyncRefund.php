@@ -12,6 +12,8 @@ use BillaBear\Entity\Refund;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\RefundRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Integrations\AccountingIntegrationFailure;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 readonly class SyncRefund
 {
@@ -19,6 +21,7 @@ readonly class SyncRefund
         private RefundRepositoryInterface $refundRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -35,8 +38,14 @@ readonly class SyncRefund
             return;
         }
 
-        $registration = $customerService->registerRefund($refund);
-        $refund->setAccountingReference($registration->refundReference);
+        try {
+            $registration = $customerService->registerRefund($refund);
+            $refund->setAccountingReference($registration->refundReference);
+        } catch (\Exception $e) {
+            $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
+
+            return;
+        }
 
         $this->refundRepository->save($refund);
     }

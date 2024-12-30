@@ -13,7 +13,7 @@ use BillaBear\Dto\Request\App\Subscription\ChangeSeats;
 use BillaBear\Entity\Subscription;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\UpdateAction\SetSeatsFromSubscription;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;

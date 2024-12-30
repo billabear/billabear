@@ -12,6 +12,8 @@ use BillaBear\Entity\Invoice;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Integrations\AccountingIntegrationFailure;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 readonly class SyncInvoice
 {
@@ -19,6 +21,7 @@ readonly class SyncInvoice
         private InvoiceRepositoryInterface $invoiceRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -32,11 +35,15 @@ readonly class SyncInvoice
 
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
         $invoiceService = $integration->getInvoiceService();
-        if ($invoice->getAccountingReference()) {
-            $invoiceService->update($invoice);
-        } else {
-            $registration = $invoiceService->register($invoice);
-            $invoice->setAccountingReference($registration->invoiceReference);
+        try {
+            if ($invoice->getAccountingReference()) {
+                $invoiceService->update($invoice);
+            } else {
+                $registration = $invoiceService->register($invoice);
+                $invoice->setAccountingReference($registration->invoiceReference);
+            }
+        } catch (\Exception $e) {
+            $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
         }
         $this->invoiceRepository->save($invoice);
     }

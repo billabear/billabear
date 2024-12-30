@@ -12,7 +12,7 @@ use BillaBear\Entity\CancellationRequest;
 use BillaBear\Notification\Slack\Data\SubscriptionCancelled;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionCancelledPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionCancelledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

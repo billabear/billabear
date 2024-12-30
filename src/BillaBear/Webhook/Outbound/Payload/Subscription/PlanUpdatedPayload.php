@@ -6,13 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Webhook\Outbound\Payload;
+namespace BillaBear\Webhook\Outbound\Payload\Subscription;
 
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Webhook\Outbound\Payload\Parts\PlanPayloadTrait;
+use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 use BillaBear\Webhook\Outbound\WebhookEventType;
 
-class PlanDeletePayload implements PayloadInterface
+class PlanUpdatedPayload implements PayloadInterface
 {
     use PlanPayloadTrait;
 
@@ -22,13 +23,13 @@ class PlanDeletePayload implements PayloadInterface
 
     public function getType(): WebhookEventType
     {
-        return WebhookEventType::PLAN_DELETED;
+        return WebhookEventType::PLAN_UPDATED;
     }
 
     public function getPayload(): array
     {
         return [
-            'type' => WebhookEventType::PLAN_DELETED->value,
+            'type' => WebhookEventType::PLAN_UPDATED->value,
             'plan' => $this->createPlanPayload($this->plan),
         ];
     }

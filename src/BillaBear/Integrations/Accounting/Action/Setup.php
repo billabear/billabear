@@ -10,12 +10,15 @@ namespace BillaBear\Integrations\Accounting\Action;
 
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Integrations\AccountingIntegrationFailure;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 class Setup
 {
     public function __construct(
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -27,6 +30,10 @@ class Setup
         }
 
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
-        $integration->setup();
+        try {
+            $integration->setup();
+        } catch (\Exception $e) {
+            $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
+        }
     }
 }

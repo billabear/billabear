@@ -20,7 +20,7 @@ use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
-use BillaBear\Webhook\Outbound\Payload\CustomerCreatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Customer\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\ProviderFailureException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

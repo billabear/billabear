@@ -12,7 +12,7 @@ use BillaBear\Entity\SubscriptionCreation;
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
 use BillaBear\Stats\RevenueEstimatesGeneration;
 use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionStartPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionStartPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;

@@ -25,7 +25,7 @@ use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\Subscription\TrialManager;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Enum\BillingChangeTiming;

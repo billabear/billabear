@@ -12,6 +12,8 @@ use BillaBear\Entity\Credit;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Integrations\AccountingIntegrationFailure;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 readonly class SyncCredit
 {
@@ -19,6 +21,7 @@ readonly class SyncCredit
         private CreditRepositoryInterface $creditRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -39,7 +42,13 @@ readonly class SyncCredit
 
         $integration = $this->integrationManager->getAccountingIntegration($settings->getAccountingIntegration()->getIntegration());
         $customerService = $integration->getCreditService();
-        $registration = $customerService->registeredCreditNote($credit);
+        try {
+            $registration = $customerService->registeredCreditNote($credit);
+        } catch (\Exception $e) {
+            $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
+
+            return;
+        }
         $credit->setAccountingReference($registration->creditReference);
 
         $this->creditRepository->save($credit);

@@ -12,6 +12,8 @@ use BillaBear\Entity\Payment;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Integrations\AccountingIntegrationFailure;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 readonly class SyncPayment
 {
@@ -19,6 +21,7 @@ readonly class SyncPayment
         private PaymentRepositoryInterface $paymentRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -34,10 +37,16 @@ readonly class SyncPayment
         $paymentService = $integration->getPaymentService();
         $invoiceService = $integration->getInvoiceService();
 
-        if (!$payment->getAccountingReference() && !$invoiceService->isPaid($payment->getInvoice())) {
-            $registration = $paymentService->register($payment);
-            $payment->setAccountingReference($registration->paymentReference);
-            $this->paymentRepository->save($payment);
+        try {
+            if (!$payment->getAccountingReference() && !$invoiceService->isPaid($payment->getInvoice())) {
+                $registration = $paymentService->register($payment);
+                $payment->setAccountingReference($registration->paymentReference);
+                $this->paymentRepository->save($payment);
+            }
+        } catch (\Exception $e) {
+            $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
+
+            return;
         }
     }
 }

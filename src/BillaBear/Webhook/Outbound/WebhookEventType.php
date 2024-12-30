@@ -33,4 +33,8 @@ enum WebhookEventType: string
     case PAYMENT_METHOD_ADDED = 'payment_method_added';
     case PAYMENT_METHOD_DELETED = 'payment_method_deleted';
     case PAYMENT_METHOD_EXPIRED = 'payment_method_expired';
+
+    case INTEGRATION_ACCOUNTING_FAILURE = 'integration_accounting_failure';
+    case INTEGRATION_NEWSLETTER_FAILURE = 'integration_newsletter_failure';
+    case INTEGRATION_CUSTOMER_SUPPORT_FAILURE = 'integration_customer_support_failure';
 }
