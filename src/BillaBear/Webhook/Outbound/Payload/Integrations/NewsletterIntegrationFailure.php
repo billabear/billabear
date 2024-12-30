@@ -12,7 +12,7 @@ use BillaBear\Webhook\Outbound\Payload\Parts\ExceptionPayloadTrait;
 use BillaBear\Webhook\Outbound\Payload\PayloadInterface;
 use BillaBear\Webhook\Outbound\WebhookEventType;
 
-class AccountingIntegrationFailure implements PayloadInterface
+class NewsletterIntegrationFailure implements PayloadInterface
 {
     use ExceptionPayloadTrait;
 
@@ -22,13 +22,13 @@ class AccountingIntegrationFailure implements PayloadInterface
 
     public function getType(): WebhookEventType
     {
-        return WebhookEventType::INTEGRATION_ACCOUNTING_FAILURE;
+        return WebhookEventType::INTEGRATION_NEWSLETTER_FAILURE;
     }
 
     public function getPayload(): array
     {
         return [
-            'type' => WebhookEventType::INTEGRATION_ACCOUNTING_FAILURE->value,
+            'type' => WebhookEventType::INTEGRATION_NEWSLETTER_FAILURE->value,
             'exception' => $this->convertException($this->exception->getPrevious() ?? $this->exception),
         ];
     }

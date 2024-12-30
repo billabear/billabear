@@ -12,6 +12,8 @@ use BillaBear\Entity\Customer;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Integrations\NewsletterIntegrationFailure;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 readonly class SyncCustomer
 {
@@ -19,6 +21,7 @@ readonly class SyncCustomer
         private CustomerRepositoryInterface $customerRepository,
         private SettingsRepositoryInterface $settingsRepository,
         private IntegrationManager $integrationManager,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -32,11 +35,17 @@ readonly class SyncCustomer
 
         $integration = $this->integrationManager->getCustomerSupportIntegration($settings->getCustomerSupportIntegration()->getIntegration());
         $customerService = $integration->getCustomerService();
-        if ($customer->getCustomerSupportReference()) {
-            $customerService->update($customer);
-        } else {
-            $registration = $customerService->register($customer);
-            $customer->setCustomerSupportReference($registration->reference);
+        try {
+            if ($customer->getCustomerSupportReference()) {
+                $customerService->update($customer);
+            } else {
+                $registration = $customerService->register($customer);
+                $customer->setCustomerSupportReference($registration->reference);
+            }
+        } catch (\Exception $e) {
+            $this->webhookDispatcher->dispatch(new NewsletterIntegrationFailure($e));
+
+            return;
         }
         $this->customerRepository->save($customer);
     }
