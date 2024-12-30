@@ -41,7 +41,7 @@ class InvoiceProcess
     #[ORM\Column('updated_at', type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
-    #[ORM\Column('error', type: 'string', nullable: true)]
+    #[ORM\Column('error', type: 'string', nullable: true, length: 9999)]
     private ?string $error = null;
 
     public function getId()

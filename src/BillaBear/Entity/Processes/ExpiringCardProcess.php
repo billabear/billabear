@@ -41,7 +41,7 @@ class ExpiringCardProcess
     #[ORM\Column('subscription_charged_at', type: 'datetime')]
     private \DateTimeInterface $subscriptionChargedAt;
 
-    #[ORM\Column('error', type: 'string', nullable: true)]
+    #[ORM\Column('error', type: 'string', nullable: true, length: 9999)]
     private ?string $error = null;
 
     public function getId()
