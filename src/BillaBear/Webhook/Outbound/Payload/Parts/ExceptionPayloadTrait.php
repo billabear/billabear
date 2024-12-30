@@ -23,13 +23,11 @@ trait ExceptionPayloadTrait
             $output['request'] = [
                 'method' => $exception->getRequest()->getMethod(),
                 'uri' => $exception->getRequest()->getUri(),
-                'headers' => $exception->getRequest()->getHeaders(),
                 'body' => $exception->getRequest()->getBody()->getContents(),
             ];
 
             $output['response'] = [
                 'status' => $exception->getResponse()->getStatusCode(),
-                'headers' => $exception->getResponse()->getHeaders(),
                 'body' => $exception->getResponse()->getBody()->getContents(),
             ];
         }
