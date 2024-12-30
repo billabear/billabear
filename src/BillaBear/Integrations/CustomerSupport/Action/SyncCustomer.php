@@ -12,7 +12,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\Integrations\NewsletterIntegrationFailure;
+use BillaBear\Webhook\Outbound\Payload\Integrations\CustomerSupportIntegrationFailure;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 readonly class SyncCustomer
@@ -43,7 +43,7 @@ readonly class SyncCustomer
                 $customer->setCustomerSupportReference($registration->reference);
             }
         } catch (\Exception $e) {
-            $this->webhookDispatcher->dispatch(new NewsletterIntegrationFailure($e));
+            $this->webhookDispatcher->dispatch(new CustomerSupportIntegrationFailure($e));
 
             return;
         }

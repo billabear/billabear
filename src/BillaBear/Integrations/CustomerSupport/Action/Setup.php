@@ -10,7 +10,7 @@ namespace BillaBear\Integrations\CustomerSupport\Action;
 
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\Integrations\NewsletterIntegrationFailure;
+use BillaBear\Webhook\Outbound\Payload\Integrations\CustomerSupportIntegrationFailure;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 
 class Setup
@@ -33,7 +33,7 @@ class Setup
         try {
             $integration->setup();
         } catch (\Exception $e) {
-            $this->webhookDispatcher->dispatch(new NewsletterIntegrationFailure($e));
+            $this->webhookDispatcher->dispatch(new CustomerSupportIntegrationFailure($e));
         }
     }
 }
