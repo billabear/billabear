@@ -68,4 +68,40 @@ class QuantityProviderTest extends TestCase
 
         $this->assertEquals(0.33, $quantityProvider->getQuantity(1, new \DateTime('2024-04-20'), $subscription));
     }
+
+    public function testReturnsQuantityWhen01WhenTenDayLeftOddTime()
+    {
+        $systemSettings = new SystemSettings();
+        $systemSettings->setInvoiceGenerationType(InvoiceGenerationType::END_OF_MONTH);
+
+        $settings = new Settings();
+        $settings->setSystemSettings($systemSettings);
+
+        $settingsRepository = $this->createMock(SettingsRepositoryInterface::class);
+        $settingsRepository->method('getDefaultSettings')->willReturn($settings);
+
+        $quantityProvider = new QuantityProvider($settingsRepository);
+        $subscription = new \BillaBear\Entity\Subscription();
+        $subscription->setValidUntil(new \DateTime('2024-12-31 13:33:21'));
+
+        $this->assertEquals(0.03, $quantityProvider->getQuantity(1, new \DateTime('2024-12-30 13:33:21'), $subscription));
+    }
+
+    public function testReturnsQuantityWhenThatDay()
+    {
+        $systemSettings = new SystemSettings();
+        $systemSettings->setInvoiceGenerationType(InvoiceGenerationType::END_OF_MONTH);
+
+        $settings = new Settings();
+        $settings->setSystemSettings($systemSettings);
+
+        $settingsRepository = $this->createMock(SettingsRepositoryInterface::class);
+        $settingsRepository->method('getDefaultSettings')->willReturn($settings);
+
+        $quantityProvider = new QuantityProvider($settingsRepository);
+        $subscription = new \BillaBear\Entity\Subscription();
+        $subscription->setValidUntil(new \DateTime('2024-12-31 23:33:21'));
+
+        $this->assertEquals(0.02, $quantityProvider->getQuantity(1, new \DateTime('2024-12-31 13:33:21'), $subscription));
+    }
 }

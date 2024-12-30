@@ -8,7 +8,7 @@
 
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
-use BillaBear\Entity\Invoice;
+use BillaBear\Entity\Processes\InvoiceProcess;
 use BillaBear\Integrations\Accounting\Action\SyncInvoice;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,8 +30,8 @@ class SyncIntegrationTransition implements EventSubscriberInterface
 
     public function transition(Event $event)
     {
-        /** @var Invoice $invoice */
+        /** @var InvoiceProcess $invoice */
         $invoice = $event->getSubject();
-        $this->syncInvoice->sync($invoice);
+        $this->syncInvoice->sync($invoice->getInvoice());
     }
 }

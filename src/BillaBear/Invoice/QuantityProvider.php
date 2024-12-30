@@ -26,7 +26,12 @@ class QuantityProvider
         }
 
         $daysInMonth = $when->format('t');
-        $daysLeft = abs($subscription->getValidUntil()->diff($when)->days);
+        $when = $when->modify('midnight');
+        $modify = $subscription->getValidUntil()->modify('midnight');
+        $daysLeft = abs($modify->diff($when)->days);
+        if (0 == $daysLeft) {
+            $daysLeft = 0.5;
+        }
         $daysToBill = $daysInMonth / $daysLeft;
 
         return round($quantity / $daysToBill, 2);
