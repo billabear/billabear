@@ -34,6 +34,8 @@ class Setup
             $integration->setup();
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new NewsletterIntegrationFailure($e));
+
+            throw $e;
         }
     }
 }

@@ -9,14 +9,18 @@
 namespace BillaBear\Integrations\Accounting\Action;
 
 use BillaBear\Entity\Invoice;
+use BillaBear\Exception\Integrations\UnexpectedErrorException;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\Integrations\AccountingIntegrationFailure;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
+use Parthenon\Common\LoggerAwareTrait;
 
-readonly class SyncInvoice
+class SyncInvoice
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private InvoiceRepositoryInterface $invoiceRepository,
         private SettingsRepositoryInterface $settingsRepository,
@@ -43,7 +47,13 @@ readonly class SyncInvoice
                 $invoice->setAccountingReference($registration->invoiceReference);
             }
         } catch (\Exception $e) {
+            if ($e instanceof UnexpectedErrorException) {
+                $this->getLogger()->warning('An integration failure happened when syncing invoice', ['invoice_id' => $invoice->getId(), 'integration' => $integration->getName()]);
+            } else {
+                $this->getLogger()->error('An problem occured happened when syncing invoice', ['invoice_id' => $invoice->getId(), 'integration' => $integration->getName()]);
+            }
             $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
+            throw $e;
         }
         $this->invoiceRepository->save($invoice);
     }

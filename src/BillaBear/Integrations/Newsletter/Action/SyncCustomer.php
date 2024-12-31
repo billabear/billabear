@@ -72,7 +72,7 @@ class SyncCustomer
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new NewsletterIntegrationFailure($e));
 
-            return;
+            throw $e;
         }
 
         $this->customerRepository->save($customer);

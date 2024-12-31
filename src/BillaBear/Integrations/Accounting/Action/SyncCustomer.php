@@ -45,7 +45,7 @@ readonly class SyncCustomer
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
 
-            return;
+            throw $e;
         }
         $this->customerRepository->save($customer);
     }

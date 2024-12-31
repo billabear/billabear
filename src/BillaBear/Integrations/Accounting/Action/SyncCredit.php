@@ -47,7 +47,7 @@ readonly class SyncCredit
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
 
-            return;
+            throw $e;
         }
         $credit->setAccountingReference($registration->creditReference);
 

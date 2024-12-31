@@ -44,7 +44,7 @@ readonly class SyncRefund
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
 
-            return;
+            throw $e;
         }
 
         $this->refundRepository->save($refund);

@@ -46,7 +46,7 @@ readonly class SyncPayment
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new AccountingIntegrationFailure($e));
 
-            return;
+            throw $e;
         }
     }
 }
