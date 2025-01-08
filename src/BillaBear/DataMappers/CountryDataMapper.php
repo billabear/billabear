@@ -54,11 +54,15 @@ class CountryDataMapper
         $appDto->setInEu($entity->isInEu());
         $appDto->setStartOfTaxYear($entity->getStartOfTaxYear());
         $appDto->setEnabled($entity->isEnabled());
-        $appDto->setCollecting($entity->getCollecting());
         $appDto->setTaxNumber($entity->getTaxNumber());
 
         $amountTransacted = $this->manager->getTransactedAmount($entity);
         $appDto->setAmountTransacted($amountTransacted->getMinorAmount()->toInt());
+        if ($entity->getCollecting()) {
+            $appDto->setCollecting($entity->getCollecting());
+        } else {
+            $appDto->setCollecting($appDto->getAmountTransacted() > $entity->getThreshold());
+        }
 
         return $appDto;
     }

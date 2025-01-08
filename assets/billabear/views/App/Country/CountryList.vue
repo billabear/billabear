@@ -22,6 +22,7 @@
               <tr class="border-b border-black">
               <th class="text-left pb-2">{{ $t('app.country.list.list.name') }}</th>
               <th class="text-left pb-2">{{ $t('app.country.list.list.iso_code')}}</th>
+                <th class="text-left pb-2">{{ $t('app.country.list.list.collecting')}}</th>
               <th class="text-left pb-2">{{ $t('app.country.list.list.tax_threshold')}}</th>
               <th class="text-left pb-2"></th>
             </tr>
@@ -30,6 +31,7 @@
             <tr v-for="country in payments" class="mt-5 cursor-pointer">
               <td class="py-3">{{ country.name }}</td>
               <td class="py-3">{{ country.iso_code }}</td>
+              <td class="py-3">{{ country.collecting }}</td>
               <td class="py-3">
                 <span :class="{'badge--green': country.amount_transacted >= country.threshold, 'badge--red': country.amount_transacted < country.threshold }">
                   {{ currency(country.amount_transacted) }}/{{ currency(country.threshold) }}

@@ -14,6 +14,7 @@ use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\CountryRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Repository\StateRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
@@ -25,6 +26,7 @@ class ThresholdManager
 
     public function __construct(
         private CountryRepositoryInterface $countryRepository,
+        private StateRepositoryInterface $stateRepository,
         private PaymentRepositoryInterface $paymentRepository,
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
@@ -53,7 +55,14 @@ class ThresholdManager
             $amountToAdd = $this->currencyConverter->convert($money, $country->getCurrency(), RoundingMode::HALF_DOWN);
             $amountTransacted = $amountTransacted->plus($amountToAdd, RoundingMode::HALF_DOWN);
 
-            return $country->getThresholdAsMoney()->isLessThanOrEqualTo($amountTransacted);
+            $returnValue = $country->getThresholdAsMoney()->isLessThanOrEqualTo($amountTransacted);
+
+            if ($returnValue) {
+                $country->setCollecting(true);
+                $this->countryRepository->save($country);
+            }
+
+            return $returnValue;
         } catch (NoEntityFoundException) {
             return false;
         }
@@ -83,6 +92,10 @@ class ThresholdManager
             return false;
         }
 
+        if ($state->isCollecting()) {
+            return true;
+        }
+
         try {
             $country = $this->countryRepository->getByIsoCode($countryCode);
 
@@ -93,7 +106,13 @@ class ThresholdManager
 
             $stateThreshold = Money::ofMinor($state->getThreshold(), $country->getCurrency());
 
-            return $stateThreshold->isLessThanOrEqualTo($amountTransacted);
+            $returnValue = $stateThreshold->isLessThanOrEqualTo($amountTransacted);
+            if ($returnValue) {
+                $state->setCollecting(true);
+                $this->stateRepository->save($state);
+            }
+
+            return $returnValue;
         } catch (NoEntityFoundException) {
             return false;
         }

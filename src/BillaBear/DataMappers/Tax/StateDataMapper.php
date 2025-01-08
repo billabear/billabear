@@ -46,7 +46,7 @@ class StateDataMapper
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
         $dto->setCode($entity->getCode());
-        $dto->setCollecting($entity->hasNexus());
+        $dto->setCollecting($entity->isCollecting());
         $dto->setCountry($this->dataMapper->createAppDto($entity->getCountry()));
         $dto->setThreshold($entity->getThreshold());
 

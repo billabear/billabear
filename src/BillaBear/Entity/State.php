@@ -86,7 +86,7 @@ class State
         $this->country = $country;
     }
 
-    public function hasNexus(): bool
+    public function isCollecting(): bool
     {
         return $this->collecting;
     }

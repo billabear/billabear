@@ -87,7 +87,7 @@ class TaxRuleProvider
             return null;
         }
 
-        if (!$this->thresholdManager->isThresholdReachedForState($country->getIsoCode(), $foundState, $amount) && !$foundState->hasNexus()) {
+        if (!$this->thresholdManager->isThresholdReachedForState($country->getIsoCode(), $foundState, $amount) && !$foundState->isCollecting()) {
             return null;
         }
 

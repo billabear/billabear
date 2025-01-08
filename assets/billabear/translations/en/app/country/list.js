@@ -7,7 +7,8 @@ export const COUNTRY_LIST_TRANSLATIONS = {
     list: {
         name: "Name",
         iso_code: "Code",
-        tax_threshold: "Tax Threshold"
+        tax_threshold: "Tax Threshold",
+        collecting: "Collecting Tax",
     },
     view: "View",
     filter: {
