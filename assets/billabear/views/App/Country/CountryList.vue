@@ -84,7 +84,7 @@ import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
-  name: "CustomerList.vue",
+  name: "CountryList.vue",
   components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
   data() {
     return {

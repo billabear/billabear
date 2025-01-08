@@ -38,7 +38,7 @@ class UsageWarningTriggeredPayload implements PayloadInterface
         return [
             'customer' => $this->getCustomerData($this->usageWarning->getCustomer()),
             'limit' => [
-                'warning_level' => $this->usageWarning->getUsageLimit()->getWarningLevel()->value,
+                'warning_level' => $this->usageWarning->getUsageLimit()->getWarningLevel()->name,
                 'amount' => $this->usageWarning->getUsageLimit()->getAmount(),
             ],
             'start_of_period' => $this->usageWarning->getStartOfPeriod()->format(\DateTime::ATOM),
