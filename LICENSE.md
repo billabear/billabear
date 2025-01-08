@@ -6,7 +6,7 @@ FSL-1.1-Apache-2.0
 
 ## Notice
 
-Copyright 2023-2024 Humbly Arrogant Software Limited
+Copyright 2023-2025 Humbly Arrogant Software Limited
 
 ## Terms and Conditions
 
