@@ -37,4 +37,6 @@ enum WebhookEventType: string
     case INTEGRATION_ACCOUNTING_FAILURE = 'integration_accounting_failure';
     case INTEGRATION_NEWSLETTER_FAILURE = 'integration_newsletter_failure';
     case INTEGRATION_CUSTOMER_SUPPORT_FAILURE = 'integration_customer_support_failure';
+
+    case USAGE_WARNING_TRIGGERED = 'usage_warning_triggered';
 }

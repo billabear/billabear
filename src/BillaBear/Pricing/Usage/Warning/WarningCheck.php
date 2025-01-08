@@ -16,6 +16,8 @@ use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Pricing\Usage\WarningLevel;
 use BillaBear\Repository\Usage\UsageWarningRepositoryInterface;
 use BillaBear\Repository\UsageLimitRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Usage\UsageWarningTriggeredPayload;
+use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Brick\Money\Money;
 use Parthenon\Common\LoggerAwareTrait;
 
@@ -29,6 +31,7 @@ class WarningCheck
         private UsageWarningRepositoryInterface $usageWarningRepository,
         private Disabler $disabler,
         private WarningNotifier $warningNotifier,
+        private WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -95,6 +98,8 @@ class WarningCheck
             $warning->setCreatedAt(new \DateTime());
 
             $this->usageWarningRepository->save($warning);
+
+            $this->webhookDispatcher->dispatch(new UsageWarningTriggeredPayload($warning));
         }
     }
 }
