@@ -29,7 +29,6 @@ class StateThresholdReached extends AbstractNotification
             'country' => [
                 'name' => $this->state->getCountry()->getName(),
                 'code' => $this->state->getCountry()->getIsoCode(),
-                'threshold' => (string) $this->state->getCountry()->getThresholdAsMoney()->getAmount(),
             ],
             'state' => [
                 'name' => $this->state->getName(),
