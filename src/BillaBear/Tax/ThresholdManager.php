@@ -30,6 +30,7 @@ class ThresholdManager
         private PaymentRepositoryInterface $paymentRepository,
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
+        private ThresholdNotifier $thresholdNotifier,
     ) {
         $this->currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
     }
@@ -60,6 +61,7 @@ class ThresholdManager
             if ($returnValue) {
                 $country->setCollecting(true);
                 $this->countryRepository->save($country);
+                $this->thresholdNotifier->countryThresholdReached($country);
             }
 
             return $returnValue;
@@ -110,6 +112,7 @@ class ThresholdManager
             if ($returnValue) {
                 $state->setCollecting(true);
                 $this->stateRepository->save($state);
+                $this->thresholdNotifier->stateThresholdReached($state);
             }
 
             return $returnValue;

@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -94,5 +95,10 @@ class State
     public function setCollecting(bool $collecting): void
     {
         $this->collecting = $collecting;
+    }
+
+    public function getThresholdAsMoney(): Money
+    {
+        return Money::ofMinor($this->threshold, $this->country->getCurrency());
     }
 }

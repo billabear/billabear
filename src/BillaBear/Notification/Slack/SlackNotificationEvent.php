@@ -20,4 +20,6 @@ enum SlackNotificationEvent: string
     case TRIAL_CONVERTED = 'trial_converted';
     case USAGE_WARNING = 'usage_warning';
     case USAGE_DISABLE = 'usage_disable';
+    case TAX_COUNTRY_THRESHOLD_REACHED = 'tax_country_threshold_reached';
+    case TAX_STATE_THRESHOLD_REACHED = 'tax_state_threshold_reached';
 }

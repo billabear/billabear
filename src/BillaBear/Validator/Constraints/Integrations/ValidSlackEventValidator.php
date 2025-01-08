@@ -9,16 +9,11 @@
 namespace BillaBear\Validator\Constraints\Integrations;
 
 use BillaBear\Notification\Slack\SlackNotificationEvent;
-use BillaBear\Repository\SlackWebhookRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ValidSlackEventValidator extends ConstraintValidator
 {
-    public function __construct(private SlackWebhookRepositoryInterface $slackWebhookRepository)
-    {
-    }
-
     public function validate(mixed $value, Constraint $constraint)
     {
         if (empty($value)) {

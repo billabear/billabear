@@ -20,6 +20,8 @@
                 <option>trial_started</option>
                 <option>trial_ended</option>
                 <option>trial_converted</option>
+                <option>tax_country_threshold_reached</option>
+                <option>tax_state_threshold_reached</option>
               </select>
               <p class="form-field-help">{{ $t('app.system.integrations.slack.notifications.create.help_info.event') }}</p>
             </div>
@@ -93,6 +95,10 @@ export default {
         this.webhook.template = "Trial ended for {{customer.email}} for {{subscription.plan_name}}";
       } else if (this.webhook.event === "trial converted") {
         this.webhook.template = "Trial converted into a subscription for {{customer.email}} for {{subscription.plan_name}}";
+      } else if (this.webhook.event === "tax_country_threshold_reached") {
+        this.webhook.template = "Tax country threshold of {{country.threshold}} reached for {{country.name}}";
+      } else if (this.webhook.event === "tax_state_threshold_reached") {
+        this.webhook.template = "Tax state threshold of {{state.threshold}} reached for {{ state.name }} in {{country.name}}";
       }
     },
     save: function () {
