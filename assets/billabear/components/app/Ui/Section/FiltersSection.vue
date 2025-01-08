@@ -21,7 +21,7 @@
           </select>
         </div>
         <div v-else-if="filter.type === 'boolean'">
-          <input type="checkbox" class="form-field-input" v-model="filter.value">
+          <Toggle v-model="filter.value" />
         </div>
       </div>
       <div v-if="Object.keys(filters).length === 0">
@@ -40,10 +40,11 @@
 
 <script>
 import InputText from "../Forms/InputText.vue";
+import {Toggle} from "flowbite-vue";
 
 export default {
   name: "FiltersSection",
-  components: {InputText},
+  components: {Toggle, InputText},
   props: {
     filters: Array,
   },

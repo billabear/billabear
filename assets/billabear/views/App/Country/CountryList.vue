@@ -114,6 +114,11 @@ export default {
           type: 'text',
           value: null
         },
+        collecting: {
+          label: 'app.country.list.filter.collecting',
+          type: 'boolean',
+          value: null
+        },
       }
     }
   },

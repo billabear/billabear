@@ -16,6 +16,7 @@ export const COUNTRY_LIST_TRANSLATIONS = {
         name: "Name",
         code: "Code",
         button: "Filters",
+        collecting: "Collecting Tax",
         search: "Filter"
     },
     error_message: "An error has occurred"

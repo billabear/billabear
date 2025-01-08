@@ -8,6 +8,7 @@
 
 namespace BillaBear\Filters;
 
+use Parthenon\Athena\Filters\BoolFilter;
 use Parthenon\Athena\Filters\ContainsFilter;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 
@@ -23,6 +24,10 @@ class CountryList extends AbstractFilterList
             'code' => [
                 'field' => 'isoCode',
                 'filter' => ExactChoiceFilter::class,
+            ],
+            'collecting' => [
+                'field' => 'collecting',
+                'filter' => BoolFilter::class,
             ],
         ];
     }
