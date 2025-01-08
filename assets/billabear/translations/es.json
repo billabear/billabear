@@ -3356,7 +3356,8 @@
                 "list": {
                     "name": "Nombre",
                     "iso_code": "Código",
-                    "tax_threshold": "Umbral impositivo"
+                    "tax_threshold": "Umbral impositivo",
+                    "collecting": "Recaudación de impuestos"
                 },
                 "view": "Ver",
                 "filter": {
@@ -3364,7 +3365,8 @@
                     "name": "Nombre",
                     "code": "Código",
                     "button": "Filtros",
-                    "search": "Filtro"
+                    "search": "Filtro",
+                    "collecting": "Recaudación de impuestos"
                 },
                 "error_message": "Se ha producido un error"
             },

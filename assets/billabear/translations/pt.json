@@ -3349,7 +3349,8 @@
                 "list": {
                     "name": "Nome",
                     "iso_code": "Código",
-                    "tax_threshold": "Limiar de tributação"
+                    "tax_threshold": "Limiar de tributação",
+                    "collecting": "Cobrança de impostos"
                 },
                 "view": "Ver",
                 "filter": {
@@ -3357,7 +3358,8 @@
                     "name": "Nome",
                     "code": "Código",
                     "button": "Filtros",
-                    "search": "Filtro"
+                    "search": "Filtro",
+                    "collecting": "Cobrança de impostos"
                 },
                 "error_message": "Ocorreu um erro"
             },

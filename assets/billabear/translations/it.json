@@ -3356,7 +3356,8 @@
                 "list": {
                     "name": "Nome",
                     "iso_code": "Codice",
-                    "tax_threshold": "Soglia fiscale"
+                    "tax_threshold": "Soglia fiscale",
+                    "collecting": "Riscossione delle imposte"
                 },
                 "view": "Vista",
                 "filter": {
@@ -3364,7 +3365,8 @@
                     "name": "Nome",
                     "code": "Codice",
                     "button": "Filtri",
-                    "search": "Filtro"
+                    "search": "Filtro",
+                    "collecting": "Riscossione delle imposte"
                 },
                 "error_message": "Si è verificato un errore"
             },

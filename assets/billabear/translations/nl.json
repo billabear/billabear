@@ -3356,7 +3356,8 @@
                 "list": {
                     "name": "Naam",
                     "iso_code": "Code",
-                    "tax_threshold": "Belastingdrempel"
+                    "tax_threshold": "Belastingdrempel",
+                    "collecting": "Belasting innen"
                 },
                 "view": "Bekijk",
                 "filter": {
@@ -3364,7 +3365,8 @@
                     "name": "Naam",
                     "code": "Code",
                     "button": "Filters",
-                    "search": "Filter"
+                    "search": "Filter",
+                    "collecting": "Belasting innen"
                 },
                 "error_message": "Er is een fout opgetreden"
             },

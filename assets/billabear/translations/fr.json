@@ -3356,7 +3356,8 @@
                 "list": {
                     "name": "Nom",
                     "iso_code": "Code",
-                    "tax_threshold": "Seuil d'imposition"
+                    "tax_threshold": "Seuil d'imposition",
+                    "collecting": "Perception de la taxe"
                 },
                 "view": "Voir",
                 "filter": {
@@ -3364,7 +3365,8 @@
                     "name": "Nom",
                     "code": "Code",
                     "button": "Filtres",
-                    "search": "Filtre"
+                    "search": "Filtre",
+                    "collecting": "Perception de la taxe"
                 },
                 "error_message": "Une erreur s'est produite"
             },

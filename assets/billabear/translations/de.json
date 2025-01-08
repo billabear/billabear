@@ -3356,7 +3356,8 @@
                 "list": {
                     "name": "Name",
                     "iso_code": "Code",
-                    "tax_threshold": "Steuerlicher Schwellenwert"
+                    "tax_threshold": "Steuerlicher Schwellenwert",
+                    "collecting": "Steuererhebung"
                 },
                 "view": "Siehe",
                 "filter": {
@@ -3364,7 +3365,8 @@
                     "name": "Name",
                     "code": "Code",
                     "button": "Filter",
-                    "search": "Filter"
+                    "search": "Filter",
+                    "collecting": "Steuererhebung"
                 },
                 "error_message": "Es ist ein Fehler aufgetreten"
             },
