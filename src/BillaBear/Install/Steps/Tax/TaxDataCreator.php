@@ -44,6 +44,7 @@ class TaxDataCreator
             $country->setInEu($countryData['in_eu']);
             $country->setEnabled(true);
             $country->setCreatedAt(new \DateTime());
+            $country->setCollecting(false);
 
             $this->countryRepository->save($country);
 
