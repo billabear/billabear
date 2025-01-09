@@ -9,9 +9,9 @@
 namespace BillaBear\Stats\Graphs;
 
 use BillaBear\Dto\Response\App\Stats\DashboardStats;
-use BillaBear\Repository\Stats\RefundAmountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\RefundAmountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\RefundAmountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\RefundAmountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\RefundAmountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\RefundAmountYearlyStatsRepositoryInterface;
 
 class RefundAmountStatsProvider
 {

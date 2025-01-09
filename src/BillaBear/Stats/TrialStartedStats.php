@@ -9,9 +9,9 @@
 namespace BillaBear\Stats;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Repository\Stats\TrialStartedDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\TrialStartedMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\TrialStartedYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\TrialStartedDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\TrialStartedMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\TrialStartedYearlyStatsRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class TrialStartedStats

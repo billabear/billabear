@@ -9,12 +9,12 @@
 namespace BillaBear\Stats;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Repository\Stats\SubscriptionCancellationDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCancellationMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCancellationYearlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountYearlyStatsRepositoryInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class SubscriptionCancellationStats

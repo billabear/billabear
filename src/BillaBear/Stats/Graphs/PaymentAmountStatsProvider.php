@@ -9,9 +9,9 @@
 namespace BillaBear\Stats\Graphs;
 
 use BillaBear\Dto\Response\App\Stats\DashboardStats;
-use BillaBear\Repository\Stats\PaymentAmountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\PaymentAmountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\PaymentAmountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\PaymentAmountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\PaymentAmountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\PaymentAmountYearlyStatsRepositoryInterface;
 
 class PaymentAmountStatsProvider
 {

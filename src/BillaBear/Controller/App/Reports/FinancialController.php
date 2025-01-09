@@ -15,7 +15,7 @@ use BillaBear\Filters\Stats\LifetimeValue;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use BillaBear\Repository\Stats\LifetimeValueStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\LifetimeValueStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Stats\LifeTimeValueCalculation;
 use Brick\Math\BigDecimal;

@@ -9,9 +9,9 @@
 namespace BillaBear\Stats;
 
 use BillaBear\Entity\Customer;
-use BillaBear\Repository\Stats\PaymentAmountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\PaymentAmountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\PaymentAmountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\PaymentAmountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\PaymentAmountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\PaymentAmountYearlyStatsRepositoryInterface;
 use Parthenon\Billing\Entity\Payment;
 
 class PaymentAmountStats

@@ -209,170 +209,170 @@ services:
   app.repository.orm.subscription_creation:
     class: BillaBear\Repository\Orm\SubscriptionCreationRepository
 
-  BillaBear\Repository\Stats\SubscriptionCreationDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCreationDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_daily_stats'
   app.repository.orm.subscription_daily_stats:
     class: BillaBear\Repository\Orm\SubscriptionCreationDailyStatsRepository
-  BillaBear\Repository\Stats\SubscriptionCreationMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCreationMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_weekly_stats'
   app.repository.orm.subscription_weekly_stats:
     class: BillaBear\Repository\Orm\SubscriptionCreationMonthlyStatsRepository
-  BillaBear\Repository\Stats\SubscriptionCreationYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCreationYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_yearly_stats'
   app.repository.orm.subscription_yearly_stats:
     class: BillaBear\Repository\Orm\SubscriptionCreationYearlyStatsRepository
 
-  BillaBear\Repository\Stats\CustomerCreationDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\CustomerCreationDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.customer_daily_stats'
   app.repository.orm.customer_daily_stats:
     class: BillaBear\Repository\Orm\CustomerCreationDailyStatsRepository
-  BillaBear\Repository\Stats\CustomerCreationMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\CustomerCreationMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.customer_weekly_stats'
   app.repository.orm.customer_weekly_stats:
     class: BillaBear\Repository\Orm\CustomerCreationMonthlyStatsRepository
-  BillaBear\Repository\Stats\CustomerCreationYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\CustomerCreationYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.customer_yearly_stats'
   app.repository.orm.customer_yearly_stats:
     class: BillaBear\Repository\Orm\CustomerCreationYearlyStatsRepository
 
-  BillaBear\Repository\Stats\SubscriptionCountDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCountDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_count_daily_stats'
   app.repository.orm.subscription_count_daily_stats:
     class: BillaBear\Repository\Orm\SubscriptionCountDailyStatsRepository
-  BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCountMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_count_weekly_stats'
   app.repository.orm.subscription_count_weekly_stats:
     class: BillaBear\Repository\Orm\SubscriptionCountMonthlyStatsRepository
-  BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCountYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_count_yearly_stats'
   app.repository.orm.subscription_count_yearly_stats:
     class: BillaBear\Repository\Orm\SubscriptionCountYearlyStatsRepository
 
-  BillaBear\Repository\Stats\SubscriptionCancellationDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_cancellation_daily_stats'
   app.repository.orm.subscription_cancellation_daily_stats:
     class: BillaBear\Repository\Orm\SubscriptionCancellationDailyStatsRepository
-  BillaBear\Repository\Stats\SubscriptionCancellationMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_cancellation_weekly_stats'
   app.repository.orm.subscription_cancellation_weekly_stats:
     class: BillaBear\Repository\Orm\SubscriptionCancellationMonthlyStatsRepository
-  BillaBear\Repository\Stats\SubscriptionCancellationYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_cancellation_yearly_stats'
   app.repository.orm.subscription_cancellation_yearly_stats:
     class: BillaBear\Repository\Orm\SubscriptionCancellationYearlyStatsRepository
 
-  BillaBear\Repository\Stats\CachedStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\CachedStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.cached_stats'
   app.repository.orm.cached_stats:
     class: BillaBear\Repository\Orm\CachedStatsRepository
 
-  BillaBear\Repository\Stats\PaymentAmountDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\PaymentAmountDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.payment_amount_daily_stats'
   app.repository.orm.payment_amount_daily_stats:
     class: BillaBear\Repository\Orm\PaymentAmountDailyStatsRepository
 
-  BillaBear\Repository\Stats\PaymentAmountMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\PaymentAmountMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.payment_amount_weekly_stats'
   app.repository.orm.payment_amount_weekly_stats:
     class: BillaBear\Repository\Orm\PaymentAmountMonthlyStatsRepository
-  BillaBear\Repository\Stats\PaymentAmountYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\PaymentAmountYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.payment_amount_yearly_stats'
   app.repository.orm.payment_amount_yearly_stats:
     class: BillaBear\Repository\Orm\PaymentAmountYearlyStatsRepository
 
-  BillaBear\Repository\Stats\RefundAmountDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\RefundAmountDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.refund_amount_daily_stats'
   app.repository.orm.refund_amount_daily_stats:
     class: BillaBear\Repository\Orm\RefundAmountDailyStatsRepository
 
-  BillaBear\Repository\Stats\RefundAmountMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\RefundAmountMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.refund_amount_weekly_stats'
   app.repository.orm.refund_amount_weekly_stats:
     class: BillaBear\Repository\Orm\RefundAmountMonthlyStatsRepository
-  BillaBear\Repository\Stats\RefundAmountYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\RefundAmountYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.refund_amount_yearly_stats'
   app.repository.orm.refund_amount_yearly_stats:
     class: BillaBear\Repository\Orm\RefundAmountYearlyStatsRepository
 
-  BillaBear\Repository\Stats\TrialStartedDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialStartedDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_started_daily_stats'
   app.repository.orm.trial_started_daily_stats:
     class: BillaBear\Repository\Orm\TrialStartedDailyStatsRepository
-  BillaBear\Repository\Stats\TrialStartedMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialStartedMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_started_weekly_stats'
   app.repository.orm.trial_started_weekly_stats:
     class: BillaBear\Repository\Orm\TrialStartedMonthlyStatsRepository
-  BillaBear\Repository\Stats\TrialStartedYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialStartedYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_started_yearly_stats'
   app.repository.orm.trial_started_yearly_stats:
     class: BillaBear\Repository\Orm\TrialStartedYearlyStatsRepository
 
-  BillaBear\Repository\Stats\TrialExtendedDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialExtendedDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_extended_daily_stats'
   app.repository.orm.trial_extended_daily_stats:
     class: BillaBear\Repository\Orm\TrialExtendedDailyStatsRepository
-  BillaBear\Repository\Stats\TrialExtendedMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialExtendedMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_extended_weekly_stats'
   app.repository.orm.trial_extended_weekly_stats:
     class: BillaBear\Repository\Orm\TrialExtendedMonthlyStatsRepository
-  BillaBear\Repository\Stats\TrialExtendedYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialExtendedYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_extended_yearly_stats'
   app.repository.orm.trial_extended_yearly_stats:
     class: BillaBear\Repository\Orm\TrialExtendedYearlyStatsRepository
 
 
-  BillaBear\Repository\Stats\TrialEndedDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialEndedDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_ended_daily_stats'
   app.repository.orm.trial_ended_daily_stats:
     class: BillaBear\Repository\Orm\TrialEndedDailyStatsRepository
-  BillaBear\Repository\Stats\TrialEndedMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialEndedMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_ended_weekly_stats'
   app.repository.orm.trial_ended_weekly_stats:
     class: BillaBear\Repository\Orm\TrialEndedMonthlyStatsRepository
-  BillaBear\Repository\Stats\TrialEndedYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\TrialEndedYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.trial_ended_yearly_stats'
   app.repository.orm.trial_ended_yearly_stats:
     class: BillaBear\Repository\Orm\TrialEndedYearlyStatsRepository
 
-  BillaBear\Repository\Stats\ChargeBackAmountDailyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\ChargeBackAmountDailyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.charge_back_amount_daily_stats'
   app.repository.orm.charge_back_amount_daily_stats:
     class: BillaBear\Repository\Orm\ChargeBackAmountDailyStatsRepository
-  BillaBear\Repository\Stats\ChargeBackAmountMonthlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\ChargeBackAmountMonthlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.charge_back_amount_weekly_stats'
   app.repository.orm.charge_back_amount_weekly_stats:
     class: BillaBear\Repository\Orm\ChargeBackAmountMonthlyStatsRepository
-  BillaBear\Repository\Stats\ChargeBackAmountYearlyStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\ChargeBackAmountYearlyStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.charge_back_amount_yearly_stats'
   app.repository.orm.charge_back_amount_yearly_stats:
@@ -503,7 +503,7 @@ services:
   app.repository.orm.webhook_event:
     class: BillaBear\Repository\Orm\WebhookEventRepository
 
-  BillaBear\Repository\Stats\LifetimeValueStatsRepository:
+  BillaBear\Repository\Stats\Aggregate\LifetimeValueStatsRepository:
     arguments:
       $entityRepository: '@app.repository.orm.lifetime_value'
   app.repository.orm.lifetime_value:

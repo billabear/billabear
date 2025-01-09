@@ -9,9 +9,9 @@
 namespace BillaBear\Stats;
 
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountYearlyStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;

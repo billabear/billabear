@@ -9,9 +9,9 @@
 namespace BillaBear\Stats\Graphs;
 
 use BillaBear\Dto\Response\App\Stats\DashboardStats;
-use BillaBear\Repository\Stats\ChargeBackAmountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\ChargeBackAmountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\ChargeBackAmountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\ChargeBackAmountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\ChargeBackAmountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\ChargeBackAmountYearlyStatsRepositoryInterface;
 
 class ChargeBackAmountStatsProvider
 {

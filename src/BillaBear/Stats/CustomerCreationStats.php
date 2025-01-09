@@ -11,9 +11,9 @@ namespace BillaBear\Stats;
 use BillaBear\Entity\Customer;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Repository\Stats\CustomerCreationDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\CustomerCreationMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\CustomerCreationYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CustomerCreationDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CustomerCreationMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CustomerCreationYearlyStatsRepositoryInterface;
 
 class CustomerCreationStats
 {

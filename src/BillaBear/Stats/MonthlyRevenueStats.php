@@ -12,7 +12,7 @@ use BillaBear\Entity\Stats\CachedStats;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
 use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CachedStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;

@@ -9,9 +9,9 @@
 namespace BillaBear\Stats\Graphs;
 
 use BillaBear\Dto\Response\App\Stats\DashboardStats;
-use BillaBear\Repository\Stats\SubscriptionCancellationDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCancellationMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCancellationYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationYearlyStatsRepositoryInterface;
 
 class SubscriptionCancellationStatsProvider
 {

@@ -9,9 +9,9 @@
 namespace BillaBear\Stats\Graphs;
 
 use BillaBear\Dto\Response\App\Stats\DashboardStats;
-use BillaBear\Repository\Stats\SubscriptionCreationDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCreationMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCreationYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCreationDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCreationMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCreationYearlyStatsRepositoryInterface;
 
 class SubscriptionCreationStatsProvider
 {

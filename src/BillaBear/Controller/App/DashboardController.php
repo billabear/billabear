@@ -19,7 +19,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CachedStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\Graphs\ChargeBackAmountStatsProvider;
 use BillaBear\Stats\Graphs\PaymentAmountStatsProvider;
