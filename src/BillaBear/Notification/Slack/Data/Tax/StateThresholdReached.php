@@ -32,7 +32,7 @@ class StateThresholdReached extends AbstractNotification
             ],
             'state' => [
                 'name' => $this->state->getName(),
-                'threshold' => (string) $this->state->getThresholdAsMoney()->getAmount(),
+                'threshold_amount' => (string) $this->state->getThresholdAsMoney()->getAmount(),
             ],
         ];
     }

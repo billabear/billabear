@@ -29,7 +29,7 @@ class CountryThresholdReached extends AbstractNotification
             'country' => [
                 'name' => $this->country->getName(),
                 'code' => $this->country->getIsoCode(),
-                'threshold' => (string) $this->country->getThresholdAsMoney()->getAmount(),
+                'threshold_amount' => (string) $this->country->getThresholdAsMoney()->getAmount(),
             ],
         ];
     }
