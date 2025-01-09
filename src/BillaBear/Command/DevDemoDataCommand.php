@@ -58,7 +58,8 @@ class DevDemoDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         self::$count = $input->getOption('count');
-        self::$date = new \DateTime($input->getOption('date'));
+        $date = new \DateTime($input->getOption('date'));
+        static::$date = $date;
         $products = $input->getOption('products');
         $writeToStripe = 'true' === strtolower($input->getOption('stripe'));
 

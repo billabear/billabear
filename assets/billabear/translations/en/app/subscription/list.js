@@ -9,6 +9,7 @@ export const SUBSCRIPTION_LIST_TRANSLATIONS = {
     next: "Next Page",
     prev: "Previous Page",
     view: "View",
+    loading: "Loading subscriptions...",
     filter: {
         title: "Filters",
         email: "Email",

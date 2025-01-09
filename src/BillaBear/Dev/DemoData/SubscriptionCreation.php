@@ -45,11 +45,10 @@ class SubscriptionCreation
         $totalCount = DevDemoDataCommand::getNumberOfCustomers();
 
         $origStartDate = clone DevDemoDataCommand::getStartDate();
-        $origStartDate->modify('first day of this month');
         $now = new \DateTime('now');
         $interval = $origStartDate->diff($now);
 
-        $numberOfMonths = abs($interval->m);
+        $numberOfMonths = abs(($interval->y * 12) + $interval->m);
 
         $elements = [];
         $currentValue = intval($totalCount / $numberOfMonths);

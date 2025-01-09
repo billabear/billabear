@@ -48,6 +48,8 @@ class InvoiceCreation
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
+        gc_disable();
+        gc_collect_cycles();
         $this->entityManager->clear();
         $output->writeln("\nCreating invoices");
 
@@ -94,6 +96,7 @@ class InvoiceCreation
             }
 
             $this->entityManager->clear();
+            gc_collect_cycles();
         } while (!empty($data));
         $progressBar->finish();
     }
