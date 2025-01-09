@@ -330,7 +330,7 @@ class InvoiceGenerator
 
         $this->invoiceRepository->save($invoice);
 
-        // $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
+        $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
 
         return $invoice;
     }
