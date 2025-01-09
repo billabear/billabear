@@ -16,6 +16,7 @@ use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -33,14 +34,13 @@ class SubscriptionCreation
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private SubscriptionCreationProcessor $subscriptionCreationProcessor,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $output->writeln("\nCreate Subscriptions");
-        $faker = Factory::create();
-        $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
 
         $totalCount = DevDemoDataCommand::getNumberOfCustomers();
 
@@ -71,6 +71,7 @@ class SubscriptionCreation
         $progressBar = new ProgressBar($output, $totalCount);
 
         $progressBar->start();
+        $mainCount = 0;
         foreach ($elements as $step) {
             $a = 0;
             while ($a < $step) {
@@ -84,6 +85,9 @@ class SubscriptionCreation
 
                 /** @var Customer $customer */
                 foreach ($customers->getResults() as $customer) {
+                    $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
+                    ++$mainCount;
+                    $faker = Factory::create();
                     ++$a;
                     $progressBar->advance();
                     $cards = $this->paymentCardRepository->getPaymentCardForCustomer($customer);
@@ -122,7 +126,11 @@ class SubscriptionCreation
                     $process->setSubscription($subscription);
                     $process->setCreatedAt($startDate);
                     $process->setState('started');
-                    $this->subscriptionCreationProcessor->process($process);
+                    // $this->subscriptionCreationProcessor->process($process);
+
+                    if (0 === $mainCount % 100) {
+                        $this->entityManager->clear();
+                    }
                 }
                 if ($totalCount <= $progressBar->getProgress()) {
                     break 2;

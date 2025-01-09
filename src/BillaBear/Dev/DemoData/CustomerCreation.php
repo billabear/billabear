@@ -16,6 +16,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Common\Address;
@@ -33,12 +34,12 @@ class CustomerCreation
         private $stripeConfig,
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
-        $faker = Factory::create();
         /* @var StripeClient $stripe */
         if ($writeToStripe) {
             $stripe = new StripeClient($this->stripeConfig['api_key']);
@@ -48,10 +49,10 @@ class CustomerCreation
         $output->writeln('Starting to create customers');
         $progressBar = new ProgressBar($output, $numberOfCustomers);
 
-        $brandSettings = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
-
         $progressBar->start();
         for ($i = 0; $i < $numberOfCustomers; ++$i) {
+            $faker = Factory::create();
+            $brandSettings = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
             $customer = new Customer();
             $customer->setBillingEmail($faker->email);
             $customer->setName($faker->name);
@@ -107,6 +108,9 @@ class CustomerCreation
 
             $this->paymentCardRepository->save($paymentCard);
             $progressBar->advance();
+            if (0 === $i % 100) {
+                $this->entityManager->clear();
+            }
         }
         $progressBar->finish();
     }

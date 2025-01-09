@@ -103,10 +103,14 @@ class InvoiceGenerator
     /**
      * @param Subscription[] $subscriptions
      */
-    public function generateForCustomerAndSubscriptions(Customer $customer, array $subscriptions, array $inputLines = []): Invoice
+    public function generateForCustomerAndSubscriptions(Customer $customer, array $subscriptions, array $inputLines = [], ?\DateTime $createdAt = null): Invoice
     {
         if (empty($subscriptions) && empty($inputLines)) {
             throw new \Exception("Can't generate invoices for no subscription");
+        }
+
+        if (!$createdAt) {
+            $createdAt = new \DateTime('now');
         }
 
         $lines = [];
@@ -128,7 +132,7 @@ class InvoiceGenerator
                     $invoicedMetricCounter = new InvoicedMetricCounter();
                     $invoicedMetricCounter->setMetricCounter($metricCounter);
                     $invoicedMetricCounter->setMetric($metricCounter->getMetric());
-                    $invoicedMetricCounter->setCreatedAt(new \DateTime());
+                    $invoicedMetricCounter->setCreatedAt($createdAt);
                     $invoicedMetricCounter->setInvoice($invoice);
                     $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
 
@@ -144,11 +148,11 @@ class InvoiceGenerator
                     }
 
                     $invoicedMetricCounter->setValue($usage);
-                    $metricCounter->setUpdatedAt(new \DateTime());
+                    $metricCounter->setUpdatedAt($createdAt);
                     $this->metricUsageRepository->save($metricCounter);
                 } else {
                     $usage = $subscription->getSeats();
-                    $usage = $this->quantityProvider->getQuantity($usage, new \DateTime(), $subscription);
+                    $usage = $this->quantityProvider->getQuantity($usage, $createdAt, $subscription);
                 }
                 // Pass Metric Usage
                 $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
@@ -223,13 +227,13 @@ class InvoiceGenerator
             throw new NothingToInvoiceException('Nothing to invoice');
         }
 
-        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat);
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat, $createdAt);
     }
 
     /**
      * @throws MoneyMismatchException
      */
-    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?Money $total, array $lines, ?Money $subTotal, string $currencyCode, ?Money $vat): Invoice
+    protected function finaliseInvoice(Customer $customer, Invoice $invoice, ?Money $total, array $lines, ?Money $subTotal, string $currencyCode, ?Money $vat, \DateTime $createdAt): Invoice
     {
         if ($customer->hasCredit() && !$customer->getCreditAsMoney()->isZero()) {
             $line = new InvoiceLine();
@@ -312,8 +316,8 @@ class InvoiceGenerator
         $invoice->setAmountDue($total?->getMinorAmount()?->toInt() ?? 0);
         $invoice->setSubTotal($subTotal?->getMinorAmount()?->toInt() ?? 0);
         $invoice->setPaid(false);
-        $invoice->setCreatedAt(new \DateTime('now'));
-        $invoice->setUpdatedAt(new \DateTime('now'));
+        $invoice->setCreatedAt($createdAt);
+        $invoice->setUpdatedAt($createdAt);
         $invoice->setCustomer($customer);
         $invoice->setPayeeAddress($customer->getBillingAddress());
         $invoice->setBillerAddress($customer->getBrandSettings()->getAddress());
@@ -326,7 +330,7 @@ class InvoiceGenerator
 
         $this->invoiceRepository->save($invoice);
 
-        $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
+        // $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
 
         return $invoice;
     }

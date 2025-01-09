@@ -12,51 +12,51 @@ use BillaBear\Command\DevDemoDataCommand;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
-use BillaBear\Event\Invoice\InvoicePaid;
+use BillaBear\Entity\Subscription;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Schedule\SchedulerProvider;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Obol\Exception\PaymentFailureException;
 use Obol\Model\PaymentDetails;
 use Parthenon\Athena\Filters\GreaterThanFilter;
-use Parthenon\Billing\Entity\Subscription;
-use Parthenon\Billing\Event\PaymentCreated;
-use Parthenon\Billing\Obol\PaymentFactoryInterface;
+use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InvoiceCreation
 {
     public function __construct(
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private InvoiceGenerator $invoiceGenerator,
-        private InvoiceCharger $invoiceCharger,
         private SchedulerProvider $schedulerProvider,
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
-        private PaymentFactoryInterface $paymentFactory,
+        private PaymentCardRepositoryInterface $paymentCardRepository,
+        private InvoiceCharger $invoiceCharger,
         private PaymentRepositoryInterface $paymentRepository,
-        private EventDispatcherInterface $eventDispatcher,
         private InvoiceRepositoryInterface $invoiceRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
+        $this->entityManager->clear();
         $output->writeln("\nCreating invoices");
 
         $lastId = null;
-        $limit = 25;
+        $limit = 1;
         $now = new \DateTime('now');
         $startDate = DevDemoDataCommand::getStartDate();
-        $brand = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
 
+        $brand = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
         $progressBar = new ProgressBar($output, $this->subscriptionRepository->getCreatedCountForPeriod($startDate, $now, $brand));
         $progressBar->start();
         do {
@@ -81,7 +81,7 @@ class InvoiceCreation
                     $subscription->setStartOfCurrentPeriod($lastStart);
                     $this->schedulerProvider->getScheduler($subscription->getPrice())->scheduleNextDueDate($subscription);
                     $subscription->setUpdatedAt(new \DateTime('now'));
-                    $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($subscription->getCustomer(), [$subscription]);
+                    $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($subscription->getCustomer(), [$subscription], createdAt: $lastStart);
                     try {
                         if ($writeToStripe) {
                             $this->invoiceCharger->chargeInvoice($invoice, createdAt: $subscription->getStartOfCurrentPeriod());
@@ -92,6 +92,8 @@ class InvoiceCreation
                     }
                 } while ($subscription->getValidUntil() < $now);
             }
+
+            $this->entityManager->clear();
         } while (!empty($data));
         $progressBar->finish();
     }
@@ -103,9 +105,26 @@ class InvoiceCreation
         $paymentDetails->setPaymentReference('ch_'.$faker->text(8));
         $paymentDetails->setPaymentReferenceLink($faker->url());
         $paymentDetails->setAmount($invoice->getTotalMoney());
+        $customer = $invoice->getCustomer();
+        $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
+
+        $paymentDetails->setStoredPaymentReference($paymentCard->getStoredPaymentReference());
 
         /** @var Payment $payment */
-        $payment = $this->paymentFactory->fromSubscriptionCreation($paymentDetails, $invoice->getCustomer());
+        $payment = new Payment();
+        $payment->setPaymentReference($paymentDetails->getPaymentReference());
+        $payment->setPaymentProviderDetailsUrl($paymentDetails->getPaymentReferenceLink());
+        $payment->setMoneyAmount($paymentDetails->getAmount());
+
+        $payment->setCustomer($customer);
+        $payment->setCountry($customer->getCountry());
+        $payment->setState($customer->getBillingAddress()->getRegion());
+
+        $payment->setCompleted(true);
+        $payment->setCreatedAt($lastStart);
+        $payment->setUpdatedAt($lastStart);
+        $payment->setStatus(PaymentStatus::COMPLETED);
+        $payment->setProvider('stripe');
 
         $invoice->setPaidAt($lastStart);
 
@@ -116,8 +135,5 @@ class InvoiceCreation
         $invoice->setPayments(new ArrayCollection([$payment]));
         $invoice->setPaid(true);
         $this->invoiceRepository->save($invoice);
-
-        $this->eventDispatcher->dispatch(new InvoicePaid($invoice), InvoicePaid::NAME);
-        $this->eventDispatcher->dispatch(new PaymentCreated($payment, true), PaymentCreated::NAME);
     }
 }

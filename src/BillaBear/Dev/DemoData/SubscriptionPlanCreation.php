@@ -15,6 +15,7 @@ use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Faker\Factory;
 use Parthenon\Billing\Entity\SubscriptionFeature;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
+use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -100,6 +101,7 @@ class SubscriptionPlanCreation
                 $price->setPublic(true);
                 $price->setSchedule('month');
                 $price->setRecurring(true);
+                $price->setType(PriceType::FIXED_PRICE);
 
                 if ($writeToStripe) {
                     $this->priceRegister->registerPrice($price);
@@ -116,6 +118,7 @@ class SubscriptionPlanCreation
                 $price->setPublic(true);
                 $price->setSchedule('year');
                 $price->setRecurring(true);
+                $price->setType(PriceType::FIXED_PRICE);
                 if ($writeToStripe) {
                     $this->priceRegister->registerPrice($price);
                 }
