@@ -97,7 +97,7 @@ class InvoiceGenerator
         $line->setTaxType($newPlan->getProduct()->getTaxType());
         $lines[] = $line;
 
-        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo->total->getCurrency()->getCurrencyCode(), $vat);
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo->total->getCurrency()->getCurrencyCode(), $vat, new \DateTime('now'));
     }
 
     /**
