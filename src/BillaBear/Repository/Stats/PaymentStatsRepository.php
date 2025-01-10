@@ -26,7 +26,6 @@ class PaymentStatsRepository implements PaymentStatsRepositoryInterface
 
     public function getMonthlyPaymentStatsForAYear(): array
     {
-        // TODO: Implement getMonthlyPaymentStatsForAYear() method.
     }
 
     public function getYearlyPaymentStats(): array
