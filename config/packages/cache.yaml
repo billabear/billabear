@@ -2,14 +2,17 @@ framework:
     cache:
         default_redis_provider: '%env(CACHE_REDIS_URL)%'
 
-        system: cache.adapter.redis
-        app: cache.adapter.apcu
+        system: cache.adapter.apcu
+        app: cache.adapter.redis
 
         pools:
             doctrine.result_cache_pool:
                 adapter: cache.app
             doctrine.system_cache_pool:
                 adapter: cache.system
-
-            app.core:
+            app.cache.short:
                 adapter: cache.app
+                default_lifetime: 300
+            app.cache.long:
+                adapter: cache.app
+                default_lifetime: 3600
