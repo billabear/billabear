@@ -14,6 +14,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-pcntl": "*",
+        "ext-redis": "*",
+        "ext-apcu": "*",
         "beberlei/doctrineextensions": "^1.5",
         "docraptor/docraptor": "*",
         "doctrine/doctrine-migrations-bundle": "^3.3",
