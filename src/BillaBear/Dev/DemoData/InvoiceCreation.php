@@ -14,6 +14,7 @@ use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
 use BillaBear\Entity\Subscription;
 use BillaBear\Invoice\InvoiceGenerator;
+use BillaBear\Payment\ExchangeRates\ToSystemConverter;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
@@ -43,6 +44,7 @@ class InvoiceCreation
         private PaymentRepositoryInterface $paymentRepository,
         private InvoiceRepositoryInterface $invoiceRepository,
         private EntityManagerInterface $entityManager,
+        private ToSystemConverter $toSystemConverter,
     ) {
     }
 
@@ -128,6 +130,9 @@ class InvoiceCreation
         $payment->setUpdatedAt($lastStart);
         $payment->setStatus(PaymentStatus::COMPLETED);
         $payment->setProvider('stripe');
+
+        $converted = $this->toSystemConverter->convert($payment->getMoneyAmount());
+        $payment->setConvertedMoney($converted);
 
         $invoice->setPaidAt($lastStart);
 

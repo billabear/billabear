@@ -95,6 +95,9 @@ class PaymentFactory implements PaymentFactoryInterface
         $payment->setUpdatedAt(new \DateTime('now'));
         $payment->setProvider($this->provider->getName());
 
+        $converted = $this->toSystemConverter->convert($payment->getMoneyAmount());
+        $payment->setConvertedMoney($converted);
+
         try {
             $paymentCard = $this->paymentCardRepository->getByStoredPaymentReference($charge->getExternalPaymentMethodId());
             $payment->setPaymentCard($paymentCard);
