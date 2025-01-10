@@ -18,7 +18,6 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
-use Parthenon\Athena\Filters\GreaterThanFilter;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
@@ -74,11 +73,7 @@ class SubscriptionCreation
         foreach ($elements as $step) {
             $a = 0;
             while ($a < $step) {
-                $filter = new GreaterThanFilter();
-                $filter->setFieldName('createdAt');
-                $filter->setData($origStartDate);
-
-                $filters = []; // [$filter];
+                $filters = [];
                 $customers = $this->customerRepository->getList(filters: $filters, limit: $limit, lastId: $lastId);
                 $lastId = $customers->getLastKey();
 
@@ -127,6 +122,11 @@ class SubscriptionCreation
                     $process->setState('started');
                     $this->subscriptionCreationProcessor->process($process);
 
+                    if ($a >= $step) {
+                        $this->entityManager->clear();
+                        $mainCount = 0;
+                        break;
+                    }
                     if (0 === $mainCount % 100) {
                         $this->entityManager->clear();
                     }
