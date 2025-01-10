@@ -68,7 +68,7 @@ class SubscriptionCreation
         $limit = 25;
         $lastId = null;
         $progressBar = new ProgressBar($output, $totalCount);
-
+        $elements = array_reverse($elements);
         $progressBar->start();
         $mainCount = 0;
         foreach ($elements as $step) {
@@ -85,8 +85,8 @@ class SubscriptionCreation
                 /** @var Customer $customer */
                 foreach ($customers->getResults() as $customer) {
                     $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
-                    ++$mainCount;
                     $faker = Factory::create();
+                    ++$mainCount;
                     ++$a;
                     $progressBar->advance();
                     $cards = $this->paymentCardRepository->getPaymentCardForCustomer($customer);
@@ -125,7 +125,7 @@ class SubscriptionCreation
                     $process->setSubscription($subscription);
                     $process->setCreatedAt($startDate);
                     $process->setState('started');
-                    // $this->subscriptionCreationProcessor->process($process);
+                    $this->subscriptionCreationProcessor->process($process);
 
                     if (0 === $mainCount % 100) {
                         $this->entityManager->clear();
