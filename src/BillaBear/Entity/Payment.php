@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Billing\Entity\PaymentCard;
 
@@ -30,6 +31,12 @@ class Payment extends \Parthenon\Billing\Entity\Payment
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $accountingReference = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedAmount = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $convertedCurrency = null;
 
     public function getInvoice(): ?Invoice
     {
@@ -79,5 +86,31 @@ class Payment extends \Parthenon\Billing\Entity\Payment
     public function setAccountingReference(?string $accountingReference): void
     {
         $this->accountingReference = $accountingReference;
+    }
+
+    public function getConvertedAmount(): ?int
+    {
+        return $this->convertedAmount;
+    }
+
+    public function setConvertedAmount(?int $convertedAmount): void
+    {
+        $this->convertedAmount = $convertedAmount;
+    }
+
+    public function getConvertedCurrency(): ?string
+    {
+        return $this->convertedCurrency;
+    }
+
+    public function setConvertedCurrency(?string $convertedCurrency): void
+    {
+        $this->convertedCurrency = $convertedCurrency;
+    }
+
+    public function setConvertedMoney(Money $money): void
+    {
+        $this->convertedAmount = $money->getMinorAmount()->toInt();
+        $this->convertedCurrency = $money->getCurrency()->getCurrencyCode();
     }
 }

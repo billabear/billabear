@@ -9,6 +9,7 @@
 namespace BillaBear\Payment;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Payment\ExchangeRates\ToSystemConverter;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use Obol\Model\Events\AbstractCharge;
 use Obol\Model\PaymentDetails;
@@ -33,6 +34,7 @@ class PaymentFactory implements PaymentFactoryInterface
         private ProviderInterface $provider,
         private EntityFactoryInterface $entityFactory,
         private PaymentCardRepositoryInterface $paymentCardRepository,
+        private ToSystemConverter $toSystemConverter,
     ) {
     }
 
@@ -46,6 +48,10 @@ class PaymentFactory implements PaymentFactoryInterface
         $payment->setPaymentReference($paymentDetails->getPaymentReference());
         $payment->setPaymentProviderDetailsUrl($paymentDetails->getPaymentReferenceLink());
         $payment->setMoneyAmount($paymentDetails->getAmount());
+
+        $converted = $this->toSystemConverter->convert($paymentDetails->getAmount());
+        $payment->setConvertedMoney($converted);
+
         if (isset($customer)) {
             $payment->setCustomer($customer);
             $payment->setCountry($customer->getCountry());
