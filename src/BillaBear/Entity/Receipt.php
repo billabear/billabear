@@ -23,15 +23,8 @@ class Receipt extends \Parthenon\Billing\Entity\Receipt
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $convertedTaxTotal = null;
 
-    public function getConvertedAmountDue(): ?int
-    {
-        return $this->convertedAmountDue;
-    }
-
-    public function setConvertedAmountDue(?int $convertedAmountDue): void
-    {
-        $this->convertedAmountDue = $convertedAmountDue;
-    }
+    #[ORM\ManyToOne(targetEntity: Payment::class)]
+    private ?Payment $payment = null;
 
     public function getConvertedTotal(): ?int
     {
@@ -61,5 +54,15 @@ class Receipt extends \Parthenon\Billing\Entity\Receipt
     public function setConvertedTaxTotal(?int $convertedTaxTotal): void
     {
         $this->convertedTaxTotal = $convertedTaxTotal;
+    }
+
+    public function getPayment(): ?Payment
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(?Payment $payment): void
+    {
+        $this->payment = $payment;
     }
 }

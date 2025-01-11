@@ -172,6 +172,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setVatPercentage($line->getVatPercentage());
         $receipt->setPayeeAddress($customer->getBillingAddress());
         $receipt->setBillerAddress($customer->getBrandSettings()->getAddress());
+        $receipt->setPayment($payment);
 
         $convertedTotal = $this->toSystemConverter->convert($total);
         $convertedSubtotal = $this->toSystemConverter->convert($subTotalTotal);
