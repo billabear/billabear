@@ -193,6 +193,7 @@ class InvoiceGenerator
                     $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
                     $line->setProduct($subscription->getSubscriptionPlan()->getProduct());
                     $line->setMetadata($subscription->getMetadata());
+                    $line->setSubscription($subscription);
 
                     $lines[] = $line;
                 }
@@ -205,9 +206,9 @@ class InvoiceGenerator
                 $line->setTaxTotal(0);
                 $line->setNetPrice(0);
                 $line->setDescription('Free trial');
+                $line->setSubscription($subscription);
                 $lines[] = $line;
             }
-            $line->setSubscription($subscription);
         }
         $invoice->setSubscriptions($subscriptions);
 
