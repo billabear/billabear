@@ -21,6 +21,7 @@ use BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Invoice\QuantityProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
+use BillaBear\Payment\ExchangeRates\ToSystemConverter;
 use BillaBear\Pricing\PriceInfo;
 use BillaBear\Pricing\Pricer;
 use BillaBear\Pricing\Usage\MetricProvider;
@@ -89,7 +90,23 @@ class InvoiceGeneratorTest extends TestCase
         $quantityProvider = $this->createMock(QuantityProvider::class);
         $quantityProvider->method('getQuantity')->willReturn(1);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $metricProvider, $metricUsage, $quantityProvider, $exchangeRateProvider);
+        $toSystemConverter = $this->createMock(ToSystemConverter::class);
+        $toSystemConverter->method('convert')->willReturnArgument(0);
+
+        $subject = new InvoiceGenerator(
+            $pricer,
+            $invoiceNumberGeneratorProvider,
+            $repository,
+            $creditAdjustmentRecorder,
+            $voucherApplication,
+            $eventDispatcher,
+            $dueDateDecider,
+            $metricProvider,
+            $metricUsage,
+            $quantityProvider,
+            $toSystemConverter,
+            $exchangeRateProvider,
+        );
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());
