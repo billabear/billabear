@@ -58,16 +58,18 @@ class SubscriptionCreation
         }
 
         for ($i = 0; $i < $numberOfMonths; ++$i) {
-            $elements[$i] = intval($elements[$i] + (($totalCount - array_sum($elements)) * 0.50));
+            $elements[$i] = intval($elements[$i] + (($totalCount - array_sum($elements)) * 0.25));
             if (array_sum($elements) >= $totalCount) {
                 break;
             }
         }
         ++$elements[0];
+        $elements[0] += ($totalCount - array_sum($elements));
         $limit = 25;
         $lastId = null;
         $progressBar = new ProgressBar($output, $totalCount);
         $elements = array_reverse($elements);
+
         $progressBar->start();
         $mainCount = 0;
         foreach ($elements as $step) {

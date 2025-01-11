@@ -37,4 +37,13 @@ class ProviderFactory
 
         return Factory::create($config, $this->obolLogger);
     }
+
+    public function getApiKey(): string
+    {
+        if (!isset($this->obolConfig['api_key']) || empty($this->obolConfig['api_key'])) {
+            return $this->obolSettingsRepository->getDefaultSettings()->getSystemSettings()->getStripePrivateKey();
+        } else {
+            return $this->obolConfig['api_key'];
+        }
+    }
 }

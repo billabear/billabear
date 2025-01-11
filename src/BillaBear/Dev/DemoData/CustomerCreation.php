@@ -13,6 +13,7 @@ use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\CustomerType;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Entity\Customer;
+use BillaBear\Payment\Provider\ProviderFactory;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
@@ -23,15 +24,13 @@ use Parthenon\Common\Address;
 use Stripe\StripeClient;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class CustomerCreation
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
         private ExternalRegisterInterface $externalRegister,
-        #[Autowire('%parthenon_billing_payments_obol_config%')]
-        private $stripeConfig,
+        private ProviderFactory $providerFactory,
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
         private EntityManagerInterface $entityManager,
@@ -42,7 +41,7 @@ class CustomerCreation
     {
         /* @var StripeClient $stripe */
         if ($writeToStripe) {
-            $stripe = new StripeClient($this->stripeConfig['api_key']);
+            $stripe = new StripeClient($this->providerFactory->getApiKey());
         }
 
         $numberOfCustomers = DevDemoDataCommand::getNumberOfCustomers();
