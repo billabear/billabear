@@ -73,6 +73,18 @@ class Invoice
     #[ORM\Column(type: 'integer')]
     private int $taxTotal;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedAmountDue = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedTotal = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedSubTotal = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedTaxTotal = null;
+
     #[ORM\Column(type: 'boolean')]
     private bool $paid = false;
 
@@ -355,5 +367,45 @@ class Invoice
     public function setAccountingReference(?string $accountingReference): void
     {
         $this->accountingReference = $accountingReference;
+    }
+
+    public function getConvertedAmountDue(): int
+    {
+        return $this->convertedAmountDue;
+    }
+
+    public function setConvertedAmountDue(int $convertedAmountDue): void
+    {
+        $this->convertedAmountDue = $convertedAmountDue;
+    }
+
+    public function getConvertedTotal(): int
+    {
+        return $this->convertedTotal;
+    }
+
+    public function setConvertedTotal(int $convertedTotal): void
+    {
+        $this->convertedTotal = $convertedTotal;
+    }
+
+    public function getConvertedSubTotal(): int
+    {
+        return $this->convertedSubTotal;
+    }
+
+    public function setConvertedSubTotal(int $convertedSubTotal): void
+    {
+        $this->convertedSubTotal = $convertedSubTotal;
+    }
+
+    public function getConvertedTaxTotal(): int
+    {
+        return $this->convertedTaxTotal;
+    }
+
+    public function setConvertedTaxTotal(int $convertedTaxTotal): void
+    {
+        $this->convertedTaxTotal = $convertedTaxTotal;
     }
 }

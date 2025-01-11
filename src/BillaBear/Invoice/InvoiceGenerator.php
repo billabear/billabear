@@ -20,6 +20,7 @@ use BillaBear\Event\Invoice\InvoiceCreated;
 use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
+use BillaBear\Payment\ExchangeRates\ToSystemConverter;
 use BillaBear\Pricing\PricerInterface;
 use BillaBear\Pricing\Usage\MetricProvider;
 use BillaBear\Pricing\Usage\MetricType;
@@ -49,6 +50,7 @@ class InvoiceGenerator
         private MetricProvider $metricProvider,
         private MetricCounterRepositoryInterface $metricUsageRepository,
         private QuantityProvider $quantityProvider,
+        private ToSystemConverter $toSystemConverter,
         BricksExchangeRateProvider $exchangeRateProvider,
     ) {
         $this->currencyConverter = new CurrencyConverter($exchangeRateProvider);
@@ -208,10 +210,17 @@ class InvoiceGenerator
 
             $line = new InvoiceLine();
             $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+
             $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
             $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
             $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
             $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
+
+            $line->setConvertedTotal($this->toSystemConverter->convert($priceInfo->total)->getMinorAmount()->toInt());
+            $line->setConvertedSubTotal($this->toSystemConverter->convert($priceInfo->subTotal)->getMinorAmount()->toInt());
+            $line->setConvertedTaxTotal($this->toSystemConverter->convert($priceInfo->vat)->getMinorAmount()->toInt());
+            $line->setConvertedNetPrice($this->toSystemConverter->convert($priceInfo->netPrice)->getMinorAmount()->toInt());
+
             $line->setInvoice($invoice);
             $line->setDescription($lineItem->getDescription());
             $line->setTaxPercentage($priceInfo->taxInfo->rate);
@@ -241,6 +250,7 @@ class InvoiceGenerator
             $line->setInvoice($invoice);
             $line->setTaxTotal(0);
             $line->setTaxPercentage(0);
+            $line->setConvertedTaxTotal(0);
             $credit = $customer->getCreditAsMoney();
             $description = 'Credit adjustment';
 
@@ -273,6 +283,11 @@ class InvoiceGenerator
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setNetPrice($amount->getMinorAmount()->toInt());
+
+            $line->setConvertedTotal($amount->getMinorAmount()->toInt());
+            $line->setConvertedSubTotal($amount->getMinorAmount()->toInt());
+            $line->setConvertedNetPrice($amount->getMinorAmount()->toInt());
+
             $line->setDescription($description);
             $lines[] = $line;
             $total = $total?->plus($amount, RoundingMode::HALF_CEILING) ?? $amount;
@@ -294,9 +309,15 @@ class InvoiceGenerator
 
             $line->setDescription($voucherApplication->getVoucher()->getName());
             $line->setTaxPercentage($vatAmount->getMinorAmount()->toInt());
+
             $line->setSubTotal($amount->getMinorAmount()->toInt());
             $line->setTotal($amount->getMinorAmount()->toInt());
             $line->setNetPrice($amount->getMinorAmount()->toInt());
+
+            $line->setConvertedTotal($amount->getMinorAmount()->toInt());
+            $line->setConvertedSubTotal($amount->getMinorAmount()->toInt());
+            $line->setConvertedNetPrice($amount->getMinorAmount()->toInt());
+
             $line->setTaxTotal(0);
 
             $vat = $vat?->plus($vatAmount, RoundingMode::HALF_CEILING);
@@ -315,6 +336,12 @@ class InvoiceGenerator
         $invoice->setTotal($total?->getMinorAmount()?->toInt() ?? 0);
         $invoice->setAmountDue($total?->getMinorAmount()?->toInt() ?? 0);
         $invoice->setSubTotal($subTotal?->getMinorAmount()?->toInt() ?? 0);
+
+        $invoice->setConvertedTaxTotal($this->toSystemConverter->convert($vat ?? Money::zero('usd'))->getMinorAmount()->toInt() ?? 0);
+        $invoice->setConvertedTotal($this->toSystemConverter->convert($total ?? Money::zero('usd'))->getMinorAmount()?->toInt() ?? 0);
+        $invoice->setConvertedAmountDue($this->toSystemConverter->convert($total ?? Money::zero('usd'))->getMinorAmount()?->toInt() ?? 0);
+        $invoice->setConvertedSubTotal($this->toSystemConverter->convert($subTotal ?? Money::zero('usd'))->getMinorAmount()?->toInt() ?? 0);
+
         $invoice->setPaid(false);
         $invoice->setCreatedAt($createdAt);
         $invoice->setUpdatedAt($createdAt);
