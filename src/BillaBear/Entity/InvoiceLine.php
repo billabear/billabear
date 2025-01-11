@@ -32,6 +32,9 @@ class InvoiceLine
     #[ORM\ManyToOne(targetEntity: Product::class)]
     private ?Product $product = null;
 
+    #[ORM\ManyToOne(targetEntity: Subscription::class)]
+    private ?Subscription $subscription = null;
+
     #[ORM\Column(type: 'string')]
     private string $currency;
 
@@ -320,5 +323,15 @@ class InvoiceLine
     public function setConvertedTaxTotal(int $convertedTaxTotal): void
     {
         $this->convertedTaxTotal = $convertedTaxTotal;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): void
+    {
+        $this->subscription = $subscription;
     }
 }

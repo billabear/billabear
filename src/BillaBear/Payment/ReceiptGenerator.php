@@ -68,6 +68,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setReverseCharge($invoiceLine->isReverseCharge());
                 $line->setTaxCountry($invoiceLine->getTaxCountry());
                 $line->setMetadata($invoiceLine->getMetadata());
+                $line->setSubscription($invoiceLine->getSubscription());
 
                 $convertedTotal = $this->toSystemConverter->convert(Money::of($line->getTotal(), $line->getCurrency()));
                 $convertedSubtotal = $this->toSystemConverter->convert(Money::of($line->getSubTotal(), $line->getCurrency()));

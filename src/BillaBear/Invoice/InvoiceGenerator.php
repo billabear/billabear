@@ -197,6 +197,7 @@ class InvoiceGenerator
                 $line->setDescription('Free trial');
                 $lines[] = $line;
             }
+            $line->setSubscription($subscription);
         }
         $invoice->setSubscriptions($subscriptions);
 

@@ -38,7 +38,8 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     #[ORM\Column(type: 'integer', nullable: true)]
     private int $convertedVatTotal;
 
-    private ?Subscription $subscription;
+    #[ORM\ManyToOne(targetEntity: Subscription::class)]
+    private ?Subscription $subscription = null;
 
     public function getTaxType(): ?TaxType
     {
@@ -122,5 +123,15 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     public function setConvertedVatTotal(int $convertedVatTotal): void
     {
         $this->convertedVatTotal = $convertedVatTotal;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): void
+    {
+        $this->subscription = $subscription;
     }
 }
