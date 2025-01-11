@@ -2163,7 +2163,8 @@
                 },
                 "payments": {
                     "title": "Totales de pago"
-                }
+                },
+                "loading_chart": "Cargando datos del gráfico..."
             },
             "expiring_cards": {
                 "main": {

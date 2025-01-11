@@ -2157,7 +2157,8 @@
                 },
                 "payments": {
                     "title": "Totais de pagamento"
-                }
+                },
+                "loading_chart": "Carregando dados do gráfico..."
             },
             "expiring_cards": {
                 "main": {
