@@ -70,9 +70,9 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setMetadata($invoiceLine->getMetadata());
                 $line->setSubscription($invoiceLine->getSubscription());
 
-                $convertedTotal = $this->toSystemConverter->convert(Money::of($line->getTotal(), $line->getCurrency()));
-                $convertedSubtotal = $this->toSystemConverter->convert(Money::of($line->getSubTotal(), $line->getCurrency()));
-                $convertedVatTotal = $this->toSystemConverter->convert(Money::of($line->getVatTotal(), $line->getCurrency()));
+                $convertedTotal = $this->toSystemConverter->convert(Money::ofMinor($line->getTotal(), $line->getCurrency()));
+                $convertedSubtotal = $this->toSystemConverter->convert(Money::ofMinor($line->getSubTotal(), $line->getCurrency()));
+                $convertedVatTotal = $this->toSystemConverter->convert(Money::ofMinor($line->getVatTotal(), $line->getCurrency()));
 
                 $line->setConvertedSubTotal($convertedSubtotal->getMinorAmount()->toInt());
                 $line->setConvertedVatTotal($convertedVatTotal->getMinorAmount()->toInt());

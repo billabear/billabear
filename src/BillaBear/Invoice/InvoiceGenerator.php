@@ -90,6 +90,10 @@ class InvoiceGenerator
         $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
         $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
         $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+        $line->setConvertedTotal($this->toSystemConverter->convert($priceInfo->total)->getMinorAmount()->toInt());
+        $line->setConvertedSubTotal($this->toSystemConverter->convert($priceInfo->subTotal)->getMinorAmount()->toInt());
+        $line->setConvertedTaxTotal($this->toSystemConverter->convert($priceInfo->vat)->getMinorAmount()->toInt());
+        $line->setConvertedNetPrice($this->toSystemConverter->convert($priceInfo->netPrice)->getMinorAmount()->toInt());
         $line->setInvoice($invoice);
         $line->setDescription(sprintf('Change from %s at %s to %s at %s', $oldPlan->getName(), $oldPrice->getAsMoney(), $newPlan->getName(), $newPrice->getAsMoney()));
         $line->setTaxPercentage($priceInfo->taxInfo->rate);
@@ -170,6 +174,12 @@ class InvoiceGenerator
                     $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
                     $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
                     $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
+
+                    $line->setConvertedTotal($this->toSystemConverter->convert($priceInfo->total)->getMinorAmount()->toInt());
+                    $line->setConvertedSubTotal($this->toSystemConverter->convert($priceInfo->subTotal)->getMinorAmount()->toInt());
+                    $line->setConvertedTaxTotal($this->toSystemConverter->convert($priceInfo->vat)->getMinorAmount()->toInt());
+                    $line->setConvertedNetPrice($this->toSystemConverter->convert($priceInfo->netPrice)->getMinorAmount()->toInt());
+
                     $line->setQuantity($priceInfo->quantity);
                     if ($priceInfo->quantity > 1) {
                         $line->setDescription(sprintf('%d x %s', $priceInfo->quantity, $subscription->getPlanName()));

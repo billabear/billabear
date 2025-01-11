@@ -8,6 +8,7 @@
 
 namespace BillaBear\Command;
 
+use BillaBear\Background\Payments\ExchangeRatesFetchProcess;
 use BillaBear\Dev\DemoData\CustomerCreation;
 use BillaBear\Dev\DemoData\InvoiceCreation;
 use BillaBear\Dev\DemoData\SubscriptionCreation;
@@ -33,6 +34,7 @@ class DevDemoDataCommand extends Command
         private readonly InvoiceCreation $invoiceCreation,
         private readonly RevenueEstimatesGeneration $estimatesGeneration,
         private readonly CreateSubscriptionCountStats $createSubscriptionCountStats,
+        private readonly ExchangeRatesFetchProcess $exchangeRatesFetchProcess,
     ) {
         parent::__construct();
     }
@@ -68,8 +70,11 @@ class DevDemoDataCommand extends Command
         if ('true' === strtolower($products)) {
             $this->subscriptionPlanCreation->createData($output, $writeToStripe);
         }
+        $output->writeln('Fetching exchange rates');
+        $this->exchangeRatesFetchProcess->process();
         $this->subscriptionCreation->createData($output, $writeToStripe);
         $this->invoiceCreation->createData($output, $writeToStripe);
+        $output->writeln('Generating data');
         $this->estimatesGeneration->generate();
         $this->createSubscriptionCountStats->generate();
 

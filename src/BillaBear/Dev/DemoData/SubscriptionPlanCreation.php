@@ -160,5 +160,6 @@ class SubscriptionPlanCreation
         }
 
         $progressBar->finish();
+        $output->writeln('');
     }
 }
