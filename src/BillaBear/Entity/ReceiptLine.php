@@ -29,6 +29,17 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $metadata = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private int $convertedTotal;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private int $convertedSubTotal;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private int $convertedVatTotal;
+
+    private ?Subscription $subscription;
+
     public function getTaxType(): ?TaxType
     {
         return $this->taxType;
@@ -37,16 +48,6 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     public function setTaxType(?TaxType $taxType): void
     {
         $this->taxType = $taxType;
-    }
-
-    public function isIncludeTax(): bool
-    {
-        return $this->includeTax;
-    }
-
-    public function setIncludeTax(bool $includeTax): void
-    {
-        $this->includeTax = $includeTax;
     }
 
     public function getTaxCountry(): ?string
@@ -91,5 +92,35 @@ class ReceiptLine extends \Parthenon\Billing\Entity\ReceiptLine
     public function setMetadata(?array $metadata): void
     {
         $this->metadata = $metadata;
+    }
+
+    public function getConvertedTotal(): int
+    {
+        return $this->convertedTotal;
+    }
+
+    public function setConvertedTotal(int $convertedTotal): void
+    {
+        $this->convertedTotal = $convertedTotal;
+    }
+
+    public function getConvertedSubTotal(): int
+    {
+        return $this->convertedSubTotal;
+    }
+
+    public function setConvertedSubTotal(int $convertedSubTotal): void
+    {
+        $this->convertedSubTotal = $convertedSubTotal;
+    }
+
+    public function getConvertedVatTotal(): int
+    {
+        return $this->convertedVatTotal;
+    }
+
+    public function setConvertedVatTotal(int $convertedVatTotal): void
+    {
+        $this->convertedVatTotal = $convertedVatTotal;
     }
 }

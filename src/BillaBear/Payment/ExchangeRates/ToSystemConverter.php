@@ -15,6 +15,9 @@ use Brick\Money\Money;
 
 class ToSystemConverter
 {
+    private string $currency;
+    private CurrencyConverter $converter;
+
     public function __construct(
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
@@ -23,9 +26,11 @@ class ToSystemConverter
 
     public function convert(Money $originalFee): Money
     {
-        $defaultCurrency = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency();
-        $currencyConverter = new CurrencyConverter($this->exchangeRateProvider);
+        if (!isset($this->currency)) {
+            $this->currency = $this->settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency();
+            $this->converter = new CurrencyConverter($this->exchangeRateProvider);
+        }
 
-        return $currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
+        return $this->converter->convert($originalFee, $this->currency, RoundingMode::HALF_DOWN);
     }
 }
