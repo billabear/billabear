@@ -32,25 +32,46 @@
             </div>
           </div>
         </div>
-        <div class="text-end my-5">
-          <div class="bg-white rounded-3xl inline p-3">
-            <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
-              {{ $t('app.reports.dashboard.buttons.daily') }}
+        <div class="grid grid-cols-2">
+          <div class="my-5">
+
+            <div class="bg-white rounded-3xl inline p-3">
+              <div class="chart-button inline p-3 rounded-3xl " @click="setChart('subscriptions')" :class="{'chart-button-selected': chart === 'subscriptions'}">
+                {{ $t('app.reports.dashboard.buttons.subscriptions') }}
+              </div>
+              <div class="chart-button inline p-3 rounded-3xl " @click="setChart('payments')" :class="{'chart-button-selected': chart === 'payments'}">
+                {{ $t('app.reports.dashboard.buttons.payments') }}
+              </div>
             </div>
-            <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
-              {{ $t('app.reports.dashboard.buttons.monthly') }}
-            </div>
-            <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
-              {{ $t('app.reports.dashboard.buttons.yearly') }}
+          </div>
+          <div class="text-end my-5">
+            <div class="bg-white rounded-3xl inline p-3">
+              <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
+                {{ $t('app.reports.dashboard.buttons.daily') }}
+              </div>
+              <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
+                {{ $t('app.reports.dashboard.buttons.monthly') }}
+              </div>
+              <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
+                {{ $t('app.reports.dashboard.buttons.yearly') }}
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" v-if="chart=='subscriptions'">
           <div  class="">
             <h2 class="chart-title">{{ $t('app.reports.dashboard.subscription_count.title') }}</h2>
             <div class="section-body">
               <apexchart ref="analyticsChart" :series="subscriptionCountChartSeries" :options="subscriptionCountChartOptions"  height="400"   />
             </div>
+          </div>
+        </div>
+        <div class="card-body" v-if="chart=='payments'">
+          <div  class="">
+            <h2 class="chart-title">{{ $t('app.reports.dashboard.payments.title') }}</h2>
+             <div class="section-body">
+               <apexchart ref="analyticsChart" :series="paymentAmountChartSeries" :options="paymentAmountChartOptions"  height="400"   />
+             </div>
           </div>
         </div>
 
@@ -158,84 +179,9 @@ export default {
       currency: null,
       header: {},
       viewName: 'monthly',
+      chart: 'subscriptions',
       subscriptionCountChartSeries: [],
       subscriptionCountChartOptions: {
-        title: {
-          text: '',
-          align: 'left'
-        },
-        chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-        },
-        yaxis: [
-          {
-            labels: {
-              formatter: function(val) {
-                return val.toFixed(0);
-              }
-            }
-          }
-        ]
-      },
-      subscriptionCreatedChartSeries: [],
-      subscriptionCreatedChartOptions: {
-        title: {
-          text: '',
-          align: 'left'
-        },
-        chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-        },
-        yaxis: [
-          {
-            labels: {
-              formatter: function(val) {
-                return val.toFixed(0);
-              }
-            }
-          }
-        ]
-      },
-      subscriptionCancellationChartSeries: [],
-      subscriptionCancellationChartOptions: {
         title: {
           text: '',
           align: 'left'
@@ -280,59 +226,40 @@ export default {
         },
         chart: {
           height: 350,
-          type: 'line',
+          type: 'bar',
+          stacked: true,
+          toolbar: {
+            show: true
+          },
           zoom: {
             enabled: false
           }
         },
         dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
+          enabled: false,
+          formatter: function (val) {
+            return `${currency(val, { fromCents: true }).format({symbol: ''})}`;
           },
+          style: {
+            fontSize: '13px',
+            fontWeight: 900
+          }
         },
-        xaxis: {
-          categories: [],
-        },
-        yaxis: [
-          {
-            labels: {
-              formatter: function(val) {
-                return val.toFixed(0);
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            borderRadius: 10,
+            borderRadiusApplication: 'end', // 'around', 'end'
+            borderRadiusWhenStacked: 'last', // 'all', 'last'
+            dataLabels: {
+              total: {
+                enabled: true,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900
+                }
               }
             }
-          }
-        ]
-      },
-      refundAmountChartSeries: [],
-      refundAmountChartOptions: {
-        title: {
-          text: '',
-          align: 'left'
-        },
-        chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
           },
         },
         xaxis: {
@@ -342,45 +269,7 @@ export default {
           {
             labels: {
               formatter: function(val) {
-                return val.toFixed(0);
-              }
-            }
-          }
-        ]
-      },
-      chargeBackAmountChartSeries: [],
-      chargeBackAmountChartOptions: {
-        title: {
-          text: '',
-          align: 'left'
-        },
-        chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-        },
-        yaxis: [
-          {
-            labels: {
-              formatter: function(val) {
-                return val.toFixed(0);
+                return `${currency(val, { fromCents: true }).format({symbol: ''})}`;
               }
             }
           }
@@ -396,6 +285,8 @@ export default {
     axios.get('/app/stats').then(response => {
       this.ready = true;
       this.responseData = response.data;
+      this.paymentAmountChartSeries = response.data.payment_stats.series;
+      this.paymentAmountChartOptions.xaxis.categories  = response.data.payment_stats.xaxis;
       const viewName = 'monthly';
       this.setChartData(viewName)
     })
@@ -420,29 +311,15 @@ export default {
     }
   },
   methods: {
+    setChart: function (chartName) {
+      this.chart = chartName;
+    },
     setChartData: function (viewName) {
       this.viewName = viewName;
       const subscriptionCountStats = this.convertStatToChartData(this.responseData.subscription_count[viewName]);
       this.subscriptionCountChartSeries = subscriptionCountStats.values;
       this.subscriptionCountChartOptions.xaxis.categories = subscriptionCountStats.categories;
 
-      const subscriptionCreationStats = this.convertStatToChartData(this.responseData.subscription_creation[viewName]);
-      this.subscriptionCreatedChartSeries = subscriptionCreationStats.values;
-      this.subscriptionCreatedChartOptions.xaxis.categories = subscriptionCreationStats.categories;
-
-      const subscriptionCancellationStats = this.convertStatToChartData(this.responseData.subscription_cancellation[viewName]);
-      this.subscriptionCancellationChartSeries = subscriptionCancellationStats.values;
-      this.subscriptionCancellationChartOptions.xaxis.categories = subscriptionCancellationStats.categories;
-
-      const paymentAmountStats = this.convertMoneyToChartData(this.responseData.payment_amount[viewName]);
-      this.paymentAmountChartSeries = paymentAmountStats.values;
-      this.paymentAmountChartOptions.xaxis.categories = paymentAmountStats.categories;
-      const refundAmountStats = this.convertMoneyToChartData(this.responseData.refund_amount[viewName]);
-      this.refundAmountChartSeries = refundAmountStats.values;
-      this.refundAmountChartOptions.xaxis.categories = refundAmountStats.categories;
-      const chargeBackAmountStats = this.convertMoneyToChartData(this.responseData.charge_back_amount[viewName]);
-      this.chargeBackAmountChartSeries = chargeBackAmountStats.values;
-      this.chargeBackAmountChartOptions.xaxis.categories = chargeBackAmountStats.categories;
 
       this.currency = this.responseData.currency;
       this.estimated_mrr = this.responseData.estimated_mrr;

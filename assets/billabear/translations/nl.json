@@ -1335,7 +1335,8 @@
                         "trial_active": "Actief onderzoek",
                         "trial_ended": "Proef beëindigd"
                     }
-                }
+                },
+                "loading": "Abonnementen worden geladen..."
             },
             "menu": {
                 "title": "Abonnementen",
@@ -2128,7 +2129,9 @@
                 "buttons": {
                     "daily": "Dagelijks",
                     "monthly": "Maandelijks",
-                    "yearly": "Jaarlijks"
+                    "yearly": "Jaarlijks",
+                    "subscriptions": "Abonnementen",
+                    "payments": "Betalingen"
                 },
                 "links": {
                     "customers": "Klanten",
@@ -2157,6 +2160,9 @@
                         "customer": "Klant",
                         "creation_date": "Aanmaakdatum"
                     }
+                },
+                "payments": {
+                    "title": "Totalen betalingen"
                 }
             },
             "expiring_cards": {

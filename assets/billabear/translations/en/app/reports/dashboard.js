@@ -28,7 +28,9 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
     buttons: {
         daily: "Daily",
         monthly: "Monthly",
-        yearly: "Yearly"
+        yearly: "Yearly",
+        subscriptions: "Subscriptions",
+        payments: "Payments"
     },
     links: {
         customers: "Customers",
@@ -57,5 +59,8 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
             customer: "Customer",
             creation_date: "Creation Date"
         }
+    },
+    payments: {
+        title: "Payment Totals"
     }
 };

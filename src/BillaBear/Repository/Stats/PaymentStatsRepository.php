@@ -26,14 +26,15 @@ class PaymentStatsRepository implements PaymentStatsRepositoryInterface
 
     public function getMonthlyPaymentStatsForAYear(): array
     {
-        $result = $this->connection->executeCacheQuery('select count(*), sum(p.converted_amount), p.converted_currency, sp."name",  EXTRACT(MONTH FROM p.created_at) as "month", EXTRACT(year FROM p.created_at) as "year" 
+        $result = $this->connection->executeQuery('select count(*), sum(p.converted_amount) as amount, p.converted_currency as currency, sp."name",  
+EXTRACT(MONTH FROM p.created_at) as "month", EXTRACT(year FROM p.created_at) as "year" 
 from payment p
 inner join payment_subscription ps ON ps.payment_id =p.id 
 inner join "subscription" s on s.id = ps.subscription_id 
 inner join subscription_plan sp on sp.id = s.subscription_plan_id 
 WHERE p.created_at >= NOW() - INTERVAL \'12 months\'
-group by sp."name", p.converted_currency, p.created_at
-order by p.created_at;');
+group by sp."name", p.converted_currency, EXTRACT(MONTH FROM p.created_at), EXTRACT(year FROM p.created_at)
+order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at);');
 
         return $result->fetchAllAssociative();
     }

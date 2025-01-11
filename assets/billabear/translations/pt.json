@@ -1335,7 +1335,8 @@
                         "trial_ended": "Ensaio Terminou"
                     }
                 },
-                "error_message": "Ocorreu um erro"
+                "error_message": "Ocorreu um erro",
+                "loading": "Carregando assinaturas..."
             },
             "menu": {
                 "title": "Assinaturas",
@@ -2122,7 +2123,9 @@
                 "buttons": {
                     "daily": "Diário",
                     "monthly": "Mensal",
-                    "yearly": "Anual"
+                    "yearly": "Anual",
+                    "subscriptions": "Assinaturas",
+                    "payments": "Pagamentos"
                 },
                 "links": {
                     "customers": "Clientes",
@@ -2151,6 +2154,9 @@
                         "customer": "Cliente",
                         "creation_date": "Data de criação"
                     }
+                },
+                "payments": {
+                    "title": "Totais de pagamento"
                 }
             },
             "expiring_cards": {

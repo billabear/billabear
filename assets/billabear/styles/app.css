@@ -486,7 +486,7 @@ body {
 }
 
 .chart-button {
-    @apply inline p-2 border bg-white hover:bg-gray-100 cursor-pointer  dark:text-white dark:bg-gray-700 dark:hover:bg-gray-500;
+    @apply inline p-2 border bg-white hover:bg-gray-100 cursor-pointer  dark:text-white dark:bg-gray-700 dark:hover:bg-gray-500 cursor-pointer;
 }
 
 .chart-button-selected {

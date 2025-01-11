@@ -15,24 +15,22 @@ use BillaBear\Dto\Response\App\Stats\MainDashboardHeader;
 use BillaBear\Dto\Response\App\Stats\MainDashboardStats;
 use BillaBear\Entity\Stats\CachedStats;
 use BillaBear\Invoice\UnpaidInvoiceStatsProvider;
+use BillaBear\Reports\Formatters\StackedColumns;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\CachedStatsRepositoryInterface;
+use BillaBear\Repository\Stats\PaymentStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
-use BillaBear\Stats\Graphs\ChargeBackAmountStatsProvider;
-use BillaBear\Stats\Graphs\PaymentAmountStatsProvider;
-use BillaBear\Stats\Graphs\RefundAmountStatsProvider;
-use BillaBear\Stats\Graphs\SubscriptionCancellationStatsProvider;
 use BillaBear\Stats\Graphs\SubscriptionCountStatsProvider;
-use BillaBear\Stats\Graphs\SubscriptionCreationStatsProvider;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class DashboardController
 {
@@ -40,12 +38,9 @@ class DashboardController
 
     #[Route('/app/stats', name: 'app_app_stats_returnstats', methods: ['GET'])]
     public function returnStats(
-        PaymentAmountStatsProvider $paymentAmountStatsProvider,
-        ChargeBackAmountStatsProvider $chargeBackAmountStatsProvider,
-        RefundAmountStatsProvider $refundAmountStatsProvider,
         SubscriptionCountStatsProvider $subscriptionCountStatsProvider,
-        SubscriptionCreationStatsProvider $subscriptionCreationStatsProvider,
-        SubscriptionCancellationStatsProvider $subscriptionCancellationStatsProvider,
+        PaymentStatsRepositoryInterface $paymentStatsRepository,
+        StackedColumns $stackedColumns,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
         CachedStatsRepositoryInterface $cachedStatsRepository,
@@ -61,7 +56,22 @@ class DashboardController
     ): Response {
         $this->getLogger()->info('Received request for dashboard stats');
 
-        $mainDashboardStat = $appCacheShort->get('dashboard_stats', function () use ($subscriptionRepository, $invoiceStatsProvider, $paymentAmountStatsProvider, $refundAmountStatsProvider, $chargeBackAmountStatsProvider, $subscriptionCountStatsProvider, $subscriptionCreationStatsProvider, $subscriptionCancellationStatsProvider, $settingsRepository, $cachedStatsRepository, $customerRepository, $customerDataMapper, $customerSubscriptionEventRepository, $subscriptionEventDataMapper, $paymentRepository, $paymentDataMapper) {
+        $mainDashboardStat = $appCacheShort->get('dashboard_stats', function (ItemInterface $item) use (
+            $subscriptionRepository,
+            $invoiceStatsProvider,
+            $subscriptionCountStatsProvider,
+            $settingsRepository,
+            $cachedStatsRepository,
+            $customerRepository,
+            $customerDataMapper,
+            $customerSubscriptionEventRepository,
+            $subscriptionEventDataMapper,
+            $paymentRepository,
+            $paymentDataMapper,
+            $paymentStatsRepository,
+            $stackedColumns,
+        ) {
+            $item->expiresAfter(\DateInterval::createFromDateString('5 minutes'));
             $headerStats = new MainDashboardHeader();
             $headerStats->setActiveSubscriptions($subscriptionRepository->getCountActive());
             $headerStats->setActiveCustomers($subscriptionRepository->getCountOfActiveCustomers());
@@ -71,12 +81,8 @@ class DashboardController
 
             $mainDashboardStat = new MainDashboardStats();
             $mainDashboardStat->setHeader($headerStats);
-            $mainDashboardStat->setPaymentAmount($paymentAmountStatsProvider->getMainDashboard());
-            $mainDashboardStat->setRefundAmount($refundAmountStatsProvider->getMainDashboard());
-            $mainDashboardStat->setChargeBackAmount($chargeBackAmountStatsProvider->getMainDashboard());
+            $mainDashboardStat->setPaymentStats($stackedColumns->formatMonthly($paymentStatsRepository->getMonthlyPaymentStatsForAYear()));
             $mainDashboardStat->setSubscriptionCount($subscriptionCountStatsProvider->getMainDashboard());
-            $mainDashboardStat->setSubscriptionCreation($subscriptionCreationStatsProvider->getMainDashboard());
-            $mainDashboardStat->setSubscriptionCancellation($subscriptionCancellationStatsProvider->getMainDashboard());
             $mainDashboardStat->setCurrency($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
 
             $mrrCache = $cachedStatsRepository->getMoneyStat(CachedStats::STAT_NAME_ESTIMATED_MRR);

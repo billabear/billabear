@@ -17,20 +17,8 @@ class MainDashboardStats
     #[SerializedName('subscription_count')]
     private DashboardStats $subscriptionCount;
 
-    #[SerializedName('subscription_creation')]
-    private DashboardStats $subscriptionCreation;
-
-    #[SerializedName('subscription_cancellation')]
-    private DashboardStats $subscriptionCancellation;
-
-    #[SerializedName('payment_amount')]
-    private DashboardStats $paymentAmount;
-
-    #[SerializedName('refund_amount')]
-    private DashboardStats $refundAmount;
-
-    #[SerializedName('charge_back_amount')]
-    private DashboardStats $chargeBackAmount;
+    #[SerializedName('payment_stats')]
+    private array $paymentStats;
 
     #[SerializedName('estimated_mrr')]
     private int $estimatedMrr;
@@ -59,54 +47,14 @@ class MainDashboardStats
         $this->subscriptionCount = $subscriptionCount;
     }
 
-    public function getSubscriptionCreation(): DashboardStats
+    public function getPaymentStats(): array
     {
-        return $this->subscriptionCreation;
+        return $this->paymentStats;
     }
 
-    public function setSubscriptionCreation(DashboardStats $subscriptionCreation): void
+    public function setPaymentStats(array $paymentStats): void
     {
-        $this->subscriptionCreation = $subscriptionCreation;
-    }
-
-    public function getSubscriptionCancellation(): DashboardStats
-    {
-        return $this->subscriptionCancellation;
-    }
-
-    public function setSubscriptionCancellation(DashboardStats $subscriptionCancellation): void
-    {
-        $this->subscriptionCancellation = $subscriptionCancellation;
-    }
-
-    public function getPaymentAmount(): DashboardStats
-    {
-        return $this->paymentAmount;
-    }
-
-    public function setPaymentAmount(DashboardStats $paymentAmount): void
-    {
-        $this->paymentAmount = $paymentAmount;
-    }
-
-    public function getRefundAmount(): DashboardStats
-    {
-        return $this->refundAmount;
-    }
-
-    public function setRefundAmount(DashboardStats $refundAmount): void
-    {
-        $this->refundAmount = $refundAmount;
-    }
-
-    public function getChargeBackAmount(): DashboardStats
-    {
-        return $this->chargeBackAmount;
-    }
-
-    public function setChargeBackAmount(DashboardStats $chargeBackAmount): void
-    {
-        $this->chargeBackAmount = $chargeBackAmount;
+        $this->paymentStats = $paymentStats;
     }
 
     public function getEstimatedMrr(): int

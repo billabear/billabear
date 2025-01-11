@@ -1335,7 +1335,8 @@
                         "trial_active": "Prova attiva",
                         "trial_ended": "Prova conclusa"
                     }
-                }
+                },
+                "loading": "Caricamento abbonamenti..."
             },
             "menu": {
                 "title": "Abbonamenti",
@@ -2128,7 +2129,9 @@
                 "buttons": {
                     "daily": "Giornaliero",
                     "monthly": "Mensile",
-                    "yearly": "Annuale"
+                    "yearly": "Annuale",
+                    "subscriptions": "Abbonamenti",
+                    "payments": "Pagamenti"
                 },
                 "links": {
                     "customers": "Clienti",
@@ -2157,6 +2160,9 @@
                         "customer": "Cliente",
                         "creation_date": "Data di creazione"
                     }
+                },
+                "payments": {
+                    "title": "Totali dei pagamenti"
                 }
             },
             "expiring_cards": {

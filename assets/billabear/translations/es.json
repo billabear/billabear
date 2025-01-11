@@ -1335,7 +1335,8 @@
                         "trial_active": "Prueba activa",
                         "trial_ended": "Juicio finalizado"
                     }
-                }
+                },
+                "loading": "Cargando suscripciones..."
             },
             "menu": {
                 "title": "Suscripciones",
@@ -2128,7 +2129,9 @@
                 "buttons": {
                     "daily": "Diario",
                     "monthly": "Mensualmente",
-                    "yearly": "Anualmente"
+                    "yearly": "Anualmente",
+                    "subscriptions": "Suscripciones",
+                    "payments": "Pagos"
                 },
                 "links": {
                     "customers": "Clientes",
@@ -2157,6 +2160,9 @@
                         "customer": "Cliente",
                         "creation_date": "Fecha de creación"
                     }
+                },
+                "payments": {
+                    "title": "Totales de pago"
                 }
             },
             "expiring_cards": {
