@@ -12,10 +12,12 @@ use BillaBear\Command\DevDemoDataCommand;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
+use BillaBear\Entity\PaymentCreation;
 use BillaBear\Entity\Subscription;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\ExchangeRates\ToSystemConverter;
 use BillaBear\Payment\InvoiceCharger;
+use BillaBear\Payment\PaymentCreationProcessor;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
@@ -45,6 +47,7 @@ class InvoiceCreation
         private InvoiceRepositoryInterface $invoiceRepository,
         private EntityManagerInterface $entityManager,
         private ToSystemConverter $toSystemConverter,
+        private PaymentCreationProcessor $paymentCreationProcessor,
     ) {
     }
 
@@ -143,5 +146,11 @@ class InvoiceCreation
         $invoice->setPayments(new ArrayCollection([$payment]));
         $invoice->setPaid(true);
         $this->invoiceRepository->save($invoice);
+
+        $paymentCreation = new PaymentCreation();
+        $paymentCreation->setPayment($payment);
+        $paymentCreation->setState('started');
+        $paymentCreation->setCreatedAt($payment->getCreatedAt());
+        $this->paymentCreationProcessor->process($paymentCreation);
     }
 }
