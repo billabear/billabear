@@ -12,6 +12,7 @@ use BillaBear\Dto\Response\App\Stats\DashboardStats;
 use BillaBear\Repository\Stats\Aggregate\PaymentAmountDailyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\PaymentAmountMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\PaymentAmountYearlyStatsRepositoryInterface;
+use BillaBear\Stats\Graphs\Formatters\MoneyStatOutputConverter;
 
 class PaymentAmountStatsProvider
 {

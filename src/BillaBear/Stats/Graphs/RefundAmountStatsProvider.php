@@ -12,6 +12,7 @@ use BillaBear\Dto\Response\App\Stats\DashboardStats;
 use BillaBear\Repository\Stats\Aggregate\RefundAmountDailyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\RefundAmountMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\RefundAmountYearlyStatsRepositoryInterface;
+use BillaBear\Stats\Graphs\Formatters\MoneyStatOutputConverter;
 
 class RefundAmountStatsProvider
 {

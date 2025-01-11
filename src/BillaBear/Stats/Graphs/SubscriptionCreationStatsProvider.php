@@ -12,6 +12,7 @@ use BillaBear\Dto\Response\App\Stats\DashboardStats;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCreationDailyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCreationMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCreationYearlyStatsRepositoryInterface;
+use BillaBear\Stats\Graphs\Formatters\StatOutputConverter;
 
 class SubscriptionCreationStatsProvider
 {

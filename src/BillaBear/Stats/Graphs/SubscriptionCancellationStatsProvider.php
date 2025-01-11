@@ -12,6 +12,7 @@ use BillaBear\Dto\Response\App\Stats\DashboardStats;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationDailyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCancellationYearlyStatsRepositoryInterface;
+use BillaBear\Stats\Graphs\Formatters\StatOutputConverter;
 
 class SubscriptionCancellationStatsProvider
 {

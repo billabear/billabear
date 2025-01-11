@@ -374,7 +374,7 @@ class MainContext implements Context
     {
         $data = $this->getJsonContent();
 
-        if (!isset($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND])) {
+        if (!isset($data['subscription_count']['daily'][Customer::DEFAULT_BRAND])) {
             throw new \Exception("Can't see subscritpion creation stats");
         }
     }
@@ -385,7 +385,7 @@ class MainContext implements Context
     public function iWillSeeThereIsDaysOfDailyStats($arg1)
     {
         $data = $this->getJsonContent();
-        $actual = count($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND]);
+        $actual = count($data['subscription_count']['daily'][Customer::DEFAULT_BRAND]);
         if ($actual != $arg1) {
             throw new \Exception('wrong count - '.$actual);
         }
@@ -397,7 +397,7 @@ class MainContext implements Context
     public function iWillSeeThereIsMonthsOfMonthlyStats($arg1)
     {
         $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
+        if (count($data['subscription_count']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
             throw new \Exception('wrong count');
         }
     }
@@ -408,21 +408,8 @@ class MainContext implements Context
     public function iWillSeeThereIsYearsOfYearlyStats($arg1)
     {
         $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
+        if (count($data['subscription_count']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
             throw new \Exception('wrong count');
-        }
-    }
-
-    /**
-     * @Then I will see there is 12 months of monthly revenue stats for :currency
-     */
-    public function iWillSeeThereIsMonthsOfMonthlyRevenueStatsFor($currency)
-    {
-        $data = $this->getJsonContent();
-        foreach ($data['payment_amount']['monthly'][Customer::DEFAULT_BRAND] as $month) {
-            if (0 == $month[$currency]) {
-                throw new \Exception('There is a month with a zero. There should be no months with a zero');
-            }
         }
     }
 

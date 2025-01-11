@@ -17,8 +17,8 @@ class MainDashboardStats
     #[SerializedName('subscription_count')]
     private DashboardStats $subscriptionCount;
 
-    #[SerializedName('payment_stats')]
-    private array $paymentStats;
+    #[SerializedName('revenue_stats')]
+    private DashboardStats $revenueStats;
 
     #[SerializedName('estimated_mrr')]
     private int $estimatedMrr;
@@ -47,14 +47,14 @@ class MainDashboardStats
         $this->subscriptionCount = $subscriptionCount;
     }
 
-    public function getPaymentStats(): array
+    public function getRevenueStats(): DashboardStats
     {
-        return $this->paymentStats;
+        return $this->revenueStats;
     }
 
-    public function setPaymentStats(array $paymentStats): void
+    public function setRevenueStats(DashboardStats $revenueStats): void
     {
-        $this->paymentStats = $paymentStats;
+        $this->revenueStats = $revenueStats;
     }
 
     public function getEstimatedMrr(): int

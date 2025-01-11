@@ -25,10 +25,16 @@
               <span class="text-3xl">{{ responseData.header.unpaid_invoices_count }}</span> / {{ displayCurrency(responseData.header.unpaid_invoices_amount) }} {{ currency }}
             </div>
           </div>
-          <div class="stat">
+          <div class="stat" v-if="viewName !== 'yearly'">
             <h3 class="stat-header">{{ $t('app.reports.dashboard.estimated_mrr') }}</h3>
             <div class="stat-body">
               <span class="text-3xl">{{ displayCurrency(estimated_mrr) }} </span> {{ currency }}
+            </div>
+          </div>
+          <div class="stat" v-else>
+            <h3 class="stat-header">{{ $t('app.reports.dashboard.estimated_arr') }}</h3>
+            <div class="stat-body">
+              <span class="text-3xl">{{ displayCurrency(estimated_arr) }} </span> {{ currency }}
             </div>
           </div>
         </div>
@@ -73,6 +79,9 @@
                <apexchart ref="analyticsChart" :series="paymentAmountChartSeries" :options="paymentAmountChartOptions"  height="400"   />
              </div>
           </div>
+        </div>
+        <div class="flex card-body h-[430px] text-center place-content-center" v-if="chart=='loading'">
+          <LoadingMessage class="place-content-center">{{ $t('app.reports.dashboard.loading_chart') }}</LoadingMessage>
         </div>
 
         <div class="grid grid-cols-3 my-5 gap-3">
@@ -285,8 +294,6 @@ export default {
     axios.get('/app/stats').then(response => {
       this.ready = true;
       this.responseData = response.data;
-      this.paymentAmountChartSeries = response.data.payment_stats.series;
-      this.paymentAmountChartOptions.xaxis.categories  = response.data.payment_stats.xaxis;
       const viewName = 'monthly';
       this.setChartData(viewName)
     })
@@ -313,14 +320,31 @@ export default {
   methods: {
     setChart: function (chartName) {
       this.chart = chartName;
+      this.setChartData(this.viewName)
     },
     setChartData: function (viewName) {
-      this.viewName = viewName;
-      const subscriptionCountStats = this.convertStatToChartData(this.responseData.subscription_count[viewName]);
-      this.subscriptionCountChartSeries = subscriptionCountStats.values;
-      this.subscriptionCountChartOptions.xaxis.categories = subscriptionCountStats.categories;
+      const orgChart = this.chart;
+      this.chart = 'loading';
 
+      let that = this;
+      setTimeout(function() {
+        var data;
 
+        if (orgChart === 'subscriptions') {
+          data = that.responseData.subscription_count;
+          const subscriptionCountStats = that.convertStatToChartData(data[viewName]);
+          that.subscriptionCountChartSeries = subscriptionCountStats.values;
+          that.subscriptionCountChartOptions.xaxis.categories = subscriptionCountStats.categories;
+          console.log("Testsfdsf")
+        } else {
+          data = that.responseData.revenue_stats[viewName];
+          that.paymentAmountChartSeries = data.series;
+          that.paymentAmountChartOptions.xaxis.categories  = data.xaxis;
+        }
+
+        that.viewName = viewName;
+        that.chart = orgChart;
+      }, 100);
       this.currency = this.responseData.currency;
       this.estimated_mrr = this.responseData.estimated_mrr;
       this.estimated_arr = this.responseData.estimated_arr;

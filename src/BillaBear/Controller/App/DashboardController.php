@@ -15,7 +15,6 @@ use BillaBear\Dto\Response\App\Stats\MainDashboardHeader;
 use BillaBear\Dto\Response\App\Stats\MainDashboardStats;
 use BillaBear\Entity\Stats\CachedStats;
 use BillaBear\Invoice\UnpaidInvoiceStatsProvider;
-use BillaBear\Reports\Formatters\StackedColumns;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\PaymentRepositoryInterface;
@@ -23,6 +22,7 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\CachedStatsRepositoryInterface;
 use BillaBear\Repository\Stats\PaymentStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Stats\Graphs\RevenueStatsProvider;
 use BillaBear\Stats\Graphs\SubscriptionCountStatsProvider;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,7 +40,7 @@ class DashboardController
     public function returnStats(
         SubscriptionCountStatsProvider $subscriptionCountStatsProvider,
         PaymentStatsRepositoryInterface $paymentStatsRepository,
-        StackedColumns $stackedColumns,
+        RevenueStatsProvider $revenueStatsProvider,
         SubscriptionRepositoryInterface $subscriptionRepository,
         SerializerInterface $serializer,
         CachedStatsRepositoryInterface $cachedStatsRepository,
@@ -68,8 +68,7 @@ class DashboardController
             $subscriptionEventDataMapper,
             $paymentRepository,
             $paymentDataMapper,
-            $paymentStatsRepository,
-            $stackedColumns,
+            $revenueStatsProvider,
         ) {
             $item->expiresAfter(\DateInterval::createFromDateString('5 minutes'));
             $headerStats = new MainDashboardHeader();
@@ -81,7 +80,7 @@ class DashboardController
 
             $mainDashboardStat = new MainDashboardStats();
             $mainDashboardStat->setHeader($headerStats);
-            $mainDashboardStat->setPaymentStats($stackedColumns->formatMonthly($paymentStatsRepository->getMonthlyPaymentStatsForAYear()));
+            $mainDashboardStat->setRevenueStats($revenueStatsProvider->getMainDashboard());
             $mainDashboardStat->setSubscriptionCount($subscriptionCountStatsProvider->getMainDashboard());
             $mainDashboardStat->setCurrency($settingsRepository->getDefaultSettings()->getSystemSettings()->getMainCurrency());
 

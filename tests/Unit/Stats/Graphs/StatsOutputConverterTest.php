@@ -10,7 +10,7 @@ namespace BillaBear\Tests\Unit\Stats\Graphs;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Stats\SubscriptionCreationDailyStats;
-use BillaBear\Stats\Graphs\StatOutputConverter;
+use BillaBear\Stats\Graphs\Formatters\StatOutputConverter;
 use PHPUnit\Framework\TestCase;
 
 class StatsOutputConverterTest extends TestCase

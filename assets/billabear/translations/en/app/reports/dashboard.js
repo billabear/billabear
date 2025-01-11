@@ -62,5 +62,6 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
     },
     payments: {
         title: "Payment Totals"
-    }
+    },
+    loading_chart: "Loading chart data..."
 };

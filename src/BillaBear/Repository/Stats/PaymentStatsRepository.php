@@ -21,7 +21,17 @@ class PaymentStatsRepository implements PaymentStatsRepositoryInterface
 
     public function getDailyPaymentStatesForAMonth(): array
     {
-        // TODO: Implement getDailyPaymentStatesForAMonth() method.
+        $result = $this->connection->executeQuery('select count(*), sum(p.converted_amount) as amount, p.converted_currency as currency, sp."name",  
+EXTRACT(DAY FROM p.created_at) as "day", EXTRACT(MONTH FROM p.created_at) as "month", EXTRACT(year FROM p.created_at) as "year" 
+from payment p
+inner join payment_subscription ps ON ps.payment_id =p.id 
+inner join "subscription" s on s.id = ps.subscription_id 
+inner join subscription_plan sp on sp.id = s.subscription_plan_id 
+WHERE p.created_at >= NOW() - INTERVAL \'30 days\'
+group by sp."name", p.converted_currency, EXTRACT(DAY FROM p.created_at), EXTRACT(MONTH FROM p.created_at), EXTRACT(year FROM p.created_at)
+order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at), EXTRACT(DAY FROM p.created_at)');
+
+        return $result->fetchAllAssociative();
     }
 
     public function getMonthlyPaymentStatsForAYear(): array
@@ -41,6 +51,16 @@ order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at);');
 
     public function getYearlyPaymentStats(): array
     {
-        // TODO: Implement getYearlyPaymentStats() method.
+        $result = $this->connection->executeQuery('select count(*),sum(p.converted_amount) as amount, p.converted_currency as currency, sp."name",  
+EXTRACT(year FROM p.created_at) as "year" 
+from payment p
+inner join payment_subscription ps ON ps.payment_id =p.id 
+inner join "subscription" s on s.id = ps.subscription_id 
+inner join subscription_plan sp on sp.id = s.subscription_plan_id 
+WHERE p.created_at >= NOW() - INTERVAL \'5 years\'
+group by sp."name", p.converted_currency, EXTRACT(year FROM p.created_at)
+order by EXTRACT(year FROM p.created_at)');
+
+        return $result->fetchAllAssociative();
     }
 }

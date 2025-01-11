@@ -12,6 +12,7 @@ use BillaBear\Dto\Response\App\Stats\DashboardStats;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCountDailyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCountMonthlyStatsRepositoryInterface;
 use BillaBear\Repository\Stats\Aggregate\SubscriptionCountYearlyStatsRepositoryInterface;
+use BillaBear\Stats\Graphs\Formatters\StatOutputConverter;
 
 class SubscriptionCountStatsProvider
 {
@@ -27,6 +28,7 @@ class SubscriptionCountStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
+        $thirtyDaysAgo = $thirtyDaysAgo->modify('midnight');
         $oneYear = new \DateTime('first day of this month');
         $oneYear = $oneYear->modify('-11 months');
         $tenYears = new \DateTime('first day of january');
