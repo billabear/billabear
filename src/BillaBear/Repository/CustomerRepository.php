@@ -89,7 +89,7 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
         return $this->entityRepository->count([]);
     }
 
-    public function getLatestCustomers(int $number = 5): array
+    public function getLatestCustomers(int $number = 10): array
     {
         return $this->entityRepository->findBy([], ['createdAt' => 'DESC'], $number);
     }

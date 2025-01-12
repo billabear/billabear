@@ -88,7 +88,7 @@
           </div>
           <div class="">
             <TabGroup>
-              <TabList class="block w-full bg-white rounded-3xl my-3 flex justify-center ">
+              <TabList class="w-full bg-white rounded-3xl my-3 flex justify-between">
                 <Tab v-slot="{ selected }">
                   <button :class="['chart-button inline p-2 rounded-3xl', selected ? 'chart-button-selected' : '' ]">
                     {{ $t('app.reports.dashboard.latest_customers.title') }}
