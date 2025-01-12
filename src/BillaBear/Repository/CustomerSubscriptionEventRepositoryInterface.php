@@ -30,5 +30,5 @@ interface CustomerSubscriptionEventRepositoryInterface extends CrudRepositoryInt
      */
     public function getAllForSubscription(Subscription $subscription): array;
 
-    public function getLatest(int $limit = 5): array;
+    public function getLatest(int $limit = 10): array;
 }

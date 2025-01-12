@@ -38,119 +38,145 @@
             </div>
           </div>
         </div>
-        <div class="grid grid-cols-2">
-          <div class="my-5">
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2">
+            <div class="grid grid-cols-2">
+              <div class="my-5">
 
-            <div class="bg-white rounded-3xl inline p-3">
-              <div class="chart-button inline p-3 rounded-3xl " @click="setChart('subscriptions')" :class="{'chart-button-selected': chart === 'subscriptions'}">
-                {{ $t('app.reports.dashboard.buttons.subscriptions') }}
+                <div class="bg-white rounded-3xl inline p-3">
+                  <div class="chart-button inline p-3 rounded-3xl " @click="setChart('subscriptions')" :class="{'chart-button-selected': chart === 'subscriptions'}">
+                    {{ $t('app.reports.dashboard.buttons.subscriptions') }}
+                  </div>
+                  <div class="chart-button inline p-3 rounded-3xl " @click="setChart('payments')" :class="{'chart-button-selected': chart === 'payments'}">
+                    {{ $t('app.reports.dashboard.buttons.payments') }}
+                  </div>
+                </div>
               </div>
-              <div class="chart-button inline p-3 rounded-3xl " @click="setChart('payments')" :class="{'chart-button-selected': chart === 'payments'}">
-                {{ $t('app.reports.dashboard.buttons.payments') }}
+              <div class="text-end my-5">
+                <div class="bg-white rounded-3xl inline p-3">
+                  <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
+                    {{ $t('app.reports.dashboard.buttons.daily') }}
+                  </div>
+                  <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
+                    {{ $t('app.reports.dashboard.buttons.monthly') }}
+                  </div>
+                  <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
+                    {{ $t('app.reports.dashboard.buttons.yearly') }}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="text-end my-5">
-            <div class="bg-white rounded-3xl inline p-3">
-              <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('daily')" :class="{'chart-button-selected': viewName === 'daily'}">
-                {{ $t('app.reports.dashboard.buttons.daily') }}
-              </div>
-              <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
-                {{ $t('app.reports.dashboard.buttons.monthly') }}
-              </div>
-              <div class="chart-button inline p-3 rounded-3xl " @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
-                {{ $t('app.reports.dashboard.buttons.yearly') }}
+            <div class="card-body" v-if="chart=='subscriptions'">
+              <div  class="">
+                <h2 class="chart-title">{{ $t('app.reports.dashboard.subscription_count.title') }}</h2>
+                <div class="section-body">
+                  <apexchart ref="analyticsChart" :series="subscriptionCountChartSeries" :options="subscriptionCountChartOptions"  height="400"   />
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="card-body" v-if="chart=='subscriptions'">
-          <div  class="">
-            <h2 class="chart-title">{{ $t('app.reports.dashboard.subscription_count.title') }}</h2>
-            <div class="section-body">
-              <apexchart ref="analyticsChart" :series="subscriptionCountChartSeries" :options="subscriptionCountChartOptions"  height="400"   />
+            <div class="card-body" v-if="chart=='payments'">
+              <div  class="">
+                <h2 class="chart-title">{{ $t('app.reports.dashboard.payments.title') }}</h2>
+                <div class="section-body">
+                  <apexchart ref="analyticsChart" :series="paymentAmountChartSeries" :options="paymentAmountChartOptions"  height="400"   />
+                </div>
+              </div>
+            </div>
+            <div class="flex card-body h-[430px] text-center place-content-center" v-if="chart=='loading'">
+              <LoadingMessage class="place-content-center">{{ $t('app.reports.dashboard.loading_chart') }}</LoadingMessage>
             </div>
           </div>
-        </div>
-        <div class="card-body" v-if="chart=='payments'">
-          <div  class="">
-            <h2 class="chart-title">{{ $t('app.reports.dashboard.payments.title') }}</h2>
-             <div class="section-body">
-               <apexchart ref="analyticsChart" :series="paymentAmountChartSeries" :options="paymentAmountChartOptions"  height="400"   />
-             </div>
-          </div>
-        </div>
-        <div class="flex card-body h-[430px] text-center place-content-center" v-if="chart=='loading'">
-          <LoadingMessage class="place-content-center">{{ $t('app.reports.dashboard.loading_chart') }}</LoadingMessage>
-        </div>
+          <div class="">
+            <TabGroup>
+              <TabList class="block w-full bg-white rounded-3xl my-3 flex justify-center ">
+                <Tab v-slot="{ selected }">
+                  <button :class="['chart-button inline p-2 rounded-3xl', selected ? 'chart-button-selected' : '' ]">
+                    {{ $t('app.reports.dashboard.latest_customers.title') }}
+                  </button>
+                </Tab>
+                <Tab v-slot="{ selected }">
+                  <button :class="['chart-button inline p-2 rounded-3xl', selected ? 'chart-button-selected' : '' ]">
+                    {{ $t('app.reports.dashboard.latest_events.title') }}
+                  </button>
+                </Tab>
+                <Tab v-slot="{ selected }">
+                  <button :class="['chart-button inline p-2 rounded-3xl', selected ? 'chart-button-selected' : '' ]">
+                    {{ $t('app.reports.dashboard.latest_payments.title') }}
+                  </button>
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <div class="card-body overflow-auto">
+                    <h2 class="section-header"></h2>
 
-        <div class="grid grid-cols-3 my-5 gap-3">
-          <div class="card-body overflow-auto">
-            <h2 class="section-header">{{ $t('app.reports.dashboard.latest_customers.title') }}</h2>
+                    <div class="mt-2">
+                      <table class="list-table">
+                        <thead>
+                        <tr>
+                          <th>{{ $t('app.reports.dashboard.latest_customers.list.email') }}</th>
+                          <th>{{ $t('app.reports.dashboard.latest_customers.list.creation_date') }}</th>
+                          <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="customer in customers">
+                          <td><router-link  :to="{name: 'app.customer.view', params: {id: customer.id}}">{{ customer.email }}</router-link></td>
+                          <td>{{ $filters.moment(customer.created_at, 'lll') }}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </TabPanel>
+                <TabPanel>
+                  <div class="card-body overflow-auto">
 
-            <div class="mt-2">
-              <table class="list-table">
-                <thead>
-                  <tr>
-                    <th>{{ $t('app.reports.dashboard.latest_customers.list.email') }}</th>
-                    <th>{{ $t('app.reports.dashboard.latest_customers.list.creation_date') }}</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="customer in customers">
-                    <td><router-link  :to="{name: 'app.customer.view', params: {id: customer.id}}">{{ customer.email }}</router-link></td>
-                    <td>{{ $filters.moment(customer.created_at, 'lll') }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                    <div class="mt-2">
+                      <table class="list-table">
+                        <thead>
+                        <tr>
+                          <th>{{ $t('app.reports.dashboard.latest_events.list.event_type') }}</th>
+                          <th>{{ $t('app.reports.dashboard.latest_events.list.customer') }}</th>
+                          <th>{{ $t('app.reports.dashboard.latest_events.list.creation_date') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="event in events">
+                          <td>{{ event.type }}</td>
+                          <td><router-link  :to="{name: 'app.customer.view', params: {id: event.subscription.customer.id}}">{{ event.subscription.customer.email }}</router-link></td>
+                          <td>{{ $filters.moment(event.created_at, 'lll') }}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
 
-          <div class="card-body overflow-auto">
-            <h2 class="section-header">{{ $t('app.reports.dashboard.latest_events.title') }}</h2>
-
-            <div class="mt-2">
-              <table class="list-table">
-                <thead>
-                  <tr>
-                    <th>{{ $t('app.reports.dashboard.latest_events.list.event_type') }}</th>
-                    <th>{{ $t('app.reports.dashboard.latest_events.list.customer') }}</th>
-                    <th>{{ $t('app.reports.dashboard.latest_events.list.creation_date') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="event in events">
-                    <td>{{ event.type }}</td>
-                    <td><router-link  :to="{name: 'app.customer.view', params: {id: event.subscription.customer.id}}">{{ event.subscription.customer.email }}</router-link></td>
-                    <td>{{ $filters.moment(event.created_at, 'lll') }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-
-          <div class="card-body overflow-auto">
-            <h2 class="section-header">{{ $t('app.reports.dashboard.latest_payments.title') }}</h2>
-            <div class="mt-2">
-              <table class="list-table">
-                <thead>
-                <tr>
-                  <th>{{ $t('app.reports.dashboard.latest_payments.list.amount') }}</th>
-                  <th>{{ $t('app.reports.dashboard.latest_payments.list.customer') }}</th>
-                  <th>{{ $t('app.reports.dashboard.latest_payments.list.creation_date') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="payment in payments">
-                  <td>{{ payment.currency }} {{ displayCurrency(payment.amount) }}</td>
-                  <td><router-link  :to="{name: 'app.customer.view', params: {id: payment.customer.id}}">{{ payment.customer.email }}</router-link></td>
-                  <td>{{ $filters.moment(payment.created_at, 'lll') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+                  </div>
+                </TabPanel>
+                <TabPanel>
+                  <div class="card-body overflow-auto">
+                    <div class="mt-2">
+                      <table class="list-table">
+                        <thead>
+                        <tr>
+                          <th>{{ $t('app.reports.dashboard.latest_payments.list.amount') }}</th>
+                          <th>{{ $t('app.reports.dashboard.latest_payments.list.customer') }}</th>
+                          <th>{{ $t('app.reports.dashboard.latest_payments.list.creation_date') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="payment in payments">
+                          <td>{{ payment.currency }} {{ displayCurrency(payment.amount) }}</td>
+                          <td><router-link  :to="{name: 'app.customer.view', params: {id: payment.customer.id}}">{{ payment.customer.email }}</router-link></td>
+                          <td>{{ $filters.moment(payment.created_at, 'lll') }}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </TabPanel>
+              </TabPanels>
+            </TabGroup>
           </div>
         </div>
       </LoadingScreen>
@@ -175,11 +201,11 @@ import currency from "currency.js";
 import WorldMap from "../../components/app/Graphs/WorldMap.vue";
 import {mapState} from "vuex";
 import OnboardingMenu from "../../components/app/Onboarding/OnboardingMenu.vue";
-import {TableBody} from "flowbite-vue";
+import {TabGroup, Tab, TabList, TabPanel, TabPanels} from "@headlessui/vue";
 
 export default {
   name: "Dashboard",
-  components: {TableBody, OnboardingMenu, WorldMap},
+  components: {Tab, TabPanels, TabPanel, TabList, TabGroup, OnboardingMenu, WorldMap},
   data() {
     return {
       ready: false,
