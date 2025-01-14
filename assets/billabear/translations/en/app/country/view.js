@@ -9,7 +9,9 @@ export const COUNTRY_VIEW_TRANSLATIONS = {
         start_of_tax_year: "Start Of Tax Year",
         enabled: "Enabled",
         collecting: "Collecting Tax",
-        tax_number: "Tax Number"
+        tax_number: "Tax Number",
+        transaction_threshold: "Transaction Threshold",
+        threshold_type: "Threshold Type",
     },
     edit_button: "Edit",
     tax_rule: {

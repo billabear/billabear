@@ -3407,7 +3407,9 @@
                     "start_of_tax_year": "Início do ano fiscal",
                     "enabled": "Ativado",
                     "collecting": "Cobrança de impostos",
-                    "tax_number": "Número de identificação fiscal"
+                    "tax_number": "Número de identificação fiscal",
+                    "transaction_threshold": "Limiar de transação",
+                    "threshold_type": "Tipo de limiar"
                 },
                 "edit_button": "Editar",
                 "tax_rule": {
@@ -3464,7 +3466,15 @@
                         "tax_year": "Início do ano fiscal",
                         "enabled": "Ativado",
                         "collecting": "Cobrar impostos",
-                        "tax_number": "Número de identificação fiscal"
+                        "tax_number": "Número de identificação fiscal",
+                        "transaction_threshold": "Limiar de transação",
+                        "threshold_type": "Tipo de limiar",
+                        "threshold_types": {
+                            "rolling": "Rolagem anual",
+                            "calendar": "Ano civil",
+                            "rolling_quarterly": "Rolagem por trimestres",
+                            "rolling_accounting": "Rolagem por exercício contabilístico"
+                        }
                     },
                     "help_info": {
                         "name": "O nome do país",
@@ -3475,7 +3485,9 @@
                         "tax_year": "A data de início do ano fiscal do país",
                         "enabled": "Se o país estiver ativado para inscrições de clientes",
                         "collecting": "Se os impostos devem ser sempre cobrados para este país",
-                        "tax_number": "O seu número de contribuinte para este país."
+                        "tax_number": "O seu número de contribuinte para este país.",
+                        "transaction_threshold": "Qual o limiar de transação para o Estado",
+                        "threshold_type": "Como é determinado o período de tempo para o cálculo do limiar"
                     }
                 },
                 "update_button": "Atualização"
@@ -3562,7 +3574,9 @@
                     "name": "Nome",
                     "code": "Código",
                     "threshold": "Limiar",
-                    "collecting": "Coleção"
+                    "collecting": "Coleção",
+                    "transaction_threshold": "Limiar de transação",
+                    "threshold_type": "Tipo de limiar"
                 },
                 "tax_rule": {
                     "title": "Regras fiscais",
@@ -3621,13 +3635,23 @@
                         "name": "Nome",
                         "code": "Código",
                         "collecting": "Coleção",
-                        "threshold": "Limiar"
+                        "threshold": "Limiar",
+                        "transaction_threshold": "Limiar de transação",
+                        "threshold_type": "Tipo de limiar",
+                        "threshold_types": {
+                            "rolling": "Rolagem anual",
+                            "calendar": "Ano civil",
+                            "rolling_quarterly": "Rolagem por trimestres",
+                            "rolling_accounting": "Rolagem por exercício contabilístico"
+                        }
                     },
                     "help_info": {
                         "name": "O nome do Estado",
                         "code": "O código que é frequentemente utilizado como abreviatura para o estado",
                         "collecting": "Se estivermos sempre a cobrar impostos ao Estado",
-                        "threshold": "Qual o limiar económico para o Estado"
+                        "threshold": "Qual o limiar económico para o Estado",
+                        "transaction_threshold": "Qual o limiar de transação para o Estado",
+                        "threshold_type": "Como é determinado o período de tempo para o cálculo do limiar"
                     }
                 },
                 "update_button": "Atualização"

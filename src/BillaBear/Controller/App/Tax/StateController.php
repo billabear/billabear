@@ -11,7 +11,7 @@ namespace BillaBear\Controller\App\Tax;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Tax\StateDataMapper;
 use BillaBear\DataMappers\Tax\StateTaxRuleDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateState;
 use BillaBear\Dto\Request\App\Country\CreateStateTaxRule;
 use BillaBear\Dto\Request\App\Country\UpdateState;

@@ -8,6 +8,7 @@
 
 namespace BillaBear\Dto\Request\App\Country;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateState
@@ -23,6 +24,16 @@ class UpdateState
     #[Assert\GreaterThanOrEqual(0)]
     #[Assert\Type('integer')]
     private $threshold;
+
+    #[Assert\GreaterThan(0)]
+    #[Assert\Type('integer')]
+    #[SerializedName('transaction_threshold')]
+    private $transactionThreshold;
+
+    #[Assert\Choice(choices: ['rolling', 'calendar', 'rolling_quarterly', 'rolling_accounting'])]
+    #[Assert\Type('string')]
+    #[SerializedName('threshold_type')]
+    private $thresholdType;
 
     #[Assert\Type('boolean')]
     private $collecting;
@@ -65,5 +76,25 @@ class UpdateState
     public function setCollecting($collecting): void
     {
         $this->collecting = $collecting;
+    }
+
+    public function getTransactionThreshold()
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold($transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType()
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType($thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

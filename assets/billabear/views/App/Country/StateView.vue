@@ -29,6 +29,14 @@
                 <dt>{{ $t('app.state.view.fields.threshold') }}</dt>
                 <dd><Currency :amount="state.threshold" :currency="state.country.currency" /></dd>
               </div>
+              <div>
+                <dt>{{ $t('app.state.view.fields.transaction_threshold') }}</dt>
+                <dd>{{ state.transaction_threshold }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.state.view.fields.threshold_type') }}</dt>
+                <dd>{{ state.threshold_type }}</dd>
+              </div>
             </dl>
           </div>
         </div>

@@ -3414,7 +3414,9 @@
                     "start_of_tax_year": "Inicio del ejercicio fiscal",
                     "enabled": "Activado",
                     "collecting": "Recaudación de impuestos",
-                    "tax_number": "Número de identificación fiscal"
+                    "tax_number": "Número de identificación fiscal",
+                    "transaction_threshold": "Umbral de transacción",
+                    "threshold_type": "Tipo de umbral"
                 },
                 "edit_button": "Editar",
                 "tax_rule": {
@@ -3471,7 +3473,15 @@
                         "tax_year": "Inicio del ejercicio fiscal",
                         "enabled": "Activado",
                         "collecting": "Recaudar impuestos",
-                        "tax_number": "Número de identificación fiscal"
+                        "tax_number": "Número de identificación fiscal",
+                        "transaction_threshold": "Umbral de transacción",
+                        "threshold_type": "Tipo de umbral",
+                        "threshold_types": {
+                            "rolling": "Rotación anual",
+                            "calendar": "Año natural",
+                            "rolling_quarterly": "Rodar por trimestres",
+                            "rolling_accounting": "Desplazamiento por ejercicio contable"
+                        }
                     },
                     "help_info": {
                         "name": "El nombre del país",
@@ -3482,7 +3492,9 @@
                         "tax_year": "La fecha de inicio del ejercicio fiscal para el país",
                         "enabled": "Si el país está habilitado para el registro de clientes",
                         "collecting": "Si siempre hay que recaudar impuestos para este país",
-                        "tax_number": "Su número de identificación fiscal para este país."
+                        "tax_number": "Su número de identificación fiscal para este país.",
+                        "transaction_threshold": "Cuál es el umbral de transacción del Estado",
+                        "threshold_type": "Cómo se determina el periodo de tiempo para el cálculo del umbral"
                     }
                 },
                 "update_button": "Actualización"
@@ -3569,7 +3581,9 @@
                     "name": "Nombre",
                     "code": "Código",
                     "threshold": "Umbral",
-                    "collecting": "Recopilación"
+                    "collecting": "Recopilación",
+                    "transaction_threshold": "Umbral de transacción",
+                    "threshold_type": "Tipo de umbral"
                 },
                 "tax_rule": {
                     "title": "Normas fiscales",
@@ -3628,13 +3642,23 @@
                         "name": "Nombre",
                         "code": "Código",
                         "collecting": "Recopilación",
-                        "threshold": "Umbral"
+                        "threshold": "Umbral",
+                        "transaction_threshold": "Umbral de transacción",
+                        "threshold_type": "Tipo de umbral",
+                        "threshold_types": {
+                            "rolling": "Rotación anual",
+                            "calendar": "Año natural",
+                            "rolling_quarterly": "Rodar por trimestres",
+                            "rolling_accounting": "Desplazamiento por ejercicio contable"
+                        }
                     },
                     "help_info": {
                         "name": "El nombre del Estado",
                         "code": "El código que suele utilizarse como abreviatura del estado",
                         "collecting": "Si siempre estamos recaudando impuestos para el estado",
-                        "threshold": "Cuál es el umbral económico del Estado"
+                        "threshold": "Cuál es el umbral económico del Estado",
+                        "transaction_threshold": "Cuál es el umbral de transacción del Estado",
+                        "threshold_type": "Cómo se determina el periodo de tiempo para el cálculo del umbral"
                     }
                 },
                 "update_button": "Actualización"

@@ -51,6 +51,16 @@ class CreateCountry
     #[Assert\Type('string')]
     private $taxNumber;
 
+    #[Assert\GreaterThan(0)]
+    #[Assert\Type('integer')]
+    #[SerializedName('transaction_threshold')]
+    private $transactionThreshold;
+
+    #[Assert\Choice(choices: ['rolling', 'calendar', 'rolling_quarterly', 'rolling_accounting'])]
+    #[Assert\Type('string')]
+    #[SerializedName('threshold_type')]
+    private $thresholdType;
+
     public function getName()
     {
         return $this->name;

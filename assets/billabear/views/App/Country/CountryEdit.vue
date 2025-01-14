@@ -79,6 +79,28 @@
             <input type="text" class="form-field" v-model="country.tax_number" />
             <p class="form-field-help">{{ $t('app.country.edit.country.help_info.tax_number') }}</p>
           </div>
+
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="threshold">
+              {{ $t('app.country.edit.country.fields.transaction_threshold') }}
+            </label>
+            <p class="form-field-error" v-if="errors.transactionThreshold != undefined">{{ errors.transactionThreshold }}</p>
+            <input type="number" class="form-field" v-model="country.transaction_threshold" />
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.transaction_threshold') }}</p>
+          </div>
+          <div class="form-field-ctn">
+            <label class="form-field-lbl" for="threshold_type">
+              {{ $t('app.country.edit.country.fields.threshold_type') }}
+            </label>
+            <p class="form-field-error" v-if="errors.thresholdType != undefined">{{ errors.thresholdType }}</p>
+            <select v-model="country.threshold_type" class="form-field">
+              <option value="rolling">{{ $t('app.country.edit.country.fields.threshold_types.rolling') }}</option>
+              <option value="calendar">{{ $t('app.country.edit.country.fields.threshold_types.calendar') }}</option>
+              <option value="rolling_quarterly">{{ $t('app.country.edit.country.fields.threshold_types.rolling_quarterly') }}</option>
+              <option value="rolling_accounting">{{ $t('app.country.edit.country.fields.threshold_types.rolling_accounting') }}</option>
+            </select>
+            <p class="form-field-help">{{ $t('app.country.edit.country.help_info.threshold_type') }}</p>
+          </div>
         </div>
       </div>
       <div class="mt-3">

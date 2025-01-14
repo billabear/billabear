@@ -6,6 +6,8 @@ export const STATE_VIEW_TRANSLATIONS = {
         code: "Code",
         threshold: "Threshold",
         collecting: "Collecting",
+        transaction_threshold: "Transaction Threshold",
+        threshold_type: "Threshold Type",
     },
     tax_rule: {
         title: "Tax Rules",

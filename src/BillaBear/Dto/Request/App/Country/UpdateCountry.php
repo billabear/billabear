@@ -48,6 +48,16 @@ class UpdateCountry
     #[Assert\Type('string')]
     private $taxNumber;
 
+    #[Assert\GreaterThan(0)]
+    #[Assert\Type('integer')]
+    #[SerializedName('transaction_threshold')]
+    private $transactionThreshold;
+
+    #[Assert\Choice(choices: ['rolling', 'calendar', 'rolling_quarterly', 'rolling_accounting'])]
+    #[Assert\Type('string')]
+    #[SerializedName('threshold_type')]
+    private $thresholdType;
+
     public function getName()
     {
         return $this->name;
@@ -146,5 +156,25 @@ class UpdateCountry
     public function setTaxNumber($taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTransactionThreshold()
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold($transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType()
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType($thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

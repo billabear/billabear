@@ -3414,7 +3414,9 @@
                     "start_of_tax_year": "Begin van het belastingjaar",
                     "enabled": "Ingeschakeld",
                     "collecting": "Belasting innen",
-                    "tax_number": "Belastingnummer"
+                    "tax_number": "Belastingnummer",
+                    "transaction_threshold": "Drempel transactie",
+                    "threshold_type": "Type drempel"
                 },
                 "edit_button": "Bewerk",
                 "tax_rule": {
@@ -3471,7 +3473,15 @@
                         "tax_year": "Begin van het belastingjaar",
                         "enabled": "Ingeschakeld",
                         "collecting": "Belasting innen",
-                        "tax_number": "Belastingnummer"
+                        "tax_number": "Belastingnummer",
+                        "transaction_threshold": "Drempel transactie",
+                        "threshold_type": "Type drempel",
+                        "threshold_types": {
+                            "rolling": "Jaarlijks",
+                            "calendar": "Kalenderjaar",
+                            "rolling_quarterly": "Rollen per kwart",
+                            "rolling_accounting": "Voortschrijdend per boekjaar"
+                        }
                     },
                     "help_info": {
                         "name": "De naam van het land",
@@ -3482,7 +3492,9 @@
                         "tax_year": "De datum voor het begin van het belastingjaar voor het land",
                         "enabled": "Als het land is ingeschakeld voor aanmeldingen van klanten",
                         "collecting": "Als er altijd belasting geïnd moet worden voor dit land",
-                        "tax_number": "Je fiscaal nummer voor dit land."
+                        "tax_number": "Je fiscaal nummer voor dit land.",
+                        "transaction_threshold": "Wat de transactiedrempel voor de staat is",
+                        "threshold_type": "Hoe de periode voor de drempelberekening wordt bepaald"
                     }
                 },
                 "update_button": "Update"
@@ -3569,7 +3581,9 @@
                     "name": "Naam",
                     "code": "Code",
                     "threshold": "Drempel",
-                    "collecting": "Verzamelen"
+                    "collecting": "Verzamelen",
+                    "transaction_threshold": "Drempel transactie",
+                    "threshold_type": "Type drempel"
                 },
                 "tax_rule": {
                     "title": "Belastingregels",
@@ -3628,13 +3642,23 @@
                         "name": "Naam",
                         "code": "Code",
                         "collecting": "Verzamelen",
-                        "threshold": "Drempel"
+                        "threshold": "Drempel",
+                        "transaction_threshold": "Drempel transactie",
+                        "threshold_type": "Type drempel",
+                        "threshold_types": {
+                            "rolling": "Jaarlijks",
+                            "calendar": "Kalenderjaar",
+                            "rolling_quarterly": "Rollen per kwart",
+                            "rolling_accounting": "Voortschrijdend per boekjaar"
+                        }
                     },
                     "help_info": {
                         "name": "De naam van de staat",
                         "code": "De code die vaak wordt gebruikt als steno voor de staat",
                         "collecting": "Als we altijd belasting innen voor de staat",
-                        "threshold": "Wat de economische drempel voor de staat is"
+                        "threshold": "Wat de economische drempel voor de staat is",
+                        "transaction_threshold": "Wat de transactiedrempel voor de staat is",
+                        "threshold_type": "Hoe de periode voor de drempelberekening wordt bepaald"
                     }
                 },
                 "update_button": "Update"

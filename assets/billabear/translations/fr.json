@@ -3414,7 +3414,9 @@
                     "start_of_tax_year": "Début de l'année fiscale",
                     "enabled": "Activé",
                     "collecting": "Perception de la taxe",
-                    "tax_number": "Numéro d'identification fiscale"
+                    "tax_number": "Numéro d'identification fiscale",
+                    "transaction_threshold": "Seuil de transaction",
+                    "threshold_type": "Type de seuil"
                 },
                 "edit_button": "Editer",
                 "tax_rule": {
@@ -3471,7 +3473,15 @@
                         "tax_year": "Début de l'année fiscale",
                         "enabled": "Activé",
                         "collecting": "Percevoir l'impôt",
-                        "tax_number": "Numéro d'identification fiscale"
+                        "tax_number": "Numéro d'identification fiscale",
+                        "transaction_threshold": "Seuil de transaction",
+                        "threshold_type": "Type de seuil",
+                        "threshold_types": {
+                            "rolling": "Roulant Annuel",
+                            "calendar": "Année civile",
+                            "rolling_quarterly": "Roulage par quartiers",
+                            "rolling_accounting": "Roulage par année comptable"
+                        }
                     },
                     "help_info": {
                         "name": "Le nom du pays",
@@ -3482,7 +3492,9 @@
                         "tax_year": "Date du début de l'année fiscale pour le pays",
                         "enabled": "Si le pays est activé pour l'inscription des clients",
                         "collecting": "Si l'impôt doit toujours être perçu pour ce pays",
-                        "tax_number": "Votre numéro d'identification fiscale pour ce pays."
+                        "tax_number": "Votre numéro d'identification fiscale pour ce pays.",
+                        "transaction_threshold": "Quel est le seuil de transaction pour l'État ?",
+                        "threshold_type": "Détermination de la période de calcul du seuil"
                     }
                 },
                 "update_button": "Mise à jour"
@@ -3569,7 +3581,9 @@
                     "name": "Nom",
                     "code": "Code",
                     "threshold": "Seuil",
-                    "collecting": "Collecte"
+                    "collecting": "Collecte",
+                    "transaction_threshold": "Seuil de transaction",
+                    "threshold_type": "Type de seuil"
                 },
                 "tax_rule": {
                     "title": "Règles fiscales",
@@ -3628,13 +3642,23 @@
                         "name": "Nom",
                         "code": "Code",
                         "collecting": "Collecte",
-                        "threshold": "Seuil"
+                        "threshold": "Seuil",
+                        "transaction_threshold": "Seuil de transaction",
+                        "threshold_type": "Type de seuil",
+                        "threshold_types": {
+                            "rolling": "Roulant Annuel",
+                            "calendar": "Année civile",
+                            "rolling_quarterly": "Roulage par quartiers",
+                            "rolling_accounting": "Roulage par année comptable"
+                        }
                     },
                     "help_info": {
                         "name": "Le nom de l'Etat",
                         "code": "Le code qui est souvent utilisé comme raccourci pour l'état",
                         "collecting": "Si nous collectons toujours des impôts pour l'État",
-                        "threshold": "Quel est le seuil économique pour l'État ?"
+                        "threshold": "Quel est le seuil économique pour l'État ?",
+                        "transaction_threshold": "Quel est le seuil de transaction pour l'État ?",
+                        "threshold_type": "Comment est déterminée la période de temps pour le calcul du seuil ?"
                     }
                 },
                 "update_button": "Mise à jour"

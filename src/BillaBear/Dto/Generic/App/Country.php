@@ -8,6 +8,7 @@
 
 namespace BillaBear\Dto\Generic\App;
 
+use BillaBear\Tax\ThresholdType;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 class Country
@@ -28,6 +29,9 @@ class Country
 
     private int $threshold;
 
+    #[SerializedName('transaction_threshold')]
+    private ?int $transactionThreshold;
+
     #[SerializedName('in_eu')]
     private bool $inEu;
 
@@ -41,6 +45,9 @@ class Country
 
     #[SerializedName('tax_number')]
     private ?string $taxNumber;
+
+    #[SerializedName('threshold_type')]
+    private ThresholdType $thresholdType;
 
     public function getId(): string
     {
@@ -160,5 +167,25 @@ class Country
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTransactionThreshold(): ?int
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold(?int $transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType(): ThresholdType
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType(ThresholdType $thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

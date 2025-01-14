@@ -10,10 +10,10 @@ namespace BillaBear\Controller\App\Tax;
 
 use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
-use BillaBear\DataMappers\CountryDataMapper;
-use BillaBear\DataMappers\CountryTaxRuleDataMapper;
+use BillaBear\DataMappers\Tax\CountryDataMapper;
+use BillaBear\DataMappers\Tax\CountryTaxRuleDataMapper;
 use BillaBear\DataMappers\Tax\StateDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateCountry;
 use BillaBear\Dto\Request\App\Country\CreateCountryTaxRule;
 use BillaBear\Dto\Request\App\Country\UpdateCountry;

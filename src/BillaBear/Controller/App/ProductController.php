@@ -11,7 +11,7 @@ namespace BillaBear\Controller\App;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\CreateProduct;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Dto\Response\App\Product\CreateProductView;

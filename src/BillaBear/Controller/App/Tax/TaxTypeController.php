@@ -10,7 +10,7 @@ namespace BillaBear\Controller\App\Tax;
 
 use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\TaxType\CreateTaxType;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;

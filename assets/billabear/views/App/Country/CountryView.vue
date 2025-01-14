@@ -31,6 +31,14 @@
                 <dd>{{ currency(country.threshold) }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.country.view.fields.transaction_threshold') }}</dt>
+                <dd>{{ country.transaction_threshold }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.country.view.fields.threshold_type') }}</dt>
+                <dd>{{ country.threshold_type }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.country.view.fields.in_eu') }}</dt>
                 <dd>{{ country.in_eu }}</dd>
               </div>

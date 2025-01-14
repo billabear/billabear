@@ -8,7 +8,6 @@
 
 namespace BillaBear\DataMappers\Tax;
 
-use BillaBear\DataMappers\TaxTypeDataMapper;
 use BillaBear\Dto\Generic\App\StateTaxRule as AppDto;
 use BillaBear\Dto\Request\App\Country\CreateStateTaxRule;
 use BillaBear\Dto\Request\App\Country\UpdateStateTaxRule;

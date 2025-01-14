@@ -11,7 +11,7 @@ namespace BillaBear\Controller\App;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\QuoteDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoice;
 use BillaBear\Dto\Request\App\Invoice\ReadQuoteView;
 use BillaBear\Dto\Request\App\Quote\CreateQuote;

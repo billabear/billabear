@@ -6,13 +6,14 @@
  * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\DataMappers;
+namespace BillaBear\DataMappers\Tax;
 
 use BillaBear\Dto\Generic\App\Country as AppDto;
 use BillaBear\Dto\Request\App\Country\CreateCountry;
 use BillaBear\Dto\Request\App\Country\UpdateCountry;
 use BillaBear\Entity\Country as Entity;
 use BillaBear\Tax\ThresholdManager;
+use BillaBear\Tax\ThresholdType;
 use writecrow\CountryCodeConverter\CountryCodeConverter;
 
 class CountryDataMapper
@@ -38,6 +39,8 @@ class CountryDataMapper
         $entity->setEnabled($updateCountry->isEnabled());
         $entity->setTaxNumber($updateCountry->getTaxNumber());
         $entity->setCollecting($updateCountry->getCollecting());
+        $entity->setTransactionThreshold($updateCountry->getTransactionThreshold());
+        $entity->setThresholdType(ThresholdType::from($updateCountry->getThresholdType()));
 
         return $entity;
     }
@@ -55,6 +58,8 @@ class CountryDataMapper
         $appDto->setStartOfTaxYear($entity->getStartOfTaxYear());
         $appDto->setEnabled($entity->isEnabled());
         $appDto->setTaxNumber($entity->getTaxNumber());
+        $appDto->setTransactionThreshold($entity->getTransactionThreshold());
+        $appDto->setThresholdType($entity->getThresholdType());
 
         $amountTransacted = $this->manager->getTransactedAmount($entity);
         $appDto->setAmountTransacted($amountTransacted->getMinorAmount()->toInt());

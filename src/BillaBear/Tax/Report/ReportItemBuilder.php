@@ -9,7 +9,7 @@
 namespace BillaBear\Tax\Report;
 
 use BillaBear\DataMappers\CustomerDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Generic\App\TaxReportItem;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;

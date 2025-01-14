@@ -8,12 +8,12 @@
 
 namespace BillaBear\DataMappers\Tax;
 
-use BillaBear\DataMappers\CountryDataMapper;
 use BillaBear\Dto\Generic\App\State as AppDto;
 use BillaBear\Dto\Request\App\Country\CreateState;
 use BillaBear\Dto\Request\App\Country\UpdateState;
 use BillaBear\Entity\State as Entity;
 use BillaBear\Repository\CountryRepositoryInterface;
+use BillaBear\Tax\ThresholdType;
 
 class StateDataMapper
 {
@@ -36,6 +36,8 @@ class StateDataMapper
         if ($createState instanceof CreateState) {
             $entity->setCountry($this->countryRepository->findById($createState->getCountry()));
         }
+        $entity->setTransactionThreshold($entity->getTransactionThreshold());
+        $entity->setThresholdType(ThresholdType::from($createState->getThresholdType()));
 
         return $entity;
     }
@@ -49,6 +51,8 @@ class StateDataMapper
         $dto->setCollecting($entity->isCollecting());
         $dto->setCountry($this->dataMapper->createAppDto($entity->getCountry()));
         $dto->setThreshold($entity->getThreshold());
+        $dto->setTransactionThreshold($entity->getTransactionThreshold());
+        $dto->setThresholdType($entity->getThresholdType());
 
         return $dto;
     }

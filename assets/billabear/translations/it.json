@@ -3414,7 +3414,9 @@
                     "start_of_tax_year": "Inizio dell'anno fiscale",
                     "enabled": "Abilitato",
                     "collecting": "Riscossione delle imposte",
-                    "tax_number": "Codice fiscale"
+                    "tax_number": "Codice fiscale",
+                    "transaction_threshold": "Soglia di transazione",
+                    "threshold_type": "Tipo di soglia"
                 },
                 "edit_button": "Modifica",
                 "tax_rule": {
@@ -3471,7 +3473,15 @@
                         "tax_year": "Inizio dell'anno fiscale",
                         "enabled": "Abilitato",
                         "collecting": "Riscossione delle imposte",
-                        "tax_number": "Codice fiscale"
+                        "tax_number": "Codice fiscale",
+                        "transaction_threshold": "Soglia di transazione",
+                        "threshold_type": "Tipo di soglia",
+                        "threshold_types": {
+                            "rolling": "Annuale",
+                            "calendar": "Anno solare",
+                            "rolling_quarterly": "Rotolamento per quarti",
+                            "rolling_accounting": "Ripartizione per anno contabile"
+                        }
                     },
                     "help_info": {
                         "name": "Il nome del paese",
@@ -3482,7 +3492,9 @@
                         "tax_year": "La data di inizio dell'anno fiscale per il Paese",
                         "enabled": "Se il paese è abilitato per l'iscrizione dei clienti",
                         "collecting": "Se le tasse devono essere sempre raccolte per questo paese",
-                        "tax_number": "Il vostro codice fiscale per questo Paese."
+                        "tax_number": "Il vostro codice fiscale per questo Paese.",
+                        "transaction_threshold": "Qual è la soglia di transazione per lo Stato",
+                        "threshold_type": "Come viene determinato il periodo di tempo per il calcolo della soglia"
                     }
                 },
                 "update_button": "Aggiornamento"
@@ -3569,7 +3581,9 @@
                     "name": "Nome",
                     "code": "Codice",
                     "threshold": "Soglia",
-                    "collecting": "Raccolta"
+                    "collecting": "Raccolta",
+                    "transaction_threshold": "Soglia di transazione",
+                    "threshold_type": "Tipo di soglia"
                 },
                 "tax_rule": {
                     "title": "Regole fiscali",
@@ -3628,13 +3642,23 @@
                         "name": "Nome",
                         "code": "Codice",
                         "collecting": "Raccolta",
-                        "threshold": "Soglia"
+                        "threshold": "Soglia",
+                        "transaction_threshold": "Soglia di transazione",
+                        "threshold_type": "Tipo di soglia",
+                        "threshold_types": {
+                            "rolling": "Annuale",
+                            "calendar": "Anno solare",
+                            "rolling_quarterly": "Rotolamento per quarti",
+                            "rolling_accounting": "Ripartizione per anno contabile"
+                        }
                     },
                     "help_info": {
                         "name": "Il nome dello Stato",
                         "code": "Il codice che viene spesso utilizzato come abbreviazione dello stato",
                         "collecting": "Se raccogliamo sempre le tasse per lo Stato",
-                        "threshold": "Quale soglia economica per lo Stato"
+                        "threshold": "Quale soglia economica per lo Stato",
+                        "transaction_threshold": "Qual è la soglia di transazione per lo Stato",
+                        "threshold_type": "Come viene determinato il periodo di tempo per il calcolo della soglia"
                     }
                 },
                 "update_button": "Aggiornamento"

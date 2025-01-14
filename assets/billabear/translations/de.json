@@ -3414,7 +3414,9 @@
                     "start_of_tax_year": "Beginn des Steuerjahres",
                     "enabled": "Aktiviert",
                     "collecting": "Steuererhebung",
-                    "tax_number": "Umsatzsteuer-Identifikationsnummer"
+                    "tax_number": "Umsatzsteuer-Identifikationsnummer",
+                    "transaction_threshold": "Transaktionsschwellenwert",
+                    "threshold_type": "Schwellenwert Typ"
                 },
                 "edit_button": "Bearbeiten",
                 "tax_rule": {
@@ -3471,7 +3473,15 @@
                         "tax_year": "Beginn des Steuerjahres",
                         "enabled": "Aktiviert",
                         "collecting": "Steuer einziehen",
-                        "tax_number": "Umsatzsteuer-Identifikationsnummer"
+                        "tax_number": "Umsatzsteuer-Identifikationsnummer",
+                        "transaction_threshold": "Transaktionsschwellenwert",
+                        "threshold_type": "Schwellenwert Typ",
+                        "threshold_types": {
+                            "rolling": "Rollierend Jährlich",
+                            "calendar": "Kalenderjahr",
+                            "rolling_quarterly": "Walzen nach Quartalen",
+                            "rolling_accounting": "Rolling nach Rechnungsjahr"
+                        }
                     },
                     "help_info": {
                         "name": "Der Name des Landes",
@@ -3482,7 +3492,9 @@
                         "tax_year": "Das Datum des Beginns des Steuerjahres für das Land",
                         "enabled": "Wenn das Land für Kundenanmeldungen aktiviert ist",
                         "collecting": "Wenn Steuern immer für dieses Land erhoben werden sollen",
-                        "tax_number": "Ihre Umsatzsteuer-Identifikationsnummer für dieses Land."
+                        "tax_number": "Ihre Umsatzsteuer-Identifikationsnummer für dieses Land.",
+                        "transaction_threshold": "Wie hoch ist die Transaktionsschwelle für den Staat?",
+                        "threshold_type": "Wie der Zeitraum für die Schwellenwertberechnung bestimmt wird"
                     }
                 },
                 "update_button": "Update"
@@ -3569,7 +3581,9 @@
                     "name": "Name",
                     "code": "Code",
                     "threshold": "Schwellenwert",
-                    "collecting": "Sammeln"
+                    "collecting": "Sammeln",
+                    "transaction_threshold": "Transaktionsschwellenwert",
+                    "threshold_type": "Schwellenwert Typ"
                 },
                 "tax_rule": {
                     "title": "Steuerliche Vorschriften",
@@ -3628,13 +3642,23 @@
                         "name": "Name",
                         "code": "Code",
                         "collecting": "Sammeln",
-                        "threshold": "Schwellenwert"
+                        "threshold": "Schwellenwert",
+                        "transaction_threshold": "Transaktionsschwellenwert",
+                        "threshold_type": "Schwellenwert Typ",
+                        "threshold_types": {
+                            "rolling": "Rollierend Jährlich",
+                            "calendar": "Kalenderjahr",
+                            "rolling_quarterly": "Walzen nach Quartalen",
+                            "rolling_accounting": "Rolling nach Rechnungsjahr"
+                        }
                     },
                     "help_info": {
                         "name": "Der Name des Staates",
                         "code": "Der Code, der oft als Abkürzung für den Zustand verwendet wird",
                         "collecting": "Wenn wir ständig Steuern für den Staat eintreiben",
-                        "threshold": "Was die wirtschaftliche Schwelle für den Staat ist"
+                        "threshold": "Was die wirtschaftliche Schwelle für den Staat ist",
+                        "transaction_threshold": "Wie hoch ist die Transaktionsschwelle für den Staat?",
+                        "threshold_type": "Wie der Zeitraum für die Schwellenwertberechnung bestimmt wird"
                     }
                 },
                 "update_button": "Update"

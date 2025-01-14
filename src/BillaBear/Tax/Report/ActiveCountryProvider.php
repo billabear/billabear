@@ -8,7 +8,7 @@
 
 namespace BillaBear\Tax\Report;
 
-use BillaBear\DataMappers\CountryDataMapper;
+use BillaBear\DataMappers\Tax\CountryDataMapper;
 use BillaBear\Dto\Response\App\Tax\ActiveTaxCountries;
 use BillaBear\Entity\Country;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;

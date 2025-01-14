@@ -8,6 +8,7 @@
 
 namespace BillaBear\DataMappers;
 
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Generic\Api\Product as ProductDto;
 use BillaBear\Dto\Generic\App\Product as AppDto;
 use BillaBear\Dto\Request\Api\CreateProduct as ApiCreate;
