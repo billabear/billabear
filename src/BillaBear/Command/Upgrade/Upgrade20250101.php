@@ -8,16 +8,15 @@
 
 namespace BillaBear\Command\Upgrade;
 
-use BillaBear\Install\Steps\DataStep;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'billabear:upgrade:20240101', description: 'Handles adding data that is needed after the upgrade', hidden: true)]
-class Upgrade20240101 extends Command
+#[AsCommand(name: 'billabear:upgrade:20250101', description: 'Handles adding data that is needed after the upgrade', hidden: true)]
+class Upgrade20250101 extends Command
 {
-    public function __construct(private DataStep $dataStep)
+    public function __construct()
     {
         parent::__construct();
     }
@@ -25,7 +24,6 @@ class Upgrade20240101 extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting the process to add data for upgrade');
-        $this->dataStep->install();
 
         return Command::SUCCESS;
     }

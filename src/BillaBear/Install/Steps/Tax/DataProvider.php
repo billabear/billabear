@@ -21,114 +21,109 @@ class DataProvider
                 'currency' => 'USD',
                 'rates' => [],
                 'states' => [
-                    'TX' => [
-                        'name' => 'Texas',
-                        'threshold' => 50000000,
+                    'AL' => [
+                        'name' => 'Alabama',
+                        'threshold' => 25000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.25],
+                            'Standard VAT' => ['default' => true, 'rate' => 4],
                         ],
                     ],
-                    'KS' => [
-                        'name' => 'Kansas',
+                    'AK' => [
+                        'name' => 'Alaska',
                         'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.5],
-                        ],
-                    ],
-                    'NM' => [
-                        'name' => 'New Mexico',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4.875],
+                            'Standard VAT' => ['default' => true, 'rate' => 0],
                         ],
                     ],
                     'AZ' => [
                         'name' => 'Arizona',
                         'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 5.6],
+                        ],
+                    ],
+                    'AR' => [
+                        'name' => 'Arkansas',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.5],
                         ],
                     ],
                     'CA' => [
                         'name' => 'California',
                         'threshold' => 50000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 7.25],
                         ],
                     ],
-                    'WA' => [
-                        'name' => 'Washington',
+                    'CO' => [
+                        'name' => 'Colorado',
                         'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.5],
+                            'Standard VAT' => ['default' => true, 'rate' => 2.9],
                         ],
                     ],
-                    'UT' => [
-                        'name' => 'Utah',
+                    'CT' => [
+                        'name' => 'Connecticut',
                         'threshold' => 10000000,
+                        'transaction_threshold' => 200,
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4.85],
+                            'Standard VAT' => ['default' => true, 'rate' => 7],
                         ],
                     ],
-                    'WY' => [
-                        'name' => 'Wyoming',
-                        'threshold' => 10000000,
+                    'DE' => [
+                        'name' => 'Delaware',
+                        'threshold' => 0,
+                        'threshold_type' => 'calendar',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4],
                         ],
                     ],
-                    'ND' => [
-                        'name' => 'North Dakota',
+                    'DC' => [
+                        'name' => 'District of Columbia',
                         'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 5],
-                        ],
-                    ],
-                    'SD' => [
-                        'name' => 'South Dakota',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4.5],
-                        ],
-                    ],
-                    'NE' => [
-                        'name' => 'Nebraska',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 5.5],
-                        ],
-                    ],
-                    'MN' => [
-                        'name' => 'Minnesota',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.88],
-                        ],
-                    ],
-                    'IA' => [
-                        'name' => 'Iowa',
-                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 6],
                         ],
                     ],
-                    'LA' => [
-                        'name' => 'Louisiana',
+                    'FL' => [
+                        'name' => 'Florida',
                         'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4.45],
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
                         ],
                     ],
-                    'WI' => [
-                        'name' => 'Wisconsin',
-                        'threshold' => 10000000,
+                    'GE' => [
+                        'name' => 'Georgia',
+                        'threshold' => 25000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 5],
+                            'Standard VAT' => ['default' => true, 'rate' => 4],
                         ],
                     ],
-                    'MI' => [
-                        'name' => 'Michigan',
+                    'HI' => [
+                        'name' => 'Hawaii',
                         'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4],
+                        ],
+                    ],
+                    'ID' => [
+                        'name' => 'Idaho',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 6],
                         ],
@@ -136,6 +131,8 @@ class DataProvider
                     'IL' => [
                         'name' => 'Illinois',
                         'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'rolling',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 6.25],
                         ],
@@ -143,15 +140,200 @@ class DataProvider
                     'IN' => [
                         'name' => 'Indiana',
                         'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 7],
+                        ],
+                    ],
+                    'IA' => [
+                        'name' => 'Iowa',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
+                        ],
+                    ],
+                    'KS' => [
+                        'name' => 'Kansas',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.5],
+                        ],
+                    ],
+                    'KY' => [
+                        'name' => 'Kentucky',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
+                        ],
+                    ],
+                    'LA' => [
+                        'name' => 'Louisiana',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4.45],
+                        ],
+                    ],
+                    'ME' => [
+                        'name' => 'Maine',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 5.5],
+                        ],
+                    ],
+                    'MD' => [
+                        'name' => 'Maryland',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.63],
+                        ],
+                    ],
+                    'MA' => [
+                        'name' => 'Massachusetts',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 100,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.25],
+                        ],
+                    ],
+                    'MI' => [
+                        'name' => 'Michigan',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'prev_calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
+                        ],
+                    ],
+                    'MN' => [
+                        'name' => 'Minnesota',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'rolling_quarter',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.88],
+                        ],
+                    ],
+                    'MS' => [
+                        'name' => 'Mississippi',
+                        'threshold' => 25000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 7],
+                        ],
+                    ],
+                    'MO' => [
+                        'name' => 'Missouri',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'rolling_quarter',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4.225],
+                        ],
+                    ],
+                    'MT' => [
+                        'name' => 'Montana',
+                        'threshold' => 0,
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 0],
+                        ],
+                    ],
+                    'NE' => [
+                        'name' => 'Nebraska',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 5.5],
+                        ],
+                    ],
+                    'NV' => [
+                        'name' => 'Nevada',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.85],
+                        ],
+                    ],
+                    'NH' => [
+                        'name' => 'New Hampshire',
+                        'threshold' => 0,
+                        'rates' => [
+                        ],
+                    ],
+                    'NJ' => [
+                        'name' => 'New Jersey',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.63],
+                        ],
+                    ],
+                    'NM' => [
+                        'name' => 'New Mexico',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 5.125],
+                        ],
+                    ],
+                    'NY' => [
+                        'name' => 'New York',
+                        'threshold' => 50000000,
+                        'transaction_threshold' => 100,
+                        'transaction_type' => 'rolling',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4],
+                        ],
+                    ],
+                    'NC' => [
+                        'name' => 'North Carolina',
+                        'threshold' => 10000000,
+                        'transaction_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4.75],
+                        ],
+                    ],
+                    'ND' => [
+                        'name' => 'North Dakota',
+                        'threshold' => 10000000,
+                        'transaction_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 5],
                         ],
                     ],
                     'OH' => [
                         'name' => 'Ohio',
                         'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 5.75],
+                        ],
+                    ],
+                    'OK' => [
+                        'name' => 'Oklahoma',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4.5],
+                        ],
+                    ],
+                    'OR' => [
+                        'name' => 'Oregon',
+                        'threshold' => 0,
+                        'rates' => [
                         ],
                     ],
                     'PA' => [
@@ -161,109 +343,115 @@ class DataProvider
                             'Standard VAT' => ['default' => true, 'rate' => 6],
                         ],
                     ],
-                    'ME' => [
-                        'name' => 'Maine',
+                    'PR' => [
+                        'name' => 'Puerto Rico',
                         'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'accounting_year',
                         'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 5.5],
-                        ],
-                    ],
-                    'VT' => [
-                        'name' => 'Vermont',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6],
-                        ],
-                    ],
-                    'NY' => [
-                        'name' => 'New York',
-                        'threshold' => 50000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4],
-                        ],
-                    ],
-                    'NJ' => [
-                        'name' => 'New Jersey',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.63],
-                        ],
-                    ],
-                    'MD' => [
-                        'name' => 'Maryland',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.63],
-                        ],
-                    ],
-                    'WV' => [
-                        'name' => 'West Virginia',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.63],
-                        ],
-                    ],
-                    'KY' => [
-                        'name' => 'Kentucky',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6],
-                        ],
-                    ],
-                    'TN' => [
-                        'name' => 'Tennessee',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 7],
-                        ],
-                    ],
-                    'NC' => [
-                        'name' => 'North Carolina',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4.75],
-                        ],
-                    ],
-                    'SC' => [
-                        'name' => 'South Carolina',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6],
-                        ],
-                    ],
-                    'AL' => [
-                        'name' => 'Alabama',
-                        'threshold' => 25000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 4],
-                        ],
-                    ],
-                    'MS' => [
-                        'name' => 'Mississippi',
-                        'threshold' => 25000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 7],
-                        ],
-                    ],
-                    'MA' => [
-                        'name' => 'Massachusetts',
-                        'threshold' => 10000000,
-                        'rates' => [
-                            'Standard VAT' => ['default' => true, 'rate' => 6.25],
+                            'Standard VAT' => ['default' => true, 'rate' => 11.5],
                         ],
                     ],
                     'RI' => [
                         'name' => 'Rhode Island',
                         'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 7],
                         ],
                     ],
-                    'CT' => [
-                        'name' => 'Connecticut',
+                    'SC' => [
+                        'name' => 'South Carolina',
                         'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
+                        ],
+                    ],
+                    'SD' => [
+                        'name' => 'South Dakota',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4.5],
+                        ],
+                    ],
+                    'TN' => [
+                        'name' => 'Tennessee',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'rolling',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 7],
+                        ],
+                    ],
+                    'TX' => [
+                        'name' => 'Texas',
+                        'threshold' => 50000000,
+                        'threshold_type' => 'rolling',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.25],
+                        ],
+                    ],
+                    'UT' => [
+                        'name' => 'Utah',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4.85],
+                        ],
+                    ],
+                    'VT' => [
+                        'name' => 'Vermont',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'rolling',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6],
+                        ],
+                    ],
+                    'VA' => [
+                        'name' => 'Virginia',
+                        'threshold' => 10000000,
+                        'transactions_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 5.3],
+                        ],
+                    ],
+                    'WA' => [
+                        'name' => 'Washington',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.5],
+                        ],
+                    ],
+                    'WV' => [
+                        'name' => 'West Virginia',
+                        'threshold' => 10000000,
+                        'transactions_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 6.63],
+                        ],
+                    ],
+                    'WI' => [
+                        'name' => 'Wisconsin',
+                        'threshold' => 10000000,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 5],
+                        ],
+                    ],
+                    'WY' => [
+                        'name' => 'Wyoming',
+                        'threshold' => 10000000,
+                        'transaction_threshold' => 200,
+                        'threshold_type' => 'calendar',
+                        'rates' => [
+                            'Standard VAT' => ['default' => true, 'rate' => 4],
                         ],
                     ],
                 ],
@@ -428,7 +616,7 @@ class DataProvider
             ],
             'FI' => [
                 'name' => 'Finland',
-                'threshold' => 1500000,
+                'threshold' => 2000000,
                 'in_eu' => true,
                 'currency' => 'EUR',
                 'rates' => [

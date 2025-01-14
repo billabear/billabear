@@ -18,6 +18,7 @@ use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\StateRepositoryInterface;
 use BillaBear\Repository\StateTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
+use BillaBear\Tax\ThresholdType;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class TaxDataCreator
@@ -41,6 +42,7 @@ class TaxDataCreator
             $country->setIsoCode($countryData['code']);
             $country->setCurrency($countryData['currency']);
             $country->setThreshold($countryData['threshold']);
+            $country->setTransactionThreshold($countryData['transaction_threshold'] ?? null);
             $country->setInEu($countryData['in_eu']);
             $country->setEnabled(true);
             $country->setCreatedAt(new \DateTime());
@@ -79,6 +81,8 @@ class TaxDataCreator
                 $state->setName($data['name']);
                 $state->setCode($code);
                 $state->setThreshold($data['threshold']);
+                $state->setTransactionThreshold($data['transaction_threshold'] ?? null);
+                $state->setThresholdType(ThresholdType::from($data['threshold_type'] ?? 'calendar'));
                 $state->setCollecting(false);
 
                 $this->stateRepository->save($state);

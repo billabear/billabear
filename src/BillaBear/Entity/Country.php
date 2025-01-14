@@ -36,6 +36,9 @@ class Country
     #[ORM\Column(type: 'bigint')]
     private int $threshold;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $transactionThreshold = null;
+
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $startOfTaxYear = null;
 
@@ -184,5 +187,15 @@ class Country
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTransactionThreshold(): ?int
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold(?int $transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
     }
 }

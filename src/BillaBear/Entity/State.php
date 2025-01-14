@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use BillaBear\Tax\ThresholdType;
 use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -31,11 +32,17 @@ class State
     #[ORM\Column(type: 'bigint')]
     private int $threshold;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $transactionThreshold = null;
+
     #[ORM\ManyToOne(targetEntity: Country::class)]
     private Country $country;
 
     #[ORM\Column(type: 'boolean')]
     private bool $collecting;
+
+    #[ORM\Column(type: 'string', enumType: ThresholdType::class, nullable: true)]
+    private ?ThresholdType $thresholdType = null;
 
     public function getId()
     {
@@ -100,5 +107,25 @@ class State
     public function getThresholdAsMoney(): Money
     {
         return Money::ofMinor($this->threshold, $this->country->getCurrency());
+    }
+
+    public function getTransactionThreshold(): ?int
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold(?int $transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType(): ?ThresholdType
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType(?ThresholdType $thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }
