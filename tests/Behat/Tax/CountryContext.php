@@ -62,6 +62,7 @@ class CountryContext implements Context
             'threshold' => intval($data['Threshold']),
             'collecting' => boolval($data['Collecting'] ?? 'false'),
             'country' => (string) $country->getId(),
+            'threshold_type' => 'rolling',
         ];
 
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/state', $payload);
@@ -94,6 +95,7 @@ class CountryContext implements Context
             'currency' => $data['Currency'],
             'default' => boolval($data['Default'] ?? 'true'),
             'in_eu' => boolval($data['In EU'] ?? 'true'),
+            'threshold_type' => 'rolling',
         ];
 
         $this->sendJsonRequest('POST', '/app/country', $payload);
@@ -114,6 +116,7 @@ class CountryContext implements Context
             'currency' => $data['Currency'],
             'in_eu' => boolval($data['In EU'] ?? 'true'),
             'enabled' => boolval($data['Enabled'] ?? 'true'),
+            'threshold_type' => 'rolling',
         ];
 
         $this->sendJsonRequest('POST', '/app/country/'.$country->getId().'/edit', $payload);

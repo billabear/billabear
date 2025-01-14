@@ -160,4 +160,24 @@ class CreateCountry
     {
         $this->taxNumber = $taxNumber;
     }
+
+    public function getTransactionThreshold()
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold($transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType()
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType($thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
+    }
 }
