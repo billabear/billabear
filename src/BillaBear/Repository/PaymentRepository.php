@@ -27,6 +27,19 @@ class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentReposit
         return $query->getResult();
     }
 
+    public function getPaymentsCountSinceDate(string $countryCode, \DateTime $when): int
+    {
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->select('COUNT(p.amount) as count')
+            ->where('p.createdAt > :createdAt')
+            ->andWhere('p.country = :countryCode')
+            ->setParameter('countryCode', $countryCode)
+            ->setParameter('createdAt', $when);
+        $query = $qb->getQuery();
+
+        return $query->getResult()[0]['count'];
+    }
+
     public function getPaymentsAmountForStateSinceDate(string $countryCode, string $state, \DateTime $when): array
     {
         $qb = $this->entityRepository->createQueryBuilder('p');
@@ -41,6 +54,21 @@ class PaymentRepository extends \Parthenon\Billing\Repository\Orm\PaymentReposit
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    public function getPaymentsCountForStateSinceDate(string $countryCode, string $state, \DateTime $when): int
+    {
+        $qb = $this->entityRepository->createQueryBuilder('p');
+        $qb->select('COUNT(p.amount) as count')
+            ->where('p.createdAt > :createdAt')
+            ->andWhere('p.country = :countryCode')
+            ->andWhere('p.state = :state')
+            ->setParameter('countryCode', $countryCode)
+            ->setParameter('state', $state)
+            ->setParameter('createdAt', $when);
+        $query = $qb->getQuery();
+
+        return $query->getResult()[0]['count'];
     }
 
     public function getLastTenForCustomer(Customer $customer): ResultSet

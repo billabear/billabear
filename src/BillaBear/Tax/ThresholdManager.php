@@ -50,6 +50,17 @@ class ThresholdManager
             if ($country->isInEu() && $this->isEuStopShopEnabled()) {
                 return true;
             }
+            if (null !== $country->getTransactionThreshold()) {
+                $count = $this->paymentRepository->getPaymentsCountSinceDate($country->getIsoCode(), new \DateTime('-12 months'));
+
+                if ($count > $country->getTransactionThreshold()) {
+                    $country->setCollecting(true);
+                    $this->countryRepository->save($country);
+                    $this->thresholdNotifier->countryThresholdReached($country);
+
+                    return true;
+                }
+            }
 
             $amountTransacted = $this->getTransactedAmount($country);
 
@@ -88,6 +99,24 @@ class ThresholdManager
         return $money;
     }
 
+    public function getTransactionNumber(Country $country, ?\DateTime $when = null): int
+    {
+        if (!$when) {
+            $when = new \DateTime('-12 months');
+        }
+        $defaultCurrency = $country->getCurrency();
+        $money = Money::zero($defaultCurrency);
+        $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($country->getIsoCode(), $when);
+
+        foreach ($amounts as $amountData) {
+            $originalFee = Money::ofMinor($amountData['amount'], $amountData['currency']);
+            $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
+            $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
+        }
+
+        return $money;
+    }
+
     public function isThresholdReachedForState(string $countryCode, State $state, ?Money $money): bool
     {
         if (!$money) {
@@ -102,6 +131,17 @@ class ThresholdManager
             $country = $this->countryRepository->getByIsoCode($countryCode);
 
             $amountTransacted = $this->getTransactedAmountForState($country, $state);
+            if (null !== $state->getTransactionThreshold()) {
+                $count = $this->paymentRepository->getPaymentsCountForStateSinceDate($country->getIsoCode(), $state->getName(), new \DateTime('-12 months'));
+
+                if ($count > $state->getTransactionThreshold()) {
+                    $state->setCollecting(true);
+                    $this->stateRepository->save($state);
+                    $this->thresholdNotifier->stateThresholdReached($state);
+
+                    return true;
+                }
+            }
 
             $amountToAdd = $this->currencyConverter->convert($money, $country->getCurrency(), RoundingMode::HALF_DOWN);
             $amountTransacted = $amountTransacted->plus($amountToAdd, RoundingMode::HALF_DOWN);

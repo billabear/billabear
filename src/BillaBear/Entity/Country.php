@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use BillaBear\Tax\ThresholdType;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,6 +39,9 @@ class Country
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $transactionThreshold = null;
+
+    #[ORM\Column(type: 'string', enumType: ThresholdType::class, nullable: true)]
+    private ?ThresholdType $thresholdType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $startOfTaxYear = null;
@@ -197,5 +201,15 @@ class Country
     public function setTransactionThreshold(?int $transactionThreshold): void
     {
         $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType(): ?ThresholdType
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType(?ThresholdType $thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

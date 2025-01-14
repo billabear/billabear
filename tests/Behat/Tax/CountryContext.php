@@ -21,6 +21,7 @@ use BillaBear\Repository\Orm\CountryTaxRuleRepository;
 use BillaBear\Repository\Orm\StateRepository;
 use BillaBear\Repository\Orm\StateTaxRuleRepository;
 use BillaBear\Repository\Orm\TaxTypeRepository;
+use BillaBear\Tax\ThresholdType;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
 class CountryContext implements Context
@@ -152,10 +153,16 @@ class CountryContext implements Context
             if (!$country = $this->countryRepository->findOneBy(['isoCode' => $row['ISO Code']])) {
                 $country = new Country();
             }
+            $transactionThreshold = $row['Transaction Threshold'] ?? null;
+            if (empty($transactionThreshold)) {
+                $transactionThreshold = null;
+            }
             $country->setName($row['Name']);
             $country->setIsoCode(trim($row['ISO Code']));
             $country->setCurrency($row['Currency']);
             $country->setThreshold(intval($row['Threshold']));
+            $country->setTransactionThreshold($transactionThreshold);
+            $country->setThresholdType(ThresholdType::from($row['Threshold Type'] ?? 'rolling'));
             $country->setCreatedAt(new \DateTime());
             $country->setEnabled('true' === strtolower($row['Enabled'] ?? 'true'));
             $country->setInEu('true' === strtolower($row['In EU'] ?? 'false'));
@@ -176,11 +183,18 @@ class CountryContext implements Context
         foreach ($rows as $row) {
             $country = $this->getCountryByName($row['Country']);
 
+            $transactionThreshold = $row['Transaction Threshold'] ?? null;
+            if (empty($transactionThreshold)) {
+                $transactionThreshold = null;
+            }
+
             $state = new State();
             $state->setCountry($country);
             $state->setName($row['Name']);
             $state->setCode($row['Code']);
             $state->setThreshold(intval($row['Threshold'] ?? 0));
+            $state->setTransactionThreshold($transactionThreshold);
+            $state->setThresholdType(ThresholdType::from($row['Threshold Type'] ?? 'calendar'));
             $state->setCollecting('true' === strtolower($row['Has Nexus'] ?? 'false'));
             $this->stateRepository->getEntityManager()->persist($state);
         }

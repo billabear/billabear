@@ -43,6 +43,7 @@ class TaxDataCreator
             $country->setCurrency($countryData['currency']);
             $country->setThreshold($countryData['threshold']);
             $country->setTransactionThreshold($countryData['transaction_threshold'] ?? null);
+            $country->setThresholdType(ThresholdType::from($countryData['threshold_type'] ?? 'rolling'));
             $country->setInEu($countryData['in_eu']);
             $country->setEnabled(true);
             $country->setCreatedAt(new \DateTime());

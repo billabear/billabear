@@ -19,10 +19,14 @@ interface PaymentRepositoryInterface extends \Parthenon\Billing\Repository\Payme
      */
     public function getPaymentsAmountForCountrySinceDate(string $countryCode, \DateTime $when): array;
 
+    public function getPaymentsCountSinceDate(string $countryCode, \DateTime $when): int;
+
     /**
      * @return Payment[]
      */
     public function getPaymentsAmountForStateSinceDate(string $countryCode, string $state, \DateTime $when): array;
+
+    public function getPaymentsCountForStateSinceDate(string $countryCode, string $state, \DateTime $when): int;
 
     public function getLastTenForCustomer(Customer $customer): ResultSet;
 
