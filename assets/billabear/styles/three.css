@@ -118,6 +118,10 @@ a {
     color: red;
 }
 
+.chart-button {
+    @apply cursor-pointer;
+}
+
 .chart-button-selected {
-    @apply bg-teal-500 text-white font-medium;
+    @apply bg-teal-500 text-white font-medium cursor-not-allowed;
 }
