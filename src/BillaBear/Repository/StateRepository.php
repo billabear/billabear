@@ -8,8 +8,20 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\State;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class StateRepository extends DoctrineCrudRepository implements StateRepositoryInterface
 {
+    public function getByCode(string $code): State
+    {
+        $state = $this->entityRepository->findOneBy(['code' => $code]);
+
+        if (!$state instanceof State) {
+            throw new NoEntityFoundException(sprintf('No state found for %s', $code));
+        }
+
+        return $state;
+    }
 }

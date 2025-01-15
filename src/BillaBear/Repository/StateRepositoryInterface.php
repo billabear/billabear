@@ -8,8 +8,10 @@
 
 namespace BillaBear\Repository;
 
+use BillaBear\Entity\State;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface StateRepositoryInterface extends CrudRepositoryInterface
 {
+    public function getByCode(string $code): State;
 }

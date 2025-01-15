@@ -347,7 +347,7 @@ class DataProvider
                         'name' => 'Puerto Rico',
                         'threshold' => 10000000,
                         'transaction_threshold' => 200,
-                        'threshold_type' => 'accounting_year',
+                        'threshold_type' => 'rolling_accounting',
                         'rates' => [
                             'Standard VAT' => ['default' => true, 'rate' => 11.5],
                         ],

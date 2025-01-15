@@ -14,4 +14,5 @@ enum ThresholdType: string
     case CALENDAR = 'calendar';
     case ROLLING_QUARTER = 'rolling_quarter';
     case ROLLING_ACCOUNTING = 'rolling_accounting';
+    case PREVIOUS_CALENDAR = 'prev_calendar';
 }
