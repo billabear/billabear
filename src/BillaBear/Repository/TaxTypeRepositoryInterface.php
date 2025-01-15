@@ -10,6 +10,7 @@ namespace BillaBear\Repository;
 
 use BillaBear\Entity\TaxType;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 /**
  * @method TaxType findById($id)
@@ -21,6 +22,9 @@ interface TaxTypeRepositoryInterface extends CrudRepositoryInterface
      */
     public function getAll(): array;
 
+    /**
+     * @throws NoEntityFoundException
+     */
     public function getByName(string $name): TaxType;
 
     public function removeDefault(): void;

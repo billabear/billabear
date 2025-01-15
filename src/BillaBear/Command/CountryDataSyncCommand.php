@@ -9,10 +9,15 @@
 namespace BillaBear\Command;
 
 use BillaBear\Entity\Country;
+use BillaBear\Entity\CountryTaxRule;
 use BillaBear\Entity\State;
+use BillaBear\Entity\StateTaxRule;
+use BillaBear\Entity\TaxType;
 use BillaBear\Install\Steps\Tax\DataProvider;
 use BillaBear\Repository\CountryRepositoryInterface;
+use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\StateRepositoryInterface;
+use BillaBear\Repository\StateTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Tax\ThresholdType;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -29,8 +34,36 @@ class CountryDataSyncCommand extends Command
         private CountryRepositoryInterface $countryRepository,
         private StateRepositoryInterface $stateRepository,
         private TaxTypeRepositoryInterface $taxTypeRepository,
+        private CountryTaxRuleRepositoryInterface $countryTaxRuleRepository,
+        private StateTaxRuleRepositoryInterface $stateTaxRuleRepository,
     ) {
         parent::__construct(null);
+    }
+
+    protected function buildStateTaxRule(TaxType $taxType, State $state, array $rate): StateTaxRule
+    {
+        $taxRule = new StateTaxRule();
+        $taxRule->setTaxType($taxType);
+        $taxRule->setState($state);
+        $taxRule->setCreatedAt(new \DateTime());
+        $taxRule->setValidFrom(new \DateTime());
+        $taxRule->setIsDefault($rate['default']);
+        $taxRule->setTaxRate($rate['rate']);
+
+        return $taxRule;
+    }
+
+    protected function buildCountryTaxRule(TaxType $taxType, Country $country, array $rate): CountryTaxRule
+    {
+        $taxRule = new CountryTaxRule();
+        $taxRule->setCountry($country);
+        $taxRule->setTaxType($taxType);
+        $taxRule->setCreatedAt(new \DateTime());
+        $taxRule->setValidFrom(new \DateTime());
+        $taxRule->setIsDefault($rate['default']);
+        $taxRule->setTaxRate($rate['rate']);
+
+        return $taxRule;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,6 +91,31 @@ class CountryDataSyncCommand extends Command
 
             $this->countryRepository->save($country);
 
+            foreach ($countryData['rates'] as $taxTypeStr => $rate) {
+                try {
+                    $taxType = $this->taxTypeRepository->getByName($taxTypeStr);
+                } catch (NoEntityFoundException) {
+                    $taxType = new TaxType();
+                    $taxType->setName($taxTypeStr);
+                    $this->taxTypeRepository->save($taxType);
+                }
+
+                try {
+                    $taxRule = $this->countryTaxRuleRepository->getOpenEndedForCountryAndTaxType($country, $taxType);
+                } catch (NoEntityFoundException) {
+                    $taxRule = $this->buildCountryTaxRule($taxType, $country, $rate);
+                    $this->countryTaxRuleRepository->save($taxRule);
+                }
+
+                if ($rate['rate'] != $taxRule->getTaxRate()) {
+                    $taxRule->setValidUntil(new \DateTime('-1 minute'));
+                    $this->countryTaxRuleRepository->save($taxRule);
+
+                    $taxRule = $this->buildCountryTaxRule($taxType, $country, $rate);
+                    $this->countryTaxRuleRepository->save($taxRule);
+                }
+            }
+
             if (isset($countryData['states'])) {
                 foreach ($countryData['states'] as $stateCode => $stateData) {
                     try {
@@ -74,6 +132,31 @@ class CountryDataSyncCommand extends Command
                     $state->setThresholdType(ThresholdType::from($stateData['threshold_type'] ?? 'rolling'));
 
                     $this->stateRepository->save($state);
+
+                    foreach ($stateData['rates'] as $taxTypeStr => $rate) {
+                        try {
+                            $taxType = $this->taxTypeRepository->getByName($taxTypeStr);
+                        } catch (NoEntityFoundException) {
+                            $taxType = new TaxType();
+                            $taxType->setName($taxTypeStr);
+                            $this->taxTypeRepository->save($taxType);
+                        }
+
+                        try {
+                            $taxRule = $this->stateTaxRuleRepository->getOpenEndedForCountryStateAndTaxType($state, $taxType);
+                        } catch (NoEntityFoundException) {
+                            $taxRule = $this->buildStateTaxRule($taxType, $state, $rate);
+                            $this->stateTaxRuleRepository->save($taxRule);
+                        }
+
+                        if ($rate['rate'] != $taxRule->getTaxRate()) {
+                            $taxRule->setValidUntil(new \DateTime('-1 minute'));
+                            $this->stateTaxRuleRepository->save($taxRule);
+
+                            $taxRule = $this->buildStateTaxRule($taxType, $state, $rate);
+                            $this->stateTaxRuleRepository->save($taxRule);
+                        }
+                    }
                 }
             }
         }

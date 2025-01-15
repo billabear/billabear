@@ -12,11 +12,15 @@ use BillaBear\Entity\State;
 use BillaBear\Entity\StateTaxRule;
 use BillaBear\Entity\TaxType;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 interface StateTaxRuleRepositoryInterface extends CrudRepositoryInterface
 {
     public function getForState(State $state): array;
 
+    /**
+     * @throws NoEntityFoundException
+     */
     public function getOpenEndedForCountryStateAndTaxType(State $state, TaxType $taxType): StateTaxRule;
 
     public function getForCountryStateAndTaxType(State $state, TaxType $taxType);
