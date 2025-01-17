@@ -26,7 +26,7 @@
               </thead>
               <tbody v-if="loaded">
               <tr v-for="metric in metrics" class="mt-5">
-                <td class="py-3">{{ metric.name }}</td>metrics
+                <td class="py-3">{{ metric.name }}</td>
                 <td class="py-3"><router-link :to="{name: 'app.metric.view', params: {id: metric.id}}" class="list-btn">{{ $t('app.metric.list.view_btn') }}</router-link></td>
               </tr>
               <tr v-if="metrics.length === 0">
