@@ -20,6 +20,8 @@ class SubscriptionPlanUpdateView
 
     private array $features;
 
+    private array $metrics;
+
     public function getPrices(): array
     {
         return $this->prices;
@@ -48,5 +50,15 @@ class SubscriptionPlanUpdateView
     public function setSubscriptionPlan(SubscriptionPlan $subscriptionPlan): void
     {
         $this->subscriptionPlan = $subscriptionPlan;
+    }
+
+    public function getMetrics(): array
+    {
+        return $this->metrics;
+    }
+
+    public function setMetrics(array $metrics): void
+    {
+        $this->metrics = $metrics;
     }
 }

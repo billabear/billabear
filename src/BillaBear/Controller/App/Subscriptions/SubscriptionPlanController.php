@@ -186,6 +186,8 @@ class SubscriptionPlanController
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
+        MetricRepositoryInterface $metricRepository,
+        MetricDataMapper $metricDataMapper,
         PriceDataMapper $priceFactory,
     ): Response {
         $this->getLogger()->info('Received request to read update plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
@@ -204,15 +206,18 @@ class SubscriptionPlanController
 
         $features = $subscriptionFeatureRepository->getAll();
         $prices = $priceRepository->getAllForProduct($product);
+        $metrics = $metricRepository->getAll();
 
         $featureDtos = array_map([$featureFactory, 'createAppDto'], $features);
         $priceDtos = array_map([$priceFactory, 'createAppDto'], $prices);
+        $metricDtos = array_map([$metricDataMapper, 'createAppDto'], $metrics);
 
         $subscriptionPlanDto = $factory->createAppDto($subscriptionPlan);
         $dto = new SubscriptionPlanUpdateView();
         $dto->setPrices($priceDtos);
         $dto->setFeatures($featureDtos);
         $dto->setSubscriptionPlan($subscriptionPlanDto);
+        $dto->setMetrics($metricDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
@@ -225,7 +230,6 @@ class SubscriptionPlanController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         SubscriptionPlanDataMapper $factory,
-        ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         WebhookDispatcher $eventDispatcher,
     ) {
