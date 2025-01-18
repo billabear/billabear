@@ -114,6 +114,7 @@ const mutations = {
         state.selectedFeatures = payload.subscription_plan.features;
         state.features = payload.features;
         state.prices = payload.prices;
+        state.metrics = payload.metrics;
         state.loaded = true;
     },
     addNewFeature(state, feature) {

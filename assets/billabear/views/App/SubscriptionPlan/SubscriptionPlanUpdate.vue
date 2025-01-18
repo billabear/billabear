@@ -135,6 +135,7 @@ export default {
     }
   },
   mounted() {
+    this.reset();
     var productId = this.$route.params.productId
     var subscriptionPlanId = this.$route.params.subscriptionPlanId;
     this.fetchSubscriptionPlan({productId, subscriptionPlanId}).then(response => {
@@ -154,7 +155,7 @@ export default {
       ...mapState('planStore', ['selectedFeatures', 'selectedLimits', 'selectedPrices'])
   },
   methods: {
-    ...mapActions('planStore', ['fetchSubscriptionPlan']),
+    ...mapActions('planStore', ['fetchSubscriptionPlan', 'reset']),
     send: function () {
       var productId = this.$route.params.productId
       this.sendingInProgress = true;
