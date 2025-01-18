@@ -165,7 +165,7 @@ Then go to http://localhost and follow the install instructions.
 
 ### Is BillaBear Open Source?
 
-It's available free to use under the Functional Software License that adds restrictions on competing for 2-years.
+It's available free to use under the Fair Core License that adds restrictions on competing for 2-years.
 
 There are arguments about if these licenses are open source or not, but generally for most we care can we use it for
 free and can we modify it. And this is true for BillaBear.
