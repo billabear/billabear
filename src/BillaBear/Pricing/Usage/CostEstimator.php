@@ -64,8 +64,9 @@ class CostEstimator
         foreach ($priceInfos as $priceInfo) {
             $money = $money->plus($priceInfo->total);
         }
+        $billableUsage = $usage->getValue() - $lastValue;
 
-        return new CostEstimate($money, $usage->getValue(), $price->getMetric()->getName());
+        return new CostEstimate($money, $billableUsage, $price->getMetric()->getName());
     }
 
     /**
