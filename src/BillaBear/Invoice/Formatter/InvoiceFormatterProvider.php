@@ -27,7 +27,7 @@ class InvoiceFormatterProvider
         return $this->getFormatterByType($customer->getInvoiceFormat());
     }
 
-    public function getFormatterByType(string $format): InvoiceFormatterInterface
+    public function getFormatterByType(?string $format): InvoiceFormatterInterface
     {
         $format = $format ?? InvoicePdfGenerator::FORMAT_NAME;
 
