@@ -125,6 +125,7 @@ To start integrating with BillaBear you can use the REST API.
 * [Go](https://github.com/billabear/go-sdk)
 * [JavaScript](https://github.com/billabear/javascript-sdk)
 * [Ruby](https://github.com/billabear/ruby-sdk)
+* [Python](https://github.com/billabear/python-sdk)
 
 ## Getting Started
 
