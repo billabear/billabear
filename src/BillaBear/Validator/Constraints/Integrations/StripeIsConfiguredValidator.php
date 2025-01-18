@@ -8,7 +8,7 @@
 
 namespace BillaBear\Validator\Constraints\Integrations;
 
-use BillaBear\Repository\SettingsRepositoryInterface;
+use BillaBear\Payment\Provider\ProviderFactory;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,14 +17,15 @@ class StripeIsConfiguredValidator extends ConstraintValidator
 {
     use LoggerAwareTrait;
 
-    public function __construct(private SettingsRepositoryInterface $settingsRepository)
-    {
+    public function __construct(
+        private ProviderFactory $providerFactory,
+    ) {
     }
 
     public function validate(mixed $value, Constraint $constraint)
     {
-        $settings = $this->settingsRepository->getDefaultSettings();
-        if (!$settings->getSystemSettings()->getStripePublicKey() || !$settings->getSystemSettings()->getStripePrivateKey()) {
+        $apiKey = $this->providerFactory->getApiKey();
+        if (empty($apiKey)) {
             $this->context->buildViolation($constraint->message)->atPath('stripe')->addViolation();
         }
     }
