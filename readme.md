@@ -47,7 +47,15 @@ Watch the video on youtube.
 * Credit notes
 * And more
 
-## Feature Comparison Matrix
+### Workflows
+
+Workflows are a powerful feature of BillaBear. They allow you to integrate important tasks that have to be done during a process that if it fails you want to be able to retry later and resume with the rest of the process. This avoids manual developer intervention which can be timely and annoying.
+
+For example, you might want a microservice to be called on a subscription creation to allow for the creation of resources.
+
+Another example of where workflows are useful is when you're issuing refunds and for some reason the connection/API rquest fails. You can retry the refund later without requiring manual intervention.
+
+### Feature Comparison Matrix
 
 | Feature                           | BillaBear | Lago Open Source | Lago Cloud | Stripe | ChargeBee | Recurly | KillBill |
 |-----------------------------------|-----------|------------------|------------|--------|-----------|---------|----------|
