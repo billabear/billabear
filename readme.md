@@ -55,6 +55,10 @@ For example, you might want a microservice to be called on a subscription creati
 
 Another example of where workflows are useful is when you're issuing refunds and for some reason the connection/API rquest fails. You can retry the refund later without requiring manual intervention.
 
+### Templates
+
+BillaBear uses Twig templates for the generation of documents such as invoices, quotes, and emails. This allows you to customize the look and feel of these documents to match your brands. It also allows for using the email service provider's templates. Both of these allows other departments other than tech to make minor changes, no more minor tickets to change the wording in an invoice or an email.
+
 ### Feature Comparison Matrix
 
 | Feature                           | BillaBear | Lago Open Source | Lago Cloud | Stripe | ChargeBee | Recurly | KillBill |
