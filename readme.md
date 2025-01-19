@@ -63,7 +63,7 @@ BillaBear uses Twig templates for the generation of documents such as invoices, 
 
 BillaBear has a powerful tax system that allows you to set up tax rules for countries and states. This allows you to configure your tax system to match the legal requirements for your specific product type.
 
-EU Tax laws such as reverse charge and one-stop-shop are supported.
+EU Tax laws such as reverse charge and one-stop-shop are supported. And there is an integration with VAT Sense so you can automate the syncing of tax rules for the EU and countries other than US and Canada. 
 
 The system is aware of thresholds which are configurable per country and state. This allows you to set up the system to charge tax only when you reach a certain threshold. And you can configure it to receive notifications when a threshold is reached.
 
