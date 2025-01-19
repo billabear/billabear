@@ -34,6 +34,7 @@ default:
                 - BillaBear\Tests\Behat\Subscriptions\ApiContext
                 - BillaBear\Tests\Behat\Subscriptions\MassChangeContext
                 - BillaBear\Tests\Behat\Subscriptions\EventsContext
+                - BillaBear\Tests\Behat\Subscriptions\NotificationContext
 
                 # Subscription Plan
                 - BillaBear\Tests\Behat\SubscriptionPlan\AppContext

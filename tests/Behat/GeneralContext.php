@@ -105,6 +105,16 @@ class GeneralContext implements Context
 
         $em->persist($validWarning);
 
+        $validWarning = new EmailTemplate();
+        $validWarning->setName(EmailTemplate::NAME_TRIAL_ENDING_WARNING);
+        $validWarning->setBrand($brand);
+        $validWarning->setLocale('en');
+        $validWarning->setSubject('Trial Ending Soon');
+        $validWarning->setTemplateBody('Body here');
+        $validWarning->setUseEmspTemplate(false);
+
+        $em->persist($validWarning);
+
         $notValidWarning = new EmailTemplate();
         $notValidWarning->setName(EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_NOT_VALID_WARNING);
         $notValidWarning->setBrand($brand);
