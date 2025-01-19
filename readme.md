@@ -67,6 +67,19 @@ EU Tax laws such as reverse charge and one-stop-shop are supported.
 
 The system is aware of thresholds which are configurable per country and state. This allows you to set up the system to charge tax only when you reach a certain threshold. And you can configure it to receive notifications when a threshold is reached.
 
+### Pricing
+
+BillaBear allows you to have the pricing you want. 
+
+Pricing Examples:
+
+* A fixed price for a plan.
+* Sell packages, say 200,000 euros of revenue. Which can also be sold in usage so they are billed based on their previous month's usage.
+* Have tier volume pricing where the price per unit decreases as the volume increases.
+* Have stair pricing (called tier graduated) where the price per unit decreases as the volume increases but only after a certain volume.
+* Have tiered volume with a fixed fee and per unit fee.
+* Seats pricing where you charge per seat.
+
 ### Feature Comparison Matrix
 
 | Feature                           | BillaBear | Lago Open Source | Lago Cloud | Stripe | ChargeBee | Recurly | KillBill |
