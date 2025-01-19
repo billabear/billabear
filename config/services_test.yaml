@@ -6,8 +6,10 @@ services:
     BillaBear\Tests\Behat\:
         resource: '../tests/Behat/*'
 
-    Parthenon\Notification\EmailSenderInterface: '@Parthenon\Notification\Sender\NullEmailSender'
+    BillaBear\Tests\Mock\:
+        resource: '../tests/Mock/*'
 
+    Parthenon\Notification\EmailSenderInterface: '@BillaBear\Tests\Mock\EmailSender'
     BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\DummyRegister'
 
     Parthenon\Billing\Obol\ProductRegisterInterface: '@BillaBear\Dummy\ProductRegister'
