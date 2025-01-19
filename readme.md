@@ -59,6 +59,14 @@ Another example of where workflows are useful is when you're issuing refunds and
 
 BillaBear uses Twig templates for the generation of documents such as invoices, quotes, and emails. This allows you to customize the look and feel of these documents to match your brands. It also allows for using the email service provider's templates. Both of these allows other departments other than tech to make minor changes, no more minor tickets to change the wording in an invoice or an email.
 
+### Tax Management
+
+BillaBear has a powerful tax system that allows you to set up tax rules for countries and states. This allows you to configure your tax system to match the legal requirements for your specific product type.
+
+EU Tax laws such as reverse charge and one-stop-shop are supported.
+
+The system is aware of thresholds which are configurable per country and state. This allows you to set up the system to charge tax only when you reach a certain threshold. And you can configure it to receive notifications when a threshold is reached.
+
 ### Feature Comparison Matrix
 
 | Feature                           | BillaBear | Lago Open Source | Lago Cloud | Stripe | ChargeBee | Recurly | KillBill |
