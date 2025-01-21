@@ -18,7 +18,7 @@
 
     </div>
 
-    <div class="ml-5">
+    <div class="mt-5">
       <SubmitButton :in-progress="sending">{{ $t('app.payment_details.add_with_token.submit') }}</SubmitButton>
     </div>
     </form>
