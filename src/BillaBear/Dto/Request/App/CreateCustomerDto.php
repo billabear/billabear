@@ -73,7 +73,6 @@ class CreateCustomerDto
     #[Assert\Type('string')]
     private $invoiceFormat;
 
-    #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('boolean')]
     #[SerializedName('marketing_opt_in')]
     private $marketingOptIn;
