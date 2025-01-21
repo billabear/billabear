@@ -60,7 +60,7 @@
               <label class="form-field-lbl" for="type">
                 {{ $t('app.customer.update.marketing_opt_in') }}
               </label>
-              <p class="form-field-error" v-if="errors.marketing_opt_in != undefined">{{ errors.marketing_opt_in }}</p>
+              <p class="form-field-error" v-if="errors.marketingOptIn != undefined">{{ errors.marketingOptIn }}</p>
               <Toggle v-model="customer.marketing_opt_in" />
               <p class="form-field-help">{{ $t('app.customer.update.help_info.marketing_opt_in') }}</p>
             </div>
