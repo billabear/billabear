@@ -43,14 +43,14 @@ class Invoice
     #[ORM\ManyToOne(targetEntity: Customer::class)]
     private Customer $customer;
 
-    #[ORM\ManyToOne(targetEntity: InvoicedMetricCounter::class, cascade: ['persist'])]
-    private ?InvoicedMetricCounter $invoicedMetricCounter = null;
-
     #[ORM\ManyToMany(targetEntity: Subscription::class)]
     private array|Collection $subscriptions;
 
     #[ORM\ManyToMany(targetEntity: Payment::class)]
     private array|Collection $payments;
+
+    #[ORM\OneToMany(targetEntity: InvoicedMetricCounter::class, mappedBy: 'invoice', cascade: ['persist'])]
+    private array|Collection $invoicedMetricCounters = [];
 
     #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice', cascade: ['persist'])]
     private array|Collection $lines;
@@ -168,16 +168,6 @@ class Invoice
     public function setCustomer(Customer $customer): void
     {
         $this->customer = $customer;
-    }
-
-    public function getInvoicedMetricCounter(): ?InvoicedMetricCounter
-    {
-        return $this->invoicedMetricCounter;
-    }
-
-    public function setInvoicedMetricCounter(InvoicedMetricCounter $invoicedMetricCounter): void
-    {
-        $this->invoicedMetricCounter = $invoicedMetricCounter;
     }
 
     public function addPayment(Payment $payment): void
@@ -407,5 +397,33 @@ class Invoice
     public function setConvertedTaxTotal(int $convertedTaxTotal): void
     {
         $this->convertedTaxTotal = $convertedTaxTotal;
+    }
+
+    /**
+     * @return InvoicedMetricCounter[]|Collection
+     */
+    public function getInvoicedMetricCounters(): Collection
+    {
+        if (is_array($this->invoicedMetricCounters)) {
+            $this->invoicedMetricCounters = new ArrayCollection($this->invoicedMetricCounters);
+        }
+
+        return $this->invoicedMetricCounters;
+    }
+
+    public function setInvoicedMetricCounters(array|Collection $invoicedMetricCounters): void
+    {
+        $this->invoicedMetricCounters = $invoicedMetricCounters;
+    }
+
+    public function getInvoiceMetricForMetricCounter(Usage\MetricCounter $metricCounter): ?InvoicedMetricCounter
+    {
+        foreach ($this->getInvoicedMetricCounters() as $invoicedMetricCounter) {
+            if ($invoicedMetricCounter->getMetricCounter() === $metricCounter) {
+                return $invoicedMetricCounter;
+            }
+        }
+
+        return null;
     }
 }

@@ -35,6 +35,9 @@ class InvoiceLine
     #[ORM\ManyToOne(targetEntity: Subscription::class)]
     private ?Subscription $subscription = null;
 
+    #[ORM\ManyToOne(targetEntity: InvoicedMetricCounter::class, cascade: ['persist'])]
+    private ?InvoicedMetricCounter $invoicedMetricCounter = null;
+
     #[ORM\Column(type: 'string')]
     private string $currency;
 
@@ -333,5 +336,15 @@ class InvoiceLine
     public function setSubscription(?Subscription $subscription): void
     {
         $this->subscription = $subscription;
+    }
+
+    public function getInvoicedMetricCounter(): ?InvoicedMetricCounter
+    {
+        return $this->invoicedMetricCounter;
+    }
+
+    public function setInvoicedMetricCounter(?InvoicedMetricCounter $invoicedMetricCounter): void
+    {
+        $this->invoicedMetricCounter = $invoicedMetricCounter;
     }
 }

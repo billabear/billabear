@@ -39,6 +39,7 @@ Feature: Continuous metric
     Given the following invoices exist:
       | Customer                 | Created At |
       | customer.one@example.org | -1 year    |
+    And the metric usage for "customer.one@example.org" and metric "Test One" that has the value 15
     And the last invoice for "customer.one@example.org" had a metric usage for "Test One" that was 15
     And the metric usage for "customer.one@example.org" and metric "Test One" that has the value 25
     And stripe billing is disabled

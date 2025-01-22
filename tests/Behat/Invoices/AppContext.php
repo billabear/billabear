@@ -346,14 +346,19 @@ class AppContext implements Context
         $this->invoiceRepository->getEntityManager()->persist($metricUsage);
         $this->invoiceRepository->getEntityManager()->flush();
 
+        /** @var InvoiceLine $line */
+        $line = $invoice->getLines()->current();
+
         $invoicedMetricCounter = new InvoicedMetricCounter();
         $invoicedMetricCounter->setMetric($metric);
         $invoicedMetricCounter->setValue(floatval($value));
         $invoicedMetricCounter->setMetricCounter($metricUsage);
         $invoicedMetricCounter->setCreatedAt($invoice->getCreatedAt());
 
-        $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
+        $invoice->setInvoicedMetricCounters([$invoicedMetricCounter]);
+        $line->setInvoicedMetricCounter($invoicedMetricCounter);
 
+        $this->invoiceRepository->getEntityManager()->persist($line);
         $this->invoiceRepository->getEntityManager()->persist($invoice);
         $this->invoiceRepository->getEntityManager()->flush();
     }

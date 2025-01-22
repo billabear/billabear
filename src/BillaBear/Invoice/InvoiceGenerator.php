@@ -82,12 +82,8 @@ class InvoiceGenerator
         $diff = $diff->abs();
 
         list($priceInfo, $total, $subTotal, $vat, $line, $lines) = $this->buildForPrice(
-            $subscription, $newPrice, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines
+            $subscription, $newPrice, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines, $diff
         );
-
-        $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
-        $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
-        $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
 
         $line = new InvoiceLine();
         $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
@@ -136,7 +132,7 @@ class InvoiceGenerator
             $price = $subscription->getPrice();
 
             if ($price instanceof Price) {
-                list($priceInfo, $total, $subTotal, $vat, $line, $lines) = $this->buildForPrice($subscription, $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
+                list($total, $subTotal, $vat, $line, $lines) = $this->buildForPrice($subscription, $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
             } else {
                 $line = new InvoiceLine();
                 $line->setInvoice($invoice);
@@ -191,10 +187,21 @@ class InvoiceGenerator
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat, $createdAt);
     }
 
-    public function buildForPrice(Subscription $subscription, Price $price, Customer $customer, ?\DateTime $createdAt, Invoice $invoice, mixed $total, mixed $subTotal, mixed $vat, array $lines): array
-    {
+    protected function buildForPrice(
+        Subscription $subscription,
+        Price $price,
+        Customer $customer,
+        ?\DateTime $createdAt,
+        Invoice $invoice,
+        mixed $total,
+        mixed $subTotal,
+        mixed $vat,
+        array $lines,
+        ?Money $money = null,
+    ): array {
         $lastValue = null;
         $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
+        $invoicedMetricCounter = null;
         if ($price->getUsage()) {
             $metricCounter = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
             $invoicedMetricCounter = new InvoicedMetricCounter();
@@ -202,7 +209,6 @@ class InvoiceGenerator
             $invoicedMetricCounter->setMetric($metricCounter->getMetric());
             $invoicedMetricCounter->setCreatedAt($createdAt);
             $invoicedMetricCounter->setInvoice($invoice);
-            $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
 
             if (MetricType::RESETTABLE === $price->getMetricType()) {
                 $metricCounter->setValue(0);
@@ -210,7 +216,7 @@ class InvoiceGenerator
             } else {
                 $lastInvoice = $this->invoiceRepository->getLastForCustomer($customer);
                 $totalUsage = $this->metricProvider->getMetric($subscription);
-                $lastValue = $lastInvoice?->getInvoicedMetricCounter()?->getValue() ?? 0.0;
+                $lastValue = $lastInvoice?->getInvoiceMetricForMetricCounter($metricCounter)?->getValue() ?? 0.0;
                 $usage = $totalUsage + $lastValue;
                 $metricCounter->setValue($usage);
             }
@@ -222,14 +228,21 @@ class InvoiceGenerator
             $usage = $subscription->getSeats();
             $usage = $this->quantityProvider->getQuantity($usage, $createdAt, $subscription);
         }
-        // Pass Metric Usage
-        $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
+        if (!$money) {
+            // Pass Metric Usage
+            $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
+        } else {
+            $priceInfos = [$this->pricer->getCustomerPriceInfoFromMoney($money, $customer, true, $taxType)];
+        }
+
+        $priceInfo = null;
 
         foreach ($priceInfos as $priceInfo) {
             $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
             $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
             $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
             $line = new InvoiceLine();
+            $line->setInvoicedMetricCounter($invoicedMetricCounter);
             $line->setInvoice($invoice);
             $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
             $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
