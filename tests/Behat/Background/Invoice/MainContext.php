@@ -9,6 +9,7 @@
 namespace BillaBear\Tests\Behat\Background\Invoice;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use BillaBear\Background\Invoice\DisableOverdueInvoices;
 use BillaBear\Background\Invoice\GenerateNewInvoices;
 use BillaBear\Background\Invoice\UnpaidInvoices;
@@ -54,6 +55,18 @@ class MainContext implements Context
 
         if ($invoice->getAmountDue() != $amount) {
             throw new \Exception('Different amount due - '.$invoice->getAmountDue());
+        }
+    }
+
+    #[Then('there will be an invoice for :arg1 with a metric counter :arg2')]
+    public function thereWillBeAnInvoiceForWithAMetricCounter($customerEmail, $metricCount): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if ($invoice->getInvoicedMetricCounter()?->getMetric()?->getName() != $metricCount) {
+            throw new \Exception('Different metric counter - '.$invoice->getInvoicedMetricCounter()?->getMetric()?->getName());
         }
     }
 

@@ -121,3 +121,30 @@ Feature: Customer Subscription Update Plan
     Then the subscription "Better Test Plan" for "customer.one@example.org" will not exist
     And the subscription "Test Plan" for "customer.one@example.org" will exist
     Then there should be a credit for "customer.one@example.org" for 1500 in the currency "USD"
+
+  Scenario: Usage based change price
+    Given I have authenticated to the API
+    Given the follow metrics exist:
+      | Name     | Code     | Type       | Aggregation Method | Aggregation Property | Ingestion |
+      | Test One | test_one | Resettable | Sum                |                      | Real Time |
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+    Given the follow price "Product One" for "USD" monthly price with a usage tiered graduated for metric "Test One" with these tiers:
+      | First Unit | Last Unit | Unit Price | Flat Fee |
+      | 1          | 20        | 0          | 1000     |
+      | 21         | -1        | 0          | 1500     |
+    And the a price for "Product One" for 250 "USD" monthly price for package of 2500 units for metric "Test One"
+    Given the following subscriptions exist:
+      | Subscription Plan | Type             | Price Currency | Price Schedule | Customer                 | Next Charge | Status | Seats |
+      | Test Plan         | tiered_graduated | USD            | month          | customer.one@example.org | +3 days     | Active | 5     |
+    And the following events exist:
+      | Metric   | Customer                 | Subscription Plan | Value | Repeated |
+      | Test One | customer.one@example.org | Test Plan         | 2     | 15       |
+    And stripe billing is disabled
+    When I make a API Request to update the subscription "Test Plan" for "customer.one@example.org" to plan to be changed instantly:
+      | Product    | Product One |
+      | Plan       | Test Plan   |
+      | Price Type | package     |
+      | Currency   | USD         |
+    Then there will be an invoice for "customer.one@example.org" with a metric counter "Test One"

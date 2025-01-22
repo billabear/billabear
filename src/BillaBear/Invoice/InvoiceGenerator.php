@@ -62,15 +62,18 @@ class InvoiceGenerator
         SubscriptionPlan $newPlan,
         Price $oldPrice,
         Price $newPrice,
+        Subscription $subscription,
         ?Money $diff = null,
     ): Invoice {
         $lines = [];
         $total = null;
         $subTotal = null;
         $vat = null;
+        $createdAt = new \DateTime('now');
         $invoice = new Invoice();
         $invoice->setValid(true);
         $invoice->setInvoiceNumber($this->invoiceNumberGeneratorProvider->getGenerator()->generate());
+        $invoice->setSubscriptions([$subscription]);
 
         if (!$diff) {
             $diff = $oldPrice->getAsMoney()->minus($newPrice->getAsMoney());
@@ -78,7 +81,9 @@ class InvoiceGenerator
 
         $diff = $diff->abs();
 
-        $priceInfo = $this->pricer->getCustomerPriceInfoFromMoney($diff, $customer, $newPrice->isIncludingTax(), $newPlan->getProduct()->getTaxType());
+        list($priceInfo, $total, $subTotal, $vat, $line, $lines) = $this->buildForPrice(
+            $subscription, $newPrice, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines
+        );
 
         $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
         $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
@@ -103,7 +108,7 @@ class InvoiceGenerator
         $line->setTaxType($newPlan->getProduct()->getTaxType());
         $lines[] = $line;
 
-        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo->total->getCurrency()->getCurrencyCode(), $vat, new \DateTime('now'));
+        return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $priceInfo->total->getCurrency()->getCurrencyCode(), $vat, $createdAt);
     }
 
     /**
@@ -131,72 +136,7 @@ class InvoiceGenerator
             $price = $subscription->getPrice();
 
             if ($price instanceof Price) {
-                $lastValue = null;
-                $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
-                if ($price->getUsage()) {
-                    $metricCounter = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
-                    $invoicedMetricCounter = new InvoicedMetricCounter();
-                    $invoicedMetricCounter->setMetricCounter($metricCounter);
-                    $invoicedMetricCounter->setMetric($metricCounter->getMetric());
-                    $invoicedMetricCounter->setCreatedAt($createdAt);
-                    $invoicedMetricCounter->setInvoice($invoice);
-                    $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
-
-                    if (MetricType::RESETTABLE === $price->getMetricType()) {
-                        $metricCounter->setValue(0);
-                        $usage = $this->metricProvider->getMetric($subscription);
-                    } else {
-                        $lastInvoice = $this->invoiceRepository->getLastForCustomer($customer);
-                        $totalUsage = $this->metricProvider->getMetric($subscription);
-                        $lastValue = $lastInvoice?->getInvoicedMetricCounter()?->getValue() ?? 0.0;
-                        $usage = $totalUsage + $lastValue;
-                        $metricCounter->setValue($usage);
-                    }
-
-                    $invoicedMetricCounter->setValue($usage);
-                    $metricCounter->setUpdatedAt($createdAt);
-                    $this->metricUsageRepository->save($metricCounter);
-                } else {
-                    $usage = $subscription->getSeats();
-                    $usage = $this->quantityProvider->getQuantity($usage, $createdAt, $subscription);
-                }
-                // Pass Metric Usage
-                $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
-
-                foreach ($priceInfos as $priceInfo) {
-                    $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
-                    $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
-                    $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
-                    $line = new InvoiceLine();
-                    $line->setInvoice($invoice);
-                    $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
-                    $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
-                    $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-                    $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
-                    $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
-
-                    $line->setConvertedTotal($this->toSystemConverter->convert($priceInfo->total)->getMinorAmount()->toInt());
-                    $line->setConvertedSubTotal($this->toSystemConverter->convert($priceInfo->subTotal)->getMinorAmount()->toInt());
-                    $line->setConvertedTaxTotal($this->toSystemConverter->convert($priceInfo->vat)->getMinorAmount()->toInt());
-                    $line->setConvertedNetPrice($this->toSystemConverter->convert($priceInfo->netPrice)->getMinorAmount()->toInt());
-
-                    $line->setQuantity($priceInfo->quantity);
-                    if ($priceInfo->quantity > 1) {
-                        $line->setDescription(sprintf('%d x %s', $priceInfo->quantity, $subscription->getPlanName()));
-                    } else {
-                        $line->setDescription($subscription->getPlanName());
-                    }
-                    $line->setTaxPercentage($priceInfo->taxInfo->rate);
-                    $line->setTaxType($taxType);
-                    $line->setTaxCountry($priceInfo->taxInfo->country);
-                    $line->setTaxState($priceInfo->taxInfo->state);
-                    $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
-                    $line->setProduct($subscription->getSubscriptionPlan()->getProduct());
-                    $line->setMetadata($subscription->getMetadata());
-                    $line->setSubscription($subscription);
-
-                    $lines[] = $line;
-                }
+                list($priceInfo, $total, $subTotal, $vat, $line, $lines) = $this->buildForPrice($subscription, $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
             } else {
                 $line = new InvoiceLine();
                 $line->setInvoice($invoice);
@@ -249,6 +189,78 @@ class InvoiceGenerator
         }
 
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat, $createdAt);
+    }
+
+    public function buildForPrice(Subscription $subscription, Price $price, Customer $customer, ?\DateTime $createdAt, Invoice $invoice, mixed $total, mixed $subTotal, mixed $vat, array $lines): array
+    {
+        $lastValue = null;
+        $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
+        if ($price->getUsage()) {
+            $metricCounter = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
+            $invoicedMetricCounter = new InvoicedMetricCounter();
+            $invoicedMetricCounter->setMetricCounter($metricCounter);
+            $invoicedMetricCounter->setMetric($metricCounter->getMetric());
+            $invoicedMetricCounter->setCreatedAt($createdAt);
+            $invoicedMetricCounter->setInvoice($invoice);
+            $invoice->setInvoicedMetricCounter($invoicedMetricCounter);
+
+            if (MetricType::RESETTABLE === $price->getMetricType()) {
+                $metricCounter->setValue(0);
+                $usage = $this->metricProvider->getMetric($subscription);
+            } else {
+                $lastInvoice = $this->invoiceRepository->getLastForCustomer($customer);
+                $totalUsage = $this->metricProvider->getMetric($subscription);
+                $lastValue = $lastInvoice?->getInvoicedMetricCounter()?->getValue() ?? 0.0;
+                $usage = $totalUsage + $lastValue;
+                $metricCounter->setValue($usage);
+            }
+
+            $invoicedMetricCounter->setValue($usage);
+            $metricCounter->setUpdatedAt($createdAt);
+            $this->metricUsageRepository->save($metricCounter);
+        } else {
+            $usage = $subscription->getSeats();
+            $usage = $this->quantityProvider->getQuantity($usage, $createdAt, $subscription);
+        }
+        // Pass Metric Usage
+        $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
+
+        foreach ($priceInfos as $priceInfo) {
+            $total = $total?->plus($priceInfo->total) ?? $priceInfo->total;
+            $subTotal = $subTotal?->plus($priceInfo->subTotal) ?? $priceInfo->subTotal;
+            $vat = $vat?->plus($priceInfo->vat) ?? $priceInfo->vat;
+            $line = new InvoiceLine();
+            $line->setInvoice($invoice);
+            $line->setCurrency($priceInfo->total->getCurrency()->getCurrencyCode());
+            $line->setTotal($priceInfo->total->getMinorAmount()->toInt());
+            $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+            $line->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+            $line->setNetPrice($priceInfo->netPrice->getMinorAmount()->toInt());
+
+            $line->setConvertedTotal($this->toSystemConverter->convert($priceInfo->total)->getMinorAmount()->toInt());
+            $line->setConvertedSubTotal($this->toSystemConverter->convert($priceInfo->subTotal)->getMinorAmount()->toInt());
+            $line->setConvertedTaxTotal($this->toSystemConverter->convert($priceInfo->vat)->getMinorAmount()->toInt());
+            $line->setConvertedNetPrice($this->toSystemConverter->convert($priceInfo->netPrice)->getMinorAmount()->toInt());
+
+            $line->setQuantity($priceInfo->quantity);
+            if ($priceInfo->quantity > 1) {
+                $line->setDescription(sprintf('%d x %s', $priceInfo->quantity, $subscription->getPlanName()));
+            } else {
+                $line->setDescription($subscription->getPlanName());
+            }
+            $line->setTaxPercentage($priceInfo->taxInfo->rate);
+            $line->setTaxType($taxType);
+            $line->setTaxCountry($priceInfo->taxInfo->country);
+            $line->setTaxState($priceInfo->taxInfo->state);
+            $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+            $line->setProduct($subscription->getSubscriptionPlan()->getProduct());
+            $line->setMetadata($subscription->getMetadata());
+            $line->setSubscription($subscription);
+
+            $lines[] = $line;
+        }
+
+        return [$priceInfo, $total, $subTotal, $vat, $line, $lines];
     }
 
     /**

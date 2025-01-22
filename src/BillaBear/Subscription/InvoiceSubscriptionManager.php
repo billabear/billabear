@@ -154,6 +154,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                     $subscription->getSubscriptionPlan(),
                     $oldPrice,
                     $price,
+                    $subscription,
                     $diff,
                 );
 
@@ -200,7 +201,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
             $diff = $this->calculateProrateDiff($subscription, $oldPrice, $price);
 
             if ($diff->isPositive()) {
-                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price, $diff);
+                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price, $subscription, $diff);
 
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
                     try {

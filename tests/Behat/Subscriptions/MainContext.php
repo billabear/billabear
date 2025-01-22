@@ -596,8 +596,12 @@ class MainContext implements Context
 
         /** @var SubscriptionPlan $subscriptionPlan */
         $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $data['Plan']]);
-        /** @var Price $price */
-        $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+        /* @var Price $price */
+        if (isset($data['Price'])) {
+            $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+        } else {
+            $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'type' => PriceType::from($data['Price Type']), 'currency' => $data['Currency']]);
+        }
 
         $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/plan', [
             'when' => UpdatePlan::WHEN_INSTANTLY,

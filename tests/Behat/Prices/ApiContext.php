@@ -11,6 +11,7 @@ namespace BillaBear\Tests\Behat\Prices;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Behat\Step\Given;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\TierComponent;
 use BillaBear\Pricing\Usage\MetricType;
@@ -208,6 +209,28 @@ class ApiContext implements Context
     public function theFollowPriceForMonthlyPriceWithAUsageTieredGraduatedForMetricWithTheseTiers($productName, $currency, $metricName, TableNode $table)
     {
         $this->createMetricPrice($productName, $metricName, $currency, 'month', $table);
+    }
+
+    #[Given('the a price for :productName for :amount :currency monthly price for package of :unitCount units for metric :metricName')]
+    public function theAPriceForForMonthlyPriceForPackageOfUnitsForMetric(string $productName, string $currency, int $amount, int $units, string $metricName): void
+    {
+        $product = $this->getProductByName($productName);
+        $metric = $this->getMetric($metricName);
+        $price = new Price();
+        $price->setProduct($product);
+        $price->setMetric($metric);
+        $price->setAmount($amount);
+        $price->setCurrency($currency);
+        $price->setCreatedAt(new \DateTime('now'));
+        $price->setType(PriceType::PACKAGE);
+        $price->setMetricType(MetricType::RESETTABLE);
+        $price->setRecurring(true);
+        $price->setUsage(true);
+        $price->setSchedule('month');
+        $price->setUnits($units);
+
+        $this->priceRepository->getEntityManager()->persist($price);
+        $this->priceRepository->getEntityManager()->flush();
     }
 
     /**
