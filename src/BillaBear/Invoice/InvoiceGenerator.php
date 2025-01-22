@@ -81,7 +81,7 @@ class InvoiceGenerator
 
         $diff = $diff->abs();
 
-        list($priceInfo, $total, $subTotal, $vat, $line, $lines) = $this->buildForPrice(
+        list($priceInfo, $total, $subTotal, $vat, $lines) = $this->buildForPrice(
             $subscription, $newPlan, $newPrice, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines, $diff
         );
 
@@ -132,7 +132,7 @@ class InvoiceGenerator
             $price = $subscription->getPrice();
 
             if ($price instanceof Price) {
-                list($total, $subTotal, $vat, $line, $lines) = $this->buildForPrice($subscription, $subscription->getSubscriptionPlan(), $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
+                list($priceInfo, $total, $subTotal, $vat, $lines) = $this->buildForPrice($subscription, $subscription->getSubscriptionPlan(), $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
             } else {
                 $line = new InvoiceLine();
                 $line->setInvoice($invoice);
@@ -184,6 +184,8 @@ class InvoiceGenerator
             throw new NothingToInvoiceException('Nothing to invoice');
         }
 
+        $line = current($lines);
+
         return $this->finaliseInvoice($customer, $invoice, $total, $lines, $subTotal, $line->getCurrency(), $vat, $createdAt);
     }
 
@@ -233,7 +235,7 @@ class InvoiceGenerator
             // Pass Metric Usage
             $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $taxType, $usage, $lastValue);
         } else {
-            $priceInfos = [$this->pricer->getCustomerPriceInfoFromMoney($money, $customer, true, $taxType)];
+            $priceInfos = [$this->pricer->getCustomerPriceInfoFromMoney($money, $customer, $price->isIncludingTax(), $taxType)];
         }
 
         $priceInfo = null;
@@ -274,7 +276,7 @@ class InvoiceGenerator
             $lines[] = $line;
         }
 
-        return [$priceInfo, $total, $subTotal, $vat, $line, $lines];
+        return [$priceInfo, $total, $subTotal, $vat, $lines];
     }
 
     /**
