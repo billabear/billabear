@@ -82,7 +82,7 @@ class InvoiceGenerator
         $diff = $diff->abs();
 
         list($priceInfo, $total, $subTotal, $vat, $line, $lines) = $this->buildForPrice(
-            $subscription, $newPrice, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines, $diff
+            $subscription, $newPlan, $newPrice, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines, $diff
         );
 
         $line = new InvoiceLine();
@@ -132,7 +132,7 @@ class InvoiceGenerator
             $price = $subscription->getPrice();
 
             if ($price instanceof Price) {
-                list($total, $subTotal, $vat, $line, $lines) = $this->buildForPrice($subscription, $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
+                list($total, $subTotal, $vat, $line, $lines) = $this->buildForPrice($subscription, $subscription->getSubscriptionPlan(), $price, $customer, $createdAt, $invoice, $total, $subTotal, $vat, $lines);
             } else {
                 $line = new InvoiceLine();
                 $line->setInvoice($invoice);
@@ -189,6 +189,7 @@ class InvoiceGenerator
 
     protected function buildForPrice(
         Subscription $subscription,
+        SubscriptionPlan $plan,
         Price $price,
         Customer $customer,
         ?\DateTime $createdAt,
@@ -200,7 +201,7 @@ class InvoiceGenerator
         ?Money $money = null,
     ): array {
         $lastValue = null;
-        $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
+        $taxType = $plan->getProduct()->getTaxType();
         $invoicedMetricCounter = null;
         if ($price->getUsage()) {
             $metricCounter = $this->metricUsageRepository->getForCustomerAndMetric($customer, $price->getMetric());
