@@ -65,9 +65,13 @@ class MainContext implements Context
         /** @var Invoice $invoice */
         $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
 
-        if ($invoice->getInvoicedMetricCounter()?->getMetric()?->getName() != $metricCount) {
-            throw new \Exception('Different metric counter - '.$invoice->getInvoicedMetricCounter()?->getMetric()?->getName());
+        foreach ($invoice->getInvoicedMetricCounters() as $counter) {
+            if ($counter->getMetric()->getName() == $metricCount) {
+                return;
+            }
         }
+
+        throw new \Exception('Not found');
     }
 
     /**
