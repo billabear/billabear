@@ -60,7 +60,6 @@
             <input type="text" class="form-field-input" id="external_reference" v-model="product.external_reference"  />
             <p class="form-field-help">{{ $t('app.product.create.help_info.external_reference') }}</p>
           </div>
-
         </div>
 
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
@@ -86,6 +85,7 @@ export default {
       product: {
         name: null,
         external_reference: null,
+        tax_type: null,
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -102,8 +102,9 @@ export default {
     this.failed=false;
     this.errors = {};
     axios.get('/app/product/create').then(response => {
-      this.ready = true;
       this.tax_types = response.data.tax_types;
+      this.product.tax_type = this.tax_types[0].id;
+      this.ready = true;
     })
   },
   methods: {
