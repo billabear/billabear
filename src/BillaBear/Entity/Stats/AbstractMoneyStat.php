@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity\Stats;
@@ -12,16 +12,10 @@ use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\MappedSuperclass()]
 #[ORM\Index(fields: ['year', 'month', 'day'])]
+#[ORM\MappedSuperclass]
 class AbstractMoneyStat
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'integer')]
     protected int $amount = 0;
 
@@ -42,6 +36,11 @@ class AbstractMoneyStat
 
     #[ORM\Column(type: 'string')]
     protected string $brandCode;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
+    private $id;
 
     public function getId()
     {
@@ -96,23 +95,6 @@ class AbstractMoneyStat
         $this->date = $date;
     }
 
-    protected function setDatetime(): void
-    {
-        if (!isset($this->year)) {
-            return;
-        }
-
-        if (!isset($this->month)) {
-            return;
-        }
-
-        if (!isset($this->day)) {
-            return;
-        }
-
-        $this->date = new \DateTime(sprintf('%d-%d-%d', $this->year, $this->month, $this->day));
-    }
-
     public function getAmount(): int
     {
         return $this->amount;
@@ -162,5 +144,22 @@ class AbstractMoneyStat
     public function setBrandCode(?string $brandCode): void
     {
         $this->brandCode = $brandCode;
+    }
+
+    protected function setDatetime(): void
+    {
+        if (!isset($this->year)) {
+            return;
+        }
+
+        if (!isset($this->month)) {
+            return;
+        }
+
+        if (!isset($this->day)) {
+            return;
+        }
+
+        $this->date = new \DateTime(sprintf('%d-%d-%d', $this->year, $this->month, $this->day));
     }
 }

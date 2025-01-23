@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Repository;
@@ -16,11 +16,21 @@ class CustomerSubscriptionEventRepository extends DoctrineCrudRepository impleme
 {
     public function getAllForCustomer(Customer $customer): array
     {
-        return $this->entityRepository->findBy(['customer' => $customer]);
+        return $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC']);
+    }
+
+    public function getLastTenForCustomer(Customer $customer): array
+    {
+        return $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], 10);
     }
 
     public function getAllForSubscription(Subscription $subscription): array
     {
         return $this->entityRepository->findBy(['subscription' => $subscription]);
+    }
+
+    public function getLatest(int $limit = 10): array
+    {
+        return $this->entityRepository->findBy([], ['createdAt' => 'DESC'], $limit);
     }
 }

@@ -1,29 +1,33 @@
 <template>
-  <div class="mt-5">
-    <div class="w-full mb-5 mt-5">
-      <img src="/images/app-logo.png" alt="" class="" width="175" />
-    </div>
-    <div v-if="ready">
-      <div class="grid grid-cols-2 gap-4" v-if="!error_page">
-        <div class="mt-5 rounded-xl basket-container">
-          <h2 class="text-4xl">{{ displayCurrency(checkout_session.amount_due) }} {{ checkout.currency }}</h2>
-          <h3 class="text-2xl" v-if="checkout_session.tax_total !== null">{{ $t('portal.checkout.total', {amount: displayCurrency(checkout_session.tax_total), currency: checkout.currency}) }}</h3>
+
+  <div class="h-screen flex flex-col lg:flex-row" v-if="ready">
+    <!-- Left Section -->
+    <div class="bg-teal-500 w-full lg:w-1/2 h-full desktop-only text-center text-white pt-12">
+      <img src="/images/app-logo.png" alt="BillaBear" class="w-72 mx-auto" />
+
+      <h1 class="my-3 text-4xl underline">{{ $t('portal.checkout.title') }}</h1>
+
+        <div class="mt-5 mx-auto max-w-2xl text-left bg-white text-black p-3 rounded-lg">
+          <h2 class="text-3xl">{{
+              $t('portal.checkout.total', {amount: displayCurrency(checkout_session.amount_due), currency: checkout.currency})
+                  }}</h2>
+          <h3 class="text-2xl" v-if="checkout_session.tax_total !== null">{{ $t('portal.checkout.tax_total', {amount: displayCurrency(checkout_session.tax_total), currency: checkout.currency}) }}</h3>
 
           <h3 class="text-xl mt-5 mb-2">{{ $t('portal.checkout.items.title') }}</h3>
           <div v-for="line in checkout.lines" class="item-line">
-            <p>{{ displayCurrency(line.total) }} {{ line.currency }} - {{ line.description }}</p>
+            <p>{{ displayCurrency(line.total) }} {{ line.currency }} {{ $t('portal.checkout.schedule.'+line.schedule) }} - {{ line.description }}</p>
           </div>
-
         </div>
-        <div class="mt-5">
+    </div>
+        <div class="p-12 w-1/2">
           <div v-if="stage === 'customer'">
-            <h2 class="text-xl mb-5">{{ $t('portal.checkout.customer.title') }}</h2>
+            <h2 class="text-2xl font-bold mb-5">{{ $t('portal.checkout.customer.title') }}</h2>
             <div class="form-field-ctn">
               <label class="form-field-lbl" for="email">
                 {{ $t('portal.checkout.customer.fields.email') }}
               </label>
               <p class="form-field-error" v-if="errors.email != undefined">{{ errors.email }}</p>
-              <input type="email" class="form-field-input w-full" id="email" v-model="customer.email" />
+              <input type="email" class="rounded-lg p-2 border-gray-300 text-gray-900 shadow w-full" id="email" v-model="customer.email" />
             </div>
 
             <div class="form-field-ctn">
@@ -31,11 +35,11 @@
                 {{ $t('portal.checkout.customer.fields.country') }}
               </label>
               <p class="form-field-error" v-if="errors['address.country'] != undefined">{{ errors['address.country'] }}</p>
-              <CountrySelect class="form-field-input w-full"  v-model="customer.address.country" />
+              <CountrySelect class="rounded-lg p-2 border-gray-300 text-gray-900 shadow-lg w-full"  v-model="customer.address.country" />
             </div>
 
             <div class="form-field-ctn mt-2">
-              <SubmitButton :in-progress="sending" class="w-full btn--main" @click="createCustomer">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
+              <SubmitButton :in-progress="sending" class="w-full shadow-lg btn--main" @click="createCustomer">{{ $t('portal.checkout.customer.submit') }}</SubmitButton>
             </div>
           </div>
           <div v-else-if="stage == 'payment'">
@@ -50,24 +54,12 @@
 
             <p>{{ $t('portal.checkout.success.message') }}</p>
           </div>
-
-
         </div>
-      </div>
-      <div v-else>
-        <div class="text-center">
-          <img src="/images/error-bear.png" width="250"  class="m-auto" alt="BillaBear - Loading" />
-          <p class="text-3xl font-bold">{{ $t('portal.checkout.error') }}</p>
-        </div>
-      </div>
-    </div>
-    <div v-else>
-      <div class="text-center">
-        <img src="/images/bear-with-papers.png" width="250"  class="m-auto" alt="BillaBear - Loading" />
-        <p class="text-3xl font-bold">{{ $t('portal.checkout.loading') }}</p>
-      </div>
-    </div>
   </div>
+  <div class="flex justify-center items-center h-screen" v-else>
+    <img src="/images/public-logo.svg" class="w-80 animate-fade-in-out" />
+  </div>
+
 </template>
 
 <script>
@@ -102,7 +94,6 @@ export default {
   },
   mounted() {
     const slug = this.$route.params.slug;
-
     axios.get("/public/checkout/"+slug+"/view").then(response => {
       this.ready = true;
       this.checkout = response.data.checkout;
@@ -168,30 +159,4 @@ export default {
 </script>
 
 <style scoped>
-.basket-container {
-  @apply p-5;
-  background: #ffe6bf;
-}
-
-.form-field-ctn {
-  @apply mb-1;
-}
-
-.form-field-lbl {
-  @apply block;
-}
-
-.form-field-input {
-  @apply p-2 border rounded-xl;
-}
-
-#cardInput {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.hide {
-  display: none;
-}
 </style>

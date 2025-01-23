@@ -1,20 +1,24 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App;
 
 use BillaBear\Customer\CreationHandler;
+use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\Disabler;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Customer\LimitsFactory;
+use BillaBear\Customer\Messenger\CustomerEvent;
+use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\Customer\ObolRegister;
 use BillaBear\DataMappers\CreditDataMapper;
 use BillaBear\DataMappers\CustomerDataMapper;
+use BillaBear\DataMappers\Invoice\InvoiceDeliverySettingsDataMapper;
 use BillaBear\DataMappers\InvoiceDataMapper;
 use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
@@ -22,31 +26,39 @@ use BillaBear\DataMappers\RefundDataMapper;
 use BillaBear\DataMappers\Settings\BrandSettingsDataMapper;
 use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
+use BillaBear\DataMappers\Usage\MetricCounterDataMapper;
+use BillaBear\DataMappers\Usage\UsageLimitDataMapper;
+use BillaBear\Dto\Generic\App\Usage\MetricCounter;
 use BillaBear\Dto\Request\App\CreateCustomerDto;
 use BillaBear\Dto\Response\App\Customer\CreateCustomerView;
 use BillaBear\Dto\Response\App\CustomerView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerStatus;
+use BillaBear\Entity\Subscription;
+use BillaBear\Event\Customer\CustomerEnabled;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CreditRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
+use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
+use BillaBear\Repository\PaymentRepositoryInterface;
+use BillaBear\Repository\RefundRepositoryInterface;
+use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Repository\UsageLimitRepositoryInterface;
 use BillaBear\Stats\CustomerCreationStats;
-use BillaBear\Webhook\Outbound\Payload\CustomerEnabledPayload;
-use BillaBear\Webhook\Outbound\Payload\CustomerUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Customer\CustomerEnabledPayload;
+use BillaBear\Webhook\Outbound\Payload\Customer\CustomerUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
-use Parthenon\Billing\Repository\PaymentRepositoryInterface;
-use Parthenon\Billing\Repository\RefundRepositoryInterface;
-use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -197,6 +209,7 @@ class CustomerController
         Request $request,
         CustomerRepositoryInterface $customerRepository,
         WebhookDispatcherInterface $eventProcessor,
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->getLogger()->info('Received request to enable customer', ['customer_id' => $request->get('id')]);
 
@@ -214,6 +227,7 @@ class CustomerController
         $customer->setStatus(CustomerStatus::ACTIVE);
         $customerRepository->save($customer);
         $eventProcessor->dispatch(new CustomerEnabledPayload($customer));
+        $eventDispatcher->dispatch(new CustomerEnabled($customer), CustomerEnabled::NAME);
 
         return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
     }
@@ -239,6 +253,11 @@ class CustomerController
         InvoiceDataMapper $invoiceDataMapper,
         CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
         CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
+        InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
+        InvoiceDeliverySettingsDataMapper $invoiceDeliveryDataMapper,
+        MetricCounterDataMapper $metricCounterDataMapper,
+        UsageLimitRepositoryInterface $usageLimitRepository,
+        UsageLimitDataMapper $usageLimitDataMapper,
     ): Response {
         $this->getLogger()->info('Received request to view customer', ['customer_id' => $request->get('id')]);
 
@@ -248,40 +267,98 @@ class CustomerController
             return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $payments = $paymentRepository->getPaymentsForCustomer($customer);
-        $paymentDtos = array_map([$paymentDataMapper, 'createAppDto'], $payments);
+        $payments = $paymentRepository->getLastTenForCustomer($customer);
+        $paymentDtos = array_map([$paymentDataMapper, 'createAppDto'], $payments->getResults());
 
-        $refunds = $refundRepository->getForCustomer($customer);
-        $refundDtos = array_map([$refundDataMapper, 'createAppDto'], $refunds);
+        $paymentList = new ListResponse();
+        $paymentList->setData($paymentDtos);
+        $paymentList->setLastKey($payments->getLastKey());
+        $paymentList->setFirstKey($payments->getFirstKey());
+        $paymentList->setHasMore($payments->hasMore());
+
+        $refunds = $refundRepository->getLastTenForCustomer($customer);
+        $refundDtos = array_map([$refundDataMapper, 'createAppDto'], $refunds->getResults());
+
+        $refundList = new ListResponse();
+        $refundList->setData($refundDtos);
+        $refundList->setHasMore($refunds->hasMore());
+        $refundList->setFirstKey($refundList->getFirstKey());
+        $refundList->setLastKey($refundList->getLastKey());
 
         $paymentDetails = $paymentDetailsRepository->getPaymentCardForCustomer($customer);
         $paymentDetailsDto = array_map([$paymentDetailsFactory, 'createAppDto'], $paymentDetails);
 
-        $subscriptions = $subscriptionRepository->getAllForCustomer($customer);
-        $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions);
+        $subscriptions = $subscriptionRepository->getLastTenForCustomer($customer);
+        $subscriptionDtos = array_map([$subscriptionFactory, 'createAppDto'], $subscriptions->getResults());
 
-        $limits = $limitsFactory->createAppDto($customer, $subscriptions);
+        /** @var MetricCounter[] $metricCounterDtos */
+        $metricCounterDtos = [];
+        /** @var Subscription $subscription */
+        foreach ($subscriptions->getResults() as $subscription) {
+            if ($subscription->isActive() && $subscription->getPrice()?->getUsage()) {
+                $metric = $metricCounterDataMapper->createAppDto($subscription);
+                $found = false;
+                foreach ($metricCounterDtos as $dto) {
+                    if ($metric->getId() === $dto->getId()) {
+                        $found = true;
+                    }
+                }
+                if ($found) {
+                    continue;
+                }
+                $metricCounterDtos[] = $metric;
+            }
+        }
+
+        $subscriptionList = new ListResponse();
+        $subscriptionList->setData($subscriptionDtos);
+        $subscriptionList->setHasMore($subscriptions->hasMore());
+        $subscriptionList->setLastKey($subscriptions->getLastKey());
+        $subscriptionList->setFirstKey($subscriptions->getFirstKey());
+
+        $allSubscriptions = $subscriptionRepository->getAllForCustomer($customer);
+
+        $limits = $limitsFactory->createAppDto($customer, $allSubscriptions);
 
         $creditNotes = $creditNoteRepository->getForCustomer($customer);
         $creditNotesDto = array_map([$creditDataMapper, 'createAppDto'], $creditNotes);
 
-        $invoices = $invoiceRepository->getAllForCustomer($customer);
-        $invoiceDtos = array_map([$invoiceDataMapper, 'createQuickViewAppDto'], $invoices);
+        $invoices = $invoiceRepository->getLastTenForCustomer($customer);
+        $invoiceDtos = array_map([$invoiceDataMapper, 'createQuickViewAppDto'], $invoices->getResults());
 
-        $subscriptionEvents = $customerSubscriptionEventRepository->getAllForCustomer($customer);
+        $invoiceList = new ListResponse();
+        $invoiceList->setData($invoiceDtos);
+        $invoiceList->setHasMore($invoices->hasMore());
+        $invoiceList->setLastKey($invoices->getLastKey());
+        $invoiceList->setFirstKey($invoices->getFirstKey());
+
+        $subscriptionEvents = $customerSubscriptionEventRepository->getLastTenForCustomer($customer);
         $subscriptionEventDtos = array_map([$customerSubscriptionEventDataMapper, 'createAppDto'], $subscriptionEvents);
+
+        $invoiceDelivery = $invoiceDeliveryRepository->getAllForCustomer($customer);
+        $invoiceDeliveryDtos = array_map([$invoiceDeliveryDataMapper, 'createAppDto'], $invoiceDelivery);
+
+        $invoiceDeliveryList = new ListResponse();
+        $invoiceDeliveryList->setData($invoiceDeliveryDtos);
+        $invoiceDeliveryList->setHasMore(false);
+
+        $usageLimits = $usageLimitRepository->getForCustomer($customer);
+        $usageLimitsDto = array_map([$usageLimitDataMapper, 'createAppDto'], $usageLimits);
 
         $customerDto = $customerDataMapper->createAppDto($customer);
         $dto = new CustomerView();
         $dto->setCustomer($customerDto);
         $dto->setPaymentDetails($paymentDetailsDto);
-        $dto->setSubscriptions($subscriptionDtos);
-        $dto->setPayments($paymentDtos);
-        $dto->setRefunds($refundDtos);
+        $dto->setSubscriptions($subscriptionList);
+        $dto->setPayments($paymentList);
+        $dto->setRefunds($refundList);
         $dto->setLimits($limits);
         $dto->setCredit($creditNotesDto);
-        $dto->setInvoices($invoiceDtos);
+        $dto->setInvoices($invoiceList);
+        $dto->setInvoiceDelivery($invoiceDeliveryList);
         $dto->setSubscriptionEvents($subscriptionEventDtos);
+        $dto->setMetricCounters($metricCounterDtos);
+        $dto->setUsageLimits($usageLimitsDto);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
@@ -297,6 +374,7 @@ class CustomerController
         CustomerDataMapper $customerFactory,
         ObolRegister $obolRegister,
         WebhookDispatcherInterface $webhookDispatcher,
+        MessageBusInterface $messageBus,
     ): Response {
         $this->getLogger()->info('Received request to update customer', ['customer_id' => $request->get('id')]);
 
@@ -328,6 +406,7 @@ class CustomerController
         $customerRepository->save($newCustomer);
 
         $webhookDispatcher->dispatch(new CustomerUpdatedPayload($customer));
+        $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
 
         $dto = $customerFactory->createAppDto($newCustomer);
         $jsonResponse = $serializer->serialize($dto, 'json');

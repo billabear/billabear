@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Quotes;
@@ -11,10 +11,12 @@ namespace BillaBear\Quotes;
 use BillaBear\Entity\ConvertableToInvoiceInterface;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceLine;
+use BillaBear\Event\Invoice\InvoiceCreated;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class QuoteConverter
 {
@@ -22,6 +24,7 @@ class QuoteConverter
         private InvoiceRepositoryInterface $invoiceRepository,
         private SubscriptionFactory $subscriptionFactory,
         private InvoiceNumberGeneratorProvider $provider,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -58,6 +61,7 @@ class QuoteConverter
             $invoiceLine->setCurrency($line->getCurrency());
             $invoiceLine->setTotal($line->getTotal());
             $invoiceLine->setSubTotal($line->getSubTotal());
+            $invoiceLine->setNetPrice($line->getSubTotal());
             $invoiceLine->setTaxTotal($line->getTaxTotal());
             $invoiceLine->setTaxType($line->getTaxType());
             $invoiceLine->setTaxPercentage($line->getTaxPercentage());
@@ -71,9 +75,9 @@ class QuoteConverter
             $invoiceLines[] = $invoiceLine;
         }
 
-        $numbrer = $this->provider->getGenerator()->generate();
+        $number = $this->provider->getGenerator()->generate();
 
-        $invoice->setInvoiceNumber($numbrer);
+        $invoice->setInvoiceNumber($number);
         $invoice->setLines($invoiceLines);
         $invoice->setTotal($total->getMinorAmount()->toInt());
         $invoice->setSubTotal($subTotal->getMinorAmount()->toInt());
@@ -89,6 +93,7 @@ class QuoteConverter
         $quote->setPaidAt(new \DateTime('now'));
 
         $this->invoiceRepository->save($invoice);
+        $this->eventDispatcher->dispatch(new InvoiceCreated($invoice), InvoiceCreated::NAME);
 
         return $invoice;
     }

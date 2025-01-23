@@ -3,21 +3,21 @@
     <h1 class="page-title">{{ $t('app.settings.exchange_rates.title') }}</h1>
     <LoadingScreen :ready="loaded">
 
-      <div class="mt-3">
-        <table class="list-table">
+      <div class="rounded-lg bg-white shadow p-3">
+        <table class="w-full">
           <thead>
-          <tr>
-            <th>{{ $t('app.settings.exchange_rates.list.currency_code') }}</th>
-            <th>{{ $t('app.settings.exchange_rates.list.rate') }}</th>
+          <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.settings.exchange_rates.list.currency_code') }}</th>
+            <th class="text-left pb-2">{{ $t('app.settings.exchange_rates.list.rate') }}</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="rate in rates" class="mt-5">
-            <td>{{ rate.currency_code }}</td>
+            <td class="py-3">{{ rate.currency_code }}</td>
             <td>{{ rate.rate }}</td>
           </tr>
           <tr v-if="rates.length === 0">
-            <td colspan="2" class="text-center">{{ $t('app.settings.exchange_rates.list.no_rates') }}</td>
+            <td colspan="2" class="py-3 text-center">{{ $t('app.settings.exchange_rates.list.no_rates') }}</td>
           </tr>
           </tbody>
         </table>

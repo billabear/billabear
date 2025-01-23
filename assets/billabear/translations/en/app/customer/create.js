@@ -25,6 +25,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     type: "Customer Type",
     type_business: "Business",
     type_individual: "Individual",
+    invoice_format: "Invoice Format",
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",
@@ -42,6 +43,7 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
         tax_number: 'The tax number for the customer',
         standard_tax_rate: "The tax rate to be applied for the customer for everything but digital services",
         type: "If the customer is a business or individual",
+        invoice_format: "The format that should be used when creating and delivering an invoice",
     },
     failed_message: "Unable to successfully create customer",
 }

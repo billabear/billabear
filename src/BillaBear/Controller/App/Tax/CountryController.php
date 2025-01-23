@@ -1,19 +1,19 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App\Tax;
 
 use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
-use BillaBear\DataMappers\CountryDataMapper;
-use BillaBear\DataMappers\CountryTaxRuleDataMapper;
+use BillaBear\DataMappers\Tax\CountryDataMapper;
+use BillaBear\DataMappers\Tax\CountryTaxRuleDataMapper;
 use BillaBear\DataMappers\Tax\StateDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\Country\CreateCountry;
 use BillaBear\Dto\Request\App\Country\CreateCountryTaxRule;
 use BillaBear\Dto\Request\App\Country\UpdateCountry;
@@ -57,7 +57,7 @@ class CountryController
         CountryRepositoryInterface $countryRepository,
         CountryDataMapper $dataMapper,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $this->getLogger()->info('Received request to add country');
 
@@ -123,7 +123,7 @@ class CountryController
         CountryRepositoryInterface $countryRepository,
         CountryDataMapper $dataMapper,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $this->getLogger()->info('Received request to edit country', ['country_id' => $request->get('id')]);
 

@@ -20,19 +20,25 @@
         </div>
       </div>
       <div  v-if="add_type === 'new'">
-        <div class="grid grid-cols-3 gap-3">
-          <div class="">{{ $t('app.subscription_plan.create.features_section.create.name') }}</div>
-          <div class="">{{ $t('app.subscription_plan.create.features_section.create.code_name') }}</div>
-          <div class="">{{ $t('app.subscription_plan.create.features_section.create.description') }}</div>
-          <div><input type="text" class="form-field" v-model="feature.name" /></div>
-          <div><input type="text" class="form-field" v-model="feature.code" /></div>
-          <div><input type="text" class="form-field" v-model="feature.description" /></div>
-
-          <div><span class="form-field-error" v-if="errors.name != undefined">{{ $t(errors.name) }}</span></div>
-          <div><span class="form-field-error" v-if="errors.code != undefined">{{ $t(errors.code) }}</span></div>
-          <div><span class="form-field-error" v-if="errors.description != undefined">{{ $t(errors.description) }}</span></div>
-        </div>
         <div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.features_section.create.name') }}</span>
+            <input type="text" class="form-field" v-model="feature.name" />
+            <span class="form-field-error" v-if="errors.name != undefined">{{ $t(errors.name) }}</span>
+          </div>
+
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.features_section.create.code_name') }}</span>
+            <input type="text" class="form-field" v-model="feature.code" />
+            <span class="form-field-error" v-if="errors.code != undefined">{{ $t(errors.code) }}</span>
+          </div>
+          <div class="">
+            <span class="font-bold block">{{ $t('app.subscription_plan.create.features_section.create.description') }}</span>
+            <input type="text" class="form-field" v-model="feature.description" />
+            <span class="form-field-error" v-if="errors.description != undefined">{{ $t(errors.description) }}</span>
+          </div>
+        </div>
+        <div class="mt-3">
           <SubmitButton :in-progress="sendingRequest" @click="sendCreate">{{ $t('app.subscription_plan.create.features_section.create.button') }}</SubmitButton>
         </div>
       </div>

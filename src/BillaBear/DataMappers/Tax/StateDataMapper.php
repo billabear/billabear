@@ -1,26 +1,26 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\DataMappers\Tax;
 
-use BillaBear\DataMappers\CountryDataMapper;
 use BillaBear\Dto\Generic\App\State as AppDto;
 use BillaBear\Dto\Request\App\Country\CreateState;
 use BillaBear\Dto\Request\App\Country\UpdateState;
 use BillaBear\Entity\State as Entity;
 use BillaBear\Repository\CountryRepositoryInterface;
+use BillaBear\Tax\ThresholdType;
 
 class StateDataMapper
 {
     public function __construct(
         private CountryRepositoryInterface $countryRepository,
-        private CountryDataMapper $dataMapper, )
-    {
+        private CountryDataMapper $dataMapper,
+    ) {
     }
 
     public function createEntity(CreateState|UpdateState $createState, ?Entity $entity = null): Entity
@@ -36,6 +36,8 @@ class StateDataMapper
         if ($createState instanceof CreateState) {
             $entity->setCountry($this->countryRepository->findById($createState->getCountry()));
         }
+        $entity->setTransactionThreshold($entity->getTransactionThreshold());
+        $entity->setThresholdType(ThresholdType::from($createState->getThresholdType()));
 
         return $entity;
     }
@@ -46,9 +48,11 @@ class StateDataMapper
         $dto->setId((string) $entity->getId());
         $dto->setName($entity->getName());
         $dto->setCode($entity->getCode());
-        $dto->setCollecting($entity->hasNexus());
+        $dto->setCollecting($entity->isCollecting());
         $dto->setCountry($this->dataMapper->createAppDto($entity->getCountry()));
         $dto->setThreshold($entity->getThreshold());
+        $dto->setTransactionThreshold($entity->getTransactionThreshold());
+        $dto->setThresholdType($entity->getThresholdType());
 
         return $dto;
     }

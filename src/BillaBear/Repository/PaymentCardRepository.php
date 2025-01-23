@@ -1,14 +1,16 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Repository;
 
+use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Repository\Orm\PaymentCardRepository as BaseRepository;
+use Parthenon\Common\Exception\NoEntityFoundException;
 
 class PaymentCardRepository extends BaseRepository implements PaymentCardRepositoryInterface
 {
@@ -25,8 +27,17 @@ class PaymentCardRepository extends BaseRepository implements PaymentCardReposit
             ->setParameter(':year', (int) $now->format('Y'))
             ->setParameter(':month', (int) $now->format('m'));
 
-        $cards = $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult();
+    }
 
-        return $cards;
+    public function getByStoredPaymentReference(string $reference): PaymentCard
+    {
+        $result = $this->entityRepository->findOneBy(['storedPaymentReference' => $reference]);
+
+        if (!$result instanceof PaymentCard) {
+            throw new NoEntityFoundException('No PaymentCard found with stored reference: '.$reference);
+        }
+
+        return $result;
     }
 }

@@ -1,20 +1,20 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Unit\Workflow;
 
 use BillaBear\Entity\WorkflowTransition;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerInterface;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
 use BillaBear\Workflow\WorkflowBuilder;
+use BillaBear\Workflow\WorkflowType;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;

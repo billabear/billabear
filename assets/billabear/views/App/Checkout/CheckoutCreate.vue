@@ -3,7 +3,7 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.checkout.create.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="p-5">
+      <div class="">
       <div class="card-body">
 
         <div class="form-field-ctn">
@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <div class="card-body mt-5">
+      <div class="card-body mt-3">
           <div class="grid grid-cols-2">
             <div><h2 class="mb-3">{{ $t('app.checkout.create.subscriptions.title') }}</h2></div>
             <div class="text-right"><button class="btn--main" @click="addSubscriptionPlan">{{ $t('app.checkout.create.subscriptions.add_subscription') }}</button></div>
@@ -109,7 +109,7 @@
         </table>
       </div>
 
-      <div class="card-body mt-5">
+      <div class="card-body mt-3">
         <div class="grid grid-cols-2">
           <div><h2 class="mb-3">{{ $t('app.checkout.create.items.title') }}</h2></div>
           <div class="text-right"><button class="btn--main" @click="addItem">{{ $t('app.checkout.create.items.add_item') }}</button></div>

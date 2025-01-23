@@ -1,14 +1,15 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Background\Invoice;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Then;
 use BillaBear\Background\Invoice\DisableOverdueInvoices;
 use BillaBear\Background\Invoice\GenerateNewInvoices;
 use BillaBear\Background\Invoice\UnpaidInvoices;
@@ -55,6 +56,22 @@ class MainContext implements Context
         if ($invoice->getAmountDue() != $amount) {
             throw new \Exception('Different amount due - '.$invoice->getAmountDue());
         }
+    }
+
+    #[Then('there will be an invoice for :arg1 with a metric counter :arg2')]
+    public function thereWillBeAnInvoiceForWithAMetricCounter($customerEmail, $metricCount): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+        /** @var Invoice $invoice */
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        foreach ($invoice->getInvoicedMetricCounters() as $counter) {
+            if ($counter->getMetric()->getName() == $metricCount) {
+                return;
+            }
+        }
+
+        throw new \Exception('Not found');
     }
 
     /**

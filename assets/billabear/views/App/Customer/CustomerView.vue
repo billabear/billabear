@@ -1,20 +1,25 @@
 <template>
   <div>
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.customer.view.title') }}</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <h1 class="page-title">{{ $t('app.customer.view.title') }}</h1>
+      <div class="text-end mt-3">
 
-    <LoadingScreen :ready="ready">
-      <div v-if="!error">
         <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-          <div class="m-3 text-end">
+          <div class="">
             <button class="btn--danger mr-3" v-if="customer.status == 'disabled'" @click="enableCustomer">{{ $t('app.customer.view.enable') }}</button>
             <button class="btn--danger mr-3" v-else @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
             <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
           </div>
         </RoleOnlyView>
+      </div>
+    </div>
 
-        <div class="grid grid-cols-2 gap-3 p-5">
+    <LoadingScreen :ready="ready">
+      <div v-if="!error">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div class="card-body">
-            <h2 class="section-header">{{ $t('app.customer.view.main.title') }}</h2>
+            <h2 class="text-xl font-bold mb-3">{{ $t('app.customer.view.main.title') }}</h2>
             <div class="section-body">
               <dl class="detail-list">
                 <div>
@@ -44,6 +49,10 @@
                 <div>
                   <dt>{{ $t('app.customer.view.main.tax_number') }}</dt>
                   <dd>{{ customer.tax_number }}</dd>
+                </div>
+                <div>
+                  <dt>{{ $t('app.customer.view.main.marketing_opt_in') }}</dt>
+                  <dd>{{ customer.marketing_opt_in }}</dd>
                 </div>
                 <div v-if="customer.standard_tax_rate">
                   <dt>{{ $t('app.customer.view.main.standard_tax_rate') }}</dt>
@@ -101,75 +110,85 @@
           </div>
 
           <div class="card-body">
-            <div class="grid grid-cols-2">
-              <div><h2  class="section-header">{{ $t('app.customer.view.subscriptions.title') }}</h2></div>
-              <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-                <div class="text-end"><router-link :to="{name: 'app.subscription.create', params: {customerId: customer.id}}" class="btn--main">{{ $t('app.customer.view.subscriptions.add_new') }}</router-link></div>
+            <SubscriptionList :result-set="subscriptions" :customer="customer" />
+          </div>
 
-              </RoleOnlyView>
-            </div>
+          <div class="card-body">
+            <h2  class="section-header">{{ $t('app.customer.view.metric_counters.title') }}</h2>
 
             <div class="mt-2">
 
               <table class="list-table">
                 <thead>
                 <tr>
-                  <th>{{ $t('app.customer.view.subscriptions.list.plan_name') }}</th>
-                  <th>{{ $t('app.customer.view.subscriptions.list.status') }}</th>
-                  <th>{{ $t('app.customer.view.subscriptions.list.schedule') }}</th>
-                  <th>{{ $t('app.customer.view.subscriptions.list.valid_until') }}</th>
+                  <th>{{ $t('app.customer.view.metric_counters.list.name') }}</th>
+                  <th>{{ $t('app.customer.view.metric_counters.list.usage') }}</th>
+                  <th>{{ $t('app.customer.view.metric_counters.list.cost') }}</th>
                   <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="subscription in subscriptions" class="mt-5">
-                  <td v-if="subscription.plan !== undefined && subscription.plan !== null">{{ subscription.plan.name }}</td>
-                  <td v-else>N/A</td>
-                  <td>{{ subscription.status }}</td>
-                  <td>{{ subscription.schedule }}</td>
-                  <td>{{ $filters.moment(subscription.valid_until, "LLL") }}</td>
-                  <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="list-btn">{{ $t('app.customer.view.subscriptions.list.view') }}</router-link></td>
-                </tr>
-                <tr v-if="subscriptions.length == 0">
-                  <td colspan="6" class="text-center">{{ $t('app.customer.view.subscriptions.no_subscriptions') }}</td>
-                </tr>
+                  <tr v-for="metric_counter in metric_counters">
+                    <td>{{ metric_counter.metric.code }}</td>
+                    <td>{{ metric_counter.usage}}</td>
+                    <td>{{ currency(metric_counter.estimated_cost) }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
           <div class="card-body">
-            <div class="grid grid-cols-2">
-              <div><h2  class="section-header">{{ $t('app.customer.view.subscription_events.title') }}</h2></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2">
+              <div>
+                <h2  class="section-header">{{ $t('app.customer.view.usage_limits.title') }}</h2>
+              </div>
+              <div class="text-end">
+                <button class="btn--main" @click="show_create_usage_limits = true">{{ $t('app.customer.view.usage_limits.add_new') }}</button>
+              </div>
             </div>
-
             <div class="mt-2">
-
               <table class="list-table">
                 <thead>
                 <tr>
-                  <th>{{ $t('app.customer.view.subscription_events.list.event') }}</th>
-                  <th>{{ $t('app.customer.view.subscription_events.list.subscription') }}</th>
-                  <th>{{ $t('app.customer.view.subscription_events.list.created_at') }}</th>
+                  <th>{{ $t('app.customer.view.usage_limits.list.amount') }}</th>
+                  <th>{{ $t('app.customer.view.usage_limits.list.warn_level') }}</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="subscription in subscription_events" class="mt-5">
-                  <td>{{ subscription.type }}</td>
-                  <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}">{{ subscription.subscription.plan.name }}</router-link></td>
-                  <td>{{ $filters.moment(subscription.created_at, "LLL") }}</td>
-                </tr>
-                <tr v-if="subscription_events.length == 0">
-                  <td colspan="6" class="text-center">{{ $t('app.customer.view.subscription_events.no_subscription_events') }}</td>
-                </tr>
+                  <tr v-for="(limit, key) in usage_limits">
+                    <td><Currency :amount="limit.amount" /></td>
+                    <td>
+                      <span v-if="limit.warn_level === 1000">{{ $t('app.customer.view.usage_limits.warn_levels.warn') }}</span>
+                      <span v-else-if="limit.warn_level === 9999">{{ $t('app.customer.view.usage_limits.warn_levels.disable') }}</span>
+                    </td>
+                    <td><button class="btn--danger" @click="deleteLimit(key)"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
+                  <tr v-if="usage_limits.length === 0">
+                    <td colspan="3" class="text-center">{{ $t('app.customer.view.usage_limits.no_limits') }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
+
+            <VueFinalModal
+                v-model="show_create_usage_limits"
+                class="flex justify-center items-center"
+                content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2"
+            >
+              <UsageLimitAdd :customer="customer" :limits="usage_limits" @close-modal="closeAddModal" />
+            </VueFinalModal>
+          </div>
+
+          <div class="card-body">
+            <CustomerSubscriptionEvent :subscription_events="subscription_events" />
           </div>
 
 
           <div class="card-body">
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-1 md:grid-cols-2">
               <div><h2  class="section-header">{{ $t('app.customer.view.payment_details.title') }}</h2></div>
               <div class="text-end">
                 <RoleOnlyView role="ROLE_DEVELOPER">
@@ -240,6 +259,7 @@
               </table>
             </div>
           </div>
+
           <div class="card-body">
             <h2 class="section-header">{{ $t('app.customer.view.features.title') }}</h2>
             <div class="">
@@ -261,60 +281,15 @@
             </table>
             </div>
           </div>
+
           <div class="card-body">
-            <h2 class="section-header">{{ $t('app.customer.view.payments.title') }}</h2>
-            <div class="">
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.customer.view.payments.list.amount') }}</th>
-                <th>{{ $t('app.customer.view.payments.list.currency') }}</th>
-                <th>{{ $t('app.customer.view.payments.list.status') }}</th>
-                <th>{{ $t('app.customer.view.payments.list.created_at') }}</th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="payment in payments" class="mt-5">
-                <td>{{ currency(payment.amount) }}</td>
-                <td>{{ payment.currency }}</td>
-                <td>{{ payment.status }}</td>
-                <td>{{ $filters.moment(payment.created_at, "LLL") || "unknown" }}</td>
-                <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
-              </tr>
-              <tr v-if="payments.length == 0">
-                <td colspan="5" class="text-center">{{$t('app.customer.view.payments.no_payments') }}</td>
-              </tr>
-              </tbody>
-            </table></div>
+            <CustomerPaymentList :result-set="payments" :customer="customer" />
           </div>
+
           <div class="card-body">
-            <h2 class="section-header">{{ $t('app.customer.view.refunds.title') }}</h2>
-            <div class="">
-            <table class="list-table">
-              <thead>
-              <tr>
-                <th>{{ $t('app.customer.view.refunds.list.amount') }}</th>
-                <th>{{ $t('app.customer.view.refunds.list.currency') }}</th>
-                <th>{{ $t('app.customer.view.refunds.list.created_by') }}</th>
-                <th>{{ $t('app.customer.view.refunds.list.created_at') }}</th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="refund in refunds">
-                <td>{{ currency(refund.amount) }}</td>
-                <td>{{ refund.currency }}</td>
-                <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
-                <td v-else>API</td>
-                <td>{{ $filters.moment(refund.created_at, "LLL") || "unknown" }}</td>
-              </tr>
-              <tr v-if="refunds.length == 0">
-                <td colspan="5" class="text-center">{{ $t('app.customer.view.refunds.no_refunds') }}</td>
-              </tr>
-              </tbody>
-            </table></div>
+            <CustomerRefundList :result-set="refunds" :customer="customer" />
           </div>
+
           <div class="card-body">
             <div class="grid grid-cols-2">
               <div>
@@ -352,46 +327,10 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="grid grid-cols-2">
-              <div>
-                <h2 class="section-header">{{ $t('app.customer.view.invoices.title') }}</h2>
-              </div>
-              <div class="text-end">
-              </div>
-            </div>
-            <div class="">
-
-              <table class="list-table">
-                <thead>
-                <tr>
-                  <th>{{ $t('app.customer.view.invoices.list.amount') }}</th>
-                  <th>{{ $t('app.customer.view.invoices.list.currency') }}</th>
-                  <th>{{ $t('app.customer.view.invoices.list.status') }}</th>
-                  <th>{{ $t('app.customer.view.invoices.list.created_at') }}</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="invoice in invoices">
-                  <td>{{ currency(invoice.total) }}</td>
-                  <td>{{ invoice.currency }}</td>
-                  <td>
-                    <span class="badge--green" v-if="invoice.paid">
-                      {{ $t('app.customer.view.invoices.list.paid') }}
-                    </span>
-                    <span class="badge--red" v-else>
-                      {{ $t('app.customer.view.invoices.list.outstanding') }}
-                    </span>
-                  </td>
-                  <td>{{ $filters.moment(invoice.created_at, "LLL") || "unknown" }}</td>
-                  <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="btn--main">{{ $t('app.customer.view.invoices.list.view_btn') }}</router-link></td>
-                </tr>
-                <tr v-if="invoices.length == 0">
-                  <td colspan="5" class="text-center">{{ $t('app.customer.view.invoices.no_invoices') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+            <CustomerInvoiceList :invoice-result="invoices" :customer="customer" />
+          </div>
+          <div class="card-body">
+            <CustomerInvoiceDelivery :invoice-result="invoice_delivery" :customer="customer" />
           </div>
       </div>
       </div>
@@ -407,10 +346,28 @@
 import axios from "axios";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import SubscriptionList from "../../../components/app/Customer/View/SubscriptionList.vue";
+import CustomerInvoiceList from "../../../components/app/Customer/View/CustomerInvoiceList.vue";
+import CustomerSubscriptionEvent from "../../../components/app/Customer/View/CustomerSubscriptionEvent.vue";
+import CustomerPaymentList from "../../../components/app/Customer/View/CustomerPaymentList.vue";
+import CustomerRefundList from "../../../components/app/Customer/View/CustomerRefundList.vue";
+import CustomerInvoiceDelivery from "../../../components/app/Customer/View/CustomerInvoiceDelivery.vue";
+import Currency from "../../../components/app/Currency.vue";
+import {Button} from "flowbite-vue";
+import UsageLimitAdd from "../../../components/app/Customer/Modal/UsageLimitAdd.vue";
+import {VueFinalModal} from "vue-final-modal";
+import {handleResponse} from "../../../services/utils";
 
 export default {
   name: "CustomerView",
-  components: {RoleOnlyView},
+  components: {
+    VueFinalModal,
+    UsageLimitAdd,
+    Button,
+    Currency,
+    CustomerInvoiceDelivery,
+    CustomerRefundList,
+    CustomerPaymentList, CustomerSubscriptionEvent, CustomerInvoiceList, SubscriptionList, RoleOnlyView},
   data() {
     return {
       ready: false,
@@ -426,6 +383,10 @@ export default {
       credit: [],
       invoices: [],
       subscription_events: [],
+      invoice_delivery: {},
+      metric_counters: [],
+      usage_limits: [],
+      show_create_usage_limits: false,
     }
   },
   methods: {
@@ -455,7 +416,7 @@ export default {
       })
     },
     defaultPayment: function (id) {
-      var customerId = this.$route.params.id
+      const customerId = this.$route.params.id
       axios.post('/app/customer/'+customerId+'/payment-card/'+id+'/default').then(response => {
         for (var i = 0; i < this.paymentDetails.length; i++) {
           if (this.paymentDetails[i].id == id) {
@@ -464,6 +425,16 @@ export default {
             this.paymentDetails[i].default = false;
           }
         }
+      })
+    },
+    closeAddModal: function () {
+      this.show_create_usage_limits = false;
+    },
+    deleteLimit: function (key) {
+      const customerId = this.$route.params.id
+      const limit = this.usage_limits[key];
+      axios.post('/app/customer/'+customerId+'/usage-limit/'+limit.id+'/delete').then(response => {
+        this.usage_limits.splice(key, 1);
       })
     }
   },
@@ -479,6 +450,9 @@ export default {
       this.credit = response.data.credit;
       this.invoices = response.data.invoices;
       this.subscription_events = response.data.subscription_events;
+      this.invoice_delivery = response.data.invoice_delivery;
+      this.metric_counters = response.data.metric_counters;
+      this.usage_limits = response.data.usage_limits;
       this.ready = true;
     }).catch(error => {
       if (error.response.status == 404) {

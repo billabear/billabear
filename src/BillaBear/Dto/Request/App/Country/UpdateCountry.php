@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\App\Country;
@@ -17,17 +17,17 @@ class UpdateCountry
     #[Assert\Type('string')]
     private $name;
 
-    #[SerializedName('iso_code')]
-    #[Assert\NotBlank]
     #[Assert\Country]
+    #[Assert\NotBlank]
+    #[SerializedName('iso_code')]
     private $isoCode;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
-    #[Assert\Type('integer')]
     #[Assert\PositiveOrZero]
+    #[Assert\Type('integer')]
     private $threshold;
 
     #[SerializedName('in_eu')]
@@ -47,6 +47,16 @@ class UpdateCountry
 
     #[Assert\Type('string')]
     private $taxNumber;
+
+    #[Assert\GreaterThan(0)]
+    #[Assert\Type('integer')]
+    #[SerializedName('transaction_threshold')]
+    private $transactionThreshold;
+
+    #[Assert\Choice(choices: ['rolling', 'calendar', 'rolling_quarterly', 'rolling_accounting'])]
+    #[Assert\Type('string')]
+    #[SerializedName('threshold_type')]
+    private $thresholdType;
 
     public function getName()
     {
@@ -146,5 +156,25 @@ class UpdateCountry
     public function setTaxNumber($taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTransactionThreshold()
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold($transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType()
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType($thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

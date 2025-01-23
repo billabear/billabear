@@ -1,26 +1,31 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\SlackNotificationEvent;
+use BillaBear\Notification\Slack\SlackNotificationEvent;
 use Doctrine\ORM\Mapping as ORM;
 use Parthenon\Athena\Entity\DeletableInterface;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table(name: 'slack_notification')]
 class SlackNotification implements DeletableInterface
 {
-    #[ORM\Id]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    protected ?\DateTimeInterface $deletedAt;
+
+    #[ORM\Column(type: 'boolean')]
+    protected $isDeleted = false;
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(enumType: SlackNotificationEvent::class)]
@@ -34,12 +39,6 @@ class SlackNotification implements DeletableInterface
 
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    protected ?\DateTimeInterface $deletedAt;
-
-    #[ORM\Column(type: 'boolean')]
-    protected $isDeleted = false;
 
     public function getId()
     {

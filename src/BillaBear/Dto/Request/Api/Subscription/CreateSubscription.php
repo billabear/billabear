@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\Api\Subscription;
@@ -20,8 +20,8 @@ class CreateSubscription
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[SubscriptionPlanExists]
     #[SerializedName('subscription_plan')]
+    #[SubscriptionPlanExists]
     private $subscription_plan;
 
     #[Assert\Type('string')]
@@ -35,21 +35,24 @@ class CreateSubscription
     #[Assert\Type('string')]
     private $card_token;
 
-    #[Assert\Type('string')]
     #[Assert\Choice(choices: ['week', 'month', 'year'])]
+    #[Assert\Type('string')]
     private $schedule;
 
     #[PaymentMethodExists]
     #[SerializedName('payment_details')]
     private $payment_details;
 
-    #[Assert\Type('integer')]
     #[Assert\Positive]
+    #[Assert\Type('integer')]
     #[SerializedName('seat_number')]
     private $seat_number = 1;
 
     #[Assert\Type('boolean')]
     private $deny_trial;
+
+    #[Assert\Type('array')]
+    private $metadata;
 
     public function getSubscriptionPlan()
     {
@@ -134,5 +137,19 @@ class CreateSubscription
     public function setDenyTrial($deny_trial): void
     {
         $this->deny_trial = $deny_trial;
+    }
+
+    public function getMetadata()
+    {
+        if (!isset($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata($metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }

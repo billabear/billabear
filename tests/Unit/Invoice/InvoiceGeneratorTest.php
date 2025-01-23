@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Unit\Invoice;
@@ -19,10 +19,14 @@ use BillaBear\Invoice\DueDateDecider;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorInterface;
 use BillaBear\Invoice\Number\InvoiceNumberGeneratorProvider;
-use BillaBear\Invoice\PriceInfo;
-use BillaBear\Invoice\Pricer;
+use BillaBear\Invoice\QuantityProvider;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
+use BillaBear\Payment\ExchangeRates\ToSystemConverter;
+use BillaBear\Pricing\PriceInfo;
+use BillaBear\Pricing\Pricer;
+use BillaBear\Pricing\Usage\MetricProvider;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\Usage\MetricCounterRepositoryInterface;
 use BillaBear\Repository\VoucherApplicationRepositoryInterface;
 use BillaBear\Tax\TaxInfo;
 use Brick\Money\Money;
@@ -46,11 +50,13 @@ class InvoiceGeneratorTest extends TestCase
         $subscriptionOne->method('getPrice')->willReturn($mockPrice);
         $subscriptionOne->method('getPlanName')->willReturn('Plan Name One');
         $subscriptionOne->method('getSubscriptionPlan')->willReturn($subscriptionPlan);
+        $subscriptionOne->method('getSeats')->willReturn(1);
 
         $subscriptionTwo = $this->createMock(Subscription::class);
         $subscriptionTwo->method('getPrice')->willReturn($mockPrice);
         $subscriptionTwo->method('getPlanName')->willReturn('Plan Name Two');
         $subscriptionTwo->method('getSubscriptionPlan')->willReturn($subscriptionPlan);
+        $subscriptionTwo->method('getSeats')->willReturn(1);
 
         $customer = $this->createMock(Customer::class);
         $invoiceNumberGenerator = $this->createMock(InvoiceNumberGeneratorInterface::class);
@@ -59,11 +65,11 @@ class InvoiceGeneratorTest extends TestCase
         $invoiceNumberGeneratorProvider = $this->createMock(InvoiceNumberGeneratorProvider::class);
         $invoiceNumberGeneratorProvider->method('getGenerator')->willReturn($invoiceNumberGenerator);
 
-        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false));
-        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false));
+        $priceInfoOne = new PriceInfo(Money::ofMinor(1000, 'USD'), Money::ofMinor(800, 'USD'), Money::ofMinor(200, 'USD'), new TaxInfo(20.0, 'de', false), 1, Money::ofMinor(3200, 'USD'));
+        $priceInfoTwo = new PriceInfo(Money::ofMinor(4000, 'USD'), Money::ofMinor(3200, 'USD'), Money::ofMinor(800, 'USD'), new TaxInfo(20.0, 'de', false), 1, Money::ofMinor(3200, 'USD'));
 
         $pricer = $this->createMock(Pricer::class);
-        $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls($priceInfoOne, $priceInfoTwo);
+        $pricer->method('getCustomerPriceInfo')->willReturnOnConsecutiveCalls([$priceInfoOne], [$priceInfoTwo]);
 
         $repository = $this->createMock(InvoiceRepositoryInterface::class);
         $repository->expects($this->once())->method('save')->with($this->isInstanceOf(Invoice::class));
@@ -78,7 +84,29 @@ class InvoiceGeneratorTest extends TestCase
         $dueDateDecider = $this->createMock(DueDateDecider::class);
         $exchangeRateProvider = $this->createMock(BricksExchangeRateProvider::class);
 
-        $subject = new InvoiceGenerator($pricer, $invoiceNumberGeneratorProvider, $repository, $creditAdjustmentRecorder, $voucherApplication, $eventDispatcher, $dueDateDecider, $exchangeRateProvider);
+        $metricProvider = $this->createMock(MetricProvider::class);
+        $metricUsage = $this->createMock(MetricCounterRepositoryInterface::class);
+
+        $quantityProvider = $this->createMock(QuantityProvider::class);
+        $quantityProvider->method('getQuantity')->willReturn(1);
+
+        $toSystemConverter = $this->createMock(ToSystemConverter::class);
+        $toSystemConverter->method('convert')->willReturnArgument(0);
+
+        $subject = new InvoiceGenerator(
+            $pricer,
+            $invoiceNumberGeneratorProvider,
+            $repository,
+            $creditAdjustmentRecorder,
+            $voucherApplication,
+            $eventDispatcher,
+            $dueDateDecider,
+            $metricProvider,
+            $metricUsage,
+            $quantityProvider,
+            $toSystemConverter,
+            $exchangeRateProvider,
+        );
         $actual = $subject->generateForCustomerAndSubscriptions($customer, [$subscriptionOne, $subscriptionTwo]);
 
         $this->assertCount(2, $actual->getLines());

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Invoice;
@@ -20,6 +20,7 @@ use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Subscription\SubscriptionFactory;
 use Brick\Money\Money;
 use Obol\Exception\PaymentFailureException;
+use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\SubscriptionPlan;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -51,7 +52,7 @@ class ManualInvoiceCreator
         foreach ($createInvoice->getSubscriptions() as $subscription) {
             /** @var SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
-            /** @var \Parthenon\Billing\Entity\Price $price */
+            /** @var Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
             $subscription = $this->subscriptionManager->create($customer, $plan, $price, seatNumber: $subscription->getSeatNumber());
             $subscriptions[] = $subscription;

@@ -1,16 +1,19 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Payment;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceLine;
-use BillaBear\Invoice\PricerInterface;
+use BillaBear\Entity\Receipt;
+use BillaBear\Entity\ReceiptLine;
+use BillaBear\Payment\ExchangeRates\ToSystemConverter;
+use BillaBear\Pricing\PricerInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
@@ -30,6 +33,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         private PricerInterface $pricer,
         private EntityFactoryInterface $entityFactory,
         private TaxTypeRepositoryInterface $taxTypeRepository,
+        private ToSystemConverter $toSystemConverter,
     ) {
     }
 
@@ -38,6 +42,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
      */
     public function generateReceiptForPayment(Payment $payment): ReceiptInterface
     {
+        /** @var Receipt $receipt */
         $receipt = $this->entityFactory->getReceipt();
         $total = $payment->getMoneyAmount();
         $vatTotal = null;
@@ -50,7 +55,7 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $this->getLogger()->debug('Create receipt from invoice', ['payment_id' => (string) $payment->getId()]);
             /** @var InvoiceLine $invoiceLine */
             foreach ($payment->getInvoice()->getLines() as $invoiceLine) {
-                /** @var \BillaBear\Entity\ReceiptLine $line */
+                /** @var ReceiptLine $line */
                 $line = $this->entityFactory->getReceiptLine();
                 $line->setTotal($invoiceLine->getTotal());
                 $line->setCurrency($invoiceLine->getCurrency());
@@ -62,6 +67,16 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
                 $line->setTaxType($invoiceLine->getTaxType());
                 $line->setReverseCharge($invoiceLine->isReverseCharge());
                 $line->setTaxCountry($invoiceLine->getTaxCountry());
+                $line->setMetadata($invoiceLine->getMetadata());
+                $line->setSubscription($invoiceLine->getSubscription());
+
+                $convertedTotal = $this->toSystemConverter->convert(Money::ofMinor($line->getTotal(), $line->getCurrency()));
+                $convertedSubtotal = $this->toSystemConverter->convert(Money::ofMinor($line->getSubTotal(), $line->getCurrency()));
+                $convertedVatTotal = $this->toSystemConverter->convert(Money::ofMinor($line->getVatTotal(), $line->getCurrency()));
+
+                $line->setConvertedSubTotal($convertedSubtotal->getMinorAmount()->toInt());
+                $line->setConvertedVatTotal($convertedVatTotal->getMinorAmount()->toInt());
+                $line->setConvertedTotal($convertedTotal->getMinorAmount()->toInt());
 
                 $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
                 $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
@@ -72,27 +87,38 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $this->getLogger()->debug('Creating receipt from subscriptions', ['payment_id' => (string) $payment->getId()]);
             /** @var Subscription $subscription */
             foreach ($payment->getSubscriptions() as $subscription) {
-                /** @var \BillaBear\Entity\ReceiptLine $line */
-                $line = $this->entityFactory->getReceiptLine();
-                $line->setTotal($subscription->getAmount());
-                $line->setCurrency($subscription->getCurrency());
-                $line->setDescription($subscription->getPlanName());
-                $line->setReceipt($receipt);
                 $taxType = $subscription->getSubscriptionPlan()->getProduct()->getTaxType();
 
-                $priceInfo = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $taxType);
-                $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
-                $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-                $line->setVatPercentage($priceInfo->taxInfo->rate);
-                $line->setTaxType($taxType);
-                $line->setTaxCountry($priceInfo->taxInfo->country);
-                $line->setTaxState($priceInfo->taxInfo->state);
-                $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                $priceInfos = $this->pricer->getCustomerPriceInfo($subscription->getPrice(), $subscription->getCustomer(), $taxType);
+                foreach ($priceInfos as $priceInfo) {
+                    /** @var ReceiptLine $line */
+                    $line = $this->entityFactory->getReceiptLine();
+                    $line->setTotal($subscription->getAmount());
+                    $line->setCurrency($subscription->getCurrency());
+                    $line->setDescription($subscription->getPlanName());
+                    $line->setReceipt($receipt);
+                    $line->setVatTotal($priceInfo->vat->getMinorAmount()->toInt());
+                    $line->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                    $line->setVatPercentage($priceInfo->taxInfo->rate);
+                    $line->setTaxType($taxType);
+                    $line->setTaxCountry($priceInfo->taxInfo->country);
+                    $line->setTaxState($priceInfo->taxInfo->state);
+                    $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                    $line->setMetadata($subscription->getMetadata());
 
-                $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
-                $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
+                    $convertedTotal = $this->toSystemConverter->convert($priceInfo->total);
+                    $convertedSubtotal = $this->toSystemConverter->convert($priceInfo->subTotal);
+                    $convertedVatTotal = $this->toSystemConverter->convert($priceInfo->vat);
 
-                $lines[] = $line;
+                    $line->setConvertedSubTotal($convertedSubtotal->getMinorAmount()->toInt());
+                    $line->setConvertedVatTotal($convertedVatTotal->getMinorAmount()->toInt());
+                    $line->setConvertedTotal($convertedTotal->getMinorAmount()->toInt());
+
+                    $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
+                    $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
+
+                    $lines[] = $line;
+                }
             }
         }
 
@@ -119,6 +145,14 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
             $line->setTaxState($priceInfo->taxInfo->state);
             $line->setReverseCharge($priceInfo->taxInfo->reverseCharge);
 
+            $convertedTotal = $this->toSystemConverter->convert(Money::ofMinor($payment->getAmount(), $payment->getCurrency()));
+            $convertedSubtotal = $this->toSystemConverter->convert($priceInfo->subTotal);
+            $convertedVatTotal = $this->toSystemConverter->convert($priceInfo->vat);
+
+            $line->setConvertedSubTotal($convertedSubtotal->getMinorAmount()->toInt());
+            $line->setConvertedVatTotal($convertedVatTotal->getMinorAmount()->toInt());
+            $line->setConvertedTotal($convertedTotal->getMinorAmount()->toInt());
+
             $vatTotal = $this->addToTotal($vatTotal, $line->getVatTotalMoney());
             $subTotalTotal = $this->addToTotal($subTotalTotal, $line->getSubTotalMoney());
 
@@ -138,8 +172,22 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         $receipt->setVatPercentage($line->getVatPercentage());
         $receipt->setPayeeAddress($customer->getBillingAddress());
         $receipt->setBillerAddress($customer->getBrandSettings()->getAddress());
+        $receipt->setPayment($payment);
+
+        $convertedTotal = $this->toSystemConverter->convert($total);
+        $convertedSubtotal = $this->toSystemConverter->convert($subTotalTotal);
+        $convertedVatTotal = $this->toSystemConverter->convert($vatTotal);
+
+        $receipt->setConvertedSubTotal($convertedSubtotal->getMinorAmount()->toInt());
+        $receipt->setConvertedTaxTotal($convertedVatTotal->getMinorAmount()->toInt());
+        $receipt->setConvertedTotal($convertedTotal->getMinorAmount()->toInt());
 
         return $receipt;
+    }
+
+    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): ReceiptInterface
+    {
+        throw new \Exception('TODO fix ISP breakage');
     }
 
     private function addToTotal(?Money $total, Money $money): Money
@@ -151,10 +199,5 @@ class ReceiptGenerator implements ReceiptGeneratorInterface
         }
 
         return $total;
-    }
-
-    public function generateInvoiceForPeriod(\DateTimeInterface $startDate, \DateTimeInterface $endDate, CustomerInterface $customer): ReceiptInterface
-    {
-        throw new \Exception('TODO fix ISP breakage');
     }
 }

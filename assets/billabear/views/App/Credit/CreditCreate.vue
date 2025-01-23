@@ -11,8 +11,6 @@
             </label>
             <p class="form-field-error" v-if="errors.amount != undefined">{{ errors.amount }}</p>
             <CurrencyInput v-model="creditNote.amount" />
-            <p class="form-field-help">{{ $t('app.credit.create.help_info.amount') }}</p>
-            <p class="form-field-help">{{ $t('app.credit.create.help_info.display_amount', {amount: currency(creditNote.amount)}) }}</p>
           </div>
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="type">
@@ -87,6 +85,7 @@ export default {
           response => {
             this.sendingInProgress = false;
             this.success = true;
+            this.$router.push({name: 'app.customer.view', params: {id: customerId}});
           }
       ).catch(error => {
         this.errors = error.response.data.errors;
@@ -109,10 +108,6 @@ export default {
 
 .form-field-lbl {
   @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
-}
-
-.form-field-input {
-  @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
 }
 
 .form-field-help {

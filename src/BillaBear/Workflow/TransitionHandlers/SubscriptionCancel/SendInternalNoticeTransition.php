@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Workflow\TransitionHandlers\SubscriptionCancel;
@@ -12,7 +12,7 @@ use BillaBear\Entity\CancellationRequest;
 use BillaBear\Notification\Slack\Data\SubscriptionCancelled;
 use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionCancelledPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionCancelledPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -1,13 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Generic\Api;
 
+use BillaBear\Dto\Generic\Api\Usage\Metric;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Price
@@ -16,7 +17,7 @@ class Price
     private string $id;
 
     #[SerializedName('amount')]
-    private int $amount;
+    private ?int $amount;
 
     #[SerializedName('currency')]
     private string $currency;
@@ -36,6 +37,15 @@ class Price
     #[SerializedName('public')]
     private bool $public = true;
 
+    #[SerializedName('usage')]
+    private bool $usage = false;
+
+    #[SerializedName('metric')]
+    private ?Metric $metric;
+
+    #[SerializedName('metric_type')]
+    private ?string $metricType;
+
     public function getId(): string
     {
         return $this->id;
@@ -46,12 +56,12 @@ class Price
         $this->id = $id;
     }
 
-    public function getAmount(): int
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): void
+    public function setAmount(?int $amount): void
     {
         $this->amount = $amount;
     }
@@ -114,5 +124,35 @@ class Price
     public function setPublic(bool $public): void
     {
         $this->public = $public;
+    }
+
+    public function isUsage(): bool
+    {
+        return $this->usage;
+    }
+
+    public function setUsage(bool $usage): void
+    {
+        $this->usage = $usage;
+    }
+
+    public function getMetric(): ?Metric
+    {
+        return $this->metric;
+    }
+
+    public function setMetric(?Metric $metric): void
+    {
+        $this->metric = $metric;
+    }
+
+    public function getMetricType(): ?string
+    {
+        return $this->metricType;
+    }
+
+    public function setMetricType(?string $metricType): void
+    {
+        $this->metricType = $metricType;
     }
 }

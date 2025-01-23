@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Stats;
@@ -11,9 +11,9 @@ namespace BillaBear\Stats;
 use BillaBear\Entity\Customer;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Repository\Stats\CustomerCreationDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\CustomerCreationMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\CustomerCreationYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CustomerCreationDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CustomerCreationMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CustomerCreationYearlyStatsRepositoryInterface;
 
 class CustomerCreationStats
 {

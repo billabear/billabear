@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Api;
@@ -11,10 +11,8 @@ namespace BillaBear\Controller\Api;
 use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\Dto\Request\Api\CreateProduct;
 use BillaBear\Dto\Response\Api\ListResponse;
+use BillaBear\Entity\Product;
 use BillaBear\Filters\ProductList;
-use Obol\Exception\ProviderFailureException;
-use Parthenon\Billing\Entity\Product;
-use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
@@ -35,7 +33,6 @@ class ProductController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         ProductDataMapper $productFactory,
-        ProductRegisterInterface $productRegister,
         ProductRepositoryInterface $productRepository,
     ): Response {
         $this->getLogger()->info('Received request to create product');
@@ -52,22 +49,16 @@ class ProductController
 
             return new JsonResponse([
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $product = $productFactory->createFromApiCreate($dto);
-        if (!$product->hasExternalReference()) {
-            try {
-                $product = $productRegister->registerProduct($product);
-            } catch (ProviderFailureException $e) {
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
-        }
+
         $productRepository->save($product);
         $productDto = $productFactory->createApiDtoFromProduct($product);
         $jsonResponse = $serializer->serialize($productDto, 'json');
 
-        return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+        return new JsonResponse($jsonResponse, Response::HTTP_CREATED, json: true);
     }
 
     #[Route('/api/v1/product', name: 'api_v1.0_product_list', methods: ['GET'])]
@@ -84,13 +75,13 @@ class ProductController
         if ($resultsPerPage < 1) {
             return new JsonResponse([
                 'reason' => 'limit is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'reason' => 'limit is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
         $filterBuilder = new ProductList();
@@ -125,8 +116,8 @@ class ProductController
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
         $dto = $productFactory->createApiDtoFromProduct($product);
         $data = $serializer->serialize($dto, 'json');
@@ -146,8 +137,8 @@ class ProductController
         try {
             /** @var Product $product */
             $product = $productRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
         /** @var CreateProduct $dto */
         $dto = $serializer->deserialize($request->getContent(), CreateProduct::class, 'json');
@@ -162,7 +153,7 @@ class ProductController
 
             return new JsonResponse([
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $newProduct = $productFactory->createFromApiCreate($dto, $product);
@@ -171,6 +162,6 @@ class ProductController
         $dto = $productFactory->createApiDtoFromProduct($newProduct);
         $jsonResponse = $serializer->serialize($dto, 'json');
 
-        return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
+        return new JsonResponse($jsonResponse, Response::HTTP_ACCEPTED, json: true);
     }
 }

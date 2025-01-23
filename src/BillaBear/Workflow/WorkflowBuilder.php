@@ -1,15 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Workflow;
 
 use BillaBear\Entity\WorkflowTransition;
-use BillaBear\Enum\WorkflowType;
 use BillaBear\Workflow\Places\PlaceInterface;
 use BillaBear\Workflow\Places\PlacesProvider;
 use BillaBear\Workflow\TransitionHandlers\DynamicTransitionHandlerProvider;
@@ -21,6 +20,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Workflow\Debug\TraceableWorkflow;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
+use Symfony\Component\Workflow\Metadata\InMemoryMetadataStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -55,7 +55,7 @@ class WorkflowBuilder
             $this->getPlaceNames($places),
             $this->getTransitions($places),
             [$this->getPlaceNames($places)[0]],
-            new \Symfony\Component\Workflow\Metadata\InMemoryMetadataStore([], [], new \SplObjectStorage())
+            new InMemoryMetadataStore([], [], new \SplObjectStorage())
         );
 
         $this->addEventHandlers($workflowType, $places);

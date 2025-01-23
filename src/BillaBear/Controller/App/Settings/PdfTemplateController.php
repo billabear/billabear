@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App\Settings;
@@ -20,8 +20,8 @@ use BillaBear\Dto\Response\App\Template\CreateTemplateView;
 use BillaBear\Dto\Response\App\Template\TemplateView;
 use BillaBear\Dummy\Data\ReceiptProvider;
 use BillaBear\Entity\Template;
-use BillaBear\Enum\PdfGeneratorType;
-use BillaBear\Pdf\InvoicePdfGenerator;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
+use BillaBear\Pdf\PdfGeneratorType;
 use BillaBear\Pdf\ReceiptPdfGenerator;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -50,7 +50,7 @@ class PdfTemplateController
         Request $request,
         TemplateRepositoryInterface $templateRepository,
         TemplateDataMapper $factory,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to read notification settings');
         $templates = $templateRepository->getByBrand($request->get('brand', 'default'));
@@ -219,7 +219,7 @@ class PdfTemplateController
     public function downloadInvoice(
         Request $request,
         TemplateRepositoryInterface $templateRepository,
-        InvoicePdfGenerator $generator,
+        InvoiceFormatterProvider $invoiceFormatterProvider,
         ReceiptProvider $provider,
     ): Response {
         $this->getLogger()->info('Received request to download invoice template', ['pdf_template' => $request->get('id')]);
@@ -231,6 +231,7 @@ class PdfTemplateController
         }
 
         $invoice = $provider->getInvoice();
+        $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         try {
             $pdf = $generator->generate($invoice);
         } catch (Error $e) {
@@ -242,7 +243,7 @@ class PdfTemplateController
         file_put_contents($tmpFile, $pdf);
 
         $response = new BinaryFileResponse($tmpFile);
-        $filename = 'dummy.pdf';
+        $filename = $generator->filename($invoice);
 
         $response->headers->set('Content-Type', 'application/pdf');
         $response->setContentDisposition(

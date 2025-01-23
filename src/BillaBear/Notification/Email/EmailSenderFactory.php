@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Notification\Email;
@@ -53,16 +53,12 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
             return new NullEmailSender();
         }
 
-        switch ($notificationSettings->getEmsp()) {
-            case NotificationSettings::EMSP_SENDGRID:
-                return $this->createSendGrid($notificationSettings);
-            case NotificationSettings::EMSP_POSTMARK:
-                return $this->createPostMark($notificationSettings);
-            case NotificationSettings::EMSP_MAILGUN:
-                return $this->createMailgun($notificationSettings);
-            default:
-                return $this->createSymfony($notificationSettings);
-        }
+        return match ($notificationSettings->getEmsp()) {
+            NotificationSettings::EMSP_SENDGRID => $this->createSendGrid($notificationSettings),
+            NotificationSettings::EMSP_POSTMARK => $this->createPostMark($notificationSettings),
+            NotificationSettings::EMSP_MAILGUN => $this->createMailgun($notificationSettings),
+            default => $this->createSymfony($notificationSettings),
+        };
     }
 
     private function createSendGrid(NotificationSettings $notificationSettings): SendGridEmailSender
@@ -78,9 +74,7 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
 
     private function createConfiguration(NotificationSettings $notificationSettings): Configuration
     {
-        $config = new Configuration('BillaBear System', $notificationSettings->getDefaultOutgoingEmail());
-
-        return $config;
+        return new Configuration('BillaBear System', $notificationSettings->getDefaultOutgoingEmail());
     }
 
     private function createPostMark(NotificationSettings $notificationSettings): PostmarkEmailSender

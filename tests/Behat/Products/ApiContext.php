@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Products;
@@ -78,8 +78,10 @@ class ApiContext implements Context
             $product->setPhysical('true' === strtolower($row['Physical'] ?? 'false'));
 
             $taxTypeName = $row['Tax Type'] ?? 'default';
-            $taxType = $this->taxTypeRepository->findOneBy(['name' => $taxTypeName]);
-            $product->setTaxType($taxType);
+            if ('NULL' !== $taxTypeName) {
+                $taxType = $this->taxTypeRepository->findOneBy(['name' => $taxTypeName]);
+                $product->setTaxType($taxType);
+            }
 
             if (isset($row['Tax Rate']) && !empty($row['Tax Rate'])) {
                 $product->setTaxRate(floatval($row['Tax Rate']));

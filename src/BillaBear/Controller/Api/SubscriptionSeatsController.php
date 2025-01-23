@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Api;
@@ -15,7 +15,7 @@ use BillaBear\Entity\Subscription;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\UpdateAction\AddSeatToSubscription;
 use BillaBear\Subscription\UpdateAction\RemoveSeatFromSubscription;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
@@ -31,7 +31,7 @@ class SubscriptionSeatsController
     use ValidationErrorResponseTrait;
     use LoggerAwareTrait;
 
-    public function __construct(private WebhookDispatcherInterface $webhookDispatcher)
+    public function __construct(private readonly WebhookDispatcherInterface $webhookDispatcher)
     {
     }
 
@@ -42,13 +42,13 @@ class SubscriptionSeatsController
         SubscriptionRepositoryInterface $subscriptionRepository,
         AddSeatToSubscription $addSeatToSubscription,
         ValidatorInterface $validator,
-    ) {
+    ): Response {
         $this->getLogger()->info('Received API request to add seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $dto = $serializer->deserialize($request->getContent(), AddSeats::class, 'json');
@@ -72,13 +72,13 @@ class SubscriptionSeatsController
         SubscriptionRepositoryInterface $subscriptionRepository,
         RemoveSeatFromSubscription $removeSeatFromSubscription,
         ValidatorInterface $validator,
-    ) {
+    ): JsonResponse|Response {
         $this->getLogger()->info('Received API request to remove seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $dto = $serializer->deserialize($request->getContent(), RemoveSeats::class, 'json');

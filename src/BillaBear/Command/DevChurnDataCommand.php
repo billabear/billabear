@@ -1,17 +1,17 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Command;
 
 use BillaBear\Entity\CancellationRequest;
-use BillaBear\Enum\CancellationType;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use BillaBear\Subscription\CancellationType;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -26,10 +26,10 @@ class DevChurnDataCommand extends Command
         protected CancellationRequestRepositoryInterface $cancellationRequestRepository,
         protected SubscriptionRepositoryInterface $subscriptionRepository,
     ) {
-        parent::__construct(null);
+        parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('date', mode: InputOption::VALUE_REQUIRED, description: 'The starting start churning', default: '-6 months')
             ->addOption('count', mode: InputOption::VALUE_REQUIRED, description: 'The number of users to add', default: 4);

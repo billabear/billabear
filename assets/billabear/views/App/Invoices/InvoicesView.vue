@@ -3,14 +3,16 @@
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.invoices.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="p-5">
-        <div class="mb-5">
+      <div class="">
+        <div class="mb-3">
           <div class="alert-success" v-if="invoice.paid">{{ $t('app.invoices.view.status.paid',  {date: $filters.moment(invoice.paid_at, 'LLL')}) }}</div>
           <div class="alert-error" v-else>{{ $t('app.invoices.view.status.outstanding') }}</div>
         </div>
 
-        <div class="text-end mb-5">
-          <a :href="'/app/invoice/'+invoice.id+'/download'" class="btn--main" target="_blank">{{ $t('app.invoices.view.download') }}</a>
+        <div class="text-end mb-3">
+          <SubmitButton :in-progress="chargingCard" @click="chargeCard" button-class=" btn--main" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.view.actions.charge_card') }}</SubmitButton>
+          <SubmitButton :in-progress="markingAsPaid" @click="markAsPaid" button-class="ml-3 btn--secondary" v-if="invoice.paid === false">{{ $t('app.invoices.view.actions.mark_as_paid') }}</SubmitButton>
+          <button class="ml-3 btn--main" target="_blank" @click="showDownload = true">{{ $t('app.invoices.view.download') }}</button>
         </div>
 
         <div class="card-body">
@@ -28,7 +30,7 @@
                 </div>
                 <div v-if="invoice.due_date">
                   <dt>{{ $t('app.invoices.view.main.due_date') }}</dt>
-                  <dd>{{ invoice.due_date }}</dd>
+                  <dd>{{ $filters.moment(invoice.due_date, 'llll') }}</dd>
                 </div>
               </dl>
             </div>
@@ -113,8 +115,9 @@
             </div>
           </div>
         </div>
-        <div class="">
-          <h2 class="my-3  dark:text-gray-300">{{ $t('app.invoices.view.lines.title') }}</h2>
+
+        <h2 class="my-3  dark:text-gray-300">{{ $t('app.invoices.view.lines.title') }}</h2>
+        <div class="card-body">
 
           <table class="list-table">
             <thead>
@@ -136,11 +139,11 @@
             </tbody>
           </table>
         </div>
-        <div class="my-3 text-end">
-          <div class="float-right text-end w-1/5">
+        <div class="mt-3 text-end">
+          <div class="w-full text-end relative">
             <h3 class="text-xl dark:text-gray-500">{{ $t('app.invoices.view.total.title') }}</h3>
 
-            <dl class="total-list">
+            <dl class="total-list w-1/4 ml-auto">
               <div>
                 <dt>{{ $t('app.invoices.view.total.tax_total') }}</dt>
                 <dd>
@@ -162,9 +165,31 @@
             </dl>
           </div>
         </div>
-        <div class="mt-3 clear-both">
-          <SubmitButton :in-progress="chargingCard" @click="chargeCard" button-class="btn--main" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">{{ $t('app.invoices.view.actions.charge_card') }}</SubmitButton>
-          <SubmitButton :in-progress="markingAsPaid" @click="markAsPaid" button-class="btn--secondary" v-if="invoice.paid === false">{{ $t('app.invoices.view.actions.mark_as_paid') }}</SubmitButton>
+        <div class="mt-3 card-body relative">
+          <h2 class="text-2xl mb-3">{{ $t('app.invoices.view.invoice_delivery.title') }}</h2>
+          <table class="list-table">
+            <thead>
+              <tr>
+                <th>{{ $t('app.invoices.view.invoice_delivery.method') }}</th>
+                <th>{{ $t('app.invoices.view.invoice_delivery.detail') }}</th>
+                <th>{{ $t('app.invoices.view.invoice_delivery.status') }}</th>
+                <th>{{ $t('app.invoices.view.invoice_delivery.created_at') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="invoiceDelivery in invoice_deliveries">
+                <td>{{ invoiceDelivery.invoice_delivery_settings.type }}</td>
+                <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'email'">{{ invoiceDelivery.invoice_delivery_settings.email }}</td>
+                <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'sftp'">{{ invoiceDelivery.invoice_delivery_settings.sftp_host }}</td>
+                <td v-if="invoiceDelivery.invoice_delivery_settings.type === 'webhook'">{{ invoiceDelivery.invoice_delivery_settings.webhook_url }}</td>
+                <td>{{ invoiceDelivery.status }}</td>
+                <td>{{ $filters.moment(invoiceDelivery.created_at, 'llll') }}</td>
+              </tr>
+              <tr>
+                <td colspan="5" class="text-center">{{ $t('app.invoices.view.invoice_delivery.no_invoice_deliveries') }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </LoadingScreen>
@@ -184,6 +209,13 @@
     >
       {{ $t('app.invoices.view.payment_succeeded.message') }}
     </VueFinalModal>
+
+    <VueFinalModal
+        v-model="showDownload"
+        class="flex justify-center items-center"
+        content-class="max-w-xl mx-4 p-4 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg space-y-2">
+      <DownloadInvoice :invoice="invoice" />
+    </VueFinalModal>
   </div>
 </template>
 
@@ -191,13 +223,16 @@
 import axios from "axios";
 import Currency from "../../../components/app/Currency.vue";
 import {VueFinalModal} from "vue-final-modal";
+import DownloadInvoice from "../../../components/app/Invoice/Modals/DownloadInvoice.vue";
+import {Button} from "flowbite-vue";
 
 export default {
   name: "InvoiceView",
-  components: {VueFinalModal, Currency},
+  components: {Button, DownloadInvoice, VueFinalModal, Currency},
   data() {
     return {
       invoice: {},
+      invoice_deliveries: [],
       ready: false,
       chargingCard: false,
       markingAsPaid: false,
@@ -207,12 +242,14 @@ export default {
       success: {
         modelValue: false,
       },
+      showDownload: false,
     }
   },
   mounted() {
     const id = this.$route.params.id
     axios.get("/app/invoice/"+id+"/view").then(response => {
       this.invoice = response.data.invoice;
+      this.invoice_deliveries = response.data.invoice_deliveries;
       this.ready = true;
     })
   },
@@ -226,7 +263,6 @@ export default {
         this.invoice.paid_at = Date.now();
         this.markingAsPaid = false;
       }).catch(error => {
-        console.log(error)
         this.failed.modelValue = true;
         this.markingAsPaid = false;
       })
@@ -244,7 +280,6 @@ export default {
         }
         this.chargingCard = false;
       }).catch(error => {
-        console.log(error)
         this.failed.modelValue = true;
         this.chargingCard = false;
       })

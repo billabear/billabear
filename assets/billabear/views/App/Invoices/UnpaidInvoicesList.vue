@@ -2,53 +2,31 @@
   <div v-if="!has_error">
     <h1 class="mt-5 ml-5 page-title">{{ $t('app.invoices.list.unpaid_title') }}</h1>
 
-    <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
-          <div class="list_container">
-            <ListGroup>
-              <ListGroupItem v-for="(filter, filterKey) in filters">
-                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </Dropdown>
-      </div>
-    </div>
-
-    <div class="card-body my-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.invoices.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-        </div>
-      </div>
-
-      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
-    </div>
-
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
-        <table class="list-table">
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
           <thead>
-            <tr>
-              <th>{{ $t('app.invoices.list.email') }}</th>
-              <th>{{ $t('app.invoices.list.total')}}</th>
-              <th>{{ $t('app.invoices.list.currency')}}</th>
-              <th>{{ $t('app.invoices.list.created_at') }}</th>
+            <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.invoices.list.email') }}</th>
+              <th class="text-left pb-2">{{ $t('app.invoices.list.total')}}</th>
+              <th class="text-left pb-2">{{ $t('app.invoices.list.currency')}}</th>
+              <th class="text-left pb-2">{{ $t('app.invoices.list.created_at') }}</th>
               <th></th>
               <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="invoice in invoices" class="mt-5">
-              <td>{{ invoice.customer.email }}</td>
-              <td>{{ currency(invoice.total) }}</td>
-              <td>{{ invoice.currency }}</td>
-              <td>{{ $filters.moment(invoice.created_at, "LLL")}}</td>
-              <td><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="list-btn">{{ $t('app.invoices.list.view_btn') }}</router-link></td>
-              <td>
+              <td class="py-3">{{ invoice.customer.email }}</td>
+              <td class="py-3">{{ currency(invoice.total) }}</td>
+              <td class="py-3">{{ invoice.currency }}</td>
+              <td class="py-3">{{ $filters.moment(invoice.created_at, "LLL")}}</td>
+              <td class="py-3"><router-link :to="{name: 'app.invoices.view', params: {id: invoice.id}}" class="list-btn">{{ $t('app.invoices.list.view_btn') }}</router-link></td>
+              <td class="py-3">
                 <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT" v-if="invoice.customer.billing_type == 'card' && invoice.paid == false">
                   <SubmitButton button-class="ml-3 btn--secondary--main" :in-progress="charging_invoice" @click="attemptPayment(invoice)" >{{ $t('app.invoices.list.charge') }}</SubmitButton>
                   <button class="btn--secondary--menu" @click="showMenu(invoice)"><i class="fa-solid fa-caret-down"></i></button>
@@ -64,8 +42,8 @@
             </tr>
           </tbody>
           <tbody v-else>
-            <tr>
-              <td colspan="4" class="text-center">
+            <tr v-for="invoice in invoices">
+              <td colspan="4" class="py-3 text-center">
                 <LoadingMessage>{{ $t('app.invoices.list.loading') }}</LoadingMessage>
               </td>
             </tr>
@@ -79,7 +57,7 @@
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.invoices.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select  class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -87,6 +65,9 @@
           </select>
         </div>
       </div>
+        </div>
+      </div>
+
     </LoadingScreen>
   </div>
   <div v-else class="error-page">
@@ -100,10 +81,11 @@ import InternalApp from "../InternalApp.vue";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "InvoiceList.vue",
-  components: {ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
+  components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
   data() {
     return {
       ready: false,
@@ -175,7 +157,6 @@ export default {
         } else {
           this.filters[key].value = null;
             if (this.active_filters.indexOf(key) !== -1) {
-              console.log(key)
               this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
             }
         }

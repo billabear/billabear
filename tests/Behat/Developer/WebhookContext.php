@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Developer;
@@ -12,10 +12,10 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\WebhookEndpoint;
-use BillaBear\Enum\WebhookEventType;
 use BillaBear\Repository\Orm\WebhookEndpointRepository;
 use BillaBear\Repository\Orm\WebhookEventRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
+use BillaBear\Webhook\Outbound\WebhookEventType;
 
 class WebhookContext implements Context
 {
@@ -133,19 +133,6 @@ class WebhookContext implements Context
         }
     }
 
-    protected function getWebhookEndpoint(string $name): WebhookEndpoint
-    {
-        $entity = $this->webhookEndpointRepository->findOneBy(['name' => $name]);
-
-        if (!$entity instanceof WebhookEndpoint) {
-            throw new \Exception('Unable to find webhook for '.$name);
-        }
-
-        $this->webhookEndpointRepository->getEntityManager()->refresh($entity);
-
-        return $entity;
-    }
-
     /**
      * @Then there should be a webhook event for payment received
      */
@@ -216,5 +203,18 @@ class WebhookContext implements Context
         if (!$entity) {
             throw new \Exception("Can't find event");
         }
+    }
+
+    protected function getWebhookEndpoint(string $name): WebhookEndpoint
+    {
+        $entity = $this->webhookEndpointRepository->findOneBy(['name' => $name]);
+
+        if (!$entity instanceof WebhookEndpoint) {
+            throw new \Exception('Unable to find webhook for '.$name);
+        }
+
+        $this->webhookEndpointRepository->getEntityManager()->refresh($entity);
+
+        return $entity;
     }
 }

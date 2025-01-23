@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -18,17 +18,31 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'invoice_line')]
 class InvoiceLine
 {
-    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: TaxType::class)]
+    protected ?TaxType $taxType = null;
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class)]
     private Invoice $invoice;
 
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    private ?Product $product = null;
+
+    #[ORM\ManyToOne(targetEntity: Subscription::class)]
+    private ?Subscription $subscription = null;
+
+    #[ORM\ManyToOne(targetEntity: InvoicedMetricCounter::class, cascade: ['persist'])]
+    private ?InvoicedMetricCounter $invoicedMetricCounter = null;
+
     #[ORM\Column(type: 'string')]
     private string $currency;
+
+    #[ORM\Column(type: 'integer')]
+    private int $netPrice;
 
     #[ORM\Column(type: 'integer')]
     private int $total;
@@ -39,14 +53,23 @@ class InvoiceLine
     #[ORM\Column(type: 'integer')]
     private int $taxTotal;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedNetPrice = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedTotal = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedSubTotal = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedTaxTotal = null;
+
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $taxPercentage = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $description = null;
-
-    #[ORM\ManyToOne(targetEntity: TaxType::class)]
-    protected ?TaxType $taxType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $taxCountry;
@@ -56,6 +79,12 @@ class InvoiceLine
 
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $reverseCharge = false;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private float $quantity;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $metadata = null;
 
     public function getId()
     {
@@ -117,6 +146,11 @@ class InvoiceLine
         $this->taxTotal = $taxTotal;
     }
 
+    public function getTaxTotalAsMoney(): Money
+    {
+        return Money::ofMinor($this->taxTotal, $this->currency);
+    }
+
     public function getDescription(): string
     {
         return $this->description;
@@ -142,6 +176,21 @@ class InvoiceLine
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
+    public function getNetPrice(): int
+    {
+        return $this->netPrice;
+    }
+
+    public function setNetPrice(int $netPrice): void
+    {
+        $this->netPrice = $netPrice;
+    }
+
+    public function getNetPriceAsMoney(): Money
+    {
+        return Money::ofMinor($this->netPrice, strtoupper($this->currency));
+    }
+
     public function getTaxPercentage(): ?float
     {
         return $this->taxPercentage;
@@ -152,12 +201,12 @@ class InvoiceLine
         $this->taxPercentage = $taxPercentage;
     }
 
-    public function getTaxType(): TaxType
+    public function getTaxType(): ?TaxType
     {
         return $this->taxType;
     }
 
-    public function setTaxType(TaxType $taxType): void
+    public function setTaxType(?TaxType $taxType): void
     {
         $this->taxType = $taxType;
     }
@@ -190,5 +239,112 @@ class InvoiceLine
     public function setReverseCharge(bool $reverseCharge): void
     {
         $this->reverseCharge = $reverseCharge;
+    }
+
+    public function getQuantity(): float
+    {
+        if (!isset($this->quantity)) {
+            return 1;
+        }
+
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function isZeroRated(): bool
+    {
+        if (0 === $this->taxPercentage || 0.0 === $this->taxPercentage) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getMetadata(): array
+    {
+        if (!isset($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata(?array $metadata): void
+    {
+        $this->metadata = $metadata;
+    }
+
+    public function getConvertedNetPrice(): int
+    {
+        return $this->convertedNetPrice;
+    }
+
+    public function setConvertedNetPrice(int $convertedNetPrice): void
+    {
+        $this->convertedNetPrice = $convertedNetPrice;
+    }
+
+    public function getConvertedTotal(): int
+    {
+        return $this->convertedTotal;
+    }
+
+    public function setConvertedTotal(int $convertedTotal): void
+    {
+        $this->convertedTotal = $convertedTotal;
+    }
+
+    public function getConvertedSubTotal(): int
+    {
+        return $this->convertedSubTotal;
+    }
+
+    public function setConvertedSubTotal(int $convertedSubTotal): void
+    {
+        $this->convertedSubTotal = $convertedSubTotal;
+    }
+
+    public function getConvertedTaxTotal(): int
+    {
+        return $this->convertedTaxTotal;
+    }
+
+    public function setConvertedTaxTotal(int $convertedTaxTotal): void
+    {
+        $this->convertedTaxTotal = $convertedTaxTotal;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): void
+    {
+        $this->subscription = $subscription;
+    }
+
+    public function getInvoicedMetricCounter(): ?InvoicedMetricCounter
+    {
+        return $this->invoicedMetricCounter;
+    }
+
+    public function setInvoicedMetricCounter(?InvoicedMetricCounter $invoicedMetricCounter): void
+    {
+        $this->invoicedMetricCounter = $invoicedMetricCounter;
     }
 }

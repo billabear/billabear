@@ -1,50 +1,40 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="page-title">{{ $t('app.settings.user.list.title') }}</h1>
+    <div class="grid grid-cols-2">
+      <h1 class="page-title">{{ $t('app.settings.user.list.title') }}</h1>
 
 
-    <div class="top-button-container">
-      <div class="list">
+      <div class="text-end mt-5 top-button-container">
         <router-link :to="{name: 'app.user.invite'}" class="btn--main ml-4"><i class="fa-solid fa-user-plus"></i> {{ $t('app.settings.user.list.invite') }}</router-link>
       </div>
-    </div>
-    <div class="card-body my-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.settings.user.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-        </div>
-      </div>
 
-      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
     </div>
 
     <LoadingScreen :ready="ready">
-      <div class="mt-3">
-        <table class="list-table">
+      <div class="rounded-lg bg-white shadow p-3">
+        <table class="w-full">
           <thead>
-          <tr>
-            <th>{{ $t('app.settings.user.list.list.email')}}</th>
-            <th>{{ $t('app.settings.user.list.list.role') }}</th>
+          <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.settings.user.list.list.email')}}</th>
+            <th class="text-left pb-2">{{ $t('app.settings.user.list.list.role') }}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="loaded">
           <tr v-for="user in users" class="mt-5 cursor-pointer">
-            <td>{{ user.email }}</td>
-            <td>
+            <td class="py-3">{{ user.email }}</td>
+            <td class="py-3">
               <span v-for="role in user.roles" class="badge--green mr-1">{{ role }}</span>
             </td>
             <td><router-link :to="{name: 'app.settings.users.update', params: {id: user.id}}" class="list-btn ">{{ $t('app.settings.user.list.view_btn') }}</router-link></td>
           </tr>
           <tr v-if="users.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.settings.user.list.no_users') }}</td>
+            <td colspan="4" class="py-3 text-center">{{ $t('app.settings.user.list.no_users') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="4" class="text-center">
+            <td colspan="4" class="py-3 text-center">
               <LoadingMessage>{{ $t('app.settings.user.list.loading') }}</LoadingMessage>
             </td>
           </tr>
@@ -58,7 +48,7 @@
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.settings.user.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -68,28 +58,30 @@
       </div>
 
       <div class="" v-if="invites.length > 0">
-        <h3>{{ $t('app.settings.user.list.invite_title') }}</h3>
-        <table class="list-table">
-          <thead>
-          <tr>
-            <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
-            <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(invite, key) in invites">
-            <td>{{ invite.email }}</td>
-            <td>{{ invite.role }}</td>
-            <td>
-              <button class="btn--main" v-if="copied === key" disabled><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copied_link') }}</button>
-              <button class="btn--main" @click="copyInviteToClipboard(invite, key)" v-else><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copy_link') }}</button>
+        <h3 class="text-3xl mb-3">{{ $t('app.settings.user.list.invite_title') }}</h3>
+        <div class="rounded-lg bg-white shadow p-3">
+          <table class="list-table">
+            <thead>
+            <tr>
+              <th>{{ $t('app.settings.user.list.invite_list.email')}}</th>
+              <th>{{ $t('app.settings.user.list.invite_list.role') }}</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(invite, key) in invites">
+              <td>{{ invite.email }}</td>
+              <td><span class="badge--green">{{ invite.role }}</span></td>
+              <td>
+                <button class="btn--main" v-if="copied === key" disabled><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copied_link') }}</button>
+                <button class="btn--main" @click="copyInviteToClipboard(invite, key)" v-else><i class="fa-solid fa-copy"></i> {{ $t('app.settings.user.list.invite_list.copy_link') }}</button>
 
-            </td>
+              </td>
 
-          </tr>
-          </tbody>
-        </table>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </LoadingScreen>
   </div>
@@ -158,7 +150,6 @@ export default {
         } else {
           this.filters[key].value = null;
           if (this.active_filters.indexOf(key) !== -1) {
-            console.log(key)
             this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
           }
         }

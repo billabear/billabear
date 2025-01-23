@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Install\Steps\Tax;
@@ -18,6 +18,7 @@ use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\StateRepositoryInterface;
 use BillaBear\Repository\StateTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
+use BillaBear\Tax\ThresholdType;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class TaxDataCreator
@@ -34,20 +35,23 @@ class TaxDataCreator
 
     public function process(): void
     {
+        $hasDefaultTaxRate = false;
         foreach ($this->countryList->getCountryList() as $countryData) {
             $country = new Country();
             $country->setName($countryData['name']);
             $country->setIsoCode($countryData['code']);
             $country->setCurrency($countryData['currency']);
             $country->setThreshold($countryData['threshold']);
+            $country->setTransactionThreshold($countryData['transaction_threshold'] ?? null);
+            $country->setThresholdType(ThresholdType::from($countryData['threshold_type'] ?? 'rolling'));
             $country->setInEu($countryData['in_eu']);
             $country->setEnabled(true);
             $country->setCreatedAt(new \DateTime());
+            $country->setCollecting(false);
 
             $this->countryRepository->save($country);
 
             $rates = $countryData['rates'] ?? [];
-            $hasDefaultTaxRate = false;
             foreach ($rates as $name => $data) {
                 try {
                     $taxType = $this->taxTypeRepository->getByName($name);
@@ -78,6 +82,8 @@ class TaxDataCreator
                 $state->setName($data['name']);
                 $state->setCode($code);
                 $state->setThreshold($data['threshold']);
+                $state->setTransactionThreshold($data['transaction_threshold'] ?? null);
+                $state->setThresholdType(ThresholdType::from($data['threshold_type'] ?? 'calendar'));
                 $state->setCollecting(false);
 
                 $this->stateRepository->save($state);

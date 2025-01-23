@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -18,14 +18,14 @@ use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'invoice')]
 #[ORM\Index(name: 'paid_idx', columns: ['paid'])]
+#[ORM\Table(name: 'invoice')]
 class Invoice
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -49,6 +49,9 @@ class Invoice
     #[ORM\ManyToMany(targetEntity: Payment::class)]
     private array|Collection $payments;
 
+    #[ORM\OneToMany(targetEntity: InvoicedMetricCounter::class, mappedBy: 'invoice', cascade: ['persist'])]
+    private array|Collection $invoicedMetricCounters = [];
+
     #[ORM\OneToMany(targetEntity: InvoiceLine::class, mappedBy: 'invoice', cascade: ['persist'])]
     private array|Collection $lines;
 
@@ -70,20 +73,35 @@ class Invoice
     #[ORM\Column(type: 'integer')]
     private int $taxTotal;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedAmountDue = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedTotal = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedSubTotal = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $convertedTaxTotal = null;
+
     #[ORM\Column(type: 'boolean')]
     private bool $paid = false;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $createdAt;
+    private \DateTime $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $paidAt = null;
+    private ?\DateTime $paidAt = null;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $updatedAt;
+    private \DateTime $updatedAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $dueAt = null;
+    private ?\DateTime $dueAt = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
 
     public function __construct()
     {
@@ -160,12 +178,12 @@ class Invoice
     /**
      * @return Collection|Payment[]
      */
-    public function getPayments(): Collection|array
+    public function getPayments(): array|Collection
     {
         return $this->payments;
     }
 
-    public function setPayments(Collection|array $payments): void
+    public function setPayments(array|Collection $payments): void
     {
         $this->payments = $payments;
     }
@@ -220,12 +238,12 @@ class Invoice
         $this->taxTotal = $taxTotal;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -233,12 +251,12 @@ class Invoice
     /**
      * @return Collection|InvoiceLine[]
      */
-    public function getLines(): Collection|array
+    public function getLines(): array|Collection
     {
         return $this->lines;
     }
 
-    public function setLines(Collection|array $lines): void
+    public function setLines(array|Collection $lines): void
     {
         $this->lines = $lines;
     }
@@ -246,12 +264,12 @@ class Invoice
     /**
      * @return Subscription[]|Collection
      */
-    public function getSubscriptions(): Collection|array
+    public function getSubscriptions(): array|Collection
     {
         return $this->subscriptions;
     }
 
-    public function setSubscriptions(Collection|array $subscriptions): void
+    public function setSubscriptions(array|Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }
@@ -271,16 +289,6 @@ class Invoice
         return Money::ofMinor($this->subTotal, strtoupper($this->currency));
     }
 
-    public function getVatPercentage(): float
-    {
-        return $this->vatPercentage;
-    }
-
-    public function setVatPercentage(float $vatPercentage): void
-    {
-        $this->vatPercentage = $vatPercentage;
-    }
-
     public function isPaid(): bool
     {
         return $this->paid;
@@ -291,22 +299,22 @@ class Invoice
         $this->paid = $paid;
     }
 
-    public function getPaidAt(): ?\DateTimeInterface
+    public function getPaidAt(): ?\DateTime
     {
         return $this->paidAt;
     }
 
-    public function setPaidAt(\DateTimeInterface $paidAt): void
+    public function setPaidAt(\DateTime $paidAt): void
     {
         $this->paidAt = $paidAt;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -326,13 +334,96 @@ class Invoice
         return Money::ofMinor($this->amountDue, strtoupper($this->currency));
     }
 
-    public function getDueAt(): ?\DateTimeInterface
+    public function getDueAt(): ?\DateTime
     {
         return $this->dueAt;
     }
 
-    public function setDueAt(?\DateTimeInterface $dueAt): void
+    public function setDueAt(?\DateTime $dueAt): void
     {
         $this->dueAt = $dueAt;
+    }
+
+    public function getBrandSettings(): BrandSettings
+    {
+        return $this->customer->getBrandSettings();
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
+    }
+
+    public function getConvertedAmountDue(): int
+    {
+        return $this->convertedAmountDue;
+    }
+
+    public function setConvertedAmountDue(int $convertedAmountDue): void
+    {
+        $this->convertedAmountDue = $convertedAmountDue;
+    }
+
+    public function getConvertedTotal(): int
+    {
+        return $this->convertedTotal;
+    }
+
+    public function setConvertedTotal(int $convertedTotal): void
+    {
+        $this->convertedTotal = $convertedTotal;
+    }
+
+    public function getConvertedSubTotal(): int
+    {
+        return $this->convertedSubTotal;
+    }
+
+    public function setConvertedSubTotal(int $convertedSubTotal): void
+    {
+        $this->convertedSubTotal = $convertedSubTotal;
+    }
+
+    public function getConvertedTaxTotal(): int
+    {
+        return $this->convertedTaxTotal;
+    }
+
+    public function setConvertedTaxTotal(int $convertedTaxTotal): void
+    {
+        $this->convertedTaxTotal = $convertedTaxTotal;
+    }
+
+    /**
+     * @return InvoicedMetricCounter[]|Collection
+     */
+    public function getInvoicedMetricCounters(): Collection
+    {
+        if (is_array($this->invoicedMetricCounters)) {
+            $this->invoicedMetricCounters = new ArrayCollection($this->invoicedMetricCounters);
+        }
+
+        return $this->invoicedMetricCounters;
+    }
+
+    public function setInvoicedMetricCounters(array|Collection $invoicedMetricCounters): void
+    {
+        $this->invoicedMetricCounters = $invoicedMetricCounters;
+    }
+
+    public function getInvoiceMetricForMetricCounter(Usage\MetricCounter $metricCounter): ?InvoicedMetricCounter
+    {
+        foreach ($this->getInvoicedMetricCounters() as $invoicedMetricCounter) {
+            if ($invoicedMetricCounter->getMetricCounter() === $metricCounter) {
+                return $invoicedMetricCounter;
+            }
+        }
+
+        return null;
     }
 }

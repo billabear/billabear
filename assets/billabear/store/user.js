@@ -7,13 +7,10 @@ var userData;
 try {
      userData = JSON.parse(rawUserData);
 } catch (e) {
-    console.log("check");
     axios.get('/app/user').then(response => {
-        console.log("yea")
         userData = response.data.user;
         localStorage.setItem('user', JSON.stringify(userData));
     }).catch(error => {
-        console.log("nope")
         userData = null;
     })
 }
@@ -62,7 +59,7 @@ const actions = {
                     }
                 },
                 error => {
-                    commit('loginFailure', error);
+                    commit('loginFailure', error.response.data.error);
                 }
             );
     },

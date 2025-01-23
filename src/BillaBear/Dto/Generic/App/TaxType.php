@@ -1,12 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Generic\App;
+
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 class TaxType
 {
@@ -15,6 +17,9 @@ class TaxType
     private string $name;
 
     private bool $default;
+
+    #[SerializedName('vat_sense_type')]
+    private ?string $vatSenseType;
 
     public function getId(): string
     {
@@ -44,5 +49,15 @@ class TaxType
     public function setDefault(bool $default): void
     {
         $this->default = $default;
+    }
+
+    public function getVatSenseType(): ?string
+    {
+        return $this->vatSenseType;
+    }
+
+    public function setVatSenseType(?string $vatSenseType): void
+    {
+        $this->vatSenseType = $vatSenseType;
     }
 }

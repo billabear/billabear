@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\DataMappers;
@@ -47,6 +47,24 @@ class CheckoutDataMapper
         return $appDto;
     }
 
+    public function createPublicDto(Entity $entity): PublicDto
+    {
+        $appDto = new PublicDto();
+        $appDto->setName($entity->getName());
+        $appDto->setCreatedAt($entity->getCreatedAt());
+        $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
+        $appDto->setId((string) $entity->getId());
+        $appDto->setCurrency($entity->getCurrency());
+        $appDto->setTotal($entity->getTotal());
+        $appDto->setTaxTotal($entity->getTaxTotal());
+        $appDto->setSubTotal($entity->getSubTotal());
+        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
+        $appDto->setExpiresAt($entity->getExpiresAt());
+        $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
+
+        return $appDto;
+    }
+
     protected function createAppLineDto(EntityLine $quoteLine): AppLineDto
     {
         $appLineDto = new AppLineDto();
@@ -68,25 +86,6 @@ class CheckoutDataMapper
         return $appLineDto;
     }
 
-    public function createPublicDto(Entity $entity): PublicDto
-    {
-        $appDto = new PublicDto();
-        $appDto->setName($entity->getName());
-        $appDto->setCreatedAt($entity->getCreatedAt());
-        $appDto->setCreatedBy($this->billingAdminDataMapper->createAppDto($entity->getCreatedBy()));
-        $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
-        $appDto->setId((string) $entity->getId());
-        $appDto->setCurrency($entity->getCurrency());
-        $appDto->setTotal($entity->getTotal());
-        $appDto->setTaxTotal($entity->getTaxTotal());
-        $appDto->setSubTotal($entity->getSubTotal());
-        $appDto->setLines(array_map([$this, 'createAppLineDto'], $entity->getLines()->toArray()));
-        $appDto->setExpiresAt($entity->getExpiresAt());
-        $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
-
-        return $appDto;
-    }
-
     protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto
     {
         $appLineDto = new PublicLineDto();
@@ -104,6 +103,7 @@ class CheckoutDataMapper
         $appLineDto->setCurrency($quoteLine->getCurrency());
         $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
         $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
+        $appLineDto->setSchedule($quoteLine->getPrice()?->getSchedule() ?? 'one-off');
 
         return $appLineDto;
     }

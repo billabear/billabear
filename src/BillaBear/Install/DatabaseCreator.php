@@ -1,14 +1,15 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Install;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Parthenon\MultiTenancy\Database\MigrationsHandler;
 use Parthenon\MultiTenancy\Entity\TenantInterface;
@@ -27,7 +28,7 @@ class DatabaseCreator
         $em = $this->entityManager;
         $metaData = $em->getMetadataFactory()->getAllMetadata();
 
-        $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
+        $tool = new SchemaTool($em);
         $tool->createSchema($metaData);
         if (!$tenant) {
             $tenant = $this->getTenant();
@@ -38,7 +39,7 @@ class DatabaseCreator
 
     public function getTenant()
     {
-        return new class() implements TenantInterface {
+        return new class implements TenantInterface {
             public function getId()
             {
                 // TODO: Implement getId() method.

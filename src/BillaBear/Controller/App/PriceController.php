@@ -1,17 +1,19 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App;
 
 use BillaBear\DataMappers\PriceDataMapper;
+use BillaBear\DataMappers\Usage\MetricDataMapper;
 use BillaBear\Dto\Request\Api\CreatePrice;
+use BillaBear\Dto\Request\App\Price\CreatePriceView;
 use BillaBear\Dto\Response\Api\ListResponse;
-use Obol\Exception\ProviderFailureException;
+use BillaBear\Repository\Usage\MetricRepositoryInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
@@ -30,6 +32,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PriceController
 {
     use LoggerAwareTrait;
+
+    #[IsGranted('ROLE_ACCOUNT_MANAGER')]
+    #[Route('/app/product/{id}/price', name: 'app_product_price_create_get', methods: ['GET'])]
+    public function createPriceRead(
+        MetricRepositoryInterface $metricRepository,
+        MetricDataMapper $metricDataMapper,
+        SerializerInterface $serializer,
+    ) {
+        $metrics = $metricRepository->getAll();
+        $dto = new CreatePriceView();
+        $dto->setMetrics(array_map([$metricDataMapper, 'createAppDto'], $metrics));
+
+        $json = $serializer->serialize($dto, 'json');
+
+        return new JsonResponse($json, status: Response::HTTP_OK, json: true);
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/price', name: 'app_product_price_create', methods: ['POST'])]
@@ -70,15 +88,6 @@ class PriceController
         $price = $priceFactory->createPriceFromDto($dto);
         $price->setProduct($product);
 
-        if (!$price->getExternalReference()) {
-            try {
-                $priceRegister->registerPrice($price);
-            } catch (ProviderFailureException $e) {
-                $this->getLogger()->error('Failed to register price with stripe', ['exception_message' => $e->getMessage()]);
-
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
-        }
         $priceRepository->save($price);
         $dto = $priceFactory->createAppDto($price);
         $jsonResponse = $serializer->serialize($dto, 'json');

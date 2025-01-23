@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Subscriptions;
@@ -16,23 +16,22 @@ use BillaBear\Entity\Payment;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Entity\SubscriptionSeatModification;
-use BillaBear\Enum\SubscriptionSeatModificationType;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PriceRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
 use BillaBear\Repository\Orm\SubscriptionRepository;
 use BillaBear\Repository\Orm\SubscriptionSeatModificationRepository;
+use BillaBear\Subscription\SubscriptionSeatModificationType;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\SubscriptionPlan\SubscriptionPlanTrait;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Enum\PaymentStatus;
+use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
-
-use function Symfony\Component\String\s;
 
 class MainContext implements Context
 {
@@ -89,8 +88,16 @@ class MainContext implements Context
         /** @var SubscriptionPlan $subscriptionPlan */
         $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $row['Subscription Plan']]);
         $customer = $this->getCustomerByEmail($customerEmail);
-        /** @var Price $price */
-        $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+
+        if (isset($row['Type'])) {
+            $priceType = PriceType::from($row['Type']);
+            /** @var Price $price */
+            $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'type' => $priceType]);
+        } else {
+            /** @var Price $price */
+            $price = $this->priceRepository->findOneBy(['amount' => $row['Price Amount'], 'currency' => $row['Price Currency'], 'schedule' => $row['Price Schedule']]);
+        }
+
         $payload = [
             'subscription_plan' => (string) $subscriptionPlan->getId(),
             'price' => (string) $price->getId(),
@@ -131,6 +138,18 @@ class MainContext implements Context
     public function thereShouldBeASubscriptionForTheUser($customerEmail)
     {
         $this->getSubscription($customerEmail);
+    }
+
+    /**
+     * @Then the subscription for the user :arg1 should have the metadata :arg2
+     */
+    public function theSubscriptionForTheUserShouldHaveTheMetadataRegion($customerEmail, $jsonRaw): void
+    {
+        $subscription = $this->getSubscription($customerEmail);
+
+        if (json_encode(json_decode($jsonRaw, true)) !== json_encode($subscription->getMetadata())) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", json_encode(json_decode($jsonRaw, true)), json_encode($subscription->getMetadata())));
+        }
     }
 
     /**
@@ -368,7 +387,14 @@ class MainContext implements Context
                 $subscription->setPrice($price);
                 $subscription->setCurrency($price->getCurrency());
                 $subscription->setAmount($price->getAmount());
+            } elseif (isset($row['Type'])) {
+                $priceType = PriceType::from($row['Type']);
+                $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'type' => $priceType]);
+                $subscription->setPaymentSchedule($row['Price Schedule']);
+                $subscription->setPrice($price);
+                $subscription->setCurrency($price->getCurrency());
             }
+
             $statusText = strtolower($row['Status'] ?? 'Active');
             $status = SubscriptionStatus::from($statusText);
 
@@ -389,6 +415,7 @@ class MainContext implements Context
             $subscription->setPaymentDetails($paymentDetails);
             $subscription->setValidUntil($end);
             $subscription->setActive($active);
+            $subscription->setMetadata(json_decode($row['Metadata'] ?? '[]', true));
 
             if (isset($row['Ended At'])) {
                 $subscription->setEndedAt(new \DateTime($row['Ended At']));
@@ -435,7 +462,7 @@ class MainContext implements Context
             throw new \Exception('No subscriptions found');
         }
 
-        foreach ($data['subscriptions'] as $subscription) {
+        foreach ($data['subscriptions']['data'] as $subscription) {
             if ($subscription['plan']['name'] === $arg1) {
                 return;
             }
@@ -569,8 +596,12 @@ class MainContext implements Context
 
         /** @var SubscriptionPlan $subscriptionPlan */
         $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $data['Plan']]);
-        /** @var Price $price */
-        $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+        /* @var Price $price */
+        if (isset($data['Price'])) {
+            $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'amount' => $data['Price'], 'currency' => $data['Currency']]);
+        } else {
+            $price = $this->priceRepository->findOneBy(['product' => $subscriptionPlan->getProduct(), 'type' => PriceType::from($data['Price Type']), 'currency' => $data['Currency']]);
+        }
 
         $this->sendJsonRequest('POST', '/api/v1/subscription/'.$subscription->getId().'/plan', [
             'when' => UpdatePlan::WHEN_INSTANTLY,

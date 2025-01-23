@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\App\Voucher;
@@ -14,12 +14,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CreateVoucher
 {
-    #[Assert\NotBlank()]
     #[Assert\Choice(choices: ['percentage', 'fixed_credit'])]
+    #[Assert\NotBlank]
     private $type;
 
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['manual', 'automatic'])]
+    #[Assert\NotBlank]
     #[SerializedName('entry_type')]
     private $entryType;
 
@@ -27,12 +27,12 @@ class CreateVoucher
     #[SerializedName('entry_event')]
     private $entryEvent;
 
-    #[Assert\Type(type: 'string')]
     #[Assert\NotBlank]
+    #[Assert\Type(type: 'string')]
     private $name;
 
-    #[Assert\Positive()]
     #[Assert\LessThanOrEqual(100)]
+    #[Assert\Positive]
     private $percentage;
 
     #[Assert\Valid]
@@ -119,7 +119,7 @@ class CreateVoucher
         $this->code = $code;
     }
 
-    #[Assert\Callback()]
+    #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, $payload)
     {
         if ('fixed_credit' === $this->type) {

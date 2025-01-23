@@ -3,7 +3,7 @@
     <h1 class="page-title mb-3">{{ $t('app.settings.stripe.view_import.title') }}</h1>
     <LoadingScreen :ready="ready">
 
-      <div class="m-5 card-body">
+      <div class="card-body">
 
         <dl class="detail-list">
           <div>

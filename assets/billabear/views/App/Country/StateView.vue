@@ -1,12 +1,15 @@
 <template>
   <div>
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.state.view.title') }}</h1>
+    <div class="grid grid-cols-2">
+      <h1 class="ml-5 mt-5 page-title">{{ $t('app.state.view.title') }}</h1>
 
-    <LoadingScreen :ready="ready">
-      <div class="m-5 text-end">
+      <div class="text-end mt-5" v-if="ready">
         <router-link :to="{'name': 'app.finance.state.edit', params: {countryId: countryId,stateId: state.id}}" class="btn--main">{{ $t('app.state.view.edit') }}</router-link>
       </div>
-      <div class="mx-5">
+    </div>
+
+    <LoadingScreen :ready="ready">
+      <div class="">
         <div class="card-body">
           <div class="section-body">
             <dl class="detail-list">
@@ -26,6 +29,14 @@
                 <dt>{{ $t('app.state.view.fields.threshold') }}</dt>
                 <dd><Currency :amount="state.threshold" :currency="state.country.currency" /></dd>
               </div>
+              <div>
+                <dt>{{ $t('app.state.view.fields.transaction_threshold') }}</dt>
+                <dd>{{ state.transaction_threshold }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.state.view.fields.threshold_type') }}</dt>
+                <dd>{{ state.threshold_type }}</dd>
+              </div>
             </dl>
           </div>
         </div>
@@ -33,37 +44,40 @@
 
       <div class="grid grid-cols-2">
         <h2 class="page-title">{{ $t('app.state.view.tax_rule.title') }}</h2>
-        <div class="text-end mt-5 mr-5">
+        <div class="text-end mt-5">
           <button class="btn--main" @click="showCreate">{{ $t('app.state.view.tax_rule.add') }}</button>
         </div>
       </div>
-      <table class="list-table">
-        <thead>
-        <tr>
-          <th>{{ $t('app.state.view.tax_rule.rate') }}</th>
-          <th>{{ $t('app.state.view.tax_rule.type')}}</th>
-          <th>{{ $t('app.state.view.tax_rule.start_date') }}</th>
-          <th>{{ $t('app.state.view.tax_rule.end_date') }}</th>
-          <th>{{ $t('app.state.view.tax_rule.default') }}</th>
+      <div class="rounded-lg bg-white shadow p-3">
+        <table class="w-full">
+          <thead>
+          <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.state.view.tax_rule.rate') }}</th>
+          <th class="text-left pb-2">{{ $t('app.state.view.tax_rule.type')}}</th>
+          <th class="text-left pb-2">{{ $t('app.state.view.tax_rule.start_date') }}</th>
+          <th class="text-left pb-2">{{ $t('app.state.view.tax_rule.end_date') }}</th>
+          <th class="text-left pb-2">{{ $t('app.state.view.tax_rule.default') }}</th>
           <th></th>
         </tr>
         </thead>
         <tbody v-if="tax_rules.length > 0">
         <tr v-for="rule in tax_rules">
-          <td>{{ rule.tax_rate }}</td>
-          <td>{{ rule.tax_type.name }}</td>
-          <td>{{ rule.valid_from }}</td>
-          <td>{{ rule.valid_until }}</td>
-          <td>{{ rule.default }}</td>
-          <td><button class="btn--secondary" @click="showEdit(rule)">{{ $t('app.country.view.tax_rule.edit') }}</button> </td>
+          <td class="py-3">{{ rule.tax_rate }}</td>
+          <td class="py-3">{{ rule.tax_type.name }}</td>
+          <td class="py-3">{{ rule.valid_from }}</td>
+          <td class="py-3">{{ rule.valid_until }}</td>
+          <td class="py-3">{{ rule.default }}</td>
+          <td class="py-3"><button class="btn--secondary" @click="showEdit(rule)">{{ $t('app.country.view.tax_rule.edit') }}</button> </td>
         </tr>
         </tbody>
         <tbody v-else>
         <tr>
-          <td colspan="6" class="text-center">{{ $t('app.country.view.tax_rule.no_tax_rules') }}</td>
+          <td colspan="6" class="py-3 text-center">{{ $t('app.country.view.tax_rule.no_tax_rules') }}</td>
         </tr>
         </tbody>
       </table>
+      </div>
+
 
     </LoadingScreen>
     <VueFinalModal

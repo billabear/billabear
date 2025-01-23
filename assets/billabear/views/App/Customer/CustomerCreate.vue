@@ -6,6 +6,7 @@
       {{ $t('app.customer.create.failed_message') }}
     </div>
 
+    <p class="form-field-error" v-if="errors.stripe != undefined">{{ errors.stripe }}</p>
     <form @submit.prevent="send">
     <div class="mt-3 card-body">
         <div class="form-field-ctn">
@@ -89,6 +90,18 @@
           <input type="number" class="form-field-input" id="standard_tax_rate" v-model="customer.standard_tax_rate"  />
           <p class="form-field-help">{{ $t('app.customer.create.help_info.standard_tax_rate') }}</p>
         </div>
+
+        <div class="form-field-ctn">
+          <label class="form-field-lbl" for="tax_number">
+            {{ $t('app.customer.create.invoice_format') }}
+          </label>
+          <p class="form-field-error" v-if="errors.invoiceFormat != undefined">{{ errors.invoiceFormat }}</p>
+          <select v-model="customer.invoice_format">
+            <option value="pdf">PDF</option>
+            <option value="zugferd_v1"> ZUGFeRD v1 - Factur-X/XRechung</option>
+          </select>
+          <p class="form-field-help">{{ $t('app.customer.create.help_info.invoice_format') }}</p>
+        </div>
       </div>
 
     <div class="card-body mt-5">
@@ -166,6 +179,7 @@
 
     </div>
 
+      <p class="form-field-error" v-if="errors.stripe != undefined">{{ errors.stripe }}</p>
     <div class="form-field-submit-ctn">
       <SubmitButton :in-progress="sendingInProgress">{{ $t('app.customer.create.submit_btn') }}</SubmitButton>
     </div>

@@ -21,6 +21,8 @@ security:
             remember_me:
                 secret: '%kernel.secret%'
                 always_remember_me: true
+                lifetime: 2592000
+                name: REMEMBERME
             logout:
                 path: parthenon_user_logout
             json_login:

@@ -1,14 +1,13 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Api;
 
-use BillaBear\Dummy\Data\ReceiptProvider;
 use BillaBear\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
@@ -31,14 +30,13 @@ class ReceiptController
 
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptPdfGenerator $generator,
-        ReceiptProvider $provider,
     ): Response {
         $this->getLogger()->info('Received request to download receipt', ['receipt_id' => $request->get('id')]);
         try {
             /** @var Receipt $receipt */
             $receipt = $receiptRepository->getById($request->get('id'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
         $pdf = $generator->generate($receipt);
         $tmpFile = tempnam('/tmp', 'pdf');

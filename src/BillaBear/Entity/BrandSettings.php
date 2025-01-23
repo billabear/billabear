@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -14,14 +14,14 @@ use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'brand_settings')]
 #[ORM\Index(name: 'brand_code_idx', columns: ['code'])]
+#[ORM\Table(name: 'brand_settings')]
 class BrandSettings
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', unique: true)]
@@ -50,6 +50,12 @@ class BrandSettings
 
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $digitalServicesRate = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $supportEmail = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $supportPhoneNumber = null;
 
     public function getId()
     {
@@ -158,5 +164,25 @@ class BrandSettings
     public function setDigitalServicesRate(?float $digitalServicesRate): void
     {
         $this->digitalServicesRate = $digitalServicesRate;
+    }
+
+    public function getSupportEmail(): ?string
+    {
+        return $this->supportEmail;
+    }
+
+    public function setSupportEmail(?string $supportEmail): void
+    {
+        $this->supportEmail = $supportEmail;
+    }
+
+    public function getSupportPhoneNumber(): ?string
+    {
+        return $this->supportPhoneNumber;
+    }
+
+    public function setSupportPhoneNumber(?string $supportPhoneNumber): void
+    {
+        $this->supportPhoneNumber = $supportPhoneNumber;
     }
 }

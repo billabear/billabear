@@ -1,62 +1,46 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.tax_type.list.title') }}</h1>
+    <div class="grid grid-cols-2">
+      <h1 class="ml-5 mt-5 page-title">{{ $t('app.tax_type.list.title') }}</h1>
 
-    <div class="top-button-container">
-      <div class="list">
-        <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
-          <div class="list_container">
-            <ListGroup>
-              <ListGroupItem v-for="(filter, filterKey) in filters">
-                <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-              </ListGroupItem>
-            </ListGroup>
-          </div>
-        </Dropdown>
+      <div class="mt-5 text-end">
         <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
           <router-link :to="{name: 'app.finance.tax_type.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.tax_type.list.create_new') }}</router-link>
         </RoleOnlyView>
       </div>
     </div>
 
-    <div class="card-body m-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.tax_type.list.filter.title') }}</h2>
-      <form @submit.prevent="doSearch">
-        <div v-for="filter in active_filters">
-          <div class="px-3 py-1 sm:flex sm:px-6">
-            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-            <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-          </div>
-        </div>
-
-        <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.country.list.filter.search') }}</button>
-      </form>
-    </div>
 
     <LoadingScreen :ready="ready">
-    <div class="mt-3">
-        <table class="list-table">
-          <thead>
-            <tr>
-              <th>{{ $t('app.tax_type.list.list.name') }}</th>
-              <th>{{ $t('app.tax_type.list.list.default') }}</th>
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.tax_type.list.list.name') }}</th>
+              <th class="text-left pb-2">{{ $t('app.tax_type.list.list.default') }}</th>
+                <th></th>
             </tr>
           </thead>
           <tbody v-if="loaded">
             <tr v-for="tax_type in taxTypes" class="mt-5 cursor-pointer">
-              <td>{{ tax_type.name }}</td>
-              <td>
+              <td class="py-3">{{ tax_type.name }}</td>
+              <td class="py-3">
                 <span v-if="tax_type.default">{{ $t('app.tax_type.list.list.is_default') }}</span>
                 <SubmitButton class="btn--main" :in-progress="sendingDefault" @click="makeDefault(tax_type.id)" v-else>{{ $t('app.tax_type.list.list.make_default') }}</SubmitButton>
               </td>
+              <td><router-link class="btn--main" :to="{name: 'app.finance.tax_type.update', params: {id: tax_type.id}}">{{ $t('app.tax_type.list.list.update') }}</router-link></td>
             </tr>
             <tr v-if="taxTypes.length === 0">
-              <td colspan="5" class="text-center">{{ $t('app.tax_type.list.no_tax_types') }}</td>
+              <td colspan="5" class="py-3 text-center">{{ $t('app.tax_type.list.no_tax_types') }}</td>
             </tr>
           </tbody>
           <tbody v-else>
-            <tr>
-              <td colspan="5" class="text-center">
+            <tr v-for="tax_type in taxTypes">
+              <td colspan="5" class="py-3 text-center">
                 <LoadingMessage>{{ $t('app.tax_type.list.loading') }}</LoadingMessage>
               </td>
             </tr>
@@ -70,12 +54,14 @@
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.tax_type.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+        </div>
+      </div>
         </div>
       </div>
     </LoadingScreen>
@@ -92,10 +78,11 @@ import "currency.js"
 import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "TaxTypeList.vue",
-  components: {ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
+  components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
   data() {
     return {
       ready: false,
@@ -146,7 +133,6 @@ export default {
         } else {
           this.filters[key].value = null;
             if (this.active_filters.indexOf(key) !== -1) {
-              console.log(key)
               this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
             }
         }

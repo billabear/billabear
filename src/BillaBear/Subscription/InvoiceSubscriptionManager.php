@@ -1,19 +1,22 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Subscription;
 
 use BillaBear\Credit\CreditAdjustmentRecorder;
 use BillaBear\Entity\Customer;
+use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Security\ApiUser;
 use Brick\Math\RoundingMode;
+use Brick\Money\Exception\MoneyMismatchException;
+use Brick\Money\Money;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Dto\StartSubscriptionDto;
 use Parthenon\Billing\Entity\CustomerInterface;
@@ -53,18 +56,28 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
     ) {
     }
 
-    public function startSubscription(CustomerInterface $customer, SubscriptionPlan|Plan $plan, Price|PlanPrice $planPrice, ?PaymentCard $paymentDetails = null, int $seatNumbers = 1, ?bool $hasTrial = null, ?int $trialLengthDays = null): Subscription
-    {
+    public function startSubscription(
+        CustomerInterface $customer,
+        Plan|SubscriptionPlan $plan,
+        PlanPrice|Price $planPrice,
+        ?PaymentCard $paymentDetails = null,
+        int $seatNumbers = 1,
+        ?bool $hasTrial = null,
+        ?int $trialLengthDays = null,
+    ): Subscription {
         $subscription = $this->subscriptionFactory->create($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
 
         if ($subscription->isHasTrial()) {
             $this->trialManager->startTrialProcess($subscription);
         }
 
-        $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
+        try {
+            $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, [$subscription]);
 
-        if (Customer::BILLING_TYPE_CARD === $customer->getBillingType() && SubscriptionStatus::ACTIVE === $subscription->getStatus()) {
-            $this->invoiceCharger->chargeInvoice($invoice);
+            if (Customer::BILLING_TYPE_CARD === $customer->getBillingType() && SubscriptionStatus::ACTIVE === $subscription->getStatus()) {
+                $this->invoiceCharger->chargeInvoice($invoice);
+            }
+        } catch (NothingToInvoiceException) {
         }
 
         $this->dispatcher->dispatch(new SubscriptionCreated($subscription), SubscriptionCreated::NAME);
@@ -141,6 +154,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
                     $subscription->getSubscriptionPlan(),
                     $oldPrice,
                     $price,
+                    $subscription,
                     $diff,
                 );
 
@@ -177,7 +191,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription->setPaymentSchedule($price->getSchedule());
     }
 
-    public function changeSubscriptionPlan(Subscription $subscription, SubscriptionPlan|Plan $plan, Price|PlanPrice $price, BillingChangeTiming $billingChangeTiming): void
+    public function changeSubscriptionPlan(Subscription $subscription, Plan|SubscriptionPlan $plan, PlanPrice|Price $price, BillingChangeTiming $billingChangeTiming): void
     {
         /** @var \BillaBear\Entity\Price $oldPrice */
         $oldPrice = $subscription->getPrice();
@@ -187,7 +201,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
             $diff = $this->calculateProrateDiff($subscription, $oldPrice, $price);
 
             if ($diff->isPositive()) {
-                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price, $diff);
+                $invoice = $this->invoiceGenerator->generateForCustomerAndUpgrade($customer, $oldPlan, $plan, $oldPrice, $price, $subscription, $diff);
 
                 if (Customer::BILLING_TYPE_CARD === $customer->getBillingType()) {
                     try {
@@ -223,9 +237,9 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
     }
 
     /**
-     * @throws \Brick\Money\Exception\MoneyMismatchException
+     * @throws MoneyMismatchException
      */
-    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, Price|\BillaBear\Entity\Price $price): \Brick\Money\Money
+    public function calculateProrateDiff(Subscription $subscription, \BillaBear\Entity\Price $oldPrice, \BillaBear\Entity\Price|Price $price): Money
     {
         $now = new \DateTime();
         $originalInterval = $subscription->getStartOfCurrentPeriod()->diff($subscription->getValidUntil());
@@ -238,8 +252,7 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
 
         $oldPriceMoney = $oldPrice->getAsMoney();
         $proRateAmount = $oldPriceMoney->minus($oldPriceMoney->multipliedBy($percentage, RoundingMode::DOWN));
-        $diff = $price->getAsMoney()->minus($proRateAmount);
 
-        return $diff;
+        return $price->getAsMoney()->minus($proRateAmount);
     }
 }

@@ -1,18 +1,18 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Workflow\TransitionHandlers\Invoice;
 
+use BillaBear\Checkout\PayLinkGeneratorInterface;
 use BillaBear\Entity\Processes\InvoiceProcess;
-use BillaBear\Invoice\PayLinkGeneratorInterface;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Notification\Email\Data\InvoiceOverdueEmail;
 use BillaBear\Notification\Email\EmailBuilder;
-use BillaBear\Pdf\InvoicePdfGenerator;
 use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -26,7 +26,7 @@ class SendOverdueNotificationsTransition implements EventSubscriberInterface
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
         private PayLinkGeneratorInterface $payLinkGenerator,
-        private InvoicePdfGenerator $invoicePdfGenerator,
+        private InvoiceFormatterProvider $invoiceFormatterProvider,
     ) {
     }
 
@@ -51,8 +51,10 @@ class SendOverdueNotificationsTransition implements EventSubscriberInterface
 
         $fullPayLink = $this->payLinkGenerator->generatePayLink($invoice);
 
-        $pdf = $this->invoicePdfGenerator->generate($invoice);
-        $attachment = new Attachment(sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), $pdf);
+        $generator = $this->invoiceFormatterProvider->getFormatter($invoice->getCustomer());
+        $pdf = $generator->generate($invoice);
+        $filename = $generator->filename($invoice);
+        $attachment = new Attachment($filename, $pdf);
 
         $invoiceOverdueEmail = new InvoiceOverdueEmail($invoice, $fullPayLink);
         $email = $this->emailBuilder->build($customer, $invoiceOverdueEmail);

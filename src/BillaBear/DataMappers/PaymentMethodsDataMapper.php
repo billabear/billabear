@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\DataMappers;
@@ -11,6 +11,7 @@ namespace BillaBear\DataMappers;
 use BillaBear\Dto\Generic\Api\PaymentMethod as ApiDto;
 use BillaBear\Dto\Generic\App\PaymentMethod as AppDto;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use Obol\Model\PaymentMethod\PaymentMethodCard;
 use Parthenon\Billing\Entity\PaymentCard;
 
 class PaymentMethodsDataMapper
@@ -49,7 +50,7 @@ class PaymentMethodsDataMapper
         return $dto;
     }
 
-    public function createFromObol(\Obol\Model\PaymentMethod\PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
+    public function createFromObol(PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
     {
         if (!$entity) {
             $entity = new PaymentCard();

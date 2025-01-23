@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Install\Dto;
@@ -17,12 +17,12 @@ class InstallRequest
     #[SerializedName('default_brand')]
     private $defaultBrand;
 
-    #[Assert\NotBlank]
     #[Assert\Country]
+    #[Assert\NotBlank]
     private $country;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[SerializedName('from_email')]
     private $fromEmail;
 
@@ -35,15 +35,15 @@ class InstallRequest
     #[SerializedName('webhook_url')]
     private $webhookUrl;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     private $email;
 
     #[Assert\NotBlank]
     private $password;
 
-    #[Assert\NotBlank]
     #[Assert\Currency]
+    #[Assert\NotBlank]
     private $currency;
 
     public function getDefaultBrand()

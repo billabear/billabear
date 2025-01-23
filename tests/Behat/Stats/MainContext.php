@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Stats;
@@ -283,6 +283,31 @@ class MainContext implements Context
     }
 
     /**
+     * @Then the payment amount stats for the day should be more than :arg2 and less than :arg3 in the currency :arg1
+     */
+    public function thePaymentAmountStatsForTheDayShouldBeMoreThanAndLessThanInTheCurrency($amount, $higherAmount, $currency): void
+    {
+        $dateTime = new \DateTime('now');
+        $statEntity = $this->paymentAmountDailyStatsRepository->findOneBy([
+            'year' => $dateTime->format('Y'),
+            'month' => $dateTime->format('m'),
+            'day' => $dateTime->format('d'),
+        ]);
+
+        if (!$statEntity instanceof PaymentAmountDailyStats && 0 != $amount) {
+            throw new \Exception('No stat found');
+        }
+
+        if ($statEntity?->getAmount() <= $amount || $statEntity->getAmount() >= $higherAmount) {
+            throw new \Exception(sprintf('Expected between %d and %d but got %d', $amount, $higherAmount, $statEntity->getAmount()));
+        }
+
+        if ($statEntity?->getCurrency() != $currency && 0 != $amount) {
+            throw new \Exception('Currency is wrong');
+        }
+    }
+
+    /**
      * @Then there will be a refund amount daily stat for :arg2 in the currency :arg1
      */
     public function thereWillBeARefundAmountDailyStatForInTheCurrency($amount, $currency)
@@ -331,6 +356,134 @@ class MainContext implements Context
         while ($startDate <= $endDate) {
             $this->generateDailyStats($startDate);
             $startDate->modify('+1 day');
+        }
+    }
+
+    /**
+     * @When I view the overall stats
+     */
+    public function iViewTheOverallStats()
+    {
+        $this->sendJsonRequest('GET', '/app/stats');
+    }
+
+    /**
+     * @Then I will see that there are stats for the default brand
+     */
+    public function iWillSeeThatThereAreStatsForTheDefaultBrand()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['subscription_count']['daily'][Customer::DEFAULT_BRAND])) {
+            throw new \Exception("Can't see subscritpion creation stats");
+        }
+    }
+
+    /**
+     * @Then I will see there is :arg1 days of daily stats
+     */
+    public function iWillSeeThereIsDaysOfDailyStats($arg1)
+    {
+        $data = $this->getJsonContent();
+        $actual = count($data['subscription_count']['daily'][Customer::DEFAULT_BRAND]);
+        if ($actual != $arg1) {
+            throw new \Exception('wrong count - '.$actual);
+        }
+    }
+
+    /**
+     * @Then I will see there is :arg1 months of monthly stats
+     */
+    public function iWillSeeThereIsMonthsOfMonthlyStats($arg1)
+    {
+        $data = $this->getJsonContent();
+        if (count($data['subscription_count']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
+            throw new \Exception('wrong count');
+        }
+    }
+
+    /**
+     * @Then I will see there is :arg1 years of yearly stats
+     */
+    public function iWillSeeThereIsYearsOfYearlyStats($arg1)
+    {
+        $data = $this->getJsonContent();
+        if (count($data['subscription_count']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
+            throw new \Exception('wrong count');
+        }
+    }
+
+    /**
+     * @Then I will see the total number of active subscriptions
+     */
+    public function iWillSeeTheTotalNumberOfActiveSubscriptions()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['header']['active_subscriptions'])) {
+            throw new \Exception("Can't see active_subscriptions");
+        }
+    }
+
+    /**
+     * @Then I will see the total number of active customers
+     */
+    public function iWillSeeTheTotalNumberOfActiveCustomers()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['header']['active_customers'])) {
+            throw new \Exception("Can't see active_customers");
+        }
+    }
+
+    /**
+     * @Then I will see the number of outstanding payments
+     */
+    public function iWillSeeTheNumberOfOutstandingPayments()
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['header']['unpaid_invoices_count'])) {
+            throw new \Exception("Can't see unpaid invoices count");
+        }
+
+        if (!isset($data['header']['unpaid_invoices_amount'])) {
+            throw new \Exception("Can't see unpaid invoices amount");
+        }
+    }
+
+    /**
+     * @Then the monthly recurring revenue estimate should be :arg1
+     */
+    public function theMonthlyRecurringRevenueEstimateShouldBe($amount)
+    {
+        /** @var CachedStats $cached */
+        $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_MRR]);
+
+        if (!$cached instanceof CachedStats && 0 != $amount) {
+            throw new \Exception("Can't find stat");
+        }
+
+        if ($cached?->getValue() != $amount && 0 != $amount) {
+            throw new \Exception('Incorrect value - '.$cached->getValue());
+        }
+    }
+
+    /**
+     * @Then the annual recurring revenue estimate should be :arg1
+     */
+    public function theAnnualRecurringRevenueEstimateShouldBe($amount)
+    {
+        /** @var CachedStats $cached */
+        $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_ARR]);
+
+        if (!$cached instanceof CachedStats && 0 != $amount) {
+            throw new \Exception("Can't find stat");
+        }
+
+        if ($cached?->getValue() != $amount && 0 != $amount) {
+            throw new \Exception('Incorrect value - '.$cached->getValue());
         }
     }
 
@@ -562,146 +715,5 @@ class MainContext implements Context
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($refundAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->persist($chargeBackAmount);
         $this->refundAmountDailyStatsRepository->getEntityManager()->flush();
-    }
-
-    /**
-     * @When I view the overall stats
-     */
-    public function iViewTheOverallStats()
-    {
-        $this->sendJsonRequest('GET', '/app/stats');
-    }
-
-    /**
-     * @Then I will see that there are stats for the default brand
-     */
-    public function iWillSeeThatThereAreStatsForTheDefaultBrand()
-    {
-        $data = $this->getJsonContent();
-
-        if (!isset($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND])) {
-            throw new \Exception("Can't see subscritpion creation stats");
-        }
-    }
-
-    /**
-     * @Then I will see there is :arg1 days of daily stats
-     */
-    public function iWillSeeThereIsDaysOfDailyStats($arg1)
-    {
-        $data = $this->getJsonContent();
-        $actual = count($data['subscription_creation']['daily'][Customer::DEFAULT_BRAND]);
-        if ($actual != $arg1) {
-            throw new \Exception('wrong count - '.$actual);
-        }
-    }
-
-    /**
-     * @Then I will see there is :arg1 months of monthly stats
-     */
-    public function iWillSeeThereIsMonthsOfMonthlyStats($arg1)
-    {
-        $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
-            throw new \Exception('wrong count');
-        }
-    }
-
-    /**
-     * @Then I will see there is :arg1 years of yearly stats
-     */
-    public function iWillSeeThereIsYearsOfYearlyStats($arg1)
-    {
-        $data = $this->getJsonContent();
-        if (count($data['subscription_creation']['yearly'][Customer::DEFAULT_BRAND]) < $arg1) {
-            throw new \Exception('wrong count');
-        }
-    }
-
-    /**
-     * @Then I will see there is 12 months of monthly revenue stats for :currency
-     */
-    public function iWillSeeThereIsMonthsOfMonthlyRevenueStatsFor($currency)
-    {
-        $data = $this->getJsonContent();
-        foreach ($data['payment_amount']['monthly'][Customer::DEFAULT_BRAND] as $month) {
-            if (0 == $month[$currency]) {
-                throw new \Exception('There is a month with a zero. There should be no months with a zero');
-            }
-        }
-    }
-
-    /**
-     * @Then I will see the total number of active subscriptions
-     */
-    public function iWillSeeTheTotalNumberOfActiveSubscriptions()
-    {
-        $data = $this->getJsonContent();
-
-        if (!isset($data['header']['active_subscriptions'])) {
-            throw new \Exception("Can't see active_subscriptions");
-        }
-    }
-
-    /**
-     * @Then I will see the total number of active customers
-     */
-    public function iWillSeeTheTotalNumberOfActiveCustomers()
-    {
-        $data = $this->getJsonContent();
-
-        if (!isset($data['header']['active_customers'])) {
-            throw new \Exception("Can't see active_customers");
-        }
-    }
-
-    /**
-     * @Then I will see the number of outstanding payments
-     */
-    public function iWillSeeTheNumberOfOutstandingPayments()
-    {
-        $data = $this->getJsonContent();
-
-        if (!isset($data['header']['unpaid_invoices_count'])) {
-            throw new \Exception("Can't see unpaid invoices count");
-        }
-
-        if (!isset($data['header']['unpaid_invoices_amount'])) {
-            throw new \Exception("Can't see unpaid invoices amount");
-        }
-    }
-
-    /**
-     * @Then the monthly recurring revenue estimate should be :arg1
-     */
-    public function theMonthlyRecurringRevenueEstimateShouldBe($amount)
-    {
-        /** @var CachedStats $cached */
-        $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_MRR]);
-
-        if (!$cached instanceof CachedStats && 0 != $amount) {
-            throw new \Exception("Can't find stat");
-        }
-
-        if ($cached?->getValue() != $amount && 0 != $amount) {
-            throw new \Exception('Incorrect value - '.$cached->getValue());
-        }
-    }
-
-    /**
-     * @Then the annual recurring revenue estimate should be :arg1
-     */
-    public function theAnnualRecurringRevenueEstimateShouldBe($amount)
-    {
-        /** @var CachedStats $cached */
-        $cached = $this->cachedStatsRepository->findOneBy(['name' => CachedStats::STAT_NAME_ESTIMATED_ARR]);
-
-        if (!$cached instanceof CachedStats && 0 != $amount) {
-            throw new \Exception("Can't find stat");
-        }
-
-        if ($cached?->getValue() != $amount && 0 != $amount) {
-            throw new \Exception('Incorrect value - '.$cached->getValue());
-        }
     }
 }

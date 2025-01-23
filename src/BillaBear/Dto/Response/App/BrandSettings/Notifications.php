@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Response\App\BrandSettings;
@@ -38,6 +38,9 @@ class Notifications
 
     #[SerializedName('before_charge_warning')]
     private string $beforeChargeWarnings;
+
+    #[SerializedName('payment_failure')]
+    private bool $paymentFailure;
 
     public function getSubscriptionCreation()
     {
@@ -127,5 +130,15 @@ class Notifications
     public function setBeforeChargeWarnings(string $beforeChargeWarnings): void
     {
         $this->beforeChargeWarnings = $beforeChargeWarnings;
+    }
+
+    public function isPaymentFailure(): bool
+    {
+        return $this->paymentFailure;
+    }
+
+    public function setPaymentFailure(bool $paymentFailure): void
+    {
+        $this->paymentFailure = $paymentFailure;
     }
 }

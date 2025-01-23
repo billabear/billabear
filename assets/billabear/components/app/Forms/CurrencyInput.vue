@@ -1,5 +1,5 @@
 <template>
-  <input class="form-field-input" ref="inputRef" type="text" />
+  <input class="form-field" ref="inputRef" type="text" />
 </template>
 
 <script>

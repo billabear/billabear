@@ -16,8 +16,8 @@ Feature: Tax the correct country with threshold
       | Digital Services | False    |
       | Physical         | True     |
     And that the following countries exist:
-      | Name           | ISO Code | Threshold | Currency |
-      | United Kingdom | GB       | 1770      | GBP      |
+      | Name           | ISO Code | Threshold | Transaction Threshold | Currency |
+      | United Kingdom | GB       | 1770      |                       | GBP      |
     And the following country tax rules exist:
       | Country        | Tax Type       | Tax Rate | Valid From |
       | United Kingdom | Digital Goods  | 20       | -10 days   |
@@ -54,6 +54,7 @@ Feature: Tax the correct country with threshold
       | customer.five@example.org  | GB      | cust_ddsjfu        | Customer Five  | card         | ref_valid         | dfadf      | example |
       | customer.six@example.org   | GB      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | example |
       | customer.seven@example.org | US      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | example |
+      | customer.eight@example.org | AU      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     | example |
 
   Scenario:
     Given the following subscriptions exist:
@@ -104,9 +105,10 @@ Feature: Tax the correct country with threshold
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
       | Test Plan         | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
     And that the following countries exist:
-      | Name           | ISO Code | Threshold | Currency |
-      | United States  | US       | 1000000   | USD      |
-      | United Kingdom | GB       | 0         | USD      |
+      | Name           | ISO Code | Threshold | Transaction Threshold | Currency |
+      | United States  | US       | 1000000   |                       | USD      |
+      | United Kingdom | GB       | 0         |                       | USD      |
+      | Australia      | AU       | 7500000   | 100                   | AUD      |
     And the following country tax rules exist:
       | Country       | Tax Type       | Tax Rate | Valid From |
       | United States | Digital Goods  | 17.5     | -10 days   |
@@ -114,3 +116,51 @@ Feature: Tax the correct country with threshold
     When the background task to reinvoice active subscriptions
     And there the latest invoice for "customer.seven@example.org" will have tax country of "GB"
 
+  Scenario:
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.seven@example.org | +3 Minutes  | Active |
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Transaction Threshold | Currency |
+      | United States  | US       | 1000000   |                       | USD      |
+      | United Kingdom | GB       | 0         |                       | USD      |
+      | Australia      | AU       | 7500000   | 100                   | AUD      |
+    And the following country tax rules exist:
+      | Country       | Tax Type       | Tax Rate | Valid From |
+      | United States | Digital Goods  | 17.5     | -10 days   |
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.seven@example.org" will have tax country of "GB"
+
+  Scenario: Country transaction threshold not reached
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.eight@example.org | +3 Minutes  | Active |
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Transaction Threshold | Currency |
+      | United States  | US       | 1000000   |                       | USD      |
+      | United Kingdom | GB       | 0         |                       | USD      |
+      | Australia      | AU       | 7500000   | 100                   | AUD      |
+    And the following country tax rules exist:
+      | Country       | Tax Type       | Tax Rate | Valid From |
+      | Australia     | Digital Goods  | 20       | -10 days   |
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.eight@example.org" will have tax country of "GB"
+
+  Scenario: Country transaction threshold reached
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.eight@example.org | +3 Minutes  | Active |
+    And that the following countries exist:
+      | Name           | ISO Code | Threshold | Transaction Threshold | Currency |
+      | United States  | US       | 1000000   |                       | USD      |
+      | United Kingdom | GB       | 0         |                       | USD      |
+      | Australia      | AU       | 7500000   | 100                   | AUD      |
+    And the following country tax rules exist:
+      | Country       | Tax Type       | Tax Rate | Valid From |
+      | Australia     | Digital Goods  | 20       | -10 days   |
+    And there are 200 transactions for "customer.eight@example.org" for the past 12 months
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.eight@example.org" will have tax country of "AU"

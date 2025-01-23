@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Repository;
@@ -12,6 +12,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Subscription;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Common\Exception\NoEntityFoundException;
 
 class InvoiceRepository extends DoctrineCrudRepository implements InvoiceRepositoryInterface
@@ -61,5 +62,22 @@ class InvoiceRepository extends DoctrineCrudRepository implements InvoiceReposit
         if (!$entity instanceof Invoice) {
             throw new NoEntityFoundException(sprintf("Can't find invoice for subscription '%s'", $subscription->getId()));
         }
+    }
+
+    public function getLastTenForCustomer(Customer $customer): ResultSet
+    {
+        $results = $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], 11);
+
+        return new ResultSet($results, 'createdAt', 'DESC', 10);
+    }
+
+    public function getLastForCustomer(Customer $customer): ?Invoice
+    {
+        return $this->entityRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+    }
+
+    public function getTotalCount(): int
+    {
+        return $this->entityRepository->count([]);
     }
 }

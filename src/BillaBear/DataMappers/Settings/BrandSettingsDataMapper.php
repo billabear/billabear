@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\DataMappers\Settings;
@@ -17,7 +17,7 @@ use Parthenon\Common\Address;
 
 class BrandSettingsDataMapper
 {
-    public function createEntityFromEditDto(EditDto|CreateBrandSettings $dto, ?BrandSettings $brandSettings = null): BrandSettings
+    public function createEntityFromEditDto(CreateBrandSettings|EditDto $dto, ?BrandSettings $brandSettings = null): BrandSettings
     {
         if ($dto instanceof CreateBrandSettings) {
             $brandSettings = new BrandSettings();
@@ -46,10 +46,14 @@ class BrandSettingsDataMapper
         $brandSettings->getNotificationSettings()->setInvoiceOverdue($dto->getNotifications()->getInvoiceOverdue());
         $brandSettings->getNotificationSettings()->setSendTrialEndingWarning($dto->getNotifications()->getTrialEndingWarnings());
         $brandSettings->getNotificationSettings()->setSendBeforeChargeWarnings($dto->getNotifications()->getBeforeChargeWarnings());
+        $brandSettings->getNotificationSettings()->setPaymentFailure($dto->getNotifications()->getPaymentFailure());
 
         $brandSettings->setTaxNumber($dto->getTaxNumber());
         $brandSettings->setTaxRate($dto->getTaxRate());
         $brandSettings->setDigitalServicesRate($dto->getDigitalServicesTaxRate());
+
+        $brandSettings->setSupportEmail($dto->getSupportEmailAddress());
+        $brandSettings->setSupportPhoneNumber($dto->getSupportPhoneNumber());
 
         return $brandSettings;
     }
@@ -79,6 +83,8 @@ class BrandSettingsDataMapper
         $dto->setTaxNumber($brandSettings->getTaxNumber());
         $dto->setTaxRate($brandSettings->getTaxRate());
         $dto->setDigitalServicesTaxRate($brandSettings->getDigitalServicesRate());
+        $dto->setSupportEmailAddress($brandSettings->getSupportEmail());
+        $dto->setSupportPhoneNumber($brandSettings->getSupportPhoneNumber());
 
         $dto->getNotifications()->setSubscriptionCreation($brandSettings->getNotificationSettings()->getSubscriptionCreation());
         $dto->getNotifications()->setSubscriptionCancellation($brandSettings->getNotificationSettings()->getSubscriptionCancellation());
@@ -89,6 +95,7 @@ class BrandSettingsDataMapper
         $dto->getNotifications()->setInvoiceOverdue($brandSettings->getNotificationSettings()->getInvoiceOverdue());
         $dto->getNotifications()->setTrialEndingWarnings($brandSettings->getNotificationSettings()->getSendTrialEndingWarning());
         $dto->getNotifications()->setBeforeChargeWarnings($brandSettings->getNotificationSettings()->getSendBeforeChargeWarnings());
+        $dto->getNotifications()->setPaymentFailure($brandSettings->getNotificationSettings()->getPaymentFailure());
 
         return $dto;
     }

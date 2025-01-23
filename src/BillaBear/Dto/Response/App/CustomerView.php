@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Response\App;
@@ -20,11 +20,11 @@ class CustomerView
     protected array $paymentDetails = [];
 
     #[SerializedName('subscriptions')]
-    protected array $subscriptions = [];
+    protected ListResponse $subscriptions;
 
-    protected array $payments = [];
+    protected ListResponse $payments;
 
-    protected array $refunds = [];
+    protected ListResponse $refunds;
 
     protected bool $success = true;
 
@@ -33,10 +33,19 @@ class CustomerView
     #[SerializedName('credit')]
     protected array $credit = [];
 
-    protected array $invoices = [];
+    protected ListResponse $invoices;
+
+    #[SerializedName('invoice_delivery')]
+    protected ListResponse $invoiceDelivery;
 
     #[SerializedName('subscription_events')]
     protected array $subscriptionEvents;
+
+    #[SerializedName('metric_counters')]
+    protected array $metricCounters;
+
+    #[SerializedName('usage_limits')]
+    protected array $usageLimits;
 
     public function getCustomer(): Customer
     {
@@ -68,32 +77,32 @@ class CustomerView
         $this->success = $success;
     }
 
-    public function getSubscriptions(): array
+    public function getSubscriptions(): ListResponse
     {
         return $this->subscriptions;
     }
 
-    public function setSubscriptions(array $subscriptions): void
+    public function setSubscriptions(ListResponse $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }
 
-    public function getPayments(): array
+    public function getPayments(): ListResponse
     {
         return $this->payments;
     }
 
-    public function setPayments(array $payments): void
+    public function setPayments(ListResponse $payments): void
     {
         $this->payments = $payments;
     }
 
-    public function getRefunds(): array
+    public function getRefunds(): ListResponse
     {
         return $this->refunds;
     }
 
-    public function setRefunds(array $refunds): void
+    public function setRefunds(ListResponse $refunds): void
     {
         $this->refunds = $refunds;
     }
@@ -118,12 +127,12 @@ class CustomerView
         $this->credit = $credit;
     }
 
-    public function getInvoices(): array
+    public function getInvoices(): ListResponse
     {
         return $this->invoices;
     }
 
-    public function setInvoices(array $invoices): void
+    public function setInvoices(ListResponse $invoices): void
     {
         $this->invoices = $invoices;
     }
@@ -136,5 +145,35 @@ class CustomerView
     public function setSubscriptionEvents(array $subscriptionEvents): void
     {
         $this->subscriptionEvents = $subscriptionEvents;
+    }
+
+    public function getInvoiceDelivery(): ListResponse
+    {
+        return $this->invoiceDelivery;
+    }
+
+    public function setInvoiceDelivery(ListResponse $invoiceDelivery): void
+    {
+        $this->invoiceDelivery = $invoiceDelivery;
+    }
+
+    public function getMetricCounters(): array
+    {
+        return $this->metricCounters;
+    }
+
+    public function setMetricCounters(array $metricCounters): void
+    {
+        $this->metricCounters = $metricCounters;
+    }
+
+    public function getUsageLimits(): array
+    {
+        return $this->usageLimits;
+    }
+
+    public function setUsageLimits(array $usageLimits): void
+    {
+        $this->usageLimits = $usageLimits;
     }
 }

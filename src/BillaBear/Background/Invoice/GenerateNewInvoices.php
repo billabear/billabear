@@ -1,18 +1,19 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Background\Invoice;
 
+use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Database\TransactionManager;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Enum\CustomerSubscriptionEventType;
+use BillaBear\Exception\Invoice\NothingToInvoiceException;
 use BillaBear\Invoice\InvoiceGenerator;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\SettingsRepositoryInterface;
@@ -29,14 +30,14 @@ class GenerateNewInvoices
     use LoggerAwareTrait;
 
     public function __construct(
-        private SubscriptionRepositoryInterface $subscriptionRepository,
-        private InvoiceGenerator $invoiceGenerator,
-        private SchedulerProvider $schedulerProvider,
-        private InvoiceCharger $invoiceCharger,
-        private SettingsRepositoryInterface $settingsRepository,
-        private TransactionManager $transactionManager,
-        private TrialManager $trialEnder,
-        private CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly InvoiceGenerator $invoiceGenerator,
+        private readonly SchedulerProvider $schedulerProvider,
+        private readonly InvoiceCharger $invoiceCharger,
+        private readonly SettingsRepositoryInterface $settingsRepository,
+        private readonly TransactionManager $transactionManager,
+        private readonly TrialManager $trialEnder,
+        private readonly CustomerSubscriptionEventCreator $customerSubscriptionEventCreator,
     ) {
     }
 
@@ -90,10 +91,8 @@ class GenerateNewInvoices
 
     /**
      * @param Subscription[] $activeSubscriptions
-     *
-     * @throws \Exception
      */
-    protected function generateInvoice(Subscription|array $activeSubscriptions, Customer $customer): void
+    protected function generateInvoice(array|Subscription $activeSubscriptions, Customer $customer): void
     {
         $this->transactionManager->start();
         try {
@@ -113,7 +112,14 @@ class GenerateNewInvoices
                 $activeSubscription->setStatus(SubscriptionStatus::ACTIVE);
                 $this->subscriptionRepository->save($activeSubscription);
             }
-            $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+            try {
+                $invoice = $this->invoiceGenerator->generateForCustomerAndSubscriptions($customer, $activeSubscriptions);
+            } catch (NothingToInvoiceException) {
+                $this->transactionManager->finish();
+
+                return;
+            }
+
             $this->transactionManager->finish();
             if (Customer::BILLING_TYPE_CARD == $customer->getBillingType()) {
                 try {
@@ -123,8 +129,6 @@ class GenerateNewInvoices
                 }
             }
         } catch (\Throwable $exception) {
-            $this->transactionManager->abort();
-
             $this->getLogger()->critical('An error happened while generating invoice', [
                 'exception_message' => $exception->getMessage(),
                 'exception_line' => $exception->getLine(),
@@ -133,6 +137,8 @@ class GenerateNewInvoices
                 'subscriptions' => array_map(function ($item) {
                     return (string) $item->getId();
                 }, $activeSubscriptions)]);
+
+            $this->transactionManager->abort();
         }
     }
 }

@@ -1,22 +1,35 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Generic\App;
 
+use BillaBear\Dto\Generic\App\Usage\Metric;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Price
 {
+    #[SerializedName('payment_provider_details_url')]
+    protected ?string $paymentProviderDetailsUrl = null;
+
+    #[SerializedName('display_value')]
+    protected string $displayValue;
+
+    #[SerializedName('product')]
+    protected ?Product $product = null;
+
+    protected ?Metric $metric = null;
+
+    protected bool $usage = false;
     #[SerializedName('id')]
     private string $id;
 
     #[SerializedName('amount')]
-    private int $amount;
+    private ?int $amount;
 
     #[SerializedName('currency')]
     private string $currency;
@@ -36,15 +49,6 @@ class Price
     #[SerializedName('public')]
     private bool $public = true;
 
-    #[SerializedName('payment_provider_details_url')]
-    protected ?string $paymentProviderDetailsUrl = null;
-
-    #[SerializedName('display_value')]
-    protected string $displayValue;
-
-    #[SerializedName('product')]
-    protected ?Product $product = null;
-
     public function hasId(): bool
     {
         return isset($this->id);
@@ -60,12 +64,12 @@ class Price
         $this->id = $id;
     }
 
-    public function getAmount(): int
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): void
+    public function setAmount(?int $amount): void
     {
         $this->amount = $amount;
     }
@@ -158,5 +162,25 @@ class Price
     public function setProduct(?Product $product): void
     {
         $this->product = $product;
+    }
+
+    public function getMetric(): ?Metric
+    {
+        return $this->metric;
+    }
+
+    public function setMetric(?Metric $metric): void
+    {
+        $this->metric = $metric;
+    }
+
+    public function isUsage(): bool
+    {
+        return $this->usage;
+    }
+
+    public function setUsage(bool $usage): void
+    {
+        $this->usage = $usage;
     }
 }

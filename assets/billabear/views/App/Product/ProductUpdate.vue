@@ -84,6 +84,7 @@ export default {
     var productId = this.$route.params.id
     axios.get('/app/product/'+productId+'/update').then(response => {
       this.product = response.data.product;
+      this.product.tax_type = response.data.product.tax_type.id;
       this.tax_types = response.data.tax_types;
       this.ready = true;
     }).catch(error => {

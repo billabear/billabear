@@ -61,5 +61,13 @@ export const INVOICES_VIEW_TRANSLATIONS = {
     payment_succeeded: {
         message: "Payment successfully made."
     },
-    download: "Download Invoice"
+    download: "Download Invoice",
+    invoice_delivery: {
+        title: "Invoice Deliveries",
+        method: "Method",
+        detail: "Detail",
+        status: "Status",
+        created_at: "Created At",
+        no_invoice_deliveries: "No invoice deliveries"
+    }
 }

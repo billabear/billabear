@@ -2,77 +2,70 @@
   <div v-if="!has_error">
     <h1 class="ml-5 mt-5 page-title">{{ $t('app.subscription.list.title') }}</h1>
 
-    <div class="top-button-container">
-      <Dropdown text="Filters" v-if="Object.keys(filters).length > 0">
-        <div class="list_container">
-          <ListGroup>
-            <ListGroupItem v-for="(filter, filterKey) in filters">
-              <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-            </ListGroupItem>
-          </ListGroup>
-        </div>
-      </Dropdown>
-    </div>
-
-    <div class="card-body my-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.subscription.list.filter.title') }}</h2>
-        <form @submit.prevent="doSearch">
-        <div v-for="filter in active_filters">
-          <div class="px-3 py-1 sm:flex sm:px-6">
-            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-            <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-          </div>
-        </div>
-
-        <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
-      </form>
-    </div>
-
     <LoadingScreen :ready="ready">
-      <div class="mt-3">
-          <table class="list-table">
-          <thead>
-          <tr>
-            <th>{{ $t('app.subscription.list.email') }}</th>
-            <th>{{ $t('app.subscription.list.plan')}}</th>
-            <th>{{ $t('app.subscription.list.status') }}</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody v-if="loaded">
-          <tr v-for="subscription in subscriptions" class="mt-5">
-            <td>{{ subscription.customer.email }}</td>
-            <td v-if="subscription.plan !== null && subscription.plan !== undefined">{{ subscription.plan.name }}</td>
-            <td v-else></td>
-            <td>{{ subscription.status }}</td>
-            <td><router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
-          </tr>
-          <tr v-if="subscriptions.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.subscription.list.no_subscriptions') }}</td>
-          </tr>
-          </tbody>
-          <tbody v-else>
-          <tr>
-            <td colspan="4" class="text-center">
-              <LoadingMessage>{{ $t('app.subscription.list.loading') }}</LoadingMessage>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="sm:grid sm:grid-cols-2">
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
 
-        <div class="mt-4">
-          <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.subscription.list.prev') }}</button>
-          <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.subscription.list.next') }}</button>
-        </div>
-        <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+                <thead>
+                <tr class="border-b border-black">
+                  <th class="text-left pb-2">{{ $t('app.subscription.list.email') }}</th>
+                  <th class="text-left pb-2">{{ $t('app.subscription.list.plan') }}</th>
+                  <th class="text-left pb-2">{{ $t('app.subscription.list.status') }}</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody v-if="loaded">
+                <tr v-for="subscription in subscriptions" class="mt-5">
+                  <td class="py-3">{{ subscription.customer.email }}</td>
+                  <td class="py-3" v-if="subscription.plan !== null && subscription.plan !== undefined">{{
+                      subscription.plan.name
+                    }}
+                  </td>
+                  <td class="py-3" v-else></td>
+                  <td class="py-3">{{ subscription.status }}</td>
+                  <td class="py-3">
+                    <router-link :to="{name: 'app.subscription.view', params: {subscriptionId: subscription.id}}"
+                                 class="btn--main">{{ $t('app.subscription.list.view') }}
+                    </router-link>
+                  </td>
+                </tr>
+                <tr v-if="subscriptions.length === 0">
+                  <td colspan="4" class="text-center">{{ $t('app.subscription.list.no_subscriptions') }}</td>
+                </tr>
+                </tbody>
+                <tbody v-else>
+                <tr  v-for="subscription in subscriptions">
+                  <td colspan="4" class="py-3 text-center">
+                    <LoadingMessage>{{ $t('app.subscription.list.loading') }}</LoadingMessage>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+          </div>
+          <div class="sm:grid sm:grid-cols-2">
+
+            <div class="mt-4">
+              <button @click="prevPage" v-if="show_back" class="btn--main mr-3">{{
+                  $t('app.subscription.list.prev')
+                }}
+              </button>
+              <button @click="nextPage" v-if="has_more" class="btn--main">{{
+                  $t('app.subscription.list.next')
+                }}
+              </button>
+            </div>
+            <div class="mt-4 text-end">
+              <select class="rounded-lg border border-gray-300"  @change="changePerPage" v-model="per_page">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </LoadingScreen>
@@ -85,10 +78,11 @@
 <script>
 import axios from "axios";
 import InternalApp from "../InternalApp.vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "SubscriptionList.vue",
-  components: {InternalApp},
+  components: {FiltersSection, InternalApp},
   data() {
     return {
       ready: false,
@@ -104,7 +98,38 @@ export default {
       show_filter_menu: false,
       active_filters: [],
       per_page: "10",
-      filters: {}
+      filters: {
+        status: {
+          label: 'app.subscription.list.filters.status',
+          type: 'choice',
+          choices: [
+            {
+              label: "app.subscription.list.filters.status_choices.cancelled",
+              value: 'cancelled'
+            },
+            {
+              label: "app.subscription.list.filters.status_choices.active",
+              value: 'active'
+            },
+            {
+              label: "app.subscription.list.filters.status_choices.blocked",
+              value: 'blocked'
+            },
+            {
+              label: "app.subscription.list.filters.status_choices.overdue_payment_open",
+              value: 'overdue_payment_open'
+            },
+            {
+              label: "app.subscription.list.filters.status_choices.trial_active",
+              value: 'trial_active'
+            },
+            {
+              label: "app.subscription.list.filters.status_choices.trial_ended",
+              value: 'trial_ended'
+            }
+          ]
+        }
+      }
     }
   },
   mounted() {
@@ -127,8 +152,7 @@ export default {
         } else {
           this.filters[key].value = null;
           if (this.active_filters.indexOf(key) !== -1) {
-            console.log(key)
-            this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
+            this.active_filters.splice(this.active_filters.indexOf(key), 1);
           }
         }
       });
@@ -149,7 +173,7 @@ export default {
 
       if (this.$route.query.per_page !== undefined) {
         queryVals.per_page = this.$route.query.per_page;
-        this.per_page=this.$route.query.per_page;
+        this.per_page = this.$route.query.per_page;
       }
 
       return queryVals;
@@ -168,7 +192,7 @@ export default {
     changePerPage: function ($event) {
       var queryVals = this.buildFilterQuery();
       queryVals.per_page = $event.target.value;
-      this.per_page=queryVals.per_page;
+      this.per_page = queryVals.per_page;
 
       if (this.$route.query.last_key !== undefined) {
         queryVals.last_key = this.$route.query.last_key;
@@ -178,18 +202,17 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
-    {
+    doStuff: function () {
       this.syncQueryToFilters();
       var mode = 'normal';
       let urlString = '/app/subscription?';
 
       if (this.$route.query.last_key !== undefined) {
-        urlString = urlString + '&last_key=' +  encodeURIComponent(this.$route.query.last_key);
+        urlString = urlString + '&last_key=' + encodeURIComponent(this.$route.query.last_key);
         this.show_back = true;
         mode = 'normal';
       } else if (this.$route.query.first_key !== undefined) {
-        urlString = urlString + '&first_key=' +  encodeURIComponent(this.$route.query.first_key);
+        urlString = urlString + '&first_key=' + encodeURIComponent(this.$route.query.first_key);
         this.has_more = true;
         mode = 'first_key';
       }
@@ -200,7 +223,7 @@ export default {
 
       Object.keys(this.filters).forEach(key => {
         if (this.$route.query[key] !== undefined) {
-          urlString = urlString + '&'+key+'=' + encodeURIComponent(this.$route.query[key]);
+          urlString = urlString + '&' + key + '=' + encodeURIComponent(this.$route.query[key]);
         }
       });
       this.loaded = false;

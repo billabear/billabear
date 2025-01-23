@@ -41,7 +41,7 @@ Feature: Tax the correct state with threshold
     And the follow customers exist:
       | Email                      | Country | External Reference | Reference      | Billing Type | Payment Reference | Tax Number | Digital Tax Rate | Standard Tax Rate | State  |
       | customer.seven@example.org | US      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     |                  |                   | Texas  |
-      | customer.eight@example.org | CA      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     |                  |                   | quebec |
+      | customer.eight@example.org | CA      | cust_jliujoi       | Customer Six   | card         | ref_fails         | fdsafd     |                  |                   | Quebec |
 
   Scenario:
     Given the following subscriptions exist:
@@ -97,6 +97,28 @@ Feature: Tax the correct state with threshold
     And stripe billing is disabled
     When the background task to reinvoice active subscriptions
     Then there the latest invoice for "customer.eight@example.org" will not have tax state of "Quebec"
+
+  Scenario: Meets transaction threshold
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                   | Next Charge | Status |
+      | Test Plan         | 1000         | USD            | week           | customer.eight@example.org | +3 Minutes  | Active |
+    And that the following countries exist:
+      | Name          | ISO Code | Threshold | Currency |
+      | Canada        | CA       | 0         | CAD      |
+    And the following country tax rules exist:
+      | Country        | Tax Type      | Tax Rate | Valid From |
+      | Canada         | Digital Goods | 5        | -10 days   |
+    And the following states exist:
+      | Country       | Name       | Code | Threshold | Transaction Threshold |
+      | Canada        | Quebec     | QC   | 10000000  | 100                   |
+    And the following state tax rules exist:
+      | Country       | State  | Tax Rate | Tax Type      | Valid From |
+      | Canada        | Quebec | 9.975    | Digital Goods | -10 days   |
+    And there are 200 transactions for "customer.eight@example.org" for the past 12 months
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    And there the latest invoice for "customer.eight@example.org" will have tax state of "Quebec"
+    Then there the latest invoice for "customer.eight@example.org" will have tax rate of "14.975"
 
   Scenario: Has Nexus
     Given the following subscriptions exist:

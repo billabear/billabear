@@ -1,28 +1,36 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Notification\Email;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\EmailTemplate;
 use BillaBear\Notification\Email\Data\AbstractEmailData;
 use Parthenon\Notification\Email;
 use Twig\Environment;
 
 class EmailBuilder
 {
-    public function __construct(private Environment $twig, private EmailTemplateProvider $emailTemplateProvider)
-    {
+    public function __construct(
+        private Environment $twig,
+        private EmailTemplateProvider $emailTemplateProvider,
+    ) {
     }
 
     public function build(Customer $customer, AbstractEmailData $emailData): Email
     {
         $emailTemplate = $this->emailTemplateProvider->getTemplateForCustomer($customer, $emailData->getTemplateName());
 
+        return $this->buildWithTemplate($customer, $emailTemplate, $emailData);
+    }
+
+    public function buildWithTemplate(Customer $customer, EmailTemplate $emailTemplate, AbstractEmailData $emailData): Email
+    {
         $email = new Email();
         $email->setToAddress($customer->getBillingEmail());
         $email->setFromAddress($customer->getBrandSettings()->getEmailAddress());

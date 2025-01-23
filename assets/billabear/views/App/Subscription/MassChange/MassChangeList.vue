@@ -1,63 +1,44 @@
 <template>
   <div v-if="!has_error">
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.subscription.mass_change.list.title') }}</h1>
+    <div class="grid grid-cols-2">
 
-    <div class="top-button-container">
-      <div class="list" v-if="Object.keys(filters).length > 0">
-        <div class="list_button">
-          <button class="flex btn--secondary" @click="show_filter_menu = !show_filter_menu">
-            <i v-if="!show_filter_menu" class="fa-solid fa-caret-down"></i>
-            <i v-else class="fa-solid fa-caret-up"></i>
-            {{ $t('app.subscription.mass_change.list.filter.button') }}
-          </button>
-        </div>
-        <div class="list_container" v-if="show_filter_menu">
-          <span v-for="(filter, filterKey) in filters" class="block">
-            <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" /> {{ $t(''+filter.label+'') }}
-          </span>
-        </div>
+      <h1 class="ml-5 mt-5 page-title">{{ $t('app.subscription.mass_change.list.title') }}</h1>
+
+      <div class="text-end mt-5">
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <router-link :to="{name: 'app.subscription.mass_change.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.subscription.mass_change.list.create_new') }}</router-link>
+        </RoleOnlyView>
       </div>
-      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-        <router-link :to="{name: 'app.subscription.mass_change.create'}" class="btn--main ml-4"><i class="fa-solid fa-plus"></i> {{ $t('app.subscription.mass_change.list.create_new') }}</router-link>
-      </RoleOnlyView>
-    </div>
-
-    <div class="card-body my-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.subscription.mass_change.list.filter.title') }}</h2>
-      <div v-for="filter in active_filters">
-        <div class="px-3 py-1 sm:flex sm:px-6">
-          <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-          <div><input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" /></div>
-        </div>
-      </div>
-
-      <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
     </div>
 
     <LoadingScreen :ready="ready">
-      <div class="mt-3">
-        <table class="list-table">
-          <thead>
-          <tr>
-            <th>{{ $t('app.subscription.mass_change.list.change_date') }}</th>
-            <th>{{ $t('app.subscription.mass_change.list.status') }}</th>
-            <th>{{ $t('app.subscription.mass_change.list.created_at') }}</th>
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.subscription.mass_change.list.change_date') }}</th>
+            <th class="text-left pb-2">{{ $t('app.subscription.mass_change.list.status') }}</th>
+            <th class="text-left pb-2">{{ $t('app.subscription.mass_change.list.created_at') }}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="loaded">
           <tr v-for="subscription in subscriptions" class="mt-5">
-            <td>{{ subscription.change_date }}</td>
+            <td class="py-3">{{ subscription.change_date }}</td>
             <td>{{ subscription.status }}</td>
             <td>{{ $filters.moment(subscription.created_at, 'lll') }}</td>
             <td><router-link :to="{name: 'app.subscription.mass_change.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.subscription.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.subscription.mass_change.list.no_mass_change') }}</td>
+            <td colspan="4" class="py-3 text-center">{{ $t('app.subscription.mass_change.list.no_mass_change') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
-          <tr>
+          <tr v-for="subscription in subscriptions">
             <td colspan="4" class="text-center">
               <LoadingMessage>{{ $t('app.subscription.mass_change.list.loading') }}</LoadingMessage>
             </td>
@@ -65,19 +46,21 @@
           </tbody>
         </table>
       </div>
-      <div class="sm:grid sm:grid-cols-2 m-5">
+      <div class="sm:grid sm:grid-cols-2 mt-5">
 
         <div class="mt-4">
           <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.subscription.mass_change.list.prev') }}</button>
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.subscription.mass_change.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+        </div>
+      </div>
         </div>
       </div>
     </LoadingScreen>
@@ -89,9 +72,12 @@
 
 <script>
 import axios from "axios";
+import FiltersSection from "../../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
-  name: "MassChanteList",data() {
+  name: "MassChanteList",
+  components: {FiltersSection},
+  data() {
     return {
       ready: false,
       subscriptions: [],
@@ -129,7 +115,6 @@ export default {
         } else {
           this.filters[key].value = null;
           if (this.active_filters.indexOf(key) !== -1) {
-            console.log(key)
             this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
           }
         }

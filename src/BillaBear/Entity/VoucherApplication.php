@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -16,10 +16,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'vouchers_application')]
 class VoucherApplication
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Voucher::class)]
@@ -36,6 +36,9 @@ class VoucherApplication
 
     #[ORM\Column(type: 'datetime')]
     private \DateTime $createdAt;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
 
     public function getId()
     {
@@ -85,5 +88,15 @@ class VoucherApplication
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
     }
 }

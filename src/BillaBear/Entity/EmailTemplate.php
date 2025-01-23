@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'email_templates')]
 #[ORM\Index(name: 'name_locale', fields: ['name', 'locale'])]
+#[ORM\Table(name: 'email_templates')]
 #[ORM\UniqueConstraint(name: 'name_locale_brand', fields: ['name', 'locale', 'brand'])]
 class EmailTemplate
 {
@@ -40,6 +40,10 @@ class EmailTemplate
 
     public const NAME_SUBSCRIPTION_RENEWAL_WARNING = 'subscription_renewal_warning';
 
+    public const NAME_USAGE_WARNING = 'usage_warning';
+
+    public const NAME_USAGE_DISABLED = 'usage_disabled';
+
     public const TEMPLATE_NAMES = [
         self::NAME_SUBSCRIPTION_CREATED,
         self::NAME_SUBSCRIPTION_PAUSED,
@@ -54,12 +58,14 @@ class EmailTemplate
         self::NAME_QUOTE_CREATED,
         self::NAME_TRIAL_ENDING_WARNING,
         self::NAME_SUBSCRIPTION_RENEWAL_WARNING,
+        self::NAME_USAGE_WARNING,
+        self::NAME_USAGE_DISABLED,
     ];
 
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string', nullable: false)]

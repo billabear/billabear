@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity\Processes;
@@ -17,10 +17,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'process_trial_started')]
 class TrialStartedProcess implements WorkflowProcessInterface
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column('state', type: 'string')]
@@ -32,7 +32,7 @@ class TrialStartedProcess implements WorkflowProcessInterface
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column('error', type: 'string', nullable: true)]
+    #[ORM\Column('error', type: 'string', nullable: true, length: 9999)]
     private ?string $error = null;
 
     #[ORM\Column('has_error', type: 'boolean', nullable: true)]

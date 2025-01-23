@@ -2,7 +2,7 @@
   <div>
     <h1 class="page-title mt-5 ml-5">{{ $t('app.quotes.create.title') }}</h1>
 
-    <div class="p-5">
+    <div class="">
       <div class="card-body">
 
         <div class="form-field-ctn">

@@ -58,14 +58,14 @@ Feature: Create invoice
       | Per Seat   | True    |
       | User Count | 10       |
     And the follow customers exist:
-      | Email                      | Country | External Reference | Reference      | Billing Type |
-      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      |
-      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         |
-      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         |
-      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         |
-      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         |
-      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         |
-      | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |
+      | Email                      | Country | External Reference | Reference      | Billing Type | Add Card |
+      | customer.one@example.org   | DE      | cust_jf9j545       | Customer One   | invoice      |          |
+      | customer.two@example.org   | UK      | cust_dfugfdu       | Customer Two   | card         | true     |
+      | customer.three@example.org | UK      | cust_mlklfdu       | Customer Three | card         | true     |
+      | customer.four@example.org  | UK      | cust_dkkoadu       | Customer Four  | card         | true     |
+      | customer.five@example.org  | UK      | cust_ddsjfu        | Customer Five  | card         | false    |
+      | customer.six@example.org   | UK      | cust_jliujoi       | Customer Six   | card         | true     |
+      | customer.seven@example.org | UK      | cust_jliujoi       | Customer Six   | invoice      |          |
     And there are the following tax types:
       | Name     |
       | Digital Goods |
@@ -124,3 +124,12 @@ Feature: Create invoice
     And I want the invoice to be paid within "60 days"
     When I finalise the invoice in APP
     And the latest invoice for "customer.seven@example.org" will be due in "60 days"
+
+  Scenario: Customer has no card
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And I want to invoice the customer "customer.five@example.org"
+    And I want to invoice for a subscription to "Test Two" at 1000 in "USD" per "week"
+    And I want to invoice for a subscription to "Test Plan" at 2000 in "USD" per "week"
+    And I want the invoice to be paid within "60 days"
+    When I finalise the invoice in APP
+    And the latest invoice for "customer.five@example.org" will be due in "60 days"

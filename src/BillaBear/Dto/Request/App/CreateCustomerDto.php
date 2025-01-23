@@ -1,17 +1,20 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\App;
 
 use BillaBear\Dto\Generic\Address;
+use BillaBear\Validator\Constraints\Integrations\StripeIsConfigured;
+use BillaBear\Validator\Constraints\ValidVatNumber;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[StripeIsConfigured]
 class CreateCustomerDto
 {
     #[Assert\NotBlank(allowNull: true)]
@@ -22,13 +25,13 @@ class CreateCustomerDto
     #[SerializedName('brand')]
     private $brand;
 
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[SerializedName('email')]
     private $email;
 
+    #[Assert\Locale]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Locale()]
     #[SerializedName('locale')]
     private $locale;
 
@@ -38,31 +41,41 @@ class CreateCustomerDto
     #[SerializedName('external_reference')]
     private $externalReference;
 
-    #[SerializedName('billing_type')]
+    #[Assert\Choice(choices: ['invoice', 'card'])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['invoice', 'card'])]
+    #[SerializedName('billing_type')]
     private $billingType;
 
     #[Assert\Valid]
     #[SerializedName('address')]
     private ?Address $address = null;
 
-    #[SerializedName('tax_number')]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
+    #[SerializedName('tax_number')]
+    #[ValidVatNumber]
     private $taxNumber;
 
-    #[SerializedName('standard_tax_rate')]
     #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(['integer', 'float'])]
     #[Assert\PositiveOrZero]
+    #[Assert\Type(['integer', 'float'])]
+    #[SerializedName('standard_tax_rate')]
     private $standardTaxRate;
 
+    #[Assert\Choice(choices: ['individual', 'business'])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['individual', 'business'])]
     private $type;
+
+    #[Assert\Choice(['pdf', 'zugferd_v1'])]
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Type('string')]
+    private $invoiceFormat;
+
+    #[Assert\Type('boolean')]
+    #[SerializedName('marketing_opt_in')]
+    private $marketingOptIn;
 
     public function getEmail(): ?string
     {
@@ -172,5 +185,25 @@ class CreateCustomerDto
     public function setType($type): void
     {
         $this->type = $type;
+    }
+
+    public function getInvoiceFormat()
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat($invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getMarketingOptIn(): bool
+    {
+        return true === $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn($marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
     }
 }

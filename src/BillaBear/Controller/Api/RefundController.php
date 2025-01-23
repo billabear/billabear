@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Api;
@@ -38,13 +38,13 @@ class RefundController
         if ($resultsPerPage < 1) {
             return new JsonResponse([
                 'reason' => 'limit is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'reason' => 'limit is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
         $filterBuilder = new ProductList();
@@ -69,17 +69,17 @@ class RefundController
     }
 
     #[Route('/api/v1/refund/{id}', name: 'api_v1.0_refund_view', methods: ['GET'])]
-    public function veiwRefund(
+    public function viewRefund(
         Request $request,
         RefundRepositoryInterface $repository,
         RefundDataMapper $factory,
         SerializerInterface $serializer,
-    ) {
+    ): JsonResponse {
         $this->getLogger()->info('Received request to view refund', ['refund_id' => $request->get('id')]);
         try {
             $refund = $repository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
         }
 
         $dto = $factory->createApiDto($refund);

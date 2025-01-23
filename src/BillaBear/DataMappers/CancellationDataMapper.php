@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\DataMappers;
@@ -14,14 +14,14 @@ use BillaBear\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription as ApiInputDto;
 use BillaBear\Dto\Request\App\CancelSubscription as AppInputDto;
 use BillaBear\Entity\CancellationRequest as Entity;
-use BillaBear\Enum\CancellationType;
+use BillaBear\Subscription\CancellationType;
 use Parthenon\Billing\Entity\BillingAdminInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 class CancellationDataMapper
 {
     public function __construct(
-        private SubscriptionDataMapper $subscriptionDataMapper
+        private SubscriptionDataMapper $subscriptionDataMapper,
     ) {
     }
 
@@ -40,7 +40,7 @@ class CancellationDataMapper
         return $cancellationRequest;
     }
 
-    public function getCancellationRequestEntity(Subscription $subscription, AppInputDto|ApiInputDto $dto, ?BillingAdminInterface $user = null): Entity
+    public function getCancellationRequestEntity(Subscription $subscription, ApiInputDto|AppInputDto $dto, ?BillingAdminInterface $user = null): Entity
     {
         $cancellationRequest = new Entity();
         $cancellationRequest->setSubscription($subscription);

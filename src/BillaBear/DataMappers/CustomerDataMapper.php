@@ -1,13 +1,15 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\DataMappers;
 
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerType;
 use BillaBear\Dto\Generic\Address as AddressDto;
 use BillaBear\Dto\Generic\Api\Customer as CustomerApiDto;
 use BillaBear\Dto\Generic\App\Customer as CustomerAppDto;
@@ -16,8 +18,6 @@ use BillaBear\Dto\Request\Api\CreateCustomerDto as ApiCreate;
 use BillaBear\Dto\Request\App\CreateCustomerDto as AppCreate;
 use BillaBear\Dto\Request\Public\CreateCustomerDto as PublicCreate;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerType;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Obol\Model\Customer as ObolCustomer;
 use Parthenon\Common\Address;
@@ -89,6 +89,8 @@ class CustomerDataMapper
         $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
         $customer->setTaxNumber($createCustomerDto->getTaxNumber());
         $customer->setStandardTaxRate($createCustomerDto->getStandardTaxrate());
+        $customer->setInvoiceFormat($createCustomerDto->getInvoiceFormat());
+        $customer->setMarketingOptIn($createCustomerDto->getMarketingOptIn());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
@@ -128,6 +130,8 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
+        $dto->setInvoiceFormat($customer->getInvoiceFormat());
+        $dto->setMarketingOptIn($customer->getMarketingOptIn());
 
         return $dto;
     }
@@ -161,6 +165,9 @@ class CustomerDataMapper
         $dto->setTaxNumber($customer->getTaxNumber());
         $dto->setStandardTaxRate($customer->getStandardTaxRate());
         $dto->setType($customer->getType()->value);
+        $dto->setInvoiceFormat($customer->getInvoiceFormat());
+        $dto->setCreatedAt($customer->getCreatedAt());
+        $dto->setMarketingOptIn($customer->getMarketingOptIn());
 
         return $dto;
     }

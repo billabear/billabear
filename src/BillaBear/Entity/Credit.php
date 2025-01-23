@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'credit')]
 #[ORM\Index(name: 'customer_idx', fields: ['customer'])]
+#[ORM\Table(name: 'credit')]
 class Credit
 {
     public const CREATION_TYPE_AUTOMATED = 'automated';
@@ -22,10 +22,10 @@ class Credit
     public const TYPE_CREDIT = 'credit';
     public const TYPE_DEBIT = 'debit';
 
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
@@ -63,6 +63,9 @@ class Credit
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $validUntil = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference = null;
 
     public function getId()
     {
@@ -102,6 +105,11 @@ class Credit
     public function setAmount(int $amount): void
     {
         $this->amount = $amount;
+    }
+
+    public function getAmountAsMoney(): Money
+    {
+        return Money::ofMinor($this->amount, $this->currency);
     }
 
     public function getCurrency(): string
@@ -194,11 +202,26 @@ class Credit
         $this->type = $type;
     }
 
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
+    }
+
     public function asMoney(): Money
     {
         $multipler = (Credit::TYPE_DEBIT === $this->type) ? -1 : 1;
         $amount = $this->amount * $multipler;
 
         return Money::ofMinor($amount, $this->currency);
+    }
+
+    public function isCredit(): bool
+    {
+        return self::TYPE_CREDIT === $this->type;
     }
 }

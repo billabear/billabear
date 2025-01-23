@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Settings;
@@ -13,7 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\Template;
-use BillaBear\Enum\PdfGeneratorType;
+use BillaBear\Pdf\PdfGeneratorType;
 use BillaBear\Repository\Orm\SettingsRepository;
 use BillaBear\Repository\Orm\TemplateRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
@@ -214,19 +214,6 @@ class PdfTemplatesContext implements Context
         }
     }
 
-    protected function getTemplate(string $templateName, string $customerGroup): Template
-    {
-        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'brand' => $customerGroup]);
-
-        if (!$template instanceof Template) {
-            throw new \Exception("Can't find template");
-        }
-
-        $this->templateRepository->getEntityManager()->refresh($template);
-
-        return $template;
-    }
-
     /**
      * @When I update the pdf template for :arg1 in brand :arg2 with:
      */
@@ -246,5 +233,18 @@ class PdfTemplatesContext implements Context
         if ($template->getContent() !== $contentBody) {
             throw new \Exception('Wrong content');
         }
+    }
+
+    protected function getTemplate(string $templateName, string $customerGroup): Template
+    {
+        $template = $this->templateRepository->findOneBy(['name' => $templateName, 'brand' => $customerGroup]);
+
+        if (!$template instanceof Template) {
+            throw new \Exception("Can't find template");
+        }
+
+        $this->templateRepository->getEntityManager()->refresh($template);
+
+        return $template;
     }
 }

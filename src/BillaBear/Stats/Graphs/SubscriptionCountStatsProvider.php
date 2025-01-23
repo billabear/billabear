@@ -1,17 +1,18 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Stats\Graphs;
 
 use BillaBear\Dto\Response\App\Stats\DashboardStats;
-use BillaBear\Repository\Stats\SubscriptionCountDailyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountMonthlyStatsRepositoryInterface;
-use BillaBear\Repository\Stats\SubscriptionCountYearlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountDailyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountMonthlyStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\SubscriptionCountYearlyStatsRepositoryInterface;
+use BillaBear\Stats\Graphs\Formatters\StatOutputConverter;
 
 class SubscriptionCountStatsProvider
 {
@@ -27,6 +28,7 @@ class SubscriptionCountStatsProvider
     {
         $now = new \DateTime();
         $thirtyDaysAgo = new \DateTime('-29 days');
+        $thirtyDaysAgo = $thirtyDaysAgo->modify('midnight');
         $oneYear = new \DateTime('first day of this month');
         $oneYear = $oneYear->modify('-11 months');
         $tenYears = new \DateTime('first day of january');

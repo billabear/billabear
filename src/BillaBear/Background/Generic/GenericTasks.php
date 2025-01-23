@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Background\Generic;
@@ -12,7 +12,7 @@ use BillaBear\Enum\GenericTaskStatus;
 use BillaBear\Repository\GenericBackgroundTaskRepositoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
-class GenericTasks
+readonly class GenericTasks
 {
     /**
      * @param ExecutorInterface[]|iterable $executors
@@ -22,11 +22,6 @@ class GenericTasks
         private iterable $executors,
         private GenericBackgroundTaskRepositoryInterface $genericBackgroundTaskRepository,
     ) {
-    }
-
-    public function addExecutor(ExecutorInterface $executor): void
-    {
-        $this->executors[] = $executor;
     }
 
     public function execute(): void

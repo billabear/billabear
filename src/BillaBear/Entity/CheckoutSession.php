@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
@@ -11,7 +11,6 @@ namespace BillaBear\Entity;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -19,14 +18,14 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'checkout_session')]
 class CheckoutSession implements ConvertableToInvoiceInterface
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Customer::class)]
-    private ?CustomerInterface $customer = null;
+    private ?Customer $customer = null;
 
     #[ORM\ManyToOne(targetEntity: Checkout::class)]
     private Checkout $checkout;
@@ -74,12 +73,12 @@ class CheckoutSession implements ConvertableToInvoiceInterface
         $this->id = $id;
     }
 
-    public function getCustomer(): ?CustomerInterface
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(?CustomerInterface $customer): void
+    public function setCustomer(?Customer $customer): void
     {
         $this->customer = $customer;
     }
@@ -139,12 +138,12 @@ class CheckoutSession implements ConvertableToInvoiceInterface
         $this->taxTotal = $taxTotal;
     }
 
-    public function getLines(): Collection|array
+    public function getLines(): array|Collection
     {
         return $this->lines;
     }
 
-    public function setLines(Collection|array $lines): void
+    public function setLines(array|Collection $lines): void
     {
         $this->lines = $lines;
     }
@@ -179,12 +178,12 @@ class CheckoutSession implements ConvertableToInvoiceInterface
         $this->checkout = $checkout;
     }
 
-    public function getSubscriptions(): Collection|array
+    public function getSubscriptions(): array|Collection
     {
         return $this->subscriptions;
     }
 
-    public function setSubscriptions(Collection|array $subscriptions): void
+    public function setSubscriptions(array|Collection $subscriptions): void
     {
         $this->subscriptions = $subscriptions;
     }

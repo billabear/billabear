@@ -17,12 +17,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -41,18 +41,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -69,12 +68,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -93,18 +92,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -113,19 +111,19 @@ jobs:
         run: |
           vendor/bin/behat -f progress features/Portal
 
-  behat_app_stripe:
+  behat_app_usage:
     needs: code_style
-    name: Behat Stripe
+    name: Behat Usage
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -144,7 +142,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
@@ -154,8 +152,56 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      - name: Install dependencies
+        run: |
+          composer install
+      - name: Behat
+        run: |
+          vendor/bin/behat -f progress features/Usage
+
+  behat_app_stripe:
+    needs: code_style
+    name: Behat Stripe
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions: [ '8.3', '8.4' ]
+        experimental: [false]
+
+    services:
+      postgres:
+        image: timescale/timescaledb-ha:pg16
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: 'parthenon_test'
+          POSTGRES_USER: 'appuser'
+          POSTGRES_PASSWORD: 'apppassword'
+      redis:
+        image: redis
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: phpunit-bridge
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -171,12 +217,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -195,18 +241,18 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
       - name: Install dependencies
         run: |
           composer install
@@ -222,12 +268,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -246,18 +292,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -273,12 +318,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -301,18 +346,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -328,12 +372,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -356,18 +400,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -383,12 +426,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -411,18 +454,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -438,12 +480,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -466,18 +508,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -486,6 +527,13 @@ jobs:
         run: |
           vendor/bin/behat -f progress features/Invoice
 
+      - name: Behat logs
+        if: ${{ failure() }}
+        run: |
+          cat var/log/test.log
+          exit 1
+
+
   behat_app_background:
     needs: code_style
     name: Behat Background
@@ -493,12 +541,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -521,18 +569,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -548,12 +595,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -576,18 +623,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -603,12 +649,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -631,18 +677,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -658,12 +703,12 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     services:
       postgres:
-        image: postgres:13.3-alpine3.14
+        image: timescale/timescaledb-ha:pg16
         ports:
           - 5432:5432
         env:
@@ -686,18 +731,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install
@@ -742,7 +786,7 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3']
+        php-versions: [ '8.3', '8.4' ]
         experimental: [false]
 
     steps:
@@ -754,18 +798,17 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pgsql, mongodb, http, apcu
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get composer cache directory
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
         run: |
           composer install

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity\BrandSettings;
@@ -39,6 +39,9 @@ class NotificationSettings
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $sendBeforeChargeWarnings = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $paymentFailure = null;
 
     public function getSubscriptionCreation(): bool
     {
@@ -132,5 +135,15 @@ class NotificationSettings
     public function setSendBeforeChargeWarnings(?string $sendBeforeChargeWarnings): void
     {
         $this->sendBeforeChargeWarnings = $sendBeforeChargeWarnings;
+    }
+
+    public function getPaymentFailure(): bool
+    {
+        return true === $this->paymentFailure;
+    }
+
+    public function setPaymentFailure(?bool $paymentFailure): void
+    {
+        $this->paymentFailure = $paymentFailure;
     }
 }

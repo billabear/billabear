@@ -1,15 +1,16 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Settings;
 
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use BillaBear\Invoice\InvoiceGenerationType;
 use BillaBear\Repository\Orm\SettingsRepository;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -52,12 +53,11 @@ class InvoiceSettingsContext implements Context
      */
     public function iUpdateTheInvoiceNumberGenerationToSubsequentialWithTheCountOf($count)
     {
-        $this->sendJsonRequest('GET', '/app/settings/system');
-        $settings = $this->getJsonContent()['system_settings'];
-        $settings['timezone'] = $this->getJsonContent()['timezones'][0];
+        $this->sendJsonRequest('GET', '/app/invoice/settings');
+        $settings = $this->getJsonContent()['invoice_settings'];
         $settings['invoice_number_generation'] = 'subsequential';
         $settings['subsequential_number'] = $count;
-        $this->sendJsonRequest('POST', '/app/settings/system', $settings);
+        $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
     }
 
     /**
@@ -123,11 +123,10 @@ class InvoiceSettingsContext implements Context
      */
     public function iUpdateTheInvoiceNumberGenerationToRandom()
     {
-        $this->sendJsonRequest('GET', '/app/settings/system');
-        $settings = $this->getJsonContent()['system_settings'];
-        $settings['timezone'] = $this->getJsonContent()['timezones'][0];
+        $this->sendJsonRequest('GET', '/app/invoice/settings');
+        $settings = $this->getJsonContent()['invoice_settings'];
         $settings['invoice_number_generation'] = 'random';
-        $this->sendJsonRequest('POST', '/app/settings/system', $settings);
+        $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
     }
 
     /**
@@ -139,6 +138,73 @@ class InvoiceSettingsContext implements Context
 
         if ('random' != $settings->getSystemSettings()->getInvoiceNumberGeneration()) {
             throw new \Exception('Got - '.$settings->getSystemSettings()->getInvoiceNumberGeneration());
+        }
+    }
+
+    /**
+     * @Given the invoice number generation set to monthly
+     */
+    public function theInvoiceNumberGenerationSetToMonthly(): void
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setInvoiceGenerationType(InvoiceGenerationType::PERIODICALLY);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I update the invoice generation to end of month
+     */
+    public function iUpdateTheInvoiceGenerationToEndOfMonth(): void
+    {
+        $this->sendJsonRequest('GET', '/app/invoice/settings');
+        $settings = $this->getJsonContent()['invoice_settings'];
+        $settings['invoice_generation'] = 'end_of_month';
+        $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
+    }
+
+    /**
+     * @Then the invoice generation should be set to end of month
+     */
+    public function theInvoiceGenerationShouldBeSetToEndOfMonth(): void
+    {
+        $settings = $this->getSettings();
+
+        if (InvoiceGenerationType::END_OF_MONTH !== $settings->getSystemSettings()->getInvoiceGenerationType()) {
+            throw new \Exception('Got - '.$settings->getSystemSettings()->getInvoiceGenerationType()->value);
+        }
+    }
+
+    /**
+     * @Given the invoice number generation set to end of month
+     */
+    public function theInvoiceNumberGenerationSetToEndOfMonth(): void
+    {
+        $settings = $this->getSettings();
+        $settings->getSystemSettings()->setInvoiceGenerationType(InvoiceGenerationType::END_OF_MONTH);
+        $this->settingsRepository->getEntityManager()->persist($settings);
+        $this->settingsRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I update the invoice generation to monthly
+     */
+    public function iUpdateTheInvoiceGenerationToMonthly(): void
+    {
+        $this->sendJsonRequest('GET', '/app/invoice/settings');
+        $settings = $this->getJsonContent()['invoice_settings'];
+        $settings['invoice_generation'] = 'periodically';
+        $this->sendJsonRequest('POST', '/app/invoice/settings', $settings);
+    }
+
+    /**
+     * @Then the invoice generation should be set to monthly
+     */
+    public function theInvoiceGenerationShouldBeSetToMonthly(): void
+    {
+        $settings = $this->getSettings();
+        if (InvoiceGenerationType::PERIODICALLY !== $settings->getSystemSettings()->getInvoiceGenerationType()) {
+            throw new \Exception('Got - '.$settings->getSystemSettings()->getInvoiceGenerationType()->value);
         }
     }
 }

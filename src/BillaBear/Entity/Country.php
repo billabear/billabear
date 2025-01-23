@@ -1,13 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
 
+use BillaBear\Tax\ThresholdType;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,10 +19,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'country')]
 class Country
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string')]
@@ -35,6 +36,12 @@ class Country
 
     #[ORM\Column(type: 'bigint')]
     private int $threshold;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $transactionThreshold = null;
+
+    #[ORM\Column(type: 'string', enumType: ThresholdType::class, nullable: true)]
+    private ?ThresholdType $thresholdType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $startOfTaxYear = null;
@@ -161,7 +168,7 @@ class Country
         return $this->states;
     }
 
-    public function setStates(Collection|array $states): void
+    public function setStates(array|Collection $states): void
     {
         $this->states = $states;
     }
@@ -184,5 +191,25 @@ class Country
     public function setTaxNumber(?string $taxNumber): void
     {
         $this->taxNumber = $taxNumber;
+    }
+
+    public function getTransactionThreshold(): ?int
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold(?int $transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType(): ?ThresholdType
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType(?ThresholdType $thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

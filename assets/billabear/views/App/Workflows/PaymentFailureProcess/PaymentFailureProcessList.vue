@@ -2,60 +2,35 @@
   <div>
     <h1 class="page-title">{{ $t('app.workflows.payment_failure_process.list.title') }}</h1>
 
-    <div class="text-end m-5">
-
-      <Dropdown text="Filters" placement="left" v-if="Object.keys(filters).length > 0">
-        <div class="list_container">
-          <ListGroup>
-            <ListGroupItem v-for="(filter, filterKey) in filters">
-              <input type="checkbox" @change="toogle(filterKey)" :checked="isActive(filterKey)" class="filter_field" :id="'filter_'+filterKey" /> <label :for="'filter_'+filterKey">{{ $t(''+filter.label+'') }}</label>
-            </ListGroupItem>
-          </ListGroup>
-        </div>
-      </Dropdown>
-    </div>
-
-    <div class="card-body m-5" v-if="active_filters.length > 0">
-      <h2>{{ $t('app.customer.list.filter.title') }}</h2>
-      <form @submit.prevent="doSearch">
-        <div v-for="filter in active_filters">
-          <div class="px-3 py-1 sm:flex sm:px-6">
-            <div class="w-1/6">{{ $t(''+this.filters[filter].label+'') }}</div>
-            <div>
-              <input v-if="this.filters[filter].type == 'text'" type="text" class="filter_field" v-model="this.filters[filter].value" />
-              <input v-if="this.filters[filter].type == 'boolean'" type="checkbox"  class="filter_field" v-model="this.filters[filter].value" />
-            </div>
-          </div>
-        </div>
-
-        <button @click="doSearch" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">{{ $t('app.customer.list.filter.search') }}</button>
-      </form>
-    </div>
 
     <LoadingScreen :ready="ready">
-      <div>
-        <table class="list-table">
-          <thead>
-          <tr>
-            <th>{{ $t('app.workflows.payment_failure_process.list.email') }}</th>
-            <th>{{ $t('app.workflows.payment_failure_process.list.status') }}</th>
+      <div class="flex">
+        <FiltersSection :filters="filters"/>
+        <div class="pl-5 flex-1">
+
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+            <th class="text-left pb-2">{{ $t('app.workflows.payment_failure_process.list.email') }}</th>
+            <th class="text-left pb-2">{{ $t('app.workflows.payment_failure_process.list.status') }}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="loaded">
           <tr v-for="subscription in subscriptions" class="mt-5">
-            <td>{{ subscription.customer.email }}</td>
+            <td class="py-3">{{ subscription.customer.email }}</td>
 
-            <td>{{ subscription.state }}</td>
-            <td><router-link :to="{name: 'app.workflows.payment_failure_process.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.workflows.payment_failure_process.list.view') }}</router-link></td>
+            <td class="py-3">{{ subscription.state }}</td>
+            <td class="py-3"><router-link :to="{name: 'app.workflows.payment_failure_process.view', params: {id: subscription.id}}" class="btn--main">{{ $t('app.workflows.payment_failure_process.list.view') }}</router-link></td>
           </tr>
           <tr v-if="subscriptions.length === 0">
-            <td colspan="4" class="text-center">{{ $t('app.workflows.payment_failure_process.list.no_results') }}</td>
+            <td colspan="4" class="py-3 text-center">{{ $t('app.workflows.payment_failure_process.list.no_results') }}</td>
           </tr>
           </tbody>
           <tbody v-else>
-          <tr>
-            <td colspan="4" class="text-center">
+          <tr v-for="subscription in subscriptions" >
+            <td colspan="4" class="py-3 text-center">
               <LoadingMessage>{{ $t('app.workflows.payment_failure_process.list.loading') }}</LoadingMessage>
             </td>
           </tr>
@@ -69,12 +44,14 @@
           <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.workflows.payment_failure_process.list.next') }}</button>
         </div>
         <div class="mt-4 text-end">
-          <select @change="changePerPage" v-model="per_page">
+          <select class="rounded-lg border border-gray-300" @change="changePerPage" v-model="per_page">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
+        </div>
+      </div>
         </div>
       </div>
     </LoadingScreen>
@@ -84,10 +61,11 @@
 <script>
 import axios from "axios";
 import {Dropdown, Input, ListGroup, ListGroupItem} from "flowbite-vue";
+import FiltersSection from "../../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
   name: "SubscriptionCreationList",
-  components: {Input, Dropdown, ListGroupItem, ListGroup},
+  components: {FiltersSection, Input, Dropdown, ListGroupItem, ListGroup},
   data() {
     return {
       ready: false,

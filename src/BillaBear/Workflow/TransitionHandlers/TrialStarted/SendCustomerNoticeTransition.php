@@ -1,15 +1,17 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Workflow\TransitionHandlers\TrialStarted;
 
-use BillaBear\Entity\Processes\TrialEndedProcess;
-use BillaBear\Webhook\Outbound\Payload\TrialStartedPayload;
+use BillaBear\Entity\Processes\TrialStartedProcess;
+use BillaBear\Notification\Slack\NotificationSender;
+use BillaBear\Repository\SlackNotificationRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Subscription\TrialStartedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -23,12 +25,14 @@ class SendCustomerNoticeTransition implements EventSubscriberInterface
 
     public function __construct(
         private WebhookDispatcher $eventDispatcher,
+        private SlackNotificationRepositoryInterface $slackNotificationRepository,
+        private NotificationSender $notificationSender,
     ) {
     }
 
     public function transition(Event $event)
     {
-        /** @var TrialEndedProcess $trialEnded */
+        /** @var TrialStartedProcess $trialEnded */
         $trialEnded = $event->getSubject();
         $subscription = $trialEnded->getSubscription();
         $payload = new TrialStartedPayload($subscription);

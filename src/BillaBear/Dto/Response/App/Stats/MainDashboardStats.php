@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Response\App\Stats;
@@ -17,20 +17,8 @@ class MainDashboardStats
     #[SerializedName('subscription_count')]
     private DashboardStats $subscriptionCount;
 
-    #[SerializedName('subscription_creation')]
-    private DashboardStats $subscriptionCreation;
-
-    #[SerializedName('subscription_cancellation')]
-    private DashboardStats $subscriptionCancellation;
-
-    #[SerializedName('payment_amount')]
-    private DashboardStats $paymentAmount;
-
-    #[SerializedName('refund_amount')]
-    private DashboardStats $refundAmount;
-
-    #[SerializedName('charge_back_amount')]
-    private DashboardStats $chargeBackAmount;
+    #[SerializedName('revenue_stats')]
+    private DashboardStats $revenueStats;
 
     #[SerializedName('estimated_mrr')]
     private int $estimatedMrr;
@@ -39,6 +27,15 @@ class MainDashboardStats
     private int $estimatedAtt;
 
     private string $currency;
+
+    #[SerializedName('latest_customers')]
+    private array $latestCustomers;
+
+    #[SerializedName('subscription_events')]
+    private array $subscriptionEvents;
+
+    #[SerializedName('latest_payments')]
+    private array $latestPayments;
 
     public function getSubscriptionCount(): DashboardStats
     {
@@ -50,54 +47,14 @@ class MainDashboardStats
         $this->subscriptionCount = $subscriptionCount;
     }
 
-    public function getSubscriptionCreation(): DashboardStats
+    public function getRevenueStats(): DashboardStats
     {
-        return $this->subscriptionCreation;
+        return $this->revenueStats;
     }
 
-    public function setSubscriptionCreation(DashboardStats $subscriptionCreation): void
+    public function setRevenueStats(DashboardStats $revenueStats): void
     {
-        $this->subscriptionCreation = $subscriptionCreation;
-    }
-
-    public function getSubscriptionCancellation(): DashboardStats
-    {
-        return $this->subscriptionCancellation;
-    }
-
-    public function setSubscriptionCancellation(DashboardStats $subscriptionCancellation): void
-    {
-        $this->subscriptionCancellation = $subscriptionCancellation;
-    }
-
-    public function getPaymentAmount(): DashboardStats
-    {
-        return $this->paymentAmount;
-    }
-
-    public function setPaymentAmount(DashboardStats $paymentAmount): void
-    {
-        $this->paymentAmount = $paymentAmount;
-    }
-
-    public function getRefundAmount(): DashboardStats
-    {
-        return $this->refundAmount;
-    }
-
-    public function setRefundAmount(DashboardStats $refundAmount): void
-    {
-        $this->refundAmount = $refundAmount;
-    }
-
-    public function getChargeBackAmount(): DashboardStats
-    {
-        return $this->chargeBackAmount;
-    }
-
-    public function setChargeBackAmount(DashboardStats $chargeBackAmount): void
-    {
-        $this->chargeBackAmount = $chargeBackAmount;
+        $this->revenueStats = $revenueStats;
     }
 
     public function getEstimatedMrr(): int
@@ -138,5 +95,35 @@ class MainDashboardStats
     public function setHeader(MainDashboardHeader $header): void
     {
         $this->header = $header;
+    }
+
+    public function getLatestCustomers(): array
+    {
+        return $this->latestCustomers;
+    }
+
+    public function setLatestCustomers(array $latestCustomers): void
+    {
+        $this->latestCustomers = $latestCustomers;
+    }
+
+    public function getSubscriptionEvents(): array
+    {
+        return $this->subscriptionEvents;
+    }
+
+    public function setSubscriptionEvents(array $subscriptionEvents): void
+    {
+        $this->subscriptionEvents = $subscriptionEvents;
+    }
+
+    public function getLatestPayments(): array
+    {
+        return $this->latestPayments;
+    }
+
+    public function setLatestPayments(array $latestPayments): void
+    {
+        $this->latestPayments = $latestPayments;
     }
 }

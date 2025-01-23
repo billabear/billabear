@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Api;
@@ -45,13 +45,13 @@ class PaymentController
         if ($resultsPerPage < 1) {
             return new JsonResponse([
                 'reason' => 'limit is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'reason' => 'limit is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
         $filterBuilder = new ProductList();
@@ -82,13 +82,13 @@ class PaymentController
         RefundManagerInterface $refundManager,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
-    ) {
+    ): JsonResponse {
         $this->getLogger()->info('Received request to refund payment', ['payment_id' => $request->get('id')]);
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
         }
 
         /** @var RefundPayment $dto */
@@ -105,15 +105,15 @@ class PaymentController
             return new JsonResponse([
                 'success' => false,
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
         $amount = Money::ofMinor($dto->getAmount(), Currency::of($dto->getCurrency() ?? $payment->getCurrency()));
         try {
             $refundManager->issueRefundForPayment($payment, $amount, null, $dto->getReason());
         } catch (RefundLimitExceededException $e) {
-            return new JsonResponse(['message' => $e->getMessage()], status: JsonResponse::HTTP_NOT_ACCEPTABLE);
+            return new JsonResponse(['message' => $e->getMessage()], status: Response::HTTP_NOT_ACCEPTABLE);
         }
 
-        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse(status: Response::HTTP_ACCEPTED);
     }
 }

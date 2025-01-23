@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App\Subscriptions;
@@ -11,15 +11,17 @@ namespace BillaBear\Controller\App\Subscriptions;
 use BillaBear\DataMappers\FeatureDataMapper;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
+use BillaBear\DataMappers\Usage\MetricDataMapper;
 use BillaBear\Dto\Request\App\Product\UpdateSubscriptionPlan;
 use BillaBear\Dto\Request\App\Subscription\PostSubscriptionPlan;
 use BillaBear\Dto\Response\App\SubscriptionPlanCreationInfo;
 use BillaBear\Dto\Response\App\SubscriptionPlanUpdateView;
 use BillaBear\Dto\Response\App\SubscriptionPlanView;
 use BillaBear\Entity\SubscriptionPlan;
-use BillaBear\Webhook\Outbound\Payload\PlanCreatedPayload;
-use BillaBear\Webhook\Outbound\Payload\PlanDeletePayload;
-use BillaBear\Webhook\Outbound\Payload\PlanUpdatedPayload;
+use BillaBear\Repository\Usage\MetricRepositoryInterface;
+use BillaBear\Webhook\Outbound\Payload\Subscription\PlanCreatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\PlanDeletePayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\PlanUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcher;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -49,7 +51,9 @@ class SubscriptionPlanController
         FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
         PriceDataMapper $priceFactory,
-        SerializerInterface $serializer
+        MetricRepositoryInterface $metricRepository,
+        MetricDataMapper $metricDataMapper,
+        SerializerInterface $serializer,
     ): Response {
         $this->getLogger()->info('Received request to read create plan', ['product_id' => $request->get('id')]);
 
@@ -62,13 +66,16 @@ class SubscriptionPlanController
 
         $features = $subscriptionFeatureRepository->getAll();
         $prices = $priceRepository->getAllForProduct($product);
+        $metrics = $metricRepository->getAll();
 
         $featureDtos = array_map([$featureFactory, 'createAppDto'], $features);
         $priceDtos = array_map([$priceFactory, 'createAppDto'], $prices);
+        $metricDtos = array_map([$metricDataMapper, 'createAppDto'], $metrics);
 
         $dto = new SubscriptionPlanCreationInfo();
         $dto->setPrices($priceDtos);
         $dto->setFeatures($featureDtos);
+        $dto->setMetrics($metricDtos);
 
         $json = $serializer->serialize($dto, 'json');
 
@@ -179,6 +186,8 @@ class SubscriptionPlanController
         SubscriptionFeatureRepositoryInterface $subscriptionFeatureRepository,
         FeatureDataMapper $featureFactory,
         PriceRepositoryInterface $priceRepository,
+        MetricRepositoryInterface $metricRepository,
+        MetricDataMapper $metricDataMapper,
         PriceDataMapper $priceFactory,
     ): Response {
         $this->getLogger()->info('Received request to read update plan', ['product_id' => $request->get('productId'), 'plan_id' => $request->get('id')]);
@@ -197,15 +206,18 @@ class SubscriptionPlanController
 
         $features = $subscriptionFeatureRepository->getAll();
         $prices = $priceRepository->getAllForProduct($product);
+        $metrics = $metricRepository->getAll();
 
         $featureDtos = array_map([$featureFactory, 'createAppDto'], $features);
         $priceDtos = array_map([$priceFactory, 'createAppDto'], $prices);
+        $metricDtos = array_map([$metricDataMapper, 'createAppDto'], $metrics);
 
         $subscriptionPlanDto = $factory->createAppDto($subscriptionPlan);
         $dto = new SubscriptionPlanUpdateView();
         $dto->setPrices($priceDtos);
         $dto->setFeatures($featureDtos);
         $dto->setSubscriptionPlan($subscriptionPlanDto);
+        $dto->setMetrics($metricDtos);
         $output = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($output, json: true);
@@ -218,7 +230,6 @@ class SubscriptionPlanController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         SubscriptionPlanDataMapper $factory,
-        ProductRepositoryInterface $productRepository,
         SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         WebhookDispatcher $eventDispatcher,
     ) {

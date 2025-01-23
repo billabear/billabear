@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dev\DemoData;
@@ -16,7 +16,8 @@ use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
-use Parthenon\Athena\Filters\GreaterThanFilter;
+use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
@@ -32,23 +33,21 @@ class SubscriptionCreation
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private SubscriptionCreationProcessor $subscriptionCreationProcessor,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $output->writeln("\nCreate Subscriptions");
-        $faker = \Faker\Factory::create();
-        $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
 
         $totalCount = DevDemoDataCommand::getNumberOfCustomers();
 
         $origStartDate = clone DevDemoDataCommand::getStartDate();
-        $origStartDate->modify('first day of this month');
         $now = new \DateTime('now');
         $interval = $origStartDate->diff($now);
 
-        $numberOfMonths = abs($interval->m);
+        $numberOfMonths = abs(($interval->y * 12) + $interval->m);
 
         $elements = [];
         $currentValue = intval($totalCount / $numberOfMonths);
@@ -59,30 +58,32 @@ class SubscriptionCreation
         }
 
         for ($i = 0; $i < $numberOfMonths; ++$i) {
-            $elements[$i] = intval($elements[$i] + (($totalCount - array_sum($elements)) * 0.50));
+            $elements[$i] = intval($elements[$i] + (($totalCount - array_sum($elements)) * 0.25));
             if (array_sum($elements) >= $totalCount) {
                 break;
             }
         }
         ++$elements[0];
+        $elements[0] += ($totalCount - array_sum($elements));
         $limit = 25;
         $lastId = null;
         $progressBar = new ProgressBar($output, $totalCount);
+        $elements = array_reverse($elements);
 
         $progressBar->start();
+        $mainCount = 0;
         foreach ($elements as $step) {
             $a = 0;
             while ($a < $step) {
-                $filter = new GreaterThanFilter();
-                $filter->setFieldName('createdAt');
-                $filter->setData($origStartDate);
-
-                $filters = []; // [$filter];
+                $filters = [];
                 $customers = $this->customerRepository->getList(filters: $filters, limit: $limit, lastId: $lastId);
                 $lastId = $customers->getLastKey();
 
                 /** @var Customer $customer */
                 foreach ($customers->getResults() as $customer) {
+                    $subscriptionPlans = $this->subscriptionPlanRepository->getList(limit: 1000)->getResults();
+                    $faker = Factory::create();
+                    ++$mainCount;
                     ++$a;
                     $progressBar->advance();
                     $cards = $this->paymentCardRepository->getPaymentCardForCustomer($customer);
@@ -122,6 +123,15 @@ class SubscriptionCreation
                     $process->setCreatedAt($startDate);
                     $process->setState('started');
                     $this->subscriptionCreationProcessor->process($process);
+
+                    if ($a >= $step) {
+                        $this->entityManager->clear();
+                        $mainCount = 0;
+                        break;
+                    }
+                    if (0 === $mainCount % 100) {
+                        $this->entityManager->clear();
+                    }
                 }
                 if ($totalCount <= $progressBar->getProgress()) {
                     break 2;

@@ -19,3 +19,15 @@ Feature: Update Invoice Settings
     And the invoice number generation is subsequential
     When I update the invoice number generation to random
     Then the invoice number generation should be random.
+
+  Scenario: Set monthly invoice
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the invoice number generation set to monthly
+    When I update the invoice generation to end of month
+    Then the invoice generation should be set to end of month
+
+  Scenario: Set monthly invoice
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And the invoice number generation set to end of month
+    When I update the invoice generation to monthly
+    Then the invoice generation should be set to monthly

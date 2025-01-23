@@ -1,6 +1,8 @@
 <template>
 
-  <div class="flex items-center justify-center h-screen login">
+  <div class="w-screen">
+
+    <div class="mx-auto login max-w-2xl mt-12 mb-12 border rounded-lg bg-white shadow p-5">
     <transition
         appear-active-class="duration-1000 ease-out"
         apear-to-class="opacity-300"
@@ -21,13 +23,13 @@
           <div class="w-full">
             <PublicLogo />
           </div>
-          <h1 class="h1 text-center">{{ $t('public.forgot_password.title') }}</h1>
+          <h1 class="h1 text-center text-3xl">{{ $t('public.forgot_password.title') }}</h1>
           <div class="px-5 mt-2 mb-3" v-if="error_info.has_error">
             <div class="alert-error text-center">{{ error_info.message }}</div>
           </div>
           <div class="px-5 mb-3">
             <label class="block mb-1">{{ $t('public.forgot_password.email') }}</label>
-            <input type="text" class="input-field" v-model="email" />
+            <input type="text" class="form-field w-full" v-model="email" />
             <span class="block text-red-500" v-if="email_error !== undefined">{{ email_error }}</span>
           </div>
           <div class="px-5">
@@ -49,6 +51,7 @@
         </div>
       </div>
     </transition>
+  </div>
   </div>
 </template>
 

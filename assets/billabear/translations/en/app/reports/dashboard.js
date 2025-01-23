@@ -28,11 +28,40 @@ export const REPORT_DASHBOARD_TRANSLATIONS = {
     buttons: {
         daily: "Daily",
         monthly: "Monthly",
-        yearly: "Yearly"
+        yearly: "Yearly",
+        subscriptions: "Subscriptions",
+        payments: "Payments"
     },
     links: {
         customers: "Customers",
         subscriptions: "Subscriptions",
         invoices: "Invoices"
-    }
+    },
+    latest_customers: {
+        title: "Latest Customers",
+        list: {
+            email: "Email",
+            creation_date: "Creation Date"
+        }
+    },
+    latest_events: {
+        title: "Latest Events",
+        list: {
+            event_type: "Event Type",
+            customer: "Customer",
+            creation_date: "Creation Date"
+        }
+    },
+    latest_payments: {
+        title: "Latest Payments",
+        list: {
+            amount: "Amount",
+            customer: "Customer",
+            creation_date: "Creation Date"
+        }
+    },
+    payments: {
+        title: "Payment Totals"
+    },
+    loading_chart: "Loading chart data..."
 };

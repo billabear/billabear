@@ -1,17 +1,18 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Stats;
 
 use BillaBear\Entity\Stats\CachedStats;
 use BillaBear\Payment\ExchangeRates\BricksExchangeRateProvider;
+use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use BillaBear\Repository\Stats\CachedStatsRepositoryInterface;
+use BillaBear\Repository\Stats\Aggregate\CachedStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Brick\Math\RoundingMode;
 use Brick\Money\CurrencyConverter;
@@ -23,7 +24,8 @@ class YearlyEstimatedRevenueStats
         private BricksExchangeRateProvider $exchangeRateProvider,
         private SettingsRepositoryInterface $settingsRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
-        private CachedStatsRepositoryInterface $cachedStatsRepository
+        private CachedStatsRepositoryInterface $cachedStatsRepository,
+        private CostEstimator $costEstimator,
     ) {
     }
 
@@ -39,10 +41,16 @@ class YearlyEstimatedRevenueStats
             if (!$subscription->getPaymentSchedule()) {
                 continue;
             }
+            if ($subscription->getPrice()->getUsage()) {
+                $moneyAmount = $this->costEstimator->getEstimate($subscription)->cost;
+            } else {
+                $moneyAmount = $subscription->getMoneyAmount();
+            }
+
             $originalFee = match ($subscription->getPaymentSchedule()) {
-                'week' => $subscription->getMoneyAmount()->multipliedBy(52, RoundingMode::HALF_DOWN),
-                'month' => $subscription->getMoneyAmount()->multipliedBy(12, RoundingMode::HALF_DOWN),
-                default => $subscription->getMoneyAmount(),
+                'week' => $moneyAmount->multipliedBy(52, RoundingMode::HALF_DOWN),
+                'month' => $moneyAmount->multipliedBy(12, RoundingMode::HALF_DOWN),
+                default => $moneyAmount,
             };
 
             $amountToAdd = $currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);

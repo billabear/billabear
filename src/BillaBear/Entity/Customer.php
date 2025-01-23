@@ -1,15 +1,16 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
 
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerType;
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerType;
+use BillaBear\Pricing\Usage\WarningLevel;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,9 +19,9 @@ use Parthenon\Common\Address;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'customers')]
 #[ORM\Index(name: 'email_idx', fields: ['billingEmail'])]
 #[ORM\Index(name: 'external_ref_idx', fields: ['externalCustomerReference'])]
+#[ORM\Table(name: 'customers')]
 class Customer implements CustomerInterface
 {
     public const BILLING_TYPE_CARD = 'card';
@@ -30,10 +31,46 @@ class Customer implements CustomerInterface
     public const DEFAULT_LOCALE = 'en';
     public const DEFAULT_BILLING_TYPE = self::BILLING_TYPE_CARD;
 
-    #[ORM\Id]
+    #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
+    protected ?string $paymentProviderDetailsUrl = null;
+
+    #[ORM\Column(name: 'status', type: 'string', nullable: true, enumType: CustomerStatus::class)]
+    protected CustomerStatus $status;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    protected ?bool $disabled = false;
+
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
+    protected Collection $subscriptions;
+
+    #[ORM\Column(name: 'credit_amount', type: 'integer', nullable: true)]
+    protected ?int $creditAmount = null;
+
+    #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
+    protected ?string $creditCurrency = null;
+
+    #[ORM\Column(name: 'tax_number', type: 'string', nullable: true)]
+    protected ?string $taxNumber = null;
+
+    #[ORM\Column(name: 'tax_exempt', type: 'boolean', nullable: true)]
+    protected ?bool $taxExempt = false;
+
+    #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
+    protected ?float $standardTaxRate = null;
+
+    #[ORM\Column(enumType: CustomerType::class)]
+    protected CustomerType $type;
+
+    #[ORM\Column(name: 'invoice_format', type: 'string', nullable: true)]
+    protected ?string $invoiceFormat = null;
+
+    #[ORM\Column(name: 'warning_level', type: 'integer', enumType: WarningLevel::class, nullable: true)]
+    protected ?WarningLevel $warningLevel = null;
+
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Embedded(class: Address::class)]
@@ -63,38 +100,23 @@ class Customer implements CustomerInterface
     #[ORM\Column(name: 'locale', type: 'string', nullable: false)]
     private string $locale = self::DEFAULT_LOCALE;
 
-    #[ORM\Column(name: 'payment_provider_details_url', type: 'string', nullable: true)]
-    protected ?string $paymentProviderDetailsUrl = null;
-
-    #[ORM\Column(name: 'status', type: 'string', nullable: true, enumType: CustomerStatus::class)]
-    protected CustomerStatus $status;
-
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    protected ?bool $disabled = false;
-
-    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'customer')]
-    protected Collection $subscriptions;
-
-    #[ORM\Column(name: 'credit_amount', type: 'integer', nullable: true)]
-    protected ?int $creditAmount = null;
-
-    #[ORM\Column(name: 'credit_currency', type: 'string', nullable: true)]
-    protected ?string $creditCurrency = null;
-
     #[ORM\Column('created_at', type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(name: 'tax_number', type: 'string', nullable: true)]
-    protected ?string $taxNumber = null;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $accountingReference;
 
-    #[ORM\Column(name: 'tax_exempt', type: 'boolean', nullable: true)]
-    protected ?bool $taxExempt = false;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $customerSupportReference;
 
-    #[ORM\Column(name: 'tax_rate_standard', type: 'float', nullable: true)]
-    protected ?float $standardTaxRate = null;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $marketingOptIn = null;
 
-    #[ORM\Column(enumType: CustomerType::class)]
-    protected CustomerType $type;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $newsletterMarketingReference;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $newsletterAnnouncementReference;
 
     public function getId()
     {
@@ -397,5 +419,84 @@ class Customer implements CustomerInterface
     public function isEnabled(): bool
     {
         return !$this->disabled;
+    }
+
+    public function getInvoiceFormat(): ?string
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat(?string $invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getWarningLevel(): WarningLevel
+    {
+        if (!isset($this->warningLevel)) {
+            return WarningLevel::NO_WARNING;
+        }
+
+        return $this->warningLevel;
+    }
+
+    public function setWarningLevel(?WarningLevel $warningLevel): void
+    {
+        $this->warningLevel = $warningLevel;
+    }
+
+    public function getAccountingReference(): ?string
+    {
+        return $this->accountingReference;
+    }
+
+    public function setAccountingReference(?string $accountingReference): void
+    {
+        $this->accountingReference = $accountingReference;
+    }
+
+    public function getCustomerSupportReference(): ?string
+    {
+        return $this->customerSupportReference;
+    }
+
+    public function setCustomerSupportReference(?string $customerSupportReference): void
+    {
+        $this->customerSupportReference = $customerSupportReference;
+    }
+
+    public function getMarketingOptIn(): bool
+    {
+        if (!isset($this->marketingOptIn)) {
+            // If they've not opted in they've not opted in.
+            return false;
+        }
+
+        return $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn(?bool $marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
+    }
+
+    public function getNewsletterMarketingReference(): ?string
+    {
+        return $this->newsletterMarketingReference;
+    }
+
+    public function setNewsletterMarketingReference(?string $newsletterMarketingReference): void
+    {
+        $this->newsletterMarketingReference = $newsletterMarketingReference;
+    }
+
+    public function getNewsletterAnnouncementReference(): ?string
+    {
+        return $this->newsletterAnnouncementReference;
+    }
+
+    public function setNewsletterAnnouncementReference(?string $newsletterAnnouncementReference): void
+    {
+        $this->newsletterAnnouncementReference = $newsletterAnnouncementReference;
     }
 }

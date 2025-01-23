@@ -1,14 +1,15 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity\Settings;
 
-use BillaBear\Enum\PdfGeneratorType;
+use BillaBear\Invoice\InvoiceGenerationType;
+use BillaBear\Pdf\PdfGeneratorType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
@@ -24,6 +25,9 @@ class SystemSettings
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $defaultInvoiceDueTime = null;
+
+    #[ORM\Column(type: 'string', nullable: true, enumType: InvoiceGenerationType::class)]
+    private ?InvoiceGenerationType $invoiceGenerationType = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $subsequentialNumber = null;
@@ -261,5 +265,15 @@ class SystemSettings
     public function setInvoiceNumberFormat(?string $invoiceNumberFormat): void
     {
         $this->invoiceNumberFormat = $invoiceNumberFormat;
+    }
+
+    public function getInvoiceGenerationType(): InvoiceGenerationType
+    {
+        return $this->invoiceGenerationType ?? InvoiceGenerationType::PERIODICALLY;
+    }
+
+    public function setInvoiceGenerationType(?InvoiceGenerationType $invoiceGenerationType): void
+    {
+        $this->invoiceGenerationType = $invoiceGenerationType;
     }
 }

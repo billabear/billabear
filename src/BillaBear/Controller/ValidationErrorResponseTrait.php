@@ -1,19 +1,19 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 trait ValidationErrorResponseTrait
 {
-    protected function handleErrors(\Symfony\Component\Validator\ConstraintViolationListInterface $errors): ?Response
+    protected function handleErrors(ConstraintViolationListInterface $errors): ?JsonResponse
     {
         if (count($errors) > 0) {
             $errorOutput = [];

@@ -33,6 +33,14 @@ Feature: Customer Creation
     Then there should be an error for "email"
     And there should not be an error for "country"
 
+  Scenario: Stripe not configured
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And there are no stripe api keys configured
+    When I create a customer via the app with the following info
+      | Email   | a-word   |
+      | Country | DE |
+    Then there should be an error for "stripe"
+
   Scenario: Successfully create customer with references
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     When I create a customer via the app with the following info
@@ -151,3 +159,20 @@ Feature: Customer Creation
       | Email   | customer@example.org |
       | Country | DE                   |
     Then there should be an error for "address.country"
+
+  Scenario: Create email pdf invoice delivery
+    Given the follow brands exist:
+      | Name    | Code    | Email               |
+      | Example | example | example@example.org |
+    And I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    When I create a customer via the app with the following info
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+      | External Reference | cust_4945959         |
+      | Reference          | Test Customer        |
+      | Billing Type       | invoice              |
+      | Brand              | example              |
+      | Locale             | en                   |
+      | Tax Number         | GB2494944            |
+      | Type               | Individual           |
+    Then there should be an invoice delivery for "customer@example.org" for type "Email" and format "pdf"

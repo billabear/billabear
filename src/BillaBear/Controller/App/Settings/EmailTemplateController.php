@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App\Settings;
@@ -14,7 +14,9 @@ use BillaBear\Dto\Request\App\EmailTemplate\UpdateEmailTemplate;
 use BillaBear\Dto\Response\App\EmailTemplate\EmailTemplateView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\EmailTemplate;
+use BillaBear\Entity\User;
 use BillaBear\Filters\EmailTemplateList;
+use BillaBear\Notification\Email\EmailTester;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\EmailTemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
@@ -23,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -200,5 +203,25 @@ class EmailTemplateController
         $json = $serializer->serialize($outputDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    #[Route('/app/settings/email-template/{id}/test', name: 'app_app_settings_emailtemplate_test', methods: ['POST'])]
+    public function sendTestEmail(
+        #[CurrentUser]
+        User $user,
+        Request $request,
+        EmailTemplateRepositoryInterface $repository,
+        EmailTester $emailTester,
+    ) {
+        $this->getLogger()->info('Received request to update email template', ['email_template_id' => $request->get('id')]);
+        try {
+            $template = $repository->findById($request->get('id'));
+        } catch (NoEntityFoundException $e) {
+            return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $emailTester->sendTest($user, $template);
+
+        return new JsonResponse(['success' => true]);
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Settings;
@@ -95,18 +95,6 @@ class BrandsContext implements Context
         }
     }
 
-    protected function getBrandSettings(string $brandName): BrandSettings
-    {
-        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $brandName]);
-
-        if (!$brand instanceof BrandSettings) {
-            throw new \Exception('No brand found');
-        }
-        $this->brandSettingsRepository->getEntityManager()->refresh($brand);
-
-        return $brand;
-    }
-
     /**
      * @When I go to update the brand :arg1 with:
      */
@@ -187,5 +175,17 @@ class BrandsContext implements Context
         ];
 
         $this->sendJsonRequest('POST', '/app/settings/brand', $payload);
+    }
+
+    protected function getBrandSettings(string $brandName): BrandSettings
+    {
+        $brand = $this->brandSettingsRepository->findOneBy(['brandName' => $brandName]);
+
+        if (!$brand instanceof BrandSettings) {
+            throw new \Exception('No brand found');
+        }
+        $this->brandSettingsRepository->getEntityManager()->refresh($brand);
+
+        return $brand;
     }
 }

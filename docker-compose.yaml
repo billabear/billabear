@@ -8,7 +8,7 @@ services:
       - billabear
 
   database:
-    image: postgres:13.3-alpine3.14
+    image: timescale/timescaledb-ha:pg16
     environment:
       - POSTGRES_DB=${PSQGL_DATABASE_NAME}
       - POSTGRES_USER=${PSQGL_DATABASE_USER}
@@ -16,7 +16,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./docker/database/data:/var/lib/postgresql/data
+      - ./docker/database/data:/home/postgres/pgdata/data
       - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - billabear

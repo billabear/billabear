@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat;
@@ -11,10 +11,13 @@ namespace BillaBear\Tests\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\Session;
+use Behat\Step\Given;
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\EmailTemplate;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\TaxType;
+use BillaBear\Invoice\InvoiceGenerationType;
+use BillaBear\Repository\Orm\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Common\Address;
 
@@ -22,13 +25,11 @@ class GeneralContext implements Context
 {
     use SendRequestTrait;
 
-    private Session $session;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(Session $session, EntityManagerInterface $entityManager)
-    {
-        $this->session = $session;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private Session $session,
+        private EntityManagerInterface $entityManager,
+        private SettingsRepository $settingsRepository,
+    ) {
     }
 
     /**
@@ -76,6 +77,8 @@ class GeneralContext implements Context
         $settings->getSystemSettings()->setInvoiceNumberGeneration('random');
         $settings->getSystemSettings()->setStripePrivateKey('private-key');
         $settings->getSystemSettings()->setStripePublicKey('public-key');
+        $settings->getSystemSettings()->setInvoiceGenerationType(InvoiceGenerationType::PERIODICALLY);
+        $settings->getSystemSettings()->setDefaultInvoiceDueTime('30 days');
         $settings->setTaxSettings(new Settings\TaxSettings());
         $settings->getTaxSettings()->setTaxCustomersWithTaxNumbers(true);
 
@@ -102,6 +105,16 @@ class GeneralContext implements Context
 
         $em->persist($validWarning);
 
+        $validWarning = new EmailTemplate();
+        $validWarning->setName(EmailTemplate::NAME_TRIAL_ENDING_WARNING);
+        $validWarning->setBrand($brand);
+        $validWarning->setLocale('en');
+        $validWarning->setSubject('Trial Ending Soon');
+        $validWarning->setTemplateBody('Body here');
+        $validWarning->setUseEmspTemplate(false);
+
+        $em->persist($validWarning);
+
         $notValidWarning = new EmailTemplate();
         $notValidWarning->setName(EmailTemplate::NAME_PAYMENT_METHOD_DAY_BEFORE_NOT_VALID_WARNING);
         $notValidWarning->setBrand($brand);
@@ -111,6 +124,26 @@ class GeneralContext implements Context
         $notValidWarning->setUseEmspTemplate(false);
 
         $em->persist($notValidWarning);
+
+        $usageWarning = new EmailTemplate();
+        $usageWarning->setName(EmailTemplate::NAME_USAGE_WARNING);
+        $usageWarning->setBrand($brand);
+        $usageWarning->setLocale('en');
+        $usageWarning->setSubject('Usage Warning');
+        $usageWarning->setTemplateBody('Body here');
+        $usageWarning->setUseEmspTemplate(false);
+
+        $em->persist($usageWarning);
+
+        $usageDisable = new EmailTemplate();
+        $usageDisable->setName(EmailTemplate::NAME_USAGE_DISABLED);
+        $usageDisable->setBrand($brand);
+        $usageDisable->setLocale('en');
+        $usageDisable->setSubject('Usage Disabled');
+        $usageDisable->setTemplateBody('Body here');
+        $usageDisable->setUseEmspTemplate(false);
+
+        $em->persist($usageDisable);
 
         $taxType = new TaxType();
         $taxType->setName('default');
@@ -122,6 +155,17 @@ class GeneralContext implements Context
 
         $this->authenticate(null);
         $this->isStripe(false);
+    }
+
+    #[Given('there are no stripe api keys configured')]
+    public function thereAreNoStripeApiKeysConfigured(): void
+    {
+        /** @var Settings $settings */
+        $settings = $this->settingsRepository->findOneBy(['tag' => Settings::DEFAULT_TAG]);
+        $settings->getSystemSettings()->setStripePrivateKey(null);
+        $settings->getSystemSettings()->setStripePublicKey(null);
+        $this->entityManager->persist($settings);
+        $this->entityManager->flush();
     }
 
     /**

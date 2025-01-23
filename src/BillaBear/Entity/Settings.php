@@ -1,13 +1,16 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
 
+use BillaBear\Entity\Settings\AccountingIntegration;
+use BillaBear\Entity\Settings\CustomerSupportIntegration;
+use BillaBear\Entity\Settings\NewsletterIntegration;
 use BillaBear\Entity\Settings\NotificationSettings;
 use BillaBear\Entity\Settings\OnboardingSettings;
 use BillaBear\Entity\Settings\SystemSettings;
@@ -21,10 +24,10 @@ class Settings
 {
     public const DEFAULT_TAG = 'default';
 
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string')]
@@ -32,6 +35,15 @@ class Settings
 
     #[ORM\Embedded(class: NotificationSettings::class)]
     private NotificationSettings $notificationSettings;
+
+    #[ORM\Embedded(class: AccountingIntegration::class)]
+    private AccountingIntegration $accountingIntegration;
+
+    #[ORM\Embedded(class: CustomerSupportIntegration::class)]
+    private CustomerSupportIntegration $customerSupportIntegration;
+
+    #[ORM\Embedded(class: NewsletterIntegration::class)]
+    private NewsletterIntegration $newsletterIntegration;
 
     #[ORM\Embedded(class: SystemSettings::class)]
     private SystemSettings $systemSettings;
@@ -100,5 +112,47 @@ class Settings
     public function setTaxSettings(TaxSettings $taxSettings): void
     {
         $this->taxSettings = $taxSettings;
+    }
+
+    public function getAccountingIntegration(): AccountingIntegration
+    {
+        if (!isset($this->accountingIntegration)) {
+            $this->accountingIntegration = new AccountingIntegration();
+        }
+
+        return $this->accountingIntegration;
+    }
+
+    public function setAccountingIntegration(AccountingIntegration $accountingIntegration): void
+    {
+        $this->accountingIntegration = $accountingIntegration;
+    }
+
+    public function getCustomerSupportIntegration(): CustomerSupportIntegration
+    {
+        if (!isset($this->customerSupportIntegration)) {
+            $this->customerSupportIntegration = new CustomerSupportIntegration();
+        }
+
+        return $this->customerSupportIntegration;
+    }
+
+    public function setCustomerSupportIntegration(CustomerSupportIntegration $customerSupportIntegration): void
+    {
+        $this->customerSupportIntegration = $customerSupportIntegration;
+    }
+
+    public function getNewsletterIntegration(): NewsletterIntegration
+    {
+        if (!isset($this->newsletterIntegration)) {
+            $this->newsletterIntegration = new NewsletterIntegration();
+        }
+
+        return $this->newsletterIntegration;
+    }
+
+    public function setNewsletterIntegration(NewsletterIntegration $newsletterIntegration): void
+    {
+        $this->newsletterIntegration = $newsletterIntegration;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Repository;
@@ -12,6 +12,8 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\SubscriptionPlan;
+use Doctrine\ORM\QueryBuilder;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\SubscriptionStatus;
@@ -191,7 +193,7 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function getMassChangableQueryBuilder(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): \Doctrine\ORM\QueryBuilder
+    public function getMassChangableQueryBuilder(?SubscriptionPlan $subscriptionPlan, ?Price $price, ?BrandSettings $brandSettings, ?string $country): QueryBuilder
     {
         $qb = $this->entityRepository->createQueryBuilder('s');
         $qb->innerJoin('s.customer', 'c')
@@ -285,6 +287,24 @@ class SubscriptionRepository extends \Parthenon\Billing\Repository\Orm\Subscript
             ->setParameter('sevenDays', $sevenDays)
             ->setParameter('status', [SubscriptionStatus::TRIAL_ACTIVE])
             ->orderBy('s.customer');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getLastTenForCustomer($customer): ResultSet
+    {
+        $results = $this->entityRepository->findBy(['customer' => $customer], ['createdAt' => 'DESC'], 11);
+
+        return new ResultSet($results, 'createdAt', 'DESC', 10);
+    }
+
+    public function getSubscriptionWithUsage(): array
+    {
+        $qb = $this->entityRepository->createQueryBuilder('s');
+        $qb->join('s.price', 'p')
+            ->where('p.usage = true')
+            ->andWhere('s.status in (:status)')
+            ->setParameter('status', [SubscriptionStatus::ACTIVE, SubscriptionStatus::TRIAL_ACTIVE, SubscriptionStatus::PENDING_CANCEL, SubscriptionStatus::OVERDUE_PAYMENT_OPEN]);
 
         return $qb->getQuery()->getResult();
     }

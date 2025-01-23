@@ -4,7 +4,7 @@
     <LoadingScreen :ready="ready">
 
       <form @submit.prevent="send">
-        <div class="m-5 card-body">
+        <div class="card-body">
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="name">
               {{ $t('app.product.create.name') }}
@@ -44,14 +44,14 @@
           </div>
         </div>
 
-        <div class="form-field-ctn ml-5">
+        <div class="form-field-ctn my-2">
           <p @click="showAdvance = !showAdvance" class="cursor-pointer">
             <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
             <i class="fa-solid fa-caret-down" v-else></i>
             <span class="ml-2">{{ $t('app.product.create.show_advanced') }}</span>
           </p>
         </div>
-        <div class="card-body mt-5 ml-5" v-if="showAdvance">
+        <div class="card-body mb-3" v-if="showAdvance">
           <div class="form-field-ctn">
             <label class="form-field-lbl" for="email">
               {{ $t('app.product.create.external_reference') }}
@@ -60,12 +60,11 @@
             <input type="text" class="form-field-input" id="external_reference" v-model="product.external_reference"  />
             <p class="form-field-help">{{ $t('app.product.create.help_info.external_reference') }}</p>
           </div>
-
         </div>
 
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.product.create.success_message') }}</p>
         <p class="text-green-500 font-weight-bold" v-if="failed">{{ $t('app.product.create.failed_message') }}</p>
-        <div class="form-field-submit-ctn ml-5">
+        <div class="form-field-submit-ctn">
           <SubmitButton :in-progress="sendingInProgress">{{ $t('app.product.create.submit_btn') }}</SubmitButton>
         </div>
       </form>
@@ -86,6 +85,7 @@ export default {
       product: {
         name: null,
         external_reference: null,
+        tax_type: null,
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -102,8 +102,9 @@ export default {
     this.failed=false;
     this.errors = {};
     axios.get('/app/product/create').then(response => {
-      this.ready = true;
       this.tax_types = response.data.tax_types;
+      this.product.tax_type = this.tax_types[0].id;
+      this.ready = true;
     })
   },
   methods: {

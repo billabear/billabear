@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Quotes;
@@ -12,10 +12,12 @@ use BillaBear\Dto\Request\App\Invoice\CreateInvoiceItem;
 use BillaBear\Dto\Request\App\Quote\CreateQuote;
 use BillaBear\Dto\Request\App\Quote\CreateQuoteSubscription;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\Price;
 use BillaBear\Entity\Quote;
 use BillaBear\Entity\QuoteLine;
-use BillaBear\Event\QuoteCreated;
-use BillaBear\Invoice\Pricer;
+use BillaBear\Entity\SubscriptionPlan;
+use BillaBear\Event\Quote\QuoteCreated;
+use BillaBear\Pricing\Pricer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\QuoteRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
@@ -57,35 +59,37 @@ class QuoteCreator
         $subTotal = null;
         /** @var CreateQuoteSubscription $subscription */
         foreach ($createQuote->getSubscriptions() as $subscription) {
-            /** @var \BillaBear\Entity\SubscriptionPlan $plan */
+            /** @var SubscriptionPlan $plan */
             $plan = $this->subscriptionPlanRepository->getById($subscription->getPlan());
-            /** @var \BillaBear\Entity\Price $price */
+            /** @var Price $price */
             $price = $this->priceRepository->getById($subscription->getPrice());
 
-            $priceInfo = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);
+            $priceInfos = $this->pricer->getCustomerPriceInfo($price, $customer, $plan->getProduct()->getTaxType(), $subscription->getSeatNumber() ?? 1);
 
-            $quoteLine = new QuoteLine();
-            $quoteLine->setSubscriptionPlan($plan);
-            $quoteLine->setPrice($price);
-            $quoteLine->setSeatNumber($subscription->getSeatNumber());
-            $quoteLine->setQuote($quote);
-            $quoteLine->setTaxType($plan->getProduct()->getTaxType());
-            $quoteLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
-            $quoteLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
-            $quoteLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
-            $quoteLine->setTaxPercentage($priceInfo->taxInfo->rate);
-            $quoteLine->setTaxCountry($priceInfo->taxInfo->country);
-            $quoteLine->setTaxState($priceInfo->taxInfo->state);
-            $quoteLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
-            $quoteLine->setIncludeTax($price->isIncludingTax());
-            $quoteLine->setCurrency($price->getCurrency());
+            foreach ($priceInfos as $priceInfo) {
+                $quoteLine = new QuoteLine();
+                $quoteLine->setSubscriptionPlan($plan);
+                $quoteLine->setPrice($price);
+                $quoteLine->setSeatNumber($subscription->getSeatNumber());
+                $quoteLine->setQuote($quote);
+                $quoteLine->setTaxType($plan->getProduct()->getTaxType());
+                $quoteLine->setTaxTotal($priceInfo->vat->getMinorAmount()->toInt());
+                $quoteLine->setTotal($priceInfo->total->getMinorAmount()->toInt());
+                $quoteLine->setSubTotal($priceInfo->subTotal->getMinorAmount()->toInt());
+                $quoteLine->setTaxPercentage($priceInfo->taxInfo->rate);
+                $quoteLine->setTaxCountry($priceInfo->taxInfo->country);
+                $quoteLine->setTaxState($priceInfo->taxInfo->state);
+                $quoteLine->setReverseCharge($priceInfo->taxInfo->reverseCharge);
+                $quoteLine->setIncludeTax($price->isIncludingTax());
+                $quoteLine->setCurrency($price->getCurrency());
 
-            $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
-            $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
-            $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
+                $totalAmount = $this->addAmount($totalAmount, $priceInfo->total);
+                $totalVat = $this->addAmount($totalVat, $priceInfo->vat);
+                $subTotal = $this->addAmount($subTotal, $priceInfo->subTotal);
 
-            $quote->setCurrency($price->getCurrency());
-            $lines[] = $quoteLine;
+                $quote->setCurrency($price->getCurrency());
+                $lines[] = $quoteLine;
+            }
         }
 
         /** @var CreateInvoiceItem $item */

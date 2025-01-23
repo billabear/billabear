@@ -254,3 +254,13 @@ Feature: Generate new invoices
       | Test Plan         | 1000         | USD            | week           | customer.one@example.org | +3 Minutes  | trial_active |
     When the background task to reinvoice active subscriptions
     Then there will be no error logs for invoice
+
+  Scenario: Subscription with Metadata
+    Given the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                  | Next Charge | Status | Seats | Metadata         |
+      | Test Plan         | 1000         | USD            | week           | customer.one@example.org  | +3 Minutes  | Active | 50    | {"key": "value"} |
+    And stripe billing is disabled
+    When the background task to reinvoice active subscriptions
+    Then the subscription for "customer.one@example.org" will expire in a week
+    And there the latest invoice for "customer.one@example.org" will be for 50000 "USD"
+    And the latest invoice for "customer.one@example.org" should have metadata '{"key": "value"}'

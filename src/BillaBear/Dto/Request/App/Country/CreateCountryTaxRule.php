@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\App\Country;
@@ -16,26 +16,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[DoesNotOverlap]
 class CreateCountryTaxRule
 {
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[StateExists]
     private $country;
 
+    #[Assert\NotBlank]
     #[SerializedName('tax_type')]
-    #[Assert\NotBlank()]
     private $taxType;
 
-    #[SerializedName('tax_rate')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Type(['float', 'integer'])]
+    #[SerializedName('tax_rate')]
     private $taxRate;
 
-    #[SerializedName('valid_from')]
-    #[Assert\NotBlank()]
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    #[Assert\NotBlank]
+    #[SerializedName('valid_from')]
     private $validFrom;
 
-    #[SerializedName('valid_until')]
     #[Assert\DateTime(format: \DATE_RFC3339_EXTENDED)]
+    #[SerializedName('valid_until')]
     private $validUntil;
 
     private $default;

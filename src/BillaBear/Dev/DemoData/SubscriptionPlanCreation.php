@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dev\DemoData;
@@ -12,8 +12,10 @@ use BillaBear\Entity\Price;
 use BillaBear\Entity\Product;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
+use Faker\Factory;
 use Parthenon\Billing\Entity\SubscriptionFeature;
 use Parthenon\Billing\Entity\SubscriptionPlanLimit;
+use Parthenon\Billing\Enum\PriceType;
 use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -39,7 +41,7 @@ class SubscriptionPlanCreation
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
         $output->writeln("\nCreate features");
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         $progressBar = new ProgressBar($output, 24);
 
         $code = $faker->randomLetter.$faker->randomLetter.$faker->randomLetter;
@@ -99,6 +101,7 @@ class SubscriptionPlanCreation
                 $price->setPublic(true);
                 $price->setSchedule('month');
                 $price->setRecurring(true);
+                $price->setType(PriceType::FIXED_PRICE);
 
                 if ($writeToStripe) {
                     $this->priceRegister->registerPrice($price);
@@ -115,6 +118,7 @@ class SubscriptionPlanCreation
                 $price->setPublic(true);
                 $price->setSchedule('year');
                 $price->setRecurring(true);
+                $price->setType(PriceType::FIXED_PRICE);
                 if ($writeToStripe) {
                     $this->priceRegister->registerPrice($price);
                 }
@@ -156,5 +160,6 @@ class SubscriptionPlanCreation
         }
 
         $progressBar->finish();
+        $output->writeln('');
     }
 }

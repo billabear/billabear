@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App\Subscriptions;
@@ -11,6 +11,7 @@ namespace BillaBear\Controller\App\Subscriptions;
 use BillaBear\Controller\App\CrudListTrait;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\Database\TransactionManager;
+use BillaBear\DataMappers\CancellationDataMapper;
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\DataMappers\PaymentDataMapper;
 use BillaBear\DataMappers\PaymentMethodsDataMapper;
@@ -19,6 +20,7 @@ use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\DataMappers\Subscriptions\CustomerSubscriptionEventDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
+use BillaBear\DataMappers\Usage\MetricDataMapper;
 use BillaBear\Dto\Generic\App\SubscriptionPlan;
 use BillaBear\Dto\Request\App\CancelSubscription;
 use BillaBear\Dto\Request\App\CreateSubscription;
@@ -28,8 +30,11 @@ use BillaBear\Dto\Request\App\Subscription\UpdatePrice;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Dto\Response\App\Subscription\CreateView;
 use BillaBear\Dto\Response\App\Subscription\UpdatePlanView;
+use BillaBear\Dto\Response\App\Subscription\UsageEstimate;
 use BillaBear\Dto\Response\App\Subscription\ViewSubscription;
 use BillaBear\Entity\Subscription;
+use BillaBear\Filters\SubscriptionList;
+use BillaBear\Pricing\Usage\CostEstimator;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
@@ -37,7 +42,7 @@ use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\User\UserProvider;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Enum\BillingChangeTiming;
@@ -190,7 +195,7 @@ class SubscriptionController
     ): Response {
         $this->getLogger()->info('Received a request to list subscription');
 
-        return $this->crudList($request, $subscriptionRepository, $serializer, $subscriptionFactory, 'updatedAt');
+        return $this->crudList($request, $subscriptionRepository, $serializer, $subscriptionFactory, 'updatedAt', filterList: new SubscriptionList());
     }
 
     #[Route('/app/subscription/{subscriptionId}', name: 'app_subscription_view', methods: ['GET'])]
@@ -206,14 +211,16 @@ class SubscriptionController
         PaymentDataMapper $paymentFactory,
         CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
         CustomerSubscriptionEventDataMapper $customerSubscriptionEventDataMapper,
+        CostEstimator $costEstimator,
+        MetricDataMapper $metricDataMapper,
     ): Response {
         $this->getLogger()->info('Received a request to view subscription', ['subscription_id' => $request->get('subscriptionId')]);
 
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         $dto = $subscriptionFactory->createAppDto($subscription);
@@ -229,11 +236,20 @@ class SubscriptionController
         $view->setSubscription($dto);
         $view->setCustomer($customerDto);
         $view->setPayments($paymentDtos);
+        if ($subscription->getPrice()?->getUsage()) {
+            $costEstimate = $costEstimator->getEstimate($subscription);
+            $estimateDto = new UsageEstimate();
+            $estimateDto->setMetric($metricDataMapper->createAppDto($subscription->getPrice()->getMetric()));
+            $estimateDto->setUsage($costEstimate->usage);
+            $estimateDto->setAmount($costEstimate->cost->getMinorAmount()->toInt());
+            $view->setUsageEstimate($estimateDto);
+        }
+
         $view->setSubscriptionEvents($customerSubscriptionsDtos);
         if ($subscription->getPaymentDetails()) {
             $view->setPaymentDetails($paymentDetailsFactory->createAppDto($subscription->getPaymentDetails()));
         }
-        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getPrice()?->getProduct()));
+        $view->setProduct($productFactory->createAppDtoFromProduct($subscription->getSubscriptionPlan()?->getProduct()));
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
@@ -253,8 +269,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         /** @var UpdatePaymentMethod $dto */
@@ -290,7 +306,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
-        \BillaBear\DataMappers\CancellationDataMapper $cancellationRequestFactory,
+        CancellationDataMapper $cancellationRequestFactory,
         UserProvider $userProvider,
     ): Response {
         $this->getLogger()->info('Received a request to cancel subscription', ['subscription_id' => $request->get('subscriptionId')]);
@@ -298,8 +314,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
 
         /** @var CancelSubscription $dto */

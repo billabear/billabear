@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Api;
@@ -18,16 +18,16 @@ use BillaBear\Dto\Request\Api\Subscription\ExtendTrial;
 use BillaBear\Dto\Request\Api\Subscription\UpdatePlan;
 use BillaBear\Dto\Request\App\Subscription\UpdatePaymentMethod;
 use BillaBear\Dto\Response\Api\ListResponse;
+use BillaBear\Entity\Subscription;
 use BillaBear\Filters\SubscriptionList;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\Subscription\TrialManager;
-use BillaBear\Webhook\Outbound\Payload\SubscriptionUpdatedPayload;
+use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\PaymentFailureException;
-use Parthenon\Billing\Entity\Subscription;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
@@ -48,8 +48,8 @@ class SubscriptionController
     use LoggerAwareTrait;
 
     public function __construct(
-        private CancellationDataMapper $cancellationRequestFactory,
-        private WebhookDispatcherInterface $webhookDispatcher,
+        private readonly CancellationDataMapper $cancellationRequestFactory,
+        private readonly WebhookDispatcherInterface $webhookDispatcher,
     ) {
     }
 
@@ -69,14 +69,14 @@ class SubscriptionController
             return new JsonResponse([
                 'success' => false,
                 'reason' => 'per_page is below 1',
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($resultsPerPage > 100) {
             return new JsonResponse([
                 'success' => false,
                 'reason' => 'per_page is above 100',
-            ], JsonResponse::HTTP_REQUEST_ENTITY_TOO_LARGE);
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
         $filterBuilder = new SubscriptionList();
@@ -110,8 +110,8 @@ class SubscriptionController
         $this->getLogger()->info('Received request to view subscription', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse(null, status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
 
         $dto = $subscriptionFactory->createApiDto($subscription);
@@ -134,8 +134,8 @@ class SubscriptionController
         $this->getLogger()->info('Received request to extend subscription', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse(null, status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
 
         /** @var ExtendTrial $dto */
@@ -155,12 +155,12 @@ class SubscriptionController
             $this->getLogger()->warning('Payment failure during extension', ['reason' => $e->getReason()->value]);
             $transactionManager->abort();
 
-            return new JsonResponse(['reason' => $e->getReason()->value], JsonResponse::HTTP_PAYMENT_REQUIRED);
+            return new JsonResponse(['reason' => $e->getReason()->value], Response::HTTP_PAYMENT_REQUIRED);
         } catch (\Throwable $e) {
             $this->getLogger()->error('Error while extending subscription', ['exception_message' => $e->getMessage(), 'exception_file' => $e->getFile(), 'exception_line' => $e->getLine()]);
             $transactionManager->abort();
 
-            return new JsonResponse([], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $transactionManager->finish();
         $outputDto = $subscriptionDataMapper->createApiDto($subscription);
@@ -182,8 +182,8 @@ class SubscriptionController
         $this->getLogger()->info('Received request to cancel subscriptions', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
-        } catch (NoEntityFoundException $e) {
-            return new JsonResponse(null, status: JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
         /** @var CancelSubscription $dto */
         $dto = $serializer->deserialize($request->getContent(), CancelSubscription::class, 'json');
@@ -199,7 +199,7 @@ class SubscriptionController
             return new JsonResponse([
                 'success' => false,
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $cancellationRequest = $cancellationRequestFactory->getCancellationRequestEntity($subscription, $dto);
@@ -211,12 +211,12 @@ class SubscriptionController
         } catch (\Throwable $exception) {
             $cancellationRequestRepository->save($cancellationRequest);
 
-            // return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
+            return new JsonResponse(['error' => $exception->getMessage(), 'class' => get_class($exception)], status: JsonResponse::HTTP_FAILED_DEPENDENCY);
         }
 
         $cancellationRequestRepository->save($cancellationRequest);
 
-        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse(status: Response::HTTP_ACCEPTED);
     }
 
     #[Route('/api/v1/subscription/{subscriptionId}/payment-method', name: 'api_v1_subscription_payment_method_update', methods: ['PUT'])]
@@ -232,8 +232,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            throw new NoEntityFoundException();
+        } catch (NoEntityFoundException) {
+            return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
 
         /** @var UpdatePaymentMethod $dto */
@@ -250,14 +250,14 @@ class SubscriptionController
             return new JsonResponse([
                 'success' => false,
                 'errors' => $errorOutput,
-            ], JsonResponse::HTTP_BAD_REQUEST);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         $methodUpdateProcessor->process($subscription, $paymentDetails);
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
-        return new JsonResponse(status: JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse(status: Response::HTTP_ACCEPTED);
     }
 
     #[Route('/api/v1/subscription/{subscriptionId}/plan', name: 'api_v1_subscription_update_plan', methods: ['POST'])]
@@ -274,8 +274,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         /** @var UpdatePlan $dto */
@@ -298,14 +298,13 @@ class SubscriptionController
         $subscriptionRepository->save($subscription);
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
-        return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse([], Response::HTTP_ACCEPTED);
     }
 
     #[Route('/api/v1/subscription/{subscriptionId}/price', name: 'api_v1_subscription_update_price', methods: ['POST'])]
     public function changeSubscriptionPrice(
         Request $request,
         SubscriptionRepositoryInterface $subscriptionRepository,
-        SubscriptionPlanRepositoryInterface $subscriptionPlanRepository,
         PriceRepositoryInterface $priceRepository,
         SubscriptionManagerInterface $subscriptionManager,
         SerializerInterface $serializer,
@@ -315,8 +314,8 @@ class SubscriptionController
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
-        } catch (NoEntityFoundException $exception) {
-            return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         /** @var ChangePrice $dto */
@@ -335,6 +334,6 @@ class SubscriptionController
         $subscriptionRepository->save($subscription);
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
-        return new JsonResponse(['success' => true], JsonResponse::HTTP_ACCEPTED);
+        return new JsonResponse(['success' => true], Response::HTTP_ACCEPTED);
     }
 }

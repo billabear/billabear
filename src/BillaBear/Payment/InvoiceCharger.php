@@ -1,16 +1,16 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Payment;
 
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\Payment;
-use BillaBear\Event\InvoicePaid;
+use BillaBear\Event\Invoice\InvoicePaid;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Obol\Exception\PaymentFailureException;
@@ -24,6 +24,7 @@ use Parthenon\Billing\Obol\BillingDetailsFactoryInterface;
 use Parthenon\Billing\Obol\PaymentFactoryInterface;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,7 +49,13 @@ class InvoiceCharger
     public function chargeInvoice(Invoice $invoice, ?PaymentCard $paymentCard = null, ?\DateTime $createdAt = null): bool
     {
         if (!$paymentCard) {
-            $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
+            try {
+                $paymentCard = $this->paymentCardRepository->getDefaultPaymentCardForCustomer($invoice->getCustomer());
+            } catch (NoEntityFoundException) {
+                $this->getLogger()->warning('Failed to get default payment card for customer', ['customer_id' => $invoice->getCustomer()->getId()]);
+
+                return false;
+            }
         }
         $billingDetails = $this->billingDetailsFactory->createFromCustomerAndPaymentDetails($invoice->getCustomer(), $paymentCard);
 

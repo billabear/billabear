@@ -7,7 +7,7 @@
     </div>
 
     <form @submit.prevent="send">
-      <div class="p-5">
+      <div>
         <div class="mt-3 card-body">
           <h2>{{ $t('app.subscription.create.subscription_plans') }}</h2>
 

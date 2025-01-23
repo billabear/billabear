@@ -18,7 +18,8 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         billing_type: "Billing Type",
         tax_number: "Tax Number",
         standard_tax_rate: "Standard Tax Rate",
-        type: "Type"
+        type: "Type",
+        marketing_opt_in: "Marketing Opt In",
     },
     address: {
         company_name: "Company Name",
@@ -136,6 +137,41 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
             created_at: "Created At",
             view_btn: "View"
         },
-        no_invoices: "No invoices"
+        no_invoices: "No invoices",
+        next: "Next",
+        prev: "Previous"
+    },
+    invoice_delivery: {
+        title: "Invoice Delivery",
+        add_new: "Add New",
+        list: {
+            method: "Method",
+            format: "Format",
+            detail: "Detail",
+            view: "View",
+        },
+        no_delivery_methods: "No delivery methods",
+    },
+    metric_counters: {
+        title: "Metric Counters",
+        list: {
+            name: "Name",
+            usage: "Usage",
+            cost: "Estimated Cost"
+        },
+        no_counters: "There are no metric counters"
+    },
+    usage_limits: {
+        title: "Usage Limits",
+        add_new: "Add New",
+        list: {
+            amount: "Amount",
+            warn_level: "Action"
+        },
+        warn_levels: {
+            warn: "Warn",
+            disable: "Disable"
+        },
+        no_limits: "There are no usage limits for this customer"
     }
 }

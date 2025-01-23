@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Payments;
@@ -11,6 +11,8 @@ namespace BillaBear\Tests\Behat\Payments;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Behat\Step\Given;
+use BillaBear\Entity\Payment;
 use BillaBear\Entity\PaymentAttempt;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
@@ -21,7 +23,6 @@ use BillaBear\Repository\Orm\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
-use Parthenon\Billing\Entity\Payment;
 use Parthenon\Billing\Enum\PaymentStatus;
 use Parthenon\Billing\Repository\Orm\PaymentCardServiceRepository;
 
@@ -41,6 +42,33 @@ class MainContext implements Context
         private PaymentRepository $paymentRepository,
         private PaymentAttemptRepository $paymentAttemptRepository,
     ) {
+    }
+
+    #[Given('there are :number transactions for :email for the past 12 months')]
+    public function thereAreTransactionsForForThePastMonths($number, $email): void
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        for ($i = 0; $i < $number; ++$i) {
+            $payment = new Payment();
+            $payment->setCustomer($customer);
+
+            $payment->setStatus(PaymentStatus::COMPLETED);
+            $payment->setCreatedAt(new \DateTime('-6 months'));
+            $payment->setUpdatedAt(new \DateTime('-6 months'));
+            $payment->setAmount(1);
+            $payment->setCurrency('USD');
+            $payment->setProvider('dummy_test');
+            $payment->setPaymentReference(bin2hex(random_bytes(32)));
+            $payment->setCountry($customer->getCountry());
+
+            if ($customer->getBillingAddress()->getRegion()) {
+                $payment->setState($customer->getBillingAddress()->getRegion());
+            }
+
+            $this->paymentRepository->getEntityManager()->persist($payment);
+            $this->paymentRepository->getEntityManager()->flush();
+        }
     }
 
     /**
@@ -65,6 +93,7 @@ class MainContext implements Context
             $payment->setCurrency($row['Currency'] ?? 'USD');
             $payment->setProvider('dummy_test');
             $payment->setPaymentReference(bin2hex(random_bytes(32)));
+            $payment->setCountry($customer->getCountry());
 
             $this->paymentRepository->getEntityManager()->persist($payment);
             $this->paymentRepository->getEntityManager()->flush();

@@ -1,13 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\Interopt\Stripe;
 
+use BillaBear\DataMappers\CancellationDataMapper;
 use BillaBear\DataMappers\Interopt\Stripe\SubscriptionDataMapper;
 use BillaBear\Dto\Interopt\Stripe\Models\ListModel;
 use BillaBear\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
@@ -68,7 +69,7 @@ class SubscriptionsController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         CancellationRequestProcessor $cancellationRequestProcessor,
-        \BillaBear\DataMappers\CancellationDataMapper $cancellationRequestFactory,
+        CancellationDataMapper $cancellationRequestFactory,
         SubscriptionDataMapper $subscriptionDataMapper,
         UserProvider $userProvider,
     ): Response {

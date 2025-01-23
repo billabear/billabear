@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\App\Settings;
@@ -20,8 +20,8 @@ class NotificationSettings
     #[SerializedName('send_customer_notifications')]
     private $sendCustomerNotifications;
 
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: Entity::EMSP_CHOICES)]
+    #[Assert\NotBlank]
     private $emsp;
 
     #[Assert\NotBlank(allowNull: true)]
@@ -36,8 +36,8 @@ class NotificationSettings
     #[SerializedName('emsp_domain')]
     private $emspDomain;
 
-    #[Assert\NotBlank()]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[SerializedName('default_outgoing_email')]
     private $defaultOutgoingEmail;
 

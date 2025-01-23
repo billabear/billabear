@@ -1,4 +1,5 @@
 import {CHECKOUT_TRANSLATIONS} from "./portal/checkout";
+import {COUNTRY_TRANSLATIONS} from "../../../billabear/translations/en/country";
 
 export const ENGLISH_TRANSLATIONS = {
     portal: {
@@ -79,5 +80,11 @@ export const ENGLISH_TRANSLATIONS = {
         loading: {
             message: "Loading"
         }
+
     },
+    global: {
+        "loading": "Loading",
+        country: COUNTRY_TRANSLATIONS,
+        select_country: "Select Country",
+    }
 };

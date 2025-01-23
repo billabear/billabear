@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat;
@@ -143,30 +143,6 @@ class UserContext implements Context
     public function anUnconfirmedUserWithThePasswordExists($username, $password, $confirmationCode = 'confirmation')
     {
         $this->createUser($username, $password, $confirmationCode, false);
-    }
-
-    protected function createUser($username, $password, $confirmationCode, $confirmed, $name = 'A test user', $isAdmin = false, $bulk = false)
-    {
-        $user = new User();
-        if (!$bulk) {
-            $encodedPassword = $this->hasherFactory->getPasswordHasher($user)->hash($password);
-        } else {
-            $encodedPassword = $password;
-        }
-        $user->setEmail($username);
-        $user->setPassword($encodedPassword);
-        $user->setName($name);
-        $user->setConfirmationCode($confirmationCode);
-        $user->setIsConfirmed($confirmed);
-        $user->setCreatedAt(new \DateTime('now'));
-        $user->setRoles($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER']);
-
-        $this->repository->getEntityManager()->persist($user);
-        if (!$bulk) {
-            $this->repository->getEntityManager()->flush();
-        }
-
-        return $user;
     }
 
     /**
@@ -365,20 +341,6 @@ class UserContext implements Context
         if (401 !== $this->session->getStatusCode()) {
             throw new \Exception('Was not given an unauthorized response');
         }
-    }
-
-    /**
-     * @return User|null
-     *
-     * @throws \Doctrine\ORM\ORMException
-     */
-    protected function fetchUser($email)
-    {
-        /** @var User $user */
-        $user = $this->repository->findOneBy(['email' => $email]);
-        $this->repository->getEntityManager()->refresh($user);
-
-        return $user;
     }
 
     /**
@@ -777,5 +739,43 @@ class UserContext implements Context
                 throw new \Exception('Email found');
             }
         }
+    }
+
+    protected function createUser($username, $password, $confirmationCode, $confirmed, $name = 'A test user', $isAdmin = false, $bulk = false)
+    {
+        $user = new User();
+        if (!$bulk) {
+            $encodedPassword = $this->hasherFactory->getPasswordHasher($user)->hash($password);
+        } else {
+            $encodedPassword = $password;
+        }
+        $user->setEmail($username);
+        $user->setPassword($encodedPassword);
+        $user->setName($name);
+        $user->setConfirmationCode($confirmationCode);
+        $user->setIsConfirmed($confirmed);
+        $user->setCreatedAt(new \DateTime('now'));
+        $user->setRoles($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER']);
+
+        $this->repository->getEntityManager()->persist($user);
+        if (!$bulk) {
+            $this->repository->getEntityManager()->flush();
+        }
+
+        return $user;
+    }
+
+    /**
+     * @return User|null
+     *
+     * @throws \Doctrine\ORM\ORMException
+     */
+    protected function fetchUser($email)
+    {
+        /** @var User $user */
+        $user = $this->repository->findOneBy(['email' => $email]);
+        $this->repository->getEntityManager()->refresh($user);
+
+        return $user;
     }
 }

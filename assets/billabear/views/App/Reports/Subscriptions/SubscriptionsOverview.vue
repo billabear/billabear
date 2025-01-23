@@ -77,7 +77,6 @@ export default {
         categories.push(input[i].name);
         values.push(input[i].count);
       }
-      console.log(categories);
 
       return {categories, values};
     },

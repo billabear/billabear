@@ -17,6 +17,7 @@ export const EMAIL_TEMPLATES_UPDATE_TRANSLATIONS = {
         template_id: "The template ID given to you by your email service provider where you created the template. If unsure uncheck use emsp template.",
         variable_docs: "Check the documentation to see what variables are available",
     },
+    test_email: "Send Test Email",
     submit_btn: "Update",
     success_message: "Successfully updated email template"
 }

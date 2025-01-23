@@ -12,7 +12,7 @@
               <dl class="detail-list">
                 <div>
                   <dt>{{ $t('app.payment.view.main.amount') }}</dt>
-                  <dd>{{ currency(payment.amount) }}</dd>
+                  <dd><Currency :amount="payment.amount" /></dd>
                 </div>
                 <div>
                   <dt>{{ $t('app.payment.view.main.currency') }}</dt>
@@ -66,7 +66,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="refund in refunds">
-                  <td>{{ currency(refund.amount) }}</td>
+                  <td><Currency :amount="refund.amount" />}</td>
                   <td>{{ refund.reason }}</td>
                   <td v-if="refund.billing_admin != null">{{ refund.billing_admin.display_name }}</td>
                   <td v-else>API</td>
@@ -173,7 +173,7 @@
         <div>
           <span class="block text-lg font-medium">{{ $t('app.payment.view.modal.refund.amount.title') }}</span>
           <p class="text-red-500" v-if="refundValues.errors.amount != undefined">{{ refundValues.errors.amount }}</p>
-          <input type="number" v-model="refundValues.refundValue" class="form-field" />
+          <CurrencyInput v-model="refundValues.refundValue" />
         </div>
         <div class="mt-4">
           <span class="block text-lg font-medium">{{ $t('app.payment.view.modal.refund.reason.title') }}</span>
@@ -207,10 +207,12 @@ import {VueFinalModal} from "vue-final-modal";
 import currency from "currency.js";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import Autocomplete from "../../../components/app/Forms/Autocomplete.vue";
+import CurrencyInput from "../../../components/app/Forms/CurrencyInput.vue";
+import Currency from "../../../components/app/Currency.vue";
 
 export default {
   name: "PaymentView",
-  components: {Autocomplete, RoleOnlyView, VueFinalModal},
+  components: {Currency, CurrencyInput, Autocomplete, RoleOnlyView, VueFinalModal},
   data() {
     return {
       ready: false,

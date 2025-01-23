@@ -1,11 +1,21 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        platform_service: 'BillaBear\Database\Doctrine\TimescalePlatform'
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '13'
     orm:
+        metadata_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        query_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
         dql:
             string_functions:
                 DAY: DoctrineExtensions\Query\Postgresql\Day
@@ -22,6 +32,7 @@ doctrine:
             Parthenon\Billing\Entity\PaymentInterface: BillaBear\Entity\Payment
             Parthenon\Billing\Entity\ProductInterface: BillaBear\Entity\Product
             Parthenon\Billing\Entity\PriceInterface: BillaBear\Entity\Price
+            Parthenon\Billing\Entity\TierComponentInterface: BillaBear\Entity\TierComponent
             Parthenon\Billing\Entity\ReceiptInterface: BillaBear\Entity\Receipt
             Parthenon\Billing\Entity\ReceiptLineInterface: BillaBear\Entity\ReceiptLine
             Parthenon\Billing\Entity\SubscriptionInterface: BillaBear\Entity\Subscription

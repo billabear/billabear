@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Invoices;
@@ -13,11 +13,18 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
+use BillaBear\Entity\InvoiceDeliverySettings;
+use BillaBear\Entity\InvoicedMetricCounter;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Entity\Processes\InvoiceProcess;
+use BillaBear\Invoice\InvoiceDeliveryType;
+use BillaBear\Invoice\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
+use BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
+use BillaBear\Repository\Orm\MetricCounterRepository;
+use BillaBear\Repository\Orm\MetricRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
 use BillaBear\Repository\Orm\PaymentFailureProcessRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
@@ -26,6 +33,9 @@ use BillaBear\Repository\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 use BillaBear\Tests\Behat\Subscriptions\SubscriptionTrait;
+use BillaBear\Tests\Behat\Usage\MetricTrait;
+use BillaBear\Tests\Behat\Usage\MetricUsageTrait;
+use Brick\Money\Money;
 use Obol\Model\Enum\ChargeFailureReasons;
 
 class AppContext implements Context
@@ -33,6 +43,8 @@ class AppContext implements Context
     use CustomerTrait;
     use SendRequestTrait;
     use SubscriptionTrait;
+    use MetricTrait;
+    use MetricUsageTrait;
 
     public function __construct(
         private Session $session,
@@ -44,6 +56,9 @@ class AppContext implements Context
         private SubscriptionRepository $subscriptionRepository,
         private SubscriptionPlanRepository $planRepository,
         private TaxTypeRepository $taxTypeRepository,
+        private InvoiceDeliverySettingsRepository $invoiceDeliveryRepository,
+        private MetricRepository $metricRepository,
+        private MetricCounterRepository $metricUsageRepository,
     ) {
     }
 
@@ -270,6 +285,85 @@ class AppContext implements Context
     }
 
     /**
+     * @Then there the latest invoice for :customerEmail will be for :amount :currency
+     */
+    public function thereTheLatestInvoiceForWillBeFor($customerEmail, $amount, $currency)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $expected = Money::ofMinor($amount, $currency);
+        if (!$invoice->getTotalMoney()->isEqualTo($expected)) {
+            throw new \Exception('Got '.$invoice->getTotalMoney());
+        }
+    }
+
+    /**
+     * @Then the latest invoice for :customerEmail should have metadata :json
+     */
+    public function theLatestInvoiceForShouldHaveMetadata($customerEmail, $json): void
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer], ['createdAt' => 'DESC']);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+        $jsonData = json_encode(json_decode($json, true));
+        foreach ($invoice->getLines() as $line) {
+            if ($jsonData === json_encode($line->getMetadata())) {
+                return;
+            }
+        }
+
+        throw new \Exception("Didn't find metadata");
+    }
+
+    /**
+     * @Given the last invoice for :arg1 had a metric usage for :arg2 that was :arg3
+     */
+    public function theLastInvoiceForHadAMetricUsageForThatWas($customerEmail, $metricName, $value)
+    {
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $customer]);
+
+        if (!$invoice instanceof Invoice) {
+            throw new \Exception('No invoice found');
+        }
+
+        $metric = $this->getMetric($metricName);
+
+        $metricUsage = $this->getMetricUsage($customerEmail, $metricName);
+        $metricUsage->setValue(floatval($value));
+        $metricUsage->setUpdatedAt(new \DateTime('now'));
+        $this->invoiceRepository->getEntityManager()->persist($metricUsage);
+        $this->invoiceRepository->getEntityManager()->flush();
+
+        /** @var InvoiceLine $line */
+        $line = $invoice->getLines()->current();
+
+        $invoicedMetricCounter = new InvoicedMetricCounter();
+        $invoicedMetricCounter->setMetric($metric);
+        $invoicedMetricCounter->setValue(floatval($value));
+        $invoicedMetricCounter->setMetricCounter($metricUsage);
+        $invoicedMetricCounter->setCreatedAt($invoice->getCreatedAt());
+
+        $invoice->setInvoicedMetricCounters([$invoicedMetricCounter]);
+        $line->setInvoicedMetricCounter($invoicedMetricCounter);
+
+        $this->invoiceRepository->getEntityManager()->persist($line);
+        $this->invoiceRepository->getEntityManager()->persist($invoice);
+        $this->invoiceRepository->getEntityManager()->flush();
+    }
+
+    /**
      * @Then there the latest invoice for :arg1 will not be marked as paid
      */
     public function thereTheLatestInvoiceForWillNotBeMarkedAsPaid($customerEmail)
@@ -284,6 +378,256 @@ class AppContext implements Context
 
         if ($invoice->isPaid()) {
             throw new \Exception('Invoice is marked as paid');
+        }
+    }
+
+    /**
+     * @When I create a delivery method for :arg1 with the following settings:
+     */
+    public function iCreateADeliveryMethodForWithTheFollowingSettings($email, TableNode $table)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'type' => strtolower($data['Type']),
+            'format' => strtolower($data['Format']),
+        ];
+
+        if (isset($data['SFTP Host'])) {
+            $payload['sftp_host'] = $data['SFTP Host'];
+        }
+
+        if (isset($data['SFTP Port'])) {
+            $payload['sftp_port'] = (int) $data['SFTP Port'];
+        }
+
+        if (isset($data['SFTP Dir'])) {
+            $payload['sftp_dir'] = $data['SFTP Dir'];
+        }
+
+        if (isset($data['SFTP User'])) {
+            $payload['sftp_user'] = $data['SFTP User'];
+        }
+
+        if (isset($data['SFTP Password'])) {
+            $payload['sftp_password'] = $data['SFTP Password'];
+        }
+
+        if (isset($data['Webhook URL'])) {
+            $payload['webhook_url'] = $data['Webhook URL'];
+        }
+
+        if (isset($data['Webhook Method'])) {
+            $payload['webhook_method'] = $data['Webhook Method'];
+        }
+
+        if (isset($data['Email'])) {
+            $payload['email'] = $data['Email'];
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s/invoice-delivery', (string) $customer->getId()), $payload);
+    }
+
+    /**
+     * @When I edit the delivery methods for :arg1 for :arg2 with:
+     */
+    public function iEditTheDeliveryMethodsForForWith($email, $type, TableNode $table)
+    {
+        $type = InvoiceDeliveryType::from(strtolower($type));
+        $customer = $this->getCustomerByEmail($email);
+
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['customer' => $customer, 'type' => $type]);
+
+        if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
+            throw new \Exception("Can't find existing invoice delivery");
+        }
+
+        $data = $table->getRowsHash();
+
+        $payload = [
+            'type' => strtolower($data['Type']),
+            'format' => strtolower($data['Format']),
+        ];
+
+        if (isset($data['SFTP Host'])) {
+            $payload['sftp_host'] = $data['SFTP Host'];
+        }
+
+        if (isset($data['SFTP Port'])) {
+            $payload['sftp_port'] = (int) $data['SFTP Port'];
+        }
+
+        if (isset($data['SFTP Dir'])) {
+            $payload['sftp_dir'] = $data['SFTP Dir'];
+        }
+
+        if (isset($data['SFTP User'])) {
+            $payload['sftp_user'] = $data['SFTP User'];
+        }
+
+        if (isset($data['SFTP Password'])) {
+            $payload['sftp_password'] = $data['SFTP Password'];
+        }
+
+        if (isset($data['Webhook URL'])) {
+            $payload['webhook_url'] = $data['Webhook URL'];
+        }
+
+        if (isset($data['Webhook Method'])) {
+            $payload['webhook_method'] = $data['Webhook Method'];
+        }
+
+        $this->sendJsonRequest('POST', sprintf('/app/customer/%s/invoice-delivery/%s', (string) $customer->getId(), (string) $invoiceDelivery->getId()), $payload);
+    }
+
+    /**
+     * @Then there should be an invoice delivery for :arg1 for type :arg2 and url :arg3
+     */
+    public function thereShouldBeAnInvoiceDeliveryForForTypeAndUrl($email, $type, $url)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $type = strtolower($type);
+        $enumType = InvoiceDeliveryType::from($type);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
+        $this->invoiceDeliveryRepository->getEntityManager()->refresh($invoiceDelivery);
+
+        if ($url !== $invoiceDelivery->getWebhookUrl()) {
+            throw new \Exception(sprintf('Got %s', $invoiceDelivery->getWebhookUrl()));
+        }
+    }
+
+    /**
+     * @Then there should be an invoice delivery for :arg1 for type :arg2
+     */
+    public function thereShouldBeAnInvoiceDeliveryForForType($email, $type)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $type = strtolower($type);
+        $enumType = InvoiceDeliveryType::from($type);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
+
+        if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
+            throw new \Exception('No invoice delivery found');
+        }
+    }
+
+    /**
+     * @Then there should be an invoice delivery for :arg1 for type :arg2 and format :arg3
+     */
+    public function thereShouldBeAnInvoiceDeliveryForForTypeAndFormat($email, $type, $format)
+    {
+        $customer = $this->getCustomerByEmail($email);
+        $type = strtolower($type);
+        $enumType = InvoiceDeliveryType::from($type);
+        $format = InvoiceFormat::from($format);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer, 'invoiceFormat' => $format]);
+
+        if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
+            throw new \Exception('No invoice delivery found');
+        }
+    }
+
+    /**
+     * @Given the following invoice delivery setups exist:
+     */
+    public function theFollowingInvoiceDeliverySetupsExist(TableNode $table)
+    {
+        $data = $table->getColumnsHash();
+        foreach ($data as $row) {
+            $customer = $this->getCustomerByEmail($row['Customer']);
+            $invoiceDelivery = new InvoiceDeliverySettings();
+            $invoiceDelivery->setCustomer($customer);
+            $invoiceDelivery->setType(InvoiceDeliveryType::from(strtolower($row['Type'])));
+            $invoiceDelivery->setInvoiceFormat(strtolower($row['Format']));
+            $invoiceDelivery->setEnabled(true);
+            $invoiceDelivery->setCreatedAt(new \DateTime());
+            $invoiceDelivery->setUpdatedAt(new \DateTime());
+            $invoiceDelivery->setSftpHost($row['SFTP Host']);
+            if (!empty($row['SFTP Port'])) {
+                $invoiceDelivery->setSftpPort((int) $row['SFTP Port']);
+            }
+            $invoiceDelivery->setSftpDir($row['SFTP Dir']);
+            $invoiceDelivery->setSftpUser($row['SFTP User']);
+            $invoiceDelivery->setSftpPassword($row['SFTP Password']);
+            $invoiceDelivery->setWebhookURL($row['Webhook URL']);
+            $invoiceDelivery->setWebhookMethod($row['Webhook Method']);
+
+            $this->invoiceDeliveryRepository->getEntityManager()->persist($invoiceDelivery);
+        }
+        $this->invoiceRepository->getEntityManager()->flush();
+    }
+
+    /**
+     * @When I view the delivery methods for :arg1
+     */
+    public function iViewTheDeliveryMethodsFor($email)
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $this->sendJsonRequest('GET', sprintf('/app/customer/%s/invoice-delivery', (string) $customer->getId()));
+    }
+
+    /**
+     * @Then I will see an invoice delivery for :arg1
+     */
+    public function iWillSeeAnInvoiceDeliveryFor($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if (strtolower($arg1) == $row['type']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find invoice delivery");
+    }
+
+    /**
+     * @Then I will see an invoice delivery for SFTP to SFTP Host :arg1
+     */
+    public function iWillSeeAnInvoiceDeliveryForSftpToSftpHost($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ('sftp' == $row['type'] && $arg1 === $row['sftp_host']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find invoice delivery");
+    }
+
+    /**
+     * @Then I will see an invoice delivery for Webhook to Webhook URL :arg1
+     */
+    public function iWillSeeAnInvoiceDeliveryForWebhookToWebhookUrl($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ('webhook' == $row['type'] && $arg1 === $row['webhook_url']) {
+                return;
+            }
+        }
+
+        throw new \Exception("Can't find invoice delivery");
+    }
+
+    /**
+     * @Then I will not see an invoice delivery for Webhook to Webhook URL :arg1
+     */
+    public function iWillNotSeeAnInvoiceDeliveryForWebhookToWebhookUrl($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $row) {
+            if ('webhook' == $row['type'] && $arg1 === $row['webhook_url']) {
+                throw new \Exception('Found invoice delivery');
+            }
         }
     }
 
@@ -304,6 +648,7 @@ class AppContext implements Context
         $line->setTaxPercentage(20.0);
         $line->setSubTotal(8000);
         $line->setTaxTotal(2000);
+        $line->setNetPrice(8000);
         $line->setDescription('A test line');
         $line->setCurrency('USD');
         if (isset($row['Tax Type'])) {
@@ -315,8 +660,8 @@ class AppContext implements Context
 
         $invoice->setCustomer($customer);
         $invoice->setInvoiceNumber($row['Invoice Number'] ?? bin2hex(random_bytes(16)));
-        $invoice->setCreatedAt(new \DateTime('now'));
-        $invoice->setUpdatedAt(new \DateTime('now'));
+        $invoice->setCreatedAt(new \DateTime($row['Created At'] ?? 'now'));
+        $invoice->setUpdatedAt(new \DateTime($row['Created At'] ?? 'now'));
         $invoice->setCurrency('USD');
         $invoice->setPaid('true' === strtolower($row['Paid'] ?? 'true'));
         $invoice->setValid(true);

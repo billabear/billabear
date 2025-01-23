@@ -1,5 +1,5 @@
 <template>
-  <span v-if="currency != ''" class=" dark:text-gray-300">{{ currency }}</span> <span class=" dark:text-gray-300">{{ displayCurrency(amount) }}</span>
+  <span v-if="currency != ''" class="dark:text-gray-300">{{ currency }}</span> <span class=" dark:text-gray-300">{{ displayCurrency(amount) }}</span>
 </template>
 
 <script>
@@ -22,7 +22,6 @@ export default {
       }
     },
   methods: {
-
     displayCurrency: function (value) {
       return currency(value, { fromCents: true }).format({symbol: ''});
     },

@@ -1,17 +1,18 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Payment;
 
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
+use BillaBear\Entity\PaymentAttempt;
 use BillaBear\Entity\PaymentFailureProcess;
-use BillaBear\Event\PaymentFailed;
+use BillaBear\Event\Payment\PaymentFailed;
 use BillaBear\Repository\PaymentAttemptRepositoryInterface;
 use BillaBear\Repository\PaymentFailureProcessRepositoryInterface;
 use Obol\Model\Enum\ChargeFailureReasons;
@@ -47,7 +48,7 @@ class PaymentFailureHandler
         $this->process($paymentAttempt);
     }
 
-    protected function process(\BillaBear\Entity\PaymentAttempt $paymentAttempt): void
+    protected function process(PaymentAttempt $paymentAttempt): void
     {
         $paymentFailureProcess = $this->paymentFailureProcessRepository->findActiveForCustomer($paymentAttempt->getCustomer());
 

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Generic\App;
@@ -53,6 +53,15 @@ class Customer
     protected ?float $standardTaxRate;
 
     protected string $type;
+
+    #[SerializedName('invoice_format')]
+    protected ?string $invoiceFormat;
+
+    #[SerializedName('marketing_opt_in')]
+    protected bool $marketingOptIn;
+
+    #[SerializedName('created_at')]
+    protected \DateTime $createdAt;
 
     public function getId(): string
     {
@@ -192,5 +201,35 @@ class Customer
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getInvoiceFormat(): ?string
+    {
+        return $this->invoiceFormat;
+    }
+
+    public function setInvoiceFormat(?string $invoiceFormat): void
+    {
+        $this->invoiceFormat = $invoiceFormat;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function isMarketingOptIn(): bool
+    {
+        return $this->marketingOptIn;
+    }
+
+    public function setMarketingOptIn(bool $marketingOptIn): void
+    {
+        $this->marketingOptIn = $marketingOptIn;
     }
 }

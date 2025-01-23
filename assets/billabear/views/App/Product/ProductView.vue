@@ -1,15 +1,19 @@
 <template>
   <div>
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.product.view.title') }}</h1>
+    <div class="grid grid-cols-2">
+
+      <h1 class="page-title">{{ $t('app.product.view.title') }}</h1>
+
+      <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+
+        <div class="mt-5 text-end">
+          <router-link :to="{name: 'app.product.update'}" class="btn--main">{{ $t('app.product.view.update') }}</router-link>
+        </div>
+      </RoleOnlyView>
+    </div>
 
     <LoadingScreen :ready="ready">
-      <div v-if="!error" class="p-5">
-        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-
-          <div class="mb-5 text-end">
-            <router-link :to="{name: 'app.product.update'}" class="btn--main">{{ $t('app.product.view.update') }}</router-link>
-          </div>
-        </RoleOnlyView>
+      <div v-if="!error">
 
         <div class="card-body">
           <h2 class="section-header">{{ $t('app.product.view.main.title') }}</h2>
@@ -32,38 +36,38 @@
                 <dt>{{ $t('app.product.view.main.tax_type') }}</dt>
                 <dd><span v-if="product.tax_type">{{ product.tax_type.name }}</span></dd>
               </div>
-              <div>
-                <dt>{{ $t('app.product.view.main.external_reference') }}</dt>
-                <dd>
-                  <a v-if="product.payment_provider_details_url" target="_blank" :href="product.payment_provider_details_url">{{ product.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                  <span v-else>{{ product.external_reference }}</span>
-                </dd>
-              </div>
             </dl>
           </div>
         </div>
 
-        <div class="mt-5">
-          <h2 class="mb-2">{{ $t('app.product.view.subscription_plan.title') }}</h2>
+        <div class="mt-4">
+          <div class="grid grid-cols-2">
 
-          <table class="list-table mb-5">
-            <thead>
-            <tr>
-              <th>{{ $t('app.product.view.subscription_plan.list.name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
-              <th>{{ $t('app.product.view.subscription_plan.list.external_reference') }}</th>
+            <h2 class="mb-3 text-2xl font-bold">{{ $t('app.product.view.subscription_plan.title') }}</h2>
+
+            <div class="text-end">
+
+              <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+
+                <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
+
+              </RoleOnlyView>
+            </div>
+          </div>
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+                <th class="text-left pb-2">{{ $t('app.product.view.subscription_plan.list.name') }}</th>
+              <th class="text-left pb-2">{{ $t('app.product.view.subscription_plan.list.code_name') }}</th>
               <th></th>
               <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="plan in subscriptionPlans" class="mt-5">
-              <td>{{ plan.name }}</td>
+            <tr v-for="(plan, key) in subscriptionPlans" class="mt-5">
+              <td class="py-3">{{ plan.name }}</td>
               <td>{{ plan.code_name }}</td>
-              <td>
-                <a v-if="plan.payment_provider_details_url" target="_blank" :href="plan.payment_provider_details_url">{{ plan.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ plan.external_reference }}</span>
-              </td>
               <td>
                 <router-link :to="{name: 'app.subscription_plan.view', params: {productId: id, subscriptionPlanId: plan.id}}" class="btn--main">{{ $t('app.product.view.subscription_plan.view') }}</router-link>
               </td>
@@ -74,46 +78,47 @@
               </td>
             </tr>
             <tr v-if="subscriptionPlans.length === 0">
-              <td colspan="5" class="text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
+              <td colspan="5" class="py-3 text-center">{{ $t('app.product.view.subscription_plan.no_subscription_plans') }}</td>
             </tr>
             </tbody>
           </table>
 
-          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          </div>
+        </div>
 
-            <router-link :to="{name: 'app.subscription_plan.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.subscription_plan.create') }}</router-link>
+        <div class="mt-4">
+          <div class="grid grid-cols-2">
 
-          </RoleOnlyView>
+            <h2 class="mb-3 text-2xl font-bold">{{ $t('app.product.view.price.title') }}</h2>
+            <div class="text-end">
+
+              <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+                <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="btn--main">{{ $t('app.product.view.price.create') }}</router-link>
+              </RoleOnlyView>
+            </div>
           </div>
 
-        <div class="mt-5">
-          <h2 class="mb-5">{{ $t('app.product.view.price.title') }}</h2>
-
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.product.view.price.list.amount') }}</th>
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+                <th class="text-left pb-2">{{ $t('app.product.view.price.list.amount') }}</th>
               <th>{{ $t('app.product.view.price.list.currency') }}</th>
-              <th>{{ $t('app.product.view.price.list.recurring') }}</th>
-              <th>{{ $t('app.product.view.price.list.schedule') }}</th>
+                <th>{{ $t('app.product.view.price.list.recurring') }}</th>
+                <th>{{ $t('app.product.view.price.list.usage') }}</th>
               <th>{{ $t('app.product.view.price.list.including_tax') }}</th>
               <th>{{ $t('app.product.view.price.list.public') }}</th>
-              <th>{{ $t('app.product.view.price.list.external_reference') }}</th>
               <th></th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(price, key) in prices" class="mt-5">
-              <td>{{ currency(price.amount) }}</td>
+              <td>{{ price.display_value }}</td>
               <td>{{ price.currency }}</td>
               <td>{{ price.recurring }}</td>
-              <td>{{ price.schedule }}</td>
+              <td>{{ price.usage }}</td>
               <td>{{ price.including_tax }}</td>
               <td>{{ price.public }}</td>
-              <td>
-                <a v-if="price.payment_provider_details_url" target="_blank" :href="price.payment_provider_details_url">{{ price.external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ price.external_reference }}</span>
-              </td>
               <td>
                 <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
                   <button class="btn--main" :title="$t('app.product.view.price.show')" @click="showPrice(price, key)" v-if="!price.public"><i class="fa-solid fa-eye"></i></button>
@@ -127,10 +132,8 @@
             </tr>
             </tbody>
           </table>
-          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
-            <router-link :to="{name: 'app.price.create', params: {productId: id}}" class="mt-4 btn--main">{{ $t('app.product.view.price.create') }}</router-link>
-          </RoleOnlyView>
         </div>
+      </div>
       </div>
 
       <div v-else>

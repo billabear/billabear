@@ -1,12 +1,14 @@
 <template>
   <div>
-    <h1 class="page-title">{{ $t('app.settings.api_keys.main.title') }}</h1>
+    <div class="grid grid-cols-2">
+      <h1 class="page-title">{{ $t('app.settings.api_keys.main.title') }}</h1>
 
-    <div class="m-5 text-end">
-      <button class="btn--main" @click="options.modelValue = true">{{ $t('app.settings.api_keys.main.add_new_button') }}</button>
+      <div class="m-5 text-end">
+        <button class="btn--main" @click="options.modelValue = true">{{ $t('app.settings.api_keys.main.add_new_button') }}</button>
+      </div>
     </div>
 
-    <div class="m-5 card-body">
+    <div class="mb-3 card-body">
 
       <dl class="detail-list section-body ">
         <div>
@@ -18,29 +20,31 @@
 
     <LoadingScreen :ready="ready">
 
-      <table class="list-table">
-        <thead>
-        <tr>
-          <th>{{ $t('app.settings.api_keys.main.list.name') }}</th>
-          <th>{{ $t('app.settings.api_keys.main.list.key') }}</th>
-          <th>{{ $t('app.settings.api_keys.main.list.expires_at') }}</th>
-          <th>{{ $t('app.settings.api_keys.main.list.created_at') }}</th>
+      <div class="rounded-lg bg-white shadow p-3">
+        <table class="w-full">
+          <thead>
+          <tr class="border-b border-black">
+          <th class="text-left pb-2">{{ $t('app.settings.api_keys.main.list.name') }}</th>
+          <th class="text-left pb-2">{{ $t('app.settings.api_keys.main.list.key') }}</th>
+          <th class="text-left pb-2">{{ $t('app.settings.api_keys.main.list.expires_at') }}</th>
+          <th class="text-left pb-2">{{ $t('app.settings.api_keys.main.list.created_at') }}</th>
           <th></th>
         </tr>
         </thead>
         <tbody>
           <tr v-for="key in apiKeys">
-            <td>{{ key.name }}</td>
-            <td>{{ key.key }}</td>
-            <td>{{ $filters.moment(key.expires_at, 'lll') }}</td>
-            <td>{{ $filters.moment(key.created_at, 'lll') }}</td>
+            <td class="py-3">{{ key.name }}</td>
+            <td class="py-3">{{ key.key }}</td>
+            <td class="py-3">{{ $filters.moment(key.expires_at, 'lll') }}</td>
+            <td class="py-3">{{ $filters.moment(key.created_at, 'lll') }}</td>
             <td><button v-if="key.active" @click="disable(key)" class="btn--danger">{{ $t('app.settings.api_keys.main.list.disable_button') }}</button></td>
           </tr>
           <tr v-if="apiKeys.length === 0">
-            <td colspan="5" class="text-center">{{ $t('app.settings.api_keys.main.list.no_api_keys') }}</td>
+            <td colspan="5" class="py-3 text-center">{{ $t('app.settings.api_keys.main.list.no_api_keys') }}</td>
           </tr>
         </tbody>
       </table>
+      </div>
     </LoadingScreen>
 
     <VueFinalModal

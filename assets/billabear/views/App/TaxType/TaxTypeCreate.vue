@@ -40,7 +40,7 @@ export default {
       this.sending = true;
       this.errors = {};
       axios.post("/app/tax/type", this.type).then(response => {
-        this.$router.push({'name': 'app.system.tax_type.list'})
+        this.$router.push({'name': 'app.finance.tax_type.list'})
         this.sending = false;
       }).catch(error => {
         this.errors = error.response.data.errors;

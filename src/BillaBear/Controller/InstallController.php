@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller;
@@ -33,14 +33,14 @@ class InstallController
 {
     use ValidationErrorResponseTrait;
 
-    #[Route('/install', name: 'app_install', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
+    #[Route('/install', name: 'app_install')]
     public function installDefault(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
         try {
-            $settings = $settingsRepository->getDefaultSettings();
-        } catch (DoctrineTableException $exception) {
+            $settingsRepository->getDefaultSettings();
+        } catch (DoctrineTableException) {
             return new Response($twig->render('index.html.twig'));
         }
 
@@ -48,7 +48,7 @@ class InstallController
     }
 
     #[Route('/install/process', name: 'app_install_post', methods: ['POST'])]
-    public function procesInstall(
+    public function processInstall(
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
@@ -59,7 +59,7 @@ class InstallController
         DataStep $dataStep,
         UserCreatorInterface $userCreator,
         UserRepositoryInterface $userRepository,
-        TransactionManager $transactionManager
+        TransactionManager $transactionManager,
     ): Response {
         /** @var InstallRequest $dto */
         $dto = $serializer->deserialize($request->getContent(), InstallRequest::class, 'json');
@@ -93,7 +93,7 @@ class InstallController
         } catch (\Throwable $e) {
             $transactionManager->abort();
 
-            return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return new JsonResponse([]);

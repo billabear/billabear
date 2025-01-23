@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dto\Request\App\BrandSettings;
@@ -19,14 +19,14 @@ class CreateBrandSettings
     private $name;
 
     #[Assert\NotBlank]
-    #[Assert\Type('string')]
     #[Assert\Regex('~[a-z0-9_]+~', message: 'Code must be lower case alphanumeric with underscores only')]
+    #[Assert\Type('string')]
     #[UniqueBrandCode]
     private $code;
 
+    #[Assert\Email]
     #[Assert\NotBlank]
     #[Assert\Type('string')]
-    #[Assert\Email]
     #[SerializedName('email_address')]
     private $emailAddress;
 
@@ -46,6 +46,15 @@ class CreateBrandSettings
     #[Assert\Type('numeric')]
     #[SerializedName('digital_services_tax_rate')]
     private $digitalServicesTaxRate;
+
+    #[Assert\Email]
+    #[Assert\Type('string')]
+    #[SerializedName('support_email_address')]
+    private $supportEmailAddress;
+
+    #[Assert\Type('string')]
+    #[SerializedName('support_phone_number')]
+    private $supportPhoneNumber;
 
     public function __construct()
     {
@@ -130,5 +139,25 @@ class CreateBrandSettings
     public function setDigitalServicesTaxRate($digitalServicesTaxRate): void
     {
         $this->digitalServicesTaxRate = $digitalServicesTaxRate;
+    }
+
+    public function getSupportEmailAddress()
+    {
+        return $this->supportEmailAddress;
+    }
+
+    public function setSupportEmailAddress($supportEmailAddress): void
+    {
+        $this->supportEmailAddress = $supportEmailAddress;
+    }
+
+    public function getSupportPhoneNumber()
+    {
+        return $this->supportPhoneNumber;
+    }
+
+    public function setSupportPhoneNumber($supportPhoneNumber): void
+    {
+        $this->supportPhoneNumber = $supportPhoneNumber;
     }
 }

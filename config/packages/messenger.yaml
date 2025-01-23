@@ -3,6 +3,12 @@ framework:
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed
 
+        buses:
+            messenger.bus.default:
+                default_middleware: true
+                middleware:
+                    - 'BillaBear\Messenger\DelayMiddleware'
+
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             main: '%env(MESSENGER_TRANSPORT_DSN)%'
@@ -15,11 +21,18 @@ framework:
             'BillaBear\Workflow\Messenger\Messages\ReprocessFailedCancellationRequests': main
             'BillaBear\Workflow\Messenger\Messages\ReprocessFailedSubscriptionCreated': main
             'BillaBear\Workflow\Messenger\Messages\ReprocessFailedPaymentCreation': main
+            'BillaBear\Schedule\Messenger\Message\GenericTasks': main
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': main
+            'BillaBear\Invoice\Delivery\Messenger\InvoiceDeliveryRequest': main
+            'BillaBear\Pricing\Usage\Messenger\Message\UpdateCustomerCounters': main
 
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+when@test:
+    framework:
+        messenger:
+            transports:
+                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+                sync: 'sync://'
+            routing:
+                'BillaBear\Pricing\Usage\Messenger\Message\UpdateCustomerCounters': sync
+

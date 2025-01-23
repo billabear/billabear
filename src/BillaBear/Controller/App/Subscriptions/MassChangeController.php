@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App\Subscriptions;
@@ -18,13 +18,13 @@ use BillaBear\Dto\Request\App\Subscription\MassChange\CreateMassChange;
 use BillaBear\Dto\Request\App\Subscription\MassChange\EstimateMassChange;
 use BillaBear\Dto\Response\App\Subscription\MassChange\CreateView;
 use BillaBear\Dto\Response\App\Subscription\MassChange\ViewMassSubscriptionChange;
-use BillaBear\Enum\MassSubscriptionChangeStatus;
 use BillaBear\Export\DataProvider\MassSubscriptionChangeCustomersDataProvider;
 use BillaBear\Export\Response\ResponseConverter;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\MassSubscriptionChangeRepositoryInterface;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Subscription\MassChange\RevenueEstimator;
+use BillaBear\Subscription\MassSubscriptionChangeStatus;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Parthenon\Common\LoggerAwareTrait;
@@ -132,7 +132,7 @@ class MassChangeController
     ) {
         $this->getLogger()->info('Received request to list mass subscriptions');
 
-        return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper, 'createdAt');
+        return $this->crudList($request, $massSubscriptionChangeRepository, $serializer, $changeDataMapper);
     }
 
     #[Route('/app/subscription/mass-change/{id}/view', name: 'app_app_subscriptions_masschange_viewcange', methods: ['GET'])]

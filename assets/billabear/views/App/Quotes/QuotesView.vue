@@ -3,7 +3,7 @@
     <h1 class="page-title mt-5 ml-5">{{ $t('app.quotes.view.title') }}</h1>
 
     <LoadingScreen :ready="ready">
-      <div class="p-5">
+      <div class="">
         <div class="alert-success mb-5" v-if="quote.paid">{{ $t('app.quotes.view.status.paid',  {date: $filters.moment(quote.paid_at, 'LLL')}) }}</div>
         <div class="grid grid-cols-2 gap-4">
           <div class="card-body">
@@ -44,7 +44,7 @@
                   <dd>{{ quote.customer.address.post_code }}</dd>
                 </div>
               </dl>
-              <router-link :to="{name: 'app.customer.view', params: {id: quote.customer.id}}" class="btn--main">{{ $t('app.quotes.view.customer.more_info') }}</router-link>
+              <router-link :to="{name: 'app.customer.view', params: {id: quote.customer.id}}" class="btn--container">{{ $t('app.quotes.view.customer.more_info') }}</router-link>
             </div>
           </div>
           <div class="card-body">
@@ -72,34 +72,36 @@
           </div>
         </div>
         <div class="mt-5">
-          <h2 class="my-3">{{ $t('app.quotes.view.lines.title') }}</h2>
+          <h2 class="my-3 text-xl">{{ $t('app.quotes.view.lines.title') }}</h2>
 
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.quotes.view.lines.description') }}</th>
-              <th>{{ $t('app.quotes.view.lines.schedule') }}</th>
-              <th>{{ $t('app.quotes.view.lines.tax_rate') }}</th>
-              <th>{{ $t('app.quotes.view.lines.amount') }}</th>
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+                <th class="text-left pb-2">{{ $t('app.quotes.view.lines.description') }}</th>
+              <th class="text-left pb-2">{{ $t('app.quotes.view.lines.schedule') }}</th>
+              <th class="text-left pb-2">{{ $t('app.quotes.view.lines.tax_rate') }}</th>
+              <th class="text-left pb-2">{{ $t('app.quotes.view.lines.amount') }}</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="line in quote.lines">
-              <td>
+              <td class="py-3">
                 <span v-if="line.subscription_plan === null || line.subscription_plan === undefined">{{ line.description }}</span>
                 <span v-else-if="line.seat_number">{{ line.seat_number }} x {{ line.subscription_plan.name }}</span>
                 <span v-else>{{ line.subscription_plan.name }}</span>
               </td>
-              <td v-if="line.price !== undefined && line.price !== null">{{ line.price.schedule }}</td>
-              <td v-else>{{ $t('app.quotes.view.lines.one_off') }}</td>
-              <td v-if="line.tax_rate !== null">{{ line.tax_rate }}</td>
-              <td v-else>{{ $t('app.quotes.view.lines.tax_exempt') }}</td>
-              <td>
+              <td class="py-3" v-if="line.price !== undefined && line.price !== null">{{ line.price.schedule }}</td>
+              <td class="py-3" v-else>{{ $t('app.quotes.view.lines.one_off') }}</td>
+              <td class="py-3" v-if="line.tax_rate !== null">{{ line.tax_rate }}</td>
+              <td class="py-3" v-else>{{ $t('app.quotes.view.lines.tax_exempt') }}</td>
+              <td class="py-3">
                 <Currency :amount="line.total" />
               </td>
             </tr>
             </tbody>
           </table>
+          </div>
         </div>
         <div class="my-3 text-end">
           <div class="float-right text-end w-1/5">

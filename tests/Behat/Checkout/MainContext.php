@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Behat\Checkout;
@@ -37,6 +37,15 @@ class MainContext implements Context
     use SubscriptionTrait;
     use QuoteTrait;
 
+    private ?string $name = null;
+    private ?Customer $customer = null;
+    private array $subscriptions = [];
+    private array $items = [];
+    private ?\DateTime $expiresAt = null;
+    private ?\DateTime $dueAt = null;
+    private bool $permanent = false;
+    private ?BrandSettings $brandSettings = null;
+
     public function __construct(
         private Session $session,
         private CustomerRepository $customerRepository,
@@ -50,15 +59,6 @@ class MainContext implements Context
         private TaxTypeRepository $taxTypeRepository,
     ) {
     }
-
-    private ?string $name = null;
-    private ?Customer $customer = null;
-    private array $subscriptions = [];
-    private array $items = [];
-    private ?\DateTime $expiresAt = null;
-    private ?\DateTime $dueAt = null;
-    private bool $permanent = false;
-    private ?BrandSettings $brandSettings = null;
 
     /**
      * @BeforeScenario

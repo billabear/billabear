@@ -1,7 +1,4 @@
-Feature: Customer Subscription Update Payment Method APP
-  In order to manage a customer's subscriptions payment method
-  As an APP user
-  I need to be able to update their payment method
+Feature: Main Dashboard
 
   Background:
     Given the following accounts exist:
@@ -18,8 +15,6 @@ Feature: Customer Subscription Update Payment Method APP
     And I will see there is 30 days of daily stats
     And I will see there is 12 months of monthly stats
     And I will see there is 5 years of yearly stats
-    And I will see there is 12 months of monthly revenue stats for "USD"
-    And I will see there is 12 months of monthly revenue stats for "EUR"
     And I will see the total number of active subscriptions
     And I will see the total number of active customers
     And I will see the number of outstanding payments

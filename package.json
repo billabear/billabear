@@ -26,6 +26,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.2.0",
         "@fullhuman/postcss-purgecss": "^4.1.3",
+        "@headlessui/vue": "^1.7.22",
         "@parthenon/ui": "^1.0",
         "@parthenon/vue-menu": "^1.0",
         "@tailwindcss/forms": "^0.5.2",
@@ -39,7 +40,7 @@
         "@vuepic/vue-datepicker": "^4.3.0",
         "apexcharts": "^3.40.0",
         "autoprefixer": "^10.4.8",
-        "axios": "^1.6.0",
+        "axios": "^1.7.4",
         "axios-mock-adapter": "^1.21.2",
         "currency.js": "^2.0.4",
         "d3": "^7.9.0",

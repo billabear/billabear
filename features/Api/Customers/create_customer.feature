@@ -120,3 +120,11 @@ Feature: Customer Creation
       | Type               | Individual           |
     Then there should be a customer for "customer@example.org"
     And the customer "customer@example.org" should be a individual customer
+
+  Scenario: No stripe configuration
+    Given I have authenticated to the API
+    And there are no stripe api keys configured
+    When I create a customer with the following info
+      | Email   |    |
+      | Country | DE |
+    Then there should be an error for "stripe"

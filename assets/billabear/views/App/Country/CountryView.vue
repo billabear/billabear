@@ -31,6 +31,14 @@
                 <dd>{{ currency(country.threshold) }}</dd>
               </div>
               <div>
+                <dt>{{ $t('app.country.view.fields.transaction_threshold') }}</dt>
+                <dd>{{ country.transaction_threshold }}</dd>
+              </div>
+              <div>
+                <dt>{{ $t('app.country.view.fields.threshold_type') }}</dt>
+                <dd>{{ country.threshold_type }}</dd>
+              </div>
+              <div>
                 <dt>{{ $t('app.country.view.fields.in_eu') }}</dt>
                 <dd>{{ country.in_eu }}</dd>
               </div>
@@ -57,33 +65,35 @@
               <button class="btn--main" @click="showCreate">{{ $t('app.country.view.tax_rule.add') }}</button>
             </div>
           </div>
-          <table class="list-table">
-            <thead>
-            <tr>
-              <th>{{ $t('app.country.view.tax_rule.rate') }}</th>
-              <th>{{ $t('app.country.view.tax_rule.type')}}</th>
-              <th>{{ $t('app.country.view.tax_rule.start_date') }}</th>
-              <th>{{ $t('app.country.view.tax_rule.end_date') }}</th>
-              <th>{{ $t('app.country.view.tax_rule.default') }}</th>
+          <div class="rounded-lg bg-white shadow p-3">
+            <table class="w-full">
+              <thead>
+              <tr class="border-b border-black">
+                <th class="text-left pb-2">{{ $t('app.country.view.tax_rule.rate') }}</th>
+              <th class="text-left pb-2">{{ $t('app.country.view.tax_rule.type')}}</th>
+              <th class="text-left pb-2">{{ $t('app.country.view.tax_rule.start_date') }}</th>
+              <th class="text-left pb-2">{{ $t('app.country.view.tax_rule.end_date') }}</th>
+              <th class="text-left pb-2">{{ $t('app.country.view.tax_rule.default') }}</th>
               <th></th>
             </tr>
             </thead>
             <tbody v-if="tax_rules.length > 0">
               <tr v-for="rule in tax_rules">
-                <td>{{ rule.tax_rate }}</td>
-                <td>{{ rule.tax_type.name }}</td>
-                <td>{{ rule.valid_from }}</td>
-                <td>{{ rule.valid_until }}</td>
-                <td>{{ rule.is_default }}</td>
-                <td><button class="btn--secondary" @click="showEdit(rule)">{{ $t('app.country.view.tax_rule.edit') }}</button> </td>
+                <td class="py-3">{{ rule.tax_rate }}</td>
+                <td class="py-3">{{ rule.tax_type.name }}</td>
+                <td class="py-3">{{ rule.valid_from }}</td>
+                <td class="py-3">{{ rule.valid_until }}</td>
+                <td class="py-3">{{ rule.is_default }}</td>
+                <td class="py-3"><button class="btn--secondary" @click="showEdit(rule)">{{ $t('app.country.view.tax_rule.edit') }}</button> </td>
               </tr>
             </tbody>
             <tbody v-else>
               <tr>
-                <td colspan="6" class="text-center">{{ $t('app.country.view.tax_rule.no_tax_rules') }}</td>
+                <td colspan="6" class="py-3 text-center">{{ $t('app.country.view.tax_rule.no_tax_rules') }}</td>
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
 
 
@@ -95,31 +105,33 @@
         </div>
 
 
-        <table class="list-table">
-          <thead>
-          <tr>
-            <th>{{ $t('app.country.view.states.name') }}</th>
-            <th>{{ $t('app.country.view.states.code') }}</th>
-            <th>{{ $t('app.country.view.states.collecting') }}</th>
-            <th>{{ $t('app.country.view.states.threshold') }}</th>
+        <div class="rounded-lg bg-white shadow p-3">
+          <table class="w-full">
+            <thead>
+            <tr class="border-b border-black">
+              <th class="text-left pb-2">{{ $t('app.country.view.states.name') }}</th>
+            <th class="text-left pb-2">{{ $t('app.country.view.states.code') }}</th>
+            <th class="text-left pb-2">{{ $t('app.country.view.states.collecting') }}</th>
+            <th class="text-left pb-2">{{ $t('app.country.view.states.threshold') }}</th>
             <th></th>
           </tr>
           </thead>
           <tbody v-if="states.length > 0">
             <tr v-for="state in states">
-              <td>{{state.name}}</td>
-              <td>{{state.code}}</td>
-              <td>{{state.collecting}}</td>
-              <td><Currency :amount="state.threshold" :currency="country.currency" /></td>
-              <td><router-link class="btn--main" :to="{name: 'app.finance.state.view', params: {countryId: country.id, stateId: state.id}}">{{ $t('app.country.view.states.view') }}</router-link></td>
+              <td class="py-3">{{state.name}}</td>
+              <td class="py-3">{{state.code}}</td>
+              <td class="py-3">{{state.collecting}}</td>
+              <td class="py-3"><Currency :amount="state.threshold" :currency="country.currency" /></td>
+              <td class="py-3"><router-link class="btn--main" :to="{name: 'app.finance.state.view', params: {countryId: country.id, stateId: state.id}}">{{ $t('app.country.view.states.view') }}</router-link></td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr>
-              <Td colspan="6" class="text-center">{{ $t('app.country.view.states.no_states') }}</Td>
+              <Td colspan="6" class="py-3 text-center">{{ $t('app.country.view.states.no_states') }}</Td>
             </tr>
           </tbody>
         </table>
+        </div>
 
       </div>
     </LoadingScreen>
@@ -162,7 +174,9 @@
       </label>
       <p class="form-field-error" v-if="taxRuleErrors.default != undefined">{{ taxRuleErrors.default }}</p>
       <input type="checkbox" class="form-field" v-model="tax_rule.default" />
+      <div class="mt-3">
       <SubmitButton :in-progress="creatingTaxRule" @click="createCountryTaxRule" class="btn--main">{{ $t('app.country.view.add_tax_rule.save') }}</SubmitButton>
+      </div>
     </VueFinalModal>
 
 
@@ -204,7 +218,9 @@
       </label>
       <p class="form-field-error" v-if="taxRuleErrors.default != undefined">{{ taxRuleErrors.isDefault }}</p>
       <input type="checkbox" class="form-field" v-model="tax_rule.is_default" />
-      <SubmitButton :in-progress="creatingTaxRule" @click="editCountryTaxRule" class="btn--main">{{ $t('app.country.view.edit_tax_rule.save') }}</SubmitButton>
+      <div class="mt-3">
+        <SubmitButton :in-progress="creatingTaxRule" @click="editCountryTaxRule" class="btn--main">{{ $t('app.country.view.edit_tax_rule.save') }}</SubmitButton>
+      </div>
     </VueFinalModal>
   </div>
 </template>
@@ -328,9 +344,11 @@ export default {
 
       axios.post("/app/country/"+id+"/tax-rule/"+this.tax_rule.id+"/edit", payload).then(response => {
         this.tax_rules[key] = response.data;
+        this.creatingTaxRule = false;
+        this.openCountryTaxEdit =false;
       }).catch(error => {
         this.taxRuleErrors = error.response.data.errors;
-        this.sendingInProgress = false;
+        this.creatingTaxRule = false;
         this.success = false;
       })
     },

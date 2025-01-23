@@ -1,13 +1,15 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity;
 
+use BillaBear\Tax\ThresholdType;
+use Brick\Money\Money;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -15,10 +17,10 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Table(name: 'state')]
 class State
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'string')]
@@ -30,11 +32,17 @@ class State
     #[ORM\Column(type: 'bigint')]
     private int $threshold;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $transactionThreshold = null;
+
     #[ORM\ManyToOne(targetEntity: Country::class)]
     private Country $country;
 
     #[ORM\Column(type: 'boolean')]
     private bool $collecting;
+
+    #[ORM\Column(type: 'string', enumType: ThresholdType::class, nullable: true)]
+    private ?ThresholdType $thresholdType = null;
 
     public function getId()
     {
@@ -86,7 +94,7 @@ class State
         $this->country = $country;
     }
 
-    public function hasNexus(): bool
+    public function isCollecting(): bool
     {
         return $this->collecting;
     }
@@ -94,5 +102,30 @@ class State
     public function setCollecting(bool $collecting): void
     {
         $this->collecting = $collecting;
+    }
+
+    public function getThresholdAsMoney(): Money
+    {
+        return Money::ofMinor($this->threshold, $this->country->getCurrency());
+    }
+
+    public function getTransactionThreshold(): ?int
+    {
+        return $this->transactionThreshold;
+    }
+
+    public function setTransactionThreshold(?int $transactionThreshold): void
+    {
+        $this->transactionThreshold = $transactionThreshold;
+    }
+
+    public function getThresholdType(): ?ThresholdType
+    {
+        return $this->thresholdType;
+    }
+
+    public function setThresholdType(?ThresholdType $thresholdType): void
+    {
+        $this->thresholdType = $thresholdType;
     }
 }

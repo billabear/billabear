@@ -1,5 +1,7 @@
 export const CHECKOUT_TRANSLATIONS = {
-    total: "Tax : {amount} {currency}",
+    title: "Checkout",
+    total: "Total due today: {amount} {currency}",
+    tax_total: "Tax : {amount} {currency}",
     items: {
         title: "Item Breakdown"
     },
@@ -34,5 +36,11 @@ export const CHECKOUT_TRANSLATIONS = {
         submit: "Pay"
     },
     loading: "Loading checkout details",
-    error: "Checkout unavailable"
+    error: "Checkout unavailable",
+    schedule: {
+        week: "Weekly",
+        month: "Monthly",
+        year: "Yearly",
+        "one-off": "One Off",
+    }
 }

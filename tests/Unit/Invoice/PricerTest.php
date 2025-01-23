@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Tests\Unit\Invoice;
@@ -11,9 +11,10 @@ namespace BillaBear\Tests\Unit\Invoice;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\Product;
-use BillaBear\Invoice\Pricer;
+use BillaBear\Pricing\Pricer;
 use BillaBear\Tax\TaxInfo;
 use BillaBear\Tax\TaxRateProviderInterface;
+use Parthenon\Billing\Enum\PriceType;
 use PHPUnit\Framework\TestCase;
 
 class PricerTest extends TestCase
@@ -25,6 +26,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(true);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -33,7 +35,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(null, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(0, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1199, $priceInfo->total->getMinorAmount()->toInt());
@@ -48,6 +50,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(true);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -56,7 +59,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(19.0, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(191, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1199, $priceInfo->total->getMinorAmount()->toInt());
@@ -71,6 +74,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(false);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -79,7 +83,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(19.0, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(228, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1427, $priceInfo->total->getMinorAmount()->toInt());
@@ -94,6 +98,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(true);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -102,7 +107,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(20.0, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(2000, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(12000, $priceInfo->total->getMinorAmount()->toInt());
@@ -117,6 +122,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(false);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -125,7 +131,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer, $taxType)->willReturn(new TaxInfo(20.0, 'GB', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(2400, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(14400.00, $priceInfo->total->getMinorAmount()->toInt());
@@ -140,6 +146,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(true);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -148,7 +155,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(3724, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(22345, $priceInfo->total->getMinorAmount()->toInt());
@@ -163,6 +170,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(false);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -171,7 +179,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(20.0, 'GB', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(4469, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(26814, $priceInfo->total->getMinorAmount()->toInt());
@@ -186,6 +194,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(true);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -194,7 +203,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'CH', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(86128, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1234500, $priceInfo->total->getMinorAmount()->toInt());
@@ -209,6 +218,7 @@ class PricerTest extends TestCase
         $price->setCurrency('EUR');
         $price->setIncludingTax(false);
         $price->setProduct(new Product());
+        $price->setType(PriceType::UNIT);
 
         $customer = new Customer();
         $taxType = new \BillaBear\Entity\TaxType();
@@ -217,7 +227,7 @@ class PricerTest extends TestCase
         $taxProvider->method('getRateForCustomer')->with($customer)->willReturn(new TaxInfo(7.5, 'DE', false));
 
         $subject = new Pricer($taxProvider);
-        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType);
+        $priceInfo = $subject->getCustomerPriceInfo($price, $customer, $taxType)[0];
 
         $this->assertEquals(92588, $priceInfo->vat->getMinorAmount()->toInt());
         $this->assertEquals(1327088, $priceInfo->total->getMinorAmount()->toInt());

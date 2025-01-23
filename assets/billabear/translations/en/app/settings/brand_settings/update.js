@@ -13,7 +13,9 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         code: "Code",
         tax_number: "Tax Number",
         tax_rate: "Tax Rate",
-        digital_services_tax_rate: "Digital Services Tax Rate"
+        digital_services_tax_rate: "Digital Services Tax Rate",
+        support_email: "Support Email",
+        support_phone_number: "Support Phone Number",
     },
     help_info: {
         name: "The name of the brand",
@@ -28,11 +30,14 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         postcode: "The post code for the billing address",
         tax_number: "The tax number for the company/brand",
         tax_rate: "The rax rate that is to be used for your home country or when no other tax rate can be found",
-        digital_services_tax_rate: "The tax rate that is to be used for your home country or when no other tax rate can be found for digital services"
+        digital_services_tax_rate: "The tax rate that is to be used for your home country or when no other tax rate can be found for digital services",
+        support_email: "The email address for support contact",
+        support_phone_number: "The phone number for support contact",
     },
     general: "General Settings",
     notifications: "Notifications",
     address_title: "Billing Address",
+    support: "Support Contact Details",
     success_message: "Updated",
     submit_btn: "Update",
     notification: {
@@ -45,6 +50,7 @@ export const BRAND_SETTINGS_UPDATE_TRANSLATIONS = {
         quote_created: "Quote Created",
         trial_ending_warning: "Trial Ending Warning",
         before_charge_warning: "Before Charge Warning",
+        payment_failure: "Payment Failure",
         before_charge_warning_options: {
             none: "None",
             all: "All",

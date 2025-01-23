@@ -8,7 +8,8 @@ const state = {
     selectedFeatures: [],
     selectedLimits: [],
     selectedPrices: [],
-    errors: {}
+    errors: {},
+    metrics: [],
 }
 
 const actions = {
@@ -49,6 +50,9 @@ const actions = {
     },
     removePriceFromSelected({commit}, {key}) {
         commit('removePrice', key)
+    },
+    reset({commit}) {
+        commit('resetEverything', []);
     },
     createFeature({commit}, {feature}) {
         commit('markAsSendingRequest')
@@ -101,6 +105,7 @@ const mutations = {
     setData(state, payload) {
         state.features = payload.features;
         state.prices = payload.prices;
+        state.metrics = payload.metrics;
         state.loaded = true;
     },
     setSubscriptionPlanData(state, payload) {
@@ -109,6 +114,7 @@ const mutations = {
         state.selectedFeatures = payload.subscription_plan.features;
         state.features = payload.features;
         state.prices = payload.prices;
+        state.metrics = payload.metrics;
         state.loaded = true;
     },
     addNewFeature(state, feature) {
@@ -138,6 +144,11 @@ const mutations = {
     },
     removePrice(state, key){
         state.selectedPrices.splice(key, 1);
+    },
+    resetEverything(state, key){
+        state.selectedPrices = [];
+        state.selectedFeatures = [];
+        state.selectedLimits = [];
     }
 }
 

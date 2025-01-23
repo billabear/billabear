@@ -1,13 +1,14 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Command;
 
+use BillaBear\Background\Payments\ExchangeRatesFetchProcess;
 use BillaBear\Dev\DemoData\CustomerCreation;
 use BillaBear\Dev\DemoData\InvoiceCreation;
 use BillaBear\Dev\DemoData\SubscriptionCreation;
@@ -23,10 +24,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'billabear:dev:demo-data', description: 'Generate some demo data')]
 class DevDemoDataCommand extends Command
 {
-    public const NUMBER_OF_CUSTOMERS = 2000;
-
     private static int $count;
     private static \DateTime $date;
+
+    public function __construct(
+        private readonly CustomerCreation $customerCreation,
+        private readonly SubscriptionPlanCreation $subscriptionPlanCreation,
+        private readonly SubscriptionCreation $subscriptionCreation,
+        private readonly InvoiceCreation $invoiceCreation,
+        private readonly RevenueEstimatesGeneration $estimatesGeneration,
+        private readonly CreateSubscriptionCountStats $createSubscriptionCountStats,
+        private readonly ExchangeRatesFetchProcess $exchangeRatesFetchProcess,
+    ) {
+        parent::__construct();
+    }
 
     public static function getNumberOfCustomers(): int
     {
@@ -38,18 +49,7 @@ class DevDemoDataCommand extends Command
         return clone self::$date;
     }
 
-    public function __construct(
-        private CustomerCreation $customerCreation,
-        private SubscriptionPlanCreation $subscriptionPlanCreation,
-        private SubscriptionCreation $subscriptionCreation,
-        private InvoiceCreation $invoiceCreation,
-        private RevenueEstimatesGeneration $estimatesGeneration,
-        private CreateSubscriptionCountStats $createSubscriptionCountStats,
-    ) {
-        parent::__construct(null);
-    }
-
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('date', mode: InputOption::VALUE_REQUIRED, description: 'The starting date to add new customers and subscriptions', default: '-18 months')
             ->addOption('count', mode: InputOption::VALUE_REQUIRED, description: 'The number of users to add', default: 3000)
@@ -60,7 +60,8 @@ class DevDemoDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         self::$count = $input->getOption('count');
-        self::$date = new \DateTime($input->getOption('date'));
+        $date = new \DateTime($input->getOption('date'));
+        static::$date = $date;
         $products = $input->getOption('products');
         $writeToStripe = 'true' === strtolower($input->getOption('stripe'));
 
@@ -69,8 +70,11 @@ class DevDemoDataCommand extends Command
         if ('true' === strtolower($products)) {
             $this->subscriptionPlanCreation->createData($output, $writeToStripe);
         }
+        $output->writeln('Fetching exchange rates');
+        $this->exchangeRatesFetchProcess->process();
         $this->subscriptionCreation->createData($output, $writeToStripe);
         $this->invoiceCreation->createData($output, $writeToStripe);
+        $output->writeln('Generating data');
         $this->estimatesGeneration->generate();
         $this->createSubscriptionCountStats->generate();
 

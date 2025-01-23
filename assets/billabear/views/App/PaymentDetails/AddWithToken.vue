@@ -3,7 +3,7 @@
     <h1 class="page-title">{{ $t('app.payment_details.add_with_token.title') }}</h1>
 
     <form @submit.prevent="send">
-    <div class="card-body m-5">
+    <div class="card-body">
 
         <div class="form-field-ctn">
           <label class="form-field-lbl" for="token">
@@ -18,7 +18,7 @@
 
     </div>
 
-    <div class="ml-5">
+    <div class="mt-5">
       <SubmitButton :in-progress="sending">{{ $t('app.payment_details.add_with_token.submit') }}</SubmitButton>
     </div>
     </form>

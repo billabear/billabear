@@ -1,56 +1,57 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Dev\DemoData;
 
 use BillaBear\Command\DevDemoDataCommand;
+use BillaBear\Customer\CustomerStatus;
+use BillaBear\Customer\CustomerType;
 use BillaBear\Customer\ExternalRegisterInterface;
 use BillaBear\Entity\Customer;
-use BillaBear\Enum\CustomerStatus;
-use BillaBear\Enum\CustomerType;
+use BillaBear\Payment\Provider\ProviderFactory;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
 use Parthenon\Billing\Entity\PaymentCard;
 use Parthenon\Common\Address;
 use Stripe\StripeClient;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class CustomerCreation
 {
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
         private ExternalRegisterInterface $externalRegister,
-        #[Autowire('%parthenon_billing_payments_obol_config%')]
-        private $stripeConfig,
+        private ProviderFactory $providerFactory,
         private PaymentCardRepositoryInterface $paymentCardRepository,
         private BrandSettingsRepositoryInterface $brandSettingsRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
     public function createData(OutputInterface $output, bool $writeToStripe): void
     {
-        $faker = \Faker\Factory::create();
         /* @var StripeClient $stripe */
         if ($writeToStripe) {
-            $stripe = new StripeClient($this->stripeConfig['api_key']);
+            $stripe = new StripeClient($this->providerFactory->getApiKey());
         }
 
         $numberOfCustomers = DevDemoDataCommand::getNumberOfCustomers();
         $output->writeln('Starting to create customers');
         $progressBar = new ProgressBar($output, $numberOfCustomers);
 
-        $brandSettings = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
-
         $progressBar->start();
         for ($i = 0; $i < $numberOfCustomers; ++$i) {
+            $faker = Factory::create();
+            $brandSettings = $this->brandSettingsRepository->getByCode(Customer::DEFAULT_BRAND);
             $customer = new Customer();
             $customer->setBillingEmail($faker->email);
             $customer->setName($faker->name);
@@ -106,6 +107,9 @@ class CustomerCreation
 
             $this->paymentCardRepository->save($paymentCard);
             $progressBar->advance();
+            if (0 === $i % 100) {
+                $this->entityManager->clear();
+            }
         }
         $progressBar->finish();
     }

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Repository;
@@ -12,11 +12,13 @@ use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\Price;
 use BillaBear\Entity\Subscription as BillaSubscription;
 use BillaBear\Entity\SubscriptionPlan;
+use Parthenon\Athena\ResultSet;
 use Parthenon\Billing\Entity\CustomerInterface;
 use Parthenon\Billing\Entity\Subscription;
 
 /**
- * @method findById($id) \BillaBear\Entity\Subscription
+ * @method BillaSubscription   findById($id)
+ * @method BillaSubscription[] getAllActiveForCustomer(CustomerInterface $customer)
  */
 interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\SubscriptionRepositoryInterface
 {
@@ -79,4 +81,8 @@ interface SubscriptionRepositoryInterface extends \Parthenon\Billing\Repository\
     public function getAllActiveCountForCustomer(CustomerInterface $customer): int;
 
     public function getAllCancelledCountForCustomer(CustomerInterface $customer): int;
+
+    public function getLastTenForCustomer($customer): ResultSet;
+
+    public function getSubscriptionWithUsage(): array;
 }

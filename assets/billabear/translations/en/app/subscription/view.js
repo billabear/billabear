@@ -18,7 +18,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
         price: "Price",
         recurring: "Recurring",
         schedule: "Schedule",
-        change: "Change"
+        change: "Change",
+        no_price: "No price set for subscription"
     },
     payments: {
         title: "Payments",
@@ -43,6 +44,16 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
             created_at: "Created At"
         },
         no_subscription_events: "No Subscription Events"
+    },
+    usage_estimate: {
+        title: "Usage Estimate Cost",
+        usage: "Usage",
+        estimate_cost: "Estimate Cost",
+        metric: "Metric"
+    },
+    metadata: {
+        title: "Metadata",
+        no_metadata: "No Metadata"
     },
     buttons: {
         cancel: "Cancel",

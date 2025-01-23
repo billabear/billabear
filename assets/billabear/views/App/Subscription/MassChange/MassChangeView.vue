@@ -1,11 +1,10 @@
 <template>
   <div>
-    <h1 class="ml-5 mt-5 page-title">{{ $t('app.subscription.mass_change.view.title') }}</h1>
+    <h1 class="mb-3 page-title">{{ $t('app.subscription.mass_change.view.title') }}</h1>
     <LoadingScreen :ready="ready">
-      <div class="p-5">
-        <div class="mt-5 card-body">
-          <h3>{{ $t('app.subscription.mass_change.view.criteria.title') }}</h3>
-
+      <div class="">
+        <div class="card-body">
+          <h3 class="text-xl">{{ $t('app.subscription.mass_change.view.criteria.title') }}</h3>
 
           <dl class="detail-list">
             <div v-if="mass_change.target_plan !== null">
@@ -26,8 +25,8 @@
             </div>
           </dl>
         </div>
-        <div class="mt-5 card-body">
-          <h3>{{ $t('app.subscription.mass_change.view.new_values.title') }}</h3>
+        <div class="mt-3 card-body">
+          <h3 class="text-xl">{{ $t('app.subscription.mass_change.view.new_values.title') }}</h3>
           <dl class="detail-list">
             <div v-if="mass_change.new_plan !== null">
               <dt>{{ $t('app.subscription.mass_change.view.new_values.plan') }}</dt>
@@ -39,16 +38,16 @@
             </div>
           </dl>
         </div>
-        <div class="mt-5 card-body">
-          <h3>{{ $t('app.subscription.mass_change.view.change_date.title') }}</h3>
+        <div class="mt-3 card-body">
+          <h3 class="text-xl">{{ $t('app.subscription.mass_change.view.change_date.title') }}</h3>
 
           {{  $filters.moment(mass_change.change_date, "LLL") }}
         </div>
 
-        <div class="mt-5 card-body" v-if="estimate !== null">
+        <div class="mt-3 card-body" v-if="estimate !== null">
           {{ $t('app.subscription.mass_change.view.estimate.amount', {amount: currency(this.estimate.amount), currency: this.estimate.currency, schedule: this.estimate.schedule}) }}
         </div>
-        <div class="mt-5">
+        <div class="mt-3">
           <SubmitButton :in-progress="exportInProgress" @click="processExport">{{ $t('app.subscription.mass_change.view.export_button') }}</SubmitButton>
           <SubmitButton :in-progress="cancelInProgress" @click="cancel" class="ml-5 btn--danger" v-if="mass_change.status == 'created'">{{ $t('app.subscription.mass_change.view.cancel') }}</SubmitButton>
           <SubmitButton :in-progress="cancelInProgress" @click="uncancel" class="ml-5 btn--secondary" v-if="mass_change.status == 'cancelled'">{{ $t('app.subscription.mass_change.view.uncancel') }}</SubmitButton>
@@ -140,7 +139,6 @@ export default {
             if (responseData) {
               if (typeof responseData === 'string') {
                 const jsonData = JSON.parse(responseData);
-                console.log('Response is JSON:', jsonData);
               }
             }
           })

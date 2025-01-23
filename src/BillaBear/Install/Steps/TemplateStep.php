@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Install\Steps;
@@ -754,6 +754,24 @@ SOFTWARE. #}
         $emailTemplate->setName(EmailTemplate::NAME_TRIAL_ENDING_WARNING);
         $emailTemplate->setSubject('Your Trial Is Ending Soon');
         $emailTemplate->setTemplateBody($this->getEmailTemplate('Your trial is ending soon. If you don\'t want to continue cancel now.'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_USAGE_WARNING);
+        $emailTemplate->setSubject('Usage Warning');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('<p>Just to let you know, your account currently has the usage of {{ current_amount }}.</p>'));
+        $emailTemplate->setBrand($brand);
+        $emailTemplate->setUseEmspTemplate(false);
+        $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);
+        $this->emailTemplateRepository->save($emailTemplate);
+
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setName(EmailTemplate::NAME_USAGE_DISABLED);
+        $emailTemplate->setSubject('Usage Warning');
+        $emailTemplate->setTemplateBody($this->getEmailTemplate('<p>Just to let you know, your account currently has the usage of {{ current_amount }} and to stop unexpected high usage costs we\'ve disabled your account.</p>'));
         $emailTemplate->setBrand($brand);
         $emailTemplate->setUseEmspTemplate(false);
         $emailTemplate->setLocale(Customer::DEFAULT_LOCALE);

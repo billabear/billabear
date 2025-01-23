@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Controller\App;
@@ -11,7 +11,7 @@ namespace BillaBear\Controller\App;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\DataMappers\ProductDataMapper;
 use BillaBear\DataMappers\Subscriptions\SubscriptionPlanDataMapper;
-use BillaBear\DataMappers\TaxTypeDataMapper;
+use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\CreateProduct;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Dto\Response\App\Product\CreateProductView;
@@ -20,7 +20,6 @@ use BillaBear\Dto\Response\App\ProductView;
 use BillaBear\Filters\ProductList;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
-use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Entity\Product;
 use Parthenon\Billing\Obol\ProductRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
@@ -88,13 +87,7 @@ class ProductController
         }
 
         $product = $productFactory->createFromAppCreate($dto);
-        if (!$product->hasExternalReference()) {
-            try {
-                $product = $productRegister->registerProduct($product);
-            } catch (ProviderFailureException $e) {
-                return new JsonResponse([], JsonResponse::HTTP_FAILED_DEPENDENCY);
-            }
-        }
+
         $productRepository->save($product);
         $productDto = $productFactory->createApiDtoFromProduct($product);
         $jsonResponse = $serializer->serialize($productDto, 'json');
@@ -135,7 +128,7 @@ class ProductController
             lastId: $lastKey,
         );
 
-        $dtos = array_map([$productFactory, 'createApiDtoFromProduct'], $resultSet->getResults());
+        $dtos = array_map([$productFactory, 'createAppDtoFromProduct'], $resultSet->getResults());
 
         $listResponse = new ListResponse();
         $listResponse->setHasMore($resultSet->hasMore());

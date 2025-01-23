@@ -1,7 +1,8 @@
 export const ONBOARDING_MAIN_TRANSLATION = {
     bar: {
-        message: "Stripe must be configured before you can use BillaBear"
+        message: "Stripe must be configured before you can use BillaBear!"
     },
+    error: "Something went wrong!",
     dialog: {
         title: "Onboarding",
         has_stripe_key: {

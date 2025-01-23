@@ -9,6 +9,7 @@ export const SUBSCRIPTION_LIST_TRANSLATIONS = {
     next: "Next Page",
     prev: "Previous Page",
     view: "View",
+    loading: "Loading subscriptions...",
     filter: {
         title: "Filters",
         email: "Email",
@@ -16,6 +17,17 @@ export const SUBSCRIPTION_LIST_TRANSLATIONS = {
         external_reference: "External Reference",
         button: "Filters",
         search: "Filter"
+    },
+    filters: {
+        status: "Status",
+        status_choices: {
+            cancelled: "Cancelled",
+            active: "Active",
+            blocked: "Blocked",
+            overdue_payment_open: "Overdue Payment Open",
+            trial_active: "Active Trial",
+            trial_ended: "Trial Ended"
+        }
     },
     error_message: "An error has occurred"
 }

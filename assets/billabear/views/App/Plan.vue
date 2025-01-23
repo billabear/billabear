@@ -92,7 +92,6 @@ export default {
   methods: {
     select: function (planName, paymentSchedule) {
       planservice.startSubscriptionFromPaymentDetails(planName, paymentSchedule, this.currency).then(response => {
-        console.log(response)
         alert('here')
       })
     },

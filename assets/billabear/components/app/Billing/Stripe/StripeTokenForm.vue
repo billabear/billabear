@@ -103,9 +103,6 @@ export default {
   text-decoration: none;
 }
 
-.hidden {
-  display: none;
-}
 
 #card-error {
   color: rgb(105, 115, 134);

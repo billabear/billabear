@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright Humbly Arrogant Software Limited 2023-2024.
+ * Copyright Humbly Arrogant Software Limited 2023-2025.
  *
- * Use of this software is governed by the Functional Source License, Version 1.1, Apache 2.0 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
+ * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
 namespace BillaBear\Entity\Stats;
@@ -11,16 +11,10 @@ namespace BillaBear\Entity\Stats;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-#[ORM\MappedSuperclass()]
 #[ORM\Index(fields: ['year', 'month', 'day'])]
+#[ORM\MappedSuperclass]
 class AbstractStats
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private $id;
-
     #[ORM\Column(type: 'integer')]
     protected int $count = 0;
 
@@ -38,6 +32,11 @@ class AbstractStats
 
     #[ORM\Column(type: 'string')]
     protected string $brandCode;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
+    private $id;
 
     public function getId()
     {
