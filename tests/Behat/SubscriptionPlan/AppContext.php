@@ -81,7 +81,14 @@ class AppContext implements Context
     {
         $subscriptionPlan = $this->findSubscriptionPlanByName($planName);
         $product = $subscriptionPlan->getProduct();
-        $price = $this->priceRepository->findOneBy(['product' => $product]);
+
+        if (isset($data['Price'])) {
+            $price = $this->priceRepository->findOneBy(['amount' => $data['Price'], 'currency' => $data['Currency']]);
+            $subscriptionPlan->addPrice($price);
+        } else {
+            $price = $this->priceRepository->findOneBy(['product' => $product]);
+        }
+
         $feature = $subscriptionPlan->getFeatures()->current();
         /** @var SubscriptionPlanLimit $limitFeature */
         $limitFeature = $subscriptionPlan->getLimits()->current();
@@ -111,8 +118,9 @@ class AppContext implements Context
 
     /**
      * @Given a Subscription Plan exists for product :arg1 with a feature :arg2 and a limit for :arg3 with a limit of :arg5 and price :arg4 with:
+     * @Given a Subscription Plan exists for product :arg1 with a feature :arg2 and a limit for :arg3 with a limit of :arg5 with:
      */
-    public function aSubscriptionPlanExistsForProductWithAFeatureAndALimitForWithALimitOfAndPriceWith($productName, $featureName, $limitFeatureName, $limit, $price, TableNode $table)
+    public function aSubscriptionPlanExistsForProductWithAFeatureAndALimitForWithALimitOfAndPriceWith($productName, $featureName, $limitFeatureName, $limit, TableNode $table)
     {
         $data = $table->getRowsHash();
 
@@ -135,6 +143,11 @@ class AppContext implements Context
         $subscriptionPlan->addLimit($subscriptionLimit);
         $subscriptionPlan->setCodeName($data['Code Name'] ?? null);
         $subscriptionPlan->setIsTrialStandalone('true' === strtolower($data['Standalone Trial'] ?? 'false'));
+
+        if (isset($data['Price'])) {
+            $price = $this->priceRepository->findOneBy(['amount' => $data['Price'], 'currency' => $data['Currency']]);
+            $subscriptionPlan->addPrice($price);
+        }
 
         $this->subscriptionFeatureRepository->getEntityManager()->persist($subscriptionPlan);
         $this->subscriptionFeatureRepository->getEntityManager()->flush();

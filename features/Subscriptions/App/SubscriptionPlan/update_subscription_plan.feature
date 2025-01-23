@@ -20,8 +20,12 @@ Feature: Update Subscription Plan
       | Feature One   | feature_one   | A dummy feature |
       | Feature Two   | feature_two   | A dummy feature |
       | Feature Three | feature_three | A dummy feature |
+    And the follow prices exist:
+      | Product     | Amount | Currency | Recurring | Schedule | Public |
+      | Product One | 100   | USD      | true      | week     | true   |
+      | Product One | 120   | USD      | true      | week     | true   |
 
-  Scenario: Create a Subscription Plan use code name
+  Scenario:
     Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
     And a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "Price One" with:
       | Name       | Test Plan  |
@@ -35,5 +39,32 @@ Feature: Update Subscription Plan
       | Per Seat   | False       |
       | User Count | 10          |
       | Code Name  | test        |
+    Then there should not be an error
+    Then there should be a subscription plan called "Test Plan 2"
+
+  Scenario:
+    Given I have logged in as "sally.brown@example.org" with the password "AF@k3P@ss"
+    And a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 with:
+      | Name       | Test Plan  |
+      | Public     | True       |
+      | Per Seat   | False      |
+      | User Count | 10         |
+      | Code Name  | test       |
+      | Price      | 100        |
+      | Currency   | USD        |
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+    And the following subscriptions exist:
+      | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 |
+      | Test Plan         | 100          | USD            | week          | customer.one@example.org |
+    When I update a Subscription Plan "Test Plan":
+      | Name       | Test Plan 2 |
+      | Public     | True        |
+      | Per Seat   | False       |
+      | User Count | 10          |
+      | Code Name  | test        |
+      | Price      | 120        |
+      | Currency   | USD        |
     Then there should not be an error
     Then there should be a subscription plan called "Test Plan 2"
