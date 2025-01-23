@@ -37,7 +37,7 @@ class Pricer implements PricerInterface
             PriceType::TIERED_GRADUATED => $this->getTierGraduatedPrice($price, $seatNumber, $alreadyBilled),
             PriceType::TIERED_VOLUME => $this->getTieredVolumePrice($price, $seatNumber),
             PriceType::UNIT => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber, RoundingMode::HALF_CEILING), $seatNumber, $price->getAsMoney())],
-            PriceType::PACKAGE => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber / $price->getUnits(), RoundingMode::HALF_CEILING), $seatNumber, $price->getAsMoney())],
+            PriceType::PACKAGE => [new PriceCalculation($price->getAsMoney()->multipliedBy(ceil($seatNumber / $price->getUnits()), RoundingMode::HALF_CEILING), $seatNumber, $price->getAsMoney())],
             default => [new PriceCalculation($price->getAsMoney()->multipliedBy($seatNumber, RoundingMode::HALF_CEILING), $seatNumber, $price->getAsMoney())],
         };
 
