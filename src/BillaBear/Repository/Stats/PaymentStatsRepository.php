@@ -21,13 +21,13 @@ class PaymentStatsRepository implements PaymentStatsRepositoryInterface
 
     public function getDailyPaymentStatesForAMonth(): array
     {
-        $result = $this->connection->executeQuery('select count(*), sum(rl.converted_total) as amount,  sp."name",  
+        $result = $this->connection->executeQuery('select count(*), sum(rl.converted_total) as amount, COALESCE(sp."name", \'Other\') as name,  
 EXTRACT(DAY FROM p.created_at) as "day", EXTRACT(MONTH FROM p.created_at) as "month", EXTRACT(year FROM p.created_at) as "year" 
 from receipt_line rl
 inner join receipt r on r.id = rl.receipt_id 
 inner join payment p on p.id = r.payment_id    
 inner join "subscription" s on s.id = rl.subscription_id 
-inner join subscription_plan sp on sp.id = s.subscription_plan_id 
+left join subscription_plan sp on sp.id = s.subscription_plan_id 
 WHERE p.created_at >= NOW() - INTERVAL \'30 days\'
 group by sp."name", EXTRACT(DAY FROM p.created_at), EXTRACT(MONTH FROM p.created_at), EXTRACT(year FROM p.created_at)
 order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at), EXTRACT(DAY FROM p.created_at)');
@@ -37,13 +37,13 @@ order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at), EXTR
 
     public function getMonthlyPaymentStatsForAYear(): array
     {
-        $result = $this->connection->executeQuery('select count(*), sum(rl.converted_total) as amount,  sp."name",  
+        $result = $this->connection->executeQuery('select count(*), sum(rl.converted_total) as amount,  COALESCE(sp."name", \'Other\') as name,  
 EXTRACT(MONTH FROM p.created_at) as "month", EXTRACT(year FROM p.created_at) as "year" 
 from receipt_line rl
 inner join receipt r on r.id = rl.receipt_id 
 inner join payment p on p.id = r.payment_id
 inner join "subscription" s on s.id = rl.subscription_id 
-inner join subscription_plan sp on sp.id = s.subscription_plan_id 
+left join subscription_plan sp on sp.id = s.subscription_plan_id 
 WHERE p.created_at >= NOW() - INTERVAL \'12 months\'
 group by sp."name", EXTRACT(MONTH FROM p.created_at), EXTRACT(year FROM p.created_at)
 order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at);');
@@ -53,13 +53,13 @@ order by EXTRACT(year FROM p.created_at), EXTRACT(MONTH FROM p.created_at);');
 
     public function getYearlyPaymentStats(): array
     {
-        $result = $this->connection->executeQuery('select count(*),sum(rl.converted_total) as amount, sp."name",  
+        $result = $this->connection->executeQuery('select count(*),sum(rl.converted_total) as amount, COALESCE(sp."name", \'Other\') as name,  
 EXTRACT(year FROM p.created_at) as "year" 
 from receipt_line rl
 inner join receipt r on r.id = rl.receipt_id 
 inner join payment p on p.id = r.payment_id
 inner join "subscription" s on s.id = rl.subscription_id 
-inner join subscription_plan sp on sp.id = s.subscription_plan_id 
+left join subscription_plan sp on sp.id = s.subscription_plan_id 
 WHERE p.created_at >= NOW() - INTERVAL \'5 years\'
 group by sp."name", EXTRACT(year FROM p.created_at)
 order by EXTRACT(year FROM p.created_at)');
