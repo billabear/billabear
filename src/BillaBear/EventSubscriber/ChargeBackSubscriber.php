@@ -9,16 +9,17 @@
 namespace BillaBear\EventSubscriber;
 
 use BillaBear\Entity\ChargeBackCreation;
-use BillaBear\Payment\ChargeBackCreationProcessor;
 use BillaBear\Repository\ChargeBackCreationRepositoryInterface;
+use BillaBear\Workflow\Messenger\Messages\ProcessChargeBack;
 use Parthenon\Billing\Event\ChargeBackCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ChargeBackSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private ChargeBackCreationRepositoryInterface $chargeBackCreationRepository,
-        private ChargeBackCreationProcessor $chargeBackCreationProcessor,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -41,6 +42,6 @@ class ChargeBackSubscriber implements EventSubscriberInterface
         $paymentCreation->setState('started');
 
         $this->chargeBackCreationRepository->save($paymentCreation);
-        $this->chargeBackCreationProcessor->process($paymentCreation);
+        $this->messageBus->dispatch(new ProcessChargeBack((string) $paymentCreation->getId()));
     }
 }
