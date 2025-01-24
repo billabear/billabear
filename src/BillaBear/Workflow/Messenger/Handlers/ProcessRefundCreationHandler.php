@@ -12,7 +12,9 @@ use BillaBear\Payment\RefundCreatedProcessor;
 use BillaBear\Repository\RefundCreatedProcessRepositoryInterface;
 use BillaBear\Workflow\Messenger\Messages\ProcessRefundCreation;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class ProcessRefundCreationHandler
 {
     use LoggerAwareTrait;

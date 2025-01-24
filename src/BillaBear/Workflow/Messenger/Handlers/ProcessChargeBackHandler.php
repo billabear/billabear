@@ -12,7 +12,9 @@ use BillaBear\Payment\ChargeBackCreationProcessor;
 use BillaBear\Repository\ChargeBackCreationRepositoryInterface;
 use BillaBear\Workflow\Messenger\Messages\ProcessChargeBack;
 use Parthenon\Common\LoggerAwareTrait;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class ProcessChargeBackHandler
 {
     use LoggerAwareTrait;
