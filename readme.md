@@ -80,6 +80,10 @@ Pricing Examples:
 * Have tiered volume with a fixed fee and per unit fee.
 * Seats pricing where you charge per seat.
 
+### Customer Facing Frontend
+
+BillaBear allows you to use Stripe.JS by providing you a token that is registered with Stripe to be used with the customer. This allows you all the normal flexibility that Stripe.JS allows for.
+
 ### Feature Comparison Matrix
 
 | Feature                           | BillaBear | Lago Open Source | Lago Cloud | Stripe | ChargeBee | Recurly | KillBill |
@@ -137,7 +141,8 @@ Pricing Examples:
 To start integrating with BillaBear you can use the REST API.
 
 * [Swagger Docs](https://swagger.billabear.com)
-* [Technical Documentation For API](https://docs.billabear.com/technical/api/)
+* [Technical Documentation For API](https://docs.billabear.com/technical/)
+* [User Documentation](https://docs.billabear.com/user/)
 
 ### SDKS
 
