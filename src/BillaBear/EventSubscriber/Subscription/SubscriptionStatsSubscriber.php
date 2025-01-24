@@ -11,20 +11,21 @@ namespace BillaBear\EventSubscriber\Subscription;
 use BillaBear\Entity\SubscriptionCreation;
 use BillaBear\Repository\SubscriptionCreationRepositoryInterface;
 use BillaBear\Stats\RevenueEstimatesGeneration;
-use BillaBear\Subscription\Process\SubscriptionCreationProcessor;
 use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionStartPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
+use BillaBear\Workflow\Messenger\Messages\ProcessSubscriptionCreated;
 use Parthenon\Billing\Event\SubscriptionCancelled;
 use Parthenon\Billing\Event\SubscriptionCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class SubscriptionStatsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private SubscriptionCreationRepositoryInterface $subscriptionCreationRepository,
-        private SubscriptionCreationProcessor $subscriptionCreationProcessor,
         private RevenueEstimatesGeneration $revenueEstimatesGeneration,
         private WebhookDispatcherInterface $eventDispatcher,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -48,7 +49,7 @@ class SubscriptionStatsSubscriber implements EventSubscriberInterface
         $subscriptionCreation->setCreatedAt(new \DateTime());
 
         $this->subscriptionCreationRepository->save($subscriptionCreation);
-        $this->subscriptionCreationProcessor->process($subscriptionCreation);
+        $this->messageBus->dispatch(new ProcessSubscriptionCreated((string) $subscriptionCreation->getId()));
 
         $this->revenueEstimatesGeneration->generate();
 
