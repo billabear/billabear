@@ -9,16 +9,17 @@
 namespace BillaBear\EventSubscriber;
 
 use BillaBear\Entity\RefundCreatedProcess;
-use BillaBear\Payment\RefundCreatedProcessor;
 use BillaBear\Repository\RefundCreatedProcessRepositoryInterface;
+use BillaBear\Workflow\Messenger\Messages\ProcessRefundCreation;
 use Parthenon\Billing\Event\RefundCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RefundSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private RefundCreatedProcessRepositoryInterface $refundCreatedProcessRepository,
-        private RefundCreatedProcessor $refundCreatedProcessor,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -42,6 +43,6 @@ class RefundSubscriber implements EventSubscriberInterface
         $paymentCreation->setState('started');
 
         $this->refundCreatedProcessRepository->save($paymentCreation);
-        $this->refundCreatedProcessor->process($paymentCreation);
+        $this->messageBus->dispatch(new ProcessRefundCreation((string) $paymentCreation->getId()));
     }
 }
