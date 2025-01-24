@@ -11,10 +11,9 @@ namespace BillaBear\Workflow\Messenger\Messages;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]
-readonly class ProcessSubscriptionCreated
+class ProcessPaymentCreated
 {
-    public function __construct(
-        public string $id,
-    ) {
+    public function __construct(public string $id)
+    {
     }
 }

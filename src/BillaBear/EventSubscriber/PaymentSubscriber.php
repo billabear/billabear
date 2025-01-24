@@ -11,14 +11,17 @@ namespace BillaBear\EventSubscriber;
 use BillaBear\Entity\PaymentCreation;
 use BillaBear\Payment\PaymentCreationProcessor;
 use BillaBear\Repository\PaymentCreationRepositoryInterface;
+use BillaBear\Workflow\Messenger\Messages\ProcessPaymentCreated;
 use Parthenon\Billing\Event\PaymentCreated;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PaymentSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private PaymentCreationRepositoryInterface $paymentCreationRepository,
         private PaymentCreationProcessor $paymentCreationProcessor,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -41,6 +44,6 @@ class PaymentSubscriber implements EventSubscriberInterface
         $paymentCreation->setState('started');
 
         $this->paymentCreationRepository->save($paymentCreation);
-        $this->paymentCreationProcessor->process($paymentCreation);
+        $this->messageBus->dispatch(new ProcessPaymentCreated((string) $paymentCreation->getId()));
     }
 }
