@@ -44,6 +44,7 @@ use BillaBear\Subscription\PaymentMethodUpdateProcessor;
 use BillaBear\User\UserProvider;
 use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
+use BillaBear\Workflow\Messenger\Messages\ProcessCancellationRequest;
 use Parthenon\Billing\Entity\Price;
 use Parthenon\Billing\Enum\BillingChangeTiming;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
@@ -56,6 +57,7 @@ use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -308,6 +310,7 @@ class SubscriptionController
         CancellationRequestProcessor $cancellationRequestProcessor,
         CancellationDataMapper $cancellationRequestFactory,
         UserProvider $userProvider,
+        MessageBusInterface $messageBus,
     ): Response {
         $this->getLogger()->info('Received a request to cancel subscription', ['subscription_id' => $request->get('subscriptionId')]);
 
@@ -342,7 +345,7 @@ class SubscriptionController
         $cancellationRequestRepository->save($cancellationRequest);
 
         try {
-            $cancellationRequestProcessor->process($cancellationRequest);
+            $messageBus->dispatch(new ProcessCancellationRequest((string) $cancellationRequest->getId()));
         } catch (\Throwable $exception) {
             $cancellationRequestRepository->save($cancellationRequest);
 

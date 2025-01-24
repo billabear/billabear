@@ -18,8 +18,6 @@ class CancellationRequestProcessor
 {
     use LoggerAwareTrait;
 
-    public const TRANSITIONS = ['cancel_subscription', 'issue_refund', 'handle_stats', 'send_customer_notice', 'send_internal_notice', 'complete'];
-
     public function __construct(
         private WorkflowProcessor $workflowProcessor,
         private CancellationRequestRepositoryInterface $cancellationRequestRepository,
@@ -28,6 +26,6 @@ class CancellationRequestProcessor
 
     public function process(CancellationRequest $request): void
     {
-        $cancellationRequestStateMachine = $this->workflowProcessor->process($request, WorkflowType::CANCEL_SUBSCRIPTION, $this->cancellationRequestRepository);
+        $this->workflowProcessor->process($request, WorkflowType::CANCEL_SUBSCRIPTION, $this->cancellationRequestRepository);
     }
 }
