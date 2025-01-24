@@ -23,6 +23,8 @@ Watch the video on youtube.
 
 ## Features
 
+More features than you can shake a stick at, including:
+
 * Tax System (Thresholds, Multiple Tax Types, Country Tax Rules, State Tax Rules)
 * Workflow system
 * Plan Management
@@ -166,7 +168,7 @@ Platform.
 
 ### Docker Compose
 
-Billabear is deployable using docker-compose using the docker-compose.yaml found
+BillaBear is deployable using docker-compose using the docker-compose.yaml found
 in https://github.com/billabear/hosting-docker-compose.
 
 ```
