@@ -8,7 +8,7 @@ services:
       - billabear
 
   database:
-    image: timescale/timescaledb-ha:pg16
+    image: timescale/timescaledb:pg16
     environment:
       - POSTGRES_DB=${PSQGL_DATABASE_NAME}
       - POSTGRES_USER=${PSQGL_DATABASE_USER}
@@ -22,7 +22,7 @@ services:
       - billabear
 
   php-fpm:
-    image: billabear/ubuntu-php-fpm:8.2
+    image: billabear/ubuntu-php-fpm:8.4
     depends_on:
       - database
     environment:
