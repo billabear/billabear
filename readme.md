@@ -88,6 +88,22 @@ Pricing Examples:
 
 BillaBear allows you to use Stripe.JS by providing you a token that is registered with Stripe to be used with the customer. This allows you all the normal flexibility that Stripe.JS allows for.
 
+### Integrations
+
+* DocRaptor - PDF Generation
+* SendGrid - Email Service Provider
+* Mailgun - Email Service Provider
+* PostMark - Email Service Provider
+* Stripe - Payment Provider
+* VAT Sense - Tax Rules
+* Slack - Notifications
+* Xero - Accounting
+* EasyBill - Accounting
+* Mailchimp - Marketing
+* EmailOctopus - Marketing
+* FreshDesk - Help Desk
+* Zendesk - Help Desk
+
 ### Feature Comparison Matrix
 
 | Feature                           | BillaBear | Lago Open Source | Lago Cloud | Stripe | ChargeBee | Recurly | KillBill |
@@ -139,6 +155,16 @@ BillaBear allows you to use Stripe.JS by providing you a token that is registere
 | Self-Hostable                     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Extendable                        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Slack Support                     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
+
+## Benefits for Developers
+
+* The ability to extend the platform to meet your needs.
+* A workflow system that allows you to add webhook events into your workflow to ensure that crucial events are handled.
+* The ability to define your own templates for emails and PDFs via Twig.
+* The ability for others to make easy changes to templates instead of it being a developer task
+* The ability to define your own tax rules and rates which can make tax changes less painful.
+* The ability to choose which PDF generation engine you want to use.
+* And a lot more
 
 ## How to Integrate
 
