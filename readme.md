@@ -9,7 +9,7 @@
 BillaBear is a standalone Subscription Management and Billing System that integrates with Stripe. It provides a REST API
 allowing you to integrate it easily.
 
-You can get the managed hosted version at https://www.billabear.com.
+You can get the managed hosted version at https://www.billabear.com. The managed cloud hosted version gets updates on a regular basis while the open version GitHub gets a new feature release every 6 months.
 
 ## Demo
 
@@ -207,7 +207,9 @@ docker compose up -d
 
 ### Managed Cloud Hosting
 
-You can get managed cloud hosting at https://billabear.com.
+You can get managed cloud hosting at https://billabear.com. 
+
+The managed cloud hosted version gets updates on a regular basis while the open version GitHub gets a new feature release every 6 months.
 
 ### Development
 
