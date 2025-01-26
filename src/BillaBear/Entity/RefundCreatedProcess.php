@@ -10,7 +10,6 @@ namespace BillaBear\Entity;
 
 use BillaBear\Workflow\WorkflowProcessInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Parthenon\Billing\Entity\Refund;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 #[ORM\Entity]
@@ -35,7 +34,7 @@ class RefundCreatedProcess implements WorkflowProcessInterface
     #[ORM\Column('updated_at', type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
-    #[ORM\Column('error', type: 'string', nullable: true)]
+    #[ORM\Column('error', type: 'text', nullable: true)]
     private ?string $error = null;
 
     #[ORM\Column('has_error', type: 'boolean', nullable: true)]
