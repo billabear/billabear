@@ -11,12 +11,6 @@ allowing you to integrate it easily.
 
 You can get the managed hosted version at https://www.billabear.com. The managed cloud hosted version gets updates on a regular basis while the open version GitHub gets a new feature release every 6 months.
 
-## Demo
-
-Watch the video on youtube.
-
-[![Watch the video](https://img.youtube.com/vi/ByRwKryljSE/mqdefault.jpg)](https://youtu.be/ByRwKryljSE)
-
 ## Documentation
 
 * [User Documentation](https://docs.billabear.com/user/) - How to use BillaBear as a user
