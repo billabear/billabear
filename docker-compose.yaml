@@ -7,8 +7,15 @@ services:
     networks:
       - billabear
 
+  redis:
+    image: redis:5-alpine
+    networks:
+      - billabear
+    ports:
+      - "6379:6379"
+
   database:
-    image: timescale/timescaledb:pg16
+    image: timescale/timescaledb-ha:pg17
     environment:
       - POSTGRES_DB=${PSQGL_DATABASE_NAME}
       - POSTGRES_USER=${PSQGL_DATABASE_USER}
