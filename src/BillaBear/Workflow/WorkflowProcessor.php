@@ -8,6 +8,8 @@
 
 namespace BillaBear\Workflow;
 
+use BillaBear\Notification\Slack\Data\Workflow\WorkflowFailure;
+use BillaBear\Notification\Slack\NotificationSender;
 use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Common\Repository\RepositoryInterface;
 use Symfony\Component\Workflow\Transition;
@@ -17,8 +19,10 @@ class WorkflowProcessor
 {
     use LoggerAwareTrait;
 
-    public function __construct(private WorkflowBuilder $workflowBuilder)
-    {
+    public function __construct(
+        private WorkflowBuilder $workflowBuilder,
+        private NotificationSender $notificationSender,
+    ) {
     }
 
     public function process(WorkflowProcessInterface $subject, WorkflowType $workflowType, RepositoryInterface $repository): WorkflowProcessInterface
@@ -41,6 +45,9 @@ class WorkflowProcessor
 
             $subject->setError($errorMessage);
             $subject->setHasError(true);
+
+            $notification = new WorkflowFailure($workflowType, $transition ?? 'unknown', $errorMessage);
+            $this->notificationSender->sendNotification($notification);
         }
 
         $repository->save($subject);

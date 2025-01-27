@@ -22,4 +22,5 @@ enum SlackNotificationEvent: string
     case USAGE_DISABLE = 'usage_disable';
     case TAX_COUNTRY_THRESHOLD_REACHED = 'tax_country_threshold_reached';
     case TAX_STATE_THRESHOLD_REACHED = 'tax_state_threshold_reached';
+    case WORKFLOW_FAILURE = 'workflow_failure';
 }

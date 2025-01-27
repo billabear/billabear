@@ -22,6 +22,7 @@
                 <option>trial_converted</option>
                 <option>tax_country_threshold_reached</option>
                 <option>tax_state_threshold_reached</option>
+                <option>workflow_failure</option>
               </select>
               <p class="form-field-help">{{ $t('app.system.integrations.slack.notifications.create.help_info.event') }}</p>
             </div>
@@ -99,6 +100,8 @@ export default {
         this.webhook.template = "Tax country threshold of {{country.threshold}} reached for {{country.name}}";
       } else if (this.webhook.event === "tax_state_threshold_reached") {
         this.webhook.template = "Tax state threshold of {{state.threshold}} reached for {{ state.name }} in {{country.name}}";
+      } else if (this.webhook.event === "workflow_failure") {
+        this.webhook.template = "Workflow {{workflow}} failed to transition to {{transition}} because {{error_message}}";
       }
     },
     save: function () {
