@@ -258,5 +258,4 @@ applied correctly automatically when the time comes.
 
 ### Can I do usage based billing?
 
-No. Sadly, BillaBear doesn't support usage based billing yet. However, it will be added in the future. The same goes for
-tier pricing and stair pricing.
+Yes.
