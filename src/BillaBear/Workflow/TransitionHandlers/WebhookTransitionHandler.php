@@ -75,7 +75,11 @@ class WebhookTransitionHandler implements DynamicTransitionHandlerInterface
 
         $request = $this->requestFactory->createRequest($method, $url);
         $request = $request->withBody($stream);
-        $this->client->sendRequest($request);
+        $response = $this->client->sendRequest($request);
+
+        if ($response->getStatusCode() >= 400) {
+            throw new \RuntimeException(sprintf('Webhook failed with status code %d and body ', $response->getStatusCode(), $response->getBody()->getContents()));
+        }
     }
 
     public function createCloneWithTransition(WorkflowTransition $transition): DynamicTransitionHandlerInterface
