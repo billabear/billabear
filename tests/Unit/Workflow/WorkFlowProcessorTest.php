@@ -8,6 +8,7 @@
 
 namespace BillaBear\Tests\Unit\Workflow;
 
+use BillaBear\Notification\Slack\NotificationSender;
 use BillaBear\Workflow\WorkflowBuilder;
 use BillaBear\Workflow\WorkflowProcessInterface;
 use BillaBear\Workflow\WorkflowProcessor;
@@ -31,6 +32,7 @@ class WorkFlowProcessorTest extends TestCase
         $process = $this->createMock(WorkflowProcessInterface::class);
         $repository = $this->createMock(RepositoryInterface::class);
         $transition = $this->createMock(Transition::class);
+        $notificationSender = $this->createMock(NotificationSender::class);
 
         $transition->method('getName')->willReturn(self::TRANSITION_NAME);
 
@@ -46,7 +48,7 @@ class WorkFlowProcessorTest extends TestCase
 
         $repository->expects($this->once())->method('save');
 
-        $subject = new WorkflowProcessor($builder);
+        $subject = new WorkflowProcessor($builder, $notificationSender);
         $subject->process($process, WorkflowType::CANCEL_SUBSCRIPTION, $repository);
     }
 }
