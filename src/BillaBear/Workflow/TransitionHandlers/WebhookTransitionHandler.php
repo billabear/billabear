@@ -78,7 +78,7 @@ class WebhookTransitionHandler implements DynamicTransitionHandlerInterface
         $response = $this->client->sendRequest($request);
 
         if ($response->getStatusCode() >= 400) {
-            throw new \RuntimeException(sprintf('Webhook failed with status code %d and body ', $response->getStatusCode(), $response->getBody()->getContents()));
+            throw new \RuntimeException(sprintf('Webhook failed with status code %d and body %s', $response->getStatusCode(), $response->getBody()->getContents()));
         }
     }
 
