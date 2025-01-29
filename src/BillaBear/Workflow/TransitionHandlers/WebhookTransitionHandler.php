@@ -16,11 +16,12 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-class WebhookTransitionHandler implements DynamicTransitionHandlerInterface
+readonly class WebhookTransitionHandler implements DynamicTransitionHandlerInterface
 {
-    public const NAME = 'webhook';
-    public const OPTION_METHOD = 'method';
-    public const OPTION_URL = 'url';
+    public const string NAME = 'webhook';
+    public const string OPTION_METHOD = 'method';
+    public const string OPTION_URL = 'url';
+
     private WorkflowTransition $workflowTransition;
 
     public function __construct(
