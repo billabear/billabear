@@ -506,7 +506,7 @@ class Customer implements CustomerInterface
     public function getMetadata(): array
     {
         if (!isset($this->metadata)) {
-            return $this->metadata;
+            return [];
         }
 
         return $this->metadata;
