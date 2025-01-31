@@ -133,6 +133,7 @@ class CustomerDataMapper
         $dto->setType($customer->getType()->value);
         $dto->setInvoiceFormat($customer->getInvoiceFormat());
         $dto->setMarketingOptIn($customer->getMarketingOptIn());
+        $dto->setMetadata($customer->getMetadata());
 
         return $dto;
     }
@@ -169,6 +170,7 @@ class CustomerDataMapper
         $dto->setInvoiceFormat($customer->getInvoiceFormat());
         $dto->setCreatedAt($customer->getCreatedAt());
         $dto->setMarketingOptIn($customer->getMarketingOptIn());
+        $dto->setMetadata($customer->getMetadata());
 
         return $dto;
     }

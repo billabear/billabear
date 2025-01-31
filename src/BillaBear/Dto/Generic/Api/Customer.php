@@ -56,6 +56,8 @@ class Customer
 
     protected bool $marketingOptIn;
 
+    protected array $metadata;
+
     public function getId(): string
     {
         return $this->id;
@@ -204,5 +206,15 @@ class Customer
     public function setMarketingOptIn(bool $marketingOptIn): void
     {
         $this->marketingOptIn = $marketingOptIn;
+    }
+
+    public function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata(array $metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }
