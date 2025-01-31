@@ -121,6 +121,25 @@ Feature: Customer Creation
     Then there should be a customer for "customer@example.org"
     And the customer "customer@example.org" should be a individual customer
 
+  Scenario: Successfully create customer as Individual customer with metadata
+    Given the follow brands exist:
+      | Name    | Code    | Email               |
+      | Example | example | example@example.org |
+    Given I have authenticated to the API
+    When I create a customer with the following info
+      | Email              | customer@example.org |
+      | Country            | DE                   |
+      | External Reference | cust_4945959         |
+      | Reference          | Test Customer        |
+      | Billing Type       | invoice              |
+      | Brand              | example              |
+      | Locale             | en                   |
+      | Tax Number         | GB2494944            |
+      | Type               | Individual           |
+      | Metadata           | {"region": "eu"}     |
+    Then there should be a customer for "customer@example.org"
+    And the customer "customer@example.org" should be have the metadata '{"region":"eu"}'
+
   Scenario: No stripe configuration
     Given I have authenticated to the API
     And there are no stripe api keys configured

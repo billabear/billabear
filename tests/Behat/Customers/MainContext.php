@@ -11,6 +11,7 @@ namespace BillaBear\Tests\Behat\Customers;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Behat\Step\Then;
 use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\CustomerType;
 use BillaBear\Entity\Customer;
@@ -82,6 +83,7 @@ class MainContext implements Context
 
         $payload = [
             'email' => $data['Email'],
+            'metadata' => [],
         ];
 
         if (isset($data['Country'])) {
@@ -108,6 +110,10 @@ class MainContext implements Context
 
         if (isset($data['Tax Number'])) {
             $payload['tax_number'] = $data['Tax Number'];
+        }
+
+        if (isset($data['Metadata'])) {
+            $payload['metadata'] = json_decode($data['Metadata'], true);
         }
 
         $this->sendJsonRequest('POST', '/api/v1/customer', $payload);
@@ -253,6 +259,16 @@ class MainContext implements Context
         $customer = $this->getCustomerByEmail($email);
         if (CustomerType::INDIVIDUAL !== $customer->getType()) {
             throw new \Exception('Not a INDIVIDUAL customer');
+        }
+    }
+
+    #[Then('the customer :email should be have the metadata :jsonRaw')]
+    public function theCustomerShouldBeHaveTheMetadata($email, $jsonRaw): void
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        if (json_encode(json_decode($jsonRaw, true)) !== json_encode($customer->getMetadata())) {
+            throw new \Exception(sprintf("Expected '%s' but got '%s'", json_encode(json_decode($jsonRaw, true)), json_encode($customer->getMetadata())));
         }
     }
 

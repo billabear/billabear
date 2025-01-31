@@ -91,6 +91,7 @@ class CustomerDataMapper
         $customer->setStandardTaxRate($createCustomerDto->getStandardTaxrate());
         $customer->setInvoiceFormat($createCustomerDto->getInvoiceFormat());
         $customer->setMarketingOptIn($createCustomerDto->getMarketingOptIn());
+        $customer->setMetadata($createCustomerDto->getMetadata());
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);

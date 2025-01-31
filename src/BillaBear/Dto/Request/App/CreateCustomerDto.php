@@ -77,6 +77,9 @@ class CreateCustomerDto
     #[SerializedName('marketing_opt_in')]
     private $marketingOptIn;
 
+    #[Assert\Type('array')]
+    private $metadata;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -205,5 +208,22 @@ class CreateCustomerDto
     public function setMarketingOptIn($marketingOptIn): void
     {
         $this->marketingOptIn = $marketingOptIn;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMetadata(): array
+    {
+        if (!isset($this->metadata)) {
+            return [];
+        }
+
+        return $this->metadata;
+    }
+
+    public function setMetadata($metadata): void
+    {
+        $this->metadata = $metadata;
     }
 }
