@@ -34,8 +34,6 @@ class CustomerService implements CustomerServiceInterface
                 'status' => 'subscribed',
             ]);
         } catch (RequestException $e) {
-            var_dump($e->getResponse()->getBody()->getContents(), $customer->getBillingEmail());
-
             throw new UnexpectedErrorException('Failed to register customer to Mailchimp list', previous: $e);
         }
         $this->getLogger()->info('Registering customer to Mailchimp list', ['listId' => $listId, 'customer' => $customer]);

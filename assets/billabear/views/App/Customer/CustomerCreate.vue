@@ -159,6 +159,33 @@
         <p class="form-field-help">{{ $t('app.customer.create.help_info.post_code') }}</p>
       </div>
     </div>
+      <div class="card-body mt-5">
+        <h2 class="mb-3">{{ $t('app.customer.create.metadata.title') }}</h2>
+
+        <table class="w-1/2">
+          <thead>
+          <tr>
+            <th class="text-left">{{ $t('app.customer.create.metadata.name') }}</th>
+            <th class="text-left">{{ $t('app.customer.create.metadata.value') }}</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(metaValue, key) in metadata">
+            <td><input type="text" class="form-field" v-model="metaValue.key"></td>
+            <td><input type="text" class="form-field" v-model="metaValue.value"></td>
+            <td><button class="btn--danger" @click="removeMetadata(key)"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+          <tr v-if="metadata.length === 0">
+            <td colspan="4" class="text-center">{{ $t('app.customer.create.metadata.no_values') }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn--main mt-3" @click="addMetadata">
+          <i class="fa-solid fa-plus"></i>
+          {{ $t('app.customer.create.metadata.add') }}
+        </button>
+      </div>
 
       <div class="form-field-ctn">
         <p @click="showAdvance = !showAdvance" class="cursor-pointer">
@@ -210,6 +237,7 @@ export default {
         digital_tax_rate: null,
         standard_tax_rate: null,
       },
+      metadata: [],
       sendingInProgress: false,
       showAdvance: false,
       success: false,
@@ -225,6 +253,12 @@ export default {
   },
   methods: {
     ...mapActions('onboardingStore', ['customerAdded']),
+    addMetadata: function () {
+      this.metadata.push({key: '', value: ''});
+    },
+    removeMetadata: function (key) {
+      this.metadata.splice(key, 1)
+    },
     send: function () {
       this.sendingInProgress = true;
       this.success = false;
@@ -238,7 +272,13 @@ export default {
       if (this.customer.standard_tax_rate == "") {
         this.customer.standard_tax_rate = null;
       }
-      axios.post('/app/customer', this.customer).then(
+      const payload = this.customer;
+      let metadata = {};
+      for (let i = 0; i < this.metadata.length; i++) {
+        metadata[this.metadata[i].key] = this.metadata[i].value;
+      }
+      payload.metadata = metadata;
+      axios.post('/app/customer', payload).then(
           response => {
             this.sendingInProgress = false;
             this.success = true;

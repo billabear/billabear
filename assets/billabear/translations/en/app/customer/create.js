@@ -26,6 +26,13 @@ export const CUSTOMER_CREATE_TRANSLATIONS = {
     type_business: "Business",
     type_individual: "Individual",
     invoice_format: "Invoice Format",
+    metadata: {
+        title: "Metadata",
+        name: "Name",
+        value: "Value",
+        no_values: "No metadata values",
+        add: "Add Metadata",
+    },
     help_info: {
         email: "The email for the customer where the invoices are to go",
         locale: "The locale to be used for language",

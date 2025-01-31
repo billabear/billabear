@@ -109,6 +109,22 @@
             </div>
           </div>
 
+          <div class=" card-body">
+            <h2 class="section-header">{{ $t('app.customer.view.metadata.title') }}</h2>
+            <div class="section-body">
+
+              <dl class="detail-list">
+                <div v-for="(value, key) in customer.metadata">
+                  <dt>{{ key }}</dt>
+                  <dd>{{ value }}</dd>
+                </div>
+              </dl>
+              <div v-if="customer.metadata.length < 1" class="text-center">
+                {{ $t('app.customer.view.metadata.no_metadata') }}
+              </div>
+            </div>
+
+          </div>
           <div class="card-body">
             <SubscriptionList :result-set="subscriptions" :customer="customer" />
           </div>

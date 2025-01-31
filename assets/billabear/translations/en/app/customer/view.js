@@ -21,6 +21,10 @@ export const CUSTOMER_VIEW_TRANSLATIONS = {
         type: "Type",
         marketing_opt_in: "Marketing Opt In",
     },
+    metadata: {
+        title: "Metadata",
+        no_metadata: "No metadata",
+    },
     address: {
         company_name: "Company Name",
         title: "Address",

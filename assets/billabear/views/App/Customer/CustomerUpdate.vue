@@ -165,6 +165,34 @@
             </div>
           </div>
 
+          <div class="card-body mt-5">
+            <h2 class="mb-3">{{ $t('app.customer.update.metadata.title') }}</h2>
+
+            <table class="w-1/2">v
+              <thead>
+              <tr>
+                <th class="text-left">{{ $t('app.customer.update.metadata.name') }}</th>
+                <th class="text-left">{{ $t('app.customer.update.metadata.value') }}</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(metaValue, key) in metadata">
+                <td><input type="text" class="form-field" v-model="metaValue.key"></td>
+                <td><input type="text" class="form-field" v-model="metaValue.value"></td>
+                <td><button class="btn--danger" @click="removeMetadata(key)"><i class="fa-solid fa-trash"></i></button></td>
+              </tr>
+              <tr v-if="metadata.length === 0">
+                <td colspan="4" class="text-center">{{ $t('app.customer.update.metadata.no_values') }}</td>
+              </tr>
+              </tbody>
+            </table>
+            <button class="btn--main mt-3" @click="addMetadata">
+              <i class="fa-solid fa-plus"></i>
+              {{ $t('app.customer.update.metadata.add') }}
+            </button>
+          </div>
+
           <div class="form-field-ctn mt-3">
             <p @click="showAdvance = !showAdvance" class="cursor-pointer">
               <i class="fa-solid fa-caret-up" v-if="showAdvance"></i>
@@ -196,11 +224,11 @@
 
 <script>
 import axios from "axios";
-import {Toggle} from "flowbite-vue";
+import {Button, Toggle} from "flowbite-vue";
 
 export default {
   name: "CustomerUpdate",
-  components: {Toggle},
+  components: {Button, Toggle},
   data() {
     return {
       customer: {
@@ -214,6 +242,7 @@ export default {
         digital_tax_rate: null,
         standard_tax_rate: null,
       },
+      metadata: [],
       sendingInProgress: false,
       showAdvance: false,
       success: false,
@@ -226,7 +255,12 @@ export default {
     var customerId = this.$route.params.id
     axios.get('/app/customer/'+customerId).then(response => {
       this.customer = response.data.customer;
+      for (let key in this.customer.metadata) {
+        this.metadata.push({key: key, value: this.customer.metadata[key]});
+      }
+
       this.ready = true;
+
     }).catch(error => {
       if (error.response.status == 404) {
         this.errorMessage = this.$t('app.customer.update.error.not_found')
@@ -239,6 +273,12 @@ export default {
     })
   },
   methods: {
+    addMetadata: function () {
+      this.metadata.push({key: '', value: ''});
+    },
+    removeMetadata: function (key) {
+      this.metadata.splice(key, 1)
+    },
     send: function () {
       this.sendingInProgress = true;
       this.success = false;
@@ -253,8 +293,14 @@ export default {
       if (this.customer.standard_tax_rate == "") {
         this.customer.standard_tax_rate = null;
       }
+      const payload = this.customer;
+      let metadata = {};
+      for (let i = 0; i < this.metadata.length; i++) {
+        metadata[this.metadata[i].key] = this.metadata[i].value;
+      }
+      payload.metadata = metadata;
 
-      axios.post('/app/customer/'+customerId, this.customer).then(
+      axios.post('/app/customer/'+customerId, payload).then(
           response => {
             this.sendingInProgress = false;
             this.success = true;
