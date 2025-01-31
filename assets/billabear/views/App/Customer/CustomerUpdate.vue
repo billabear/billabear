@@ -168,7 +168,7 @@
           <div class="card-body mt-5">
             <h2 class="mb-3">{{ $t('app.customer.update.metadata.title') }}</h2>
 
-            <table class="w-1/2">v
+            <table class="w-1/2">
               <thead>
               <tr>
                 <th class="text-left">{{ $t('app.customer.update.metadata.name') }}</th>
