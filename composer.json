@@ -27,7 +27,7 @@
         "knplabs/knp-snappy": "^1.5",
         "mailgun/mailgun-php": "^3.6",
         "mpdf/mpdf": "^8.2",
-        "parthenon/parthenon": "dev-main",
+        "parthenon/parthenon": "v2.2.22",
         "ramsey/uuid": "^4.7",
         "ramsey/uuid-doctrine": "^1.8",
         "rollbar/rollbar": "^4",
