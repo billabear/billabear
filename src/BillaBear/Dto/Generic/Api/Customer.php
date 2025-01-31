@@ -54,6 +54,7 @@ class Customer
 
     protected string $type;
 
+    #[SerializedName('marketing_opt_in')]
     protected bool $marketingOptIn;
 
     public function getId(): string
