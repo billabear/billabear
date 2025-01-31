@@ -77,11 +77,11 @@ class CreateCustomerDto
     #[Assert\Choice(['pdf', 'zugferd_v1'])]
     #[Assert\NotBlank(allowNull: true)]
     #[Assert\Type('string')]
-    private $invoiceFormat;
+    private $invoice_format;
 
     #[Assert\Type('boolean')]
     #[SerializedName('marketing_opt_in')]
-    private $marketingOptIn;
+    private $marketing_opt_in;
 
     #[Assert\Type('array')]
     private $metadata;
@@ -208,22 +208,22 @@ class CreateCustomerDto
 
     public function getInvoiceFormat()
     {
-        return $this->invoiceFormat;
+        return $this->invoice_format;
     }
 
-    public function setInvoiceFormat($invoiceFormat): void
+    public function setInvoiceFormat($invoice_format): void
     {
-        $this->invoiceFormat = $invoiceFormat;
+        $this->invoice_format = $invoice_format;
     }
 
-    public function getMarketingOptIn(): bool
+    public function getMarketingOptin(): bool
     {
-        return true === $this->marketingOptIn;
+        return true === $this->marketing_opt_in;
     }
 
-    public function setMarketingOptIn($marketingOptIn): void
+    public function setMarketingOptin($marketing_opt_in): void
     {
-        $this->marketingOptIn = $marketingOptIn;
+        $this->marketing_opt_in = $marketing_opt_in;
     }
 
     public function getMetadata(): array
