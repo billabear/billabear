@@ -5,7 +5,7 @@
     <LoadingScreen :ready="ready">
 
       <form @submit.prevent="send">
-        <div class="p-5">
+        <div class="">
           <div class="mt-3 card-body">
             <div class="form-field-ctn">
               <label class="form-field-lbl" for="email">
