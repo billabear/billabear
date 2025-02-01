@@ -8,6 +8,7 @@
 
 namespace BillaBear\Integrations\Crm\Hubspot;
 
+use BillaBear\Integrations\Crm\CustomerRegistration;
 use BillaBear\Integrations\Crm\CustomerServiceInterface;
 use Parthenon\Common\LoggerAwareTrait;
 
@@ -15,12 +16,12 @@ class CustomerService implements CustomerServiceInterface
 {
     use LoggerAwareTrait;
 
-    public function register(\BillaBear\Entity\Customer $customer)
+    public function register(\BillaBear\Entity\Customer $customer): CustomerRegistration
     {
         // TODO: Implement register() method.
     }
 
-    public function update(\BillaBear\Entity\Customer $customer)
+    public function update(\BillaBear\Entity\Customer $customer): void
     {
         // TODO: Implement update() method.
     }

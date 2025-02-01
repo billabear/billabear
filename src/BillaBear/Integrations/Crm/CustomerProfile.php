@@ -8,9 +8,6 @@
 
 namespace BillaBear\Integrations\Crm;
 
-interface CustomerServiceInterface
+class CustomerProfile
 {
-    public function register(\BillaBear\Entity\Customer $customer): CustomerRegistration;
-
-    public function update(\BillaBear\Entity\Customer $customer): void;
 }

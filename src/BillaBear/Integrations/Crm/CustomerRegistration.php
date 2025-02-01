@@ -8,9 +8,9 @@
 
 namespace BillaBear\Integrations\Crm;
 
-interface CustomerServiceInterface
+readonly class CustomerRegistration
 {
-    public function register(\BillaBear\Entity\Customer $customer): CustomerRegistration;
-
-    public function update(\BillaBear\Entity\Customer $customer): void;
+    public function __construct(public string $reference)
+    {
+    }
 }
