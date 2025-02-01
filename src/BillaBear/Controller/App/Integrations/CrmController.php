@@ -77,10 +77,21 @@ class CrmController
         return new JsonResponse(['settings' => $data['settings']]);
     }
 
-    #[Route('/app/integrations/crm/disable', name: 'crm_settings_disable', methods: ['POST'])]
-    public function disconnect()
-    {
+    #[Route('/app/integrations/crm/disconnect', name: 'crm_settings_disconnect', methods: ['POST'])]
+    public function disconnect(
+        MessageBusInterface $messageBus,
+        SettingsRepositoryInterface $settingsRepository,
+    ): Response {
         $this->getLogger()->info('Disconnecting accounting integration');
+        $settings = $settingsRepository->getDefaultSettings();
+        $settings->getCrmIntegration()->setEnabled(false);
+        $settings->getCrmIntegration()->getOauthSettings()->setAccessToken(null);
+        $settings->getCrmIntegration()->getOauthSettings()->setExpiresAt(new \DateTime('now'));
+        $settingsRepository->save($settings);
+
+        $messageBus->dispatch(new DisableIntegration());
+
+        return new JsonResponse([]);
     }
 
     #[Route('/app/integrations/crm/disable', name: 'accounting_settings_disable', methods: ['POST'])]

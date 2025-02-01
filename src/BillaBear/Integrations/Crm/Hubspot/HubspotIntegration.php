@@ -16,6 +16,8 @@ use BillaBear\Integrations\IntegrationType;
 use BillaBear\Integrations\Oauth\OauthConnectionProvider;
 use BillaBear\Integrations\OauthConfig;
 use BillaBear\Repository\SettingsRepositoryInterface;
+use HubSpot\Discovery\Discovery;
+use HubSpot\Factory;
 use Parthenon\Common\Config;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -23,6 +25,8 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class HubspotIntegration implements CrmIntegrationInterface, IntegrationInterface
 {
     use LoggerAwareTrait;
+
+    private Discovery $client;
 
     public function __construct(
         #[Autowire(env: 'HUBSPOT_CLIENT_ID')]
@@ -43,7 +47,7 @@ class HubspotIntegration implements CrmIntegrationInterface, IntegrationInterfac
 
     public function getCustomerService(): CustomerServiceInterface
     {
-        $customerService = new CustomerService();
+        $customerService = new CustomerService($this->getClient());
         $customerService->setLogger($this->getLogger());
 
         return $customerService;
@@ -73,7 +77,7 @@ class HubspotIntegration implements CrmIntegrationInterface, IntegrationInterfac
             'https://app.hubspot.com/oauth/authorize',
             'https://api.hubapi.com/oauth/v1/token',
             '',
-            'oauth crm.objects.contacts.read crm.objects.contacts.write crm.objects.invoices.read crm.objects.orders.read crm.objects.orders.write crm.objects.quotes.read crm.objects.quotes.write crm.schemas.quotes.read'
+            'oauth crm.objects.companies.read crm.objects.companies.write crm.objects.contacts.read crm.objects.contacts.write crm.objects.invoices.read crm.objects.orders.read crm.objects.orders.write crm.objects.quotes.read crm.objects.quotes.write crm.schemas.quotes.read'
         );
     }
 
@@ -82,7 +86,12 @@ class HubspotIntegration implements CrmIntegrationInterface, IntegrationInterfac
         return [];
     }
 
-    private function buildClient()
+    private function getClient(): Discovery
     {
+        if (!isset($this->client)) {
+            $this->client = Factory::createWithAccessToken($this->oauthConnectionProvider->getAccessToken($this));
+        }
+
+        return $this->client;
     }
 }

@@ -8,6 +8,15 @@
 
 namespace BillaBear\Integrations\Crm;
 
-class CustomerProfile
+readonly class CustomerProfile
 {
+    public function __construct(
+        public string $reference,
+        public ?string $name,
+        public ?string $city,
+        public ?string $state,
+        public ?string $postCode,
+        public ?string $country,
+    ) {
+    }
 }

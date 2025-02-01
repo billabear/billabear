@@ -39,8 +39,34 @@ readonly class SyncCustomer
             if ($customer->getCrmReference()) {
                 $customerService->update($customer);
             } else {
-                $registration = $customerService->register($customer);
-                $customer->setCrmReference($registration->reference);
+                $customerProfile = $customerService->search($customer);
+                if ($customerProfile) {
+                    if ($customerProfile->name) {
+                        $customer->getBillingAddress()->setCompanyName($customerProfile->name);
+                    }
+
+                    if ($customerProfile->city) {
+                        $customer->getBillingAddress()->setCity($customerProfile->city);
+                    }
+
+                    if ($customerProfile->state) {
+                        $customer->getBillingAddress()->setRegion($customerProfile->state);
+                    }
+
+                    if ($customerProfile->country) {
+                        $customer->getBillingAddress()->setCountry($customerProfile->country);
+                    }
+
+                    if ($customerProfile->postCode) {
+                        $customer->getBillingAddress()->setPostcode($customerProfile->postCode);
+                    }
+
+                    $customer->setCrmReference($customerProfile->reference);
+                    $customerService->update($customer);
+                } else {
+                    $registration = $customerService->register($customer);
+                    $customer->setCrmReference($registration->reference);
+                }
             }
         } catch (\Exception $e) {
             $this->webhookDispatcher->dispatch(new CrmIntegrationFailure($e));

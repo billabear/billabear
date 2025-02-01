@@ -144,7 +144,7 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
 
     private function createConfig(): Configuration
     {
-        return Configuration::getDefaultConfiguration()->setAccessToken($this->oauthConnectionProvider->getAccessToken());
+        return Configuration::getDefaultConfiguration()->setAccessToken($this->oauthConnectionProvider->getAccessToken($this));
     }
 
     private function createClient(): ClientInterface

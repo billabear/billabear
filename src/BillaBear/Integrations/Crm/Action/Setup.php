@@ -29,7 +29,7 @@ class Setup
             return;
         }
 
-        $integration = $this->integrationManager->getCustomerSupportIntegration($settings->getCustomerSupportIntegration()->getIntegration());
+        $integration = $this->integrationManager->getCrmIntegration($settings->getCrmIntegration()->getIntegration());
         try {
             $integration->setup();
         } catch (\Exception $e) {

@@ -8,7 +8,7 @@
 
 namespace BillaBear\Integrations\Crm\Messenger;
 
-use BillaBear\Integrations\CustomerSupport\Action\SyncCustomer as Action;
+use BillaBear\Integrations\Crm\Action\SyncCustomer as Action;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
