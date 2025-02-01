@@ -30,7 +30,7 @@ class SubscriptionCountStatsProvider
         $thirtyDaysAgo = new \DateTime('-29 days');
         $thirtyDaysAgo = $thirtyDaysAgo->modify('midnight');
         $oneYear = new \DateTime('first day of this month');
-        $oneYear = $oneYear->modify('-11 months');
+        $oneYear = $oneYear->modify('-12 months');
         $tenYears = new \DateTime('first day of january');
         $tenYears = $tenYears->modify('-9 years');
 

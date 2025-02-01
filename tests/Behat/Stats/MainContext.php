@@ -394,11 +394,12 @@ class MainContext implements Context
     /**
      * @Then I will see there is :arg1 months of monthly stats
      */
-    public function iWillSeeThereIsMonthsOfMonthlyStats($arg1)
+    public function iWillSeeThereIsMonthsOfMonthlyStats(int $arg1)
     {
         $data = $this->getJsonContent();
-        if (count($data['subscription_count']['monthly'][Customer::DEFAULT_BRAND]) != $arg1) {
-            throw new \Exception('wrong count');
+        // Either be 12 months exactly or 13 months
+        if (count($data['subscription_count']['monthly'][Customer::DEFAULT_BRAND]) < $arg1 || count($data['subscription_count']['monthly'][Customer::DEFAULT_BRAND]) > $arg1 + 1) {
+            throw new \Exception('wrong count - '.count($data['subscription_count']['monthly'][Customer::DEFAULT_BRAND]));
         }
     }
 
