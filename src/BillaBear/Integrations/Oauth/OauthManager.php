@@ -97,7 +97,6 @@ class OauthManager
         $settings->getAccountingIntegration()->getOauthSettings()->setRefreshToken($accessToken->getRefreshToken());
         $settings->getAccountingIntegration()->getOauthSettings()->setExpiresAt($expiresAt);
         $settings->getAccountingIntegration()->getOauthSettings()->setStateSecret(null);
-        $settings->getAccountingIntegration()->setUpdatedAt(new \DateTime());
 
         $this->settingsRepository->save($settings);
 

@@ -90,7 +90,6 @@ class AccountingController
         $this->getLogger()->info('Enabling accounting integration');
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getAccountingIntegration()->setEnabled(false);
-        $settings->getAccountingIntegration()->setUpdatedAt(new \DateTime());
         $settingsRepository->save($settings);
 
         $messageBus->dispatch(new DisableIntegration());
