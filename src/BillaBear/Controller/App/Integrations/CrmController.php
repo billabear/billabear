@@ -22,74 +22,75 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class AccountingController
+class CrmController
 {
     use LoggerAwareTrait;
 
-    #[Route('/app/integrations/accounting/settings', name: 'accounting_settings', methods: ['GET'])]
+    #[Route('/app/integrations/crm/settings', name: 'crm_settings', methods: ['GET'])]
     public function readAccountingSettings(
         IntegrationManager $integrationManager,
         IntegrationDataMapper $integrationDataMapper,
         SettingsRepositoryInterface $settingsRepository,
         SerializerInterface $serializer,
     ): Response {
-        $this->getLogger()->info('Reading accounting integration settings');
+        $this->getLogger()->info('Reading CRM integration settings');
 
         $settings = $settingsRepository->getDefaultSettings();
-        $integrations = $integrationManager->getAccountingIntegrations();
+        $integrations = $integrationManager->getCrmIntegrations();
         $integrationDtos = array_map([$integrationDataMapper, 'createAppDto'], $integrations);
 
         $viewDto = new AccountingIntegrationView(
             $integrationDtos,
-            $settings->getAccountingIntegration()->getEnabled(),
-            $settings->getAccountingIntegration()->getIntegration(),
-            $settings->getAccountingIntegration()->getSettings(),
+            $settings->getCrmIntegration()->getEnabled(),
+            $settings->getCrmIntegration()->getIntegration(),
+            $settings->getCrmIntegration()->getSettings(),
         );
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
     }
 
-    #[Route('/app/integrations/accounting/settings', name: 'accounting_settings_write', methods: ['POST'])]
+    #[Route('/app/integrations/crm/settings', name: 'crm_settings_write', methods: ['POST'])]
     public function writeAccountingSettings(
         Request $request,
         SettingsRepositoryInterface $settingsRepository,
         MessageBusInterface $messageBus,
     ): Response {
-        $this->getLogger()->info('Writing accounting integration settings');
+        $this->getLogger()->info('Writing CRM integration settings');
         $data = json_decode($request->getContent(), true);
         $settings = $settingsRepository->getDefaultSettings();
 
-        $currentEnable = $settings->getAccountingIntegration()->getEnabled();
-        $currentIntegration = $settings->getAccountingIntegration()->getIntegration();
+        $currentEnable = $settings->getCrmIntegration()->getEnabled();
+        $currentIntegration = $settings->getCrmIntegration()->getIntegration();
 
-        $settings->getAccountingIntegration()->setEnabled($data['enabled']);
-        $settings->getAccountingIntegration()->setIntegration($data['integration_name']);
-        $settings->getAccountingIntegration()->setSettings($data['settings']);
+        $settings->getCrmIntegration()->setEnabled($data['enabled']);
+        $settings->getCrmIntegration()->setIntegration($data['integration_name']);
+        $settings->getCrmIntegration()->setSettings($data['settings']);
         $settingsRepository->save($settings);
-        $newIntegration = $settings->getAccountingIntegration()->getIntegration() !== $currentIntegration;
+        $newIntegration = $settings->getCrmIntegration()->getIntegration() !== $currentIntegration;
 
-        if ((false === $currentEnable || $newIntegration) && $settings->getAccountingIntegration()->getEnabled()) {
+        if ((false === $currentEnable || $newIntegration) && $settings->getCrmIntegration()->getEnabled()) {
+            $this->getLogger()->info('Enabling new CRM integration', ['old_integration' => $currentIntegration, 'new_integration' => $settings->getCrmIntegration()->getIntegration()]);
             $messageBus->dispatch(new EnableIntegration($newIntegration));
         }
 
         return new JsonResponse(['settings' => $data['settings']]);
     }
 
-    #[Route('/app/integrations/accounting/disable', name: 'accounting_settings_disable', methods: ['POST'])]
+    #[Route('/app/integrations/crm/disable', name: 'crm_settings_disable', methods: ['POST'])]
     public function disconnect()
     {
         $this->getLogger()->info('Disconnecting accounting integration');
     }
 
-    #[Route('/app/integrations/accounting/disable', name: 'accounting_settings_disable', methods: ['POST'])]
+    #[Route('/app/integrations/crm/disable', name: 'accounting_settings_disable', methods: ['POST'])]
     public function disable(
         MessageBusInterface $messageBus,
         SettingsRepositoryInterface $settingsRepository,
     ): Response {
         $this->getLogger()->info('Enabling accounting integration');
         $settings = $settingsRepository->getDefaultSettings();
-        $settings->getAccountingIntegration()->setEnabled(false);
+        $settings->getCrmIntegration()->setEnabled(false);
         $settingsRepository->save($settings);
 
         $messageBus->dispatch(new DisableIntegration());

@@ -10,6 +10,7 @@ namespace BillaBear\Integrations\Oauth;
 
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\IntegrationManager;
+use BillaBear\Integrations\IntegrationType;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Parthenon\Common\Config;
 use Parthenon\Common\LoggerAwareTrait;
@@ -48,8 +49,14 @@ class OauthManager
         $state = ['random' => $randomString];
 
         $settings = $this->settingsRepository->getDefaultSettings();
-        $settings->getAccountingIntegration()->setIntegration($integrationName);
-        $settings->getAccountingIntegration()->getOauthSettings()->setStateSecret($randomString);
+        $integrationSettings = match ($integration->getType()) {
+            IntegrationType::ACCOUNTING => $settings->getAccountingIntegration(),
+            IntegrationType::CRM => $settings->getCrmIntegration(),
+            default => throw new \Exception("Unsupported integration type: {$integration->getType()}"),
+        };
+
+        $integrationSettings->setIntegration($integrationName);
+        $integrationSettings->getOauthSettings()->setStateSecret($randomString);
         $this->settingsRepository->save($settings);
 
         $authorizationUrl = $this->redirectUrlProvider->getAuthUrl($provider, $integration->getOauthConfig()->scope, $state);
@@ -73,31 +80,36 @@ class OauthManager
         $stateData = json_decode(base64_decode($rawState), true);
         $state = $stateData['random'];
         $settings = $this->settingsRepository->getDefaultSettings();
-        $sessionState = $settings->getAccountingIntegration()->getOauthSettings()->getStateSecret();
+
+        $integrationName = $request->get('integrationName');
+        $integration = $this->integrationManager->getIntegration($integrationName);
+        $provider = $this->getProvider($integration);
+
+        $integrationSettings = match ($integration->getType()) {
+            IntegrationType::ACCOUNTING => $settings->getAccountingIntegration(),
+            IntegrationType::CRM => $settings->getCrmIntegration(),
+            default => throw new \Exception("Unsupported integration type: {$integration->getType()}"),
+        };
+
+        $sessionState = $integrationSettings->getOauthSettings()->getStateSecret();
 
         if ($state !== $sessionState) {
             $this->getLogger()->critical('State mismatch', ['state' => $state, 'session_state' => $sessionState]);
 
             throw new \LogicException('State mismatch in oauth redirect request');
         }
-
-        $integrationName = $request->get('integrationName');
-        $integration = $this->integrationManager->getIntegration($integrationName);
-        $provider = $this->getProvider($integration);
-
         $accessToken = $provider->getAccessToken('authorization_code', [
             'code' => $code,
         ]);
         $expiresAt = new \DateTime();
         $expiresAt->setTimestamp($accessToken->getExpires());
 
-        $settings->getAccountingIntegration()->setIntegration($integrationName);
-        $settings->getAccountingIntegration()->setEnabled(true);
-        $settings->getAccountingIntegration()->getOauthSettings()->setAccessToken($accessToken->getToken());
-        $settings->getAccountingIntegration()->getOauthSettings()->setRefreshToken($accessToken->getRefreshToken());
-        $settings->getAccountingIntegration()->getOauthSettings()->setExpiresAt($expiresAt);
-        $settings->getAccountingIntegration()->getOauthSettings()->setStateSecret(null);
-        $settings->getAccountingIntegration()->setUpdatedAt(new \DateTime());
+        $integrationSettings->setIntegration($integrationName);
+        $integrationSettings->setEnabled(true);
+        $integrationSettings->getOauthSettings()->setAccessToken($accessToken->getToken());
+        $integrationSettings->getOauthSettings()->setRefreshToken($accessToken->getRefreshToken());
+        $integrationSettings->getOauthSettings()->setExpiresAt($expiresAt);
+        $integrationSettings->getOauthSettings()->setStateSecret(null);
 
         $this->settingsRepository->save($settings);
 

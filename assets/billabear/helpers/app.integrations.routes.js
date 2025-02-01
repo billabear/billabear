@@ -19,6 +19,7 @@ import TaxTypeUpdate from "../views/App/TaxType/TaxTypeUpdate.vue";
 import FinanceIntegration from "../views/App/Integrations/FinanceIntegration.vue";
 import CustomerSupportIntegrations from "../views/App/Integrations/CustomerSupportIntegrations.vue";
 import NewsletterIntegrations from "../views/App/Integrations/NewsletterIntegrations.vue";
+import CrmIntegration from "../views/App/Integrations/CrmIntegration.vue";
 
 export const AppIntegrationsRoutes  = [
     {
@@ -35,5 +36,10 @@ export const AppIntegrationsRoutes  = [
         name: 'app.integrations.newsletter',
         path: 'integrations/newsletter',
         component: NewsletterIntegrations,
+    },
+    {
+        name: 'app.integrations.crm',
+        path: 'integrations/crm',
+        component: CrmIntegration,
     },
 ];

@@ -9,6 +9,7 @@
 namespace BillaBear\Integrations;
 
 use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
+use BillaBear\Integrations\Crm\CrmIntegrationInterface;
 use BillaBear\Integrations\CustomerSupport\CustomerSupportIntegrationInterface;
 use BillaBear\Integrations\Newsletter\NewsletterIntegrationInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
@@ -55,6 +56,33 @@ class IntegrationManager
 
         foreach ($this->integrations as $integration) {
             if (IntegrationType::ACCOUNTING === $integration->getType()) {
+                $output[] = $integration;
+            }
+        }
+
+        return $output;
+    }
+
+    public function getCrmIntegration(string $name): CrmIntegrationInterface&IntegrationInterface
+    {
+        foreach ($this->integrations as $integration) {
+            if ($integration->getName() === $name && $integration instanceof CrmIntegrationInterface) {
+                return $integration;
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Integration "%s" not found', $name));
+    }
+
+    /**
+     * @return CrmIntegrationInterface[]
+     */
+    public function getCrmIntegrations(): array
+    {
+        $output = [];
+
+        foreach ($this->integrations as $integration) {
+            if (IntegrationType::CRM === $integration->getType()) {
                 $output[] = $integration;
             }
         }

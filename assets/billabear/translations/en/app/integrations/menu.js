@@ -4,4 +4,5 @@ export const INTEGRATIONS_MENU_TRANSLATIONS = {
     customer_support: "Customer Support",
     newsletter: "Newsletter",
     notifications: "Notifications",
+    crm: "CRM"
 }

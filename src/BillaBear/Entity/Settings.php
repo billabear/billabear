@@ -9,6 +9,7 @@
 namespace BillaBear\Entity;
 
 use BillaBear\Entity\Settings\AccountingIntegration;
+use BillaBear\Entity\Settings\CrmIntegration;
 use BillaBear\Entity\Settings\CustomerSupportIntegration;
 use BillaBear\Entity\Settings\NewsletterIntegration;
 use BillaBear\Entity\Settings\NotificationSettings;
@@ -41,6 +42,9 @@ class Settings
 
     #[ORM\Embedded(class: CustomerSupportIntegration::class)]
     private CustomerSupportIntegration $customerSupportIntegration;
+
+    #[ORM\Embedded(class: CrmIntegration::class)]
+    private CrmIntegration $crmIntegration;
 
     #[ORM\Embedded(class: NewsletterIntegration::class)]
     private NewsletterIntegration $newsletterIntegration;
@@ -154,5 +158,15 @@ class Settings
     public function setNewsletterIntegration(NewsletterIntegration $newsletterIntegration): void
     {
         $this->newsletterIntegration = $newsletterIntegration;
+    }
+
+    public function getCrmIntegration(): CrmIntegration
+    {
+        return $this->crmIntegration;
+    }
+
+    public function setCrmIntegration(CrmIntegration $crmIntegration): void
+    {
+        $this->crmIntegration = $crmIntegration;
     }
 }

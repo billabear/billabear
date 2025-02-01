@@ -31,6 +31,8 @@ interface CustomerRepositoryInterface extends \Parthenon\Billing\Repository\Cust
 
     public function wipeCustomerSupportReferences(): void;
 
+    public function wipeCrmReferences(): void;
+
     public function wipeAccountingReferences(): void;
 
     public function wipeNewsletterReferences(): void;

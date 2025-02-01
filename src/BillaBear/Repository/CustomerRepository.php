@@ -104,6 +104,16 @@ class CustomerRepository extends DoctrineCrudRepository implements CustomerRepos
             ->execute();
     }
 
+    public function wipeCrmReferences(): void
+    {
+        $this->entityRepository->createQueryBuilder('s')
+            ->update()
+            ->set('s.crmReference', ':crmReference')
+            ->setParameter('crmReference', null)
+            ->getQuery()
+            ->execute();
+    }
+
     public function wipeAccountingReferences(): void
     {
         $this->entityRepository->createQueryBuilder('s')

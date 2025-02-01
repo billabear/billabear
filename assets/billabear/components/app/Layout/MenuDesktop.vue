@@ -225,6 +225,9 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.integrations.newsletter'}">{{ $t('app.integrations.menu.newsletter') }}</router-link>
           </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.integrations.crm'}">{{ $t('app.integrations.menu.crm') }}</router-link>
+          </MenuSubItem>
         </template>
       </MenuTopItem>
     </RoleOnlyView>
