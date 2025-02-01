@@ -511,7 +511,14 @@
                     "type": "Se o cliente for uma empresa ou um particular",
                     "invoice_format": "O formato que deve ser utilizado para criar e entregar uma fatura"
                 },
-                "failed_message": "Não foi possível criar o cliente com êxito"
+                "failed_message": "Não foi possível criar o cliente com êxito",
+                "metadata": {
+                    "title": "Metadados",
+                    "name": "Nome",
+                    "value": "Valor",
+                    "no_values": "Nenhum valor de metadados",
+                    "add": "Adicionar metadados"
+                }
             },
             "view": {
                 "title": "Ver detalhes do cliente",
@@ -688,6 +695,10 @@
                         "disable": "Desativar"
                     },
                     "no_limits": "Não existem limites de utilização para este cliente"
+                },
+                "metadata": {
+                    "title": "Metadados",
+                    "no_metadata": "Sem metadados"
                 }
             },
             "update": {
@@ -740,7 +751,14 @@
                     "invoice_format": "O formato que deve ser utilizado para criar e entregar uma fatura",
                     "marketing_opt_in": "Se o cliente tiver optado por receber mensagens de correio eletrónico de marketing. Isto afecta as integrações de boletins informativos."
                 },
-                "marketing_opt_in": "Marketing Opt In"
+                "marketing_opt_in": "Marketing Opt In",
+                "metadata": {
+                    "title": "Metadados",
+                    "name": "Nome",
+                    "value": "Valor",
+                    "no_values": "Nenhum valor de metadados",
+                    "add": "Adicionar metadados"
+                }
             },
             "menu": {
                 "title": "Clientes",
@@ -3846,7 +3864,8 @@
                 "accounting": "Contabilidade",
                 "customer_support": "Apoio ao cliente",
                 "newsletter": "Boletim informativo",
-                "notifications": "Notificações"
+                "notifications": "Notificações",
+                "crm": "CRM"
             },
             "general": {
                 "fields": {
@@ -3866,6 +3885,17 @@
                     "required": "Este campo é obrigatório",
                     "invalid": "Este campo é inválido",
                     "complete_error": "Ocorreu um erro ao tentar guardar estas definições. Por favor, tente novamente."
+                }
+            },
+            "crm": {
+                "title": "Integrações CRM",
+                "fields": {
+                    "integration": "Integração"
+                },
+                "buttons": {
+                    "connect": "Ligar através de Oauth",
+                    "disconnect": "Desligar",
+                    "save": "Guardar"
                 }
             }
         }

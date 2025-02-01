@@ -511,7 +511,14 @@
                     "invoice_format": "Het formaat dat moet worden gebruikt bij het maken en afleveren van een factuur"
                 },
                 "failed_message": "Kan geen klant aanmaken",
-                "invoice_format": "Factuurformaat"
+                "invoice_format": "Factuurformaat",
+                "metadata": {
+                    "title": "Metagegevens",
+                    "name": "Naam",
+                    "value": "Waarde",
+                    "no_values": "Geen metagegevenswaarden",
+                    "add": "Metagegevens toevoegen"
+                }
             },
             "view": {
                 "title": "Klantgegevens bekijken",
@@ -688,6 +695,10 @@
                         "disable": "uitschakelen"
                     },
                     "no_limits": "Er zijn geen gebruikslimieten voor deze klant"
+                },
+                "metadata": {
+                    "title": "Metagegevens",
+                    "no_metadata": "Geen metagegevens"
                 }
             },
             "update": {
@@ -740,7 +751,14 @@
                     "marketing_opt_in": "Als de klant zich heeft aangemeld voor marketinge-mails. Dit heeft invloed op nieuwsbriefintegraties."
                 },
                 "invoice_format": "Factuurformaat",
-                "marketing_opt_in": "Marketing Opt-in"
+                "marketing_opt_in": "Marketing Opt-in",
+                "metadata": {
+                    "title": "Metagegevens",
+                    "name": "Naam",
+                    "value": "Waarde",
+                    "no_values": "Geen metagegevenswaarden",
+                    "add": "Metagegevens toevoegen"
+                }
             },
             "menu": {
                 "title": "Klanten",
@@ -3853,7 +3871,8 @@
                 "accounting": "Boekhouding",
                 "customer_support": "Klantenservice",
                 "newsletter": "Nieuwsbrief",
-                "notifications": "Meldingen"
+                "notifications": "Meldingen",
+                "crm": "CRM"
             },
             "general": {
                 "fields": {
@@ -3873,6 +3892,17 @@
                     "required": "Dit veld is verplicht",
                     "invalid": "Dit veld is ongeldig",
                     "complete_error": "Er is een fout opgetreden tijdens het opslaan van deze instellingen. Probeer het opnieuw."
+                }
+            },
+            "crm": {
+                "title": "CRM-integraties",
+                "fields": {
+                    "integration": "Integratie"
+                },
+                "buttons": {
+                    "connect": "Verbinden via Oauth",
+                    "disconnect": "Ontkoppelen",
+                    "save": "Sla"
                 }
             }
         }

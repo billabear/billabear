@@ -511,7 +511,14 @@
                     "invoice_format": "Le format à utiliser pour la création et la livraison d'une facture"
                 },
                 "failed_message": "Impossible de créer un client",
-                "invoice_format": "Format de la facture"
+                "invoice_format": "Format de la facture",
+                "metadata": {
+                    "title": "Métadonnées",
+                    "name": "Nom",
+                    "value": "Valeur",
+                    "no_values": "Pas de valeurs de métadonnées",
+                    "add": "Ajouter des métadonnées"
+                }
             },
             "view": {
                 "title": "Voir les détails du client",
@@ -688,6 +695,10 @@
                         "disable": "Désactiver"
                     },
                     "no_limits": "Il n'y a pas de limite d'utilisation pour ce client"
+                },
+                "metadata": {
+                    "title": "Métadonnées",
+                    "no_metadata": "Pas de métadonnées"
                 }
             },
             "update": {
@@ -740,7 +751,14 @@
                     "marketing_opt_in": "Si le client a choisi de recevoir des courriels de marketing. Cela concerne les intégrations de newsletters."
                 },
                 "invoice_format": "Format de la facture",
-                "marketing_opt_in": "Marketing Opt In"
+                "marketing_opt_in": "Marketing Opt In",
+                "metadata": {
+                    "title": "Métadonnées",
+                    "name": "Nom",
+                    "value": "Valeur",
+                    "no_values": "Pas de valeurs de métadonnées",
+                    "add": "Ajouter des métadonnées"
+                }
             },
             "menu": {
                 "title": "Clients",
@@ -3853,7 +3871,8 @@
                 "accounting": "Comptabilité",
                 "customer_support": "Soutien à la clientèle",
                 "newsletter": "Bulletin d'information",
-                "notifications": "Notifications"
+                "notifications": "Notifications",
+                "crm": "CRM"
             },
             "general": {
                 "fields": {
@@ -3873,6 +3892,17 @@
                     "required": "Ce champ est obligatoire",
                     "invalid": "Ce champ n'est pas valide",
                     "complete_error": "Une erreur s'est produite lors de l'enregistrement de ces paramètres. Veuillez réessayer."
+                }
+            },
+            "crm": {
+                "title": "Intégrations CRM",
+                "fields": {
+                    "integration": "Intégration"
+                },
+                "buttons": {
+                    "connect": "Connexion via Oauth",
+                    "disconnect": "Déconnexion",
+                    "save": "Économiser"
                 }
             }
         }

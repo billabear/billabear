@@ -511,7 +511,14 @@
                     "invoice_format": "Das Format, das bei der Erstellung und Übermittlung einer Rechnung zu verwenden ist"
                 },
                 "failed_message": "Kunde kann nicht erfolgreich angelegt werden",
-                "invoice_format": "Rechnungsformat"
+                "invoice_format": "Rechnungsformat",
+                "metadata": {
+                    "title": "Metadaten",
+                    "name": "Name",
+                    "value": "Wert",
+                    "no_values": "Keine Metadatenwerte",
+                    "add": "Metadaten hinzufügen"
+                }
             },
             "view": {
                 "title": "Kundendetails anzeigen",
@@ -688,6 +695,10 @@
                         "disable": "Deaktivieren Sie"
                     },
                     "no_limits": "Für diesen Kunden gibt es keine Nutzungsbeschränkungen"
+                },
+                "metadata": {
+                    "title": "Metadaten",
+                    "no_metadata": "Keine Metadaten"
                 }
             },
             "update": {
@@ -740,7 +751,14 @@
                     "marketing_opt_in": "Wenn sich der Kunde für Marketing-E-Mails entschieden hat. Dies betrifft Newsletter-Integrationen."
                 },
                 "invoice_format": "Rechnungsformat",
-                "marketing_opt_in": "Marketing Opt-In"
+                "marketing_opt_in": "Marketing Opt-In",
+                "metadata": {
+                    "title": "Metadaten",
+                    "name": "Name",
+                    "value": "Wert",
+                    "no_values": "Keine Metadatenwerte",
+                    "add": "Metadaten hinzufügen"
+                }
             },
             "menu": {
                 "title": "Kunden",
@@ -3853,7 +3871,8 @@
                 "accounting": "Buchhaltung",
                 "customer_support": "Kundenbetreuung",
                 "newsletter": "Newsletter",
-                "notifications": "Benachrichtigungen"
+                "notifications": "Benachrichtigungen",
+                "crm": "CRM"
             },
             "general": {
                 "fields": {
@@ -3873,6 +3892,17 @@
                     "required": "Dieses Feld ist erforderlich",
                     "invalid": "Dieses Feld ist ungültig",
                     "complete_error": "Beim Versuch, diese Einstellungen zu speichern, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+                }
+            },
+            "crm": {
+                "title": "CRM-Integrationen",
+                "fields": {
+                    "integration": "Integration"
+                },
+                "buttons": {
+                    "connect": "Verbindung über Oauth",
+                    "disconnect": "Trennen Sie die Verbindung",
+                    "save": "Speichern Sie"
                 }
             }
         }

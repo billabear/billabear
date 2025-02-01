@@ -511,7 +511,14 @@
                     "invoice_format": "Il formato da utilizzare per la creazione e la consegna di una fattura."
                 },
                 "failed_message": "Impossibile creare un cliente",
-                "invoice_format": "Formato della fattura"
+                "invoice_format": "Formato della fattura",
+                "metadata": {
+                    "title": "Metadati",
+                    "name": "Nome",
+                    "value": "Valore",
+                    "no_values": "Nessun valore di metadati",
+                    "add": "Aggiungere metadati"
+                }
             },
             "view": {
                 "title": "Visualizza i dettagli del cliente",
@@ -688,6 +695,10 @@
                         "disable": "Disattivare"
                     },
                     "no_limits": "Non ci sono limiti di utilizzo per questo cliente"
+                },
+                "metadata": {
+                    "title": "Metadati",
+                    "no_metadata": "Nessun metadato"
                 }
             },
             "update": {
@@ -740,7 +751,14 @@
                     "marketing_opt_in": "Se il cliente ha scelto di ricevere e-mail di marketing. Questo riguarda le integrazioni di newsletter."
                 },
                 "invoice_format": "Formato della fattura",
-                "marketing_opt_in": "Marketing Opt In"
+                "marketing_opt_in": "Marketing Opt In",
+                "metadata": {
+                    "title": "Metadati",
+                    "name": "Nome",
+                    "value": "Valore",
+                    "no_values": "Nessun valore di metadati",
+                    "add": "Aggiungere metadati"
+                }
             },
             "menu": {
                 "title": "Clienti",
@@ -3853,7 +3871,8 @@
                 "accounting": "Contabilità",
                 "customer_support": "Assistenza clienti",
                 "newsletter": "Newsletter",
-                "notifications": "Notifiche"
+                "notifications": "Notifiche",
+                "crm": "CRM"
             },
             "general": {
                 "fields": {
@@ -3873,6 +3892,17 @@
                     "required": "Questo campo è obbligatorio",
                     "invalid": "Questo campo non è valido",
                     "complete_error": "Si è verificato un errore durante il tentativo di salvare queste impostazioni. Riprovare."
+                }
+            },
+            "crm": {
+                "title": "Integrazioni CRM",
+                "fields": {
+                    "integration": "Integrazione"
+                },
+                "buttons": {
+                    "connect": "Connettersi tramite Oauth",
+                    "disconnect": "Disconnessione",
+                    "save": "Risparmiare"
                 }
             }
         }
