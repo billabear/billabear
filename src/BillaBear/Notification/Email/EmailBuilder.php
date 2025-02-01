@@ -19,6 +19,7 @@ class EmailBuilder
     public function __construct(
         private Environment $twig,
         private EmailTemplateProvider $emailTemplateProvider,
+        private EmailLogger $emailLogger,
     ) {
     }
 
@@ -31,6 +32,8 @@ class EmailBuilder
 
     public function buildWithTemplate(Customer $customer, EmailTemplate $emailTemplate, AbstractEmailData $emailData): Email
     {
+        $this->emailLogger->logEmail($customer, $emailTemplate);
+
         $email = new Email();
         $email->setToAddress($customer->getBillingEmail());
         $email->setFromAddress($customer->getBrandSettings()->getEmailAddress());

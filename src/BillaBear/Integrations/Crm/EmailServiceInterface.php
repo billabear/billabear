@@ -8,9 +8,9 @@
 
 namespace BillaBear\Integrations\Crm;
 
-interface CrmIntegrationInterface
-{
-    public function getCustomerService(): CustomerServiceInterface;
+use BillaBear\Entity\Customer;
 
-    public function getEmailService(): EmailServiceInterface;
+interface EmailServiceInterface
+{
+    public function registerEmail(Customer $customer, string $templateName): void;
 }

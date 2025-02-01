@@ -11,6 +11,7 @@ namespace BillaBear\Integrations\Crm\Hubspot;
 use BillaBear\Integrations\AuthenticationType;
 use BillaBear\Integrations\Crm\CrmIntegrationInterface;
 use BillaBear\Integrations\Crm\CustomerServiceInterface;
+use BillaBear\Integrations\Crm\EmailServiceInterface;
 use BillaBear\Integrations\IntegrationInterface;
 use BillaBear\Integrations\IntegrationType;
 use BillaBear\Integrations\Oauth\OauthConnectionProvider;
@@ -51,6 +52,14 @@ class HubspotIntegration implements CrmIntegrationInterface, IntegrationInterfac
         $customerService->setLogger($this->getLogger());
 
         return $customerService;
+    }
+
+    public function getEmailService(): EmailServiceInterface
+    {
+        $emailService = new EmailService($this->getClient());
+        $emailService->setLogger($this->getLogger());
+
+        return $emailService;
     }
 
     public function getType(): IntegrationType
