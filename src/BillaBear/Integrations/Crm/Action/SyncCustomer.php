@@ -62,10 +62,19 @@ readonly class SyncCustomer
                     }
 
                     $customer->setCrmReference($customerProfile->reference);
+
+                    if (!$customerProfile->contactReference) {
+                        $contactRegistration = $customerService->registerContact($customer);
+                        $customer->setCrmContactReference($contactRegistration->reference);
+                    } else {
+                        $customer->setCrmContactReference($customerProfile->contactReference);
+                    }
+
                     $customerService->update($customer);
                 } else {
-                    $registration = $customerService->register($customer);
+                    $registration = $customerService->registerCompany($customer);
                     $customer->setCrmReference($registration->reference);
+                    $customer->setCrmContactReference($registration->contactReference);
                 }
             }
         } catch (\Exception $e) {

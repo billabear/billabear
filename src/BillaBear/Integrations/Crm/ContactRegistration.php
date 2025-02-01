@@ -8,11 +8,10 @@
 
 namespace BillaBear\Integrations\Crm;
 
-readonly class CustomerRegistration
+readonly class ContactRegistration
 {
     public function __construct(
         public string $reference,
-        public string $contactReference,
     ) {
     }
 }

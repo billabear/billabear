@@ -12,6 +12,7 @@ readonly class CustomerProfile
 {
     public function __construct(
         public string $reference,
+        public ?string $contactReference,
         public ?string $name,
         public ?string $city,
         public ?string $state,

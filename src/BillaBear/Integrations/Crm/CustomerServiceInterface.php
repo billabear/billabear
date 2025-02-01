@@ -12,7 +12,9 @@ use BillaBear\Entity\Customer;
 
 interface CustomerServiceInterface
 {
-    public function register(Customer $customer): CustomerRegistration;
+    public function registerCompany(Customer $customer): CustomerRegistration;
+
+    public function registerContact(Customer $customer): ContactRegistration;
 
     public function update(Customer $customer): void;
 

@@ -121,6 +121,9 @@ class Customer implements CustomerInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $crmReference = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $crmContactReference = null;
+
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $metadata = [];
 
@@ -514,6 +517,16 @@ class Customer implements CustomerInterface
     public function setCrmReference(?string $crmReference): void
     {
         $this->crmReference = $crmReference;
+    }
+
+    public function getCrmContactReference(): ?string
+    {
+        return $this->crmContactReference;
+    }
+
+    public function setCrmContactReference(?string $crmContactReference): void
+    {
+        $this->crmContactReference = $crmContactReference;
     }
 
     public function getMetadata(): array
