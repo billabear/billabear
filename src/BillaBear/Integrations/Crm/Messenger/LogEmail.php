@@ -8,14 +8,14 @@
 
 namespace BillaBear\Integrations\Crm\Messenger;
 
+use BillaBear\Notification\Email\Email;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]
 readonly class LogEmail
 {
     public function __construct(
-        public string $customerId,
-        public string $templateName,
+        public Email $email,
     ) {
     }
 }

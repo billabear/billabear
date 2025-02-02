@@ -8,20 +8,29 @@
 
 namespace BillaBear\Notification\Email;
 
-use BillaBear\Entity\Customer;
-use BillaBear\Entity\EmailTemplate;
 use BillaBear\Integrations\Crm\Messenger\LogEmail;
+use Parthenon\Notification\EmailInterface;
+use Parthenon\Notification\EmailSenderInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class EmailLogger
+#[AsDecorator(decorates: EmailSenderInterface::class)]
+class EmailLogger implements EmailSenderInterface
 {
     public function __construct(
         private MessageBusInterface $messageBus,
+        #[AutowireDecorated]
+        private EmailSenderInterface $inner,
     ) {
     }
 
-    public function logEmail(Customer $customer, EmailTemplate $emailTemplate): void
+    /**
+     * @param Email $message
+     */
+    public function send(EmailInterface $message)
     {
-        $this->messageBus->dispatch(new LogEmail($customer->getId(), $emailTemplate->getName()));
+        $this->messageBus->dispatch(new LogEmail($message));
+        $this->inner->send($message);
     }
 }

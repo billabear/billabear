@@ -12,6 +12,7 @@ use BillaBear\Notification\Email\Data\SubscriptionCreatedEmailData;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +28,7 @@ class TestEmailCommand extends Command
         private EmailBuilder $emailBuilder,
         private CustomerRepositoryInterface $customerRepository,
         private SubscriptionRepositoryInterface $subscriptionRepository,
+        private EmailSenderInterface $emailSender,
     ) {
         parent::__construct(null);
     }
@@ -37,6 +39,7 @@ class TestEmailCommand extends Command
         $subscription = $this->subscriptionRepository->getOldestSubscription();
 
         $email = $this->emailBuilder->build($customer, new SubscriptionCreatedEmailData($subscription));
+        $this->emailSender->send($email);
 
         return Command::SUCCESS;
     }

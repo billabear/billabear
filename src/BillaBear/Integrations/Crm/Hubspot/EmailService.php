@@ -10,6 +10,7 @@ namespace BillaBear\Integrations\Crm\Hubspot;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Integrations\Crm\EmailServiceInterface;
+use BillaBear\Notification\Email\Email;
 use HubSpot\Client\Crm\Objects\Emails\ApiException;
 use HubSpot\Client\Crm\Objects\Emails\Model\AssociationSpec;
 use HubSpot\Client\Crm\Objects\Emails\Model\PublicAssociationsForObject;
@@ -27,7 +28,7 @@ class EmailService implements EmailServiceInterface
     ) {
     }
 
-    public function registerEmail(Customer $customer, string $templateName): void
+    public function registerEmail(Customer $customer, Email $email): void
     {
         $this->logger->info('Registering email with Hubspot', [
             'customer' => (string) $customer->getId(),
@@ -59,7 +60,7 @@ class EmailService implements EmailServiceInterface
         ]);
         $properties1 = [
             'hs_email_status' => 'SENT',
-            'hs_email_subject' => sprintf('BillaBear - %s', $templateName),
+            'hs_email_subject' => sprintf('BillaBear - %s', $email->getBillabearEmail()),
             'hs_email_direction' => 'EMAIL',
             'hs_timestamp' => time() * 1000,
         ];
@@ -69,7 +70,7 @@ class EmailService implements EmailServiceInterface
             'properties' => $properties1,
         ]);
         try {
-            $this->client->crm()->objects()->emails()->basicApi()->create($simplePublicObjectInputForCreate);
+            $response = $this->client->crm()->objects()->emails()->basicApi()->create($simplePublicObjectInputForCreate);
         } catch (ApiException $e) {
             $this->getLogger()->error('Failed to register email with Hubspot', ['customer' => (string) $customer->getId(), 'error' => $e->getResponseBody()]);
         }

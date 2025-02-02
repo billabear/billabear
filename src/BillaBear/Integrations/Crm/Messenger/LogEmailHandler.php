@@ -26,8 +26,8 @@ class LogEmailHandler
 
     public function __invoke(LogEmail $message)
     {
-        $this->getLogger()->info('Logging email for customer', ['customer_id' => $message->customerId, 'template_name' => $message->templateName]);
-        $customer = $this->customerRepository->findById($message->customerId);
-        $this->action->logCustomer($customer, $message->templateName);
+        $this->getLogger()->info('Logging email for customer', ['customer_id' => $message->email->getCustomerId(), 'template_name' => $message->email->getBillabearEmail()]);
+        $customer = $this->customerRepository->findById($message->email->getCustomerId());
+        $this->action->logCustomer($customer, $message->email);
     }
 }

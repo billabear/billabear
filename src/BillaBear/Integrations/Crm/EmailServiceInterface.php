@@ -9,8 +9,9 @@
 namespace BillaBear\Integrations\Crm;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Notification\Email\Email;
 
 interface EmailServiceInterface
 {
-    public function registerEmail(Customer $customer, string $templateName): void;
+    public function registerEmail(Customer $customer, Email $email): void;
 }

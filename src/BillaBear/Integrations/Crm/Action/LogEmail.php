@@ -10,6 +10,7 @@ namespace BillaBear\Integrations\Crm\Action;
 
 use BillaBear\Entity\Customer;
 use BillaBear\Integrations\IntegrationManager;
+use BillaBear\Notification\Email\Email;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\Integrations\CrmIntegrationFailure;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
@@ -23,7 +24,7 @@ class LogEmail
     ) {
     }
 
-    public function logCustomer(Customer $customer, string $email): void
+    public function logCustomer(Customer $customer, Email $email): void
     {
         $settings = $this->settingsRepository->getDefaultSettings();
         if (!$settings->getCrmIntegration()->getEnabled()) {

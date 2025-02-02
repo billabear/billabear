@@ -11,7 +11,6 @@ namespace BillaBear\Notification\Email;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\EmailTemplate;
 use BillaBear\Notification\Email\Data\AbstractEmailData;
-use Parthenon\Notification\Email;
 use Twig\Environment;
 
 class EmailBuilder
@@ -19,7 +18,6 @@ class EmailBuilder
     public function __construct(
         private Environment $twig,
         private EmailTemplateProvider $emailTemplateProvider,
-        private EmailLogger $emailLogger,
     ) {
     }
 
@@ -32,9 +30,9 @@ class EmailBuilder
 
     public function buildWithTemplate(Customer $customer, EmailTemplate $emailTemplate, AbstractEmailData $emailData): Email
     {
-        $this->emailLogger->logEmail($customer, $emailTemplate);
-
         $email = new Email();
+        $email->setBillabearEmail($emailTemplate->getName());
+        $email->setCustomerId((string) $customer->getId());
         $email->setToAddress($customer->getBillingEmail());
         $email->setFromAddress($customer->getBrandSettings()->getEmailAddress());
         $email->setFromName($customer->getBrandSettings()->getBrandName());
