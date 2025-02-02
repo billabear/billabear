@@ -162,6 +162,10 @@ class Settings
 
     public function getCrmIntegration(): CrmIntegration
     {
+        if (!isset($this->crmIntegration)) {
+            $this->crmIntegration = new CrmIntegration();
+        }
+
         return $this->crmIntegration;
     }
 
