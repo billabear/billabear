@@ -361,7 +361,6 @@ export default {
           const subscriptionCountStats = that.convertStatToChartData(data[viewName]);
           that.subscriptionCountChartSeries = subscriptionCountStats.values;
           that.subscriptionCountChartOptions.xaxis.categories = subscriptionCountStats.categories;
-          console.log("Testsfdsf")
         } else {
           data = that.responseData.revenue_stats[viewName];
           that.paymentAmountChartSeries = data.series;
