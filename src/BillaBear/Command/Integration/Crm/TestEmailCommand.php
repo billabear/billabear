@@ -12,6 +12,7 @@ use BillaBear\Notification\Email\Data\SubscriptionCreatedEmailData;
 use BillaBear\Notification\Email\EmailBuilder;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
+use Parthenon\Notification\Attachment;
 use Parthenon\Notification\EmailSenderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -38,7 +39,10 @@ class TestEmailCommand extends Command
         $customer = $this->customerRepository->getOldestCustomer();
         $subscription = $this->subscriptionRepository->getOldestSubscription();
 
+        $attachment = new Attachment('test.txt', 'Hello World');
+
         $email = $this->emailBuilder->build($customer, new SubscriptionCreatedEmailData($subscription));
+        $email->addAttachment($attachment);
         $this->emailSender->send($email);
 
         return Command::SUCCESS;

@@ -18,6 +18,7 @@ use HubSpot\Client\Crm\Objects\Emails\Model\PublicObjectId;
 use HubSpot\Client\Crm\Objects\Emails\Model\SimplePublicObjectInputForCreate;
 use HubSpot\Discovery\Discovery;
 use Parthenon\Common\LoggerAwareTrait;
+use Parthenon\Notification\Attachment;
 
 class EmailService implements EmailServiceInterface
 {
@@ -34,6 +35,12 @@ class EmailService implements EmailServiceInterface
             'customer' => (string) $customer->getId(),
         ]);
 
+        $associations = [];
+        $attachmentIds = [];
+        foreach ($email->getAttachments() as $attachment) {
+            $attachmentIds[] = $this->uploadFile($attachment);
+        }
+
         $associationSpec1 = new AssociationSpec([
             'association_category' => 'HUBSPOT_DEFINED',
             'association_type_id' => 198,
@@ -41,31 +48,32 @@ class EmailService implements EmailServiceInterface
         $to1 = new PublicObjectId([
             'id' => $customer->getCrmContactReference(),
         ]);
-
-        $associationSpec2 = new AssociationSpec([
-            'association_category' => 'HUBSPOT_DEFINED',
-            'association_type_id' => 186,
-        ]);
-        $to2 = new PublicObjectId([
-            'id' => $customer->getCrmReference(),
-        ]);
-
-        $publicAssociationsForObject1 = new PublicAssociationsForObject([
+        $associations[] = new PublicAssociationsForObject([
             'types' => [$associationSpec1],
             'to' => $to1,
         ]);
-        $publicAssociationsForObject2 = new PublicAssociationsForObject([
-            'types' => [$associationSpec2],
-            'to' => $to2,
+
+        $associationSpec = new AssociationSpec([
+            'association_category' => 'HUBSPOT_DEFINED',
+            'association_type_id' => 186,
         ]);
+        $to = new PublicObjectId([
+            'id' => $customer->getCrmReference(),
+        ]);
+        $associations[] = new PublicAssociationsForObject([
+            'types' => [$associationSpec],
+            'to' => $to,
+        ]);
+
         $properties1 = [
             'hs_email_status' => 'SENT',
             'hs_email_subject' => sprintf('BillaBear - %s', $email->getBillabearEmail()),
             'hs_email_direction' => 'EMAIL',
             'hs_timestamp' => time() * 1000,
+            'hs_attachment_ids' => implode(',', $attachmentIds),
         ];
         $simplePublicObjectInputForCreate = new SimplePublicObjectInputForCreate([
-            'associations' => [$publicAssociationsForObject1, $publicAssociationsForObject2],
+            'associations' => $associations,
             'object_write_trace_id' => 'string',
             'properties' => $properties1,
         ]);
@@ -73,6 +81,33 @@ class EmailService implements EmailServiceInterface
             $response = $this->client->crm()->objects()->emails()->basicApi()->create($simplePublicObjectInputForCreate);
         } catch (ApiException $e) {
             $this->getLogger()->error('Failed to register email with Hubspot', ['customer' => (string) $customer->getId(), 'error' => $e->getResponseBody()]);
+            throw $e;
         }
+    }
+
+    protected function uploadFile(Attachment $attachment): string
+    {
+        $this->logger->info('Uploading attachment to Hubspot', [
+            'attachment' => $attachment->getName(),
+        ]);
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'attachment');
+        file_put_contents($tmpFile, $attachment->getContent());
+
+        $splFile = new \SplFileObject($tmpFile);
+        try {
+            $response = $this->client->files()->filesApi()->upload($splFile, folder_path: 'billabear_attachments', file_name: $attachment->getName(), options: json_encode([
+                'access' => 'PRIVATE',
+                'ttl' => 'P2W',
+                'overwrite' => false,
+                'duplicateValidationStrategy' => 'NONE',
+                'duplicateValidationScope' => 'EXACT_FOLDER',
+            ]));
+        } catch (\HubSpot\Client\Files\ApiException $e) {
+            $this->getLogger()->error('Failed to register file with Hubspot', ['attachment' => $attachment->getName(), 'error' => $e->getResponseBody()]);
+            throw $e;
+        }
+
+        return $response->getId();
     }
 }

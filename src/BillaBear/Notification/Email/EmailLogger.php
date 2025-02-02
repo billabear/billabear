@@ -30,7 +30,9 @@ class EmailLogger implements EmailSenderInterface
      */
     public function send(EmailInterface $message)
     {
-        $this->messageBus->dispatch(new LogEmail($message));
+        if ($message instanceof Email) {
+            $this->messageBus->dispatch(new LogEmail($message));
+        }
         $this->inner->send($message);
     }
 }
