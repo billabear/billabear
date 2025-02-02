@@ -117,6 +117,11 @@ class ZendeskIntegration implements IntegrationInterface, CustomerSupportIntegra
         ];
     }
 
+    public function getAccountId(): string
+    {
+        throw new UnsupportedFeatureException('Zendesk does not support account id');
+    }
+
     private function buildZendeskClient(): ZendeskAPI
     {
         $settings = $this->settingsRepository->getDefaultSettings();

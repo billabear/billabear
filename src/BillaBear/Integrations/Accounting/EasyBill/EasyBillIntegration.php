@@ -100,6 +100,11 @@ class EasyBillIntegration implements IntegrationInterface, AccountingIntegration
         return $client;
     }
 
+    public function getAccountId(): string
+    {
+        throw new UnsupportedFeatureException('EasyBill does not support account id');
+    }
+
     private function createClient(): Client
     {
         $settings = $this->settingsRepository->getDefaultSettings();

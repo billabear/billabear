@@ -100,6 +100,11 @@ class FreshdeskIntegration implements IntegrationInterface, CustomerSupportInteg
         return $customerService;
     }
 
+    public function getAccountId(): string
+    {
+        throw new UnsupportedFeatureException('Freshdesk does not support account id');
+    }
+
     private function buildClient(): ContactService
     {
         $settings = $this->settingsRepository->getDefaultSettings();

@@ -142,6 +142,11 @@ class XeroIntegration implements IntegrationInterface, AccountingIntegrationInte
         return $refundService;
     }
 
+    public function getAccountId(): string
+    {
+        return $this->getTenantId();
+    }
+
     private function createConfig(): Configuration
     {
         return Configuration::getDefaultConfiguration()->setAccessToken($this->oauthConnectionProvider->getAccessToken($this));

@@ -34,4 +34,6 @@ interface IntegrationInterface
     public function getOauthConfig(): OauthConfig;
 
     public function getSettings(): array;
+
+    public function getAccountId(): string;
 }

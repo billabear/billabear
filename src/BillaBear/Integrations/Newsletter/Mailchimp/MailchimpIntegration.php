@@ -87,6 +87,11 @@ class MailchimpIntegration implements IntegrationInterface, NewsletterIntegratio
         return $listService;
     }
 
+    public function getAccountId(): string
+    {
+        throw new UnsupportedFeatureException('Mailchimp does not support account id');
+    }
+
     private function buildClient(): ApiClient
     {
         $newsletterSettings = $this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getSettings();

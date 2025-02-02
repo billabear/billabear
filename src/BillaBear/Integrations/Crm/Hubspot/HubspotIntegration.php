@@ -95,6 +95,20 @@ class HubspotIntegration implements CrmIntegrationInterface, IntegrationInterfac
         return [];
     }
 
+    public function getAccountId(): string
+    {
+        $response = $this->getClient()->apiRequest(
+            [
+                'method' => 'GET',
+                'path' => '/account-info/v3/details',
+            ]
+        );
+        $body = $response->getBody()->getContents();
+        $data = json_decode($body, true);
+
+        return $data['portalId'];
+    }
+
     private function getClient(): Discovery
     {
         if (!isset($this->client)) {

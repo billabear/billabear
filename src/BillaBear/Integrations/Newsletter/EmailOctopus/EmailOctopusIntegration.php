@@ -83,6 +83,11 @@ class EmailOctopusIntegration implements IntegrationInterface, NewsletterIntegra
         return $listService;
     }
 
+    public function getAccountId(): string
+    {
+        throw new UnsupportedFeatureException('EmailOctopus does not support account id');
+    }
+
     private function createClient(): Client
     {
         $settings = $this->settingsRepository->getDefaultSettings()->getNewsletterIntegration()->getSettings();
