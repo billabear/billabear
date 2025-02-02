@@ -113,7 +113,7 @@ class OauthManager
 
         $this->settingsRepository->save($settings);
 
-        $redirectUrl = sprintf('%s/site/integration', $this->siteConfig->getSiteUrl());
+        $redirectUrl = sprintf('%s/site/home', $this->siteConfig->getSiteUrl());
 
         return new RedirectResponse($redirectUrl);
     }
