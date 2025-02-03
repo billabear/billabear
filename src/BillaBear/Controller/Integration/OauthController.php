@@ -8,7 +8,7 @@
 
 namespace BillaBear\Controller\Integration;
 
-use BillaBear\Integrations\Oauth\OauthManager;
+use BillaBear\Integrations\Oauth\OauthManagerInterface;
 use Parthenon\Common\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class OauthController
     #[Route('/integration/{integrationName}/oauth/redirect', name: 'integration_oauth_redirect')]
     public function oauthRedirect(
         Request $request,
-        OauthManager $oauthManager,
+        OauthManagerInterface $oauthManager,
     ): Response {
         $this->getLogger()->info('Handling oauth redirect');
 

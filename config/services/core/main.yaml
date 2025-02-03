@@ -617,6 +617,8 @@ services:
     tags:
       - { name: doctrine.event_listener, event: postGenerateSchemaTable }
 
+  BillaBear\Integrations\Oauth\OauthManagerInterface: '@BillaBear\Integrations\Oauth\OauthManager'
+
 
 when@dev:
   services:

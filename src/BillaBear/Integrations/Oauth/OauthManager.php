@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class OauthManager
+class OauthManager implements OauthManagerInterface
 {
     use LoggerAwareTrait;
     use ProviderTrait;

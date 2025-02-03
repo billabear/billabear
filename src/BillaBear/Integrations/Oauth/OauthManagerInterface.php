@@ -8,9 +8,12 @@
 
 namespace BillaBear\Integrations\Oauth;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 interface OauthManagerInterface
 {
-    public function handleRedirect(Request $request): void;
+    public function sendToIntegration(string $integrationName): RedirectResponse;
+
+    public function handleRedirect(Request $request): RedirectResponse;
 }
