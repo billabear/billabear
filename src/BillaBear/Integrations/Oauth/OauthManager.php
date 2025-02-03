@@ -113,7 +113,11 @@ class OauthManager implements OauthManagerInterface
 
         $this->settingsRepository->save($settings);
 
-        $redirectUrl = sprintf('%s/site/home', $this->siteConfig->getSiteUrl());
+        $redirectUrl = match ($integration->getType()) {
+            IntegrationType::ACCOUNTING => sprintf('%s/site/integrations/accounting', $this->siteConfig->getSiteUrl()),
+            IntegrationType::CRM => sprintf('%s/site/integrations/crm', $this->siteConfig->getSiteUrl()),
+            default => sprintf('%s/site/home', $this->siteConfig->getSiteUrl()),
+        };
 
         return new RedirectResponse($redirectUrl);
     }
