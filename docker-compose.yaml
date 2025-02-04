@@ -14,6 +14,26 @@ services:
     ports:
       - "6379:6379"
 
+  elasticsearch:
+    image: elasticsearch:8.17.1
+    deploy:
+      resources:
+        limits:
+          memory: "2g"
+        reservations:
+          memory: "1g"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - network.host=0.0.0.0
+    volumes:
+      - ./docker/elasticsearch/data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - billabear
+
   database:
     image: timescale/timescaledb-ha:pg17
     environment:

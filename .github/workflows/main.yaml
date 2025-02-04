@@ -36,6 +36,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -87,6 +93,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -137,6 +149,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -185,6 +203,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -235,6 +259,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -287,6 +317,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -336,6 +372,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -391,6 +433,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
@@ -445,6 +493,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
@@ -498,6 +552,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -560,6 +620,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
@@ -613,6 +679,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -668,6 +740,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
@@ -722,6 +800,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
         env:
@@ -759,6 +843,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
+
       - name: Set Node.js 18.x
         uses: actions/setup-node@v3
         with:
@@ -792,6 +882,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.17.1
+          port: 9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
