@@ -35,7 +35,7 @@ use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,11 +47,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SubscriptionController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
 
     public function __construct(
         private readonly CancellationDataMapper $cancellationRequestFactory,
         private readonly WebhookDispatcherInterface $webhookDispatcher,
+        private readonly LoggerInterface $controllerLogger,
     ) {
     }
 
@@ -338,5 +338,10 @@ class SubscriptionController
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true], Response::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

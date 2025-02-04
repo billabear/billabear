@@ -9,14 +9,16 @@
 namespace BillaBear\Controller\App\Integrations;
 
 use BillaBear\Integrations\Oauth\OauthManager;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class OauthController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/{integrationName}/oauth/start', name: 'integration_oauth_start')]
     public function oauthStart(
@@ -30,5 +32,10 @@ class OauthController
         $redirect = $oauthManager->sendToIntegration($integrationName);
 
         return $redirect;
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

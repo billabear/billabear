@@ -22,7 +22,7 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\StripeImportRepositoryInterface;
 use Obol\Provider\ProviderInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +36,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StripeController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/stripe/disable-billing', name: 'app_app_settings_stripe_disablestripebilling', methods: ['POST'])]
     public function disableStripeBilling(
@@ -238,5 +241,10 @@ class StripeController
         $settingsRepository->save($settings);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

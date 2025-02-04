@@ -13,7 +13,7 @@ use BillaBear\DataMappers\Workflows\PaymentFailureProcessDataMapper;
 use BillaBear\Dto\Response\App\Workflows\ViewPaymentFailureProcess;
 use BillaBear\Repository\PaymentFailureProcessRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 class PaymentFailureProcessController
 {
     use CrudListTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/system/payment-failure-process/list', name: 'app_app_workflows_paymentfailureprocess_listpaymentfailureprocess', methods: ['GET'])]
     public function listPaymentFailureProcess(
@@ -79,5 +82,10 @@ class PaymentFailureProcessController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

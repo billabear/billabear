@@ -19,6 +19,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class WebhookController
 {
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
+
     #[Route('/webhook', name: 'app_webhook')]
     public function webhook(Request $request, RequestProcessor $requestProcessor, LoggerInterface $logger): Response
     {
@@ -26,5 +30,10 @@ class WebhookController
         $requestProcessor->processRequest($request);
 
         return new JsonResponse([]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

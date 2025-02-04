@@ -29,7 +29,7 @@ use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +40,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionPlanController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/plan-creation', name: 'app_product_plan_create_info', methods: ['get'])]
@@ -267,5 +269,10 @@ class SubscriptionPlanController
         $eventDispatcher->dispatch(new PlanUpdatedPayload($subscriptionPlan));
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

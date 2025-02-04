@@ -12,7 +12,7 @@ use BillaBear\Checkout\CheckoutCreator;
 use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\CheckoutDataMapper;
 use BillaBear\Dto\Request\Api\Checkout\CreateCheckout;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CheckoutController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/checkout', name: 'app_api_checkout_create_checkout', methods: ['POST'])]
     public function createCheckout(
@@ -48,5 +51,10 @@ class CheckoutController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

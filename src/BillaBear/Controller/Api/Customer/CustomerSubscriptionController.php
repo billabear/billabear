@@ -24,7 +24,7 @@ use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Billing\Subscription\SubscriptionManagerInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,8 +35,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerSubscriptionController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer/{customerId}/subscription', methods: ['GET'])]
     public function listCustomerSubscriptions(
@@ -236,5 +239,10 @@ class CustomerSubscriptionController
         $json = $serializer->serialize($subscriptionDto, 'json');
 
         return new JsonResponse($json, Response::HTTP_CREATED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

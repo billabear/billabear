@@ -26,7 +26,7 @@ use BillaBear\Repository\InvoiceRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Athena\Filters\BoolFilter;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,7 +42,10 @@ class InvoicesController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/invoices', name: 'app_invoices_list', methods: ['GET'])]
     public function listInvoice(
@@ -247,5 +250,10 @@ class InvoicesController
         $json = $serializer->serialize($output, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

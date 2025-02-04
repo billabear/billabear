@@ -15,7 +15,7 @@ use BillaBear\Entity\Customer;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\UsageLimitRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +26,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UsageLimitController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/customer/{id}/usage-limit', name: 'app_customer_usage_limit', methods: ['POST'])]
@@ -87,5 +90,10 @@ class UsageLimitController
         $usageLimitRepository->delete($usageLimit);
 
         return new Response(null, Response::HTTP_OK);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

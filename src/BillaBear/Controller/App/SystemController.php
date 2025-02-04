@@ -15,7 +15,7 @@ use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\SubscriptionPlanRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SystemController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/system/data', name: 'app_system_data', methods: ['GET'])]
     public function getSystemData(
@@ -73,5 +75,10 @@ class SystemController
         ];
 
         return new JsonResponse($json);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

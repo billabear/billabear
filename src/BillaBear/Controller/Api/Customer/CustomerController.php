@@ -27,7 +27,7 @@ use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Obol\Exception\ProviderFailureException;
 use Parthenon\Billing\Repository\SubscriptionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +38,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer', name: 'api_v1_customer_create', methods: ['POST'])]
     public function createCustomer(
@@ -274,5 +276,10 @@ class CustomerController
         $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
 
         return new JsonResponse(status: Response::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

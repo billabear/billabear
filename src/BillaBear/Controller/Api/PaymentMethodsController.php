@@ -20,7 +20,7 @@ use Parthenon\Billing\PaymentMethod\DefaultPaymentManagerInterface;
 use Parthenon\Billing\PaymentMethod\DeleterInterface;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentMethodsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer/{customerId}/payment-methods/frontend-payment-token', name: 'api_v1.0_payment_details_frontend_payment_token_start', methods: ['GET'])]
     public function startJsTokenAdd(
@@ -190,5 +192,10 @@ class PaymentMethodsController
         $json = $serializer->serialize($list, 'json');
 
         return new JsonResponse($json, Response::HTTP_ACCEPTED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

@@ -14,7 +14,7 @@ use BillaBear\DataMappers\Tax\TaxTypeDataMapper;
 use BillaBear\Dto\Request\App\TaxType\CreateTaxType;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,10 @@ class TaxTypeController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/tax/type', name: 'app_app_create_tax_type', methods: ['POST'])]
     public function createTaxType(
@@ -136,5 +139,10 @@ class TaxTypeController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

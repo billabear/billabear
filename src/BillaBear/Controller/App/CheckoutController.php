@@ -22,7 +22,7 @@ use BillaBear\Repository\CheckoutRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use Parthenon\Billing\Repository\SubscriptionPlanRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,10 @@ class CheckoutController
 {
     use CrudListTrait;
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/checkout', name: 'app_app_checkout_listcheckout', methods: ['GET'])]
     public function listCheckout(
@@ -128,5 +131,10 @@ class CheckoutController
         $json = $serializer->serialize($viewDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

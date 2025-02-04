@@ -19,7 +19,7 @@ use Parthenon\Billing\Exception\RefundLimitExceededException;
 use Parthenon\Billing\Refund\RefundManagerInterface;
 use Parthenon\Billing\Repository\PaymentRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +29,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/payment', name: 'api_v1.0_payment_list', methods: ['GET'])]
     public function listPayment(
@@ -115,5 +117,10 @@ class PaymentController
         }
 
         return new JsonResponse(status: Response::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

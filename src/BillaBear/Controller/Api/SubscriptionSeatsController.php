@@ -18,7 +18,7 @@ use BillaBear\Subscription\UpdateAction\RemoveSeatFromSubscription;
 use BillaBear\Webhook\Outbound\Payload\Subscription\SubscriptionUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,9 +29,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SubscriptionSeatsController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
 
-    public function __construct(private readonly WebhookDispatcherInterface $webhookDispatcher)
+    public function __construct(private LoggerInterface $controllerLogger, private readonly WebhookDispatcherInterface $webhookDispatcher)
     {
     }
 
@@ -94,5 +93,10 @@ class SubscriptionSeatsController
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

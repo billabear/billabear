@@ -20,7 +20,7 @@ use BillaBear\User\UserProvider;
 use BillaBear\Voucher\VoucherRegister;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +32,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class VoucherController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/voucher', name: 'app_app_voucher_listvoucher', methods: ['GET'])]
     public function listVoucher(
@@ -197,5 +200,10 @@ class VoucherController
         $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

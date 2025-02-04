@@ -27,9 +27,9 @@ use BillaBear\Subscription\MassChange\RevenueEstimator;
 use BillaBear\Subscription\MassSubscriptionChangeStatus;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Export\Engine\EngineInterface;
 use Parthenon\Export\ExportRequest;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +42,10 @@ class MassChangeController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/subscription/mass-change/create', name: 'app_app_subscriptions_masschange_createchangeread', methods: ['GET'])]
@@ -220,5 +223,10 @@ class MassChangeController
         $massSubscriptionChangeRepository->save($entity);
 
         return new JsonResponse(['status' => MassSubscriptionChangeStatus::CREATED->value]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

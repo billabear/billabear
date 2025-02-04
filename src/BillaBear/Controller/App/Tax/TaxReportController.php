@@ -14,9 +14,9 @@ use BillaBear\Export\Response\ResponseConverter;
 use BillaBear\Repository\TaxReportRepositoryInterface;
 use BillaBear\Tax\Report\ActiveCountryProvider;
 use BillaBear\Tax\Report\ReportItemBuilder;
-use Parthenon\Common\LoggerAwareTrait;
 use Parthenon\Export\Engine\EngineInterface;
 use Parthenon\Export\ExportRequest;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +24,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class TaxReportController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/tax/report', name: 'app_app_tax_taxreport_viewlist', methods: ['GET'])]
     public function viewReport(
@@ -81,5 +83,10 @@ class TaxReportController
         $responseConverter = new ResponseConverter();
 
         return $responseConverter->convert($exportResponse);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

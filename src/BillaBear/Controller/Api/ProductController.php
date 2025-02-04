@@ -15,7 +15,7 @@ use BillaBear\Entity\Product;
 use BillaBear\Filters\ProductList;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/product', name: 'api_v1.0_product_create', methods: ['POST'])]
     public function createProduct(
@@ -163,5 +165,10 @@ class ProductController
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, Response::HTTP_ACCEPTED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

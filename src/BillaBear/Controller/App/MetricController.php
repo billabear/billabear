@@ -14,7 +14,7 @@ use BillaBear\Dto\Request\App\Usage\CreateMetric;
 use BillaBear\Dto\Request\App\Usage\UpdateMetric;
 use BillaBear\Repository\Usage\MetricRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +25,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MetricController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
     use CrudListTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/metric', name: 'billabear_metrics_create_write', methods: ['POST'])]
@@ -119,5 +122,10 @@ class MetricController
         $json = $serializer->serialize($appDto, 'json');
 
         return JsonResponse::fromJsonString($json);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

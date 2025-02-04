@@ -18,7 +18,7 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Money;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CostsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer/{id}/costs', name: 'api_v1_customer_read_costs', methods: ['GET'])]
     public function costAction(
@@ -91,5 +93,10 @@ class CostsController
         $json = $serializer->serialize($cost, 'json');
 
         return new JsonResponse($json, Response::HTTP_OK, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

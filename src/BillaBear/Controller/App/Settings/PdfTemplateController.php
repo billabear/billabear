@@ -27,7 +27,7 @@ use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use BillaBear\Repository\TemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +43,10 @@ use Twig\Error\Error;
 class PdfTemplateController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/template', name: 'app_settings_template_list', methods: ['GET'])]
     public function getTemplateList(
@@ -302,5 +305,10 @@ class PdfTemplateController
         $settingsRepository->save($settings);
 
         return new JsonResponse(['success' => true]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

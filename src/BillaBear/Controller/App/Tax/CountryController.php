@@ -25,7 +25,7 @@ use BillaBear\Repository\CountryTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Tax\CountryTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +37,10 @@ class CountryController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/countries', name: 'app_country_list', methods: ['GET'])]
     public function listCountries(
@@ -214,5 +217,10 @@ class CountryController
         $json = $serializer->serialize($appDto, 'json');
 
         return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

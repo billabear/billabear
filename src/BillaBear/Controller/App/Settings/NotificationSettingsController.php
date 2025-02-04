@@ -12,7 +12,7 @@ use BillaBear\DataMappers\Settings\NotificationSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\NotificationSettings;
 use BillaBear\Dto\Response\App\Settings\NotificationSettingsView;
 use BillaBear\Repository\SettingsRepository;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_DEVELOPER')]
 class NotificationSettingsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/notification-settings', name: 'app_app_settings_notificationsettings_readsettings', methods: ['GET'])]
     public function readSettings(
@@ -78,5 +80,10 @@ class NotificationSettingsController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

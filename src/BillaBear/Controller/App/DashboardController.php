@@ -24,7 +24,7 @@ use BillaBear\Repository\Stats\PaymentStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Stats\Graphs\RevenueStatsProvider;
 use BillaBear\Stats\Graphs\SubscriptionCountStatsProvider;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +34,9 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class DashboardController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/stats', name: 'app_app_stats_returnstats', methods: ['GET'])]
     public function returnStats(
@@ -108,5 +110,10 @@ class DashboardController
         $json = $serializer->serialize($mainDashboardStat, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

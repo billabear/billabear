@@ -16,7 +16,7 @@ use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Entity\ApiKey;
 use BillaBear\Repository\ApiKeyRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,10 +28,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_DEVELOPER')]
 class ApiKeyController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
 
-    public function __construct(private readonly GenericTasks $genericTasks)
+    public function __construct(private readonly GenericTasks $genericTasks, private LoggerInterface $controllerLogger)
     {
     }
 
@@ -97,5 +96,10 @@ class ApiKeyController
         $apiKeyRepository->save($apiKey);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

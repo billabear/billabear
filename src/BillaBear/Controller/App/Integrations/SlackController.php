@@ -20,7 +20,7 @@ use BillaBear\Entity\SlackWebhook;
 use BillaBear\Repository\SlackNotificationRepositoryInterface;
 use BillaBear\Repository\SlackWebhookRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +34,10 @@ class SlackController
 {
     use ValidationErrorResponseTrait;
     use CrudListTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/integrations/slack/notification/create', name: 'billabear_app_integrations_slack_showcreatenotification', methods: ['GET'])]
     public function showCreateNotification(
@@ -190,5 +193,10 @@ class SlackController
         $repository->save($slackNotification);
 
         return new JsonResponse([], JsonResponse::HTTP_OK);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

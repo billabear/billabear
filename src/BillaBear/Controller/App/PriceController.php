@@ -20,7 +20,7 @@ use Parthenon\Billing\Obol\PriceRegisterInterface;
 use Parthenon\Billing\Repository\PriceRepositoryInterface;
 use Parthenon\Billing\Repository\ProductRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +31,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PriceController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/product/{id}/price', name: 'app_product_price_create_get', methods: ['GET'])]
@@ -207,5 +209,10 @@ class PriceController
         $priceRepository->save($price);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

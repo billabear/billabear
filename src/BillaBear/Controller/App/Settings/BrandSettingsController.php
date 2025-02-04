@@ -15,7 +15,7 @@ use BillaBear\Dto\Response\App\BrandSettings\BrandSettingsView;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ACCOUNT_MANAGER')]
 class BrandSettingsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/brand', name: 'app_settings_brand_list', methods: ['GET'])]
     public function listBrandSettings(
@@ -155,5 +157,10 @@ class BrandSettingsController
         $json = $serializer->serialize($brandView, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

@@ -13,7 +13,7 @@ use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Filters\ProductList;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RefundController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/refund', name: 'api_v1.0_refund_list', methods: ['GET'])]
     public function listRefund(
@@ -86,5 +88,10 @@ class RefundController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

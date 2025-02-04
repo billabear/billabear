@@ -14,7 +14,7 @@ use BillaBear\Integrations\Accounting\Messenger\DisableIntegration;
 use BillaBear\Integrations\Accounting\Messenger\EnableIntegration;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CrmController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/integrations/crm/settings', name: 'crm_settings', methods: ['GET'])]
     public function readAccountingSettings(
@@ -113,5 +115,10 @@ class CrmController
     public function enable()
     {
         $this->getLogger()->info('Enabling accounting integration');
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

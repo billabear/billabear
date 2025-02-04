@@ -11,7 +11,7 @@ namespace BillaBear\Controller\App\Reports;
 use BillaBear\DataMappers\Reports\ExpiringCardsDataMapper;
 use BillaBear\Dto\Response\App\ListResponse;
 use BillaBear\Repository\PaymentCardRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,7 +19,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ExpiringCardsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/reports/expiring-cards', name: 'app_app_reports_expiringcards_getcards', methods: ['GET'])]
     public function getCards(
@@ -37,5 +39,10 @@ class ExpiringCardsController
         $json = $serializer->serialize($listView, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

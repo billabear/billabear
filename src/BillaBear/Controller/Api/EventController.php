@@ -12,7 +12,7 @@ use BillaBear\Controller\ValidationErrorResponseTrait;
 use BillaBear\DataMappers\Usage\EventDataMapper;
 use BillaBear\Dto\Request\Api\CreateEvent\CreateEvent;
 use BillaBear\Repository\Usage\EventRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,8 +21,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EventController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/events', name: 'api_v1_events', methods: ['POST'])]
     public function create(
@@ -46,5 +49,10 @@ class EventController
         $eventRepository->save($eventData);
 
         return new Response(null, Response::HTTP_CREATED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

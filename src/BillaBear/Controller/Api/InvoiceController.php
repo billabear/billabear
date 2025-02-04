@@ -17,7 +17,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class InvoiceController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer/{customerId}/invoices', name: 'billabear_api_invoice_get_invoices_for_customer', methods: ['GET'])]
     public function getInvoicesForCustomer(
@@ -110,5 +112,10 @@ class InvoiceController
         );
 
         return $response;
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

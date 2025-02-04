@@ -16,7 +16,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\User\UserProvider;
 use Brick\Money\Money;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreditController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/customer/{id}/credit', name: 'app_customer_credit_create', methods: ['POST'])]
     public function createCredit(
@@ -73,5 +75,10 @@ class CreditController
         $jsonResponse = $serializer->serialize($creditDto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_CREATED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

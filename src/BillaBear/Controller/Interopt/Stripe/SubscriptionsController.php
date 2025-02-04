@@ -19,7 +19,7 @@ use BillaBear\Repository\SubscriptionRepositoryInterface;
 use BillaBear\Subscription\CancellationRequestProcessor;
 use BillaBear\User\UserProvider;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +29,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscriptionsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/interopt/stripe/v1/subscriptions', name: 'app_interopt_stripe_subscriptions_list', methods: ['GET'])]
     public function listAction(
@@ -117,5 +119,10 @@ class SubscriptionsController
         $data = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($data, status: JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

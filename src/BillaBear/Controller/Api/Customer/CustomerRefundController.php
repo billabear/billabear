@@ -16,7 +16,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use Parthenon\Athena\Filters\ExactChoiceFilter;
 use Parthenon\Billing\Repository\RefundRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CustomerRefundController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer/{id}/refund', name: 'api_v1.0_customer_refund_list', methods: ['GET'])]
     public function listRefund(
@@ -82,5 +84,10 @@ class CustomerRefundController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

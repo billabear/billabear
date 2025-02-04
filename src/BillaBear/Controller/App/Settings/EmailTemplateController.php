@@ -20,7 +20,7 @@ use BillaBear\Notification\Email\EmailTester;
 use BillaBear\Repository\BrandSettingsRepositoryInterface;
 use BillaBear\Repository\EmailTemplateRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +33,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ACCOUNT_MANAGER')]
 class EmailTemplateController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/email-template/create', name: 'app_app_settings_emailtemplate_create_read', methods: ['GET'])]
     public function createRead(
@@ -223,5 +225,10 @@ class EmailTemplateController
         $emailTester->sendTest($user, $template);
 
         return new JsonResponse(['success' => true]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

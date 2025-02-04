@@ -12,7 +12,7 @@ use BillaBear\Pdf\ReceiptPdfGenerator;
 use Parthenon\Billing\Entity\Receipt;
 use Parthenon\Billing\Repository\ReceiptRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ReceiptController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/receipt/{id}/download', name: 'billabear_api_receipt_downloadreceipt', methods: ['GET'])]
     public function downloadReceipt(
@@ -52,5 +54,10 @@ class ReceiptController
         );
 
         return $response;
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

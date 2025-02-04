@@ -13,7 +13,7 @@ use BillaBear\Dto\Response\App\Integrations\AccountingIntegrationView;
 use BillaBear\Integrations\CustomerSupport\Messenger\EnableIntegration;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CustomerSupportController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/integrations/customer-support/settings', name: 'customer_support_settings', methods: ['GET'])]
@@ -77,5 +79,10 @@ class CustomerSupportController
         }
 
         return new JsonResponse(['settings' => $data['settings']]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

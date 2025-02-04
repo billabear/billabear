@@ -10,7 +10,7 @@ namespace BillaBear\Controller\Public;
 
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,7 +18,9 @@ use Twig\Environment;
 
 class FrontController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/portal/{vueRouting}', name: 'public_main', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/portal/pay/{hash}', name: 'portal_pay_invoice', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
@@ -37,5 +39,10 @@ class FrontController
         }
 
         return new Response($twig->render('public.html.twig'));
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

@@ -12,7 +12,7 @@ use BillaBear\DataMappers\FeatureDataMapper;
 use BillaBear\Dto\Request\App\PostFeature;
 use BillaBear\Dto\Response\Api\ListResponse;
 use Parthenon\Billing\Repository\SubscriptionFeatureRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FeatureController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/feature', name: 'app_feature_create', methods: ['POST'])]
@@ -100,5 +102,10 @@ class FeatureController
         $json = $serializer->serialize($listResponse, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

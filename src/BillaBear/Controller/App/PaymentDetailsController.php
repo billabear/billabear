@@ -22,7 +22,7 @@ use Parthenon\Billing\PaymentMethod\DeleterInterface;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Billing\Repository\PaymentCardRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +33,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PaymentDetailsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_CUSTOMER_SUPPORT')]
     #[Route('/app/customer/{customerId}/payment-card/frontend-payment-token', name: 'app_payment_details_frontend_payment_token_start', methods: ['GET'])]
@@ -189,5 +191,10 @@ class PaymentDetailsController
         $deleter->delete($paymentDetails);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

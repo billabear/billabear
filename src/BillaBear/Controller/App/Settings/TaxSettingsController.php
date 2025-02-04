@@ -13,7 +13,7 @@ use BillaBear\DataMappers\Settings\TaxSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\Tax\TaxSettings;
 use BillaBear\Dto\Request\App\Settings\Tax\VatSense;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,8 +24,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ADMIN')]
 class TaxSettingsController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/tax', name: 'app_app_settings_taxsettings_readsettings', methods: ['GET'])]
     public function readSettings(
@@ -101,5 +104,10 @@ class TaxSettingsController
         $json = $serializer->serialize($outputDto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

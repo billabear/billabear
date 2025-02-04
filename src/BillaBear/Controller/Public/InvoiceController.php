@@ -21,7 +21,7 @@ use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +32,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class InvoiceController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/public/invoice/{id}/pay', name: 'app_public_invoice_readpay', methods: ['GET'])]
     public function readPay(
@@ -104,5 +107,10 @@ class InvoiceController
         }
 
         return new JsonResponse(['success' => $success, 'failure_reason' => $failureReason]);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

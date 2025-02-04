@@ -23,7 +23,7 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Currency;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Money;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,7 +31,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class FinancialController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/stats/lifetime', name: 'app_app_stats_financial_lifetimevalue', methods: ['GET'])]
     public function lifetimeValue(
@@ -107,5 +109,10 @@ class FinancialController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

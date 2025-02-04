@@ -18,7 +18,7 @@ use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\InvoiceDeliverySettingsRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +28,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class InvoiceDeliveryController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/customer/{customerId}/invoice-delivery', name: 'create_invoice_delivery', methods: ['POST'])]
     public function createNew(
@@ -170,5 +173,10 @@ class InvoiceDeliveryController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, JsonResponse::HTTP_OK, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

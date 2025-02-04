@@ -53,7 +53,7 @@ use BillaBear\Webhook\Outbound\Payload\Customer\CustomerEnabledPayload;
 use BillaBear\Webhook\Outbound\Payload\Customer\CustomerUpdatedPayload;
 use BillaBear\Webhook\Outbound\WebhookDispatcherInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +66,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/customer', name: 'site_customer_list', methods: ['GET'])]
     public function listCustomer(
@@ -412,5 +414,10 @@ class CustomerController
         $jsonResponse = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($jsonResponse, JsonResponse::HTTP_ACCEPTED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

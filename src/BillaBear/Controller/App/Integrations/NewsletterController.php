@@ -14,7 +14,7 @@ use BillaBear\Dto\Response\App\Integrations\NewsletterIntegrationView;
 use BillaBear\Integrations\IntegrationManager;
 use BillaBear\Integrations\Newsletter\Messenger\EnableIntegration;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class NewsletterController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[IsGranted('ROLE_ACCOUNT_MANAGER')]
     #[Route('/app/integrations/newsletter/settings', name: 'newsletter_settings', methods: ['GET'])]
@@ -108,5 +110,10 @@ class NewsletterController
         $json = $serializer->serialize($viewDto, 'json');
 
         return $json;
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

@@ -10,14 +10,16 @@ namespace BillaBear\Controller\App\Reports;
 
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class SubscriptionsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/reports/subscriptions', name: 'app_app_reports_subscriptions_getoverview', methods: ['GET'])]
     public function getOverview(
@@ -44,5 +46,10 @@ class SubscriptionsController
         $data['yearly'] = $cancellationRequestRepository->getYearlyCount(new \DateTime('-6 years'));
 
         return new JsonResponse($data);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

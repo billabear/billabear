@@ -13,7 +13,7 @@ use BillaBear\DataMappers\Invoice\SettingsDataMapper;
 use BillaBear\Dto\Request\App\Invoice\UpdateSettings;
 use BillaBear\Dto\Response\App\Invoice\ViewSettings;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +25,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_ACCOUNT_MANAGER')]
 class SettingsController
 {
-    use LoggerAwareTrait;
     use ValidationErrorResponseTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/invoice/settings', methods: ['GET'])]
     public function readSettings(
@@ -70,5 +73,10 @@ class SettingsController
         $json = $serializer->serialize($dto, 'json');
 
         return new JsonResponse($json, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

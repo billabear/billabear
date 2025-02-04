@@ -13,7 +13,7 @@ use BillaBear\DataMappers\Workflows\PlaceDataMapper;
 use BillaBear\Dto\Request\App\Workflows\CreateTransition;
 use BillaBear\Repository\WorkflowTransitionRepositoryInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TransitionController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/workflow/create-transition', methods: ['POST'])]
     public function createTransition(
@@ -105,5 +108,10 @@ class TransitionController
         $workflowTransitionRepository->save($entity);
 
         return new JsonResponse([], status: JsonResponse::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

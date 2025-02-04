@@ -18,6 +18,10 @@ use Twig\Environment;
 
 class FrontendController
 {
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
+
     #[Route('/', name: 'app_index_landing')]
     #[Route('/login', name: 'app_public')]
     #[Route('/signup', name: 'app_signup')]
@@ -54,5 +58,10 @@ class FrontendController
         $logger->warning('A user has ended up on the stripe error page');
 
         return new Response($twig->render('index.html.twig'));
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

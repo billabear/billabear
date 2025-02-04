@@ -23,7 +23,7 @@ use BillaBear\Repository\StateTaxRuleRepositoryInterface;
 use BillaBear\Repository\TaxTypeRepositoryInterface;
 use BillaBear\Tax\StateTaxRuleTerminator;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +34,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class StateController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/country/{id}/state/{stateId}/tax-rule/{taxRuleId}/edit', methods: ['POST'])]
     public function updateStateTaxRule(
@@ -217,5 +220,10 @@ class StateController
         $json = $serializer->serialize($appDto, 'json');
 
         return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

@@ -12,7 +12,7 @@ use BillaBear\DataMappers\Settings\SystemSettingsDataMapper;
 use BillaBear\Dto\Request\App\Settings\SystemSettings;
 use BillaBear\Dto\Response\App\Settings\SystemSettingsView;
 use BillaBear\Repository\SettingsRepositoryInterface;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[IsGranted('ROLE_DEVELOPER')]
 class SystemSettingsController
 {
-    use LoggerAwareTrait;
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/app/settings/system', name: 'app_app_settings_systemsettings_readsettings', methods: ['GET'])]
     public function readSettings(
@@ -89,5 +91,10 @@ class SystemSettingsController
         $repository->save($settings);
 
         return new JsonResponse([], JsonResponse::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }

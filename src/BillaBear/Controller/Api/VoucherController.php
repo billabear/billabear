@@ -14,7 +14,7 @@ use BillaBear\Repository\CustomerRepositoryInterface;
 use BillaBear\Repository\VoucherRepositoryInterface;
 use BillaBear\Voucher\VoucherApplier;
 use Parthenon\Common\Exception\NoEntityFoundException;
-use Parthenon\Common\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class VoucherController
 {
     use ValidationErrorResponseTrait;
-    use LoggerAwareTrait;
+
+    public function __construct(private LoggerInterface $controllerLogger)
+    {
+    }
 
     #[Route('/api/v1/customer/{id}/voucher', name: 'app_api_voucher_apply_code', methods: ['POST'])]
     public function applyCode(
@@ -55,5 +58,10 @@ class VoucherController
         $applier->applyVoucherToCustomer($customer, $voucher);
 
         return new JsonResponse([], Response::HTTP_ACCEPTED);
+    }
+
+    private function getLogger(): LoggerInterface
+    {
+        return $this->controllerLogger;
     }
 }
