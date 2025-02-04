@@ -11,3 +11,6 @@ services:
     class: BillaBear\Tax\VatSense\VatSenseClient
     factory: [ '@BillaBear\Tax\VatSense\ClientFactory', 'build' ]
 
+  Monolog\Processor\UidProcessor:
+    tags:
+      - { name: monolog.processor }
