@@ -3,6 +3,7 @@ monolog:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists\
         - obol
         - controller
+        - audit
 
 when@dev:
     monolog:
@@ -11,7 +12,7 @@ when@dev:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
-                channels: ["!event"]
+                channels: ["!event", "!audit"]
             rollbar:
                 type: service
                 id: BillaBear\Logger\Error\RollbarHandler
@@ -49,7 +50,7 @@ when@prod:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: info
-                channels: ["!event", "!deprecation"]
+                channels: ["!event", "!deprecation", "!audit"]
             rollbar:
                 type: service
                 id: BillaBear\Logger\Error\RollbarHandler
