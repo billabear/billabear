@@ -10,6 +10,7 @@ namespace BillaBear\Entity;
 
 use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\CustomerType;
+use BillaBear\Logger\Audit\AuditableInterface;
 use BillaBear\Pricing\Usage\WarningLevel;
 use Brick\Money\Money;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +23,7 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 #[ORM\Index(name: 'email_idx', fields: ['billingEmail'])]
 #[ORM\Index(name: 'external_ref_idx', fields: ['externalCustomerReference'])]
 #[ORM\Table(name: 'customers')]
-class Customer implements CustomerInterface
+class Customer implements CustomerInterface, AuditableInterface
 {
     public const BILLING_TYPE_CARD = 'card';
     public const BILLING_TYPE_INVOICE = 'invoice';
@@ -541,5 +542,15 @@ class Customer implements CustomerInterface
     public function setMetadata(array $metadata): void
     {
         $this->metadata = $metadata;
+    }
+
+    public function getAuditName(): string
+    {
+        return 'Customer';
+    }
+
+    public function getAuditLogIdTag(): string
+    {
+        return 'customer_id';
     }
 }

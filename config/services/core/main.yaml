@@ -613,12 +613,18 @@ services:
   Parthenon\Billing\Factory\EntityFactoryInterface: '@BillaBear\Factory\EntityFactory'
   Parthenon\Billing\Subscription\SchedulerInterface: '@BillaBear\Subscription\Schedule\SchedulerHandler'
 
-  BillaBear\Database\Doctrine\HypertableSchemaListener:
-    tags:
-      - { name: doctrine.event_listener, event: postGenerateSchemaTable }
 
   BillaBear\Integrations\Oauth\OauthManagerInterface: '@BillaBear\Integrations\Oauth\OauthManager'
 
+  ##########################
+  ### Doctrine Configuration
+  ##########################
+  BillaBear\Database\Doctrine\HypertableSchemaListener:
+    tags:
+      - { name: doctrine.event_listener, event: postGenerateSchemaTable }
+  BillaBear\Database\Doctrine\AuditListener:
+    tags:
+      - { name: doctrine.event_listener, event: onFlush }
 
 when@dev:
   services:
