@@ -17,8 +17,10 @@ use BillaBear\Entity\EmailTemplate;
 use BillaBear\Entity\Settings;
 use BillaBear\Entity\TaxType;
 use BillaBear\Invoice\InvoiceGenerationType;
+use BillaBear\Logger\Audit\IndexProviderInterface;
 use BillaBear\Repository\Orm\SettingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Elastic\Elasticsearch\ClientInterface;
 use Parthenon\Common\Address;
 
 class GeneralContext implements Context
@@ -29,6 +31,8 @@ class GeneralContext implements Context
         private Session $session,
         private EntityManagerInterface $entityManager,
         private SettingsRepository $settingsRepository,
+        private ClientInterface $client,
+        private IndexProviderInterface $indexProvider,
     ) {
     }
 
@@ -155,6 +159,13 @@ class GeneralContext implements Context
 
         $this->authenticate(null);
         $this->isStripe(false);
+
+        $params = ['index' => $this->indexProvider->getIndex(), 'allow_no_indices' => true];
+        $result = $this->client->indices()->exists($params);
+        if ($result->asBool()) {
+            $this->client->indices()->delete($params);
+        }
+        $this->client->indices()->create(['index' => $this->indexProvider->getIndex()]);
     }
 
     #[Given('there are no stripe api keys configured')]

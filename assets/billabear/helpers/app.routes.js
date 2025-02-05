@@ -69,6 +69,7 @@ import MetricCreate from "../views/App/Metric/MetricCreate.vue";
 import MetricView from "../views/App/Metric/MetricView.vue";
 import MetricUpdate from "../views/App/Metric/MetricUpdate.vue";
 import {AppIntegrationsRoutes} from "./app.integrations.routes";
+import AuditAll from "../views/App/Compliance/Audit/AuditAll.vue";
 
 // All paths have the prefix /app/.
 export const APP_ROUTES = [
@@ -402,4 +403,9 @@ export const APP_ROUTES = [
         path: 'metric/:id/update',
         component: MetricUpdate,
     },
+    {
+        name: 'app.compliance.audit.all',
+        path: 'compliance/audit',
+        component: AuditAll,
+    }
 ]

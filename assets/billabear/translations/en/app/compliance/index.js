@@ -1,0 +1,5 @@
+import {COMPLIANCE_AUDIT_TRANSLATIONS} from "./audit";
+
+export const COMPLIANCE_TRANSLATIONS = {
+    audit: COMPLIANCE_AUDIT_TRANSLATIONS,
+};
