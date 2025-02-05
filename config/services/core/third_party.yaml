@@ -14,3 +14,7 @@ services:
   Monolog\Processor\UidProcessor:
     tags:
       - { name: monolog.processor }
+
+  Elastic\Elasticsearch\ClientInterface:
+    class: Elastic\Elasticsearch\Client
+    factory: ['@BillaBear\Elasticsearch\Factory', 'build']
