@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid md:grid-cols-3 gap-3">
           <div class="col-span-2">
             <div class="grid grid-cols-2">
               <div class="my-5">
