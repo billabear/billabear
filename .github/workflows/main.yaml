@@ -158,6 +158,7 @@ jobs:
         with:
           stack-version: 8.17.1
           port: 9200
+          security-enabled: false
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -193,6 +194,16 @@ jobs:
         experimental: [false]
 
     services:
+      elasticsearch:
+        image: elasticsearch:8.17.1
+        env:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - network.host=0.0.0.0
+            - indices.id_field_data.enabled=true
+        ports:
+            - "9200:9200"
+            - "9300:9300"
       postgres:
         image: timescale/timescaledb-ha:pg16
         ports:
