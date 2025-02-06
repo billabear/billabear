@@ -109,12 +109,16 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionDataMapper $subscriptionFactory,
     ): Response {
-        $this->getLogger()->info('Received request to view subscription', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received request to view subscription', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
 
         $dto = $subscriptionFactory->createApiDto($subscription);
         $json = $serializer->serialize($dto, 'json');
@@ -133,13 +137,16 @@ class SubscriptionController
         TrialManager $trialManager,
         SubscriptionDataMapper $subscriptionDataMapper,
     ): Response {
-        $this->getLogger()->info('Received request to extend subscription', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
 
+        $this->getLogger()->info('Received request to extend subscription', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
         /** @var ExtendTrial $dto */
         $dto = $serializer->deserialize($request->getContent(), ExtendTrial::class, 'json');
         $errors = $validator->validate($dto);
@@ -182,12 +189,16 @@ class SubscriptionController
         ValidatorInterface $validator,
         MessageBusInterface $messageBus,
     ): Response {
-        $this->getLogger()->info('Received request to cancel subscriptions', ['subscription_id' => $request->get('id')]);
         try {
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to cancel subscriptions', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
+
         /** @var CancelSubscription $dto */
         $dto = $serializer->deserialize($request->getContent(), CancelSubscription::class, 'json');
         $errors = $validator->validate($dto);
@@ -231,7 +242,6 @@ class SubscriptionController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         PaymentMethodUpdateProcessor $methodUpdateProcessor,
     ): Response {
-        $this->getLogger()->info('Received request to update payment method for subscriptions', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -239,6 +249,10 @@ class SubscriptionController
             return new JsonResponse(null, status: Response::HTTP_NOT_FOUND);
         }
 
+        $this->getLogger()->info('Received request to update payment method for subscriptions', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
         /** @var UpdatePaymentMethod $dto */
         $dto = $serializer->deserialize($request->getContent(), UpdatePaymentMethod::class, 'json');
         $errors = $validator->validate($dto);
@@ -273,7 +287,6 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
-        $this->getLogger()->info('Received request to change subscription plan', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
@@ -281,6 +294,10 @@ class SubscriptionController
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
+        $this->getLogger()->info('Received request to change subscription plan', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
         /** @var UpdatePlan $dto */
         $dto = $serializer->deserialize($request->getContent(), UpdatePlan::class, 'json');
         $errors = $validator->validate($dto);
@@ -313,13 +330,16 @@ class SubscriptionController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
     ): Response {
-        $this->getLogger()->info('Received a request to api change price of subscription', ['subscription_id' => $request->get('subscriptionId')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('subscriptionId'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received a request to api change price of subscription', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
 
         /** @var ChangePrice $dto */
         $dto = $serializer->deserialize($request->getContent(), ChangePrice::class, 'json');
