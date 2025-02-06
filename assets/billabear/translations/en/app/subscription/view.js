@@ -57,7 +57,8 @@ export const SUBSCRIPTION_VIEW_TRANSLATIONS = {
     },
     buttons: {
         cancel: "Cancel",
-        payment_method: "Update Payment Details"
+        payment_method: "Update Payment Details",
+        audit_log: "Audit Log"
     },
     modal: {
         seats: {

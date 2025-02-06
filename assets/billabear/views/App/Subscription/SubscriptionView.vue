@@ -204,8 +204,11 @@
         </div>
         <div class="mt-5 mr-5 text-end">
 
+          <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+            <router-link :to="{name: 'app.compliance.audit.subscription', params: {id: subscription.id}}" class="btn--main">{{ $t('app.subscription.view.buttons.audit_log') }}</router-link>
+          </RoleOnlyView>
           <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-            <button class="btn--secondary mr-2" @click="showChangePaymentMethods" v-if="paymentDetails !== null && paymentDetails !== undefined">
+            <button class="btn--secondary mx-2" @click="showChangePaymentMethods" v-if="paymentDetails !== null && paymentDetails !== undefined">
               {{ $t('app.subscription.view.buttons.payment_method') }}
             </button>
 
