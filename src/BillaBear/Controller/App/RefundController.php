@@ -83,13 +83,15 @@ class RefundController
         RefundDataMapper $factory,
         SerializerInterface $serializer,
     ) {
-        $this->getLogger()->info('Received request to refund', ['refund_id' => $request->get('id')]);
-
         try {
             $refund = $repository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to refund', [
+            'refund_id' => $request->get('id'),
+            'customer_id' => (string) $refund->getCustomer()->getId(),
+        ]);
 
         $dto = $factory->createAppDto($refund);
         $dtoView = new RefundView();

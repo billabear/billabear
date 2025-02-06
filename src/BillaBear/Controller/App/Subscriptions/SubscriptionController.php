@@ -85,7 +85,7 @@ class SubscriptionController
         SerializerInterface $serializer,
         SubscriptionRepositoryInterface $subscriptionRepository,
     ): Response {
-        $this->getLogger()->info('Received a request to view create subscription');
+        $this->getLogger()->info('Received a request to view create subscription', ['customer_id' => $request->get('customerId')]);
 
         try {
             $customer = $customerRepository->findById($request->get('customerId'));

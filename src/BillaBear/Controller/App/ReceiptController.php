@@ -45,14 +45,16 @@ class ReceiptController
         SerializerInterface $serializer,
         TransactionManager $transactionManager,
     ): Response {
-        $this->getLogger()->info('Received request to generate receipt for payment', ['payment_id' => $request->get('id')]);
-
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to generate receipt for payment', [
+            'payment_id' => $request->get('id'),
+            'customer_id' => (string) $payment->getCustomer()->getId(),
+        ]);
 
         $transactionManager->start();
         try {
@@ -77,14 +79,18 @@ class ReceiptController
         ReceiptPdfGenerator $generator,
         ReceiptProvider $provider,
     ): Response {
-        $this->getLogger()->info('Received request to download receipt for payment', ['receipt_id' => $request->get('id')]);
-
         try {
             /** @var Receipt $receipt */
             $receipt = $receiptRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received request to download receipt for payment', [
+            'payment_id' => $request->get('id'),
+            'customer_id' => (string) $receipt->getCustomer()->getId(),
+        ]);
+
         $pdf = $generator->generate($receipt);
         $tmpFile = tempnam('/tmp', 'pdf');
         file_put_contents($tmpFile, $pdf);

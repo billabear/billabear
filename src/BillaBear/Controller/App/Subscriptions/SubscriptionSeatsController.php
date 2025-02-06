@@ -40,14 +40,16 @@ class SubscriptionSeatsController
         SetSeatsFromSubscription $setSeatsFromSubscription,
         ValidatorInterface $validator,
     ) {
-        $this->getLogger()->info('Received request to update subscription seats', ['subscription_id' => $request->get('id')]);
-
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException $e) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to update subscription seats', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
 
         $dto = $serializer->deserialize($request->getContent(), ChangeSeats::class, 'json');
 
