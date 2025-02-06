@@ -120,14 +120,17 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceFormatterProvider $invoiceFormatterProvider,
     ): Response {
-        $this->getLogger()->info('Received request to download invoice', ['invoice_id' => $request->get('id')]);
-
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to download invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
+
         $generator = $invoiceFormatterProvider->getFormatterByType($request->get('format'));
         $pdf = $generator->generate($invoice);
         $tmpFile = tempnam('/tmp', 'pdf');
@@ -152,14 +155,16 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceCharger $invoiceCharger,
     ): Response {
-        $this->getLogger()->info('Received request to charge invoice', ['invoice_id' => $request->get('id')]);
-
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to charge invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
 
         $failureReason = null;
         try {
@@ -180,14 +185,17 @@ class InvoicesController
         InvoiceDeliveryRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliveryDataMapper $invoiceDeliveryDataMapper,
     ): Response {
-        $this->getLogger()->info('Received request to view invoice', ['invoice_id' => $request->get('id')]);
-
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received request to view invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
 
         $invoiceDeliveries = $invoiceDeliveryRepository->getForInvoice($invoice);
 
@@ -208,14 +216,17 @@ class InvoicesController
         InvoiceRepositoryInterface $invoiceRepository,
         EventDispatcherInterface $eventDispatcher,
     ): Response {
-        $this->getLogger()->info('Received request to mark invoice as paid', ['invoice_id' => $request->get('id')]);
-
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
         } catch (NoEntityFoundException $exception) {
             return new JsonResponse([], status: JsonResponse::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received request to mark invoice as paid', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
 
         $invoice->setPaid(true);
         $invoice->setPaidAt(new \DateTime());

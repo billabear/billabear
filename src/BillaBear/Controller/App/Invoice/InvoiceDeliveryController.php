@@ -43,7 +43,7 @@ class InvoiceDeliveryController
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliverySettingsDataMapper $dataMapper,
     ): Response {
-        $this->getLogger()->info('Received a request to create a new invoice_delivery');
+        $this->getLogger()->info('Received a request to create a new invoice_delivery', ['customer_id' => $request->get('customerId')]);
 
         try {
             $customer = $customerRepository->getById($request->get('customerId'));
@@ -78,7 +78,7 @@ class InvoiceDeliveryController
         InvoiceDeliverySettingsDataMapper $dataMapper,
         InvoiceFormatterProvider $provider,
     ): Response {
-        $this->getLogger()->info('Received a request to read an invoice_delivery');
+        $this->getLogger()->info('Received a request to read an invoice_delivery', ['customer_id' => $request->get('customerId'), 'invoice_delivery_id' => $request->get('invoiceDeliveryId')]);
         try {
             $invoiceDelivery = $invoiceDeliveryRepository->findById($request->get('invoiceDeliveryId'));
         } catch (NoEntityFoundException) {
@@ -104,7 +104,7 @@ class InvoiceDeliveryController
         InvoiceDeliverySettingsRepositoryInterface $invoiceDeliveryRepository,
         InvoiceDeliverySettingsDataMapper $dataMapper,
     ): Response {
-        $this->getLogger()->info('Received a request to update an invoice_delivery');
+        $this->getLogger()->info('Received a request to update an invoice_delivery', ['customer_id' => $request->get('customerId'), 'invoice_delivery_id' => $request->get('invoiceDeliveryId')]);
 
         try {
             $customer = $customerRepository->getById($request->get('customerId'));
@@ -142,7 +142,7 @@ class InvoiceDeliveryController
         InvoiceDeliverySettingsDataMapper $dataMapper,
         SerializerInterface $serializer,
     ): Response {
-        $this->getLogger()->info('Received a request to list invoice_delivery');
+        $this->getLogger()->info('Received a request to list invoice_delivery', ['customer_id' => $request->get('customerId')]);
 
         try {
             $customer = $customerRepository->getById($request->get('customerId'));
