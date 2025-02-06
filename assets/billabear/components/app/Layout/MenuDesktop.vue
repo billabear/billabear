@@ -154,6 +154,9 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.settings.system_settings.update'}" class="submenu-link">{{ $t('app.settings.menu.system_settings') }}</router-link>
           </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.compliance.audit.all'}" class="submenu-link">{{ $t('app.settings.menu.audit_log') }}</router-link>
+          </MenuSubItem>
         </template>
       </MenuTopItem>
 

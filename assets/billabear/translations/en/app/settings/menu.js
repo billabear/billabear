@@ -13,5 +13,6 @@ export const SETTINGS_MENU_TRANSACTIONS = {
     api_keys: "API Keys",
     exchange_rates: "Exchange Rates",
     integrations: "Integrations",
-    vat_sense: "VatSense"
+    vat_sense: "VatSense",
+    audit_log: "Audit Log",
 };

@@ -4,13 +4,16 @@
       <h1 class="page-title">{{ $t('app.customer.view.title') }}</h1>
       <div class="text-end mt-3">
 
-        <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-          <div class="">
-            <button class="btn--danger mr-3" v-if="customer.status == 'disabled'" @click="enableCustomer">{{ $t('app.customer.view.enable') }}</button>
-            <button class="btn--danger mr-3" v-else @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
-            <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
-          </div>
+        <div class="">
+        <RoleOnlyView role="ROLE_ACCOUNT_MANAGER">
+          <router-link :to="{name: 'app.compliance.audit.customer', params: {id: customer.id}}" class="list-btn">{{ $t('app.customer.view.audit_log') }}</router-link>
         </RoleOnlyView>
+        <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
+            <button class="btn--danger mx-3" v-if="customer.status == 'disabled'" @click="enableCustomer">{{ $t('app.customer.view.enable') }}</button>
+            <button class="btn--danger mx-3" v-else @click="disableCustomer">{{ $t('app.customer.view.disable') }}</button>
+            <router-link :to="{name: 'app.customer.update'}" class="btn--main">{{ $t('app.customer.view.update') }}</router-link>
+        </RoleOnlyView>
+        </div>
       </div>
     </div>
 

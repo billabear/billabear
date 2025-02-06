@@ -410,7 +410,7 @@ export const APP_ROUTES = [
         component: AuditAll,
     },
     {
-        name: 'app.compliance.audit.all',
+        name: 'app.compliance.audit.customer',
         path: 'compliance/audit/customer/:id',
         component: AuditCustomer,
     }
