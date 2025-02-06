@@ -85,7 +85,6 @@ class PaymentController
         ValidatorInterface $validator,
         SerializerInterface $serializer,
     ): JsonResponse {
-        $this->getLogger()->info('Received request to refund payment', ['payment_id' => $request->get('id')]);
         try {
             /** @var Payment $payment */
             $payment = $paymentRepository->findById($request->get('id'));
@@ -93,6 +92,10 @@ class PaymentController
             return new JsonResponse(status: Response::HTTP_NOT_FOUND);
         }
 
+        $this->getLogger()->info('Received request to refund payment', [
+            'payment_id' => $request->get('id'),
+            'customer_id' => (string) $payment->getCustomer()->getId(),
+        ]);
         /** @var RefundPayment $dto */
         $dto = $serializer->deserialize($request->getContent(), RefundPayment::class, 'json');
         $errors = $validator->validate($dto);

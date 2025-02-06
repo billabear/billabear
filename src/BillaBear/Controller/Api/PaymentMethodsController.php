@@ -104,15 +104,16 @@ class PaymentMethodsController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         DefaultPaymentManagerInterface $defaultPaymentManager,
     ): Response {
-        $this->getLogger()->info('Received request to make payment details default', [
-            'payment_details_id' => $request->get('paymentDetailsId'),
-        ]);
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to make payment details default', [
+            'payment_details_id' => $request->get('paymentDetailsId'),
+            'customer_id' => (string) $paymentDetails->getCustomer()->getId(),
+        ]);
 
         $defaultPaymentManager->makePaymentDetailsDefault($paymentDetails->getCustomer(), $paymentDetails);
 
@@ -126,15 +127,18 @@ class PaymentMethodsController
         PaymentMethodsDataMapper $paymentMethodsDataMapper,
         SerializerInterface $serializer,
     ): Response {
-        $this->getLogger()->info('Received request to make payment details default', [
-            'payment_details_id' => $request->get('paymentDetailsId'),
-        ]);
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received request to make payment details default', [
+            'payment_details_id' => $request->get('paymentDetailsId'),
+            'customer_id' => (string) $paymentDetails->getCustomer()->getId(),
+        ]);
+
         $dto = $paymentMethodsDataMapper->createApiDto($paymentDetails);
         $json = $serializer->serialize($dto, 'json');
 
@@ -148,16 +152,17 @@ class PaymentMethodsController
         PaymentCardRepositoryInterface $paymentDetailsRepository,
         DeleterInterface $deleter,
     ): Response {
-        $this->getLogger()->info('Received request to delete payment details', [
-            'payment_details_id' => $request->get('paymentDetailsId'),
-        ]);
-
         try {
             /** @var PaymentCard $paymentDetails */
             $paymentDetails = $paymentDetailsRepository->findById($request->get('paymentDetailsId'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received request to delete payment details', [
+            'payment_details_id' => $request->get('paymentDetailsId'),
+            'customer_id' => (string) $paymentDetails->getCustomer()->getId(),
+        ]);
 
         $deleter->delete($paymentDetails);
 
