@@ -42,6 +42,7 @@ jobs:
           stack-version: 8.17.1
           port: 9200
           network-name: elasticsearch
+          security-enabled: false
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
