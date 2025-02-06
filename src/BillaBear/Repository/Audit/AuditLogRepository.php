@@ -10,6 +10,7 @@ namespace BillaBear\Repository\Audit;
 
 use BillaBear\DataMappers\BillingAdminDataMapper;
 use BillaBear\Dto\Generic\App\AuditLog;
+use BillaBear\Logger\Audit\AuditableInterface;
 use BillaBear\Logger\Audit\IndexProviderInterface;
 use BillaBear\Repository\UserRepositoryInterface;
 use Elastic\Elasticsearch\ClientInterface;
@@ -51,6 +52,49 @@ class AuditLogRepository implements AuditLogRepositoryInterface
             'body' => $body,
         ];
 
+        $response = $this->client->search($params);
+        $hits = $response['hits']['hits'];
+        $data = [];
+
+        foreach ($hits as $hit) {
+            $data[] = $this->buildLog($hit['_source']);
+        }
+
+        $result = new ResultSet(
+            results: $data,
+            sortKey: 'createdAt',
+            sortType: 'desc',
+            limit: $limit,
+        );
+
+        return $result;
+    }
+
+    public function findAllForAuditableEntity(AuditableInterface $auditable, ?string $lastId, int $limit = 25, bool $reverse = false): ResultSet
+    {
+        $body = [
+            'query' => [
+                'match' => [
+                    'context.'.$auditable->getAuditLogIdTag() => (string) $auditable->getId(),
+                ],
+            ],
+            'sort' => [
+                'datetime' => 'desc',
+            ],
+            'size' => $limit + 1,
+        ];
+
+        if (null !== $lastId) {
+            $order = $reverse ? 'gt' : 'lt';
+            $body['query']['range'] = [
+                'datetime' => [$order => $lastId],
+            ];
+        }
+
+        $params = [
+            'index' => [$this->indexProvider->getIndex()],
+            'body' => $body,
+        ];
         $response = $this->client->search($params);
         $hits = $response['hits']['hits'];
         $data = [];

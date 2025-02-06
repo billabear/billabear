@@ -8,8 +8,13 @@
 
 namespace BillaBear\Controller\App\Compliance;
 
+use BillaBear\DataMappers\CustomerDataMapper;
+use BillaBear\Dto\Response\App\Compliance\CustomerList;
 use BillaBear\Dto\Response\App\ListResponse;
+use BillaBear\Entity\Customer;
 use BillaBear\Repository\Audit\AuditLogRepositoryInterface;
+use BillaBear\Repository\CustomerRepositoryInterface;
+use Parthenon\Common\Exception\NoEntityFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +53,49 @@ class AuditLogController
         $crudView->setHasMore($result->hasMore());
 
         $json = $serializer->serialize($crudView, 'json');
+
+        return new JsonResponse($json, 200, [], true);
+    }
+
+    #[Route('/app/audit/customer/{id}', name: 'app_compliance_audit_customer', methods: ['GET'])]
+    public function customerListAction(
+        Request $request,
+        AuditLogRepositoryInterface $auditLogRepository,
+        CustomerRepositoryInterface $customerRepository,
+        CustomerDataMapper $customerDataMapper,
+        SerializerInterface $serializer,
+    ): Response {
+        $this->getLogger()->info('Received a request to view customer audit logs', ['customer_id' => $request->get('id')]);
+
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException $exception) {
+            return new JsonResponse(['success' => false], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $key = $request->get('last_key', null);
+        $reverse = false;
+        $firstKey = $request->get('first_key', null);
+        if ($firstKey) {
+            $key = $firstKey;
+            $reverse = true;
+        }
+
+        $result = $auditLogRepository->findAllForAuditableEntity($customer, $key, $request->get('limit', 25), $reverse);
+
+        $crudView = new ListResponse();
+        $crudView->setData($result->getResults());
+        $crudView->setLastKey($result->getLastKey());
+        $crudView->setFirstKey($result->getFirstKey());
+        $crudView->setHasMore($result->hasMore());
+
+        $view = new CustomerList(
+            $customerDataMapper->createAppDto($customer),
+            $crudView,
+        );
+
+        $json = $serializer->serialize($view, 'json');
 
         return new JsonResponse($json, 200, [], true);
     }
