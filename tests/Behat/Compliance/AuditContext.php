@@ -37,6 +37,7 @@ class AuditContext implements Context
                 'message' => $row['Message'],
                 'level' => 200,
                 'level_name' => 'INFO',
+                'channel' => 'audit',
                 'datetime' => (new \DateTime($row['Created At']))->format(\DATE_ATOM),
                 'context' => [
                 ],
