@@ -1937,7 +1937,8 @@
                         "button": "Filtros",
                         "search": "Filtro"
                     },
-                    "error_message": "Ocorreu um erro"
+                    "error_message": "Ocorreu um erro",
+                    "audit_log": "Registo de auditoria"
                 },
                 "update": {
                     "title": "Atualizar utilizador",
@@ -3911,10 +3912,14 @@
                     "billing_admin": "Administrador de faturação com sessão iniciada",
                     "no_billing_admin": "Isto não foi feito por um administrador de faturação",
                     "display_name": "Nome de exibição",
-                    "context": "Contexto do registo"
+                    "context": "Contexto do registo",
+                    "no_logs": "Não foram encontrados registos"
                 },
                 "customer": {
                     "title": "Registo de auditoria do cliente - {nome}"
+                },
+                "billing_admin": {
+                    "title": "Registo de auditoria do administrador de faturação - {nome}"
                 }
             }
         }

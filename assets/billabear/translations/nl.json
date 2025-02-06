@@ -1937,7 +1937,8 @@
                         "button": "Filters",
                         "search": "Filter"
                     },
-                    "error_message": "Er is een fout opgetreden"
+                    "error_message": "Er is een fout opgetreden",
+                    "audit_log": "Controlelogboek"
                 },
                 "update": {
                     "title": "Gebruiker bijwerken",
@@ -3918,10 +3919,14 @@
                     "billing_admin": "Ingelogde factureringsadmin",
                     "no_billing_admin": "Dit is niet gedaan door een factureringsadministrateur",
                     "display_name": "Naam weergeven",
-                    "context": "Logboek Context"
+                    "context": "Logboek Context",
+                    "no_logs": "Geen logboeken gevonden"
                 },
                 "customer": {
                     "title": "Auditlogboek klant - {naam}"
+                },
+                "billing_admin": {
+                    "title": "Auditlogboek factureringsbeheer - {naam}"
                 }
             }
         }

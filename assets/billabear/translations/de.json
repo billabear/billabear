@@ -1937,7 +1937,8 @@
                         "button": "Filter",
                         "search": "Filter"
                     },
-                    "error_message": "Es ist ein Fehler aufgetreten"
+                    "error_message": "Es ist ein Fehler aufgetreten",
+                    "audit_log": "Audit-Protokoll"
                 },
                 "update": {
                     "title": "Benutzer aktualisieren",
@@ -3918,10 +3919,14 @@
                     "billing_admin": "Angemeldeter Abrechnungsadministrator",
                     "no_billing_admin": "Dies wurde nicht von einem Verwalter der Rechnungsstellung getan",
                     "display_name": "Name anzeigen",
-                    "context": "Log-Kontext"
+                    "context": "Log-Kontext",
+                    "no_logs": "Keine Protokolle gefunden"
                 },
                 "customer": {
                     "title": "Kundenauditprotokoll - {Name}"
+                },
+                "billing_admin": {
+                    "title": "Billing Admin Audit Log - {Name}"
                 }
             }
         }

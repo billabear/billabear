@@ -1937,7 +1937,8 @@
                         "button": "Filtros",
                         "search": "Filtro"
                     },
-                    "error_message": "Se ha producido un error"
+                    "error_message": "Se ha producido un error",
+                    "audit_log": "Registro de auditoría"
                 },
                 "update": {
                     "title": "Actualizar usuario",
@@ -3918,10 +3919,14 @@
                     "billing_admin": "Administrador de facturación conectado",
                     "no_billing_admin": "Esto no lo hizo un administrador de facturación",
                     "display_name": "Mostrar nombre",
-                    "context": "Contexto del registro"
+                    "context": "Contexto del registro",
+                    "no_logs": "No se han encontrado registros"
                 },
                 "customer": {
                     "title": "Registro de auditoría del cliente - {nombre}"
+                },
+                "billing_admin": {
+                    "title": "Registro de auditoría de administración de facturación - {nombre}"
                 }
             }
         }

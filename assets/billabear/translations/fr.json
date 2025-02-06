@@ -1937,7 +1937,8 @@
                         "button": "Filtres",
                         "search": "Filtre"
                     },
-                    "error_message": "Une erreur s'est produite"
+                    "error_message": "Une erreur s'est produite",
+                    "audit_log": "Journal d'audit"
                 },
                 "update": {
                     "title": "Mise à jour de l'utilisateur",
@@ -3918,10 +3919,14 @@
                     "billing_admin": "Connexion à l'administration de la facturation",
                     "no_billing_admin": "Cela n'a pas été fait par un administrateur chargé de la facturation",
                     "display_name": "Nom d'affichage",
-                    "context": "Contexte du journal"
+                    "context": "Contexte du journal",
+                    "no_logs": "Aucun journal trouvé"
                 },
                 "customer": {
                     "title": "Journal d'audit du client - {nom}"
+                },
+                "billing_admin": {
+                    "title": "Journal d'audit de l'administrateur de la facturation - {nom}"
                 }
             }
         }

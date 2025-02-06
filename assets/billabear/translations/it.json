@@ -1937,7 +1937,8 @@
                         "button": "Filtri",
                         "search": "Filtro"
                     },
-                    "error_message": "Si è verificato un errore"
+                    "error_message": "Si è verificato un errore",
+                    "audit_log": "Registro di controllo"
                 },
                 "update": {
                     "title": "Aggiornamento Utente",
@@ -3918,10 +3919,14 @@
                     "billing_admin": "Amministratore della fatturazione connesso",
                     "no_billing_admin": "Questo non è stato fatto da un amministratore della fatturazione",
                     "display_name": "Nome visualizzato",
-                    "context": "Contesto del registro"
+                    "context": "Contesto del registro",
+                    "no_logs": "Nessun registro trovato"
                 },
                 "customer": {
                     "title": "Registro di controllo clienti - {nome}"
+                },
+                "billing_admin": {
+                    "title": "Registro di controllo dell'amministratore della fatturazione - {nome}"
                 }
             }
         }
