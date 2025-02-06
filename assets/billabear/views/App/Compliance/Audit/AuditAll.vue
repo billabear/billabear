@@ -2,49 +2,11 @@
   <div>
     <h1 class="page-title">{{ $t('app.compliance.audit.all.title') }}</h1>
     <LoadingScreen :ready="ready">
-      <div class="card-body">
-        <div class="section-header grid grid-cols-2 font-bold border-b-2 border-black">
-          <div class="text-left">
-            {{ $t('app.compliance.audit.all.log') }}
-          </div>
-          <div class="text-end">
-            {{ $t('app.compliance.audit.all.date') }}
-          </div>
-        </div>
-        <div v-for="log in logs">
-          <div class="flex hover:bg-gray-100 hover:cursor-pointer"  @click="log.show = !log.show">
-            <div class="w-5"><i class="fa-solid fa-chevron-right transition duration-300" :class="{'rotate-90': log.show}"></i></div>
-            <div class="grow">{{log.message}}</div>
-            <div class="text-end">
-              {{ $filters.moment(log.created_at, "LLL") }}
-            </div>
-          </div>
-          <div class="p-2" v-if="log.show">
-              <div class="grid grid-cols-2 gap-4">
-                <div class="border border-black rounded-lg p-3 overflow-auto">
-                  <h3 class="text-xl mb-3">
-                    {{ $t('app.compliance.audit.all.context') }}
-                  </h3>
+        <LogList :logs="logs" />
 
-                  <pre>{{ format(log.context) }}</pre>
-                </div>
-                <div class="border border-black rounded-lg p-3 overflow-auto">
-                  <h3 class="text-xl  mb-3">
-                    {{ $t('app.compliance.audit.all.billing_admin') }}
-                  </h3>
-                  <dl v-if="log.billing_admin">
-                    <div class="grid grid-cols-5">
-                      <dd class="font-bold">{{ $t('app.compliance.audit.all.display_name') }}</dd>
-                      <dt><router-link :to="{name: 'app.settings.users.update', params: {id: log.billing_admin.id}}" class="text-blue-500 no-underline hover:underline">{{ log.billing_admin.display_name }}</router-link></dt>
-                    </div>
-                  </dl>
-                  <div class="text-center text-gray-400 italic" v-else>
-                    {{ $t('app.compliance.audit.all.no_billing_admin') }}
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div>
+      <div class="mt-4">
+        <button @click="prevPage" v-if="show_back" class="btn--main mr-3" >{{ $t('app.payment.list.prev') }}</button>
+        <button @click="nextPage" v-if="has_more" class="btn--main" >{{ $t('app.payment.list.next') }}</button>
       </div>
     </LoadingScreen>
   </div>
@@ -52,24 +14,163 @@
 
 <script>
 import axios from "axios";
+import LogList from "./LogList.vue";
+import currency from "currency.js";
 
 export default {
   name: "AuditAll",
+  components: {LogList},
   data() {
     return {
       ready: false,
       logs: [],
+      has_more: false,
+      last_id: null,
+      first_id: null,
+      show_back: false,
+      active_filters: [],
+      filters: {},
     }
   },
   mounted() {
-    axios.get("/app/audit").then(response => {
-      this.logs = response.data.data;
-      this.ready = true;
-    })
+    this.doStuff();
+
+  },
+  watch: {
+    '$route.query': function (id) {
+      this.doStuff()
+    }
   },
   methods: {
-    format(data) {
-      return JSON.stringify(data, null, 2);
+    currency: function (value) {
+      return currency(value, { fromCents: true });
+    },
+    syncQueryToFilters: function () {
+      Object.keys(this.filters).forEach(key => {
+        if (this.$route.query[key] !== undefined) {
+          this.filters[key].value = this.$route.query[key];
+          if (!this.isActive(key)) {
+            this.active_filters.push(key);
+          }
+        } else {
+          this.filters[key].value = null;
+          if (this.active_filters.indexOf(key) !== -1) {
+            this.active_filters.splice( this.active_filters.indexOf(key) , 1) ;
+          }
+        }
+      });
+    },
+    doSearch: function () {
+      var queryVals = this.buildFilterQuery();
+      this.$router.push({query: queryVals})
+    },
+    buildFilterQuery: function () {
+      var queryVals = {};
+      for (var i = 0; i < this.active_filters.length; i++) {
+        var filter = this.active_filters[i];
+        if (this.filters[filter].value !== null && this.filters[filter].value !== undefined) {
+
+          queryVals[filter] = this.filters[filter].value;
+        }
+      }
+
+      if (this.$route.query.per_page !== undefined) {
+        queryVals.per_page = this.$route.query.per_page;
+        this.per_page=this.$route.query.per_page;
+      }
+
+      return queryVals;
+    },
+    nextPage: function () {
+      var queryVals = this.buildFilterQuery();
+      queryVals.last_key = this.last_key;
+      this.$router.push({query: queryVals})
+    },
+    prevPage: function () {
+      var queryVals = this.buildFilterQuery();
+      queryVals.first_key = this.first_key;
+      this.$router.push({query: queryVals})
+    },
+    changePerPage: function ($event) {
+      var queryVals = this.buildFilterQuery();
+      queryVals.per_page = $event.target.value;
+      this.per_page=queryVals.per_page;
+
+      if (this.$route.query.last_key !== undefined) {
+        queryVals.last_key = this.$route.query.last_key;
+      } else if (this.$route.query.first_key !== undefined) {
+        queryVals.first_key = this.$route.query.first_key;
+      }
+
+      this.$router.push({query: queryVals});
+    },
+    doStuff: function ()
+    {
+      this.syncQueryToFilters();
+      var mode = 'normal';
+      let urlString = '/app/audit?';
+      if (this.$route.query.last_key !== undefined) {
+        urlString = urlString + '&last_key=' +  encodeURIComponent(this.$route.query.last_key);
+        this.show_back = true;
+        mode = 'normal';
+      } else if (this.$route.query.first_key !== undefined) {
+        urlString = urlString + '&first_key=' +  encodeURIComponent(this.$route.query.first_key);
+        this.has_more = true;
+        mode = 'first_key';
+      }
+
+      if (this.$route.query.per_page !== undefined) {
+        urlString = urlString + '&per_page=' + this.$route.query.per_page;
+      }
+
+      Object.keys(this.filters).forEach(key => {
+        if (this.$route.query[key] !== undefined) {
+          urlString = urlString + '&'+key+'=' + encodeURIComponent(this.$route.query[key]);
+        }
+      });
+
+      this.loaded = false;
+      axios.get(urlString).then(response => {
+
+        this.logs = response.data.data;
+        if (mode === 'normal') {
+          this.has_more = response.data.has_more;
+        } else {
+          this.show_back = response.data.has_more;
+          this.has_more = true;
+        }
+        this.last_key = response.data.last_key;
+        this.first_key = response.data.first_key;
+        this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
+      })
+
+    },
+    toogle: function (key) {
+      var newFilters = [];
+      var found = false;
+      for (var i = 0; i < this.active_filters.length; i++) {
+        if (this.active_filters[i] !== key) {
+
+          newFilters.push(this.active_filters[i]);
+        } else {
+          found = true;
+        }
+      }
+      if (!found) {
+        newFilters.push(key);
+      }
+      this.active_filters = newFilters;
+    },
+    isActive: function (key) {
+      for (var i = 0; i < this.active_filters.length; i++) {
+        if (this.active_filters[i] === key) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

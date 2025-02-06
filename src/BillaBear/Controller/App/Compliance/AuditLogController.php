@@ -31,7 +31,15 @@ class AuditLogController
     ): Response {
         $this->getLogger()->info('Listing audit logs');
 
-        $result = $auditLogRepository->findAll();
+        $key = $request->get('last_key', null);
+        $reverse = false;
+        $firstKey = $request->get('first_key', null);
+        if ($firstKey) {
+            $key = $firstKey;
+            $reverse = true;
+        }
+
+        $result = $auditLogRepository->findAll($key, $request->get('limit', 25), $reverse);
 
         $crudView = new ListResponse();
         $crudView->setData($result->getResults());

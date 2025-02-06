@@ -25,7 +25,7 @@ class AuditLogRepository implements AuditLogRepositoryInterface
     ) {
     }
 
-    public function findAll(?string $lastId = null, int $limit = 25): ResultSet
+    public function findAll(?string $lastId = null, int $limit = 25, bool $reverse = false): ResultSet
     {
         $body = [
             'query' => [
@@ -38,9 +38,10 @@ class AuditLogRepository implements AuditLogRepositoryInterface
         ];
 
         if (null !== $lastId) {
-            $params['query'] = [
+            $order = $reverse ? 'gt' : 'lt';
+            $body['query'] = [
                 'range' => [
-                    'datetime' => ['gt' => $lastId],
+                    'datetime' => [$order => $lastId],
                 ],
             ];
         }

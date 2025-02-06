@@ -16,5 +16,5 @@ interface AuditLogRepositoryInterface
     /**
      * @return AuditLog[]
      */
-    public function findAll(string $lastId, int $limit = 25): ResultSet;
+    public function findAll(string $lastId, int $limit = 25, bool $reverse = false): ResultSet;
 }
