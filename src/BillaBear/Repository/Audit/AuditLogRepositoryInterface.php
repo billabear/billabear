@@ -9,6 +9,7 @@
 namespace BillaBear\Repository\Audit;
 
 use BillaBear\Dto\Generic\App\AuditLog;
+use BillaBear\Entity\User;
 use BillaBear\Logger\Audit\AuditableInterface;
 use Parthenon\Athena\ResultSet;
 
@@ -23,4 +24,9 @@ interface AuditLogRepositoryInterface
      * @return AuditLog[]
      */
     public function findAllForAuditableEntity(AuditableInterface $auditable, ?string $lastId, int $limit = 25, bool $reverse = false): ResultSet;
+
+    /**
+     * @return AuditLog[]
+     */
+    public function findForBillingAdmin(User $billingAdmin, ?string $lastId, int $limit = 25, bool $reverse = false): ResultSet;
 }

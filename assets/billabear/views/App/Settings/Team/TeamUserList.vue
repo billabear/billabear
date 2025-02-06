@@ -26,7 +26,10 @@
             <td class="py-3">
               <span v-for="role in user.roles" class="badge--green mr-1">{{ role }}</span>
             </td>
-            <td><router-link :to="{name: 'app.settings.users.update', params: {id: user.id}}" class="list-btn ">{{ $t('app.settings.user.list.view_btn') }}</router-link></td>
+            <td class="text-end">
+              <router-link :to="{name: 'app.compliance.audit.billing_admin', params: {id: user.id}}" class="btn--secondary mr-3">{{ $t('app.settings.user.list.audit_log') }}</router-link>
+              <router-link :to="{name: 'app.settings.users.update', params: {id: user.id}}" class="list-btn ">{{ $t('app.settings.user.list.view_btn') }}</router-link>
+            </td>
           </tr>
           <tr v-if="users.length === 0">
             <td colspan="4" class="py-3 text-center">{{ $t('app.settings.user.list.no_users') }}</td>

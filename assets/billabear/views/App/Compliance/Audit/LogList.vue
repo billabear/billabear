@@ -61,6 +61,9 @@ export default {
         </div>
       </div>
     </div>
+    <div v-if="logs.length === 0" class="text-center italic">
+      {{   $t('app.compliance.audit.all.no_logs') }}
+    </div>
   </div>
 
 </template>

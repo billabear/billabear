@@ -10,6 +10,7 @@ export const SETTINGS_USER_LIST_TRANSLATIONS = {
     next: "Next Page",
     prev: "Previous Page",
     view_btn: "View",
+    audit_log: "Audit Log",
     list: {
         email: "Email",
         role: "Roles"

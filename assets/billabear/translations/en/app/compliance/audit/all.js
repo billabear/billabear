@@ -6,5 +6,5 @@ export const COMPLIANCE_AUDIT_ALL_TRANSLATIONS = {
     no_billing_admin: "This was not done by a billing admin",
     display_name: "Display Name",
     context: "Log Context",
-
+    no_logs: "No logs found",
 }
