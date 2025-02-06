@@ -699,7 +699,8 @@
                 "metadata": {
                     "title": "Metadati",
                     "no_metadata": "Nessun metadato"
-                }
+                },
+                "audit_log": "Registro di controllo"
             },
             "update": {
                 "title": "Aggiornamento del cliente",
@@ -1262,7 +1263,8 @@
                 },
                 "buttons": {
                     "cancel": "Annullamento",
-                    "payment_method": "Aggiornare i dettagli del pagamento"
+                    "payment_method": "Aggiornare i dettagli del pagamento",
+                    "audit_log": "Registro di controllo"
                 },
                 "modal": {
                     "seats": {
@@ -1600,7 +1602,8 @@
                 "api_keys": "Chiavi API",
                 "exchange_rates": "Tassi di cambio",
                 "integrations": "Integrazioni",
-                "vat_sense": "VatSense"
+                "vat_sense": "VatSense",
+                "audit_log": "Registro di controllo"
             },
             "pdf_template": {
                 "list": {
@@ -3903,6 +3906,22 @@
                     "connect": "Connettersi tramite Oauth",
                     "disconnect": "Disconnessione",
                     "save": "Risparmiare"
+                }
+            }
+        },
+        "compliance": {
+            "audit": {
+                "all": {
+                    "title": "Registro di controllo",
+                    "log": "Log",
+                    "date": "Data",
+                    "billing_admin": "Amministratore della fatturazione connesso",
+                    "no_billing_admin": "Questo non è stato fatto da un amministratore della fatturazione",
+                    "display_name": "Nome visualizzato",
+                    "context": "Contesto del registro"
+                },
+                "customer": {
+                    "title": "Registro di controllo clienti - {nome}"
                 }
             }
         }

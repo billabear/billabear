@@ -699,7 +699,8 @@
                 "metadata": {
                     "title": "Metadatos",
                     "no_metadata": "Sin metadatos"
-                }
+                },
+                "audit_log": "Registro de auditoría"
             },
             "update": {
                 "title": "Actualizar cliente",
@@ -1262,7 +1263,8 @@
                 },
                 "buttons": {
                     "cancel": "Cancelar",
-                    "payment_method": "Actualizar datos de pago"
+                    "payment_method": "Actualizar datos de pago",
+                    "audit_log": "Registro de auditoría"
                 },
                 "modal": {
                     "seats": {
@@ -1600,7 +1602,8 @@
                 "api_keys": "Claves API",
                 "exchange_rates": "Tipos de cambio",
                 "integrations": "Integraciones",
-                "vat_sense": "VatSense"
+                "vat_sense": "VatSense",
+                "audit_log": "Registro de auditoría"
             },
             "pdf_template": {
                 "list": {
@@ -3903,6 +3906,22 @@
                     "connect": "Conectar mediante Oauth",
                     "disconnect": "Desconecte",
                     "save": "Guardar"
+                }
+            }
+        },
+        "compliance": {
+            "audit": {
+                "all": {
+                    "title": "Registro de auditoría",
+                    "log": "Registro",
+                    "date": "Fecha",
+                    "billing_admin": "Administrador de facturación conectado",
+                    "no_billing_admin": "Esto no lo hizo un administrador de facturación",
+                    "display_name": "Mostrar nombre",
+                    "context": "Contexto del registro"
+                },
+                "customer": {
+                    "title": "Registro de auditoría del cliente - {nombre}"
                 }
             }
         }

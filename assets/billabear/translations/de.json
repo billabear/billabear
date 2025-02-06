@@ -699,7 +699,8 @@
                 "metadata": {
                     "title": "Metadaten",
                     "no_metadata": "Keine Metadaten"
-                }
+                },
+                "audit_log": "Audit-Protokoll"
             },
             "update": {
                 "title": "Update Kunde",
@@ -1262,7 +1263,8 @@
                 },
                 "buttons": {
                     "cancel": "Abbrechen",
-                    "payment_method": "Zahlungsdetails aktualisieren"
+                    "payment_method": "Zahlungsdetails aktualisieren",
+                    "audit_log": "Audit-Protokoll"
                 },
                 "modal": {
                     "seats": {
@@ -1600,7 +1602,8 @@
                 "api_keys": "API-Schlüssel",
                 "exchange_rates": "Wechselkurse",
                 "integrations": "Integrationen",
-                "vat_sense": "VatSense"
+                "vat_sense": "VatSense",
+                "audit_log": "Audit-Protokoll"
             },
             "pdf_template": {
                 "list": {
@@ -3903,6 +3906,22 @@
                     "connect": "Verbindung über Oauth",
                     "disconnect": "Trennen Sie die Verbindung",
                     "save": "Speichern Sie"
+                }
+            }
+        },
+        "compliance": {
+            "audit": {
+                "all": {
+                    "title": "Audit-Protokoll",
+                    "log": "Protokoll",
+                    "date": "Datum",
+                    "billing_admin": "Angemeldeter Abrechnungsadministrator",
+                    "no_billing_admin": "Dies wurde nicht von einem Verwalter der Rechnungsstellung getan",
+                    "display_name": "Name anzeigen",
+                    "context": "Log-Kontext"
+                },
+                "customer": {
+                    "title": "Kundenauditprotokoll - {Name}"
                 }
             }
         }

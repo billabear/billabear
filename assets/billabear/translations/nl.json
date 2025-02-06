@@ -699,7 +699,8 @@
                 "metadata": {
                     "title": "Metagegevens",
                     "no_metadata": "Geen metagegevens"
-                }
+                },
+                "audit_log": "Controlelogboek"
             },
             "update": {
                 "title": "Update klant",
@@ -1262,7 +1263,8 @@
                 },
                 "buttons": {
                     "cancel": "Annuleren",
-                    "payment_method": "Betalingsgegevens bijwerken"
+                    "payment_method": "Betalingsgegevens bijwerken",
+                    "audit_log": "Controlelogboek"
                 },
                 "modal": {
                     "seats": {
@@ -1600,7 +1602,8 @@
                 "api_keys": "API-sleutels",
                 "exchange_rates": "Wisselkoersen",
                 "integrations": "Integraties",
-                "vat_sense": "VatSense"
+                "vat_sense": "VatSense",
+                "audit_log": "Controlelogboek"
             },
             "pdf_template": {
                 "list": {
@@ -3903,6 +3906,22 @@
                     "connect": "Verbinden via Oauth",
                     "disconnect": "Ontkoppelen",
                     "save": "Sla"
+                }
+            }
+        },
+        "compliance": {
+            "audit": {
+                "all": {
+                    "title": "Controlelogboek",
+                    "log": "Log",
+                    "date": "Datum",
+                    "billing_admin": "Ingelogde factureringsadmin",
+                    "no_billing_admin": "Dit is niet gedaan door een factureringsadministrateur",
+                    "display_name": "Naam weergeven",
+                    "context": "Logboek Context"
+                },
+                "customer": {
+                    "title": "Auditlogboek klant - {naam}"
                 }
             }
         }

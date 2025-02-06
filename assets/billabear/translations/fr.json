@@ -699,7 +699,8 @@
                 "metadata": {
                     "title": "Métadonnées",
                     "no_metadata": "Pas de métadonnées"
-                }
+                },
+                "audit_log": "Journal d'audit"
             },
             "update": {
                 "title": "Mise à jour du client",
@@ -1262,7 +1263,8 @@
                 },
                 "buttons": {
                     "cancel": "Annuler",
-                    "payment_method": "Mise à jour des détails de paiement"
+                    "payment_method": "Mise à jour des détails de paiement",
+                    "audit_log": "Journal d'audit"
                 },
                 "modal": {
                     "seats": {
@@ -1600,7 +1602,8 @@
                 "api_keys": "Clés API",
                 "exchange_rates": "Taux de change",
                 "integrations": "Intégrations",
-                "vat_sense": "VatSense"
+                "vat_sense": "VatSense",
+                "audit_log": "Journal d'audit"
             },
             "pdf_template": {
                 "list": {
@@ -3903,6 +3906,22 @@
                     "connect": "Connexion via Oauth",
                     "disconnect": "Déconnexion",
                     "save": "Économiser"
+                }
+            }
+        },
+        "compliance": {
+            "audit": {
+                "all": {
+                    "title": "Journal d'audit",
+                    "log": "Journal",
+                    "date": "Date",
+                    "billing_admin": "Connexion à l'administration de la facturation",
+                    "no_billing_admin": "Cela n'a pas été fait par un administrateur chargé de la facturation",
+                    "display_name": "Nom d'affichage",
+                    "context": "Contexte du journal"
+                },
+                "customer": {
+                    "title": "Journal d'audit du client - {nom}"
                 }
             }
         }
