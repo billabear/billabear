@@ -60,7 +60,7 @@ class AuditListener
         } elseif (is_object($value) && $value instanceof \DateTimeInterface) { // Check for DateTimeInterface
             return $value->format('Y-m-d H:i:s'); // Format DateTime
         } elseif (is_array($value)) {
-            return implode(', ', $value); // Format arrays
+            return var_export($value, true); // Format arrays
         } elseif (is_resource($value)) {
             return 'Resource';
         } elseif (is_object($value) && method_exists($value, 'getId')) {
