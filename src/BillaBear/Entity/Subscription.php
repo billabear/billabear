@@ -8,6 +8,7 @@
 
 namespace BillaBear\Entity;
 
+use BillaBear\Logger\Audit\AuditableInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity]
 #[ORM\Table('subscription')]
-class Subscription extends \Parthenon\Billing\Entity\Subscription
+class Subscription extends \Parthenon\Billing\Entity\Subscription implements AuditableInterface
 {
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $metadata = null;
@@ -34,5 +35,15 @@ class Subscription extends \Parthenon\Billing\Entity\Subscription
     public function setMetadata(?array $metadata): void
     {
         $this->metadata = $metadata;
+    }
+
+    public function getAuditName(): string
+    {
+        return 'Subscription';
+    }
+
+    public function getAuditLogIdTag(): string
+    {
+        return 'subscription_id';
     }
 }
