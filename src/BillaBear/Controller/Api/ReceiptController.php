@@ -33,13 +33,16 @@ class ReceiptController
         ReceiptRepositoryInterface $receiptRepository,
         ReceiptPdfGenerator $generator,
     ): Response {
-        $this->getLogger()->info('Received request to download receipt', ['receipt_id' => $request->get('id')]);
         try {
             /** @var Receipt $receipt */
             $receipt = $receiptRepository->getById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received request to download receipt', [
+            'receipt_id' => $request->get('id'),
+            'customer_id' => (string) $receipt->getCustomer()->getId(),
+        ]);
         $pdf = $generator->generate($receipt);
         $tmpFile = tempnam('/tmp', 'pdf');
         file_put_contents($tmpFile, $pdf);

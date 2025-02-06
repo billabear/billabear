@@ -42,13 +42,16 @@ class SubscriptionSeatsController
         AddSeatToSubscription $addSeatToSubscription,
         ValidatorInterface $validator,
     ): Response {
-        $this->getLogger()->info('Received API request to add seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received API request to add seat subscription', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
 
         $dto = $serializer->deserialize($request->getContent(), AddSeats::class, 'json');
         $errors = $validator->validate($dto);
@@ -72,7 +75,6 @@ class SubscriptionSeatsController
         RemoveSeatFromSubscription $removeSeatFromSubscription,
         ValidatorInterface $validator,
     ): JsonResponse|Response {
-        $this->getLogger()->info('Received API request to remove seat subscription', ['subscription_id' => $request->get('id')]);
         try {
             /** @var Subscription $subscription */
             $subscription = $subscriptionRepository->findById($request->get('id'));
@@ -80,6 +82,10 @@ class SubscriptionSeatsController
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
+        $this->getLogger()->info('Received API request to remove seat subscription', [
+            'subscription_id' => $request->get('id'),
+            'customer_id' => (string) $subscription->getCustomer()->getId(),
+        ]);
         $dto = $serializer->deserialize($request->getContent(), RemoveSeats::class, 'json');
         $dto->setSubscription($subscription);
         $errors = $validator->validate($dto);
