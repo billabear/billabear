@@ -23,6 +23,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "easybill/php-sdk": "*",
         "easybill/zugferd-php": "^2.0",
+        "elasticsearch/elasticsearch": "^8.17",
         "goran-popovic/email-octopus-php": "^1.0",
         "hubspot/api-client": "^12.0",
         "knplabs/knp-snappy": "^1.5",
