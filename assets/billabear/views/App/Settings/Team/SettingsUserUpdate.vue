@@ -27,12 +27,12 @@
             </div>
             <p class="form-field-help">{{ $t('app.settings.user.update.help_info.roles') }}</p>
           </div>
-
-
         </div>
 
         <div class="form-field-submit-ctn mt-3">
           <SubmitButton :in-progress="sending">{{ $t('app.settings.user.update.submit_btn') }}</SubmitButton>
+          <router-link :to="{name: 'app.compliance.audit.billing_admin', params: {id: user.id}}" class="btn--secondary ml-3">{{ $t('app.settings.user.list.audit_log') }}</router-link>
+
         </div>
         <p class="text-green-500 font-weight-bold" v-if="success">{{ $t('app.settings.user.update.success_message') }}</p>
       </form>

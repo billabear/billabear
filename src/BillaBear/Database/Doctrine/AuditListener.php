@@ -56,11 +56,11 @@ class AuditListener
     private function formatValue($value)
     {
         if (is_object($value) && method_exists($value, '__toString')) {
-            return (string) $value; // Use __toString if available
-        } elseif (is_object($value) && $value instanceof \DateTimeInterface) { // Check for DateTimeInterface
-            return $value->format('Y-m-d H:i:s'); // Format DateTime
+            return (string) $value;
+        } elseif (is_object($value) && $value instanceof \DateTimeInterface) {
+            return $value->format(\DateTime::ATOM);
         } elseif (is_array($value)) {
-            return var_export($value, true); // Format arrays
+            return var_export($value, true);
         } elseif (is_resource($value)) {
             return 'Resource';
         } elseif (is_object($value) && method_exists($value, 'getId')) {
@@ -68,7 +68,7 @@ class AuditListener
         } elseif (is_object($value)) {
             return get_class($value);
         } else {
-            return var_export($value, true); // Default string conversion
+            return var_export($value, true);
         }
     }
 }
