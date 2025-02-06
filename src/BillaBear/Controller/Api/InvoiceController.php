@@ -64,13 +64,16 @@ class InvoiceController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceCharger $invoiceCharger,
     ): Response {
-        $this->getLogger()->info('Received an API request to charge invoice', ['invoice_id' => $request->get('id')]);
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
+        $this->getLogger()->info('Received an API request to charge invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
 
         $failureReason = null;
         $statusCode = Response::HTTP_OK;
@@ -90,13 +93,18 @@ class InvoiceController
         InvoiceRepositoryInterface $invoiceRepository,
         InvoiceFormatterProvider $invoiceFormatterProvider,
     ): Response {
-        $this->getLogger()->info('Received an API request to download invoice', ['invoice_id' => $request->get('id')]);
         try {
             /** @var Invoice $invoice */
             $invoice = $invoiceRepository->getById($request->get('id'));
         } catch (NoEntityFoundException) {
             return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
         }
+
+        $this->getLogger()->info('Received an API request to download invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
+
         $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
         $pdf = $generator->generate($invoice);
         $tmpFile = tempnam('/tmp', 'pdf');
