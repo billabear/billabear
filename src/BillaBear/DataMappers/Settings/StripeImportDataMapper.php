@@ -15,14 +15,15 @@ class StripeImportDataMapper
 {
     public function createAppDto(Entity $entity): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setState($entity->getState());
-        $dto->setLastId($entity->getLastId());
-        $dto->setCreatedAt($entity->getCreatedAt());
-        $dto->setUpdateAt($entity->getUpdatedAt());
-        $dto->setError($entity->getError());
-
-        return $dto;
+        return new AppDto(
+            (string) $entity->getId(),
+            $entity->getState(),
+            $entity->getLastId(),
+            $entity->getCreatedAt(),
+            $entity->getUpdatedAt(),
+            $entity->getError(),
+            $entity->isComplete(),
+            $entity->hasFailed(),
+        );
     }
 }

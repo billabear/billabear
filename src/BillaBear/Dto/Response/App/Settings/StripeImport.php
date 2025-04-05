@@ -10,81 +10,21 @@ namespace BillaBear\Dto\Response\App\Settings;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class StripeImport
+readonly class StripeImport
 {
-    private string $id;
-
-    private string $state;
-
-    #[SerializedName('last_id')]
-    private ?string $lastId;
-
-    #[SerializedName('created_at')]
-    private \DateTimeInterface $createdAt;
-
-    #[SerializedName('updated_at')]
-    private \DateTimeInterface $updateAt;
-
-    #[SerializedName('error')]
-    private ?string $error;
-
-    public function getId(): string
+    public function __construct(
+        public string $id,
+        public string $state,
+        #[SerializedName('last_id')]
+        public ?string $lastId,
+        #[SerializedName('created_at')]
+        public \DateTimeInterface $createdAt,
+        #[SerializedName('updated_at')]
+        public \DateTimeInterface $updateAt,
+        #[SerializedName('error')]
+        public ?string $error,
+        public bool $completed,
+        public bool $failed)
     {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): void
-    {
-        $this->state = $state;
-    }
-
-    public function getLastId(): ?string
-    {
-        return $this->lastId;
-    }
-
-    public function setLastId(?string $lastId): void
-    {
-        $this->lastId = $lastId;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    public function getUpdateAt(): \DateTimeInterface
-    {
-        return $this->updateAt;
-    }
-
-    public function setUpdateAt(\DateTimeInterface $updateAt): void
-    {
-        $this->updateAt = $updateAt;
-    }
-
-    public function getError(): ?string
-    {
-        return $this->error;
-    }
-
-    public function setError(?string $error): void
-    {
-        $this->error = $error;
     }
 }

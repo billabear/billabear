@@ -3,12 +3,19 @@
     <h1 class="page-title mb-3">{{ $t('app.settings.stripe.view_import.title') }}</h1>
     <LoadingScreen :ready="ready">
 
+      <div class="my-3 alert-error" v-if="importData.failed">
+        {{ $t('app.settings.stripe.view_import.failed') }}
+      </div>
+      <div class="my-3 alert-error" v-else-if="!importData.failed && importData.error">
+        {{ $t('app.settings.stripe.view_import.error_state') }}
+      </div>
+
       <div class="card-body">
 
         <dl class="detail-list">
           <div>
             <dt>{{ $t('app.settings.stripe.view_import.progress') }}</dt>
-            <dd>
+            <dd :class="{'line-through': importData.failed}">
               <span class="font-bold" :class="{'text-blue-500': importData.state === 'started', 'text-red-500': importData.state != 'started'}">{{ $t('app.settings.stripe.view_import.process.started') }}</span> ->
               <span :class="{'text-blue-500  font-bold': importData.state === 'customers', 'text-red-500 font-bold': isCustomersDone(importData.state)}">{{ $t('app.settings.stripe.view_import.process.customers') }}</span> ->
               <span :class="{'text-blue-500  font-bold': importData.state === 'products', 'text-red-500 font-bold': isProductsDone(importData.state)}">{{ $t('app.settings.stripe.view_import.process.products') }}</span> ->

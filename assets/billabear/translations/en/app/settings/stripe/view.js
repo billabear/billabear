@@ -14,5 +14,7 @@ export const STRIPE_IMPORT_VIEW_TRANSLATION = {
         refunds: 'Refunds',
         charge_backs: 'Charge Backs',
         completed: 'Completed',
-    }
+    },
+    failed: "This Stripe import has failed. Check the error reason and fix.",
+    error_state: "This Stripe import is currently failing. Check the error reason and fix. We will retry again in 5 minutes."
 };

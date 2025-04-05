@@ -73,6 +73,7 @@ class StripeImportProcessor
             if (5 === $attempts) {
                 $this->getLogger()->warning('Import has failed 5 times marking complete');
                 $request->setComplete(true);
+                $request->setState('failed');
             }
         }
 

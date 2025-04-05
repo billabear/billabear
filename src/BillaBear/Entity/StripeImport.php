@@ -122,4 +122,9 @@ class StripeImport
     {
         $this->attempts = $attempts;
     }
+
+    public function hasFailed(): bool
+    {
+        return $this->complete && null !== $this->error;
+    }
 }
