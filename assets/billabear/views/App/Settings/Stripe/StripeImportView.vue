@@ -38,7 +38,7 @@
           </div>
           <div v-if="importData.error">
             <dt>{{ $t('app.settings.stripe.view_import.error') }}</dt>
-            <dd>{{ importData.error }}</dd>
+            <dd class="text-xl font-bold text-red-500"><pre>{{ importData.error }}</pre></dd>
           </div>
         </dl>
       </div>

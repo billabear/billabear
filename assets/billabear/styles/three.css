@@ -37,11 +37,11 @@
 }
 
 .detail-list dt {
-    @apply text-sm font-medium text-gray-500;
+    @apply font-medium text-gray-500;
 }
 
 .detail-list dd {
-    @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+    @apply mt-1  sm:col-span-2 sm:mt-0;
 }
 
 .list-table {
