@@ -23,16 +23,14 @@ class MetricCounterDataMapper
     public function createAppDto(Subscription $entity): AppDto
     {
         $metric = $entity->getPrice()->getMetric();
-
-        $dto = new AppDto();
-        $dto->setId((string) $metric->getId());
-        $dto->setMetric($this->metricDataMapper->createAppDto($metric));
-
         $costs = $this->costEstimator->getEstimate($entity);
-        $dto->setUsage($costs->usage);
-        $dto->setEstimatedCost($costs->cost->getMinorAmount()->toInt());
-        $dto->setCurrency($costs->cost->getCurrency()->getCurrencyCode());
 
-        return $dto;
+        return new AppDto(
+            (string) $metric->getId(),
+            $costs->usage,
+            $costs->cost->getMinorAmount()->toInt(),
+            $costs->cost->getCurrency()->getCurrencyCode(),
+            $this->metricDataMapper->createAppDto($metric),
+        );
     }
 }

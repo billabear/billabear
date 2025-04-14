@@ -58,7 +58,7 @@ class AppContext implements Context
             'user_count' => intval($data['User Count']),
             'code_name' => $data['Code Name'] ?? null,
             'prices' => [
-                ['id' => $price->getId()],
+                ['id' => (string) $price->getId()],
             ],
             'features' => [
                 ['id' => (string) $feature->getId()],

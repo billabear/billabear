@@ -49,20 +49,19 @@ class CheckoutDataMapper
 
     public function createPublicDto(Entity $entity): PublicDto
     {
-        $appDto = new PublicDto();
-        $appDto->setName($entity->getName());
-        $appDto->setCreatedAt($entity->getCreatedAt());
-        $appDto->setCustomer($this->customerDataMapper->createAppDto($entity->getCustomer()));
-        $appDto->setId((string) $entity->getId());
-        $appDto->setCurrency($entity->getCurrency());
-        $appDto->setTotal($entity->getTotal());
-        $appDto->setTaxTotal($entity->getTaxTotal());
-        $appDto->setSubTotal($entity->getSubTotal());
-        $appDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
-        $appDto->setExpiresAt($entity->getExpiresAt());
-        $appDto->setPayLink($this->portalLinkGenerator->generatePayLink($entity));
-
-        return $appDto;
+        return new PublicDto(
+            (string) $entity->getId(),
+            $entity->getName(),
+            $entity->getCurrency(),
+            $this->customerDataMapper->createAppDto($entity->getCustomer()),
+            $entity->getTotal(),
+            $entity->getSubTotal(),
+            $entity->getTaxTotal(),
+            array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()),
+            $entity->getCreatedAt(),
+            $this->portalLinkGenerator->generatePayLink($entity),
+            $entity->getExpiresAt()
+        );
     }
 
     protected function createAppLineDto(EntityLine $quoteLine): AppLineDto
@@ -88,23 +87,27 @@ class CheckoutDataMapper
 
     protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto
     {
-        $appLineDto = new PublicLineDto();
+        $plan = null;
+        $price = null;
         if ($quoteLine->getSubscriptionPlan()) {
-            $appLineDto->setSubscriptionPlan($this->subscriptionPlanDataMapper->createAppDto($quoteLine->getSubscriptionPlan()));
+            $plan = $this->subscriptionPlanDataMapper->createAppDto($quoteLine->getSubscriptionPlan());
         }
 
         if ($quoteLine->getPrice()) {
-            $appLineDto->setPrice($this->priceDataMapper->createAppDto($quoteLine->getPrice()));
+            $price = $this->priceDataMapper->createAppDto($quoteLine->getPrice());
         }
-        $appLineDto->setDescription($quoteLine->getDescription());
-        $appLineDto->setTotal($quoteLine->getTotal());
-        $appLineDto->setSubTotal($quoteLine->getSubTotal());
-        $appLineDto->setTaxTotal($quoteLine->getTaxTotal());
-        $appLineDto->setCurrency($quoteLine->getCurrency());
-        $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
-        $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
-        $appLineDto->setSchedule($quoteLine->getPrice()?->getSchedule() ?? 'one-off');
 
-        return $appLineDto;
+        return new PublicLineDto(
+            $plan,
+            $price,
+            $quoteLine->getDescription(),
+            $quoteLine->getCurrency(),
+            $quoteLine->getTotal(),
+            $quoteLine->getSeatNumber(),
+            $quoteLine->getSubTotal(),
+            $quoteLine->getTaxTotal(),
+            $quoteLine->getTaxPercentage(),
+            $quoteLine->getPrice()?->getSchedule() ?? 'one-off',
+        );
     }
 }

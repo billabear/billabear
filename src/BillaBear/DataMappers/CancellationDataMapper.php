@@ -14,9 +14,9 @@ use BillaBear\Dto\Interopt\Stripe\Requests\Subscriptions\CancelSubscription;
 use BillaBear\Dto\Request\Api\Subscription\CancelSubscription as ApiInputDto;
 use BillaBear\Dto\Request\App\CancelSubscription as AppInputDto;
 use BillaBear\Entity\CancellationRequest as Entity;
+use BillaBear\Entity\Subscription;
 use BillaBear\Subscription\CancellationType;
 use Parthenon\Billing\Entity\BillingAdminInterface;
-use Parthenon\Billing\Entity\Subscription;
 
 class CancellationDataMapper
 {
@@ -40,7 +40,7 @@ class CancellationDataMapper
         return $cancellationRequest;
     }
 
-    public function getCancellationRequestEntity(Subscription $subscription, ApiInputDto|AppInputDto $dto, ?BillingAdminInterface $user = null): Entity
+    public function getCancellationRequestEntity(Subscription $subscription, null|ApiInputDto|AppInputDto $dto, ?BillingAdminInterface $user = null): Entity
     {
         $cancellationRequest = new Entity();
         $cancellationRequest->setSubscription($subscription);
@@ -48,12 +48,12 @@ class CancellationDataMapper
             $cancellationRequest->setBillingAdmin($user);
         }
         $cancellationRequest->setCreatedAt(new \DateTime());
-        $cancellationRequest->setWhen($dto->getWhen());
-        if ($dto->getDate()) {
+        $cancellationRequest->setWhen($dto?->getWhen() ?? AppInputDto::WHEN_END_OF_RUN);
+        if ($dto?->getDate()) {
             $cancellationRequest->setSpecificDate(new \DateTime($dto->getDate()));
         }
-        $cancellationRequest->setRefundType($dto->getRefundType());
-        $cancellationRequest->setComment($dto->getComment());
+        $cancellationRequest->setRefundType($dto?->getRefundType() ?? AppInputDto::REFUND_NONE);
+        $cancellationRequest->setComment($dto?->getComment());
         $cancellationRequest->setOriginalValidUntil($subscription->getValidUntil());
         $cancellationRequest->setState('started');
         $cancellationRequest->setCancellationType(($dto instanceof AppInputDto) ? CancellationType::COMPANY_REQUEST : CancellationType::CUSTOMER_REQUEST);

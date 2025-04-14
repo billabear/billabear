@@ -9,12 +9,12 @@
 namespace BillaBear\Invoice\Formatter;
 
 use BillaBear\Entity\Customer;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class InvoiceFormatterProvider
 {
     public function __construct(
-        #[TaggedIterator('billabear.invoice_formatter')]
+        #[AutowireIterator('billabear.invoice_formatter')]
         /**
          * @var iterable<InvoiceFormatterInterface>
          */

@@ -40,4 +40,19 @@ class CountryRepository extends DoctrineCrudRepository implements CountryReposit
 
         return true;
     }
+
+    public function getCountForRegistrationRequired(): int
+    {
+        return $this->entityRepository->count(['registrationRequired' => true]);
+    }
+
+    public function getCountForCollecting(): int
+    {
+        return $this->entityRepository->count(['collecting' => true]);
+    }
+
+    public function getTotalCount(): int
+    {
+        return $this->entityRepository->count([]);
+    }
 }

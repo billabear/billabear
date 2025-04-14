@@ -10,30 +10,12 @@ namespace BillaBear\Dto\Generic\Api;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class BillingAdmin
+readonly class BillingAdmin
 {
-    private string $id;
-
-    #[SerializedName('display_name')]
-    private string $displayName;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getDisplayName(): string
-    {
-        return $this->displayName;
-    }
-
-    public function setDisplayName(string $displayName): void
-    {
-        $this->displayName = $displayName;
+    public function __construct(
+        public string $id,
+        #[SerializedName('display_name')]
+        public string $displayName,
+    ) {
     }
 }

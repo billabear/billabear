@@ -30,12 +30,11 @@ class SlackWebhookDataMapper
 
     public function createAppDto(Entity $entity): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setName($entity->getName());
-        $dto->setWebhook($entity->getWebhookUrl());
-        $dto->setEnabled($entity->isEnabled());
-
-        return $dto;
+        return new AppDto(
+            (string) $entity->getId(),
+            $entity->getName(),
+            $entity->getWebhookUrl(),
+            $entity->isEnabled()
+        );
     }
 }

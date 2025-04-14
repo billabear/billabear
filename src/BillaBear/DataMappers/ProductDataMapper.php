@@ -64,10 +64,11 @@ class ProductDataMapper
 
     public function createApiDtoFromProduct(Product $product): ProductDto
     {
-        $dto = new ProductDto();
-        $dto->setId((string) $product->getId());
-        $dto->setName($product->getName());
-        $dto->setExternalReference($product->getExternalReference());
+        $dto = new ProductDto(
+            (string) $product->getId(),
+            $product->getName(),
+            $product->getExternalReference(),
+        );
 
         return $dto;
     }
@@ -78,14 +79,15 @@ class ProductDataMapper
             return null;
         }
 
-        $dto = new AppDto();
-        $dto->setId((string) $product->getId());
-        $dto->setName($product->getName());
-        $dto->setExternalReference($product->getExternalReference());
-        $dto->setPaymentProviderDetailsUrl($product->getPaymentProviderDetailsUrl());
-        $dto->setTaxType($this->taxTypeDataMapper->createAppDto($product->getTaxType()));
-        $dto->setTaxRate($product->getTaxRate());
-        $dto->setPhysical($product->getPhysical());
+        $dto = new AppDto(
+            (string) $product->getId(),
+            $product->getName(),
+            $this->taxTypeDataMapper->createAppDto($product->getTaxType()),
+            $product->getExternalReference(),
+            $product->getPaymentProviderDetailsUrl(),
+            $product->getTaxRate(),
+            $product->getPhysical(),
+        );
 
         return $dto;
     }

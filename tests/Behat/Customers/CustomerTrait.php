@@ -9,9 +9,25 @@
 namespace BillaBear\Tests\Behat\Customers;
 
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\ManageCustomerSession;
 
 trait CustomerTrait
 {
+    /**
+     * @throws \Exception
+     */
+    public function getSession($email): ManageCustomerSession
+    {
+        $customer = $this->getCustomerByEmail($email);
+
+        $session = $this->manageCustomerSessionRepository->findOneBy(['customer' => $customer]);
+        if (!$session instanceof ManageCustomerSession) {
+            throw new \Exception('Did not find customer session');
+        }
+
+        return $session;
+    }
+
     /**
      * @return void
      *

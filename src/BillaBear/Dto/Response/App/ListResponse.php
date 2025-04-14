@@ -23,6 +23,9 @@ class ListResponse
     #[SerializedName('first_key')]
     protected $firstKey;
 
+    #[SerializedName('extra_data')]
+    protected array $extraData;
+
     public function getData(): array
     {
         return $this->data;
@@ -64,5 +67,15 @@ class ListResponse
     public function setFirstKey($firstKey): void
     {
         $this->firstKey = $firstKey;
+    }
+
+    public function getExtraData(): array
+    {
+        return $this->extraData;
+    }
+
+    public function setExtraData(array $extraData): void
+    {
+        $this->extraData = $extraData;
     }
 }

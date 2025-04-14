@@ -17,6 +17,8 @@ import StateEdit from "../views/App/Country/StateEdit.vue";
 import StateCreate from "../views/App/Country/StateCreate.vue";
 import TaxTypeUpdate from "../views/App/TaxType/TaxTypeUpdate.vue";
 import FinanceIntegration from "../views/App/Integrations/FinanceIntegration.vue";
+import CountryListCollecting from "../views/App/Country/CountryListCollecting.vue";
+import CountryListRegistrationRequired from "../views/App/Country/CountryListRegistrationRequired.vue";
 
 export const AppFinanceRoutes  = [
     {
@@ -63,6 +65,16 @@ export const AppFinanceRoutes  = [
         name: 'app.finance.country.list',
         path: 'country/list',
         component: CountryList
+    },
+    {
+        name: 'app.finance.country.collecting',
+        path: 'country/collecting',
+        component: CountryListCollecting
+    },
+    {
+        name: 'app.finance.country.registration_required',
+        path: 'country/registration-required',
+        component: CountryListRegistrationRequired
     },
     {
         name: 'app.finance.country.create',

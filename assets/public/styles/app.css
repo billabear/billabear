@@ -1,4 +1,3 @@
-@tailwind preflight;
 @tailwind base;
 @tailwind components;
 
@@ -22,15 +21,11 @@
 
 .StripeElement {
     box-sizing: border-box;
-
     height: 40px;
-
     padding: 10px 12px;
-
     border: 1px solid transparent;
     border-radius: 4px;
     background-color: white;
-
     box-shadow: 0 1px 3px 0 #d1defc;
     -webkit-transition: box-shadow 150ms ease;
     transition: box-shadow 150ms ease;
@@ -46,4 +41,17 @@
 
 .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
+}
+
+.btn--danger {
+    @apply rounded-lg bg-red-500 shadow text-white p-3 font-bold hover:bg-red-400;
+}
+
+.btn--main {
+    @apply rounded-lg bg-black shadow text-white p-3 font-bold hover:bg-gray-500;
+}
+
+.btn-secondary {
+
+    @apply rounded-lg border border-black bg-white shadow text-black p-3 font-bold hover:bg-gray-50;
 }

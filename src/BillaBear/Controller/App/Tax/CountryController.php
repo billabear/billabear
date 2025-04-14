@@ -51,7 +51,55 @@ class CountryController
     ): Response {
         $this->getLogger()->info('Received request to list countries');
 
-        return $this->crudList($request, $countryRepository, $serializer, $countryDataMapper, 'id', filterList: new CountryList());
+        return $this->crudList(
+            $request,
+            $countryRepository,
+            $serializer,
+            $countryDataMapper,
+            'id',
+            filterList: new CountryList(),
+            extraData: $this->getCountryCount($countryRepository),
+        );
+    }
+
+    #[Route('/app/countries/registration', name: 'app_country_registration_list', methods: ['GET'])]
+    public function listRegistrationCountries(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        SerializerInterface $serializer,
+        CountryDataMapper $countryDataMapper,
+    ): Response {
+        $this->getLogger()->info('Received request to list countries that need tax registration');
+
+        return $this->crudList(
+            $request,
+            $countryRepository,
+            $serializer,
+            $countryDataMapper,
+            'id',
+            filterList: new CountryList(['registrationRequired' => 'true']),
+            extraData: $this->getCountryCount($countryRepository),
+        );
+    }
+
+    #[Route('/app/countries/collecting', name: 'app_country_collecting_list', methods: ['GET'])]
+    public function listCollectingCountries(
+        Request $request,
+        CountryRepositoryInterface $countryRepository,
+        SerializerInterface $serializer,
+        CountryDataMapper $countryDataMapper,
+    ): Response {
+        $this->getLogger()->info('Received request to list countries that tax is being collected for');
+
+        return $this->crudList(
+            $request,
+            $countryRepository,
+            $serializer,
+            $countryDataMapper,
+            'id',
+            filterList: new CountryList(['collecting' => 'true']),
+            extraData: $this->getCountryCount($countryRepository),
+        );
     }
 
     #[Route('/app/country', methods: ['POST'])]
@@ -217,6 +265,15 @@ class CountryController
         $json = $serializer->serialize($appDto, 'json');
 
         return new JsonResponse($json, status: Response::HTTP_CREATED, json: true);
+    }
+
+    private function getCountryCount(CountryRepositoryInterface $countryRepository): array
+    {
+        return [
+            'registration_required' => $countryRepository->getCountForRegistrationRequired(),
+            'collecting' => $countryRepository->getCountForCollecting(),
+            'total' => $countryRepository->getTotalCount(),
+        ];
     }
 
     private function getLogger(): LoggerInterface

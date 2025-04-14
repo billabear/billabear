@@ -10,6 +10,7 @@ namespace BillaBear\DataMappers;
 
 use BillaBear\Dto\Generic\Api\PaymentMethod as ApiDto;
 use BillaBear\Dto\Generic\App\PaymentMethod as AppDto;
+use BillaBear\Dto\Generic\Public\PaymentMethod as PublicDto;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use Obol\Model\PaymentMethod\PaymentMethodCard;
 use Parthenon\Billing\Entity\PaymentCard;
@@ -22,35 +23,37 @@ class PaymentMethodsDataMapper
 
     public function createApiDto(PaymentCard $paymentDetails): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId($paymentDetails->getId());
-        $dto->setName($paymentDetails->getName());
-        $dto->setBrand($paymentDetails->getBrand());
-        $dto->setExpiryMonth($paymentDetails->getExpiryMonth());
-        $dto->setExpiryYear($paymentDetails->getExpiryYear());
-        $dto->setLastFour($paymentDetails->getLastFour());
-        $dto->setDefault($paymentDetails->isDefaultPaymentOption());
-        $dto->setCreatedAt($paymentDetails->getCreatedAt());
+        $dto = new ApiDto(
+            $paymentDetails->getId(),
+            $paymentDetails->getName(),
+            $paymentDetails->isDefaultPaymentOption(),
+            $paymentDetails->getBrand(),
+            $paymentDetails->getLastFour(),
+            $paymentDetails->getExpiryMonth(),
+            $paymentDetails->getExpiryYear(),
+            $paymentDetails->getCreatedAt(),
+        );
 
         return $dto;
     }
 
     public function createAppDto(PaymentCard $paymentDetails): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId($paymentDetails->getId());
-        $dto->setName($paymentDetails->getName());
-        $dto->setBrand($paymentDetails->getBrand());
-        $dto->setExpiryMonth($paymentDetails->getExpiryMonth());
-        $dto->setExpiryYear($paymentDetails->getExpiryYear());
-        $dto->setLastFour($paymentDetails->getLastFour());
-        $dto->setDefault($paymentDetails->isDefaultPaymentOption());
-        $dto->setCreatedAt($paymentDetails->getCreatedAt());
+        $dto = new AppDto(
+            $paymentDetails->getId(),
+            $paymentDetails->getName(),
+            $paymentDetails->isDefaultPaymentOption(),
+            $paymentDetails->getBrand(),
+            $paymentDetails->getLastFour(),
+            $paymentDetails->getExpiryMonth(),
+            $paymentDetails->getExpiryYear(),
+            $paymentDetails->getCreatedAt(),
+        );
 
         return $dto;
     }
 
-    public function createFromObol(PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null)
+    public function createFromObol(PaymentMethodCard $paymentMethodModel, ?PaymentCard $entity = null): PaymentCard
     {
         if (!$entity) {
             $entity = new PaymentCard();
@@ -66,5 +69,19 @@ class PaymentMethodsDataMapper
         $entity->setCreatedAt($paymentMethodModel->getCreatedAt());
 
         return $entity;
+    }
+
+    public function createPublicDto(PaymentCard $paymentDetails): PublicDto
+    {
+        return new PublicDto(
+            $paymentDetails->getId(),
+            $paymentDetails->getName(),
+            $paymentDetails->isDefaultPaymentOption(),
+            $paymentDetails->getBrand(),
+            $paymentDetails->getLastFour(),
+            $paymentDetails->getExpiryMonth(),
+            $paymentDetails->getExpiryYear(),
+            $paymentDetails->getCreatedAt(),
+        );
     }
 }

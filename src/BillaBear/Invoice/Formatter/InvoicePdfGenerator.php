@@ -66,7 +66,9 @@ class InvoicePdfGenerator implements InvoiceFormatterInterface
 
     public function supports(string $type): bool
     {
-        return self::FORMAT_NAME === $type;
+        $parts = explode('.', $type);
+
+        return self::FORMAT_NAME === $type || strtolower(end($parts)) === $type;
     }
 
     public function name(): string

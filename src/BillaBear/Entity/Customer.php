@@ -102,7 +102,7 @@ class Customer implements CustomerInterface, AuditableInterface
     private string $locale = self::DEFAULT_LOCALE;
 
     #[ORM\Column('created_at', type: 'datetime')]
-    private \DateTimeInterface $createdAt;
+    private \DateTime $createdAt;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $accountingReference;
@@ -361,12 +361,12 @@ class Customer implements CustomerInterface, AuditableInterface
         $this->creditAmount = $newAmount->getMinorAmount()->toInt();
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

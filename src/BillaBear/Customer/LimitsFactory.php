@@ -26,10 +26,11 @@ class LimitsFactory
     {
         list($limits, $features, $userCount) = $this->getApiVariables($customer, $subscriptions);
 
-        $dto = new ApiDto();
-        $dto->setUserCount($userCount);
-        $dto->setLimits($limits);
-        $dto->setFeatures($features);
+        $dto = new ApiDto(
+            $limits,
+            $features,
+            $userCount,
+        );
 
         return $dto;
     }
@@ -38,10 +39,11 @@ class LimitsFactory
     {
         list($limits, $features, $userCount) = $this->getVariables($customer, $subscriptions);
 
-        $dto = new AppDto();
-        $dto->setUserCount($userCount);
-        $dto->setLimits($limits);
-        $dto->setFeatures($features);
+        $dto = new AppDto(
+            $limits,
+            $features,
+            $userCount,
+        );
 
         return $dto;
     }
@@ -100,11 +102,14 @@ class LimitsFactory
                 $feature = $this->buildFeature($limit->getSubscriptionFeature());
                 $name = $limit->getSubscriptionFeature()->getName();
 
-                if (!isset($limits[$name])) {
-                    $limits[$name] = new LimitApi();
-                    $limits[$name]->setFeature($feature);
+                $existingLimit = 0;
+                if (isset($limits[$name])) {
+                    $existingLimit = $limits[$name]->limit;
                 }
-                $limits[$name]->setLimit($limits[$name]->getLimit() + $limit->getLimit());
+                $limits[$name] = new LimitApi(
+                    $feature,
+                    $existingLimit + $limit->getLimit(),
+                );
             }
             foreach ($subscription->getSubscriptionPlan()->getFeatures() as $feature) {
                 $features[$feature->getCode()] = $this->buildFeature($feature);
@@ -119,10 +124,11 @@ class LimitsFactory
 
     private function buildFeature(SubscriptionFeature $feature): FeatureApi
     {
-        $dto = new FeatureApi();
-        $dto->setName($feature->getName());
-        $dto->setDescription($feature->getDescription());
-        $dto->setCode($feature->getCode());
+        $dto = new FeatureApi(
+            $feature->getCode(),
+            $feature->getName(),
+            $feature->getDescription(),
+        );
 
         return $dto;
     }

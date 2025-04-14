@@ -117,23 +117,24 @@ class CustomerDataMapper
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostcode($customer->getBillingAddress()->getPostcode());
 
-        $dto = new CustomerApiDto();
-        $dto->setName($customer->getName());
-        $dto->setId((string) $customer->getId());
-        $dto->setReference($customer->getReference());
-        $dto->setEmail($customer->getBillingEmail());
-        $dto->setExternalReference($customer->getExternalCustomerReference());
-        $dto->setAddress($address);
-        $dto->setStatus($customer->getStatus()->value);
-        $dto->setBrand($customer->getBrand());
-        $dto->setLocale($customer->getLocale());
-        $dto->setBillingType($customer->getBillingType());
-        $dto->setTaxNumber($customer->getTaxNumber());
-        $dto->setStandardTaxRate($customer->getStandardTaxRate());
-        $dto->setType($customer->getType()->value);
-        $dto->setInvoiceFormat($customer->getInvoiceFormat());
-        $dto->setMarketingOptIn($customer->getMarketingOptIn());
-        $dto->setMetadata($customer->getMetadata());
+        $dto = new CustomerApiDto(
+            (string) $customer->getId(),
+            $customer->getName(),
+            $customer->getBillingEmail(),
+            $customer->getReference(),
+            $customer->getExternalCustomerReference(),
+            $address,
+            $customer->getStatus()->value,
+            $customer->getBrand(),
+            $customer->getLocale(),
+            $customer->getBillingType(),
+            $customer->getTaxNumber(),
+            $customer->getStandardTaxRate(),
+            $customer->getType()->value,
+            $customer->getInvoiceFormat(),
+            $customer->getMarketingOptIn(),
+            $customer->getMetadata()
+        );
 
         return $dto;
     }
@@ -153,24 +154,26 @@ class CustomerDataMapper
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostcode($customer->getBillingAddress()->getPostcode());
 
-        $dto = new CustomerAppDto();
-        $dto->setName($customer->getName());
-        $dto->setId((string) $customer->getId());
-        $dto->setReference($customer->getReference());
-        $dto->setEmail($customer->getBillingEmail());
-        $dto->setExternalReference($customer->getExternalCustomerReference());
-        $dto->setAddress($address);
-        $dto->setStatus($customer->getStatus()->value);
-        $dto->setBrand($customer->getBrand());
-        $dto->setLocale($customer->getLocale());
-        $dto->setBillingType($customer->getBillingType());
-        $dto->setTaxNumber($customer->getTaxNumber());
-        $dto->setStandardTaxRate($customer->getStandardTaxRate());
-        $dto->setType($customer->getType()->value);
-        $dto->setInvoiceFormat($customer->getInvoiceFormat());
-        $dto->setCreatedAt($customer->getCreatedAt());
-        $dto->setMarketingOptIn($customer->getMarketingOptIn());
-        $dto->setMetadata($customer->getMetadata());
+        $dto = new CustomerAppDto(
+            (string) $customer->getId(),
+            $customer->getName(),
+            $customer->getBillingEmail(),
+            $customer->getReference(),
+            $customer->getExternalCustomerReference(),
+            null,
+            $address,
+            $customer->getStatus()->value,
+            $customer->getBrand(),
+            $customer->getLocale(),
+            $customer->getBillingType(),
+            $customer->getTaxNumber(),
+            $customer->getStandardTaxRate(),
+            $customer->getType()->value,
+            $customer->getInvoiceFormat(),
+            $customer->getMarketingOptIn(),
+            $customer->getCreatedAt(),
+            $customer->getMetadata(),
+        );
 
         return $dto;
     }
@@ -185,14 +188,16 @@ class CustomerDataMapper
         $address->setCountry($customer->getBillingAddress()->getCountry());
         $address->setPostcode($customer->getBillingAddress()->getPostcode());
 
-        $dto = new CustomerPublicDto();
-        $dto->setName($customer->getName());
-        $dto->setId((string) $customer->getId());
-        $dto->setEmail($customer->getBillingEmail());
-        $dto->setAddress($address);
-        $dto->setBrand($customer->getBrand());
-        $dto->setLocale($customer->getLocale());
-        $dto->setType($customer->getType()->value);
+        $dto = new CustomerPublicDto(
+            (string) $customer->getId(),
+            $customer->getName(),
+            $customer->getBillingEmail(),
+            $address,
+            $customer->getBrand(),
+            $customer->getLocale(),
+            $customer->getType()->value,
+            $customer->getBillingType(),
+        );
 
         return $dto;
     }

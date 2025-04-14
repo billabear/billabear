@@ -579,6 +579,13 @@ services:
   app.repository.orm.event:
     class: BillaBear\Repository\Orm\EventRepository
 
+  BillaBear\Repository\ManageCustomerSessionRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.manage_customer_session'
+  app.repository.orm.manage_customer_session:
+    class: BillaBear\Repository\Orm\ManageCustomerSessionRepository
+
+
   BillaBear\Customer\ExternalRegisterInterface: '@BillaBear\Customer\ObolRegister'
 
 

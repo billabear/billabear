@@ -10,7 +10,7 @@ namespace BillaBear\Background\Generic;
 
 use BillaBear\Enum\GenericTaskStatus;
 use BillaBear\Repository\GenericBackgroundTaskRepositoryInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 readonly class GenericTasks
 {
@@ -18,7 +18,7 @@ readonly class GenericTasks
      * @param ExecutorInterface[]|iterable $executors
      */
     public function __construct(
-        #[TaggedIterator('app.background_task.executor')]
+        #[AutowireIterator('app.background_task.executor')]
         private iterable $executors,
         private GenericBackgroundTaskRepositoryInterface $genericBackgroundTaskRepository,
     ) {

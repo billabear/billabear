@@ -43,16 +43,17 @@ class RefundDataMapper
 
     public function createApiDto(Refund $refund): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $refund->getId());
-        $dto->setAmount($refund->getAmount());
-        $dto->setCurrency($refund->getCurrency());
-        $dto->setComment($refund->getReason());
-        $dto->setStatus($refund->getStatus()->value);
-        $dto->setCreatedAt($refund->getCreatedAt());
-        $dto->setPayment($this->paymentFactory->createApiDto($refund->getPayment()));
-        $dto->setCustomer($this->customerFactory->createApiDto($refund->getCustomer()));
-        $dto->setBillingAdmin($this->billingAdminFactory->createAppDto($refund->getBillingAdmin()));
+        $dto = new ApiDto(
+            (string) $refund->getId(),
+            $refund->getAmount(),
+            $refund->getCurrency(),
+            $this->customerFactory->createApiDto($refund->getCustomer()),
+            $this->paymentFactory->createApiDto($refund->getPayment()),
+            $this->billingAdminFactory->createAppDto($refund->getBillingAdmin()),
+            $refund->getStatus()->value,
+            $refund->getReason(),
+            $refund->getCreatedAt(),
+        );
 
         return $dto;
     }

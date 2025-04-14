@@ -8,6 +8,8 @@
 
 namespace BillaBear\Dto\Response\Portal\Invoice;
 
+use BillaBear\Dto\Generic\Public\Invoice;
+
 class ViewPay
 {
     protected Invoice $invoice;

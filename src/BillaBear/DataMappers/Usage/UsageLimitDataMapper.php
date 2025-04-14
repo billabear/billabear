@@ -40,20 +40,20 @@ class UsageLimitDataMapper
 
     public function createAppDto(Entity $entity): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setAmount($entity->getAmount());
-        $dto->setWarnLevel($entity->getWarningLevel()->value);
-
-        return $dto;
+        return new AppDto(
+            (string) $entity->getId(),
+            $entity->getAmount(),
+            $entity->getWarningLevel(),
+        );
     }
 
     public function createApiDto(Entity $entity): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setAmount($entity->getAmount());
-        $dto->setAction($entity->getWarningLevel()->name);
+        $dto = new ApiDto(
+            (string) $entity->getId(),
+            $entity->getAmount(),
+            $entity->getWarningLevel()->name,
+        );
 
         return $dto;
     }

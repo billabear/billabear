@@ -15,4 +15,6 @@ interface EmailSenderFactoryInterface
     public function create(): EmailSenderInterface;
 
     public function disable(): void;
+
+    public function enable(): void;
 }

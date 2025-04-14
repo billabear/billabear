@@ -55,10 +55,10 @@ class SubscriptionPlanDataMapper
         $subscriptionPlan->getPrices()->clear();
         /** @var Price $priceDto */
         foreach ($dto->getPrices() as $priceDto) {
-            if (!$priceDto->hasId()) {
+            if (!$priceDto->id) {
                 continue;
             }
-            $price = $this->priceRepository->getById($priceDto->getId());
+            $price = $this->priceRepository->getById($priceDto->id);
             $subscriptionPlan->addPrice($price);
         }
 
@@ -89,19 +89,17 @@ class SubscriptionPlanDataMapper
 
     public function createPublicDto(SubscriptionPlan $subscriptionPlan): PublicDto
     {
-        $dto = new PublicDto();
-        $dto->setId((string) $subscriptionPlan->getId());
-        $dto->setCodeName($subscriptionPlan->getCodeName());
-        $dto->setName($subscriptionPlan->getName());
-        $dto->setPerSeat($subscriptionPlan->isPerSeat());
-        $dto->setPublic($subscriptionPlan->isPublic());
-        $dto->setFree($subscriptionPlan->isFree());
-        $dto->setUserCount($subscriptionPlan->getUserCount());
-        $dto->setHasTrial($subscriptionPlan->getHasTrial());
-        $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
-        $dto->setIsTrialStandalone($subscriptionPlan->getIsTrialStandalone());
-
-        return $dto;
+        return new PublicDto(
+            (string) $subscriptionPlan->getId(),
+            $subscriptionPlan->getName(),
+            $subscriptionPlan->getCodeName(),
+            $subscriptionPlan->getUserCount(),
+            $subscriptionPlan->isPerSeat(),
+            $subscriptionPlan->getHasTrial(),
+            $subscriptionPlan->getTrialLengthDays(),
+            $subscriptionPlan->isFree(),
+            $subscriptionPlan->getIsTrialStandalone()
+        );
     }
 
     public function createAppDto(?SubscriptionPlan $subscriptionPlan): ?AppDto
@@ -110,19 +108,6 @@ class SubscriptionPlanDataMapper
             return null;
         }
 
-        $dto = new AppDto();
-        $dto->setId((string) $subscriptionPlan->getId());
-        $dto->setCodeName($subscriptionPlan->getCodeName());
-        $dto->setName($subscriptionPlan->getName());
-        $dto->setPerSeat($subscriptionPlan->isPerSeat());
-        $dto->setPublic($subscriptionPlan->isPublic());
-        $dto->setFree($subscriptionPlan->isFree());
-        $dto->setUserCount($subscriptionPlan->getUserCount());
-        $dto->setHasTrial($subscriptionPlan->getHasTrial());
-        $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
-        $dto->setProduct($this->productFactory->createAppDtoFromProduct($subscriptionPlan->getProduct()));
-        $dto->setIsTrialStandalone($subscriptionPlan->getIsTrialStandalone());
-
         $priceEntities = $subscriptionPlan->getPrices() instanceof Collection ? $subscriptionPlan->getPrices()->toArray() : $subscriptionPlan->getPrices();
         $featuresEntities = $subscriptionPlan->getFeatures() instanceof Collection ? $subscriptionPlan->getFeatures()->toArray() : $subscriptionPlan->getFeatures();
         $limits = $subscriptionPlan->getLimits() instanceof Collection ? $subscriptionPlan->getLimits()->toArray() : $subscriptionPlan->getLimits();
@@ -131,28 +116,48 @@ class SubscriptionPlanDataMapper
         $featuresDto = array_map([$this->featureFactory, 'createAppDto'], $featuresEntities);
         $limitsDto = array_map([$this, 'createLimitDto'], $limits);
 
-        $dto->setPrices($pricesDto);
-        $dto->setFeatures($featuresDto);
-        $dto->setLimits($limitsDto);
+        $dto = new AppDto(
+            (string) $subscriptionPlan->getId(),
+            $subscriptionPlan->getName(),
+            $subscriptionPlan->getCodeName(),
+            $subscriptionPlan->getUserCount(),
+            $subscriptionPlan->isPerSeat(),
+            $subscriptionPlan->getHasTrial(),
+            $subscriptionPlan->getTrialLengthDays(),
+            $subscriptionPlan->isFree(),
+            $subscriptionPlan->isPublic(),
+            $featuresDto,
+            $pricesDto,
+            $limitsDto,
+            $this->productFactory->createAppDtoFromProduct($subscriptionPlan->getProduct()),
+            $subscriptionPlan->getIsTrialStandalone(),
+        );
 
         return $dto;
     }
 
+    public function copyAppDtoWithNewPrices(AppDto $old, array $prices): AppDto
+    {
+        return new AppDto(
+            $old->id,
+            $old->name,
+            $old->codeName,
+            $old->userCount,
+            $old->perSeat,
+            $old->hasTrial,
+            $old->trialLengthDays,
+            $old->free,
+            $old->public,
+            $old->features,
+            $prices,
+            $old->limits,
+            $old->product,
+            $old->isTrialStandalone,
+        );
+    }
+
     public function createApiDto(SubscriptionPlan $subscriptionPlan): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $subscriptionPlan->getId());
-        $dto->setCodeName($subscriptionPlan->getCodeName());
-        $dto->setName($subscriptionPlan->getName());
-        $dto->setPerSeat($subscriptionPlan->isPerSeat());
-        $dto->setPublic($subscriptionPlan->isPublic());
-        $dto->setFree($subscriptionPlan->isFree());
-        $dto->setUserCount($subscriptionPlan->getUserCount());
-        $dto->setHasTrial($subscriptionPlan->getHasTrial());
-        $dto->setTrialLengthDays($subscriptionPlan->getTrialLengthDays());
-        $dto->setProduct($this->productFactory->createApiDtoFromProduct($subscriptionPlan->getProduct()));
-        $dto->setIsTrialStandalone($subscriptionPlan->getIsTrialStandalone());
-
         $priceEntities = $subscriptionPlan->getPrices() instanceof Collection ? $subscriptionPlan->getPrices()->toArray() : $subscriptionPlan->getPrices();
         $featuresEntities = $subscriptionPlan->getFeatures() instanceof Collection ? $subscriptionPlan->getFeatures()->toArray() : $subscriptionPlan->getFeatures();
         $limits = $subscriptionPlan->getLimits() instanceof Collection ? $subscriptionPlan->getLimits()->toArray() : $subscriptionPlan->getLimits();
@@ -161,9 +166,22 @@ class SubscriptionPlanDataMapper
         $featuresDto = array_map([$this->featureFactory, 'createAppDto'], $featuresEntities);
         $limitsDto = array_map([$this, 'createLimitDto'], $limits);
 
-        $dto->setPrices($pricesDto);
-        $dto->setFeatures($featuresDto);
-        $dto->setLimits($limitsDto);
+        $dto = new ApiDto(
+            (string) $subscriptionPlan->getId(),
+            $subscriptionPlan->getName(),
+            $subscriptionPlan->getCodeName(),
+            $subscriptionPlan->getUserCount(),
+            $subscriptionPlan->isPerSeat(),
+            $subscriptionPlan->getHasTrial(),
+            $subscriptionPlan->getTrialLengthDays(),
+            $subscriptionPlan->isFree(),
+            $subscriptionPlan->isPublic(),
+            $featuresDto,
+            $pricesDto,
+            $limitsDto,
+            $this->productFactory->createApiDtoFromProduct($subscriptionPlan->getProduct()),
+            $subscriptionPlan->getIsTrialStandalone(),
+        );
 
         return $dto;
     }

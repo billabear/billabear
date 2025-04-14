@@ -20,9 +20,7 @@ class BillingAdminDataMapper
             return null;
         }
 
-        $dto = new AppDto();
-        $dto->setId((string) $billingAdmin->getId());
-        $dto->setDisplayName($billingAdmin->getDisplayName());
+        $dto = new AppDto((string) $billingAdmin->getId(), $billingAdmin->getDisplayName());
 
         return $dto;
     }
@@ -33,9 +31,7 @@ class BillingAdminDataMapper
             return null;
         }
 
-        $dto = new ApiDto();
-        $dto->setId((string) $billingAdmin->getId());
-        $dto->setDisplayName($billingAdmin->getDisplayName());
+        $dto = new ApiDto((string) $billingAdmin->getId(), $billingAdmin->getDisplayName());
 
         return $dto;
     }

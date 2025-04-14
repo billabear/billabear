@@ -8,41 +8,12 @@
 
 namespace BillaBear\Dto\Generic\App\Usage;
 
-class MetricFilter
+readonly class MetricFilter
 {
-    private string $name;
-
-    private string $value;
-
-    private string $type;
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    public function setValue(string $value): void
-    {
-        $this->value = $value;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): void
-    {
-        $this->type = $type;
+    public function __construct(
+        public string $name,
+        public string $value,
+        public string $type,
+    ) {
     }
 }

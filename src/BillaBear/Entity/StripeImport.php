@@ -43,6 +43,9 @@ class StripeImport
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $attempts = 0;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $createdBy = null;
+
     public function getId()
     {
         return $this->id;
@@ -126,5 +129,15 @@ class StripeImport
     public function hasFailed(): bool
     {
         return $this->complete && null !== $this->error;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
     }
 }

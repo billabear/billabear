@@ -172,11 +172,4 @@ export default {
 </script>
 
 <style>
-.btn--main {
-  background-color: black !important;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  margin: auto;
-}
 </style>

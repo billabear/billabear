@@ -8,41 +8,12 @@
 
 namespace BillaBear\Dto\Generic\Api;
 
-class Receipt
+readonly class Receipt
 {
-    private string $id;
-
-    private \DateTime $createdAt;
-
-    private bool $valid;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    public function isValid(): bool
-    {
-        return $this->valid;
-    }
-
-    public function setValid(bool $valid): void
-    {
-        $this->valid = $valid;
+    public function __construct(
+        public string $id,
+        public \DateTimeInterface $createdAt,
+        public bool $valid,
+    ) {
     }
 }

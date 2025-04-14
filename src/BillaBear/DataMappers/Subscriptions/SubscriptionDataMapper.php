@@ -12,6 +12,7 @@ use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\DataMappers\PriceDataMapper;
 use BillaBear\Dto\Generic\Api\Subscription as ApiDto;
 use BillaBear\Dto\Generic\App\Subscription as AppDto;
+use BillaBear\Dto\Generic\Public\Subscription as PublicDto;
 use BillaBear\Entity\Subscription as Entity;
 use BillaBear\Repository\CustomerRepositoryInterface;
 use Obol\Model\Subscription as ObolModel;
@@ -87,47 +88,88 @@ class SubscriptionDataMapper
 
     public function createAppDto(Entity $subscription): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $subscription->getId());
-        $dto->setStatus($subscription->getStatus()->value);
-        $dto->setSchedule($subscription->getPaymentSchedule());
+        $planDto = null;
+        $priceDto = null;
+        $schedule = $subscription->getPrice()?->getSchedule();
+
         if ($subscription->getSubscriptionPlan()) {
-            $dto->setSubscriptionPlan($this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan()));
+            $planDto = $this->subscriptionPlanFactory->createAppDto($subscription->getSubscriptionPlan());
         }
+
         if ($subscription->getPrice()) {
-            $dto->setPrice($this->priceFactory->createAppDto($subscription->getPrice()));
+            $priceDto = $this->priceFactory->createAppDto($subscription->getPrice());
         }
-        $dto->setChildExternalReference($subscription->getChildExternalReference());
-        $dto->setMainExternalReference($subscription->getMainExternalReference());
-        $dto->setPaymentProviderDetailsUrl($subscription->getMainExternalReferenceDetailsUrl());
-        $dto->setCreatedAt($subscription->getCreatedAt());
-        $dto->setUpdatedAt($subscription->getUpdatedAt());
-        $dto->setSeatNumber($subscription->getSeats());
-        $dto->setValidUntil($subscription->getValidUntil());
-        $dto->setCustomer($this->customerFactory->createAppDto($subscription->getCustomer()));
-        $dto->setMetadata($subscription->getMetadata());
+
+        $dto = new AppDto(
+            (string) $subscription->getId(),
+            $subscription->getPaymentSchedule(),
+            $subscription->getStatus()->value,
+            $subscription->getSeats(),
+            $subscription->getCreatedAt(),
+            $subscription->getUpdatedAt(),
+            $subscription->getEndedAt(),
+            $subscription->getValidUntil(),
+            $subscription->getMainExternalReference(),
+            $subscription->getChildExternalReference(),
+            $subscription->getMainExternalReferenceDetailsUrl(),
+            $planDto,
+            $priceDto,
+            $this->customerFactory->createAppDto($subscription->getCustomer()),
+            $subscription->getMetadata(),
+        );
 
         return $dto;
     }
 
     public function createApiDto(Entity $subscription): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $subscription->getId());
-        $dto->setPlan($this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()));
+        $priceDto = null;
+        $schedule = null;
+
         if ($subscription->getPrice()) {
-            $dto->setPrice($this->priceFactory->createApiDto($subscription->getPrice()));
-            $dto->setSchedule($subscription->getPrice()->getSchedule());
+            $priceDto = $this->priceFactory->createApiDto($subscription->getPrice());
+            $schedule = $subscription->getPrice()->getSchedule();
         }
-        $dto->setChildExternalReference($subscription->getChildExternalReference());
-        $dto->setMainExternalReference($subscription->getMainExternalReference());
-        $dto->setCreatedAt($subscription->getCreatedAt());
-        $dto->setSeatNumber($subscription->getSeats());
-        $dto->setUpdatedAt($subscription->getUpdatedAt());
-        $dto->setValidUntil($subscription->getValidUntil());
-        $dto->setStatus($subscription->getStatus()->value);
-        $dto->setMetadata($subscription->getMetadata());
+        $dto = new ApiDto(
+            (string) $subscription->getId(),
+            $schedule,
+            $subscription->getCreatedAt(),
+            $subscription->getUpdatedAt(),
+            $subscription->getEndedAt(),
+            $subscription->getValidUntil(),
+            $subscription->getMainExternalReference(),
+            $subscription->getChildExternalReference(),
+            $this->subscriptionPlanFactory->createApiDto($subscription->getSubscriptionPlan()),
+            $priceDto,
+            $subscription->getSeats(),
+            $subscription->getMetadata(),
+            $subscription->getStatus()->value,
+        );
 
         return $dto;
+    }
+
+    public function createPublicDto(Entity $subscription): PublicDto
+    {
+        $planDto = null;
+        $priceDto = null;
+
+        if ($subscription->getSubscriptionPlan()) {
+            $planDto = $this->subscriptionPlanFactory->createPublicDto($subscription->getSubscriptionPlan());
+        }
+
+        if ($subscription->getPrice()) {
+            $priceDto = $this->priceFactory->createPublicDto($subscription->getPrice());
+        }
+
+        return new PublicDto(
+            (string) $subscription->getId(),
+            $planDto,
+            $priceDto,
+            $subscription->getPaymentSchedule(),
+            $subscription->getStatus(),
+            $subscription->getCreatedAt(),
+            $subscription->getValidUntil(),
+        );
     }
 }

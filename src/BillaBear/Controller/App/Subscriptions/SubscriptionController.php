@@ -470,11 +470,11 @@ class SubscriptionController
         $dtos = array_map([$subscriptionPlanFactory, 'createAppDto'], $subscriptionPlans);
 
         /** @var SubscriptionPlan $dto */
-        foreach ($dtos as $dto) {
-            $prices = array_filter($dto->getPrices(), function (\BillaBear\Dto\Generic\App\Price $price) use ($subscription, $subscriptionCount) {
-                return (1 === $subscriptionCount || $subscription->getPaymentSchedule() === $price->getSchedule()) && $price->getCurrency() === $subscription->getCurrency();
+        foreach ($dtos as $key => $dto) {
+            $prices = array_filter($dto->prices, function (\BillaBear\Dto\Generic\App\Price $price) use ($subscription, $subscriptionCount) {
+                return (1 === $subscriptionCount || $subscription->getPaymentSchedule() === $price->schedule) && $price->currency === $subscription->getCurrency();
             });
-            $dto->setPrices($prices);
+            $dtos[$key] = $subscriptionPlanFactory->copyAppDtoWithNewPrices($dto, $prices);
         }
         $viewDto = new UpdatePlanView();
         $viewDto->setPlans($dtos);

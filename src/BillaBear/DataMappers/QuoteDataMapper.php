@@ -52,20 +52,19 @@ class QuoteDataMapper
     {
         $now = new \DateTime();
 
-        $publicDto = new PublicDto();
-        $publicDto->setCreatedAt($entity->getCreatedAt());
-        $publicDto->setCustomer($this->customerDataMapper->createPublicDto($entity->getCustomer()));
-        $publicDto->setId((string) $entity->getId());
-        $publicDto->setCurrency($entity->getCurrency());
-        $publicDto->setTotal($entity->getTotal());
-        $publicDto->setTaxTotal($entity->getTaxTotal());
-        $publicDto->setSubTotal($entity->getSubTotal());
-        $publicDto->setLines(array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()));
-        $publicDto->setPaid($entity->isPaid());
-        $publicDto->setExpiresAt($entity->getExpiresAt());
-        $publicDto->setExpired(null !== $entity->getExpiresAt() && $now > $entity->getExpiresAt());
-
-        return $publicDto;
+        return new PublicDto(
+            (string) $entity->getId(),
+            $entity->getCurrency(),
+            $this->customerDataMapper->createPublicDto($entity->getCustomer()),
+            $entity->getTotal(),
+            $entity->getSubTotal(),
+            $entity->getTaxTotal(),
+            array_map([$this, 'createPublicLineDto'], $entity->getLines()->toArray()),
+            $entity->getCreatedAt(),
+            $entity->isPaid(),
+            $entity->getExpiresAt(),
+            null !== $entity->getExpiresAt() && $now > $entity->getExpiresAt(),
+        );
     }
 
     protected function createAppLineDto(EntityLine $quoteLine): AppLineDto
@@ -91,22 +90,25 @@ class QuoteDataMapper
 
     protected function createPublicLineDto(EntityLine $quoteLine): PublicLineDto
     {
-        $appLineDto = new PublicLineDto();
+        $plan = null;
+        $price = null;
         if ($quoteLine->getSubscriptionPlan()) {
-            $appLineDto->setSubscriptionPlan($this->subscriptionPlanDataMapper->createPublicDto($quoteLine->getSubscriptionPlan()));
+            $plan = $this->subscriptionPlanDataMapper->createPublicDto($quoteLine->getSubscriptionPlan());
         }
-
         if ($quoteLine->getPrice()) {
-            $appLineDto->setPrice($this->priceDataMapper->createPublicDto($quoteLine->getPrice()));
+            $price = $this->priceDataMapper->createPublicDto($quoteLine->getPrice());
         }
-        $appLineDto->setDescription($quoteLine->getDescription());
-        $appLineDto->setTotal($quoteLine->getTotal());
-        $appLineDto->setSubTotal($quoteLine->getSubTotal());
-        $appLineDto->setTaxTotal($quoteLine->getTaxTotal());
-        $appLineDto->setCurrency($quoteLine->getCurrency());
-        $appLineDto->setTaxRate($quoteLine->getTaxPercentage());
-        $appLineDto->setSeatNumber($quoteLine->getSeatNumber());
 
-        return $appLineDto;
+        return new PublicLineDto(
+            $plan,
+            $price,
+            $quoteLine->getDescription(),
+            $quoteLine->getCurrency(),
+            $quoteLine->getTotal(),
+            $quoteLine->getSeatNumber(),
+            $quoteLine->getSubTotal(),
+            $quoteLine->getTaxTotal(),
+            $quoteLine->getTaxPercentage(),
+        );
     }
 }

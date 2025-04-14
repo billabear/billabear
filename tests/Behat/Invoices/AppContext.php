@@ -11,6 +11,7 @@ namespace BillaBear\Tests\Behat\Invoices;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Behat\Step\When;
 use BillaBear\DataMappers\PaymentAttemptDataMapper;
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceDeliverySettings;
@@ -23,6 +24,7 @@ use BillaBear\Invoice\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository;
 use BillaBear\Repository\Orm\InvoiceRepository;
+use BillaBear\Repository\Orm\ManageCustomerSessionRepository;
 use BillaBear\Repository\Orm\MetricCounterRepository;
 use BillaBear\Repository\Orm\MetricRepository;
 use BillaBear\Repository\Orm\PaymentAttemptRepository;
@@ -59,6 +61,7 @@ class AppContext implements Context
         private InvoiceDeliverySettingsRepository $invoiceDeliveryRepository,
         private MetricRepository $metricRepository,
         private MetricCounterRepository $metricUsageRepository,
+        private ManageCustomerSessionRepository $manageCustomerSessionRepository,
     ) {
     }
 
@@ -145,6 +148,16 @@ class AppContext implements Context
         $this->sendJsonRequest('POST', '/api/v1/invoice/'.$invoice->getId().'/charge');
     }
 
+    #[When('charge the invoice for :arg1 via the portal')]
+    public function chargeTheInvoiceForViaThePortal($customerEmail): void
+    {
+        $session = $this->getSession($customerEmail);
+
+        $invoice = $this->invoiceRepository->findOneBy(['customer' => $session->getCustomer()]);
+
+        $this->sendJsonRequest('POST', '/public/customer/'.$session->getToken().'/invoice/'.$invoice->getId().'/charge');
+    }
+
     /**
      * @When I mark the invoice for :arg1 as paid
      */
@@ -191,6 +204,7 @@ class AppContext implements Context
         $this->invoiceRepository->getEntityManager()->refresh($invoice);
 
         if (!$invoice->isPaid()) {
+            var_dump($this->session->getStatusCode());
             throw new \Exception('Invoice not paid');
         }
     }

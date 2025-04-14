@@ -15,6 +15,7 @@ use BillaBear\Dto\Request\App\Settings\Stripe\SendConfig;
 use BillaBear\Dto\Response\App\Settings\StripeImportView;
 use BillaBear\Entity\GenericBackgroundTask;
 use BillaBear\Entity\StripeImport;
+use BillaBear\Entity\User;
 use BillaBear\Enum\GenericTask;
 use BillaBear\Enum\GenericTaskStatus;
 use BillaBear\Repository\GenericBackgroundTaskRepositoryInterface;
@@ -28,6 +29,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -131,6 +133,8 @@ class StripeController
         StripeImportDataMapper $importFactory,
         SerializerInterface $serializer,
         SettingsRepositoryInterface $settingsRepository,
+        #[CurrentUser]
+        User $user,
     ): Response {
         $this->getLogger()->info('Request to start stripe import');
         $stripeImport = $stripeImportRepository->findActive();
@@ -145,6 +149,7 @@ class StripeController
         $stripeImport->setComplete(false);
         $stripeImport->setUpdatedAt(new \DateTime());
         $stripeImport->setCreatedAt(new \DateTime());
+        $stripeImport->setCreatedBy($user);
 
         $stripeImportRepository->save($stripeImport);
         $dto = $importFactory->createAppDto($stripeImport);

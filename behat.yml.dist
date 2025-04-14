@@ -17,6 +17,7 @@ default:
                 # Customers
                 - BillaBear\Tests\Behat\Customers\MainContext
                 - BillaBear\Tests\Behat\Customers\AppContext
+                - BillaBear\Tests\Behat\Customers\PortalContext
 
                 # Products
                 - BillaBear\Tests\Behat\Products\ApiContext
@@ -35,6 +36,7 @@ default:
                 - BillaBear\Tests\Behat\Subscriptions\MassChangeContext
                 - BillaBear\Tests\Behat\Subscriptions\EventsContext
                 - BillaBear\Tests\Behat\Subscriptions\NotificationContext
+                - BillaBear\Tests\Behat\Subscriptions\PortalContext
 
                 # Subscription Plan
                 - BillaBear\Tests\Behat\SubscriptionPlan\AppContext

@@ -29,6 +29,10 @@ class CountryList extends AbstractFilterList
                 'field' => 'collecting',
                 'filter' => BoolFilter::class,
             ],
+            'registrationRequired' => [
+                'field' => 'registrationRequired',
+                'filter' => BoolFilter::class,
+            ],
         ];
     }
 }

@@ -14,17 +14,21 @@ use BillaBear\Dto\Request\Public\ProcessPay;
 use BillaBear\Dto\Response\Portal\Invoice\StripeInfo;
 use BillaBear\Dto\Response\Portal\Invoice\ViewPay;
 use BillaBear\Entity\Invoice;
+use BillaBear\Invoice\Formatter\InvoiceFormatterProvider;
 use BillaBear\Payment\InvoiceCharger;
 use BillaBear\Repository\InvoiceRepositoryInterface;
+use BillaBear\Repository\ManageCustomerSessionRepositoryInterface;
 use BillaBear\Repository\SettingsRepositoryInterface;
 use Obol\Exception\PaymentFailureException;
 use Parthenon\Billing\Config\FrontendConfig;
 use Parthenon\Billing\PaymentMethod\FrontendAddProcessorInterface;
 use Parthenon\Common\Exception\NoEntityFoundException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,7 +37,7 @@ class InvoiceController
 {
     use ValidationErrorResponseTrait;
 
-    public function __construct(private LoggerInterface $controllerLogger)
+    public function __construct(private readonly LoggerInterface $controllerLogger)
     {
     }
 
@@ -107,6 +111,125 @@ class InvoiceController
         }
 
         return new JsonResponse(['success' => $success, 'failure_reason' => $failureReason]);
+    }
+
+    #[Route('/public/customer/{token}/invoice/{id}/charge', name: 'billabear_public_invoice_charge_invoice', methods: ['POST'])]
+    public function chargeInvoice(
+        Request $request,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoiceCharger $invoiceCharger,
+        ManageCustomerSessionRepositoryInterface $manageCustomerSessionRepository,
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $session = $manageCustomerSessionRepository->getByToken($request->get('token'));
+        } catch (NoEntityFoundException) {
+            $this->getLogger()->warning('Unable to find customer management session', ['token' => $request->get('token')]);
+
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
+        }
+        $this->getLogger()->info('Received an portal request to charge invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
+
+        $now = new \DateTime();
+
+        if ($session->getExpiresAt() < $now) {
+            $this->getLogger()->warning(
+                'Customer management Session has expired',
+                [
+                    'token' => $request->get('token'),
+                    'customer_id' => (string) $session->getCustomer()->getId(),
+                ]
+            );
+
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
+        }
+
+        $expiresAt = new \DateTime('+5 minutes');
+        $session->setExpiresAt($expiresAt);
+        $session->setUpdatedAt($now);
+        $manageCustomerSessionRepository->save($session);
+
+        $failureReason = null;
+        $statusCode = Response::HTTP_OK;
+        try {
+            $invoiceCharger->chargeInvoice($invoice);
+        } catch (PaymentFailureException $e) {
+            $failureReason = $e->getReason()->value;
+            $statusCode = Response::HTTP_PAYMENT_REQUIRED;
+        }
+
+        return new JsonResponse(['paid' => $invoice->isPaid(), 'failure_reason' => $failureReason], $statusCode);
+    }
+
+    #[Route('/public/customer/{token}/invoice/{id}/download', name: 'billabear_public_invoice_download_invoice', methods: ['GET'])]
+    public function downloadInvoice(
+        Request $request,
+        ManageCustomerSessionRepositoryInterface $manageCustomerSessionRepository,
+        InvoiceRepositoryInterface $invoiceRepository,
+        InvoiceFormatterProvider $invoiceFormatterProvider,
+    ): Response {
+        try {
+            /** @var Invoice $invoice */
+            $invoice = $invoiceRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $session = $manageCustomerSessionRepository->getByToken($request->get('token'));
+        } catch (NoEntityFoundException) {
+            $this->getLogger()->warning('Unable to find customer management session', ['token' => $request->get('token')]);
+
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
+        }
+        $this->getLogger()->info('Received an portal request to download invoice', [
+            'invoice_id' => $request->get('id'),
+            'customer_id' => (string) $invoice->getCustomer()->getId(),
+        ]);
+
+        $now = new \DateTime();
+
+        if ($session->getExpiresAt() < $now) {
+            $this->getLogger()->warning(
+                'Customer management Session has expired',
+                [
+                    'token' => $request->get('token'),
+                    'customer_id' => (string) $session->getCustomer()->getId(),
+                ]
+            );
+
+            return new JsonResponse([], status: Response::HTTP_NOT_FOUND);
+        }
+
+        $expiresAt = new \DateTime('+5 minutes');
+        $session->setExpiresAt($expiresAt);
+        $session->setUpdatedAt($now);
+        $manageCustomerSessionRepository->save($session);
+
+        $generator = $invoiceFormatterProvider->getFormatter($invoice->getCustomer());
+        $pdf = $generator->generate($invoice);
+        $tmpFile = tempnam('/tmp', 'pdf');
+        file_put_contents($tmpFile, $pdf);
+
+        $response = new BinaryFileResponse($tmpFile);
+        $filename = $generator->filename($invoice);
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
     }
 
     private function getLogger(): LoggerInterface

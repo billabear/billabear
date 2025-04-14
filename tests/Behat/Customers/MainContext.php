@@ -46,15 +46,18 @@ class MainContext implements Context
     /**
      * @Then I should see that :arg1 is limited to :arg2
      */
-    public function iShouldSeeThatIsLimitedTo($limitName, $limit)
+    public function iShouldSeeThatIsLimitedTo($limitName, $limitNumber)
     {
         $data = $this->getJsonContent();
 
         foreach ($data['limits'] as $limit) {
-            if ($limit['feature']['name'] === $limitName && intval($limit['feature']) === intval($limit)) {
+            if ($limit['feature']['name'] === $limitName && intval($limit['limit']) === intval($limitNumber)) {
                 return;
             }
+
+            var_dump($limit);
         }
+
         throw new \Exception("Can't find limit");
     }
 

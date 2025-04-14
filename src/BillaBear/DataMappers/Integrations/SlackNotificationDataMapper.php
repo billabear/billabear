@@ -38,12 +38,11 @@ class SlackNotificationDataMapper
 
     public function createAppDto(Entity $entity): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setWebhook($this->slackWebhookDataMapper->createAppDto($entity->getSlackWebhook()));
-        $dto->setEvent($entity->getEvent());
-        $dto->setTemplate($entity->getMessageTemplate());
-
-        return $dto;
+        return new AppDto(
+            (string) $entity->getId(),
+            $this->slackWebhookDataMapper->createAppDto($entity->getSlackWebhook()),
+            $entity->getEvent(),
+            $entity->getMessageTemplate()
+        );
     }
 }

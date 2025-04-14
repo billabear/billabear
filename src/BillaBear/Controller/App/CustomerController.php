@@ -301,7 +301,7 @@ class CustomerController
                 $metric = $metricCounterDataMapper->createAppDto($subscription);
                 $found = false;
                 foreach ($metricCounterDtos as $dto) {
-                    if ($metric->getId() === $dto->getId()) {
+                    if ($metric->id === $dto->id) {
                         $found = true;
                     }
                 }

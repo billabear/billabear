@@ -38,6 +38,11 @@ class EmailSenderFactory implements EmailSenderFactoryInterface
         $this->enabled = false;
     }
 
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
     public function create(): EmailSenderInterface
     {
         try {

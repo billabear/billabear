@@ -19,8 +19,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 trait CrudListTrait
 {
-    protected function crudList(Request $request, CrudRepositoryInterface $crudRepository, SerializerInterface $serializer, $dataMapper, string $defaultSortKey = 'createdAt', ?AbstractFilterList $filterList = null): Response
-    {
+    protected function crudList(
+        Request $request,
+        CrudRepositoryInterface $crudRepository,
+        SerializerInterface $serializer,
+        $dataMapper,
+        string $defaultSortKey = 'createdAt',
+        ?AbstractFilterList $filterList = null,
+        array $extraData = [],
+    ): Response {
         $lastKey = $request->get('last_key');
         $firstKey = $request->get('first_key');
         $key = $request->get('key', $defaultSortKey);
@@ -66,6 +73,7 @@ trait CrudListTrait
         $listResponse->setData($dtos);
         $listResponse->setLastKey($resultSet->getLastKey());
         $listResponse->setFirstKey($resultSet->getFirstKey());
+        $listResponse->setExtraData($extraData);
 
         $json = $serializer->serialize($listResponse, 'json');
 

@@ -1,8 +1,10 @@
 import {CHECKOUT_TRANSLATIONS} from "./portal/checkout";
 import {COUNTRY_TRANSLATIONS} from "../../../billabear/translations/en/country";
+import {PORTAL_CUSTOMER_TRANSLATIONS} from "./portal/customer";
 
 export const ENGLISH_TRANSLATIONS = {
     portal: {
+        customer: PORTAL_CUSTOMER_TRANSLATIONS,
         checkout: CHECKOUT_TRANSLATIONS,
         invoice: {
             pay: {

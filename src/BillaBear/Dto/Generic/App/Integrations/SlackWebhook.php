@@ -8,53 +8,13 @@
 
 namespace BillaBear\Dto\Generic\App\Integrations;
 
-class SlackWebhook
+readonly class SlackWebhook
 {
-    private string $id;
-
-    private string $name;
-
-    private string $webhook;
-
-    private bool $enabled;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getWebhook(): string
-    {
-        return $this->webhook;
-    }
-
-    public function setWebhook(string $webhook): void
-    {
-        $this->webhook = $webhook;
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled(bool $enabled): void
-    {
-        $this->enabled = $enabled;
+    public function __construct(
+        public string $id,
+        public string $name,
+        public string $webhook,
+        public bool $enabled,
+    ) {
     }
 }

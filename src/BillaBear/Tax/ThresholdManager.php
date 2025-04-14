@@ -55,6 +55,7 @@ class ThresholdManager
 
                 if ($count > $country->getTransactionThreshold()) {
                     $country->setCollecting(true);
+                    $country->setRegistrationRequired(true);
                     $this->countryRepository->save($country);
                     $this->thresholdNotifier->countryThresholdReached($country);
 
@@ -71,6 +72,7 @@ class ThresholdManager
 
             if ($returnValue) {
                 $country->setCollecting(true);
+                $country->setRegistrationRequired(true);
                 $this->countryRepository->save($country);
                 $this->thresholdNotifier->countryThresholdReached($country);
             }

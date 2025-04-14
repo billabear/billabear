@@ -8,6 +8,7 @@
 
 namespace BillaBear\Import\Stripe;
 
+use BillaBear\Notification\Email\Email;
 use BillaBear\Notification\Email\EmailSenderFactoryInterface;
 use BillaBear\Repository\StripeImportRepositoryInterface;
 use Parthenon\Common\LoggerAwareTrait;
@@ -66,6 +67,16 @@ class StripeImportProcessor
             }
             if ('completed' === $request->getState()) {
                 $request->setComplete(true);
+                $this->emailSenderFactory->enable();
+
+                if ($request->getCreatedBy()) {
+                    $failureEmail = new Email();
+                    $failureEmail->setTemplateName('Mail/Import/Stripe/success.html.twig');
+                    $failureEmail->setToAddress($request->getCreatedBy()->getEmail());
+
+                    $emailSender = $this->emailSenderFactory->create();
+                    $emailSender->send($failureEmail);
+                }
             }
         } catch (\Throwable $e) {
             $this->getLogger()->info('Cancellation stripe import failed', ['transition' => $transition, 'message' => $e->getMessage()]);
@@ -74,6 +85,17 @@ class StripeImportProcessor
                 $this->getLogger()->warning('Import has failed 5 times marking complete');
                 $request->setComplete(true);
                 $request->setState('failed');
+                $this->emailSenderFactory->enable();
+
+                if ($request->getCreatedBy()) {
+                    $failureEmail = new Email();
+                    $failureEmail->setTemplateName('Mail/Import/Stripe/failure.html.twig');
+                    $failureEmail->setTemplateVariables(['errorMessage' => $request->getError()]);
+                    $failureEmail->setToAddress($request->getCreatedBy()->getEmail());
+
+                    $emailSender = $this->emailSenderFactory->create();
+                    $emailSender->send($failureEmail);
+                }
             }
         }
 

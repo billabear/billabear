@@ -58,17 +58,16 @@ class MetricDataMapper
             return null;
         }
 
-        $dto = new AppDto();
-        $dto->setName($entity->getName());
-        $dto->setCode($entity->getCode());
-        $dto->setAggregationMethod($entity->getAggregationMethod());
-        $dto->setAggregationProperty($entity->getAggregationProperty());
-        $dto->setEventIngestion($entity->getEventIngestion());
-        $dto->setId((string) $entity->getId());
-        $dto->setCreatedAt($entity->getCreatedAt());
-        $dto->setFilters(array_map([$this, 'createFilterDto'], $entity->getFilters()->toArray()));
-
-        return $dto;
+        return new AppDto(
+            (string) $entity->getId(),
+            $entity->getName(),
+            $entity->getCode(),
+            $entity->getAggregationMethod(),
+            $entity->getAggregationProperty(),
+            $entity->getEventIngestion(),
+            array_map([$this, 'createFilterDto'], $entity->getFilters()->toArray()),
+            $entity->getCreatedAt(),
+        );
     }
 
     public function createApiDto(?Entity $entity): ?ApiDto
@@ -77,34 +76,36 @@ class MetricDataMapper
             return null;
         }
 
-        $dto = new ApiDto();
-        $dto->setId((string) $entity->getId());
-        $dto->setName($entity->getName());
-        $dto->setCode($entity->getCode());
-        $dto->setAggregationMethod($entity->getAggregationMethod()->value);
-        $dto->setAggregationProperty($entity->getAggregationProperty());
-        $dto->setCreatedAt($entity->getCreatedAt());
-        $dto->setFilters(array_map([$this, 'createApiFilterDto'], $entity->getFilters()->toArray()));
+        $dto = new ApiDto(
+            (string) $entity->getId(),
+            $entity->getName(),
+            $entity->getCode(),
+            $entity->getAggregationMethod()->value,
+            $entity->getAggregationProperty(),
+            array_map([$this, 'createApiFilterDto'], $entity->getFilters()->toArray()),
+            $entity->getCreatedAt(),
+        );
 
         return $dto;
     }
 
     private function createFilterDto(FilterEntity $filter): AppFilterDto
     {
-        $dto = new AppFilterDto();
-        $dto->setName($filter->getName());
-        $dto->setValue($filter->getValue());
-        $dto->setType($filter->getType()->value);
-
-        return $dto;
+        return new AppFilterDto(
+            $filter->getName(),
+            $filter->getValue(),
+            $filter->getType()->value,
+        );
     }
 
     private function createApiFilterDto(FilterEntity $filter): ApiFilterDto
     {
-        $dto = new ApiFilterDto();
-        $dto->setName($filter->getName());
-        $dto->setValue($filter->getValue());
-        $dto->setType($filter->getType()->value);
+        $dto = new ApiFilterDto(
+            (string) $filter->getId(),
+            $filter->getName(),
+            $filter->getValue(),
+            $filter->getType()->value,
+        );
 
         return $dto;
     }

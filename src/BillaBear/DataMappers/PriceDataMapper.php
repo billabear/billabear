@@ -93,35 +93,33 @@ class PriceDataMapper
 
     public function createApiDto(Price $price): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $price->getId());
-        $dto->setExternalReference($price->getExternalReference());
-        $dto->setAmount($price->getAmount());
-        $dto->setCurrency($price->getCurrency());
-        $dto->setRecurring($price->isRecurring());
-        $dto->setSchedule($price->getSchedule());
-        $dto->setPublic($price->isPublic());
-        $dto->setIncludingTax($price->isIncludingTax());
-        $dto->setUsage($price->getUsage());
-        $dto->setMetric($this->metricDataMapper->createApiDto($price->getMetric()));
-        $dto->setMetricType($price->getMetricType()?->value);
+        $dto = new ApiDto(
+            (string) $price->getId(),
+            $price->getAmount(),
+            $price->getCurrency(),
+            $price->getExternalReference(),
+            $price->isRecurring(),
+            $price->getSchedule(),
+            $price->isIncludingTax(),
+            $price->isPublic(),
+            $price->getUsage(),
+            $this->metricDataMapper->createApiDto($price->getMetric()),
+            $price->getMetricType()?->value,
+        );
 
         return $dto;
     }
 
     public function createPublicDto(Price $price): PublicDto
     {
-        $dto = new PublicDto();
-        $dto->setId((string) $price->getId());
-        $dto->setExternalReference($price->getExternalReference());
-        $dto->setAmount($price->getAmount());
-        $dto->setCurrency($price->getCurrency());
-        $dto->setRecurring($price->isRecurring());
-        $dto->setSchedule($price->getSchedule());
-        $dto->setPublic($price->isPublic());
-        $dto->setIncludingTax($price->isIncludingTax());
-
-        return $dto;
+        return new PublicDto(
+            (string) $price->getId(),
+            $price->getAmount(),
+            $price->getCurrency(),
+            $price->isRecurring(),
+            $price->getSchedule(),
+            $price->isIncludingTax(),
+        );
     }
 
     public function createAppDto(?Price $price): ?AppDto
@@ -130,20 +128,21 @@ class PriceDataMapper
             return null;
         }
 
-        $dto = new AppDto();
-        $dto->setId((string) $price->getId());
-        $dto->setExternalReference($price->getExternalReference());
-        $dto->setAmount($price->getAmount());
-        $dto->setCurrency($price->getCurrency());
-        $dto->setRecurring($price->isRecurring());
-        $dto->setSchedule($price->isRecurring() ? $price->getSchedule() : 'one-off');
-        $dto->setPublic($price->isPublic());
-        $dto->setPaymentProviderDetailsUrl($price->getPaymentProviderDetailsUrl());
-        $dto->setDisplayValue($price->getDisplayName());
-        $dto->setProduct($this->productDataMapper->createAppDtoFromProduct($price->getProduct()));
-        $dto->setIncludingTax($price->isIncludingTax());
-        $dto->setMetric($this->metricDataMapper->createAppDto($price->getMetric()));
-        $dto->setUsage($price->getUsage());
+        $dto = new AppDto(
+            (string) $price->getId(),
+            $price->getAmount(),
+            $price->getCurrency(),
+            $price->getExternalReference(),
+            $price->isRecurring(),
+            $price->isRecurring() ? $price->getSchedule() : 'one-off',
+            $price->isIncludingTax(),
+            $price->isPublic(),
+            $price->getPaymentProviderDetailsUrl(),
+            $price->getDisplayName(),
+            $this->productDataMapper->createAppDtoFromProduct($price->getProduct()),
+            $this->metricDataMapper->createAppDto($price->getMetric()),
+            $price->getUsage(),
+        );
 
         return $dto;
     }

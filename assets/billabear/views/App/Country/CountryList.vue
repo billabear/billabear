@@ -10,8 +10,8 @@
       </div>
     </div>
 
-
     <LoadingScreen :ready="ready">
+      <ListLinks :total="extra_data.total" :collecting="extra_data.collecting" :registration-required="extra_data.registration_required" />
       <div class="flex">
         <FiltersSection :filters="filters"/>
         <div class="pl-5 flex-1">
@@ -84,10 +84,11 @@ import currency from "currency.js";
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
+import ListLinks from "./Component/ListLinks.vue";
 
 export default {
   name: "CountryList.vue",
-  components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
+  components: {ListLinks, FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
   data() {
     return {
       ready: false,
@@ -103,6 +104,7 @@ export default {
       show_filter_menu: false,
       active_filters: [],
       per_page: "10",
+      extra_data: {},
       filters: {
         name: {
           label: 'app.country.list.filter.name',
@@ -231,6 +233,7 @@ export default {
         }
         this.last_key = response.data.last_key;
         this.first_key = response.data.first_key;
+        this.extra_data = response.data.extra_data;
         this.ready = true;
         this.loaded = true;
       }).catch(error => {

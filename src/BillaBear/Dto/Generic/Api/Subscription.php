@@ -10,171 +10,32 @@ namespace BillaBear\Dto\Generic\Api;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class Subscription
+readonly class Subscription
 {
-    private string $id;
-
-    #[SerializedName('schedule')]
-    private ?string $schedule;
-
-    #[SerializedName('created_at')]
-    private \DateTimeInterface $createdAt;
-
-    #[SerializedName('updated_at')]
-    private \DateTimeInterface $updatedAt;
-
-    #[SerializedName('ended_at')]
-    private ?\DateTimeInterface $endedAt = null;
-
-    #[SerializedName('valid_until')]
-    private \DateTimeInterface $validUntil;
-
-    #[SerializedName('main_external_reference')]
-    private ?string $mainExternalReference;
-
-    #[SerializedName('child_external_reference')]
-    private ?string $childExternalReference;
-
-    #[SerializedName('plan')]
-    private SubscriptionPlan $plan;
-
-    #[SerializedName('price')]
-    private Price $price;
-
-    #[SerializedName('seat_number')]
-    private ?int $seatNumber = null;
-
-    private array $metadata;
-
-    private string $status;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getSchedule(): ?string
-    {
-        return $this->schedule;
-    }
-
-    public function setSchedule(?string $schedule): void
-    {
-        $this->schedule = $schedule;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    public function getUpdatedAt(): \DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    public function getEndedAt(): ?\DateTimeInterface
-    {
-        return $this->endedAt;
-    }
-
-    public function setEndedAt(?\DateTimeInterface $endedAt): void
-    {
-        $this->endedAt = $endedAt;
-    }
-
-    public function getValidUntil(): \DateTimeInterface
-    {
-        return $this->validUntil;
-    }
-
-    public function setValidUntil(\DateTimeInterface $validUntil): void
-    {
-        $this->validUntil = $validUntil;
-    }
-
-    public function getMainExternalReference(): ?string
-    {
-        return $this->mainExternalReference;
-    }
-
-    public function setMainExternalReference(?string $mainExternalReference): void
-    {
-        $this->mainExternalReference = $mainExternalReference;
-    }
-
-    public function getChildExternalReference(): ?string
-    {
-        return $this->childExternalReference;
-    }
-
-    public function setChildExternalReference(?string $childExternalReference): void
-    {
-        $this->childExternalReference = $childExternalReference;
-    }
-
-    public function getPlan(): SubscriptionPlan
-    {
-        return $this->plan;
-    }
-
-    public function setPlan(SubscriptionPlan $plan): void
-    {
-        $this->plan = $plan;
-    }
-
-    public function getPrice(): Price
-    {
-        return $this->price;
-    }
-
-    public function setPrice(Price $price): void
-    {
-        $this->price = $price;
-    }
-
-    public function getSeatNumber(): ?int
-    {
-        return $this->seatNumber;
-    }
-
-    public function setSeatNumber(?int $seatNumber): void
-    {
-        $this->seatNumber = $seatNumber;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
-    }
-
-    public function getMetadata(): array
-    {
-        return $this->metadata;
-    }
-
-    public function setMetadata(array $metadata): void
-    {
-        $this->metadata = $metadata;
+    public function __construct(
+        public string $id,
+        #[SerializedName('schedule')]
+        public ?string $schedule,
+        #[SerializedName('created_at')]
+        public \DateTimeInterface $createdAt,
+        #[SerializedName('updated_at')]
+        public \DateTimeInterface $updatedAt,
+        #[SerializedName('ended_at')]
+        public ?\DateTimeInterface $endedAt,
+        #[SerializedName('valid_until')]
+        public \DateTimeInterface $validUntil,
+        #[SerializedName('main_external_reference')]
+        public ?string $mainExternalReference,
+        #[SerializedName('child_external_reference')]
+        public ?string $childExternalReference,
+        #[SerializedName('plan')]
+        public ?SubscriptionPlan $plan,
+        #[SerializedName('price')]
+        public ?Price $price,
+        #[SerializedName('seat_number')]
+        public ?int $seatNumber,
+        public array $metadata,
+        public string $status,
+    ) {
     }
 }

@@ -12,7 +12,7 @@ use BillaBear\Integrations\Accounting\AccountingIntegrationInterface;
 use BillaBear\Integrations\Crm\CrmIntegrationInterface;
 use BillaBear\Integrations\CustomerSupport\CustomerSupportIntegrationInterface;
 use BillaBear\Integrations\Newsletter\NewsletterIntegrationInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class IntegrationManager
 {
@@ -20,7 +20,7 @@ class IntegrationManager
      * @param IntegrationInterface[]|iterable $integrations
      */
     public function __construct(
-        #[TaggedIterator('billabear.integration')]
+        #[AutowireIterator('billabear.integration')]
         private iterable $integrations,
     ) {
     }

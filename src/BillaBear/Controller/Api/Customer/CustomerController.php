@@ -13,12 +13,15 @@ use BillaBear\Customer\CustomerStatus;
 use BillaBear\Customer\LimitsFactory;
 use BillaBear\Customer\Messenger\CustomerEvent;
 use BillaBear\Customer\Messenger\CustomerEventType;
+use BillaBear\Customer\PortalManageLinkGeneratorInterface;
 use BillaBear\DataMappers\CustomerDataMapper;
 use BillaBear\Dto\Request\Api\CreateCustomerDto;
 use BillaBear\Dto\Response\Api\ListResponse;
 use BillaBear\Entity\Customer;
+use BillaBear\Entity\ManageCustomerSession;
 use BillaBear\Filters\CustomerList;
 use BillaBear\Repository\CustomerRepositoryInterface;
+use BillaBear\Repository\ManageCustomerSessionRepositoryInterface;
 use BillaBear\Webhook\Outbound\Payload\Customer\CustomerCreatedPayload;
 use BillaBear\Webhook\Outbound\Payload\Customer\CustomerDisabledPayload;
 use BillaBear\Webhook\Outbound\Payload\Customer\CustomerEnabledPayload;
@@ -276,6 +279,43 @@ class CustomerController
         $messageBus->dispatch(new CustomerEvent(CustomerEventType::UPDATE, (string) $customer->getId()));
 
         return new JsonResponse(status: Response::HTTP_ACCEPTED);
+    }
+
+    #[Route('/api/v1/customer/{id}/manage-link', name: 'api_v1_customer_manage_link', methods: ['GET'])]
+    public function manageCustomer(
+        Request $request,
+        CustomerRepositoryInterface $customerRepository,
+        ManageCustomerSessionRepositoryInterface $manageCustomerSessionRepository,
+        SerializerInterface $serializer,
+        PortalManageLinkGeneratorInterface $portalManageLinkGenerator,
+    ) {
+        $this->getLogger()->info('Fetching a customer session manage link token', ['customer_id' => (string) $request->get('id')]);
+
+        try {
+            /** @var Customer $customer */
+            $customer = $customerRepository->getById($request->get('id'));
+        } catch (NoEntityFoundException) {
+            $this->getLogger()->info('Unable to find customer for manage customer session', ['id' => (string) $request->get('id')]);
+
+            return new JsonResponse(['success' => false], Response::HTTP_NOT_FOUND);
+        }
+
+        $token = bin2hex(random_bytes(32));
+
+        $manage = new ManageCustomerSession();
+        $manage->setToken($token);
+        $manage->setCreatedAt(new \DateTime());
+        $manage->setUpdatedAt(new \DateTime());
+        $manage->setExpiresAt(new \DateTime('+5 minutes'));
+        $manage->setCustomer($customer);
+
+        $manageCustomerSessionRepository->save($manage);
+        $url = $portalManageLinkGenerator->generate($manage);
+
+        $dto = new \BillaBear\Dto\Generic\Api\ManageCustomerSession($token, $url);
+        $json = $serializer->serialize($dto, 'json');
+
+        return JsonResponse::fromJsonString($json);
     }
 
     private function getLogger(): LoggerInterface

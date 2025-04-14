@@ -25,4 +25,10 @@ interface CountryRepositoryInterface extends CrudRepositoryInterface
      * @return Country[]
      */
     public function getAll();
+
+    public function getCountForRegistrationRequired(): int;
+
+    public function getCountForCollecting(): int;
+
+    public function getTotalCount(): int;
 }

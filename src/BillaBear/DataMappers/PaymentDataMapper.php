@@ -25,44 +25,49 @@ class PaymentDataMapper
 
     public function createAppDto(Payment $payment): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $payment->getId());
-        $dto->setStatus($payment->getStatus()->value);
-        $dto->setAmount($payment->getAmount());
-        $dto->setCurrency($payment->getCurrency());
-        $dto->setExternalReference($payment->getPaymentReference());
-        $dto->setCreatedAt($payment->getCreatedAt());
-        $dto->setPaymentProviderDetailsUrl($payment->getPaymentProviderDetailsUrl());
-
+        $customerDto = null;
         $customer = $payment->getCustomer();
         if ($customer instanceof Customer) {
-            $dto->setCustomer($this->customerFactory->createAppDto($customer));
+            $customerDto = $this->customerFactory->createAppDto($customer);
         }
+
+        $dto = new AppDto(
+            (string) $payment->getId(),
+            $payment->getAmount(),
+            $payment->getCurrency(),
+            $payment->getStatus()->value,
+            $payment->getPaymentReference(),
+            $customerDto,
+            $payment->getCreatedAt(),
+        );
 
         return $dto;
     }
 
     public function createApiDto(Payment $payment): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $payment->getId());
-        $dto->setStatus($payment->getStatus()->value);
-        $dto->setAmount($payment->getAmount());
-        $dto->setCurrency($payment->getCurrency());
-        $dto->setExternalReference($payment->getPaymentReference());
-        $dto->setCreatedAt($payment->getCreatedAt());
-
         $receipts = $this->receiptRepository->getForPayment($payment);
         $receiptDtos = [];
         foreach ($receipts as $receipt) {
             $receiptDtos[] = $this->receiptDataMapper->createApiDto($receipt);
         }
-        $dto->setReceipts($receiptDtos);
 
+        $customerDto = null;
         $customer = $payment->getCustomer();
         if ($customer instanceof Customer) {
-            $dto->setCustomer($this->customerFactory->createApiDto($customer));
+            $customerDto = $this->customerFactory->createApiDto($customer);
         }
+
+        $dto = new ApiDto(
+            (string) $payment->getId(),
+            $payment->getAmount(),
+            $payment->getCurrency(),
+            $payment->getStatus()->value,
+            $payment->getPaymentReference(),
+            $customerDto,
+            $payment->getCreatedAt(),
+            $receiptDtos
+        );
 
         return $dto;
     }

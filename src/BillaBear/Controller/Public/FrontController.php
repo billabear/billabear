@@ -26,6 +26,7 @@ class FrontController
     #[Route('/portal/pay/{hash}', name: 'portal_pay_invoice', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/portal/quote/{hash}', name: 'portal_pay_quote', requirements: ['vueRouting' => '.+'], defaults: ['vueRouting' => null])]
     #[Route('/portal/checkout/{slug}', name: 'portal_pay_checkout', methods: ['GET'])]
+    #[Route('/portal/customer/{token}', name: 'portal_customer_manage', methods: ['GET'])]
     public function handlePublic(
         Environment $twig,
         SettingsRepositoryInterface $settingsRepository,

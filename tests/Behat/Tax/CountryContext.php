@@ -11,6 +11,8 @@ namespace BillaBear\Tests\Behat\Tax;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use Behat\Step\Then;
+use Behat\Step\When;
 use BillaBear\Entity\Country;
 use BillaBear\Entity\CountryTaxRule;
 use BillaBear\Entity\State;
@@ -170,6 +172,7 @@ class CountryContext implements Context
             $country->setEnabled('true' === strtolower($row['Enabled'] ?? 'true'));
             $country->setInEu('true' === strtolower($row['In EU'] ?? 'false'));
             $country->setCollecting('true' === strtolower($row['Collecting'] ?? 'false'));
+            $country->setRegistrationRequired('true' === strtolower($row['Registration Required'] ?? 'false'));
 
             $this->countryRepository->getEntityManager()->persist($country);
         }
@@ -310,6 +313,24 @@ class CountryContext implements Context
         $this->sendJsonRequest('GET', '/app/countries');
     }
 
+    #[When('I view the countries list that require tax registration')]
+    public function iViewTheCountriesListThatRequireTaxRegistration(): void
+    {
+        $this->sendJsonRequest('GET', '/app/countries/registration');
+    }
+
+    #[Then('I will not see the country :arg1 in the list')]
+    public function iWillNotSeeTheCountryInTheList($name): void
+    {
+        $data = $this->getJsonContent();
+
+        foreach ($data['data'] as $country) {
+            if ($country['name'] === $name) {
+                throw new \Exception('Found');
+            }
+        }
+    }
+
     /**
      * @Then I will see the country :arg1 in the list
      */
@@ -324,6 +345,36 @@ class CountryContext implements Context
         }
 
         throw new \Exception('Not found');
+    }
+
+    #[Then('I will see a total country count of :count')]
+    public function iWillSeeATotalCountryCountOf(int $count): void
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['extra_data']['total'] !== $count) {
+            throw new \Exception(sprintf('Expected total count of %d but got %d', $count, $data['extra_data']['total']));
+        }
+    }
+
+    #[Then('I will see a registration required count of :count')]
+    public function iWillSeeARegistrationRequiredCountOf(int $count): void
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['extra_data']['registration_required'] !== $count) {
+            throw new \Exception(sprintf('Expected registration required count of %d but got %d', $count, $data['extra_data']['registration_required']));
+        }
+    }
+
+    #[Then('I will see a collecting count of :count')]
+    public function iWillSeeACollectingCountOf(int $count): void
+    {
+        $data = $this->getJsonContent();
+
+        if ($data['extra_data']['collecting'] !== $count) {
+            throw new \Exception(sprintf('Expected collecting count of %d but got %d', $count, $data['extra_data']['collecting']));
+        }
     }
 
     /**

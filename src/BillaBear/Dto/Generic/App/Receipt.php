@@ -10,30 +10,12 @@ namespace BillaBear\Dto\Generic\App;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class Receipt
+readonly class Receipt
 {
-    private string $id;
-
-    #[SerializedName('created_at')]
-    private \DateTimeInterface $createdAt;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
-    {
-        $this->createdAt = $createdAt;
+    public function __construct(
+        public string $id,
+        #[SerializedName('created_at')]
+        public \DateTimeInterface $createdAt,
+    ) {
     }
 }

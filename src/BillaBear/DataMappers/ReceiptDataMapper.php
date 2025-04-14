@@ -16,19 +16,21 @@ class ReceiptDataMapper
 {
     public function createApiDto(Receipt $receipt): ApiDto
     {
-        $dto = new ApiDto();
-        $dto->setId((string) $receipt->getId());
-        $dto->setValid($receipt->isValid());
-        $dto->setCreatedAt($receipt->getCreatedAt());
+        $dto = new ApiDto(
+            (string) $receipt->getId(),
+            $receipt->getCreatedAt(),
+            $receipt->isValid(),
+        );
 
         return $dto;
     }
 
     public function createAppDto(Receipt $receipt): AppDto
     {
-        $dto = new AppDto();
-        $dto->setId((string) $receipt->getId());
-        $dto->setCreatedAt($receipt->getCreatedAt());
+        $dto = new AppDto(
+            (string) $receipt->getId(),
+            $receipt->getCreatedAt(),
+        );
 
         return $dto;
     }

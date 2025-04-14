@@ -10,80 +10,18 @@ namespace BillaBear\Dto\Generic\Api;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class InvoiceLine
+readonly class InvoiceLine
 {
-    private ?string $description = null;
-
-    private string $currency;
-
-    private int $total;
-
-    #[SerializedName('sub_total')]
-    private int $subTotal;
-
-    #[SerializedName('tax_total')]
-    private int $taxTotal;
-
-    #[SerializedName('tax_rate')]
-    private ?float $taxRate;
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
-    }
-
-    public function getCurrency(): string
-    {
-        return $this->currency;
-    }
-
-    public function setCurrency(string $currency): void
-    {
-        $this->currency = $currency;
-    }
-
-    public function getTotal(): int
-    {
-        return $this->total;
-    }
-
-    public function setTotal(int $total): void
-    {
-        $this->total = $total;
-    }
-
-    public function getSubTotal(): int
-    {
-        return $this->subTotal;
-    }
-
-    public function setSubTotal(int $subTotal): void
-    {
-        $this->subTotal = $subTotal;
-    }
-
-    public function getTaxTotal(): int
-    {
-        return $this->taxTotal;
-    }
-
-    public function setTaxTotal(int $taxTotal): void
-    {
-        $this->taxTotal = $taxTotal;
-    }
-
-    public function getTaxRate(): float
-    {
-        return $this->taxRate;
-    }
-
-    public function setTaxRate(?float $taxRate): void
-    {
-        $this->taxRate = $taxRate;
+    public function __construct(
+        public ?string $description = null,
+        public string $currency,
+        public int $total,
+        #[SerializedName('sub_total')]
+        public int $subTotal,
+        #[SerializedName('tax_total')]
+        public int $taxTotal,
+        #[SerializedName('tax_rate')]
+        public ?float $taxRate,
+    ) {
     }
 }

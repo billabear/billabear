@@ -3,7 +3,7 @@
   <div class="h-screen flex flex-col lg:flex-row" v-if="ready">
     <!-- Left Section -->
     <div class="bg-teal-500 w-full lg:w-1/2 h-full desktop-only text-center text-white pt-12">
-      <img src="/images/app-logo.png" alt="BillaBear" class="w-72 mx-auto" />
+      <img src="/images/app-logo.png" alt="BillaBear" class=" mx-auto" />
 
       <h1 class="my-3 text-4xl underline">{{ $t('portal.checkout.title') }}</h1>
 
@@ -57,7 +57,7 @@
         </div>
   </div>
   <div class="flex justify-center items-center h-screen" v-else>
-    <img src="/images/public-logo.svg" class="w-80 animate-fade-in-out" />
+    <img src="/images/public-logo.png" class="w-80 animate-fade-in-out" alt="BillaBear" />
   </div>
 
 </template>

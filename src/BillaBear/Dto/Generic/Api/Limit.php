@@ -8,29 +8,11 @@
 
 namespace BillaBear\Dto\Generic\Api;
 
-class Limit
+readonly class Limit
 {
-    protected Feature $feature;
-
-    protected int $limit = 0;
-
-    public function getFeature(): Feature
-    {
-        return $this->feature;
-    }
-
-    public function setFeature(Feature $feature): void
-    {
-        $this->feature = $feature;
-    }
-
-    public function getLimit()
-    {
-        return $this->limit;
-    }
-
-    public function setLimit($limit): void
-    {
-        $this->limit = $limit;
+    public function __construct(
+        public Feature $feature,
+        public int $limit = 0,
+    ) {
     }
 }

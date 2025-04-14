@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractFilterList
 {
+    public function __construct(private array $data = [])
+    {
+    }
+
     public function buildFilters(Request $request): array
     {
         $output = [];
@@ -27,9 +31,7 @@ abstract class AbstractFilterList
                 $subKey = $matches[2];
             }
 
-            if ($request->query->has($key)) {
-                $value = $request->get($key);
-
+            if (null !== $value = $this->getValue($request, $key)) {
                 if (isset($subKey)) {
                     if (!isset($value[$subKey])) {
                         continue;
@@ -61,4 +63,16 @@ abstract class AbstractFilterList
     }
 
     abstract protected function getFilters(): array;
+
+    private function getValue(Request $request, string $key): mixed
+    {
+        if (isset($this->data[$key])) {
+            return $this->data[$key];
+        }
+        if ($request->query->has($key)) {
+            return $request->get($key);
+        }
+
+        return null;
+    }
 }

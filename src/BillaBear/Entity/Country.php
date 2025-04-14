@@ -64,6 +64,9 @@ class Country
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $taxNumber = null;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $registrationRequired;
+
     public function getId()
     {
         return $this->id;
@@ -211,5 +214,15 @@ class Country
     public function setThresholdType(?ThresholdType $thresholdType): void
     {
         $this->thresholdType = $thresholdType;
+    }
+
+    public function isRegistrationRequired(): bool
+    {
+        return true === $this->registrationRequired;
+    }
+
+    public function setRegistrationRequired(?bool $registrationRequired): void
+    {
+        $this->registrationRequired = $registrationRequired;
     }
 }
