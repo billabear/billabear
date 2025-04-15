@@ -696,26 +696,29 @@
         },
         {
             "name": "doctrine/deprecations",
-            "version": "1.1.4",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9"
+                "reference": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/31610dbb31faa98e6b5447b62340826f54fbc4e9",
-                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38",
+                "reference": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
+            "conflict": {
+                "phpunit/phpunit": "<=7.5 || >=13"
+            },
             "require-dev": {
-                "doctrine/coding-standard": "^9 || ^12",
-                "phpstan/phpstan": "1.4.10 || 2.0.3",
+                "doctrine/coding-standard": "^9 || ^12 || ^13",
+                "phpstan/phpstan": "1.4.10 || 2.1.11",
                 "phpstan/phpstan-phpunit": "^1.0 || ^2",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6 || ^10.5 || ^11.5 || ^12",
                 "psr/log": "^1 || ^2 || ^3"
             },
             "suggest": {
@@ -735,9 +738,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/1.1.4"
+                "source": "https://github.com/doctrine/deprecations/tree/1.1.5"
             },
-            "time": "2024-12-07T21:18:45+00:00"
+            "time": "2025-04-07T20:06:18+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -2005,16 +2008,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.11.0",
+            "version": "v6.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "8f718f4dfc9c5d5f0c994cdfd103921b43592712"
+                "reference": "d1e91ecf8c598d073d0995afa8cd5c75c6e19e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/8f718f4dfc9c5d5f0c994cdfd103921b43592712",
-                "reference": "8f718f4dfc9c5d5f0c994cdfd103921b43592712",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d1e91ecf8c598d073d0995afa8cd5c75c6e19e66",
+                "reference": "d1e91ecf8c598d073d0995afa8cd5c75c6e19e66",
                 "shasum": ""
             },
             "require": {
@@ -2062,9 +2065,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.11.0"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.11.1"
             },
-            "time": "2025-01-23T05:11:06+00:00"
+            "time": "2025-04-09T20:32:01+00:00"
         },
         {
             "name": "goran-popovic/email-octopus-php",
@@ -2452,16 +2455,16 @@
         },
         {
             "name": "hubspot/api-client",
-            "version": "12.0.0",
+            "version": "12.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/HubSpot/hubspot-api-php.git",
-                "reference": "6659a2f85b5d2a01c890a5e5ce840c09e220c5e3"
+                "reference": "acb722b13d2a890deca85f8df3d3b8a43876aad7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HubSpot/hubspot-api-php/zipball/6659a2f85b5d2a01c890a5e5ce840c09e220c5e3",
-                "reference": "6659a2f85b5d2a01c890a5e5ce840c09e220c5e3",
+                "url": "https://api.github.com/repos/HubSpot/hubspot-api-php/zipball/acb722b13d2a890deca85f8df3d3b8a43876aad7",
+                "reference": "acb722b13d2a890deca85f8df3d3b8a43876aad7",
                 "shasum": ""
             },
             "require": {
@@ -2506,9 +2509,9 @@
             ],
             "support": {
                 "issues": "https://github.com/HubSpot/hubspot-api-php/issues",
-                "source": "https://github.com/HubSpot/hubspot-api-php/tree/12.0.0"
+                "source": "https://github.com/HubSpot/hubspot-api-php/tree/12.1.0"
             },
-            "time": "2024-10-28T06:58:59+00:00"
+            "time": "2025-04-08T14:31:18+00:00"
         },
         {
             "name": "jms/metadata",
@@ -2576,16 +2579,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.32.3",
+            "version": "3.32.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "033c9beab9eb708509a3d400e9f0ffeb2d440e71"
+                "reference": "f5c6227b2664d1e75fda65f1e6c5686a0c034b31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/033c9beab9eb708509a3d400e9f0ffeb2d440e71",
-                "reference": "033c9beab9eb708509a3d400e9f0ffeb2d440e71",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/f5c6227b2664d1e75fda65f1e6c5686a0c034b31",
+                "reference": "f5c6227b2664d1e75fda65f1e6c5686a0c034b31",
                 "shasum": ""
             },
             "require": {
@@ -2662,15 +2665,19 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/3.32.3"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.32.4"
             },
             "funding": [
                 {
                     "url": "https://github.com/goetas",
                     "type": "github"
+                },
+                {
+                    "url": "https://github.com/scyzoryck",
+                    "type": "github"
                 }
             ],
-            "time": "2025-02-11T23:16:25+00:00"
+            "time": "2025-04-06T18:42:47+00:00"
         },
         {
             "name": "knplabs/knp-snappy",
