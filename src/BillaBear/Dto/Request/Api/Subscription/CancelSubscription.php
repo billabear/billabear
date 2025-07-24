@@ -11,7 +11,7 @@ namespace BillaBear\Dto\Request\Api\Subscription;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CancelSubscription
+readonly class CancelSubscription
 {
     public const WHEN_END_OF_RUN = 'end-of-run';
     public const WHEN_INSTANTLY = 'instantly';
@@ -21,59 +21,22 @@ class CancelSubscription
     public const REFUND_PRORATE = 'prorate';
     public const REFUND_FULL = 'full';
 
-    #[Assert\Choice([self::WHEN_END_OF_RUN, self::WHEN_INSTANTLY, self::WHEN_DATE])]
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    private $when = 'end-of-run';
+    public function __construct(
+        #[Assert\Choice([self::WHEN_END_OF_RUN, self::WHEN_INSTANTLY, self::WHEN_DATE])]
+        #[Assert\NotBlank]
+        #[Assert\Type('string')]
+        public string $when = 'end-of-run',
 
-    #[Assert\Date]
-    private $date;
+        #[Assert\Date]
+        public ?string $date = null,
 
-    #[Assert\Choice([self::REFUND_NONE, self::REFUND_PRORATE, self::REFUND_FULL])]
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[SerializedName('refund_type')]
-    private $refund_type = 'none';
+        #[Assert\Choice([self::REFUND_NONE, self::REFUND_PRORATE, self::REFUND_FULL])]
+        #[Assert\NotBlank]
+        #[Assert\Type('string')]
+        #[SerializedName('refund_type')]
+        public string $refund_type = 'none',
 
-    private $comment;
-
-    public function getWhen()
-    {
-        return $this->when;
-    }
-
-    public function setWhen($when): void
-    {
-        $this->when = $when;
-    }
-
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    public function setDate($date): void
-    {
-        $this->date = $date;
-    }
-
-    public function getRefundType()
-    {
-        return $this->refund_type;
-    }
-
-    public function setRefundType($refund_type): void
-    {
-        $this->refund_type = $refund_type;
-    }
-
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    public function setComment($comment): void
-    {
-        $this->comment = $comment;
+        public ?string $comment = null,
+    ) {
     }
 }

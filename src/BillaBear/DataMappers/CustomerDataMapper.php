@@ -60,13 +60,13 @@ class CustomerDataMapper
     public function createCustomer(ApiCreate|AppCreate|PublicCreate $createCustomerDto, ?Customer $customer = null): Customer
     {
         $address = new Address();
-        $address->setCompanyName($createCustomerDto->getAddress()?->getCompanyName());
-        $address->setStreetLineOne($createCustomerDto->getAddress()?->getStreetLineOne());
-        $address->setStreetLineTwo($createCustomerDto->getAddress()?->getStreetLineTwo());
-        $address->setCountry($createCustomerDto->getAddress()?->getCountry());
-        $address->setCity($createCustomerDto->getAddress()?->getCity());
-        $address->setRegion($createCustomerDto->getAddress()?->getRegion());
-        $address->setPostcode($createCustomerDto->getAddress()?->getPostcode());
+        $address->setCompanyName($createCustomerDto->address?->companyName);
+        $address->setStreetLineOne($createCustomerDto->address?->streetLineOne);
+        $address->setStreetLineTwo($createCustomerDto->address?->streetLineTwo);
+        $address->setCountry($createCustomerDto->address?->country);
+        $address->setCity($createCustomerDto->address?->city);
+        $address->setRegion($createCustomerDto->address?->region);
+        $address->setPostcode($createCustomerDto->address?->postcode);
 
         if (!$customer) {
             $customer = new Customer();
@@ -74,29 +74,29 @@ class CustomerDataMapper
             $customer->setCreatedAt(new \DateTime('now'));
         }
 
-        $type = match (strtolower($createCustomerDto->getType() ?? '')) {
+        $type = match (strtolower($createCustomerDto->type ?? '')) {
             'business' => CustomerType::BUSINESS,
             default => CustomerType::INDIVIDUAL,
         };
 
         $customer->setType($type);
-        $customer->setBillingEmail($createCustomerDto->getEmail());
-        $customer->setReference($createCustomerDto->getReference());
+        $customer->setBillingEmail($createCustomerDto->email);
+        $customer->setReference($createCustomerDto->reference);
         $customer->setBillingAddress($address);
-        $customer->setName($createCustomerDto->getName());
-        $customer->setBrand($createCustomerDto->getBrand() ?? Customer::DEFAULT_BRAND);
-        $customer->setLocale($createCustomerDto->getLocale() ?? Customer::DEFAULT_LOCALE);
-        $customer->setBillingType($createCustomerDto->getBillingType() ?? Customer::DEFAULT_BILLING_TYPE);
-        $customer->setTaxNumber($createCustomerDto->getTaxNumber());
-        $customer->setStandardTaxRate($createCustomerDto->getStandardTaxrate());
-        $customer->setInvoiceFormat($createCustomerDto->getInvoiceFormat());
-        $customer->setMarketingOptIn($createCustomerDto->getMarketingOptIn());
-        $customer->setMetadata($createCustomerDto->getMetadata());
+        $customer->setName($createCustomerDto->name);
+        $customer->setBrand($createCustomerDto->brand ?? Customer::DEFAULT_BRAND);
+        $customer->setLocale($createCustomerDto->locale ?? Customer::DEFAULT_LOCALE);
+        $customer->setBillingType($createCustomerDto->billingType ?? Customer::DEFAULT_BILLING_TYPE);
+        $customer->setTaxNumber($createCustomerDto->tax_number);
+        $customer->setStandardTaxRate($createCustomerDto->standard_tax_rate);
+        $customer->setInvoiceFormat($createCustomerDto->invoice_format);
+        $customer->setMarketingOptIn($createCustomerDto->marketing_opt_in);
+        $customer->setMetadata($createCustomerDto->metadata ?? []);
 
         $brandSettings = $this->brandSettingRepository->getByCode($customer->getBrand());
         $customer->setBrandSettings($brandSettings);
 
-        $externalCustomerReference = $createCustomerDto->getExternalReference();
+        $externalCustomerReference = $createCustomerDto->externalReference;
 
         if (isset($externalCustomerReference)) {
             $customer->setExternalCustomerReference($externalCustomerReference);

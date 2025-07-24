@@ -16,211 +16,74 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class CreatePrice
+readonly class CreatePrice
 {
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Positive]
-    #[Assert\Type(type: 'integer')]
-    #[SerializedName('amount')]
-    private $amount;
+    public function __construct(
+        #[Assert\NotBlank(allowNull: true)]
+        #[Assert\Positive]
+        #[Assert\Type(type: 'integer')]
+        #[SerializedName('amount')]
+        public ?int $amount = null,
 
-    #[Assert\Currency]
-    #[Assert\NotBlank]
-    #[SerializedName('currency')]
-    private $currency;
+        #[Assert\Currency]
+        #[Assert\NotBlank]
+        #[SerializedName('currency')]
+        public ?string $currency = null,
 
-    #[Assert\NotBlank(allowNull: true)]
-    #[SerializedName('external_reference')]
-    private $external_reference;
+        #[Assert\NotBlank(allowNull: true)]
+        #[SerializedName('external_reference')]
+        public ?string $external_reference = null,
 
-    #[Assert\Type(type: 'boolean')]
-    #[SerializedName('recurring')]
-    private $recurring;
+        #[Assert\Type(type: 'boolean')]
+        #[SerializedName('recurring')]
+        public ?bool $recurring = null,
 
-    #[Assert\Choice(['week', 'month', 'year'])]
-    #[Assert\NotBlank(allowNull: true)]
-    #[SerializedName('schedule')]
-    private $schedule;
+        #[Assert\Choice(['week', 'month', 'year'])]
+        #[Assert\NotBlank(allowNull: true)]
+        #[SerializedName('schedule')]
+        public ?string $schedule = null,
 
-    #[Assert\Type(type: 'boolean')]
-    #[SerializedName('including_tax')]
-    private $including_tax;
+        #[Assert\Type(type: 'boolean')]
+        #[SerializedName('including_tax')]
+        public ?bool $including_tax = null,
 
-    #[SerializedName('public')]
-    private $public = true;
+        #[SerializedName('public')]
+        public bool $public = true,
 
-    #[Assert\Choice(choices: [PriceType::ONE_OFF->value, PriceType::FIXED_PRICE->value, PriceType::PACKAGE->value, PriceType::TIERED_GRADUATED->value, PriceType::TIERED_VOLUME->value, PriceType::UNIT->value])]
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type(type: 'string')]
-    private $type;
+        #[Assert\Choice(choices: [PriceType::ONE_OFF->value, PriceType::FIXED_PRICE->value, PriceType::PACKAGE->value, PriceType::TIERED_GRADUATED->value, PriceType::TIERED_VOLUME->value, PriceType::UNIT->value])]
+        #[Assert\NotBlank(allowNull: true)]
+        #[Assert\Type(type: 'string')]
+        public ?string $type = null,
 
-    #[Assert\When(
-        expression: 'this.getUsage() == true',
-        constraints: [
-            new Assert\NotBlank(),
-            new Assert\Choice(choices: MetricType::TYPES),
-        ],
-    )]
-    private $metric_type;
+        #[Assert\When(
+            expression: 'this.usage == true',
+            constraints: [
+                new Assert\NotBlank(),
+                new Assert\Choice(choices: MetricType::TYPES),
+            ],
+        )]
+        public ?string $metric_type = null,
 
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Positive]
-    #[Assert\Type(type: 'integer')]
-    private $units;
+        #[Assert\NotBlank(allowNull: true)]
+        #[Assert\Positive]
+        #[Assert\Type(type: 'integer')]
+        public ?int $units = null,
 
-    #[Assert\Type(type: 'boolean')]
-    private $usage;
+        #[Assert\Type(type: 'boolean')]
+        public ?bool $usage = null,
 
-    #[Assert\Valid]
-    private array $tiers = [];
+        #[Assert\Valid]
+        public array $tiers = [],
 
-    #[Assert\When(
-        expression: 'this.getUsage() == true',
-        constraints: [
-            new Assert\NotBlank(),
-            new MetricExists(),
-        ],
-    )]
-    private $metric;
-
-    public function getAmount(): ?int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(?int $amount): void
-    {
-        $this->amount = $amount;
-    }
-
-    public function getCurrency(): string
-    {
-        return $this->currency;
-    }
-
-    public function setCurrency(string $currency): void
-    {
-        $this->currency = $currency;
-    }
-
-    public function isPublic(): bool
-    {
-        return $this->public;
-    }
-
-    public function setPublic(bool $public): void
-    {
-        $this->public = $public;
-    }
-
-    public function getExternalReference(): ?string
-    {
-        return $this->external_reference;
-    }
-
-    public function hasExternalReference(): bool
-    {
-        return isset($this->external_reference);
-    }
-
-    public function setExternalReference(?string $external_reference): void
-    {
-        $this->external_reference = $external_reference;
-    }
-
-    public function setRecurring(bool $recurring): void
-    {
-        $this->recurring = $recurring;
-    }
-
-    public function setSchedule(?string $schedule): void
-    {
-        $this->schedule = $schedule;
-    }
-
-    public function setIncludingTax(bool $including_tax): void
-    {
-        $this->including_tax = $including_tax;
-    }
-
-    public function isRecurring(): bool
-    {
-        return true === $this->recurring;
-    }
-
-    public function getSchedule(): ?string
-    {
-        return $this->schedule;
-    }
-
-    public function isIncludingTax(): bool
-    {
-        return true === $this->including_tax;
-    }
-
-    public function getUnits()
-    {
-        return $this->units;
-    }
-
-    public function setUnits($units): void
-    {
-        $this->units = $units;
-    }
-
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    public function setType($type): void
-    {
-        $this->type = $type;
-    }
-
-    public function getUsage()
-    {
-        return true === $this->usage;
-    }
-
-    public function setUsage($usage): void
-    {
-        $this->usage = $usage;
-    }
-
-    public function addTier(CreateTier $createTier)
-    {
-        $this->tiers[] = $createTier;
-    }
-
-    public function getTiers(): array
-    {
-        return $this->tiers;
-    }
-
-    public function setTiers(array $tiers): void
-    {
-        $this->tiers = $tiers;
-    }
-
-    public function getMetric()
-    {
-        return $this->metric;
-    }
-
-    public function setMetric($metric): void
-    {
-        $this->metric = $metric;
-    }
-
-    public function getMetricType()
-    {
-        return $this->metric_type;
-    }
-
-    public function setMetricType($metric_type): void
-    {
-        $this->metric_type = $metric_type;
+        #[Assert\When(
+            expression: 'this.usage == true',
+            constraints: [
+                new Assert\NotBlank(),
+                new MetricExists(),
+            ],
+        )]
+        public ?string $metric = null,
+    ) {
     }
 
     #[Assert\Callback]
@@ -242,24 +105,24 @@ class CreatePrice
         if (count($this->tiers) > 0) {
             /* @var CreateTier[] $tiers */
             usort($this->tiers, function (CreateTier $a, CreateTier $b) {
-                return $a->getFirstUnit() <=> $b->getFirstUnit();
+                return $a->first_unit <=> $b->first_unit;
             });
             /** @var CreateTier $tier */
             foreach ($this->tiers as $tier) {
-                if ($tier->getFirstUnit() <= $lastUnit) {
+                if ($tier->first_unit <= $lastUnit) {
                     $context->buildViolation('Tiers contain invalid first and last unit configuration')
                         ->atPath('tiers')
                         ->addViolation();
                 }
 
                 $expectedUnit = $lastUnit + 1;
-                if ($expectedUnit !== $tier->getFirstUnit()) {
+                if ($expectedUnit !== $tier->first_unit) {
                     $context->buildViolation("Tiers don't align correctly")
                         ->atPath('tiers')
                         ->addViolation();
                 }
 
-                $lastUnit = $tier->getLastUnit();
+                $lastUnit = $tier->last_unit;
             }
         }
     }

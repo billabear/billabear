@@ -10,20 +10,13 @@ namespace BillaBear\Dto\Request\Api\Subscription;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AddSeats
+readonly class AddSeats
 {
-    #[Assert\NotBlank]
-    #[Assert\Positive]
-    #[Assert\Type('integer')]
-    private $seats;
-
-    public function getSeats()
-    {
-        return $this->seats;
-    }
-
-    public function setSeats($seats): void
-    {
-        $this->seats = $seats;
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Positive]
+        #[Assert\Type('integer')]
+        public int $seats,
+    ) {
     }
 }

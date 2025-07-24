@@ -61,7 +61,7 @@ class SubscriptionSeatsController
             return $errorResponse;
         }
 
-        $addSeatToSubscription->addSeats($subscription, $dto->getSeats());
+        $addSeatToSubscription->addSeats($subscription, $dto->seats);
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true]);
@@ -87,7 +87,7 @@ class SubscriptionSeatsController
             'customer_id' => (string) $subscription->getCustomer()->getId(),
         ]);
         $dto = $serializer->deserialize($request->getContent(), RemoveSeats::class, 'json');
-        $dto->setSubscription($subscription);
+        $dto->subscription = $subscription;
         $errors = $validator->validate($dto);
         $errorResponse = $this->handleErrors($errors);
 
@@ -95,7 +95,7 @@ class SubscriptionSeatsController
             return $errorResponse;
         }
 
-        $removeSeatFromSubscription->removeSeats($subscription, $dto->getSeats());
+        $removeSeatFromSubscription->removeSeats($subscription, $dto->seats);
         $this->webhookDispatcher->dispatch(new SubscriptionUpdatedPayload($subscription));
 
         return new JsonResponse(['success' => true]);

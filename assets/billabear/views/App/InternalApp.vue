@@ -2,16 +2,16 @@
   <LoadingScreen :ready="ready" v-if="!error">
 
     <div class="h-screen w-screen md:flex">
-      <div class="hidden md:block sticky w-72 bg-teal-500 text-white overflow-auto">
-        <div class="py-12 px-5 text-white">
+      <div class="hidden md:block sticky w-72 bg-gray-200 text-black overflow-auto sidebar">
+        <div class="py-12 px-5 text-black">
           <img src="/images/app-logo.png" alt="BillaBear" class="h-12">
         </div>
         <MenuDesktop />
       </div>
-      <div class="md:hidden bg-teal-500 text-white">
+      <div class="md:hidden bg-gray-200 text-black">
         <MobileDesktop />
       </div>
-      <div class="md:flex-1 bg-gray-100 p-5 divide-y divide-gray-200 overflow-auto h-screen">
+      <div class="md:flex-1 bg-white p-5 divide-y divide-gray-200 overflow-auto h-screen">
         <div class="text-end text-gray-500 font-bold pb-2">
           <TopMenu />
         </div>
@@ -97,5 +97,9 @@ export default {
 </script>
 
 <style scoped>
-
+.sidebar {
+  border-right: 3px solid;
+  border-right-color: #d1d5db; /* light gray for shadow */
+  box-shadow: 1px 0 0 #ffffff; /* white for highlight */
+}
 </style>

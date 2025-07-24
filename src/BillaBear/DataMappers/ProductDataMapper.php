@@ -30,11 +30,11 @@ class ProductDataMapper
             $product = new Product();
         }
 
-        $product->setName($createProduct->getName());
-        $product->setExternalReference($createProduct->getExternalReference());
-        $product->setPhysical($createProduct->isPhysical());
-        if ($createProduct->getTaxType()) {
-            $taxType = $this->taxTypeRepository->findById($createProduct->getTaxType());
+        $product->setName($createProduct->name);
+        $product->setExternalReference($createProduct->external_reference);
+        $product->setPhysical($createProduct->physical);
+        if ($createProduct->tax_type) {
+            $taxType = $this->taxTypeRepository->findById($createProduct->tax_type);
             $product->setTaxType($taxType);
         }
 
@@ -47,15 +47,15 @@ class ProductDataMapper
             $product = new Product();
         }
 
-        $product->setName($createProduct->getName());
-        $product->setExternalReference($createProduct->getExternalReference());
-        $product->setPhysical($createProduct->isPhysical());
-        if ($createProduct->getTaxRate()) {
-            $product->setTaxRate(floatval($createProduct->getTaxRate()));
+        $product->setName($createProduct->name);
+        $product->setExternalReference($createProduct->externalReference);
+        $product->setPhysical($createProduct->physical);
+        if ($createProduct->taxRate) {
+            $product->setTaxRate(floatval($createProduct->taxRate));
         }
 
-        if ($createProduct->getTaxType()) {
-            $taxType = $this->taxTypeRepository->findById($createProduct->getTaxType());
+        if ($createProduct->taxType) {
+            $taxType = $this->taxTypeRepository->findById($createProduct->taxType);
             $product->setTaxType($taxType);
         }
 
