@@ -38,7 +38,7 @@ readonly class Customer
         public ?string $taxNumber,
         #[SerializedName('standard_tax_rate')]
         public ?float $standardTaxRate,
-        public string $type,
+        protected string $type,
         #[SerializedName('invoice_format')]
         public ?string $invoiceFormat,
         #[SerializedName('marketing_opt_in')]

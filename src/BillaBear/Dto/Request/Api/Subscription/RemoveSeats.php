@@ -15,21 +15,38 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RemoveSeats
 {
-    #[Ignore]
-    public ?Subscription $subscription = null;
+    #[Assert\NotBlank]
+    #[Assert\Positive]
+    #[Assert\Type('integer')]
+    private $seats;
 
-    public function __construct(
-        #[Assert\NotBlank]
-        #[Assert\Positive]
-        #[Assert\Type('integer')]
-        public int $seats,
-    ) {
+    #[Ignore]
+    private Subscription $subscription;
+
+    public function getSeats()
+    {
+        return $this->seats;
+    }
+
+    public function setSeats($seats): void
+    {
+        $this->seats = $seats;
+    }
+
+    public function getSubscription(): Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(Subscription $subscription): void
+    {
+        $this->subscription = $subscription;
     }
 
     #[Assert\Callback]
     public function validNumberOfSeats(ExecutionContextInterface $context, mixed $payload)
     {
-        if ($this->subscription && $this->seats >= $this->subscription->getSeats()) {
+        if ($this->seats >= $this->subscription->getSeats()) {
             $context->buildViolation('Too many seats')->atPath('seats')->addViolation();
         }
     }

@@ -25,7 +25,7 @@ class ValidPriceValidator extends ConstraintValidator
         if (!$value instanceof CreateSubscription) {
             return;
         }
-        if (Uuid::isValid((string) $value->price)) {
+        if (Uuid::isValid((string) $value->getPrice())) {
             return;
         }
 
@@ -33,17 +33,17 @@ class ValidPriceValidator extends ConstraintValidator
             return;
         }
         try {
-            if (Uuid::isValid($value->subscription_plan)) {
-                $subscriptionPlan = $this->subscriptionPlanRepository->findById($value->subscription_plan);
+            if (Uuid::isValid($value->getSubscriptionPlan())) {
+                $subscriptionPlan = $this->subscriptionPlanRepository->findById($value->getSubscriptionPlan());
             } else {
-                $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value->subscription_plan);
+                $subscriptionPlan = $this->subscriptionPlanRepository->getByCodeName($value->getSubscriptionPlan());
             }
         } catch (\Exception $e) {
             return;
         }
 
         try {
-            $subscriptionPlan->getPriceForCurrencyAndSchedule($value->currency, $value->schedule);
+            $subscriptionPlan->getPriceForCurrencyAndSchedule($value->getCurrency(), $value->getSchedule());
         } catch (\Exception $e) {
             $this->context->buildViolation($constraint->message)->atPath('price')->addViolation();
         }

@@ -11,26 +11,63 @@ namespace BillaBear\Dto\Request\Api\Price;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-readonly class CreateTier
+class CreateTier
 {
-    public function __construct(
-        #[Assert\Positive]
-        #[Assert\Type('integer')]
-        public int $first_unit,
+    #[Assert\Positive]
+    #[Assert\Type('integer')]
+    private $first_unit;
 
-        #[Assert\NotBlank(allowNull: true)]
-        #[Assert\Positive]
-        #[Assert\Type('integer')]
-        public ?int $last_unit = null,
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Positive]
+    #[Assert\Type('integer')]
+    private $last_unit;
 
-        #[Assert\NotBlank(allowNull: true)]
-        #[Assert\PositiveOrZero]
-        public ?float $unit_price = null,
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\PositiveOrZero]
+    private $unit_price;
 
-        #[Assert\NotBlank(allowNull: true)]
-        #[Assert\PositiveOrZero]
-        public ?float $flat_fee = null,
-    ) {
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\PositiveOrZero]
+    private $flat_fee;
+
+    public function getFirstUnit()
+    {
+        return $this->first_unit;
+    }
+
+    public function setFirstUnit($first_unit): void
+    {
+        $this->first_unit = $first_unit;
+    }
+
+    public function getLastUnit()
+    {
+        return $this->last_unit;
+    }
+
+    public function setLastUnit($last_unit): void
+    {
+        $this->last_unit = $last_unit;
+    }
+
+    public function getUnitPrice()
+    {
+        return $this->unit_price;
+    }
+
+    public function setUnitPrice($unit_price): void
+    {
+        $this->unit_price = $unit_price;
+    }
+
+    public function getFlatFee()
+    {
+        return $this->flat_fee;
+    }
+
+    public function setFlatFee($flat_fee): void
+    {
+        $this->flat_fee = $flat_fee;
     }
 
     #[Assert\Callback]

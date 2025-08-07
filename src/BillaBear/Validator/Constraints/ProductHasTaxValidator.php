@@ -20,7 +20,7 @@ class ProductHasTaxValidator extends ConstraintValidator
             return;
         }
 
-        if (empty($value->tax_type) && ($value instanceof CreateProduct && empty($value->taxRate))) {
+        if (empty($value->getTaxType()) && ($value instanceof CreateProduct && empty($value->getTaxRate()))) {
             $this->context->buildViolation($constraint->message)->atPath('taxType')->addViolation();
         }
     }

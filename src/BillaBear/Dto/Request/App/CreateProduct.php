@@ -14,29 +14,76 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ProductHasTax]
-readonly class CreateProduct
+class CreateProduct
 {
-    public function __construct(
-        #[Assert\NotBlank]
-        #[SerializedName('name')]
-        public string $name,
+    #[Assert\NotBlank]
+    #[SerializedName('name')]
+    private string $name;
 
-        #[SerializedName('external_reference')]
-        public ?string $externalReference = null,
+    #[SerializedName('external_reference')]
+    private ?string $externalReference = null;
 
-        #[Assert\NotBlank(allowNull: true)]
-        #[SerializedName('tax_type')]
-        #[TaxTypeExists]
-        public ?string $taxType = null,
+    #[Assert\NotBlank(allowNull: true)]
+    #[SerializedName('tax_type')]
+    #[TaxTypeExists]
+    private $taxType;
 
-        #[Assert\NotBlank(allowNull: true)]
-        #[Assert\PositiveOrZero]
-        #[Assert\Type('numeric')]
-        #[SerializedName('tax_rate')]
-        public ?string $taxRate = null,
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\PositiveOrZero]
+    #[Assert\Type('numeric')]
+    #[SerializedName('tax_rate')]
+    private $taxRate;
 
-        #[Assert\Type('boolean')]
-        public bool $physical = false,
-    ) {
+    #[Assert\Type('boolean')]
+    private $physical = false;
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getExternalReference(): ?string
+    {
+        return $this->externalReference;
+    }
+
+    public function setExternalReference(?string $externalReference): void
+    {
+        $this->externalReference = $externalReference;
+    }
+
+    public function getTaxType()
+    {
+        return $this->taxType;
+    }
+
+    public function setTaxType($taxType): void
+    {
+        $this->taxType = $taxType;
+    }
+
+    public function getTaxRate()
+    {
+        return $this->taxRate;
+    }
+
+    public function setTaxRate($taxRate): void
+    {
+        $this->taxRate = $taxRate;
+    }
+
+    public function isPhysical(): bool
+    {
+        return $this->physical;
+    }
+
+    public function setPhysical(bool $physical): void
+    {
+        $this->physical = $physical;
     }
 }
