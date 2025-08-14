@@ -12,45 +12,17 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class VatSense
+readonly class VatSense
 {
-    #[SerializedName('validate_vat_ids')]
-    public $validateVatIds;
-    #[SerializedName('vat_sense_enabled')]
-    private $vatSenseEnabled;
-
-    #[Assert\Type('string')]
-    #[SerializedName('vat_sense_api_key')]
-    private $vatSenseApiKey;
-
-    public function getVatSenseEnabled()
-    {
-        return $this->vatSenseEnabled;
-    }
-
-    public function setVatSenseEnabled($vatSenseEnabled): void
-    {
-        $this->vatSenseEnabled = $vatSenseEnabled;
-    }
-
-    public function getVatSenseApiKey()
-    {
-        return $this->vatSenseApiKey;
-    }
-
-    public function setVatSenseApiKey($vatSenseApiKey): void
-    {
-        $this->vatSenseApiKey = $vatSenseApiKey;
-    }
-
-    public function getValidateVatIds()
-    {
-        return $this->validateVatIds;
-    }
-
-    public function setValidateVatIds($validateVatIds): void
-    {
-        $this->validateVatIds = $validateVatIds;
+    public function __construct(
+        #[SerializedName('validate_vat_ids')]
+        public ?bool $validateVatIds = null,
+        #[SerializedName('vat_sense_enabled')]
+        public ?bool $vatSenseEnabled = null,
+        #[Assert\Type('string')]
+        #[SerializedName('vat_sense_api_key')]
+        public ?string $vatSenseApiKey = null,
+    ) {
     }
 
     #[Assert\Callback]

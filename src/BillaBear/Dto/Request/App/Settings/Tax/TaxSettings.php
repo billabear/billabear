@@ -10,44 +10,15 @@ namespace BillaBear\Dto\Request\App\Settings\Tax;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-class TaxSettings
+readonly class TaxSettings
 {
-    #[SerializedName('tax_customers_with_tax_number')]
-    private $taxCustomersWithTaxNumber;
-
-    #[SerializedName('eu_business_tax_rules')]
-    private $euBusinessTaxRules;
-
-    #[SerializedName('eu_one_stop_shop_rule')]
-    private $euOneStopShopRule;
-
-    public function getTaxCustomersWithTaxNumber()
-    {
-        return $this->taxCustomersWithTaxNumber;
-    }
-
-    public function setTaxCustomersWithTaxNumber($taxCustomersWithTaxNumber): void
-    {
-        $this->taxCustomersWithTaxNumber = $taxCustomersWithTaxNumber;
-    }
-
-    public function getEuBusinessTaxRules()
-    {
-        return $this->euBusinessTaxRules;
-    }
-
-    public function setEuBusinessTaxRules($euBusinessTaxRules): void
-    {
-        $this->euBusinessTaxRules = $euBusinessTaxRules;
-    }
-
-    public function getEuOneStopShopRule()
-    {
-        return $this->euOneStopShopRule;
-    }
-
-    public function setEuOneStopShopRule($euOneStopShopRule): void
-    {
-        $this->euOneStopShopRule = $euOneStopShopRule;
+    public function __construct(
+        #[SerializedName('tax_customers_with_tax_number')]
+        public ?bool $taxCustomersWithTaxNumber = null,
+        #[SerializedName('eu_business_tax_rules')]
+        public ?bool $euBusinessTaxRules = null,
+        #[SerializedName('eu_one_stop_shop_rule')]
+        public ?bool $euOneStopShopRule = null,
+    ) {
     }
 }

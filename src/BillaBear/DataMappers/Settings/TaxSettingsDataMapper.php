@@ -17,18 +17,18 @@ class TaxSettingsDataMapper
 {
     public function updateTaxSettings(RequestDto $requestDto, Entity $entity): Entity
     {
-        $entity->setTaxCustomersWithTaxNumbers($requestDto->getTaxCustomersWithTaxNumber());
-        $entity->setEuropeanBusinessTaxRules($requestDto->getEuBusinessTaxRules());
-        $entity->setOneStopShopTaxRules($requestDto->getEuOneStopShopRule());
+        $entity->setTaxCustomersWithTaxNumbers($requestDto->taxCustomersWithTaxNumber);
+        $entity->setEuropeanBusinessTaxRules($requestDto->euBusinessTaxRules);
+        $entity->setOneStopShopTaxRules($requestDto->euOneStopShopRule);
 
         return $entity;
     }
 
     public function updateVatSense(VatSense $vatSense, Entity $entity): Entity
     {
-        $entity->setValidateTaxNumber($vatSense->getValidateVatIds());
-        $entity->setVatSenseEnabled($vatSense->getVatSenseEnabled());
-        $entity->setVatSenseApiKey($vatSense->getVatSenseApiKey());
+        $entity->setValidateTaxNumber($vatSense->validateVatIds);
+        $entity->setVatSenseEnabled($vatSense->vatSenseEnabled);
+        $entity->setVatSenseApiKey($vatSense->vatSenseApiKey);
 
         return $entity;
     }
