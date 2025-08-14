@@ -26,8 +26,8 @@ class UserDataMapper
 
     public function updateEntity(User $user, UserUpdate $userUpdate): User
     {
-        $user->setEmail($userUpdate->getEmail());
-        $user->setRoles($userUpdate->getRoles());
+        $user->setEmail($userUpdate->email);
+        $user->setRoles($userUpdate->roles);
 
         return $user;
     }

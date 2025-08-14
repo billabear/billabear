@@ -10,19 +10,12 @@ namespace BillaBear\Dto\Request\App\Settings;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RegisterWebhook
+readonly class RegisterWebhook
 {
-    #[Assert\NotBlank]
-    #[Assert\Url(protocols: ['https'])]
-    private $url;
-
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    public function setUrl($url): void
-    {
-        $this->url = $url;
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Url(protocols: ['https'])]
+        public ?string $url = null,
+    ) {
     }
 }

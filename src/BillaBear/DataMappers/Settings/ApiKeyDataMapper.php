@@ -33,8 +33,8 @@ class ApiKeyDataMapper
         $apiKey->setKey(bin2hex(random_bytes(24)));
         $apiKey->setCreatedAt(new \DateTime());
         $apiKey->setUpdatedAt(new \DateTime());
-        $apiKey->setName($createApiKey->getName());
-        $apiKey->setExpiresAt(\DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $createApiKey->getExpiresAt()));
+        $apiKey->setName($createApiKey->name);
+        $apiKey->setExpiresAt(\DateTime::createFromFormat(\DATE_RFC3339_EXTENDED, $createApiKey->expiresAt));
 
         return $apiKey;
     }

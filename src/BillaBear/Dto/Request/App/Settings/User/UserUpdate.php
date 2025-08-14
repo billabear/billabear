@@ -10,32 +10,14 @@ namespace BillaBear\Dto\Request\App\Settings\User;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserUpdate
+readonly class UserUpdate
 {
-    #[Assert\NotBlank]
-    private $roles = [];
-
-    #[Assert\Email]
-    #[Assert\NotBlank]
-    private $email;
-
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email): void
-    {
-        $this->email = $email;
+    public function __construct(
+        #[Assert\NotBlank]
+        public array $roles = [],
+        #[Assert\Email]
+        #[Assert\NotBlank]
+        public ?string $email = null,
+    ) {
     }
 }

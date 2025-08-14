@@ -13,19 +13,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[Assert\Callback('validate')]
-class UpdateGeneratorSettings
+readonly class UpdateGeneratorSettings
 {
-    #[Assert\Choice(choices: ['mpdf', 'wkhtmltopdf', 'docraptor'])]
-    #[Assert\NotBlank]
-    private $generator;
-
-    #[SerializedName('tmp_dir')]
-    private $tmpDir;
-
-    #[SerializedName('api_key')]
-    private $apiKey;
-
-    private $bin;
+    public function __construct(
+        #[Assert\Choice(choices: ['mpdf', 'wkhtmltopdf', 'docraptor'])]
+        #[Assert\NotBlank]
+        public ?string $generator = null,
+        #[SerializedName('tmp_dir')]
+        public ?string $tmpDir = null,
+        #[SerializedName('api_key')]
+        public ?string $apiKey = null,
+        public ?string $bin = null,
+    ) {
+    }
 
     public function validate(ExecutionContextInterface $context, $payload)
     {
@@ -46,45 +46,5 @@ class UpdateGeneratorSettings
                 $context->buildViolation('must have api key')->atPath('api_key')->addViolation();
             }
         }
-    }
-
-    public function getGenerator()
-    {
-        return $this->generator;
-    }
-
-    public function setGenerator($generator): void
-    {
-        $this->generator = $generator;
-    }
-
-    public function getTmpDir()
-    {
-        return $this->tmpDir;
-    }
-
-    public function setTmpDir($tmpDir): void
-    {
-        $this->tmpDir = $tmpDir;
-    }
-
-    public function getApiKey()
-    {
-        return $this->apiKey;
-    }
-
-    public function setApiKey($apiKey): void
-    {
-        $this->apiKey = $apiKey;
-    }
-
-    public function getBin()
-    {
-        return $this->bin;
-    }
-
-    public function setBin($bin): void
-    {
-        $this->bin = $bin;
     }
 }

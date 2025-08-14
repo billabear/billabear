@@ -16,12 +16,12 @@ class NotificationSettingsDataMapper
 {
     public function updateEntity(RequestDto $dto, NotificationSettings $settings): NotificationSettings
     {
-        $settings->setEmsp($dto->getEmsp());
-        $settings->setSendCustomerNotifications($dto->getSendCustomerNotifications());
-        $settings->setDefaultOutgoingEmail($dto->getDefaultOutgoingEmail());
-        $settings->setEmspApiKey($dto->getEmspApiKey());
-        $settings->setEmspApiUrl($dto->getEmspApiUrl());
-        $settings->setEmspDomain($dto->getEmspDomain());
+        $settings->setEmsp($dto->emsp);
+        $settings->setSendCustomerNotifications($dto->sendCustomerNotifications);
+        $settings->setDefaultOutgoingEmail($dto->defaultOutgoingEmail);
+        $settings->setEmspApiKey($dto->emspApiKey);
+        $settings->setEmspApiUrl($dto->emspApiUrl);
+        $settings->setEmspDomain($dto->emspDomain);
 
         return $settings;
     }
