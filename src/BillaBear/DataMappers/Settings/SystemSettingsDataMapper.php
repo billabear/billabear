@@ -16,8 +16,8 @@ class SystemSettingsDataMapper
 {
     public function updateEntity(RequestDto $dto, SystemSettings $settings): SystemSettings
     {
-        $settings->setSystemUrl($dto->getSystemUrl());
-        $settings->setTimezone($dto->getTimezone());
+        $settings->setSystemUrl($dto->systemUrl);
+        $settings->setTimezone($dto->timezone);
 
         return $settings;
     }

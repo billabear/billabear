@@ -11,74 +11,20 @@ namespace BillaBear\Dto\Request\App\Settings;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SystemSettings
+readonly class SystemSettings
 {
-    #[Assert\NotBlank]
-    #[Assert\Url]
-    #[SerializedName('system_url')]
-    private $systemUrl;
-
-    #[Assert\NotBlank]
-    #[Assert\Timezone]
-    private $timezone;
-
-    public function getSystemUrl()
-    {
-        return $this->systemUrl;
-    }
-
-    public function setSystemUrl($systemUrl): void
-    {
-        $this->systemUrl = $systemUrl;
-    }
-
-    public function getTimezone()
-    {
-        return $this->timezone;
-    }
-
-    public function setTimezone($timezone): void
-    {
-        $this->timezone = $timezone;
-    }
-
-    public function getInvoiceNumberGeneration()
-    {
-        return $this->invoiceNumberGeneration;
-    }
-
-    public function setInvoiceNumberGeneration($invoiceNumberGeneration): void
-    {
-        $this->invoiceNumberGeneration = $invoiceNumberGeneration;
-    }
-
-    public function getSubsequentialNumber()
-    {
-        return $this->subsequentialNumber;
-    }
-
-    public function setSubsequentialNumber($subsequentialNumber): void
-    {
-        $this->subsequentialNumber = $subsequentialNumber;
-    }
-
-    public function getDefaultInvoiceDueTime()
-    {
-        return $this->defaultInvoiceDueTime;
-    }
-
-    public function setDefaultInvoiceDueTime($defaultInvoiceDueTime): void
-    {
-        $this->defaultInvoiceDueTime = $defaultInvoiceDueTime;
-    }
-
-    public function getFormat()
-    {
-        return $this->format;
-    }
-
-    public function setFormat($format): void
-    {
-        $this->format = $format;
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Url]
+        #[SerializedName('system_url')]
+        public string $systemUrl,
+        #[Assert\NotBlank]
+        #[Assert\Timezone]
+        public string $timezone,
+        public ?string $invoiceNumberGeneration = null,
+        public ?int $subsequentialNumber = null,
+        public ?string $defaultInvoiceDueTime = null,
+        public ?string $format = null,
+    ) {
     }
 }
