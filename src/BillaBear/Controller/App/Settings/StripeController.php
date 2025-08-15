@@ -213,13 +213,13 @@ class StripeController
             return $errorResponse;
         }
 
-        $response = $provider->webhook()->registerWebhook($dto->getUrl(), [
+        $response = $provider->webhook()->registerWebhook($dto->url, [
             'charge.failed',
             'charge.succeeded'], "Billabear's webhook");
 
         $settings = $settingsRepository->getDefaultSettings();
         $settings->getSystemSettings()->setWebhookExternalReference($response->getId());
-        $settings->getSystemSettings()->setWebhookUrl($dto->getUrl());
+        $settings->getSystemSettings()->setWebhookUrl($dto->url);
         $settings->getSystemSettings()->setWebhookSecret($response->getSecret());
 
         $settingsRepository->save($settings);
