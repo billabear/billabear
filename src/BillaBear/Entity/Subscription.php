@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @method SubscriptionPlan getSubscriptionPlan()
  */
 #[ORM\Entity]
-#[ORM\Index(columns: ['startedAt', 'status'], name: 'subscription_started_at_status_idx')]
+#[ORM\Index(columns: ['started_at', 'status'], name: 'subscription_started_at_status_idx')]
 #[ORM\Table('subscription')]
 class Subscription extends \Parthenon\Billing\Entity\Subscription implements AuditableInterface
 {
