@@ -2,14 +2,14 @@
   <img width="450px" src="https://ha-static-data.s3.eu-central-1.amazonaws.com/github-readme-logo-v2.png">
 </p>
 
-<p align="center">
-  <h1 style="text-align: center">BillaBear - The Best Self-Hostable Billing System</h1>
+<p align="center" style="text-align: center">
+  <strong>BillaBear - The Best Self-Hostable Billing System</strong>
 </p>
 
 BillaBear is a standalone Subscription Management and Billing System that integrates with Stripe. It provides a REST API
 allowing you to integrate it easily.
 
-You can get the managed hosted version at https://www.billabear.com. The managed cloud hosted version gets updates on a regular basis while the open version GitHub gets a new feature release every 6 months.
+You can get the managed hosted version at https://www.billabear.com. The managed cloud hosted version gets updates on a regular basis while the open version on GitHub gets a new feature release every 6 months.
 
 ## Documentation
 
@@ -47,15 +47,15 @@ More features than you can shake a stick at, including:
 
 ### Workflows
 
-Workflows are a powerful feature of BillaBear. They allow you to integrate important tasks that have to be done during a process that if it fails you want to be able to retry later and resume with the rest of the process. This avoids manual developer intervention which can be timely and annoying.
+Workflows are a powerful feature of BillaBear. They allow you to integrate important tasks that have to be done during a process that, if it fails, you want to be able to retry later and resume with the rest of the process. This avoids manual developer intervention which can be time-consuming and frustrating.
 
 For example, you might want a microservice to be called on a subscription creation to allow for the creation of resources.
 
-Another example of where workflows are useful is when you're issuing refunds and for some reason the connection/API rquest fails. You can retry the refund later without requiring manual intervention.
+Another example of where workflows are useful is when you're issuing refunds and for some reason the connection/API request fails. You can retry the refund later without requiring manual intervention.
 
 ### Templates
 
-BillaBear uses Twig templates for the generation of documents such as invoices, quotes, and emails. This allows you to customize the look and feel of these documents to match your brands. It also allows for using the email service provider's templates. Both of these allows other departments other than tech to make minor changes, no more minor tickets to change the wording in an invoice or an email.
+BillaBear uses Twig templates for the generation of documents such as invoices, quotes, and emails. This allows you to customise the look and feel of these documents to match your brands. It also allows for using the email service provider's templates. Both of these allow other departments other than tech to make minor changes - no more minor tickets to change the wording in an invoice or an email.
 
 ### Tax Management
 
@@ -106,7 +106,7 @@ BillaBear allows you to use Stripe.JS by providing you a token that is registere
 | Tiered Pricing                    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Stair Pricing                     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Package Pricing                   | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
-| One off Charges                   | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
+| One-off Charges                   | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | **Payment Providers**             |           |                  |            |        |           |         |          |
 | Stripe                            | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Adyen                             | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
@@ -131,20 +131,20 @@ BillaBear allows you to use Stripe.JS by providing you a token that is registere
 | **Communications**                |           |                  |            |        |           |         |          |
 | Transactional Emails              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Full Control Over Email Templates | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
-| Full Controll Over PDF Templates  | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
+| Full Control Over PDF Templates   | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | Choose PDF generation engine      | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | Mailgun Integration               | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | SendGrid Integration              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | Postmark Integration              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | SMS Notifications                 | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
-| Slack Integration                 | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20"> |
+| Slack Integration                 | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | Zapier Integration                | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | EmailOctopus Integration          | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | Mailchimp Integration             | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | **User Self-Service**             |           |                  |            |        |           |         |          |
 | Hosted Checkout Page              | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | Hosted Paylink Page               | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
-| Hosted Details Manage             | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
+| Hosted Details Management         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">               | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">    | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">       |
 | **Technical**                     |           |                  |            |        |           |         |          |
 | Self-Hostable                     | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
 | Extendable                        | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">       | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">              | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">         | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">     | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">        | <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg" alt="No" width="20">      | <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" alt="Yes" width="20">      |
@@ -155,7 +155,7 @@ BillaBear allows you to use Stripe.JS by providing you a token that is registere
 * The ability to extend the platform to meet your needs.
 * A workflow system that allows you to add webhook events into your workflow to ensure that crucial events are handled.
 * The ability to define your own templates for emails and PDFs via Twig.
-* The ability for others to make easy changes to templates instead of it being a developer task
+* The ability for others to make easy changes to templates instead of it being a developer task.
 * The ability to define your own tax rules and rates which can make tax changes less painful.
 * The ability to choose which PDF generation engine you want to use.
 * And a lot more
@@ -168,7 +168,7 @@ To start integrating with BillaBear you can use the REST API.
 * [Technical Documentation For API](https://docs.billabear.com/technical/)
 * [User Documentation](https://docs.billabear.com/user/)
 
-### SDKS
+### SDKs
 
 * [PHP](https://github.com/billabear/php-sdk)
 * [Java](https://github.com/billabear/java-sdk)
@@ -179,19 +179,17 @@ To start integrating with BillaBear you can use the REST API.
 
 ## Getting Started
 
-To get started using this repository you can get up and running using Docker and Docker compose.
+To get started using this repository you can get up and running using Docker and Docker Compose.
 
 ### Host on DigitalOcean
 
-You can deploy to DigitalOcean with just a click of the button below and it'll deploy using the DigitalOcean App
-Platform.
+You can deploy to DigitalOcean with just a click of the button below and it'll deploy using the DigitalOcean App Platform.
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/billabear/billabear/tree/main)
 
 ### Docker Compose
 
-BillaBear is deployable using docker-compose using the docker-compose.yaml found
-in https://github.com/billabear/hosting-docker-compose.
+BillaBear is deployable using docker-compose using the docker-compose.yaml found in https://github.com/billabear/hosting-docker-compose.
 
 ```
 git clone git@github.com:billabear/hosting-docker-compose.git
@@ -203,7 +201,7 @@ docker compose up -d
 
 You can get managed cloud hosting at https://billabear.com. 
 
-The managed cloud hosted version gets updates on a regular basis while the open version GitHub gets a new feature release every 6 months.
+The managed cloud hosted version gets updates on a regular basis while the open version on GitHub gets a new feature release every 6 months.
 
 ### Development
 
@@ -217,20 +215,19 @@ Then go to http://localhost and follow the install instructions.
 
 ### Is BillaBear Open Source?
 
-It's available free to use under the Fair Core License that adds restrictions on competing for 2-years.
+It's available free to use under the Fair Core License that adds restrictions on competing for 2 years.
 
-There are arguments about if these licenses are open source or not, but generally for most we care can we use it for
-free and can we modify it. And this is true for BillaBear.
+There are arguments about whether these licences are open source or not, but generally for most of us what matters is: can we use it for free and can we modify it? And this is true for BillaBear.
 
-### Is it possible to have a customer that pays by invoice seperately?
+### Is it possible to have a customer that pays by invoice separately?
 
-Yes! BillaBear allows you to define how a customer pays which includes by invoice.
+Yes! BillaBear allows you to define how a customer pays, which includes by invoice.
 
 ### Is it possible to disable customer creation for countries?
 
-Yes! You're able to
+Yes! You're able to do this.
 
-### Is it possible to only collect tax for a country once we've met the Threshold?
+### Is it possible to only collect tax for a country once we've met the threshold?
 
 Yes! BillaBear is aware of tax thresholds for countries and states.
 
@@ -238,24 +235,20 @@ You can also declare that you're collecting tax for a country even though you've
 
 ### How much control over templates will I have?
 
-Complete control. With the ability to define the templates using the Twig templating langage you're able to update them
-with ease. You're also able to use email service provider's templating systems.
+Complete control. With the ability to define the templates using the Twig templating language, you're able to update them with ease. You're also able to use email service provider's templating systems.
 
-### Can I a trial that once it ends doesn't automatically convert to a proper subscription?
+### Can I have a trial that once it ends doesn't automatically convert to a proper subscription?
 
 Yes! With BillaBear you can have an automatically converted trial or a standalone trial.
 
 ### Will I be able to see what subscriptions a payment is for?
 
-Yes! BillaBear links payments to customers and the subscriptions they are for. As well as linking refunds from the
-payments.
+Yes! BillaBear links payments to customers and the subscriptions they are for, as well as linking refunds from the payments.
 
 ### Will I be able to handle tax rates changing?
 
-Yes! BillaBear allows you to define the start and end date of a tax rule. This means you can define when a tax rate ends
-and the next one takes over. So if a tax rate does change you're able to create the rule ahead of time and have it
-applied correctly automatically when the time comes.
+Yes! BillaBear allows you to define the start and end date of a tax rule. This means you can define when a tax rate ends and the next one takes over. So if a tax rate does change, you're able to create the rule ahead of time and have it applied correctly automatically when the time comes.
 
-### Can I do usage based billing?
+### Can I do usage-based billing?
 
 Yes.
