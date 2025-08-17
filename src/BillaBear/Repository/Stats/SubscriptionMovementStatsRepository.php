@@ -6,27 +6,17 @@
  * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
  */
 
-namespace BillaBear\Repository;
+namespace BillaBear\Repository\Stats;
 
 use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\CustomerSubscriptionEvent;
 use BillaBear\Entity\Subscription;
-use BillaBear\Repository\Stats\SubscriptionMovementStatsRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class SubscriptionMovementStatsRepository extends DoctrineCrudRepository implements SubscriptionMovementStatsRepositoryInterface
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct($entityRepository, EntityManagerInterface $entityManager)
-    {
-        parent::__construct($entityRepository);
-        $this->entityManager = $entityManager;
-    }
-
     public function getExistingSubscriptionsCountForMonth(\DateTime $month, ?BrandSettings $brandSettings = null): int
     {
         $startOfMonth = clone $month;
@@ -37,7 +27,7 @@ class SubscriptionMovementStatsRepository extends DoctrineCrudRepository impleme
         $endOfMonth->modify('last day of this month');
         $endOfMonth->setTime(23, 59, 59);
 
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $this->createQueryBuilder();
         $qb->select('COUNT(s.id)')
             ->from(Subscription::class, 's')
             ->where('s.createdAt < :startOfMonth')
@@ -112,7 +102,7 @@ class SubscriptionMovementStatsRepository extends DoctrineCrudRepository impleme
         $endOfMonth->modify('last day of this month');
         $endOfMonth->setTime(23, 59, 59);
 
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $this->createQueryBuilder();
         $qb->select('COUNT(e.id)')
             ->from(CustomerSubscriptionEvent::class, 'e')
             ->where('e.createdAt BETWEEN :startOfMonth AND :endOfMonth')

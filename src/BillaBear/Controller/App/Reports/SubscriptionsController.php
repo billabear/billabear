@@ -53,7 +53,7 @@ class SubscriptionsController
 
     #[Route('/app/reports/subscriptions/new', name: 'app_app_reports_subscriptions_getnewstats', methods: ['GET'])]
     public function getNewSubscriptionStats(
-        SubscriptionMovementStatsRepositoryInterface $newSubscriptionStatsRepository,
+        SubscriptionMovementStatsRepositoryInterface $subscriptionMovementStatsRepository,
     ): Response {
         $this->getLogger()->info('Received a request to view new subscription stats');
 
@@ -71,12 +71,12 @@ class SubscriptionsController
 
             $months[] = new MonthlySubscriptionStats(
                 month: $monthName,
-                existing: $newSubscriptionStatsRepository->getExistingSubscriptionsCountForMonth($monthDate),
-                new: $newSubscriptionStatsRepository->getNewSubscriptionsCountForMonth($monthDate),
-                upgrades: $newSubscriptionStatsRepository->getUpgradesCountForMonth($monthDate),
-                downgrades: $newSubscriptionStatsRepository->getDowngradesCountForMonth($monthDate),
-                cancellations: $newSubscriptionStatsRepository->getCancellationsCountForMonth($monthDate),
-                reactivations: $newSubscriptionStatsRepository->getReactivationsCountForMonth($monthDate)
+                existing: $subscriptionMovementStatsRepository->getExistingSubscriptionsCountForMonth($monthDate),
+                new: $subscriptionMovementStatsRepository->getNewSubscriptionsCountForMonth($monthDate),
+                upgrades: $subscriptionMovementStatsRepository->getUpgradesCountForMonth($monthDate),
+                downgrades: $subscriptionMovementStatsRepository->getDowngradesCountForMonth($monthDate),
+                cancellations: $subscriptionMovementStatsRepository->getCancellationsCountForMonth($monthDate),
+                reactivations: $subscriptionMovementStatsRepository->getReactivationsCountForMonth($monthDate)
             );
         }
 
