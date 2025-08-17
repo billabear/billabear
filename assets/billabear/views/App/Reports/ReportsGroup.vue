@@ -6,6 +6,7 @@
       <div class="submenu-container">
         <ul>
           <li class="submenu-list-item"><router-link :to="{name: 'app.report.subscriptions'}" class="submenu-link">{{ $t('app.reports.menu.subscriptions') }}</router-link></li>
+          <li class="submenu-list-item"><router-link :to="{name: 'app.report.subscription_stats'}" class="submenu-link">{{ $t('app.reports.menu.subscription_stats') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.report.churn'}" class="submenu-link">{{ $t('app.reports.menu.churn') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.report.lifetime'}" class="submenu-link">{{ $t('app.reports.menu.lifetime') }}</router-link></li>
           <li class="submenu-list-item"><router-link :to="{name: 'app.report.tax'}" class="submenu-link">{{ $t('app.reports.menu.tax') }}</router-link></li>
