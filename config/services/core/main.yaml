@@ -2,6 +2,7 @@ imports:
   - { resource: 'parameters.yaml' }
   - { resource: 'third_party.yaml' }
   - { resource: 'templates.yaml' }
+  - { resource: 'new_subscription_stats.yaml' }
 
 services:
   # default configuration for services in *this* file

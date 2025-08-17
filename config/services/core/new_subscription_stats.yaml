@@ -1,0 +1,12 @@
+services:
+  # Interface binding
+  BillaBear\Repository\Stats\NewSubscriptionStatsRepositoryInterface: '@BillaBear\Repository\NewSubscriptionStatsRepository'
+
+  # Service repository
+  BillaBear\Repository\NewSubscriptionStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.new_subscription_stats'
+
+  # ORM repository
+  app.repository.orm.new_subscription_stats:
+    class: BillaBear\Repository\Orm\NewSubscriptionStatsRepository
