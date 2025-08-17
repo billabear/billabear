@@ -288,6 +288,7 @@ class PdfTemplateController
         SettingsRepositoryInterface $settingsRepository,
     ) {
         $this->getLogger()->info('Received request to update pdf generator settings');
+        /** @var UpdateGeneratorSettings $dto */
         $dto = $serializer->deserialize($request->getContent(), UpdateGeneratorSettings::class, 'json');
         $errors = $validator->validate($dto);
         $response = $this->handleErrors($errors);
@@ -297,10 +298,10 @@ class PdfTemplateController
         }
         $settings = $settingsRepository->getDefaultSettings();
 
-        $settings->getSystemSettings()->setPdfGenerator(PdfGeneratorType::fromName($dto->getGenerator()));
-        $settings->getSystemSettings()->setPdfBin($dto->getBin());
-        $settings->getSystemSettings()->setPdfApiKey($dto->getApiKey());
-        $settings->getSystemSettings()->setPdfTmpDir($dto->getTmpDir());
+        $settings->getSystemSettings()->setPdfGenerator(PdfGeneratorType::fromName($dto->generator));
+        $settings->getSystemSettings()->setPdfBin($dto->bin);
+        $settings->getSystemSettings()->setPdfApiKey($dto->apiKey);
+        $settings->getSystemSettings()->setPdfTmpDir($dto->tmpDir);
 
         $settingsRepository->save($settings);
 

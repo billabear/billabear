@@ -10,6 +10,7 @@ namespace BillaBear\Dto\Request\App\Settings;
 
 use BillaBear\Validator\Constraints\InTheFuture;
 use BillaBear\Validator\Constraints\UniqueApiKeyName;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 readonly class CreateApiKey
@@ -18,11 +19,12 @@ readonly class CreateApiKey
         #[Assert\NotBlank]
         #[Assert\Type('string')]
         #[UniqueApiKeyName]
-        public ?string $name = null,
+        public ?string $name,
         #[Assert\DateTime(format: DATE_RFC3339_EXTENDED)]
-        #[Assert\NotBlank]
+        #[Assert\NotBlank()]
         #[InTheFuture]
-        public ?string $expiresAt = null,
+        #[SerializedName('expires_at')]
+        public string $expiresAt,
     ) {
     }
 }
