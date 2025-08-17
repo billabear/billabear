@@ -815,8 +815,9 @@ class MainContext implements Context
     {
         $subscription = $this->getSubscription($customerEmail, $planName);
 
+        $this->subscriptionRepository->getEntityManager()->refresh($subscription);
         if (SubscriptionStatus::CANCELLED !== $subscription->getStatus()) {
-            throw new \Exception('Not cancelled');
+            throw new \Exception(sprintf('The subscription %s for %s is not cancelled, it is %s', $subscription->getId(), $customerEmail, $subscription->getStatus()->value));
         }
     }
 
@@ -880,11 +881,11 @@ class MainContext implements Context
     /**
      * @throws \Exception
      */
-    public function getSubscription($customerEmail): Subscription
+    public function getSubscription($customerEmail, $planName): Subscription
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
-        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer, 'planName' => $planName]);
 
         if (!$subscription instanceof Subscription) {
             throw new \Exception('No subscription found');

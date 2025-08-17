@@ -12,16 +12,11 @@ use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\BrandSettings;
 use BillaBear\Entity\CustomerSubscriptionEvent;
 use BillaBear\Entity\Subscription;
-use Doctrine\ORM\EntityManagerInterface;
 use Parthenon\Billing\Enum\SubscriptionStatus;
+use Parthenon\Common\Repository\DoctrineRepository;
 
-class NewSubscriptionStatsRepository implements NewSubscriptionStatsRepositoryInterface
+class NewSubscriptionStatsRepository extends DoctrineRepository implements NewSubscriptionStatsRepositoryInterface
 {
-    public function __construct(
-        private EntityManagerInterface $entityManager,
-    ) {
-    }
-
     public function getExistingSubscriptionsCountForMonth(\DateTime $month, ?BrandSettings $brandSettings = null): int
     {
         $startOfMonth = clone $month;
@@ -32,7 +27,7 @@ class NewSubscriptionStatsRepository implements NewSubscriptionStatsRepositoryIn
         $endOfMonth->modify('last day of this month');
         $endOfMonth->setTime(23, 59, 59);
 
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $this->createQueryBuilder();
         $qb->select('COUNT(s.id)')
             ->from(Subscription::class, 's')
             ->where('s.createdAt < :startOfMonth')
@@ -107,7 +102,7 @@ class NewSubscriptionStatsRepository implements NewSubscriptionStatsRepositoryIn
         $endOfMonth->modify('last day of this month');
         $endOfMonth->setTime(23, 59, 59);
 
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $this->createQueryBuilder();
         $qb->select('COUNT(e.id)')
             ->from(CustomerSubscriptionEvent::class, 'e')
             ->where('e.createdAt BETWEEN :startOfMonth AND :endOfMonth')
