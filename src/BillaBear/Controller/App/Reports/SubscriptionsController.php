@@ -9,9 +9,9 @@
 namespace BillaBear\Controller\App\Reports;
 
 use BillaBear\Dto\Response\App\Stats\MonthlySubscriptionStats;
-use BillaBear\Dto\Response\App\Stats\NewSubscriptionStats;
+use BillaBear\Dto\Response\App\Stats\SubscriptionMovementStats;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
-use BillaBear\Repository\Stats\NewSubscriptionStatsRepositoryInterface;
+use BillaBear\Repository\Stats\SubscriptionMovementStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,7 +53,7 @@ class SubscriptionsController
 
     #[Route('/app/reports/subscriptions/new', name: 'app_app_reports_subscriptions_getnewstats', methods: ['GET'])]
     public function getNewSubscriptionStats(
-        NewSubscriptionStatsRepositoryInterface $newSubscriptionStatsRepository,
+        SubscriptionMovementStatsRepositoryInterface $newSubscriptionStatsRepository,
     ): Response {
         $this->getLogger()->info('Received a request to view new subscription stats');
 
@@ -83,7 +83,7 @@ class SubscriptionsController
         // Reverse the array to have months in chronological order
         $months = array_reverse($months);
 
-        $stats = new NewSubscriptionStats($months);
+        $stats = new SubscriptionMovementStats($months);
 
         return new JsonResponse($stats);
     }

@@ -2,16 +2,6 @@
   <div>
     <h1 class="page-title mb-5">{{ $t('app.reports.subscriptions.new_stats.title') }}</h1>
     <LoadingScreen :ready="ready">
-      <div class="text-end my-5">
-        <div class="bg-white rounded-3xl inline p-3">
-          <div class="chart-button inline p-3 rounded-3xl" @click="setChartData('monthly')" :class="{'chart-button-selected': viewName === 'monthly'}">
-            {{ $t('app.reports.subscriptions.new_stats.buttons.monthly') }}
-          </div>
-          <div class="chart-button inline p-3 rounded-3xl" @click="setChartData('yearly')" :class="{'chart-button-selected': viewName === 'yearly'}">
-            {{ $t('app.reports.subscriptions.new_stats.buttons.yearly') }}
-          </div>
-        </div>
-      </div>
       <div class="card-body">
         <div class="section-body">
           <apexchart height="500" type="bar" :options="chartOptions" :series="chartSeries"></apexchart>
@@ -68,7 +58,6 @@ export default {
   data() {
     return {
       ready: false,
-      viewName: 'monthly',
       months: [],
       totals: {
         existing: 0,
@@ -135,45 +124,15 @@ export default {
       axios.get('/app/reports/subscriptions/new').then(response => {
         this.months = response.data.months;
         this.calculateTotals();
-        this.setChartData('monthly');
+        this.setChartData();
         this.ready = true;
       }).catch(error => {
         console.error('Error fetching subscription stats:', error);
       });
     },
-    setChartData(viewName) {
-      this.viewName = viewName;
-      
-      // Filter months based on view (monthly = last 12 months, yearly = group by year)
-      let filteredMonths = this.months;
-      if (viewName === 'yearly') {
-        // Group by year and aggregate data
-        const yearlyData = {};
-        this.months.forEach(month => {
-          const year = month.month.substring(0, 4);
-          if (!yearlyData[year]) {
-            yearlyData[year] = {
-              month: year,
-              existing: 0,
-              new: 0,
-              upgrades: 0,
-              downgrades: 0,
-              cancellations: 0,
-              reactivations: 0
-            };
-          }
-          yearlyData[year].existing += month.existing;
-          yearlyData[year].new += month.new;
-          yearlyData[year].upgrades += month.upgrades;
-          yearlyData[year].downgrades += month.downgrades;
-          yearlyData[year].cancellations += month.cancellations;
-          yearlyData[year].reactivations += month.reactivations;
-        });
-        filteredMonths = Object.values(yearlyData);
-      } else {
-        // Use last 12 months for monthly view
-        filteredMonths = this.months.slice(-12);
-      }
+    setChartData() {
+      // Use last 12 months for monthly view
+      let filteredMonths = this.months.slice(-12);
       
       // Prepare chart data
       const categories = filteredMonths.map(month => month.month);

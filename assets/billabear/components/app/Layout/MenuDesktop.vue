@@ -100,6 +100,9 @@
           <MenuSubItem>
             <router-link :to="{name: 'app.report.lifetime'}" class="submenu-link">{{ $t('app.reports.menu.lifetime') }}</router-link>
           </MenuSubItem>
+          <MenuSubItem>
+            <router-link :to="{name: 'app.report.subscription_stats'}" class="submenu-link">{{ $t('app.reports.menu.subscription_stats') }}</router-link>          </MenuSubItem>
+
         </template>
       </MenuTopItem>
       <MenuTopItem>
