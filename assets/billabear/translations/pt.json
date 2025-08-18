@@ -2220,6 +2220,29 @@
                         "monthly": "Mensal",
                         "yearly": "Anual"
                     }
+                },
+                "new_stats": {
+                    "title": "Estatísticas de assinatura",
+                    "buttons": {
+                        "monthly": "Mensal",
+                        "yearly": "Anual"
+                    },
+                    "labels": {
+                        "existing": "Assinaturas existentes",
+                        "new": "Novas assinaturas",
+                        "upgrades": "Atualizações",
+                        "downgrades": "Reduções",
+                        "cancellations": "Cancelamentos",
+                        "reactivations": "Reativações"
+                    },
+                    "totals": {
+                        "existing": "Existentes",
+                        "new": "Novas",
+                        "upgrades": "Atualizações",
+                        "downgrades": "Reduções",
+                        "cancellations": "Cancelamentos",
+                        "reactivations": "Reativações"
+                    }
                 }
             },
             "vat": {

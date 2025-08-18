@@ -8,7 +8,10 @@
 
 namespace BillaBear\Controller\App\Reports;
 
+use BillaBear\Dto\Response\App\Stats\MonthlySubscriptionStats;
+use BillaBear\Dto\Response\App\Stats\SubscriptionMovementStats;
 use BillaBear\Repository\CancellationRequestRepositoryInterface;
+use BillaBear\Repository\Stats\SubscriptionMovementStatsRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,6 +49,43 @@ class SubscriptionsController
         $data['yearly'] = $cancellationRequestRepository->getYearlyCount(new \DateTime('-6 years'));
 
         return new JsonResponse($data);
+    }
+
+    #[Route('/app/reports/subscriptions/new', name: 'app_app_reports_subscriptions_getnewstats', methods: ['GET'])]
+    public function getNewSubscriptionStats(
+        SubscriptionMovementStatsRepositoryInterface $subscriptionMovementStatsRepository,
+    ): Response {
+        $this->getLogger()->info('Received a request to view new subscription stats');
+
+        $months = [];
+        $now = new \DateTime();
+
+        // Get data for the last 12 months
+        for ($i = 0; $i < 12; ++$i) {
+            $monthDate = clone $now;
+            $monthDate->modify("-{$i} month");
+            $monthDate->setTime(0, 0, 0);
+            $monthDate->modify('first day of this month');
+
+            $monthName = $monthDate->format('F Y');
+
+            $months[] = new MonthlySubscriptionStats(
+                month: $monthName,
+                existing: $subscriptionMovementStatsRepository->getExistingSubscriptionsCountForMonth($monthDate),
+                new: $subscriptionMovementStatsRepository->getNewSubscriptionsCountForMonth($monthDate),
+                upgrades: $subscriptionMovementStatsRepository->getUpgradesCountForMonth($monthDate),
+                downgrades: $subscriptionMovementStatsRepository->getDowngradesCountForMonth($monthDate),
+                cancellations: $subscriptionMovementStatsRepository->getCancellationsCountForMonth($monthDate),
+                reactivations: $subscriptionMovementStatsRepository->getReactivationsCountForMonth($monthDate)
+            );
+        }
+
+        // Reverse the array to have months in chronological order
+        $months = array_reverse($months);
+
+        $stats = new SubscriptionMovementStats($months);
+
+        return new JsonResponse($stats);
     }
 
     private function getLogger(): LoggerInterface

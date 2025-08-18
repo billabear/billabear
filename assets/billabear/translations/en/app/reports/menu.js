@@ -5,5 +5,6 @@ export const REPORTS_MENU_TRANSLATIONS = {
     subscriptions: "Subscriptions",
     tax: "Tax",
     churn: "Subscription Churn",
+    subscription_stats: "Subscription Stats",
     lifetime: "Lifetime"
 }

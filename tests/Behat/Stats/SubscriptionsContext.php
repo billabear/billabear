@@ -21,6 +21,138 @@ class SubscriptionsContext implements Context
     }
 
     /**
+     * @When I view the new subscriptions stats
+     */
+    public function iViewTheNewSubscriptionsStats()
+    {
+        $this->sendJsonRequest('GET', '/app/reports/subscriptions/new');
+    }
+
+    /**
+     * @Then I should see :arg1 months of new subscriptions stats
+     */
+    public function iShouldSeeMonthsOfNewSubscriptionsStats($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        if (count($data['months']) != $arg1) {
+            throw new \Exception(sprintf('Expected %d months, got %d', $arg1, count($data['months'])));
+        }
+    }
+
+    /**
+     * @Then I should see the total number of existing subscriptions for the last :arg1 months
+     */
+    public function iShouldSeeTheTotalNumberOfExistingSubscriptionsForTheLastMonths($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        foreach ($data['months'] as $month) {
+            if (!isset($month['existing'])) {
+                throw new \Exception('No existing subscriptions data found for month: '.$month['month']);
+            }
+        }
+    }
+
+    /**
+     * @Then I should see the total number of new subscriptions for the last :arg1 months
+     */
+    public function iShouldSeeTheTotalNumberOfNewSubscriptionsForTheLastMonths($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        foreach ($data['months'] as $month) {
+            if (!isset($month['new'])) {
+                throw new \Exception('No new subscriptions data found for month: '.$month['month']);
+            }
+        }
+    }
+
+    /**
+     * @Then I should see the total number of upgrades for the last :arg1 months
+     */
+    public function iShouldSeeTheTotalNumberOfUpgradesForTheLastMonths($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        foreach ($data['months'] as $month) {
+            if (!isset($month['upgrades'])) {
+                throw new \Exception('No upgrades data found for month: '.$month['month']);
+            }
+        }
+    }
+
+    /**
+     * @Then I should see the total number of downgrades for the last :arg1 months
+     */
+    public function iShouldSeeTheTotalNumberOfDowngradesForTheLastMonths($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        foreach ($data['months'] as $month) {
+            if (!isset($month['downgrades'])) {
+                throw new \Exception('No downgrades data found for month: '.$month['month']);
+            }
+        }
+    }
+
+    /**
+     * @Then I should see the total number of cancellations for the last :arg1 months
+     */
+    public function iShouldSeeTheTotalNumberOfCancellationsForTheLastMonths($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        foreach ($data['months'] as $month) {
+            if (!isset($month['cancellations'])) {
+                throw new \Exception('No cancellations data found for month: '.$month['month']);
+            }
+        }
+    }
+
+    /**
+     * @Then I should see the total number of reactivations for the last :arg1 months
+     */
+    public function iShouldSeeTheTotalNumberOfReactivationsForTheLastMonths($arg1)
+    {
+        $data = $this->getJsonContent();
+
+        if (!isset($data['months']) || !is_array($data['months'])) {
+            throw new \Exception('No months data found in response');
+        }
+
+        foreach ($data['months'] as $month) {
+            if (!isset($month['reactivations'])) {
+                throw new \Exception('No reactivations data found for month: '.$month['month']);
+            }
+        }
+    }
+
+    /**
      * @When I view the subscription stats
      */
     public function iViewTheSubscriptionStats()

@@ -2226,6 +2226,29 @@
                         "monthly": "Mensualmente",
                         "yearly": "Anualmente"
                     }
+                },
+                "new_stats": {
+                    "title": "Estadísticas de suscripción",
+                    "buttons": {
+                        "monthly": "Mensualmente",
+                        "yearly": "Anualmente"
+                    },
+                    "labels": {
+                        "existing": "Suscripciones existentes",
+                        "new": "Nuevas suscripciones",
+                        "upgrades": "Actualizaciones",
+                        "downgrades": "Degradaciones",
+                        "cancellations": "Cancelaciones",
+                        "reactivations": "Reactivaciones"
+                    },
+                    "totals": {
+                        "existing": "Existentes",
+                        "new": "Nuevas",
+                        "upgrades": "Actualizaciones",
+                        "downgrades": "Degradaciones",
+                        "cancellations": "Cancelaciones",
+                        "reactivations": "Reactivaciones"
+                    }
                 }
             },
             "vat": {

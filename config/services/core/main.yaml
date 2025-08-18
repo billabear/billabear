@@ -166,6 +166,13 @@ services:
   app.repository.orm.settings:
     class: BillaBear\Repository\Orm\SettingsRepository
 
+
+  BillaBear\Repository\Stats\SubscriptionMovementStatsRepository:
+    arguments:
+      $entityRepository: '@app.repository.orm.subscription_movement_stats'
+  app.repository.orm.subscription_movement_stats:
+    class: BillaBear\Repository\Orm\SubscriptionMovementStatsRepository
+
   BillaBear\Repository\QuoteRepository:
     arguments:
       $entityRepository: '@app.repository.orm.quote'

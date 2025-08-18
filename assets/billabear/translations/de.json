@@ -2226,6 +2226,29 @@
                         "monthly": "Monatlich",
                         "yearly": "Jährlich"
                     }
+                },
+                "new_stats": {
+                    "title": "Abonnementstatistiken",
+                    "buttons": {
+                        "monthly": "Monatlich",
+                        "yearly": "Jährlich"
+                    },
+                    "labels": {
+                        "existing": "Bestehende Abonnements",
+                        "new": "Neue Abonnements",
+                        "upgrades": "Upgrades",
+                        "downgrades": "Downgrades",
+                        "cancellations": "Kündigungen",
+                        "reactivations": "Reaktivierungen"
+                    },
+                    "totals": {
+                        "existing": "Bestehend",
+                        "new": "Neu",
+                        "upgrades": "Upgrades",
+                        "downgrades": "Downgrades",
+                        "cancellations": "Kündigungen",
+                        "reactivations": "Reaktivierungen"
+                    }
                 }
             },
             "vat": {

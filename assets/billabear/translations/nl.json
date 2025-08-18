@@ -2226,6 +2226,29 @@
                         "monthly": "Maandelijks",
                         "yearly": "Jaarlijks"
                     }
+                },
+                "new_stats": {
+                    "title": "Abonnementstatistieken",
+                    "buttons": {
+                        "monthly": "Maandelijks",
+                        "yearly": "Jaarlijks"
+                    },
+                    "labels": {
+                        "existing": "Bestaande abonnementen",
+                        "new": "Nieuwe abonnementen",
+                        "upgrades": "Upgrades",
+                        "downgrades": "Downgrades",
+                        "cancellations": "Opzeggingen",
+                        "reactivations": "Heractivaties"
+                    },
+                    "totals": {
+                        "existing": "Bestaand",
+                        "new": "Nieuw",
+                        "upgrades": "Upgrades",
+                        "downgrades": "Downgrades",
+                        "cancellations": "Opzeggingen",
+                        "reactivations": "Heractivaties"
+                    }
                 }
             },
             "vat": {
