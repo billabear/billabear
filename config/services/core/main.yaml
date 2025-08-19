@@ -171,7 +171,7 @@ services:
     arguments:
       $entityRepository: '@app.repository.orm.subscription_movement_stats'
   app.repository.orm.subscription_movement_stats:
-    class: BillaBear\Repository\Orm\SubscriptionMovementStatsRepository
+    class: BillaBear\Repository\Orm\SubscriptionRepository
 
   BillaBear\Repository\QuoteRepository:
     arguments:

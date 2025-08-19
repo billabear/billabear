@@ -31,7 +31,6 @@ import TeamUserList from "../views/App/Settings/Team/TeamUserList.vue";
 import SettingsUserUpdate from "../views/App/Settings/Team/SettingsUserUpdate.vue";
 import StripeImportList from "../views/App/Settings/Stripe/StripeImportList.vue";
 import ApiKeysMain from "../views/App/Settings/ApiKeys/ApiKeysMain.vue";
-import ReportsGroup from "../views/App/Reports/ReportsGroup.vue";
 import CreditCreate from "../views/App/Credit/CreditCreate.vue";
 import InvoicesList from "../views/App/Invoices/InvoicesList.vue";
 import StripeImportView from "../views/App/Settings/Stripe/StripeImportView.vue";
