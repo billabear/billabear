@@ -127,12 +127,8 @@ class EventsContext implements Context
 
         $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
             ->delete()
-            ->join('e.subscription', 's')
-            ->join('s.subscriptionPlan', 'p')
             ->where('e.customer = :customer')
-            ->andWhere('p.name = :planName')
-            ->setParameter('customer', $customer)
-            ->setParameter('planName', $planName);
+            ->setParameter('customer', $customer);
 
         $queryBuilder->getQuery()->execute();
     }
@@ -144,10 +140,9 @@ class EventsContext implements Context
 
         $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
             ->join('e.subscription', 's')
-            ->join('s.subscriptionPlan', 'p')
             ->where('e.customer = :customer')
             ->andWhere('e.eventType = :eventType')
-            ->andWhere('p.name = :planName')
+            ->andWhere('s.plan_name = :planName')
             ->setParameter('customer', $customer)
             ->setParameter('eventType', CustomerSubscriptionEventType::TRIAL_STARTED)
             ->setParameter('planName', $planName);
@@ -178,10 +173,9 @@ class EventsContext implements Context
 
         $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
             ->join('e.subscription', 's')
-            ->join('s.subscriptionPlan', 'p')
             ->where('e.customer = :customer')
             ->andWhere('e.eventType = :eventType')
-            ->andWhere('p.name = :planName')
+            ->andWhere('s.plan_name = :planName')
             ->setParameter('customer', $customer)
             ->setParameter('eventType', $eventType)
             ->setParameter('planName', $planName);
