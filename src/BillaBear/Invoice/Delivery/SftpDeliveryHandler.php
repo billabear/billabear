@@ -18,10 +18,17 @@ class SftpDeliveryHandler implements DeliveryHandlerInterface
 {
     use LoggerAwareTrait;
 
+    public const NAME = 'sftp';
+
     public function __construct(
         private SftpTransportFactory $sftpTransportFactory,
         private InvoiceFormatterProvider $invoiceFormatterProvider,
     ) {
+    }
+
+    public function getName(): string
+    {
+        return self::NAME;
     }
 
     public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void

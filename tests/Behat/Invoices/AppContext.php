@@ -19,7 +19,6 @@ use BillaBear\Entity\InvoicedMetricCounter;
 use BillaBear\Entity\InvoiceLine;
 use BillaBear\Entity\PaymentFailureProcess;
 use BillaBear\Entity\Processes\InvoiceProcess;
-use BillaBear\Invoice\InvoiceDeliveryType;
 use BillaBear\Invoice\InvoiceFormat;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\InvoiceDeliverySettingsRepository;
@@ -449,7 +448,7 @@ class AppContext implements Context
      */
     public function iEditTheDeliveryMethodsForForWith($email, $type, TableNode $table)
     {
-        $type = InvoiceDeliveryType::from(strtolower($type));
+        $type = strtolower($type);
         $customer = $this->getCustomerByEmail($email);
 
         $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['customer' => $customer, 'type' => $type]);
@@ -503,8 +502,7 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
         $type = strtolower($type);
-        $enumType = InvoiceDeliveryType::from($type);
-        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $type, 'customer' => $customer]);
         $this->invoiceDeliveryRepository->getEntityManager()->refresh($invoiceDelivery);
 
         if ($url !== $invoiceDelivery->getWebhookUrl()) {
@@ -519,8 +517,7 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
         $type = strtolower($type);
-        $enumType = InvoiceDeliveryType::from($type);
-        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer]);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $type, 'customer' => $customer]);
 
         if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
             throw new \Exception('No invoice delivery found');
@@ -534,9 +531,8 @@ class AppContext implements Context
     {
         $customer = $this->getCustomerByEmail($email);
         $type = strtolower($type);
-        $enumType = InvoiceDeliveryType::from($type);
         $format = InvoiceFormat::from($format);
-        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $enumType, 'customer' => $customer, 'invoiceFormat' => $format]);
+        $invoiceDelivery = $this->invoiceDeliveryRepository->findOneBy(['type' => $type, 'customer' => $customer, 'invoiceFormat' => $format]);
 
         if (!$invoiceDelivery instanceof InvoiceDeliverySettings) {
             throw new \Exception('No invoice delivery found');
@@ -553,7 +549,7 @@ class AppContext implements Context
             $customer = $this->getCustomerByEmail($row['Customer']);
             $invoiceDelivery = new InvoiceDeliverySettings();
             $invoiceDelivery->setCustomer($customer);
-            $invoiceDelivery->setType(InvoiceDeliveryType::from(strtolower($row['Type'])));
+            $invoiceDelivery->setType(strtolower($row['Type']));
             $invoiceDelivery->setInvoiceFormat(strtolower($row['Format']));
             $invoiceDelivery->setEnabled(true);
             $invoiceDelivery->setCreatedAt(new \DateTime());

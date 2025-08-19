@@ -8,7 +8,6 @@
 
 namespace BillaBear\Entity;
 
-use BillaBear\Invoice\InvoiceDeliveryType;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
@@ -31,8 +30,8 @@ class InvoiceDeliverySettings
     #[ORM\Column(type: 'string', length: 255)]
     private string $invoiceFormat;
 
-    #[ORM\Column(type: 'string', length: 255, enumType: InvoiceDeliveryType::class)]
-    private InvoiceDeliveryType $type;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $type;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $webhookMethod = null;
@@ -94,12 +93,12 @@ class InvoiceDeliverySettings
         $this->enabled = $enabled;
     }
 
-    public function getType(): InvoiceDeliveryType
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType(InvoiceDeliveryType $type): void
+    public function setType(string $type): void
     {
         $this->type = $type;
     }

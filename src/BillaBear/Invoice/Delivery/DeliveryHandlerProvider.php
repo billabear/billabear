@@ -9,24 +9,57 @@
 namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\InvoiceDeliverySettings;
-use BillaBear\Invoice\InvoiceDeliveryType;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class DeliveryHandlerProvider
 {
+    /**
+     * @param iterable<DeliveryHandlerInterface> $handlers
+     */
     public function __construct(
-        private SftpDeliveryHandler $sftpDeliveryHandler,
-        private EmailDeliveryHandler $emailDeliveryHandler,
-        private WebhookDeliveryHandler $webhookDeliveryHandler,
+        #[AutowireIterator('billabear.invoice.delivery_handler')]
+        private readonly iterable $handlers,
     ) {
     }
 
     public function getDeliveryHandler(InvoiceDeliverySettings $invoiceDelivery): DeliveryHandlerInterface
     {
-        return match ($invoiceDelivery->getType()) {
-            InvoiceDeliveryType::SFTP => $this->sftpDeliveryHandler,
-            InvoiceDeliveryType::WEBHOOK => $this->webhookDeliveryHandler,
-            InvoiceDeliveryType::EMAIL => $this->emailDeliveryHandler,
-            default => $this->emailDeliveryHandler,
-        };
+        $type = strtolower($invoiceDelivery->getType());
+        $defaultHandler = null;
+
+        foreach ($this->handlers as $handler) {
+            if (strtolower($handler->getName()) === $type) {
+                return $handler;
+            }
+
+            if (strtolower(EmailDeliveryHandler::NAME) === strtolower($handler->getName())) {
+                $defaultHandler = $handler;
+            }
+        }
+
+        // Default to email if no handler is found, or the first handler if email is not available
+        if ($defaultHandler) {
+            return $defaultHandler;
+        }
+
+        // If no handlers at all, return the first one we find
+        foreach ($this->handlers as $handler) {
+            return $handler;
+        }
+
+        throw new \RuntimeException('No delivery handlers available');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getNames(): array
+    {
+        $names = [];
+        foreach ($this->handlers as $handler) {
+            $names[] = $handler->getName();
+        }
+
+        return $names;
     }
 }

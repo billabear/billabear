@@ -11,7 +11,6 @@ namespace BillaBear\DataMappers\Invoice;
 use BillaBear\Dto\Generic\App\InvoiceDeliverySettings as AppDto;
 use BillaBear\Dto\Request\App\Invoice\CreateInvoiceDelivery;
 use BillaBear\Entity\InvoiceDeliverySettings as Entity;
-use BillaBear\Invoice\InvoiceDeliveryType;
 
 class InvoiceDeliverySettingsDataMapper
 {
@@ -24,9 +23,7 @@ class InvoiceDeliverySettingsDataMapper
         }
         $invoiceDelivery->setUpdatedAt(new \DateTime());
 
-        $type = InvoiceDeliveryType::from($createInvoiceDelivery->getType());
-
-        $invoiceDelivery->setType($type);
+        $invoiceDelivery->setType($createInvoiceDelivery->getType());
         $invoiceDelivery->setInvoiceFormat($createInvoiceDelivery->getFormat());
         $invoiceDelivery->setWebhookUrl($createInvoiceDelivery->getWebhookUrl());
         $invoiceDelivery->setWebhookMethod($createInvoiceDelivery->getWebhookMethod());
@@ -44,7 +41,7 @@ class InvoiceDeliverySettingsDataMapper
     {
         $appDto = new AppDto();
         $appDto->setId($delivery->getId());
-        $appDto->setType($delivery->getType()->value);
+        $appDto->setType($delivery->getType());
         $appDto->setFormat($delivery->getInvoiceFormat());
         $appDto->setWebhookUrl($delivery->getWebhookUrl());
         $appDto->setWebhookMethod($delivery->getWebhookMethod());

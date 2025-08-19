@@ -23,6 +23,8 @@ class EmailDeliveryHandler implements DeliveryHandlerInterface
 {
     use LoggerAwareTrait;
 
+    public const NAME = 'email';
+
     public function __construct(
         private EmailBuilder $emailBuilder,
         private EmailSenderInterface $emailSender,
@@ -30,6 +32,11 @@ class EmailDeliveryHandler implements DeliveryHandlerInterface
         private InvoiceFormatterProvider $invoiceFormatterProvider,
         private SettingsRepositoryInterface $settingsRepository,
     ) {
+    }
+
+    public function getName(): string
+    {
+        return self::NAME;
     }
 
     public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void

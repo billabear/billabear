@@ -13,7 +13,7 @@ use BillaBear\Customer\Messenger\CustomerEventType;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\InvoiceDeliverySettings;
 use BillaBear\Event\Customer\CustomerCreated as CustomerCreatedEvent;
-use BillaBear\Invoice\InvoiceDeliveryType;
+use BillaBear\Invoice\Delivery\EmailDeliveryHandler;
 use BillaBear\Invoice\InvoiceFormat;
 use BillaBear\Notification\Slack\Data\CustomerCreated as CustomerCreatedSlack;
 use BillaBear\Notification\Slack\NotificationSender;
@@ -72,7 +72,7 @@ readonly class CreationHandler
         $invoiceDelivery->setCreatedAt(new \DateTime());
         $invoiceDelivery->setUpdatedAt(new \DateTime());
         $invoiceDelivery->setInvoiceFormat(InvoiceFormat::PDF->value);
-        $invoiceDelivery->setType(InvoiceDeliveryType::EMAIL);
+        $invoiceDelivery->setType(EmailDeliveryHandler::NAME);
 
         $this->invoiceDeliverySettingsRepository->save($invoiceDelivery);
     }

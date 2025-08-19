@@ -10,8 +10,12 @@ namespace BillaBear\Invoice\Delivery;
 
 use BillaBear\Entity\Invoice;
 use BillaBear\Entity\InvoiceDeliverySettings;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
+#[AutoconfigureTag('billabear.invoice.delivery_handler')]
 interface DeliveryHandlerInterface
 {
+    public function getName(): string;
+
     public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void;
 }

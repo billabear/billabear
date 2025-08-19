@@ -21,12 +21,19 @@ class WebhookDeliveryHandler implements DeliveryHandlerInterface
 {
     use LoggerAwareTrait;
 
+    public const NAME = 'webhook';
+
     public function __construct(
         private ClientInterface $client,
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory,
         private InvoiceFormatterProvider $invoiceFormatterProvider,
     ) {
+    }
+
+    public function getName(): string
+    {
+        return self::NAME;
     }
 
     public function deliver(Invoice $invoice, InvoiceDeliverySettings $invoiceDelivery): void
