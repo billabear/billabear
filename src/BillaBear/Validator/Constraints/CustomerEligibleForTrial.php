@@ -10,7 +10,7 @@ namespace BillaBear\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class CustomerEligibleForTrial extends Constraint
 {
     public const ALREADY_USED_TRIAL = '324hi23kjr-6b9b-41cd-a99e-48dsfasdff';
