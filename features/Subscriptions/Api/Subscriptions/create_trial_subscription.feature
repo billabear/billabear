@@ -85,3 +85,43 @@ Feature: Customer Subscription Create APP
       | Subscription Plan |
       | Broken            |
     Then there should not be a subscription for the user "customer.one@example.org"
+
+  Scenario: One trial per customer fails
+    Given I have authenticated to the API
+    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "3000" in "USD" with:
+      | Name             | OnePer    |
+      | Public           | True      |
+      | Per Seat         | False     |
+      | User Count       | 10        |
+      | Code Name        | oneper    |
+      | Standalone Trial | False     |
+      | One Per Customer | True      |
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And there is not a trial started event for "customer.one@example.org" on subscription plan "OnePer"
+    When I create a trial subscription via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan |
+      | OnePer            |
+    Then there should not be a subscription for the user "customer.one@example.org"
+
+  Scenario: One trial per customer fails
+    Given I have authenticated to the API
+    Given a Subscription Plan exists for product "Product One" with a feature "Feature One" and a limit for "Feature Two" with a limit of 10 and price "3000" in "USD" with:
+      | Name             | OnePer    |
+      | Public           | True      |
+      | Per Seat         | False     |
+      | User Count       | 10        |
+      | Code Name        | oneper    |
+      | Standalone Trial | False     |
+      | One Per Customer | True      |
+    And the follow customers exist:
+      | Email                    | Country | External Reference | Reference    |
+      | customer.one@example.org | DE      | cust_jf9j545       | Customer One |
+      | customer.two@example.org | UK      | cust_dfugfdu       | Customer Two |
+    And there is a trial started event for "customer.one@example.org" on subscription plan "OnePer"
+    When I create a trial subscription via the API for "customer.one@example.org" with the follow:
+      | Subscription Plan |
+      | OnePer            |
+    Then there should not be a subscription for the user "customer.one@example.org"
