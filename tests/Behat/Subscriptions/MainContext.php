@@ -881,12 +881,15 @@ class MainContext implements Context
     /**
      * @throws \Exception
      */
-    public function getSubscription($customerEmail, $planName): Subscription
+    public function getSubscription($customerEmail, $planName = null): Subscription
     {
         $customer = $this->getCustomerByEmail($customerEmail);
 
-        $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer, 'planName' => $planName]);
-
+        if ($planName) {
+            $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer, 'planName' => $planName]);
+        } else {
+            $subscription = $this->subscriptionRepository->findOneBy(['customer' => $customer]);
+        }
         if (!$subscription instanceof Subscription) {
             throw new \Exception('No subscription found');
         }
