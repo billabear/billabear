@@ -54,6 +54,10 @@ class CreateSubscription
     #[Assert\Type('array')]
     private $metadata;
 
+    #[Assert\Type('boolean')]
+    #[SerializedName('customer_eligible_for_trial')]
+    private $customer_eligible_for_trial;
+
     public function getSubscriptionPlan()
     {
         return $this->subscription_plan;
@@ -151,5 +155,15 @@ class CreateSubscription
     public function setMetadata($metadata): void
     {
         $this->metadata = $metadata;
+    }
+
+    public function getCustomerEligibleForTrial()
+    {
+        return $this->customer_eligible_for_trial;
+    }
+
+    public function setCustomerEligibleForTrial($customer_eligible_for_trial): void
+    {
+        $this->customer_eligible_for_trial = $customer_eligible_for_trial;
     }
 }
