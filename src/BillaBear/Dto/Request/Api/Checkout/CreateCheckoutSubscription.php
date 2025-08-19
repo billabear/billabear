@@ -8,11 +8,13 @@
 
 namespace BillaBear\Dto\Request\Api\Checkout;
 
+use BillaBear\Validator\Constraints\CustomerEligibleForTrial;
 use BillaBear\Validator\Constraints\PriceExists;
 use BillaBear\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[CustomerEligibleForTrial]
 class CreateCheckoutSubscription
 {
     #[Assert\NotBlank]
@@ -27,10 +29,6 @@ class CreateCheckoutSubscription
     #[Assert\Type('integer')]
     #[SerializedName('seat_number')]
     private $seat_number;
-
-    #[Assert\Type('boolean')]
-    #[SerializedName('customer_eligible_for_trial')]
-    private $customer_eligible_for_trial;
 
     public function getPlan()
     {
@@ -60,15 +58,5 @@ class CreateCheckoutSubscription
     public function setSeatNumber($seat_number): void
     {
         $this->seat_number = $seat_number;
-    }
-
-    public function getCustomerEligibleForTrial()
-    {
-        return $this->customer_eligible_for_trial;
-    }
-
-    public function setCustomerEligibleForTrial($customer_eligible_for_trial): void
-    {
-        $this->customer_eligible_for_trial = $customer_eligible_for_trial;
     }
 }

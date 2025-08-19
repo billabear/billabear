@@ -8,12 +8,14 @@
 
 namespace BillaBear\Dto\Request\App;
 
+use BillaBear\Validator\Constraints\CustomerEligibleForTrial;
 use BillaBear\Validator\Constraints\PaymentMethodExists;
 use BillaBear\Validator\Constraints\PriceExists;
 use BillaBear\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[CustomerEligibleForTrial]
 class CreateSubscription
 {
     #[Assert\NotBlank]
@@ -47,10 +49,6 @@ class CreateSubscription
     #[Assert\Type('integer')]
     #[SerializedName('trial_length_days')]
     private $trialLengthDays;
-
-    #[Assert\Type('boolean')]
-    #[SerializedName('customer_eligible_for_trial')]
-    private $customerEligibleForTrial;
 
     public function getSubscriptionPlan()
     {
@@ -110,15 +108,5 @@ class CreateSubscription
     public function setTrialLengthDays($trialLengthDays): void
     {
         $this->trialLengthDays = $trialLengthDays;
-    }
-
-    public function getCustomerEligibleForTrial()
-    {
-        return $this->customerEligibleForTrial;
-    }
-
-    public function setCustomerEligibleForTrial($customerEligibleForTrial): void
-    {
-        $this->customerEligibleForTrial = $customerEligibleForTrial;
     }
 }
