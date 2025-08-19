@@ -75,6 +75,15 @@
           </div>
 
           <div class="form-field-ctn">
+            <label class="form-field-lbl" for="is_trial_limited_to_one_per_customer">
+              {{ $t('app.subscription_plan.create.trial_section.fields.is_trial_limited_to_one_per_customer') }}
+            </label>
+            <p class="form-field-error" v-if="errors.isTrialLimitedToOnePerCustomer != undefined">{{ errors.isTrialLimitedToOnePerCustomer }}</p>
+            <input type="checkbox" id="is_trial_limited_to_one_per_customer" v-model="subscription_plan.is_trial_limited_to_one_per_customer" />
+            <p class="form-field-help">{{ $t('app.subscription_plan.create.trial_section.help_info.is_trial_limited_to_one_per_customer') }}</p>
+          </div>
+
+          <div class="form-field-ctn">
             <label class="form-field-lbl" for="trial_length_days">
               {{ $t('app.subscription_plan.create.trial_section.fields.trial_length_days') }}
             </label>
@@ -123,6 +132,7 @@ export default {
         trial_length_days: 0,
         user_count: 1,
         is_trial_standalone: false,
+        is_trial_limited_to_one_per_customer: false,
       },
       sendingInProgress: false,
       showAdvance: false,
@@ -178,6 +188,7 @@ export default {
         has_trial: this.subscription_plan.has_trial,
         trial_length_days: this.subscription_plan.trial_length_days,
         is_trial_standalone: this.subscription_plan.is_trial_standalone,
+        is_trial_limited_to_one_per_customer: this.subscription_plan.is_trial_limited_to_one_per_customer,
       };
 
       var count = this.selectedFeatures.length;
