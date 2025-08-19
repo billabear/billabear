@@ -28,6 +28,10 @@ class CreateCheckoutSubscription
     #[SerializedName('seat_number')]
     private $seatNumber;
 
+    #[Assert\Type('boolean')]
+    #[SerializedName('customer_eligible_for_trial')]
+    private $customerEligibleForTrial;
+
     public function getPlan()
     {
         return $this->plan;
@@ -56,5 +60,15 @@ class CreateCheckoutSubscription
     public function setSeatNumber($seatNumber): void
     {
         $this->seatNumber = $seatNumber;
+    }
+
+    public function getCustomerEligibleForTrial()
+    {
+        return $this->customerEligibleForTrial;
+    }
+
+    public function setCustomerEligibleForTrial($customerEligibleForTrial): void
+    {
+        $this->customerEligibleForTrial = $customerEligibleForTrial;
     }
 }
