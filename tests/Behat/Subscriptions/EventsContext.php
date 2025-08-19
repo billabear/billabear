@@ -18,7 +18,6 @@ use BillaBear\Repository\Orm\CustomerSubscriptionEventRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
-use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class EventsContext implements Context
 {
@@ -124,58 +123,39 @@ class EventsContext implements Context
     #[Given('there is not a trial started event for :arg1 on subscription plan :arg2')]
     public function thereIsNotATrialStartedEventForOnSubscriptionPlan(string $customerEmail, string $planName): void
     {
-        $this->checkEventExistsForPlan(CustomerSubscriptionEventType::TRIAL_STARTED, $customerEmail, $planName, false);
+        $customer = $this->getCustomerByEmail($customerEmail);
+
+        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
+            ->delete()
+            ->join('e.subscription', 's')
+            ->join('s.subscriptionPlan', 'p')
+            ->where('e.customer = :customer')
+            ->andWhere('p.name = :planName')
+            ->setParameter('customer', $customer)
+            ->setParameter('planName', $planName);
+
+        $queryBuilder->getQuery()->execute();
     }
 
     #[Given('there is a trial started event for :arg1 on subscription plan :arg2')]
     public function thereIsATrialStartedEventForOnSubscriptionPlan(string $customerEmail, string $planName): void
     {
         $customer = $this->getCustomerByEmail($customerEmail);
-        $plan = $this->subscriptionPlanRepository->findOneBy(['name' => $planName]);
 
-        if (!$plan) {
-            throw new \Exception(sprintf('Subscription plan "%s" not found', $planName));
-        }
+        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
+            ->join('e.subscription', 's')
+            ->join('s.subscriptionPlan', 'p')
+            ->where('e.customer = :customer')
+            ->andWhere('e.eventType = :eventType')
+            ->andWhere('p.name = :planName')
+            ->setParameter('customer', $customer)
+            ->setParameter('eventType', CustomerSubscriptionEventType::TRIAL_STARTED)
+            ->setParameter('planName', $planName);
 
-        $events = $this->customerSubscriptionEventRepository->findBy([
-            'customer' => $customer,
-            'eventType' => CustomerSubscriptionEventType::TRIAL_STARTED,
-        ]);
+        $event = $queryBuilder->getQuery()->getOneOrNullResult();
 
-        $found = false;
-        foreach ($events as $event) {
-            $subscription = $event->getSubscription();
-            if ($subscription->getSubscriptionPlan()->getId() === $plan->getId()) {
-                $found = true;
-                break;
-            }
-        }
-
-        if (!$found) {
-            // Create a subscription for the customer on the specified plan
-            $subscription = new \BillaBear\Entity\Subscription();
-            $subscription->setCustomer($customer);
-            $subscription->setSubscriptionPlan($plan);
-            $subscription->setStatus(SubscriptionStatus::TRIAL_ACTIVE);
-            $subscription->setStartOfCurrentPeriod(new \DateTime());
-            $subscription->setValidUntil(new \DateTime('+30 days'));
-            $subscription->setCreatedAt(new \DateTime());
-            $subscription->setHasTrial(true);
-            $subscription->setTrialLengthDays(30);
-
-            $entityManager = $this->customerSubscriptionEventRepository->getEntityManager();
-            $entityManager->persist($subscription);
-            $entityManager->flush();
-
-            // Create a trial started event
-            $event = new CustomerSubscriptionEvent();
-            $event->setCustomer($customer);
-            $event->setSubscription($subscription);
-            $event->setEventType(CustomerSubscriptionEventType::TRIAL_STARTED);
-            $event->setCreatedAt(new \DateTime());
-
-            $entityManager->persist($event);
-            $entityManager->flush();
+        if (!$event) {
+            throw new \Exception(sprintf('No trial started event found for customer "%s" on plan "%s"', $customerEmail, $planName));
         }
     }
 
@@ -195,22 +175,19 @@ class EventsContext implements Context
     private function checkEventExistsForPlan(CustomerSubscriptionEventType $eventType, string $customerEmail, string $planName, bool $find = true)
     {
         $customer = $this->getCustomerByEmail($customerEmail);
-        $plan = $this->subscriptionPlanRepository->findOneBy(['name' => $planName]);
 
-        if (!$plan) {
-            throw new \Exception(sprintf('Subscription plan "%s" not found', $planName));
-        }
+        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
+            ->join('e.subscription', 's')
+            ->join('s.subscriptionPlan', 'p')
+            ->where('e.customer = :customer')
+            ->andWhere('e.eventType = :eventType')
+            ->andWhere('p.name = :planName')
+            ->setParameter('customer', $customer)
+            ->setParameter('eventType', $eventType)
+            ->setParameter('planName', $planName);
 
-        $events = $this->customerSubscriptionEventRepository->findBy(['customer' => $customer, 'eventType' => $eventType]);
-
-        $found = false;
-        foreach ($events as $event) {
-            $subscription = $event->getSubscription();
-            if ($subscription->getSubscriptionPlan()->getId() === $plan->getId()) {
-                $found = true;
-                break;
-            }
-        }
+        $event = $queryBuilder->getQuery()->getOneOrNullResult();
+        $found = null !== $event;
 
         if (!$found && $find) {
             throw new \Exception(sprintf('Event was not found for customer "%s" on plan "%s"', $customerEmail, $planName));
