@@ -10,12 +10,10 @@ namespace BillaBear\Tests\Behat\Subscriptions;
 
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use Behat\Step\Given;
 use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\CustomerSubscriptionEvent;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\CustomerSubscriptionEventRepository;
-use BillaBear\Repository\Orm\SubscriptionPlanRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
 
@@ -28,7 +26,6 @@ class EventsContext implements Context
         private Session $session,
         private CustomerRepository $customerRepository,
         private CustomerSubscriptionEventRepository $customerSubscriptionEventRepository,
-        private SubscriptionPlanRepository $subscriptionPlanRepository,
     ) {
     }
 
@@ -120,40 +117,6 @@ class EventsContext implements Context
         $this->checkEventExists(CustomerSubscriptionEventType::UPGRADED, $arg1);
     }
 
-    #[Given('there is not a trial started event for :arg1 on subscription plan :arg2')]
-    public function thereIsNotATrialStartedEventForOnSubscriptionPlan(string $customerEmail, string $planName): void
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
-            ->delete()
-            ->where('e.customer = :customer')
-            ->setParameter('customer', $customer);
-
-        $queryBuilder->getQuery()->execute();
-    }
-
-    #[Given('there is a trial started event for :arg1 on subscription plan :arg2')]
-    public function thereIsATrialStartedEventForOnSubscriptionPlan(string $customerEmail, string $planName): void
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
-            ->join('e.subscription', 's')
-            ->where('e.customer = :customer')
-            ->andWhere('e.eventType = :eventType')
-            ->andWhere('s.plan_name = :planName')
-            ->setParameter('customer', $customer)
-            ->setParameter('eventType', CustomerSubscriptionEventType::TRIAL_STARTED)
-            ->setParameter('planName', $planName);
-
-        $event = $queryBuilder->getQuery()->getOneOrNullResult();
-
-        if (!$event) {
-            throw new \Exception(sprintf('No trial started event found for customer "%s" on plan "%s"', $customerEmail, $planName));
-        }
-    }
-
     private function checkEventExists(CustomerSubscriptionEventType $eventType, string $customerEmail, bool $find = true)
     {
         $customer = $this->getCustomerByEmail($customerEmail);
@@ -164,29 +127,6 @@ class EventsContext implements Context
             throw new \Exception('Event was not found');
         } elseif ($event instanceof CustomerSubscriptionEvent && !$find) {
             throw new \Exception('Event was found');
-        }
-    }
-
-    private function checkEventExistsForPlan(CustomerSubscriptionEventType $eventType, string $customerEmail, string $planName, bool $find = true)
-    {
-        $customer = $this->getCustomerByEmail($customerEmail);
-
-        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
-            ->join('e.subscription', 's')
-            ->where('e.customer = :customer')
-            ->andWhere('e.eventType = :eventType')
-            ->andWhere('s.plan_name = :planName')
-            ->setParameter('customer', $customer)
-            ->setParameter('eventType', $eventType)
-            ->setParameter('planName', $planName);
-
-        $event = $queryBuilder->getQuery()->getOneOrNullResult();
-        $found = null !== $event;
-
-        if (!$found && $find) {
-            throw new \Exception(sprintf('Event was not found for customer "%s" on plan "%s"', $customerEmail, $planName));
-        } elseif ($found && !$find) {
-            throw new \Exception(sprintf('Event was found for customer "%s" on plan "%s"', $customerEmail, $planName));
         }
     }
 }

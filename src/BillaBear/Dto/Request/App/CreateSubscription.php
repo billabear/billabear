@@ -8,14 +8,12 @@
 
 namespace BillaBear\Dto\Request\App;
 
-use BillaBear\Validator\Constraints\CustomerEligibleForTrial;
 use BillaBear\Validator\Constraints\PaymentMethodExists;
 use BillaBear\Validator\Constraints\PriceExists;
 use BillaBear\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[CustomerEligibleForTrial]
 class CreateSubscription
 {
     #[Assert\NotBlank]

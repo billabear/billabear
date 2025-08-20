@@ -25,14 +25,12 @@ export const SUBSCRIPTION_PLAN_CREATE_TRANSLATIONS = {
         fields: {
             has_trial: "Has trial",
             is_trial_standalone: "Is Trial Standalone",
-            is_trial_limited_to_one_per_customer: "Limit to One Trial Per Customer",
             trial_length_days: "Trial Length in Days"
         },
         help_info: {
             has_trial: "If the plan has a trial period by default",
             trial_length_days: "How long the trial should be in days",
-            is_trial_standalone: "If a Trial is standalone it doesn't need a price and the subscription pauses at the end of the trial",
-            is_trial_limited_to_one_per_customer: "If enabled, customers can only use this trial once, preventing multiple trial subscriptions"
+            is_trial_standalone: "If a Trial is standalone it doesn't need a price and the subscription pauses at the end of the trial"
         }
     },
     features_section: {
