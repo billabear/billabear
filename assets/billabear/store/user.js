@@ -3,7 +3,7 @@ import {userservice} from "../services/userservice";
 import axios from "axios";
 
 const rawUserData = localStorage.getItem('user');
-var userData;
+let userData;
 try {
      userData = JSON.parse(rawUserData);
 } catch (e) {
