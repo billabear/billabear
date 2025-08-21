@@ -113,12 +113,12 @@ export default {
 
     var queryVals = this.buildFilterQuery();
     this.$router.push({query: queryVals})
-    this.doStuff();
+    this.loadCancellationRequests();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadCancellationRequests()
     }
   },
   methods: {
@@ -191,7 +191,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadCancellationRequests: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

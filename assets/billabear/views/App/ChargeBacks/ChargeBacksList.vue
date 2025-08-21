@@ -92,12 +92,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadChargeBacks();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadChargeBacks()
     }
   },
   methods: {
@@ -164,7 +164,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadChargeBacks: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';
