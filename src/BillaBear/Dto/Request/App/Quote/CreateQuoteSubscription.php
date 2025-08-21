@@ -8,13 +8,11 @@
 
 namespace BillaBear\Dto\Request\App\Quote;
 
-use BillaBear\Validator\Constraints\CustomerEligibleForTrial;
 use BillaBear\Validator\Constraints\PriceExists;
 use BillaBear\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[CustomerEligibleForTrial]
 class CreateQuoteSubscription
 {
     #[Assert\NotBlank]

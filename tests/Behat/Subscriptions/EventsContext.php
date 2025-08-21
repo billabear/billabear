@@ -142,7 +142,7 @@ class EventsContext implements Context
             ->join('e.subscription', 's')
             ->where('e.customer = :customer')
             ->andWhere('e.eventType = :eventType')
-            ->andWhere('s.plan_name = :planName')
+            ->andWhere('s.planName = :planName')
             ->setParameter('customer', $customer)
             ->setParameter('eventType', CustomerSubscriptionEventType::TRIAL_STARTED)
             ->setParameter('planName', $planName);
@@ -175,7 +175,7 @@ class EventsContext implements Context
             ->join('e.subscription', 's')
             ->where('e.customer = :customer')
             ->andWhere('e.eventType = :eventType')
-            ->andWhere('s.plan_name = :planName')
+            ->andWhere('s.planName = :planName')
             ->setParameter('customer', $customer)
             ->setParameter('eventType', $eventType)
             ->setParameter('planName', $planName);
