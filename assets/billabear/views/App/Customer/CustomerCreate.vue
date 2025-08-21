@@ -284,7 +284,7 @@ export default {
             this.success = true;
             this.customerAdded();
 
-            var id = response.data.id;
+            const id = response.data.id;
             this.$router.push({name: 'app.customer.view', params: {id: id}})
           }
       ).catch(error => {

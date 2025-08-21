@@ -49,8 +49,8 @@ const mutations = {
         state.paymentDetails = paymentDetails;
     },
     removedCard(state, paymentDetail) {
-        var newArray = [];
-        for (var i =0; i < state.paymentDetails.length; i++) {
+        const newArray = [];
+        for (let i =0; i < state.paymentDetails.length; i++) {
             if (state.paymentDetails[i].id !== paymentDetail.id) {
                 newArray.push(state.paymentDetails[i])
             }
@@ -58,7 +58,7 @@ const mutations = {
         state.paymentDetails = newArray;
     },
     removeDefaultFromAllCards(state) {
-        for (var i =0; i < state.paymentDetails.length; i++) {
+        for (let i =0; i < state.paymentDetails.length; i++) {
             state.paymentDetails[i].defaultPaymentOption = false;
         }
     },
