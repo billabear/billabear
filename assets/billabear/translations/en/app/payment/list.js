@@ -5,6 +5,8 @@ export const PAYMENT_LIST_TRANSLATIONS = {
     create_new: "Create",
     next: "Next Page",
     prev: "Previous Page",
+    view_btn: "View",
+    loading: "Loading...",
     list: {
       amount: "Amount",
       currency: "Currency",

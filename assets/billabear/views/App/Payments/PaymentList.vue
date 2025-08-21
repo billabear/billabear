@@ -92,7 +92,7 @@ export default {
       per_page: "10",
       filters: {
         email: {
-          label: 'app.customer.list.filter.email',
+          label: 'app.payment.list.filter.email',
           type: 'text',
           value: null
         },
