@@ -25,7 +25,7 @@ const TRANSLATIONS = {
     nl: DUTCH_TRANSLATIONS,
     it: ITALIAN_TRANSLATIONS,
 };
-function getBrowserLocale(options = {}) {
+const getBrowserLocale = (options = {}) => {
     const defaultOptions = { countryCodeOnly: false };
     const opt = { ...defaultOptions, ...options };
 
@@ -42,7 +42,7 @@ function getBrowserLocale(options = {}) {
         : navigatorLocale.trim();
 
     return trimmedLocale;
-}
+};
 
 const browserLocale = getBrowserLocale({ countryCodeOnly: true });
 
@@ -53,7 +53,7 @@ const i18n = createI18n({
     fallbackLocale: ['en']
 });
 
-var app = createApp(
+const app = createApp(
     App
 );
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import {handleResponse} from "./utils";
 
-function invite(email) {
+const invite = (email) => {
     return axios.post("/app/user/team/invite", {email})
         .then((response) => {
             const origResponse = response;
@@ -29,9 +29,9 @@ function invite(email) {
 
             return response;
     });
-}
+};
 
-function getTeam() {
+const getTeam = () => {
     return axios.get("/app/user/team")
         .then(handleResponse)
         .then((result) => {
@@ -40,15 +40,15 @@ function getTeam() {
                 members: result.data.members,
             };
         });
-}
+};
 
-function cancelInvite(invite) {
-    return axios.post("/app/user/team/invite/"+invite.id+"/cancel").then(handleResponse);
-}
+const cancelInvite = (invite) => {
+    return axios.post(`/app/user/team/invite/${invite.id}/cancel`).then(handleResponse);
+};
 
-function disableMember(member) {
-    return axios.post("/app/user/team/member/"+member.id+"/disable").then(handleResponse);
-}
+const disableMember = (member) => {
+    return axios.post(`/app/user/team/member/${member.id}/disable`).then(handleResponse);
+};
 
 export const teamservice = {
     invite,
