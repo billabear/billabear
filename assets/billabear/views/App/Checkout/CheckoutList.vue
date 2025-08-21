@@ -103,12 +103,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadCheckouts();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadCheckouts()
     }
   },
   methods: {
@@ -174,7 +174,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadCheckouts: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

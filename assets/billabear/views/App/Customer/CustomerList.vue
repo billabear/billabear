@@ -124,12 +124,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadCustomers();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadCustomers()
     }
   },
   methods: {
@@ -185,7 +185,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadCustomers: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

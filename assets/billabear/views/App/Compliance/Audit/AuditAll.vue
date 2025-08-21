@@ -33,12 +33,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadAuditEntries();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadAuditEntries()
     }
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadAuditEntries: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

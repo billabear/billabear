@@ -100,12 +100,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadPayments();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadPayments()
     }
   },
   methods: {
@@ -171,7 +171,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadPayments: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

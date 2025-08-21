@@ -125,12 +125,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadTeamUsers();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadTeamUsers()
     }
   },
   methods: {
@@ -203,7 +203,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadTeamUsers: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

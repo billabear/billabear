@@ -115,12 +115,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadVouchers();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadVouchers()
     }
   },
   methods: {
@@ -184,7 +184,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadVouchers: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

@@ -96,12 +96,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadMassChanges();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadMassChanges()
     }
   },
   methods: {
@@ -165,7 +165,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadMassChanges: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

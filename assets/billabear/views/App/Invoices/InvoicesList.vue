@@ -113,12 +113,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadInvoices();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadInvoices()
     }
   },
   methods: {
@@ -185,7 +185,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadInvoices: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

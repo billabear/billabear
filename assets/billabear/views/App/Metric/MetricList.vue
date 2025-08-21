@@ -102,12 +102,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadMetrics();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadMetrics()
     }
   },
   methods: {
@@ -174,7 +174,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function () {
+    loadMetrics: function () {
       this.syncQueryToFilters();
       var mode = 'normal';
       let urlString = '/app/metric/list?';

@@ -109,12 +109,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadSlackNotifications();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadSlackNotifications()
     }
   },
   methods: {
@@ -188,7 +188,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadSlackNotifications: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

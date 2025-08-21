@@ -104,12 +104,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadTaxTypes();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadTaxTypes()
     }
   },
   methods: {
@@ -182,7 +182,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadTaxTypes: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

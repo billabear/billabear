@@ -95,12 +95,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadSlackWebhooks();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadSlackWebhooks()
     }
   },
   methods: {
@@ -167,7 +167,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadSlackWebhooks: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

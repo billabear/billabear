@@ -121,12 +121,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadCountries();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadCountries()
     }
   },
   methods: {
@@ -192,7 +192,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadCountries: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

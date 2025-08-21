@@ -97,12 +97,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadFeatures();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadFeatures()
     }
   },
   methods: {
@@ -166,7 +166,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadFeatures: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';
