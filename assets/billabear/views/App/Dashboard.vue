@@ -329,7 +329,7 @@ export default {
       'show_onboarding'
     ]),
     canSeeStats: function(){
-      var data;
+      let data;
       try {
         data = JSON.parse(localStorage.getItem('user'))
       } catch (e) {
@@ -354,7 +354,7 @@ export default {
 
       let that = this;
       setTimeout(function() {
-        var data;
+        let data;
 
         if (orgChart === 'subscriptions') {
           data = that.responseData.subscription_count;
@@ -378,11 +378,11 @@ export default {
       this.payments = this.responseData.latest_payments;
     },
     convertStatToChartData: function (input) {
-      var categories = []
-      var values = []
-      var counter = 0;
+      const categories = []
+      const values = []
+      let counter = 0;
       for (const [brand, subInput] of Object.entries(input)) {
-        var subValues = [];
+        const subValues = [];
         counter++;
         for (const [key, value] of Object.entries(subInput)) {
           if (counter === 1) {
@@ -396,13 +396,13 @@ export default {
     },
 
     convertMoneyToChartData: function (input) {
-      var categories = []
-      var values = []
-      var currencies = [];
-      var counter = 0;
+      const categories = []
+      const values = []
+      const currencies = [];
+      let counter = 0;
       for (const [brand, subInput] of Object.entries(input)) {
         counter++;
-        var subValues = {};
+        const subValues = {};
         for (const [date, subSubInput] of Object.entries(subInput)) {
           if (counter === 1) {
             categories.push(date)
