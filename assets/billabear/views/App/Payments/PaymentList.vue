@@ -25,7 +25,7 @@
               <td class="py-3" v-if="payment.customer == null || payment.customer == undefined">N/A</td>
               <td class="py-3" v-else>{{ payment.customer.email }}</td>
               <td class="py-3">{{ $filters.moment(payment.created_at, 'lll') }}</td>
-              <td class="py-3"><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">View</router-link></td>
+              <td class="py-3"><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="list-btn">{{ $t('app.payment.list.view_btn') }}</router-link></td>
             </tr>
             <tr v-if="payments.length === 0">
               <td colspan="5" class="py-3 text-center">{{ $t('app.payment.list.no_payments') }}</td>
@@ -73,7 +73,7 @@ import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
-  name: "CustomerList.vue",
+  name: "PaymentList.vue",
   components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp},
   data() {
     return {
