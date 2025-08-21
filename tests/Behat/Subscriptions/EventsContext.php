@@ -13,11 +13,14 @@ use Behat\Mink\Session;
 use Behat\Step\Given;
 use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\CustomerSubscriptionEvent;
+use BillaBear\Entity\Subscription;
 use BillaBear\Repository\Orm\CustomerRepository;
 use BillaBear\Repository\Orm\CustomerSubscriptionEventRepository;
 use BillaBear\Repository\Orm\SubscriptionPlanRepository;
+use BillaBear\Repository\Orm\SubscriptionRepository;
 use BillaBear\Tests\Behat\Customers\CustomerTrait;
 use BillaBear\Tests\Behat\SendRequestTrait;
+use Parthenon\Billing\Enum\SubscriptionStatus;
 
 class EventsContext implements Context
 {
@@ -29,6 +32,7 @@ class EventsContext implements Context
         private CustomerRepository $customerRepository,
         private CustomerSubscriptionEventRepository $customerSubscriptionEventRepository,
         private SubscriptionPlanRepository $subscriptionPlanRepository,
+        private SubscriptionRepository $subscriptionRepository,
     ) {
     }
 
@@ -137,21 +141,63 @@ class EventsContext implements Context
     public function thereIsATrialStartedEventForOnSubscriptionPlan(string $customerEmail, string $planName): void
     {
         $customer = $this->getCustomerByEmail($customerEmail);
+        $subscriptionPlan = $this->subscriptionPlanRepository->findOneBy(['name' => $planName]);
 
-        $queryBuilder = $this->customerSubscriptionEventRepository->createQueryBuilder('e')
-            ->join('e.subscription', 's')
-            ->where('e.customer = :customer')
-            ->andWhere('e.eventType = :eventType')
-            ->andWhere('s.planName = :planName')
-            ->setParameter('customer', $customer)
-            ->setParameter('eventType', CustomerSubscriptionEventType::TRIAL_STARTED)
-            ->setParameter('planName', $planName);
-
-        $event = $queryBuilder->getQuery()->getOneOrNullResult();
-
-        if (!$event) {
-            throw new \Exception(sprintf('No trial started event found for customer "%s" on plan "%s"', $customerEmail, $planName));
+        if (!$subscriptionPlan) {
+            throw new \Exception(sprintf('Subscription plan "%s" not found', $planName));
         }
+
+        // Try to find an existing subscription for this customer and plan
+        $subscription = $this->subscriptionRepository->findOneBy([
+            'customer' => $customer,
+            'subscriptionPlan' => $subscriptionPlan,
+        ]);
+
+        // If no subscription exists, create a minimal one for the event with a temporary customer
+        if (!$subscription) {
+            // Create a temporary customer to avoid interfering with the test
+            $tempCustomer = new \BillaBear\Entity\Customer();
+            $tempCustomer->setBillingEmail('temp-trial-event-'.uniqid().'@example.com');
+            $tempCustomer->setReference('temp-ref-'.uniqid());
+            $tempCustomer->setExternalCustomerReference('temp-ext-ref-'.uniqid());
+            $tempCustomer->setBillingType(\BillaBear\Entity\Customer::BILLING_TYPE_CARD);
+            $tempCustomer->setType(\BillaBear\Customer\CustomerType::INDIVIDUAL);
+            $tempCustomer->setStatus(\BillaBear\Customer\CustomerStatus::ACTIVE);
+            $tempCustomer->setBrand('default');
+            $tempCustomer->setLocale('en');
+            $tempCustomer->setCreatedAt(new \DateTime('-30 days'));
+
+            $this->customerRepository->getEntityManager()->persist($tempCustomer);
+            $this->customerRepository->getEntityManager()->flush();
+
+            $subscription = new Subscription();
+            $subscription->setCustomer($tempCustomer);
+            $subscription->setSubscriptionPlan($subscriptionPlan);
+            $subscription->setPlanName($subscriptionPlan->getName());
+            $subscription->setStatus(SubscriptionStatus::CANCELLED);
+            $subscription->setActive(false);
+            $subscription->setCreatedAt(new \DateTime('-30 days'));
+            $subscription->setUpdatedAt(new \DateTime('-30 days'));
+            $subscription->setEndedAt(new \DateTime('-29 days'));
+            $subscription->setMainExternalReference('test-ref-'.uniqid());
+            $subscription->setMainExternalReferenceDetailsUrl('test-url');
+            $subscription->setChildExternalReference('test-child-ref');
+
+            // Persist the subscription
+            $this->subscriptionRepository->getEntityManager()->persist($subscription);
+            $this->subscriptionRepository->getEntityManager()->flush();
+        }
+
+        // Create the trial started event
+        $event = new CustomerSubscriptionEvent();
+        $event->setCustomer($customer);
+        $event->setSubscription($subscription);
+        $event->setEventType(CustomerSubscriptionEventType::TRIAL_STARTED);
+        $event->setCreatedAt(new \DateTime('-30 days')); // Set in the past to simulate a previous trial
+
+        // Save the event
+        $this->customerSubscriptionEventRepository->getEntityManager()->persist($event);
+        $this->customerSubscriptionEventRepository->getEntityManager()->flush();
     }
 
     private function checkEventExists(CustomerSubscriptionEventType $eventType, string $customerEmail, bool $find = true)
