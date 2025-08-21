@@ -139,6 +139,12 @@ class CustomerSubscriptionController
         } else {
             $subscriptionPlan = $subscriptionPlanRepository->getByCodeName($planIdentifier);
         }
+
+        // Check if customer is eligible for trial
+        if (!$trialManager->canCustomerHaveTrial($customer, $subscriptionPlan)) {
+            return new JsonResponse(['error' => 'Customer has already used a trial for this subscription plan'], Response::HTTP_BAD_REQUEST);
+        }
+
         $subscription = $trialManager->startTrial($customer, $subscriptionPlan, $dto->getSeatNumber(), $dto->getTrialLengthDays());
 
         $subscriptionDto = $subscriptionFactory->createApiDto($subscription);

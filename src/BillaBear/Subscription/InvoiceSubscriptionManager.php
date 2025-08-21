@@ -68,7 +68,14 @@ class InvoiceSubscriptionManager implements SubscriptionManagerInterface
         $subscription = $this->subscriptionFactory->create($customer, $plan, $planPrice, $paymentDetails, $seatNumbers, $hasTrial, $trialLengthDays);
 
         if ($subscription->isHasTrial()) {
-            $this->trialManager->startTrialProcess($subscription);
+            // Check if customer is eligible for trial - if not, silently skip trial
+            if ($this->trialManager->canCustomerHaveTrial($customer, $plan)) {
+                $this->trialManager->startTrialProcess($subscription);
+            } else {
+                // Customer has already used a trial for this plan, remove trial from subscription
+                $subscription->setHasTrial(false);
+                $subscription->setTrialLengthDays(null);
+            }
         }
 
         try {

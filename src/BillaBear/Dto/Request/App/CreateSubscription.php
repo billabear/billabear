@@ -14,97 +14,40 @@ use BillaBear\Validator\Constraints\SubscriptionPlanExists;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateSubscription
+readonly class CreateSubscription
 {
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[SerializedName('subscription_plan')]
-    #[SubscriptionPlanExists]
-    private $subscriptionPlan;
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Type('string')]
+        #[SerializedName('subscription_plan')]
+        #[SubscriptionPlanExists]
+        public string $subscriptionPlan,
 
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[PriceExists]
-    #[SerializedName('price')]
-    private $price;
+        #[Assert\NotBlank]
+        #[Assert\Type('string')]
+        #[PriceExists]
+        #[SerializedName('price')]
+        public string $price,
 
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Type('string')]
-    #[PaymentMethodExists]
-    #[SerializedName('payment_details')]
-    private $paymentDetails;
+        #[Assert\NotBlank(allowNull: true)]
+        #[Assert\Type('string')]
+        #[PaymentMethodExists]
+        #[SerializedName('payment_details')]
+        public ?string $paymentDetails = null,
 
-    #[Assert\Positive]
-    #[Assert\Type('integer')]
-    #[SerializedName('seat_number')]
-    private $seatNumber = 1;
+        #[Assert\Positive]
+        #[Assert\Type('integer')]
+        #[SerializedName('seat_number')]
+        public int $seatNumber = 1,
 
-    #[Assert\Type('boolean')]
-    #[SerializedName('has_trial')]
-    private $hasTrial;
+        #[Assert\Type('boolean')]
+        #[SerializedName('has_trial')]
+        public ?bool $hasTrial = null,
 
-    #[Assert\PositiveOrZero]
-    #[Assert\Type('integer')]
-    #[SerializedName('trial_length_days')]
-    private $trialLengthDays;
-
-    public function getSubscriptionPlan()
-    {
-        return $this->subscriptionPlan;
-    }
-
-    public function setSubscriptionPlan($subscriptionPlan): void
-    {
-        $this->subscriptionPlan = $subscriptionPlan;
-    }
-
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    public function setPrice($price): void
-    {
-        $this->price = $price;
-    }
-
-    public function getPaymentDetails()
-    {
-        return $this->paymentDetails;
-    }
-
-    public function setPaymentDetails($paymentDetails): void
-    {
-        $this->paymentDetails = $paymentDetails;
-    }
-
-    public function getSeatNumber(): int
-    {
-        return $this->seatNumber;
-    }
-
-    public function setSeatNumber(int $seatNumber): void
-    {
-        $this->seatNumber = $seatNumber;
-    }
-
-    public function getHasTrial()
-    {
-        return $this->hasTrial;
-    }
-
-    public function setHasTrial($hasTrial): void
-    {
-        $this->hasTrial = $hasTrial;
-    }
-
-    public function getTrialLengthDays()
-    {
-        return $this->trialLengthDays;
-    }
-
-    public function setTrialLengthDays($trialLengthDays): void
-    {
-        $this->trialLengthDays = $trialLengthDays;
+        #[Assert\PositiveOrZero]
+        #[Assert\Type('integer')]
+        #[SerializedName('trial_length_days')]
+        public ?int $trialLengthDays = null,
+    ) {
     }
 }

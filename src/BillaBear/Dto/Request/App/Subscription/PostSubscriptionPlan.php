@@ -71,6 +71,10 @@ class PostSubscriptionPlan
     #[SerializedName('is_trial_standalone')]
     protected $isTrialStandalone;
 
+    #[Assert\Type('boolean')]
+    #[SerializedName('is_trial_limited_to_one_per_customer')]
+    protected $isTrialLimitedToOnePerCustomer;
+
     public function getName()
     {
         return $this->name;
@@ -204,5 +208,15 @@ class PostSubscriptionPlan
     public function setIsTrialStandalone($isTrialStandalone): void
     {
         $this->isTrialStandalone = $isTrialStandalone;
+    }
+
+    public function getIsTrialLimitedToOnePerCustomer()
+    {
+        return true === $this->isTrialLimitedToOnePerCustomer;
+    }
+
+    public function setIsTrialLimitedToOnePerCustomer($isTrialLimitedToOnePerCustomer): void
+    {
+        $this->isTrialLimitedToOnePerCustomer = $isTrialLimitedToOnePerCustomer;
     }
 }

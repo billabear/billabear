@@ -1,16 +1,6 @@
 import axios from "axios";
 import {handleResponse} from "./utils";
 
-export const planservice = {
-    fetchPlanInfo,
-    createCheckout,
-    createPerSeatCheckout,
-    changePlan,
-    cancel,
-    startSubscriptionFromPaymentDetails
-};
-
-
 function fetchPlanInfo() {
     return axios.get(`/app/billing/plans`, {
         headers: {'Content-Type': 'application/json'},
@@ -24,7 +14,7 @@ function startSubscriptionFromPaymentDetails(planName, paymentSchedule, currency
         schedule: paymentSchedule,
         currency: currency,
         seat_numbers: numberOfSeats,
-    })
+    }).then(handleResponse);
 }
 
 function createCheckout(planName, paymentSchedule, currency) {
@@ -49,3 +39,12 @@ function changePlan(planName, paymentSchedule) {
 function cancel() {
     return axios.post(`/app/billing/cancel`, {}).then(handleResponse);
 }
+
+export const planservice = {
+    fetchPlanInfo,
+    createCheckout,
+    createPerSeatCheckout,
+    changePlan,
+    cancel,
+    startSubscriptionFromPaymentDetails
+};
