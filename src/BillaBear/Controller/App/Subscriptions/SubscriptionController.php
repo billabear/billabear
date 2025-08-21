@@ -167,15 +167,15 @@ class SubscriptionController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->subscriptionPlan);
+        $subscriptionPlan = $subscriptionPlanRepository->findById($dto->getSubscriptionPlan());
         $paymentDetails = null;
-        if ($dto->paymentDetails) {
-            $paymentDetails = $paymentDetailsRepository->findById($dto->paymentDetails);
+        if ($dto->getPaymentDetails()) {
+            $paymentDetails = $paymentDetailsRepository->findById($dto->getPaymentDetails());
         }
-        $price = $priceRepository->findById($dto->price);
+        $price = $priceRepository->findById($dto->getPrice());
         $transactionManager->start();
         try {
-            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->seatNumber, $dto->hasTrial, $dto->trialLengthDays);
+            $subscription = $subscriptionManager->startSubscription($customer, $subscriptionPlan, $price, $paymentDetails, $dto->getSeatNumber(), $dto->getHasTrial(), $dto->getTrialLengthDays());
         } catch (\Throwable $e) {
             $transactionManager->abort();
             throw $e;

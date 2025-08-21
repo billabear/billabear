@@ -17,7 +17,6 @@ use BillaBear\Entity\Processes\TrialStartedProcess;
 use BillaBear\Entity\Subscription;
 use BillaBear\Entity\SubscriptionPlan;
 use BillaBear\Repository\CustomerRepositoryInterface;
-use BillaBear\Repository\CustomerSubscriptionEventRepositoryInterface;
 use BillaBear\Repository\Processes\TrialEndedProcessRepositoryInterface;
 use BillaBear\Repository\Processes\TrialStartedProcessRepositoryInterface;
 use BillaBear\Repository\SubscriptionRepositoryInterface;
@@ -40,7 +39,6 @@ class TrialManager
         private TrialExtendedProcessor $trialExtendProcessor,
         private TrialStartedProcessRepositoryInterface $trialStartedProcessRepository,
         private CustomerRepositoryInterface $customerRepository,
-        private CustomerSubscriptionEventRepositoryInterface $customerSubscriptionEventRepository,
     ) {
     }
 
@@ -113,16 +111,5 @@ class TrialManager
         $this->trialEndedProcessRepository->save($process);
 
         $this->trialEndedProcessor->process($process);
-    }
-
-    public function canCustomerHaveTrial(Customer $customer, SubscriptionPlan $subscriptionPlan): bool
-    {
-        // Check if the subscription plan has the "One Per Customer" flag set
-        if (!$subscriptionPlan->getIsOnePerCustomer()) {
-            return true; // No restriction, customer can have trial
-        }
-
-        // Check if the customer has already used a trial for this subscription plan
-        return !$this->customerSubscriptionEventRepository->hasTrialStartedEventForCustomerAndPlan($customer, $subscriptionPlan);
     }
 }

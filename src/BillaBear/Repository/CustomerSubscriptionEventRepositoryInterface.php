@@ -11,7 +11,6 @@ namespace BillaBear\Repository;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\CustomerSubscriptionEvent;
 use BillaBear\Entity\Subscription;
-use BillaBear\Entity\SubscriptionPlan;
 use Parthenon\Athena\Repository\CrudRepositoryInterface;
 
 interface CustomerSubscriptionEventRepositoryInterface extends CrudRepositoryInterface
@@ -32,6 +31,4 @@ interface CustomerSubscriptionEventRepositoryInterface extends CrudRepositoryInt
     public function getAllForSubscription(Subscription $subscription): array;
 
     public function getLatest(int $limit = 10): array;
-
-    public function hasTrialStartedEventForCustomerAndPlan(Customer $customer, SubscriptionPlan $subscriptionPlan): bool;
 }

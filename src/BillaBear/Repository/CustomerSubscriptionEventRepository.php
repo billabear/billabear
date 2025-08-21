@@ -8,10 +8,8 @@
 
 namespace BillaBear\Repository;
 
-use BillaBear\Customer\CustomerSubscriptionEventType;
 use BillaBear\Entity\Customer;
 use BillaBear\Entity\Subscription;
-use BillaBear\Entity\SubscriptionPlan;
 use Parthenon\Athena\Repository\DoctrineCrudRepository;
 
 class CustomerSubscriptionEventRepository extends DoctrineCrudRepository implements CustomerSubscriptionEventRepositoryInterface
@@ -34,22 +32,5 @@ class CustomerSubscriptionEventRepository extends DoctrineCrudRepository impleme
     public function getLatest(int $limit = 10): array
     {
         return $this->entityRepository->findBy([], ['createdAt' => 'DESC'], $limit);
-    }
-
-    public function hasTrialStartedEventForCustomerAndPlan(Customer $customer, SubscriptionPlan $subscriptionPlan): bool
-    {
-        $events = $this->entityRepository->findBy([
-            'customer' => $customer,
-            'eventType' => CustomerSubscriptionEventType::TRIAL_STARTED,
-        ]);
-
-        foreach ($events as $event) {
-            $subscription = $event->getSubscription();
-            if ($subscription && $subscription->getSubscriptionPlan()->getId() === $subscriptionPlan->getId()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
