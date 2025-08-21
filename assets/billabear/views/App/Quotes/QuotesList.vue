@@ -108,12 +108,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadQuotes();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadQuotes()
     }
   },
   methods: {
@@ -180,7 +180,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadQuotes: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

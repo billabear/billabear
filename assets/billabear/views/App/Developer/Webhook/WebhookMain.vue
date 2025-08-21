@@ -83,12 +83,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadWebhooks();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadWebhooks()
     }
   },
   methods: {
@@ -152,7 +152,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadWebhooks: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

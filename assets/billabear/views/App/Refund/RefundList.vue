@@ -97,12 +97,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadRefunds();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadRefunds()
     }
   },
   methods: {
@@ -169,7 +169,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadRefunds: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

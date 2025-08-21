@@ -117,12 +117,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadUnpaidInvoices();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadUnpaidInvoices()
     }
   },
   methods: {
@@ -207,7 +207,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadUnpaidInvoices: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

@@ -89,12 +89,12 @@ export default {
 
     var queryVals = this.buildFilterQuery();
     this.$router.push({query: queryVals})
-    this.doStuff();
+    this.loadPaymentFailureProcesses();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadPaymentFailureProcesses()
     }
   },
   methods: {
@@ -158,7 +158,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadPaymentFailureProcesses: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';

@@ -133,12 +133,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadSubscriptions();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadSubscriptions()
     }
   },
   methods: {
@@ -202,7 +202,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function () {
+    loadSubscriptions: function () {
       this.syncQueryToFilters();
       var mode = 'normal';
       let urlString = '/app/subscription?';

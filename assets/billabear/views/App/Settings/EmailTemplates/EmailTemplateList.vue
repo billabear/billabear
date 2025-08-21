@@ -88,12 +88,12 @@ export default {
     }
   },
   mounted() {
-    this.doStuff();
+    this.loadEmailTemplates();
 
   },
   watch: {
     '$route.query': function (id) {
-      this.doStuff()
+      this.loadEmailTemplates()
     }
   },
   methods: {
@@ -157,7 +157,7 @@ export default {
 
       this.$router.push({query: queryVals});
     },
-    doStuff: function ()
+    loadEmailTemplates: function ()
     {
       this.syncQueryToFilters();
       var mode = 'normal';
