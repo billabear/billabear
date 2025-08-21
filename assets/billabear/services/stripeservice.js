@@ -1,18 +1,18 @@
 function redirectToCheckout(apiKey, sessionId) {
     addJs();
-    setTimeout(function () {
+    setTimeout(() => {
 
-        var stripe = Stripe(apiKey);
+        const stripe = Stripe(apiKey);
         return stripe.redirectToCheckout({sessionId: sessionId});
     }, 500);
 }
 
 function getCardToken(stripe, client_secret) {
-    var elements = stripe.elements({
+    const elements = stripe.elements({
         clientSecret: client_secret,
     });
 
-    var card = elements.create('card', {
+    const card = elements.create('card', {
         iconStyle: 'solid',
         style: {
             base: {
@@ -39,7 +39,7 @@ function getCardToken(stripe, client_secret) {
     card.mount("#cardInput");
 
     const cardElement = document.querySelector('.StripeElement');
-    card.on("change", function (event) {
+    card.on("change", (event) => {
         // Disable the Pay button if there are no card details in the Element
         document.querySelector(".btn--main").disabled = event.empty;
         document.querySelector("#cardError").textContent = event.error ? event.error.message : "";

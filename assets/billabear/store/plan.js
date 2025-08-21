@@ -15,7 +15,7 @@ const state = {
 const actions = {
     fetchSubscriptionPlan({commit}, {productId, subscriptionPlanId}) {
         return new Promise((resolve, reject) => {
-            axios.get('/app/product/'+productId+'/plan/'+subscriptionPlanId+'/update').then(response => {
+            axios.get(`/app/product/${productId}/plan/${subscriptionPlanId}/update`).then(response => {
                 commit('setSubscriptionPlanData', response.data);
                 resolve(response);
             }).catch(error => {
@@ -25,7 +25,7 @@ const actions = {
     },
     fetchData({commit}, {productId}) {
         return new Promise((resolve, reject) => {
-            axios.get('/app/product/'+productId+'/plan-creation').then(response => {
+            axios.get(`/app/product/${productId}/plan-creation`).then(response => {
                 commit('setData', response.data);
                 resolve(response);
             }).catch(error => {
@@ -74,7 +74,7 @@ const actions = {
     createPrice({commit}, {productId, price}) {
         commit('markAsSendingRequest')
         return new Promise((resolve, reject) => {
-            axios.post('/app/product/' + productId + '/price', price).then(
+            axios.post(`/app/product/${productId}/price`, price).then(
                 response => {
                     commit('addNewPrice', response.data);
                     resolve(response);

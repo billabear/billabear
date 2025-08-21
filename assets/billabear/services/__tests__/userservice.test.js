@@ -5,14 +5,14 @@ import MockAdapter from "axios-mock-adapter";
 import {afterEach, beforeAll, describe, expect, it} from 'vitest'
 
 // This sets the mock adapter on the default instance
-var mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 describe("userService", () => {
     let mock;
 
     beforeAll(() => {
         mock = new MockAdapter(axios);
-        axios.defaults.validateStatus = function () {
+        axios.defaults.validateStatus = () => {
             return true;
         };
     });
@@ -86,29 +86,29 @@ describe("userService", () => {
     describe("When doing confirm email", () => {
         it("Should return response if successful", async () => {
 
-            var code = "a-random-code";
+            const code = "a-random-code";
 
-            mock.onGet(`/app/user/confirm/`+code).reply(200, {success: true});
+            mock.onGet(`/app/user/confirm/${code}`).reply(200, {success: true});
 
             // when
             const result = await userservice.confirmEmail(code)
 
             // then
-            expect(mock.history.get[0].url).toEqual(`/app/user/confirm/`+code);
+            expect(mock.history.get[0].url).toEqual(`/app/user/confirm/${code}`);
             expect(result.data).toEqual({success: true});
         });
 
         it("Should return error", async () => {
 
-            var code = "a-random-code";
+            const code = "a-random-code";
 
-            mock.onGet(`/app/user/confirm/`+code).reply(400, {success: false, error: "Invalid code"});
+            mock.onGet(`/app/user/confirm/${code}`).reply(400, {success: false, error: "Invalid code"});
 
             try {
                 await  userservice.confirmEmail(code);
                 fail("Didn't throw error")
             } catch (error) {
-                expect(mock.history.get[0].url).toEqual(`/app/user/confirm/`+code);
+                expect(mock.history.get[0].url).toEqual(`/app/user/confirm/${code}`);
                 expect(error).toEqual("Invalid code");
 
             }
@@ -118,7 +118,7 @@ describe("userService", () => {
     describe("When doing reset password check", () => {
         it("Should return response if successful", async () => {
 
-            var code = "a-random-code";
+            const code = "a-random-code";
 
             mock.onGet(`/app/user/reset/`+code).reply(200, {success: true});
 
@@ -132,7 +132,7 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var code = "a-random-code";
+            const code = "a-random-code";
 
             mock.onGet(`/app/user/reset/`+code).reply(400, {success: false, error: "Invalid code"});
 
@@ -150,8 +150,8 @@ describe("userService", () => {
     describe("When sending the new password during the reset password", () => {
         it("Should return response if successful", async () => {
 
-            var code = "a-random-code";
-            var newPassword = "a-new-password";
+            const code = "a-random-code";
+            const newPassword = "a-new-password";
             mock.onPost(`/app/user/reset/`+code, {password: newPassword}).reply(200, {success: true});
 
             // when
@@ -164,8 +164,8 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var code = "a-random-code";
-            var newPassword = "a-new-password";
+            const code = "a-random-code";
+            const newPassword = "a-new-password";
 
             mock.onPost(`/app/user/reset/`+code, {password: newPassword}).reply(400, {success: false, error: "Invalid code"});
 
@@ -183,8 +183,8 @@ describe("userService", () => {
     describe("Change Password", () => {
         it("Should return response if successful", async () => {
 
-            var password = "a-random-password";
-            var new_password = "new.password";
+            const password = "a-random-password";
+            const new_password = "new.password";
             mock.onPost(`/app/user/password`, {password, new_password}).reply(200, {success: true});
 
             // when
@@ -197,8 +197,8 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var password = "a-random-password";
-            var new_password = "new.password";
+            const password = "a-random-password";
+            const new_password = "new.password";
             mock.onPost(`/app/user/password`, {password, new_password}).reply(400, {success: false, error: "Invalid code"});
 
             try {
@@ -215,8 +215,8 @@ describe("userService", () => {
     describe("User Invite", () => {
         it("Should return response if successful", async () => {
 
-            var code = "a-random-code";
-            var email = "iain.cambridge@example.org";
+            const code = "a-random-code";
+            const email = "iain.cambridge@example.org";
             mock.onPost(`/app/user/invite`, {email}).reply(200, {success: true});
 
             // when
@@ -229,8 +229,8 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var code = "a-random-code";
-            var email = "iain.cambridge@example.org";
+            const code = "a-random-code";
+            const email = "iain.cambridge@example.org";
 
             mock.onPost(`/app/user/invite`, {email}).reply(400, {success: false, error: "Invalid code"});
 
@@ -248,8 +248,8 @@ describe("userService", () => {
     describe("When starting the forgot password process", () => {
         it("Should return response if successful", async () => {
 
-            var code = "a-random-code";
-            var email = "iain.cambridge@example.org";
+            const code = "a-random-code";
+            const email = "iain.cambridge@example.org";
             mock.onPost(`/app/user/reset`, {email}).reply(200, {success: true});
 
             // when
@@ -262,8 +262,8 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var code = "a-random-code";
-            var email = "iain.cambridge@example.org";
+            const code = "a-random-code";
+            const email = "iain.cambridge@example.org";
 
             mock.onPost(`/app/user/reset`, {email}).reply(400, {success: false, error: "Invalid code"});
 
@@ -281,7 +281,7 @@ describe("userService", () => {
     describe("The user sign up", () => {
         it("Should return response if successful", async () => {
 
-            var user =  {
+            const user =  {
                 username: "iain.cambridge@example.org",
                 password: "a-password"
             };
@@ -298,7 +298,7 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var user =  {
+            const user =  {
                 username: "iain.cambridge@example.org",
                 password: "a-password"
             };
@@ -319,11 +319,11 @@ describe("userService", () => {
     describe("The user sign up with invite code", () => {
         it("Should return response if successful", async () => {
 
-            var user =  {
+            const user =  {
                 username: "iain.cambridge@example.org",
                 password: "a-password"
             };
-            var code = 'invite-code';
+            const code = 'invite-code';
 
             mock.onPost(`/app/user/signup/`+code, user).reply(200, {success: true});
 
@@ -337,11 +337,11 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var user =  {
+            const user =  {
                 username: "iain.cambridge@example.org",
                 password: "a-password"
             };
-            var code = 'invite-code';
+            const code = 'invite-code';
 
             mock.onPost(`/app/user/signup/`+code, user).reply(400, {success: false, error: "Invalid code"});
 
@@ -359,7 +359,7 @@ describe("userService", () => {
     describe("The login", () => {
         it("Should return response if successful", async () => {
 
-            var user =  {
+            const user =  {
                 username: "iain.cambridge@example.org",
                 password: "a-password"
             };
@@ -376,7 +376,7 @@ describe("userService", () => {
 
         it("Should return error", async () => {
 
-            var user =  {
+            const user =  {
                 username: "iain.cambridge@example.org",
                 password: "a-password"
             };

@@ -12,11 +12,11 @@ function login(username, password) {
 
 function signup(user, code) {
 
-    var url
+    let url
     if (code === undefined) {
         url = `/app/user/signup`
     } else {
-        url = '/app/user/signup/' + code
+        url = `/app/user/signup/${code}`
     }
 
     return axios.post(url, user).then(handleResponse);
@@ -27,14 +27,14 @@ function forgotPassword(email) {
 }
 
 function confirmEmail(code) {
-    return axios.get(`/app/user/confirm/` + code, {
+    return axios.get(`/app/user/confirm/${code}`, {
         headers: {'Content-Type': 'application/json'},
         data: {}
     }).then(handleResponse);
 }
 
 function forgotPasswordCheck(code) {
-    return axios.get(`/app/user/reset/` + code, {
+    return axios.get(`/app/user/reset/${code}`, {
         headers: {'Content-Type': 'application/json'},
         data: {}
     }).then(handleResponse);
@@ -45,7 +45,7 @@ function changePassword(password, new_password)
 }
 
 function forgotPasswordConfirm(code, password) {
-    return axios.post(`/app/user/reset/` + code, {password}).then(handleResponse);
+    return axios.post(`/app/user/reset/${code}`, {password}).then(handleResponse);
 }
 
 function fetchSettings() {

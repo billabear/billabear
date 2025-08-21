@@ -5,7 +5,7 @@ import MockAdapter from "axios-mock-adapter";
 import {afterEach, beforeAll, describe, expect, it} from 'vitest'
 
 // This sets the mock adapter on the default instance
-var mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 describe("testservice", () => {
     let mock;
