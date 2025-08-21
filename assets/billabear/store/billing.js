@@ -49,18 +49,12 @@ const mutations = {
         state.paymentDetails = paymentDetails;
     },
     removedCard(state, paymentDetail) {
-        const newArray = [];
-        for (let i =0; i < state.paymentDetails.length; i++) {
-            if (state.paymentDetails[i].id !== paymentDetail.id) {
-                newArray.push(state.paymentDetails[i])
-            }
-        }
-        state.paymentDetails = newArray;
+        state.paymentDetails = state.paymentDetails.filter(detail => detail.id !== paymentDetail.id);
     },
     removeDefaultFromAllCards(state) {
-        for (let i =0; i < state.paymentDetails.length; i++) {
-            state.paymentDetails[i].defaultPaymentOption = false;
-        }
+        state.paymentDetails.forEach(detail => {
+            detail.defaultPaymentOption = false;
+        });
     },
     addNewCard(state, paymentDetail) {
         state.paymentDetails.push(paymentDetail)

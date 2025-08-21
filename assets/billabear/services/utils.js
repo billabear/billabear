@@ -1,5 +1,5 @@
 
-export const handleResponse = function (response) {
+export const handleResponse = (response) => {
     const origResponse = response;
     if (response.name === 'AxiosError') {
         response = response.response;
@@ -11,4 +11,4 @@ export const handleResponse = function (response) {
     }
 
     return origResponse;
-}
+};
