@@ -2,7 +2,11 @@ name: PHP test
 
 on:
   push:
+    branches-ignore:
+      - merge
   pull_request:
+    branches-ignore:
+      - merge
   workflow_dispatch:
   repository_dispatch:
       types: [ push ]
