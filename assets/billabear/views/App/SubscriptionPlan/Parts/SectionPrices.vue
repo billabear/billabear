@@ -283,8 +283,8 @@ export default {
       this.rawTiers.push({first_unit: lastUnit+1, last_unit: lastUnit+2, unit_price: 0, flat_fee: 0});
     },
     sendCreate: function() {
-      var productId = this.$route.params.productId;
-      var price = this.price;
+      const productId = this.$route.params.productId;
+      const price = this.price;
 
       if (this.showTiers) {
         price.tiers = this.tiers;

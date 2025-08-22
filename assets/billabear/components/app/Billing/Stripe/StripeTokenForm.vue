@@ -48,11 +48,11 @@ export default {
   },
   mounted() {
 
-    var imported = document.createElement('script');
+    const imported = document.createElement('script');
     imported.src = 'https://js.stripe.com/v3/';
     document.head.appendChild(imported);
 
-    var that = this
+    const that = this
     billingservice.getAddCardToken(this.customerId).then(
       tokenResponse => {
         this.stripe = Stripe(tokenResponse.data.api_info);
@@ -74,12 +74,12 @@ export default {
     ...mapActions('billingStore', ['cardAdded']),
     send: function () {
       this.sending = true;
-      var that = this
+      const that = this
       stripeservice.sendCard(this.stripe, this.card).then(
         response => {
-          var token = response.token.id;
+          const token = response.token.id;
           billingservice.saveToken(this.customerId, token).then(response => {
-            var paymentDetails = response.data.payment_details;
+            const paymentDetails = response.data.payment_details;
             that.sending = false;
             this.$router.push({name: 'app.customer.view', params: {id: this.customerId}})
           })

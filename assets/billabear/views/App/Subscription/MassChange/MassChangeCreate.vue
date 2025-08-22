@@ -133,7 +133,7 @@ export default {
     },
     newPrices: function () {
       if (this.payload.new_plan !== null) {
-        var prices = [];
+        const prices = [];
         const len = this.prices.length;
         for (let i = 0; i < len; i++) {
           if (this.prices[i].product.id == this.payload.new_plan.product.id) {
@@ -145,7 +145,7 @@ export default {
       }
 
       if (this.payload.target_price !== null && this.payload.target_plan == null){
-        var prices = [];
+        const prices = [];
         const len = this.prices.length;
         for (let i = 0; i < len; i++) {
           if (this.prices[i].product.id == this.payload.target_price.product.id) {
