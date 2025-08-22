@@ -81,7 +81,7 @@ export default {
     }
   },
   mounted() {
-    var productId = this.$route.params.id
+    const productId = this.$route.params.id
     axios.get('/app/product/'+productId+'/update').then(response => {
       this.product = response.data.product;
       this.product.tax_type = response.data.product.tax_type.id;
@@ -103,7 +103,7 @@ export default {
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
-      var productId = this.$route.params.id
+      const productId = this.$route.params.id
       axios.post('/app/product/'+productId, this.product).then(
           response => {
             this.sendingInProgress = false;

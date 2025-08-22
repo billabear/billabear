@@ -146,8 +146,8 @@ export default {
   },
   mounted() {
     this.reset();
-    var productId = this.$route.params.productId
-    var subscriptionPlanId = this.$route.params.subscriptionPlanId;
+    const productId = this.$route.params.productId
+    const subscriptionPlanId = this.$route.params.subscriptionPlanId;
     this.fetchSubscriptionPlan({productId, subscriptionPlanId}).then(response => {
       this.subscription_plan = response.data.subscription_plan;
     }).catch(error => {
@@ -167,15 +167,15 @@ export default {
   methods: {
     ...mapActions('planStore', ['fetchSubscriptionPlan', 'reset']),
     send: function () {
-      var productId = this.$route.params.productId
+      const productId = this.$route.params.productId
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
-      var codeName = null;
+      let codeName = null;
       if (codeName !== undefined && this.subscription_plan.code_name !== '') {
         codeName = this.subscription_plan.code_name;
       }
-      var payload = {
+      const payload = {
         name: this.subscription_plan.name,
         code_name: codeName,
         free: this.subscription_plan.free,
@@ -191,18 +191,18 @@ export default {
         is_trial_limited_to_one_per_customer: this.subscription_plan.is_trial_limited_to_one_per_customer,
       };
 
-      var count = this.selectedFeatures.length;
-      var features = [];
-      for (var i = 0; i  < count; i++) {
+      const featuresCount = this.selectedFeatures.length;
+      const features = [];
+      for (let i = 0; i  < featuresCount; i++) {
         if (this.selectedFeatures[i].id !== undefined && this.selectedFeatures[i].id !== null) {
           features.push(this.selectedFeatures[i])
         }
       }
       payload.features = features;
 
-      var count = this.selectedLimits.length;
-      var limits = [];
-      for (var i = 0; i  < count; i++) {
+      const limitsCount = this.selectedLimits.length;
+      const limits = [];
+      for (let i = 0; i  < limitsCount; i++) {
         if (this.selectedLimits[i].feature !== undefined && this.selectedLimits[i].feature.id !== undefined && this.selectedLimits[i].feature.id !== null &&
             this.selectedLimits[i].limit !== undefined && this.selectedLimits[i].limit !== null) {
           limits.push(this.selectedLimits[i])
@@ -210,16 +210,16 @@ export default {
       }
       payload.limits = limits;
 
-      var count = this.selectedPrices.length;
-      var prices = [];
-      for (var i = 0; i  < count; i++) {
+      const pricesCount = this.selectedPrices.length;
+      const prices = [];
+      for (let i = 0; i  < pricesCount; i++) {
         if (this.selectedPrices[i].id !== undefined && this.selectedPrices[i].id !== null) {
           prices.push(this.selectedPrices[i])
         }
       }
       payload.prices = prices;
 
-      var subscriptionPlanId = this.$route.params.subscriptionPlanId;
+      const subscriptionPlanId = this.$route.params.subscriptionPlanId;
       axios.post('/app/product/'+productId+'/plan/'+subscriptionPlanId + '/update', payload).then(
           response => {
             this.sendingInProgress = false;

@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     hasRole: function () {
-      var data;
+      let data;
       try {
         data = JSON.parse(localStorage.getItem('user'))
       } catch (e) {

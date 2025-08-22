@@ -81,8 +81,8 @@ export default {
       return state === 'completed';
     },
     loadData: function () {
-      var that = this
-      var id = this.$route.params.id
+      const that = this
+      const id = this.$route.params.id
       axios.get('/app/settings/stripe-import/' + id + '/view').then(response => {
         this.importData = response.data;
         this.ready = true;
