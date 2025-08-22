@@ -22,7 +22,7 @@ export default {
     }
   },
   mounted() {
-    var dataset = this.getDataset();
+    const dataset = this.getDataset();
     this.computedData = dataset;
 
     this.map = new Datamap({
@@ -42,7 +42,7 @@ export default {
         }
       },
     });
-    var map = this.map;
+    const map = this.map;
     d3.select(window).on('resize', function() {
       map.resize();
     });
@@ -51,8 +51,8 @@ export default {
     getDataset: function () {
       const output = {};
 
-      var onlyValues = this.dataset.map(function(obj){ return obj.value });
-      var maxValue = Math.max.apply(null, onlyValues);
+      const onlyValues = this.dataset.map(function(obj){ return obj.value });
+      const maxValue = Math.max.apply(null, onlyValues);
 
       const getFillColour = d3.scale.linear()
           .domain([0,maxValue])

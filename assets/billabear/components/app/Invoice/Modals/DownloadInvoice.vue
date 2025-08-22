@@ -48,7 +48,7 @@ export default {
     downloadInvoice: function () {
       this.showError = false;
       axios.get('/app/invoice/'+this.invoice.id+'/download?format='+this.format, {  responseType: 'blob'}).then(response => {
-        var fileDownload = require('js-file-download');
+        const fileDownload = require('js-file-download');
         const contentDisposition = response.headers['content-disposition'];
         let filename = 'invoice-'+this.invoice.id+'.pdf';
         if (contentDisposition) {const filenameRegex = /filename=(.*)/;
@@ -58,7 +58,7 @@ export default {
         fileDownload(response.data, filename);
         this.downloadInProgress = false;
       }).catch(error => {
-        var that = this;
+        const that = this;
         let errorString = async function getString() {
           const str = await error.response.data.text();
           const errorString = JSON.parse(str);

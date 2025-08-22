@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
 
-    var subscriptionId = this.$route.params.id
+    const subscriptionId = this.$route.params.id
     axios.get('/app/subscription/mass-change/' + subscriptionId+'/view').then(response => {
       this.mass_change = response.data.mass_change;
       this.estimate = response.data.estimate;
@@ -94,7 +94,7 @@ export default {
   methods: {
     cancel: function () {
       this.cancelInProgress = true;
-      var subscriptionId = this.$route.params.id
+      const subscriptionId = this.$route.params.id
       axios.post('/app/subscription/mass-change/' + subscriptionId+'/cancel').then(response => {
         this.cancelInProgress = false;
         this.mass_change.status = response.data.status;
@@ -102,7 +102,7 @@ export default {
     },
     uncancel: function () {
       this.cancelInProgress = true;
-      var subscriptionId = this.$route.params.id
+      const subscriptionId = this.$route.params.id
       axios.post('/app/subscription/mass-change/' + subscriptionId+'/uncancel').then(response => {
         this.cancelInProgress = false;
         this.mass_change.status = response.data.status;
@@ -116,7 +116,7 @@ export default {
     },
     processExport: function () {
       this.exportInProgress = true;
-      var subscriptionId = this.$route.params.id
+      const subscriptionId = this.$route.params.id
       axios.get('/app/subscription/mass-change/' + subscriptionId+'/export', { responseType: 'blob' })
           .then((response) => {
             const contentType = response.headers['content-type'];
@@ -126,7 +126,7 @@ export default {
               return response.data.text();
             } else {
               const contentDisposition = response.headers['content-disposition'];
-              var fileDownload = require('js-file-download');
+              const fileDownload = require('js-file-download');
               const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
               if (matches !== null && matches[1]) {
                 const fileName = matches[1].replace(/['"]/g, '');

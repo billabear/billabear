@@ -74,10 +74,10 @@ export default {
       this.loaded = true;
     },
     convertStatToChartData: function (input) {
-      var categories = []
-      var values = [];
+      const categories = []
+      const values = [];
 
-      for (var i = 0; input.length > i; i++) {
+      for (let i = 0; input.length > i; i++) {
         let data = input[i];
         let label = data.dayDate+'-'+data.monthDate+'-'+data.yearDate;
         categories.push(data.dayDate+'-'+data.monthDate+'-'+data.yearDate);

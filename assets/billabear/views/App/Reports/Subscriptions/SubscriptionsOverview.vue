@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     overview: function () {
-      var labels = [];
+      const labels = [];
       const data = this.convertStats(this.planCounts);
       return this.thedata(data)
     },
@@ -70,10 +70,10 @@ export default {
     },
     convertStats: function (input) {
 
-      var categories = []
-      var values = []
+      const categories = []
+      const values = []
 
-      for (var i = 0; i < input.length; i++) {
+      for (let i = 0; i < input.length; i++) {
         categories.push(input[i].name);
         values.push(input[i].count);
       }
@@ -81,11 +81,11 @@ export default {
       return {categories, values};
     },
     convertStatToChartData: function (input) {
-      var categories = []
-      var values = []
-      var counter = 0;
+      const categories = []
+      const values = []
+      let counter = 0;
       for (const [brand, subInput] of Object.entries(input)) {
-        var subValues = [];
+        const subValues = [];
         counter++;
         for (const [key, value] of Object.entries(subInput)) {
           if (counter === 1) {

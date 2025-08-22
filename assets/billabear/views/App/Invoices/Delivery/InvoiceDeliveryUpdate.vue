@@ -131,10 +131,10 @@ export default {
     }
   },
   mounted() {
-      var customerId = this.$route.params.customerId;
-      var invoiceDeliveryId = this.$route.params.invoiceDeliveryId;
+      const customerId = this.$route.params.customerId;
+      const invoiceDeliveryId = this.$route.params.invoiceDeliveryId;
 
-      var url = '/app/customer/'+customerId+'/invoice-delivery/'+invoiceDeliveryId;
+      const url = '/app/customer/'+customerId+'/invoice-delivery/'+invoiceDeliveryId;
       axios.get(url).then(response => {
         this.loaded = true;
         this.invoice_delivery = response.data.settings;
@@ -144,8 +144,8 @@ export default {
   methods: {
     save: function() {
       this.sending = true;
-      var customerId = this.$route.params.customerId;
-      var invoiceDeliveryId = this.$route.params.invoiceDeliveryId;
+      const customerId = this.$route.params.customerId;
+      const invoiceDeliveryId = this.$route.params.invoiceDeliveryId;
       axios.post("/app/customer/"+customerId+"/invoice-delivery/"+invoiceDeliveryId, this.invoice_delivery).then(resposne => {
         this.$router.push({name: 'app.customer.view', params: {id: customerId}})
       })
