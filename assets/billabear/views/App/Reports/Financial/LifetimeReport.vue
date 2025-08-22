@@ -131,7 +131,7 @@ export default {
   methods: {
     sendFilters: function () {
       this.ready = false;
-      const filtersString = '';
+      var filtersString = '';
 
       for (const [key, value] of Object.entries(this.filters)) {
         if (value == null || value == "null" || value === undefined) {

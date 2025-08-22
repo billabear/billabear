@@ -105,7 +105,7 @@ export default {
   methods: {
     ...mapActions('userStore', ['updateLocale']),
     changePassword: function () {
-        let hasErrors = false;
+        var hasErrors = false;
         this.need_current_password = false;
         this.need_new_password = false;
         this.need_valid_password = false;

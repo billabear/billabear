@@ -108,7 +108,7 @@ export default {
     },
     processExport: function () {
       this.exportInProgress = true;
-      const subscriptionId = this.$route.params.id
+      var subscriptionId = this.$route.params.id
       axios.get('/app/tax/report/export', { responseType: 'blob' })
           .then((response) => {
             const contentType = response.headers['content-type'];
@@ -118,7 +118,7 @@ export default {
               return response.data.text();
             } else {
               const contentDisposition = response.headers['content-disposition'];
-              const fileDownload = require('js-file-download');
+              var fileDownload = require('js-file-download');
               const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
               if (matches !== null && matches[1]) {
                 const fileName = matches[1].replace(/['"]/g, '');

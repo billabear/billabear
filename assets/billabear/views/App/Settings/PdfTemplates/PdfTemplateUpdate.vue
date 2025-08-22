@@ -87,11 +87,11 @@ export default {
 
       this.downloadInProgress = true;
       axios.get('/app/settings/template/'+templateId+'/'+this.template.template.name+'-download', {  responseType: 'blob'}).then(response => {
-        const fileDownload = require('js-file-download');
+        var fileDownload = require('js-file-download');
         fileDownload(response.data, 'example.pdf');
         this.downloadInProgress = false;
       }).catch(error => {
-        const that = this;
+        var that = this;
          let errorString = async function getString() {
            const str = await error.response.data.text();
            const errorString = JSON.parse(str);

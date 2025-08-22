@@ -121,9 +121,9 @@ export default {
         return this.subscription_plan.prices;
       }
 
-      const output = [];
+      var output = [];
 
-      for (let i = 0; i < this.subscription_plan.prices.length; i++) {
+      for (var i = 0; i < this.subscription_plan.prices.length; i++) {
         if (this.subscription_plan.prices[i].currency == this.eligible_currency && this.subscription_plan.prices[i].schedule == this.eligible_schedule) {
           output.push(this.subscription_plan.prices[i]);
         }

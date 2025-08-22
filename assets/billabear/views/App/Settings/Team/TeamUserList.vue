@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     copyInviteToClipboard: function (invite, key) {
-      const that = this;
+      var that = this;
       that.copied = key;
       setTimeout( function () {
         that.copied = false;
@@ -159,13 +159,13 @@ export default {
       });
     },
     doSearch: function () {
-      const queryVals = this.buildFilterQuery();
+      var queryVals = this.buildFilterQuery();
       this.$router.push({query: queryVals})
     },
     buildFilterQuery: function () {
-      const queryVals = {};
-      for (let i = 0; i < this.active_filters.length; i++) {
-        const filter = this.active_filters[i];
+      var queryVals = {};
+      for (var i = 0; i < this.active_filters.length; i++) {
+        var filter = this.active_filters[i];
         if (this.filters[filter].value !== null && this.filters[filter].value !== undefined) {
 
           queryVals[filter] = this.filters[filter].value;
@@ -181,17 +181,17 @@ export default {
     },
     nextPage: function () {
 
-      const queryVals = this.buildFilterQuery();
+      var queryVals = this.buildFilterQuery();
       queryVals.last_key = this.last_key;
       this.$router.push({query: queryVals})
     },
     prevPage: function () {
-      const queryVals = this.buildFilterQuery();
+      var queryVals = this.buildFilterQuery();
       queryVals.first_key = this.first_key;
       this.$router.push({query: queryVals})
     },
     changePerPage: function ($event) {
-      const queryVals = this.buildFilterQuery();
+      var queryVals = this.buildFilterQuery();
       queryVals.per_page = $event.target.value;
       this.per_page=queryVals.per_page;
 
@@ -206,7 +206,7 @@ export default {
     loadTeamUsers: function ()
     {
       this.syncQueryToFilters();
-      const mode = 'normal';
+      var mode = 'normal';
       let urlString = '/app/settings/user?';
       if (this.$route.query.last_key !== undefined) {
         urlString = urlString + '&last_key=' + this.$route.query.last_key;
@@ -248,9 +248,9 @@ export default {
 
     },
     toogle: function (key) {
-      const newFilters = [];
-      let found = false;
-      for (let i = 0; i < this.active_filters.length; i++) {
+      var newFilters = [];
+      var found = false;
+      for (var i = 0; i < this.active_filters.length; i++) {
         if (this.active_filters[i] !== key) {
 
           newFilters.push(this.active_filters[i]);
@@ -264,7 +264,7 @@ export default {
       this.active_filters = newFilters;
     },
     isActive: function (key) {
-      for (let i = 0; i < this.active_filters.length; i++) {
+      for (var i = 0; i < this.active_filters.length; i++) {
         if (this.active_filters[i] === key) {
           return true;
         }

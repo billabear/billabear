@@ -51,8 +51,8 @@ export default {
   methods: {
     innerBlur: function (event) {
         const input = event.target.value;
-        for (let i = 0; i < this.autocompleteResults.length; i++) {
-          const result = this.autocompleteResults[i];
+        for (var i = 0; i < this.autocompleteResults.length; i++) {
+          var result = this.autocompleteResults[i];
           if (result[this.displayKey] == input) {
               this.selectAutocompleteResult(result);
               return;
@@ -61,7 +61,7 @@ export default {
 
         this.$emit('update:modelValue', null)
         this.blurCallback(event);
-        const that = this;
+        var that = this;
         setTimeout(function (){that.showAutocompleteResults = false;}, 1000);
     },
     fetchAutocompleteResults() {

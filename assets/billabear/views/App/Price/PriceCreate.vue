@@ -280,7 +280,7 @@ export default {
       return currency(value, { fromCents: true });
     },
     send: function () {
-      const productId = this.$route.params.productId
+      var productId = this.$route.params.productId
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
@@ -303,7 +303,7 @@ export default {
     }
   },
   mounted() {
-    const productId = this.$route.params.productId
+    var productId = this.$route.params.productId
     axios.get('/app/product/' + productId + '/price').then(response => {
       this.metrics = response.data.metrics;
     })
