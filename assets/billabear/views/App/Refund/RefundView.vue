@@ -66,7 +66,7 @@ export default {
     }
   },
   mounted() {
-    const refund = this.$route.params.id
+    var refund = this.$route.params.id
     axios.get('/app/refund/'+refund).then(response => {
       this.refund = response.data.refund;
       this.ready = true;

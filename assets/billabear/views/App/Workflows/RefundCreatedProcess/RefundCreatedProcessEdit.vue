@@ -97,11 +97,11 @@ import {useI18n} from "vue-i18n";
 import {useVfm, VueFinalModal} from "vue-final-modal";
 import {Button, Input, Select} from "flowbite-vue";
 
-const flowchartElements = ref([]);
-const placesRawData = [];
-const handlersRawData = [];
-const ready = ref(false);
-const options = {
+var flowchartElements = ref([]);
+var placesRawData = [];
+var handlersRawData = [];
+var ready = ref(false);
+var options = {
   teleportTo: 'body',
   modelValue: false,
   displayDirective: 'if',
@@ -116,12 +116,12 @@ const options = {
 };
 const {t} = useI18n();
 
-const createModalValues = {
+var createModalValues = {
   target: {
   },
   handler: null,
 };
-const editModalValues = ref({
+var editModalValues = ref({
   node: null
 })
 const {
@@ -156,11 +156,11 @@ const sync = () => {
   axios.get("/app/workflow/refund-created-process/edit").then(request => {
     placesRawData = request.data.places;
     handlersRawData = request.data.handlers;
-    const rawElements = [];
-    let y = 0;
-    for (let i = 0; i < placesRawData.length; i++) {
+    var rawElements = [];
+    var y = 0;
+    for (var i = 0; i < placesRawData.length; i++) {
       const place = placesRawData[i];
-      const className = 'default-workflow-node'
+      var className = 'default-workflow-node'
       if (!place.default) {
         className = 'custom-workflow-node';
       }
@@ -178,9 +178,9 @@ const sync = () => {
       })
       y += 100
     }
-    let prevElement = null;
-    const edgesElement = [];
-    for (let i = 0; i < placesRawData.length; i++) {
+    var prevElement = null;
+    var edgesElement = [];
+    for (var i = 0; i < placesRawData.length; i++) {
       const currentElement = placesRawData[i];
       if (prevElement !== null) {
         edgesElement.push({
@@ -203,13 +203,13 @@ const sync = () => {
 
 onMounted(sync)
 
-const handlerOptionsErrors = ref({});
+var handlerOptionsErrors = ref({});
 function sendCreate(event) {
 
-  const values = createModalValues.value;
-  const priority = parseInt(values.source.node.id) + ((parseInt(values.target.node.id) - parseInt(values.source.node.id)) / 2);
+  var values = createModalValues.value;
+  var priority = parseInt(values.source.node.id) + ((parseInt(values.target.node.id) - parseInt(values.source.node.id)) / 2);
 
-  const payload = {
+  var payload = {
     workflow: "create_refund",
     name: values.name,
     priority: priority,
@@ -217,7 +217,7 @@ function sendCreate(event) {
     handler_options: {},
   }
 
-  const errors = {};
+  var errors = {};
   for (const [key, value] of Object.entries(values.handler.options)) {
     if (value.required && (value.value === "" || value.value === undefined || value.value === null)) {
       errors[key] = true;

@@ -252,7 +252,7 @@ export default {
     }
   },
   mounted() {
-    const customerId = this.$route.params.id
+    var customerId = this.$route.params.id
     axios.get('/app/customer/'+customerId).then(response => {
       this.customer = response.data.customer;
       for (let key in this.customer.metadata) {
@@ -283,7 +283,7 @@ export default {
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
-      const customerId = this.$route.params.id
+      var customerId = this.$route.params.id
 
       // Make sure empty strings aren't sent
       if (this.customer.digital_tax_rate == "") {
