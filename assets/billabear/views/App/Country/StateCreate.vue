@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     sendCreate: function () {
-      const id = this.$route.params.id;
+      var id = this.$route.params.id;
       this.sending = true;
       this.errors = {};
       axios.post('/app/country/'+id+'/state', this.state).then(response => {

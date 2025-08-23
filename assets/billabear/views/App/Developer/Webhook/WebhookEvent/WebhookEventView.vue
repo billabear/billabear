@@ -100,7 +100,7 @@ export default {
     }
   },
   mounted() {
-    const id = this.$route.params.id
+    var id = this.$route.params.id
     axios.get("/app/developer/webhook/event/"+id+"/view").then(response => {
       this.event = response.data.event;
       this.responses = response.data.responses;

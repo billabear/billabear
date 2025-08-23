@@ -42,7 +42,7 @@ export default {
       this.sending = true;
       const customerId = this.$route.params.customerId;
       billingservice.saveToken(customerId, this.token).then(response => {
-        const paymentDetails = response.data.payment_details;
+        var paymentDetails = response.data.payment_details;
         this.sending = false;
         this.$router.push({name: 'app.customer.view', params: {id: customerId}})
       })

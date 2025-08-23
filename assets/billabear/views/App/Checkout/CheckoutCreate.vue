@@ -218,7 +218,7 @@ export default {
   },
   methods: {
     getPrices: function (prices) {
-      const that = this;
+      var that = this;
       return prices.filter(item => item.currency === that.checkout.currency);
     },
     addSubscriptionPlan: function (){
@@ -247,7 +247,7 @@ export default {
     blurCallback: function (event) {
       this.create_customer_email = event.target.value;
 
-      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;;
+      var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
       if (!this.create_customer_email.match(validRegex)) {
         return;
@@ -285,13 +285,13 @@ export default {
       if (!this.checkout.currency) {
         this.errors.currency = this.$t('app.checkout.create.errors.currency');
       }
-      const subscriptions = [];
-      let sameCurrency = true;
-      let sameSchedule = true;
-      let lastCurrency = null;
-      let lastSchedule = null;
-      for (let key in this.checkout.subscription_plans) {
-        const plan = this.checkout.subscription_plans[key];
+      var subscriptions = [];
+      var sameCurrency = true;
+      var sameSchedule = true;
+      var lastCurrency = null;
+      var lastSchedule = null;
+      for (var key in this.checkout.subscription_plans) {
+        var plan = this.checkout.subscription_plans[key];
         if (lastCurrency === null) {
           lastCurrency = plan.price.currency;
         }
@@ -319,11 +319,11 @@ export default {
         this.errors.main_error = this.$t('app.checkout.create.errors.same_currency_and_schedule');
       }
 
-      const items = [];
-      const errors =  [];
-      let hasErrors = false;
-      for (let key in this.checkout.items) {
-        const item = this.checkout.items[key];
+      var items = [];
+      var errors =  [];
+      var hasErrors = false;
+      for (var key in this.checkout.items) {
+        var item = this.checkout.items[key];
         errors[key] = {};
         if (!item.description) {
           hasErrors = true;

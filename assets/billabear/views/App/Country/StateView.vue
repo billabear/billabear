@@ -278,7 +278,7 @@ export default {
         valid_until: this.tax_rule.valid_until,
         default: this.tax_rule.default,
       }
-      for (let key = 0; key < this.tax_rules.length; key++) {
+      for (var key = 0; key < this.tax_rules.length; key++) {
         if (this.tax_rules[key].id === this.tax_rule.id) {
           break;
         }
