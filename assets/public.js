@@ -5,7 +5,6 @@ import App from "./public/views/App.vue";
 import {createVfm} from "vue-final-modal";
 import {router} from "./public/helper/router";
 import ParthenonUI from "@parthenon/ui";
-import {getBrowserLocale} from "./shared/utils/locale.js";
 
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'vue-final-modal/style.css';
@@ -25,6 +24,24 @@ const TRANSLATIONS = {
     fr: FRENCH_TRANSLATIONS,
     nl: DUTCH_TRANSLATIONS,
     it: ITALIAN_TRANSLATIONS,
+};
+const getBrowserLocale = (options = {}) => {
+    const defaultOptions = { countryCodeOnly: false };
+    const opt = { ...defaultOptions, ...options };
+
+    const navigatorLocale = navigator.languages !== undefined
+        ? navigator.languages[0]
+        : navigator.language;
+
+    if (!navigatorLocale) {
+        return undefined;
+    }
+
+    const trimmedLocale = opt.countryCodeOnly
+        ? navigatorLocale.trim().split(/-|_/)[0]
+        : navigatorLocale.trim();
+
+    return trimmedLocale;
 };
 
 const browserLocale = getBrowserLocale({ countryCodeOnly: true });

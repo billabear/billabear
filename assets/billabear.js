@@ -40,7 +40,6 @@ import RoleOnlyView from "./billabear/components/app/RoleOnlyView.vue";
 
 
 import { VueFlow } from '@vue-flow/core'
-import {getBrowserLocale} from "./shared/utils/locale.js";
 import {ENGLISH_TRANSLATIONS} from "./billabear/translations/en.js";
 import GERMAN_TRANSLATIONS from "./billabear/translations/de.json";
 import SPANISH_TRANSLATIONS from "./billabear/translations/es.json";
@@ -57,6 +56,24 @@ const TRANSLATIONS = {
     nl: DUTCH_TRANSLATIONS,
     it: ITALIAN_TRANSLATIONS,
     pt: PORTUGUESE_TRANSLATIONS,
+};
+const getBrowserLocale = (options = {}) => {
+    const defaultOptions = { countryCodeOnly: false };
+    const opt = { ...defaultOptions, ...options };
+
+    const navigatorLocale = navigator.languages !== undefined
+        ? navigator.languages[0]
+        : navigator.language;
+
+    if (!navigatorLocale) {
+        return undefined;
+    }
+
+    const trimmedLocale = opt.countryCodeOnly
+        ? navigatorLocale.trim().split(/-|_/)[0]
+        : navigatorLocale.trim();
+
+    return trimmedLocale;
 };
 
 const browserLocale = getBrowserLocale({ countryCodeOnly: true });
