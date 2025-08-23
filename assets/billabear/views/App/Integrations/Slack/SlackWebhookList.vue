@@ -72,7 +72,7 @@ import ErrorBear from "../../../../components/app/ErrorBear.vue";
 import RoleOnlyView from "../../../../components/app/RoleOnlyView.vue";
 
 export default {
-  name: "InvoiceList.vue",
+  name: "SlackWebhookList.vue",
   components: {RoleOnlyView, ErrorBear, Dropdown, ListGroupItem, ListGroup, InternalApp},
   data() {
     return {
