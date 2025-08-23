@@ -310,7 +310,7 @@ export default {
     }
   },
   mounted() {
-    var paymentId = this.$route.params.id
+    const paymentId = this.$route.params.id
     axios.get('/app/payments/'+paymentId).then(response => {
       this.payment = response.data.payment;
       this.refunds = response.data.refunds;
