@@ -97,7 +97,7 @@
 import axios from "axios";
 
 export default {
-  name: "TeamUserList.vue",
+  name: "CustomerList.vue",
   data() {
     return {
       ready: false,

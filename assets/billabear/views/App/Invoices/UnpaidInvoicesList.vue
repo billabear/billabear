@@ -84,7 +84,7 @@ import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
 import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
 
 export default {
-  name: "UnpaidInvoicesList.vue",
+  name: "InvoiceList.vue",
   components: {FiltersSection, ListGroupItem, ListGroup, Dropdown, RoleOnlyView, InternalApp},
   data() {
     return {

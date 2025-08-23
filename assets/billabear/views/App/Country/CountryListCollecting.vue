@@ -88,7 +88,7 @@ import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vu
 import ListLinks from "./Component/ListLinks.vue";
 
 export default {
-  name: "CountryListCollecting.vue",
+  name: "CountryList.vue",
   components: {ListLinks, FiltersSection, ListGroupItem, ListGroup, Dropdown, InternalApp, RoleOnlyView},
   data() {
     return {
