@@ -134,7 +134,7 @@ export default {
   methods: {
     save: function() {
       this.sending = true;
-      var customerId = this.$route.params.customerId;
+      const customerId = this.$route.params.customerId;
       axios.post("/app/customer/"+customerId+"/invoice-delivery", this.invoice_delivery).then(resposne => {
         this.$router.push({name: 'app.customer.view', params: {id: customerId}})
       })
