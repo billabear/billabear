@@ -166,7 +166,7 @@ export default {
     }
   },
   mounted() {
-    const productId = this.$route.params.id
+    var productId = this.$route.params.id
     this.id = productId;
     axios.get('/app/product/'+productId).then(response => {
       this.product = response.data.product;
@@ -186,7 +186,7 @@ export default {
   },
   methods: {
     deleteSubscriptionPlan: function (plan, key) {
-      const productId = this.$route.params.id
+      var productId = this.$route.params.id
       axios.delete('/app/product/'+productId+'/plan/'+plan.id).then(response => {
         this.subscriptionPlans.splice(key,1)
       }).catch(error => {
@@ -194,7 +194,7 @@ export default {
       })
     },
     deletePrice: function (price, key) {
-      const productId = this.$route.params.id
+      var productId = this.$route.params.id
       axios.post('/app/product/'+productId+'/price/'+price.id+'/delete').then(response => {
 
         this.prices.splice(key,1)
@@ -203,7 +203,7 @@ export default {
       })
     },
     showPrice: function (price, key) {
-      const productId = this.$route.params.id
+      var productId = this.$route.params.id
       axios.post('/app/product/'+productId+'/price/'+price.id+'/public').then(response => {
 
         price.public = true;
@@ -212,7 +212,7 @@ export default {
       })
     },
     hidePrice: function (price, key) {
-      const productId = this.$route.params.id
+      var productId = this.$route.params.id
       axios.post('/app/product/'+productId+'/price/'+price.id+'/private').then(response => {
 
         price.public = false;

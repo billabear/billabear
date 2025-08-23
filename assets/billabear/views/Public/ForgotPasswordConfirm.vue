@@ -98,8 +98,8 @@ export default {
       this.password_error = undefined;
       this.password_confirm_error = undefined;
       this.error_info = {has_error: false, message: undefined};
-      let hasError = false;
-      let hasPassword = false;
+      var hasError = false;
+      var hasPassword = false;
 
       if (this.password === "") {
         this.password_error = this.$t('public.forgot_password_confirm.password_error');

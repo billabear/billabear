@@ -413,21 +413,21 @@ export default {
       return currency(value, { fromCents: true });
     },
     disableCustomer: function() {
-      const customerId = this.$route.params.id;
+      var customerId = this.$route.params.id;
       axios.post('/app/customer/'+customerId+'/disable').then(response => {
         this.customer.status = 'disabled';
       })
     },
     enableCustomer: function()  {
-      const customerId = this.$route.params.id;
+      var customerId = this.$route.params.id;
       axios.post('/app/customer/'+customerId+'/enable').then(response => {
         this.customer.status = 'active';
       })
     },
     deletePayment: function (id) {
-      const customerId = this.$route.params.id
+      var customerId = this.$route.params.id
       axios.delete('/app/customer/'+customerId+'/payment-card/'+id).then(response => {
-        for (let i = 0; i < this.paymentDetails.length; i++) {
+        for (var i = 0; i < this.paymentDetails.length; i++) {
           if (this.paymentDetails[i].id == id) {
             this.paymentDetails.splice(i, 1);
           }
@@ -437,7 +437,7 @@ export default {
     defaultPayment: function (id) {
       const customerId = this.$route.params.id
       axios.post('/app/customer/'+customerId+'/payment-card/'+id+'/default').then(response => {
-        for (let i = 0; i < this.paymentDetails.length; i++) {
+        for (var i = 0; i < this.paymentDetails.length; i++) {
           if (this.paymentDetails[i].id == id) {
             this.paymentDetails[i].default = true;
           } else {
@@ -458,7 +458,7 @@ export default {
     }
   },
   mounted() {
-    const customerId = this.$route.params.id
+    var customerId = this.$route.params.id
     axios.get('/app/customer/'+customerId).then(response => {
       this.customer = response.data.customer;
       this.paymentDetails = response.data.payment_details;

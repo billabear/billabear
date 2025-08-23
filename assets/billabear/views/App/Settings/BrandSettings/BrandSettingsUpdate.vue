@@ -228,7 +228,7 @@ export default {
     }
   },
   mounted() {
-    const brandId = this.$route.params.id
+    var brandId = this.$route.params.id
     axios.get('/app/settings/brand/'+brandId).then(response => {
       this.brand = response.data.brand;
       this.ready = true;
@@ -245,7 +245,7 @@ export default {
   },
   methods: {
     save: function () {
-        const brandId = this.$route.params.id;
+        var brandId = this.$route.params.id;
         this.sending = true;
         this.errors = {};
         const payload = {

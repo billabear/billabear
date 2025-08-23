@@ -77,7 +77,7 @@ export default {
   methods: {
     handleSubmit: function () {
       const email = this.email;
-      let hasError = false;
+      var hasError = false;
       if (email === "") {
         this.email_error = this.$t('public.forgot_password.email_error');
         hasError = true;

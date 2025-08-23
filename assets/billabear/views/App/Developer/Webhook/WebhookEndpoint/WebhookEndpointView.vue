@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
 
-    const endpointId = this.$route.params.id
+    var endpointId = this.$route.params.id
     this.id = endpointId;
     axios.get('/app/developer/webhook/'+endpointId+'/view').then(response => {
       this.endpoint = response.data.webhook_endpoint;

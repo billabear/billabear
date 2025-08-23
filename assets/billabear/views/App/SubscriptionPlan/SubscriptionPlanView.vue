@@ -167,7 +167,7 @@ export default {
   },
   mounted() {
     this.product_id = this.$route.params.productId
-    const subscriptionPlanId = this.$route.params.subscriptionPlanId;
+    var subscriptionPlanId = this.$route.params.subscriptionPlanId;
     axios.get('/app/product/'+this.product_id+'/plan/'+subscriptionPlanId).then(response => {
       this.subscription_plan = response.data.subscription_plan;
       this.ready = true;
