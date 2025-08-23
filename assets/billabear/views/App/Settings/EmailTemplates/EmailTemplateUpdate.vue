@@ -101,7 +101,7 @@ export default {
     }
   },
   mounted() {
-    var id = this.$route.params.id
+    const id = this.$route.params.id
     this.origin = window.location.hostname;
     axios.get('/app/settings/email-template/'+id).then(response => {
       this.emailTemplate = response.data.email_template;
@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     sendTemplate: function (){
-      var id = this.$route.params.id
+      const id = this.$route.params.id
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};
@@ -125,7 +125,7 @@ export default {
       })
     },
     send: function () {
-      var id = this.$route.params.id
+      const id = this.$route.params.id
       this.sendingInProgress = true;
       this.success = false;
       this.errors = {};

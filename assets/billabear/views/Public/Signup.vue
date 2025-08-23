@@ -86,8 +86,8 @@ export default {
     handleSubmit (e) {
       this.submitted = true;
       const { email, password, password_confirm } = this;
-      var user = {email, password}
-      var hasError = false
+      const user = {email, password}
+      let hasError = false
 
       this.email_error = undefined
       this.password_error = undefined
@@ -112,7 +112,7 @@ export default {
       }
 
       this.in_process = true
-      var that = this
+      const that = this
       if (email && password) {
         userservice.signup(user, this.$route.params.code)
             .then(
@@ -122,7 +122,7 @@ export default {
                   if (response.data.user !== undefined) {
                     that.$router.push({name: 'app.home'})
                   }
-                  var user = response.data.user
+                  const user = response.data.user
                   this.markAsLoggedin({user});
                 },
                 error => {

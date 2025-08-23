@@ -51,12 +51,12 @@ export default {
   methods: {
 
     doSearch: function () {
-      var queryVals = this.buildFilterQuery();
+      const queryVals = this.buildFilterQuery();
       this.$router.push({query: queryVals})
     },
     buildFilterQuery: function () {
-      var queryVals = {};
-      for (var filter in this.filters) {
+      const queryVals = {};
+      for (let filter in this.filters) {
         if (this.filters[filter].value !== null && this.filters[filter].value !== undefined) {
           queryVals[filter] = this.filters[filter].value;
         }

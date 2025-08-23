@@ -533,7 +533,7 @@ export default {
     };
   },
   mounted() {
-    var subscriptionId = this.$route.params.subscriptionId
+    const subscriptionId = this.$route.params.subscriptionId
     axios.get('/app/subscription/' + subscriptionId).then(response => {
       this.product = response.data.product;
       this.subscription = response.data.subscription;
@@ -560,7 +560,7 @@ export default {
     },
     showPlan: function () {
       this.planOptions.modelValue = true;
-      var subscriptionId = this.$route.params.subscriptionId
+      const subscriptionId = this.$route.params.subscriptionId
 
       axios.get('/app/subscription/' + subscriptionId+'/change-plan').then(response => {
         this.plans = response.data.plans;
@@ -586,7 +586,7 @@ export default {
     },
     showPrice: function () {
       this.priceOptions.modelValue = true;
-      var subscriptionId = this.$route.params.subscriptionId
+      const subscriptionId = this.$route.params.subscriptionId
 
       axios.get('/app/subscription/' + subscriptionId+'/price').then(response => {
           this.newPrice = this.subscription.price;
@@ -599,7 +599,7 @@ export default {
     },
     sendSeats: function () {
 
-      var subscriptionId = this.$route.params.subscriptionId
+      const subscriptionId = this.$route.params.subscriptionId
       this.seatSending = true;
       axios.post('/app/subscription/' + subscriptionId+'/seats/set', {seats: this.subscription.seat_number}).then(response => {
         this.seatSending = false;
@@ -608,7 +608,7 @@ export default {
     },
     sendPrice: function () {
 
-      var subscriptionId = this.$route.params.subscriptionId
+      const subscriptionId = this.$route.params.subscriptionId
       this.priceSending = true;
       axios.post('/app/subscription/' + subscriptionId+'/price', {price: this.newPrice.id}).then(response => {
         this.priceSending = false;
@@ -625,7 +625,7 @@ export default {
     },
     sendChangePaymentMethods: function () {
         this.paymentMethodsSending = true;
-        var subscriptionId = this.$route.params.subscriptionId
+        const subscriptionId = this.$route.params.subscriptionId
         const payload = {
           payment_details: this.newPaymentMethod.id,
         };
@@ -636,7 +636,7 @@ export default {
     },
     sendCancel: function () {
       this.cancelSending = true
-      var subscriptionId = this.$route.params.subscriptionId
+      const subscriptionId = this.$route.params.subscriptionId
       const payload = {
         when: this.cancelValues.when,
         date: this.cancelValues.date,

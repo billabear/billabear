@@ -130,13 +130,13 @@ export default {
       });
     },
     doSearch: function () {
-      var queryVals = this.buildFilterQuery();
+      const queryVals = this.buildFilterQuery();
       this.$router.push({query: queryVals})
     },
     buildFilterQuery: function () {
-      var queryVals = {};
-      for (var i = 0; i < this.active_filters.length; i++) {
-        var filter = this.active_filters[i];
+      const queryVals = {};
+      for (let i = 0; i < this.active_filters.length; i++) {
+        const filter = this.active_filters[i];
         if (this.filters[filter].value !== null && this.filters[filter].value !== undefined) {
 
           queryVals[filter] = this.filters[filter].value;
@@ -152,17 +152,17 @@ export default {
     },
     nextPage: function () {
 
-      var queryVals = this.buildFilterQuery();
+      const queryVals = this.buildFilterQuery();
       queryVals.last_key = this.last_key;
       this.$router.push({query: queryVals})
     },
     prevPage: function () {
-      var queryVals = this.buildFilterQuery();
+      const queryVals = this.buildFilterQuery();
       queryVals.first_key = this.first_key;
       this.$router.push({query: queryVals})
     },
     changePerPage: function ($event) {
-      var queryVals = this.buildFilterQuery();
+      const queryVals = this.buildFilterQuery();
       queryVals.per_page = $event.target.value;
       this.per_page = queryVals.per_page;
 
@@ -176,7 +176,7 @@ export default {
     },
     loadMetrics: function () {
       this.syncQueryToFilters();
-      var mode = 'normal';
+      const mode = 'normal';
       let urlString = '/app/metric/list?';
 
       if (this.$route.query.last_key !== undefined) {
@@ -219,9 +219,9 @@ export default {
 
     },
     toogle: function (key) {
-      var newFilters = [];
-      var found = false;
-      for (var i = 0; i < this.active_filters.length; i++) {
+      const newFilters = [];
+      let found = false;
+      for (let i = 0; i < this.active_filters.length; i++) {
         if (this.active_filters[i] !== key) {
 
           newFilters.push(this.active_filters[i]);
@@ -235,7 +235,7 @@ export default {
       this.active_filters = newFilters;
     },
     isActive: function (key) {
-      for (var i = 0; i < this.active_filters.length; i++) {
+      for (let i = 0; i < this.active_filters.length; i++) {
         if (this.active_filters[i] === key) {
           return true;
         }

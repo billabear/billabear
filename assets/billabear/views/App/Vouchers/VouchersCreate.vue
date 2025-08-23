@@ -121,7 +121,7 @@ export default {
     axios.get('/app/voucher/create').then(response => {
       this.currencies = response.data.currencies;
 
-      for (var currency of this.currencies) {
+      for (const currency of this.currencies) {
         this.voucher.amounts.push({
           currency: currency,
           amount: 0
