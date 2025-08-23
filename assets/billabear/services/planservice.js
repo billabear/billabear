@@ -29,9 +29,8 @@ function createPerSeatCheckout(planName, paymentSchedule, currency, seats) {
 }
 
 function changePlan(planName, paymentSchedule) {
-    return axios.post(`/app/billing/plans/change/` + planName + '/' + paymentSchedule, {
-        headers: {'Content-Type': 'application/json'},
-        data: {}
+    return axios.post(`/app/billing/plans/change/` + planName + '/' + paymentSchedule, {}, {
+        headers: {'Content-Type': 'application/json'}
     }).then(handleResponse);
 }
 

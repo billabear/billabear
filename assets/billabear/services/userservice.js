@@ -27,17 +27,11 @@ function forgotPassword(email) {
 }
 
 function confirmEmail(code) {
-    return axios.get(`/app/user/confirm/${code}`, {
-        headers: {'Content-Type': 'application/json'},
-        data: {}
-    }).then(handleResponse);
+    return axios.get(`/app/user/confirm/${code}`).then(handleResponse);
 }
 
 function forgotPasswordCheck(code) {
-    return axios.get(`/app/user/reset/${code}`, {
-        headers: {'Content-Type': 'application/json'},
-        data: {}
-    }).then(handleResponse);
+    return axios.get(`/app/user/reset/${code}`).then(handleResponse);
 }
 function changePassword(password, new_password)
 {
@@ -49,10 +43,7 @@ function forgotPasswordConfirm(code, password) {
 }
 
 function fetchSettings() {
-    return axios.get("/app/user/settings", {
-        headers: {'Content-Type': 'application/json'},
-        data: {}
-    })
+    return axios.get("/app/user/settings")
     .then(handleResponse)
     .then(result => {
         return result.data.form;
