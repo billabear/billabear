@@ -42,16 +42,3 @@
 .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
 }
-
-.btn--danger {
-    @apply rounded-lg bg-red-500 shadow text-white p-3 font-bold hover:bg-red-400;
-}
-
-.btn--main {
-    @apply rounded-lg bg-black shadow text-white p-3 font-bold hover:bg-gray-500;
-}
-
-.btn-secondary {
-
-    @apply rounded-lg border border-black bg-white shadow text-black p-3 font-bold hover:bg-gray-50;
-}
