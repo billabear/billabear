@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import RoleOnlyView from "../../RoleOnlyView.vue";
+import RoleOnlyView from "../RoleOnlyView.vue";
 
 export default {
   name: "SubscriptionDetails",
