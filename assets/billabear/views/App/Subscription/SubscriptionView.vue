@@ -1,185 +1,26 @@
 <template>
   <div>
-    <LoadingScreen :ready="ready">
+    <LoadingScreen :ready="!loading">
       <div v-if="!error">
         <h1 class="page-title">{{ $t('app.subscription.view.title') }}</h1>
         <div class="grid grid-cols-2 gap-3">
-        <div class="card-body">
-          <h2 class="section-header">{{ $t('app.subscription.view.main.title') }}</h2>
-          <dl class="detail-list section-body ">
-            <div>
-              <dt>{{ $t('app.subscription.view.main.status') }}</dt>
-              <dd>{{ subscription.status }}</dd>
-            </div>
-
-            <div v-if="subscription.plan !== null && subscription.plan !== undefined">
-              <dt>{{ $t('app.subscription.view.main.plan') }}</dt>
-              <dd>
-                <router-link :to="{name: 'app.subscription_plan.view', params: {productId: product.id, subscriptionPlanId: subscription.plan.id}}">
-                  {{ subscription.plan.name }}
-                </router-link>
-                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-                  <button class="btn--main ml-3" @click="showPlan">{{ $t('app.subscription.view.main.plan_change') }}</button>
-                </RoleOnlyView>
-              </dd>
-            </div>
-            <div v-else></div>
-            <div>
-              <dt>{{ $t('app.subscription.view.main.customer') }}</dt>
-              <dd>
-                <router-link :to="{name: 'app.customer.view', params: {id: customer.id}}">
-                  {{ customer.email }}
-                </router-link>
-              </dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription.view.main.main_external_reference') }}</dt>
-              <dd>
-                <a v-if="subscription.external_main_reference_details_url" target="_blank" :href="subscription.external_main_reference_details_url">{{ subscription.main_external_reference }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                <span v-else>{{ subscription.main_external_reference }}</span>
-              </dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription.view.main.created_at') }}</dt>
-              <dd> {{ $filters.moment(subscription.created_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}
-              </dd>
-            </div>
-            <div v-if="subscription.ended_at != null">
-              <dt>{{ $t('app.subscription.view.main.ended_at') }}</dt>
-              <dd> {{ $filters.moment(subscription.ended_at, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}
-              </dd>
-            </div>
-            <div v-else>
-              <dt>{{ $t('app.subscription.view.main.valid_until') }}</dt>
-              <dd> {{ $filters.moment(subscription.valid_until, "dddd, MMMM Do YYYY, h:mm:ss a") || "unknown" }}
-              </dd>
-            </div>
-            <div v-if="subscription.plan.per_seat == true">
-              <dt>{{ $t('app.subscription.view.main.seat_number') }}</dt>
-              <dd>
-                {{ subscription.seat_number }}
-                <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-                  <button class="btn--main ml-3" @click="showSeatChange">{{ $t('app.subscription.view.main.change_seat') }}</button>
-                </RoleOnlyView>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <div class="card-body">
-          <h2 class="section-header">{{ $t('app.subscription.view.pricing.title') }}</h2>
-          <dl class="detail-list section-body" v-if="subscription.price">
-            <div>
-              <dt>{{ $t('app.subscription.view.pricing.price') }}</dt>
-              <dd>{{ subscription.price.display_value }}</dd>
-            </div>
-            <div>
-              <dt>{{ $t('app.subscription.view.pricing.recurring') }}</dt>
-              <dd>{{ subscription.price.recurring }}</dd>
-            </div>
-            <div v-if="subscription.price.recurring">
-              <dt>{{ $t('app.subscription.view.pricing.schedule') }}</dt>
-              <dd>{{ subscription.price.schedule }}</dd>
-            </div>
-          </dl>
-          <span class="text-center w-full" v-else>{{ $t('app.subscription.view.pricing.no_price') }}</span>
-          <RoleOnlyView role="ROLE_CUSTOMER_SUPPORT">
-            <div class="mt-2">
-              <button class="btn--container" @click="showPrice">{{ $t('app.subscription.view.pricing.change') }}</button>
-            </div>
-          </RoleOnlyView>
-        </div>
-          <div class="card-body">
-            <h2 class="section-header">{{ $t('app.subscription.view.payment_method.title') }}</h2>
-            <dl class="detail-list section-body" v-if="paymentDetails !== null && paymentDetails !== undefined">
-              <div>
-                <dt>{{ $t('app.subscription.view.payment_method.last_four') }}</dt>
-                <dd>**** **** **** {{ paymentDetails.last_four }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.subscription.view.payment_method.brand') }}</dt>
-                <dd>{{ paymentDetails.brand }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.subscription.view.payment_method.expiry_month') }}</dt>
-                <dd>{{ paymentDetails.expiry_month }}</dd>
-              </div>
-              <div>
-                <dt>{{ $t('app.subscription.view.payment_method.expiry_year') }}</dt>
-                <dd>{{ paymentDetails.expiry_year }}</dd>
-              </div>
-            </dl>
-            <div v-else class="text-center section-body">
-              {{ $t('app.subscription.view.payment_method.invoiced') }}
-            </div>
-          </div>
-          <div class="card-body">
-            <h2 class="section-header">{{ $t('app.subscription.view.payments.title') }}</h2>
-            <div class="section-body">
-
-              <table class="list-table">
-                <thead>
-                <tr>
-                  <th>{{ $t('app.subscription.view.payments.amount') }}</th>
-                  <th>{{ $t('app.subscription.view.payments.created_at') }}</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-if="payments.length == 0">
-                  <td colspan="3" class="text-center">{{ $t('app.subscription.view.payments.no_payments') }}</td>
-                </tr>
-                <tr v-for="payment in payments">
-                  <td>{{ currency(payment.amount) }}</td>
-                  <td>{{ $filters.moment(payment.created_at, 'lll') }}</td>
-                  <td><router-link :to="{name: 'app.payment.view', params: {id: payment.id}}" class="btn--main">{{ $t('app.subscription.view.payments.view') }}</router-link></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="card-body">
-            <div class="grid grid-cols-2">
-              <div><h2  class="section-header">{{ $t('app.subscription.view.subscription_events.title') }}</h2></div>
-            </div>
-
-            <div class="mt-2">
-
-              <table class="list-table">
-                <thead>
-                <tr>
-                  <th>{{ $t('app.subscription.view.subscription_events.list.event') }}</th>
-                  <th>{{ $t('app.subscription.view.subscription_events.list.created_at') }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="subscription in subscription_events" class="mt-5">
-                  <td>{{ subscription.type }}</td>
-                  <td>{{ $filters.moment(subscription.created_at, "LLL") }}</td>
-                </tr>
-                <tr v-if="subscription_events.length == 0">
-                  <td colspan="6" class="text-center">{{ $t('app.subscription.view.subscription_events.no_subscription_events') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="card-body">
-              <div><h2  class="section-header">{{ $t('app.subscription.view.metadata.title') }}</h2>
-
-                <dl class="detail-list section-body">
-                  <div v-for="(value, key) in subscription.metadata">
-                    <dt>{{ key }}</dt>
-                    <dd>{{ value }}</dd>
-                  </div>
-                </dl>
-                <div v-if="subscription.metadata.length === 0" class="w-full text-center italic text-gray-500">
-                  {{ $t('app.subscription.view.metadata.no_metadata') }}
-                </div>
-              </div>
-
-          </div>
+          <SubscriptionDetails 
+            :subscription="subscription"
+            :customer="customer"
+            :product="product"
+            @show-plan="planModal.openModal"
+            @show-seat-change="seatModal.openModal"
+          />
+          <SubscriptionPricing 
+            :subscription="subscription"
+            @show-price="priceModal.openModal"
+          />
+          <SubscriptionPaymentMethod 
+            :payment-details="paymentDetails"
+          />
+          <SubscriptionPaymentsTable :payments="payments" />
+          <SubscriptionEventsTable :subscription-events="subscriptionEvents" />
+          <SubscriptionMetadata :subscription="subscription" />
 
           <div class="card-body" v-if="usageEstimate !== null && usageEstimate !== undefined">
             <div>
@@ -422,233 +263,99 @@
 </template>
 
 <script>
-import axios from "axios";
-import {VueFinalModal} from "vue-final-modal";
-import currency from "currency.js";
+import { onMounted } from 'vue'
+import { VueFinalModal } from "vue-final-modal";
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 import Currency from "../../../components/app/Currency.vue";
+import SubscriptionDetails from "../../../components/app/Subscription/SubscriptionDetails.vue";
+import SubscriptionPricing from "../../../components/app/Subscription/SubscriptionPricing.vue";
+import SubscriptionPaymentMethod from "../../../components/app/Subscription/SubscriptionPaymentMethod.vue";
+import SubscriptionPaymentsTable from "../../../components/app/Subscription/SubscriptionPaymentsTable.vue";
+import SubscriptionEventsTable from "../../../components/app/Subscription/SubscriptionEventsTable.vue";
+import SubscriptionMetadata from "../../../components/app/Subscription/SubscriptionMetadata.vue";
+import { useSubscriptionApi } from "../../../composables/useSubscriptionApi.js";
+import { useModal } from "../../../composables/useModal.js";
 
 export default {
   name: "SubscriptionView",
-  components: {Currency, RoleOnlyView, VueFinalModal},
-  data() {
-    return {
-      subscription: {},
-      customer: {},
-      product: {},
-      paymentDetails: {},
-      payments: [],
-      refunds: [],
-      usageEstimate: null,
-      ready: false,
-      error: false,
-      errorMessage: undefined,
-      cancelValues: {
-          when: "end-of-run",
-          refundType: "none",
-          date: null,
-          errors: {},
-          cancelled: false
-      },
-      seatOptions: {
-        teleportTo: 'body',
-        modelValue: false,
-        displayDirective: 'if',
-        hideOverlay: false,
-        overlayTransition: 'vfm-fade',
-        contentTransition: 'vfm-fade',
-        clickToClose: true,
-        escToClose: true,
-        background: 'non-interactive',
-        lockScroll: true,
-        swipeToClose: 'none',
-      },
-      cancelSending: false,
-      planErrors: {},
-      planWhen: null,
-      planSending: false,
-      planReady: false,
-      planOptions: {
-        teleportTo: 'body',
-        modelValue: false,
-        displayDirective: 'if',
-        hideOverlay: false,
-        overlayTransition: 'vfm-fade',
-        contentTransition: 'vfm-fade',
-        clickToClose: true,
-        escToClose: true,
-        background: 'non-interactive',
-        lockScroll: true,
-        swipeToClose: 'none',
-      },
-      newPlan: {},
-      newPrice: {id: null},
-      priceSending: false,
-      priceReady: false,
-      priceOptions: {
-        teleportTo: 'body',
-        modelValue: false,
-        displayDirective: 'if',
-        hideOverlay: false,
-        overlayTransition: 'vfm-fade',
-        contentTransition: 'vfm-fade',
-        clickToClose: true,
-        escToClose: true,
-        background: 'non-interactive',
-        lockScroll: true,
-        swipeToClose: 'none',
-      },
-      paymentMethodOptions: {
-        teleportTo: 'body',
-        modelValue: false,
-        displayDirective: 'if',
-        hideOverlay: false,
-        overlayTransition: 'vfm-fade',
-        contentTransition: 'vfm-fade',
-        clickToClose: true,
-        escToClose: true,
-        background: 'non-interactive',
-        lockScroll: true,
-        swipeToClose: 'none',
-      },
-      options: {
-        teleportTo: 'body',
-        modelValue: false,
-        displayDirective: 'if',
-        hideOverlay: false,
-        overlayTransition: 'vfm-fade',
-        contentTransition: 'vfm-fade',
-        clickToClose: true,
-        escToClose: true,
-        background: 'non-interactive',
-        lockScroll: true,
-        swipeToClose: 'none',
-      },
-      paymentMethodReady: false,
-      paymentMethods: [],
-      newPaymentMethod: {},
-      paymentMethodsSending: false,
-      seatSending: false,
-      subscription_events: []
-    };
+  components: {
+    Currency, 
+    RoleOnlyView, 
+    VueFinalModal,
+    SubscriptionDetails,
+    SubscriptionPricing,
+    SubscriptionPaymentMethod,
+    SubscriptionPaymentsTable,
+    SubscriptionEventsTable,
+    SubscriptionMetadata
   },
-  mounted() {
-    const subscriptionId = this.$route.params.subscriptionId
-    axios.get('/app/subscription/' + subscriptionId).then(response => {
-      this.product = response.data.product;
-      this.subscription = response.data.subscription;
-      this.customer = response.data.customer;
-      this.paymentDetails = response.data.payment_details;
-      this.payments = response.data.payments;
-      this.subscription_events = response.data.subscription_events;
-      this.usageEstimate = response.data.usage_estimate;
-      this.ready = true;
-    }).catch(error => {
-      if (error.response.status == 404) {
-        this.errorMessage = this.$t('app.subscription.view.error.not_found')
-      } else {
-        this.errorMessage = this.$t('app.subscription.view.error.unknown')
-      }
+  setup() {
+    const { 
+      loading,
+      error,
+      subscription,
+      customer,
+      product,
+      paymentDetails,
+      payments,
+      usageEstimate,
+      subscriptionEvents,
+      fetchSubscription
+    } = useSubscriptionApi()
 
-      this.error = true;
-      this.ready = true;
+    const planModal = useModal()
+    const priceModal = useModal()
+    const seatModal = useModal()
+    const cancelModal = useModal()
+    const paymentMethodModal = useModal()
+
+    onMounted(() => {
+      const subscriptionId = window.location.pathname.split('/').pop()
+      fetchSubscription(subscriptionId)
     })
-  },
-  methods: {
-    currency: function (value) {
-      return currency(value, { fromCents: true });
-    },
-    showPlan: function () {
-      this.planOptions.modelValue = true;
-      const subscriptionId = this.$route.params.subscriptionId
 
-      axios.get('/app/subscription/' + subscriptionId+'/change-plan').then(response => {
-        this.plans = response.data.plans;
-        this.planReady = true;
-      })
-    },
-    sendPlan: function () {
-        this.planSending = true;
-        const subscriptionId = this.$route.params.subscriptionId;
-        const payload = {
-          when: this.planWhen,
-          price: this.newPrice.id,
-          plan: this.newPlan.id,
-        };
-        axios.post('/app/subscription/'+subscriptionId+'/change-plan', payload).then(response => {
-          this.planOptions.modelValue = false;
-          this.subscription.plan = this.newPlan;
-          this.subscription.price = this.newPrice;
-        }).catch(error => {
-          this.planErrors = error.response.data.errors;
-          this.planSending = true;
-        })
-    },
-    showPrice: function () {
-      this.priceOptions.modelValue = true;
-      const subscriptionId = this.$route.params.subscriptionId
-
-      axios.get('/app/subscription/' + subscriptionId+'/price').then(response => {
-          this.newPrice = this.subscription.price;
-          this.prices = response.data.data;
-          this.priceReady = true;
-      })
-    },
-    showSeatChange: function () {
-        this.seatOptions.modelValue = true;
-    },
-    sendSeats: function () {
-
-      const subscriptionId = this.$route.params.subscriptionId
-      this.seatSending = true;
-      axios.post('/app/subscription/' + subscriptionId+'/seats/set', {seats: this.subscription.seat_number}).then(response => {
-        this.seatSending = false;
-        this.seatOptions.modelValue = false;
-      })
-    },
-    sendPrice: function () {
-
-      const subscriptionId = this.$route.params.subscriptionId
-      this.priceSending = true;
-      axios.post('/app/subscription/' + subscriptionId+'/price', {price: this.newPrice.id}).then(response => {
-        this.priceSending = false;
-      })
-    },
-    showChangePaymentMethods: function () {
-        this.paymentMethodOptions.modelValue = true;
-        axios.get('/app/customer/'+this.customer.id+'/payment-card').then(response => {
-            this.newPaymentMethod = this.paymentDetails;
-            this.paymentMethods = response.data.data;
-            this.paymentMethodReady = true;
-
-        })
-    },
-    sendChangePaymentMethods: function () {
-        this.paymentMethodsSending = true;
-        const subscriptionId = this.$route.params.subscriptionId
-        const payload = {
-          payment_details: this.newPaymentMethod.id,
-        };
-        axios.post('/app/subscription/' + subscriptionId+'/payment-card', payload).then(response => {
-          this.paymentMethodsSending = false;
-          this.paymentDetails = this.newPaymentMethod;
-        })
-    },
-    sendCancel: function () {
-      this.cancelSending = true
-      const subscriptionId = this.$route.params.subscriptionId
-      const payload = {
-        when: this.cancelValues.when,
-        date: this.cancelValues.date,
-        refund_type: this.cancelValues.refundType,
-      }
-      axios.post('/app/subscription/' + subscriptionId+'/cancel', payload).then(response => {
-        this.cancelSending = false;
-        this.cancelValues.cancelled = true;
-      }).toLocaleString(error => {
-        this.cancelValues.errors = error.response.data.errors;
-        this.cancelSending = false;
-      })
+    return {
+      // State
+      loading,
+      error,
+      subscription,
+      customer,
+      product,
+      paymentDetails,
+      payments,
+      usageEstimate,
+      subscriptionEvents,
+      
+      // Modals
+      planModal,
+      priceModal,
+      seatModal,
+      cancelModal,
+      paymentMethodModal,
+      
+      // Additional component state (to be refactored further)
+      cancelValues: reactive({
+        when: "end-of-run",
+        refundType: "none", 
+        date: null,
+        errors: {},
+        cancelled: false
+      }),
+      planErrors: ref({}),
+      planWhen: ref(null),
+      planSending: ref(false),
+      planReady: ref(false),
+      newPlan: ref({}),
+      newPrice: ref({id: null}),
+      priceSending: ref(false),
+      priceReady: ref(false),
+      paymentMethodReady: ref(false),
+      paymentMethods: ref([]),
+      newPaymentMethod: ref({}),
+      paymentMethodsSending: ref(false),
+      seatSending: ref(false),
+      cancelSending: ref(false),
+      errorMessage: ref(undefined)
     }
   }
 }
