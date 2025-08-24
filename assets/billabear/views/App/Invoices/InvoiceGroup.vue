@@ -21,13 +21,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
-
-export default {
-  name: "InvoiceGroup",
-  components: {RoleOnlyView}
-}
 </script>
 
 <style scoped>
