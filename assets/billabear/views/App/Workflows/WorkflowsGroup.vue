@@ -21,10 +21,7 @@
 
 </template>
 
-<script>
-export default {
-  name: "SystemGroup"
-}
+<script setup>
 </script>
 
 <style scoped>
