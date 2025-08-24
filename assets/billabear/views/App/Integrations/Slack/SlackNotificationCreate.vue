@@ -54,67 +54,76 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
-import {Select, Textarea} from "flowbite-vue";
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { Select, Textarea } from "flowbite-vue"
+import { useForm } from '../../../composables/useForm'
+import { useApi } from '../../../composables/useApi'
 
-export default {
-  name: "SlackWebhookCreate",
-  components: {Textarea, Select},
-  data() {
-    return {
-      webhooks: [],
-      webhook: {
-        event: '',
-        webhook: '',
-      },
-      errors: {},
-      inProgress: false
-    }
-  },
-  mounted() {
-    axios.get("/app/integrations/slack/notification/create").then(response => {
-      this.webhooks = response.data.webhooks;
-    })
-  },
-  methods: {
-    changeEvent: function () {
+// Router
+const router = useRouter()
 
-      if (this.webhook.event == "customer_created") {
-        this.webhook.template = "A new customer ({{customer.email}}) has been created";
-      } else if (this.webhook.event === "payment_processed") {
-        this.webhook.template = "Successfully processed {{payment.amount_formatted}} for {{customer.email}}";
-      } else if (this.webhook.event === "payment_failure") {
-        this.webhook.template = "Failed to processed {{payment.amount_formatted}} for {{customer.email}}";
-      } else if (this.webhook.event === "subscription_created") {
-        this.webhook.template = "Successfully subscription {{subscription.plan_name}} for {{customer.email}}";
-      } else if (this.webhook.event === "subscription_cancelled") {
-        this.webhook.template = "Subscription {{subscription.plan_name}} for {{customer.email}} cancelled";
-      } else if (this.webhook.event === "trial_started") {
-        this.webhook.template = "Trial started for {{customer.email}} for {{subscription.plan_name}}";
-      } else if (this.webhook.event === "trial_ended") {
-        this.webhook.template = "Trial ended for {{customer.email}} for {{subscription.plan_name}}";
-      } else if (this.webhook.event === "trial converted") {
-        this.webhook.template = "Trial converted into a subscription for {{customer.email}} for {{subscription.plan_name}}";
-      } else if (this.webhook.event === "tax_country_threshold_reached") {
-        this.webhook.template = "Tax country threshold of {{country.threshold}} reached for {{country.name}}";
-      } else if (this.webhook.event === "tax_state_threshold_reached") {
-        this.webhook.template = "Tax state threshold of {{state.threshold}} reached for {{ state.name }} in {{country.name}}";
-      } else if (this.webhook.event === "workflow_failure") {
-        this.webhook.template = "Workflow {{workflow}} failed to transition to {{transition}} because {{error_message}}";
+// API for loading webhooks
+const { get } = useApi()
+
+// Component state
+const webhooks = ref([])
+
+// Initial form data
+const initialWebhookData = {
+  event: '',
+  webhook: '',
+  template: ''
+}
+
+// Form handling with useForm composable
+const {
+  formData: webhook,
+  isSubmitting: inProgress,
+  errors,
+  submitForm
+} = useForm(initialWebhookData)
+
+// Load webhooks on mount
+onMounted(async () => {
+  try {
+    const response = await get('/app/integrations/slack/notification/create')
+    webhooks.value = response.data.webhooks
+  } catch (error) {
+    console.error('Failed to load webhooks:', error)
+  }
+})
+
+// Event change handler with template population
+const changeEvent = () => {
+  const templates = {
+    'customer_created': 'A new customer ({{customer.email}}) has been created',
+    'payment_processed': 'Successfully processed {{payment.amount_formatted}} for {{customer.email}}',
+    'payment_failure': 'Failed to processed {{payment.amount_formatted}} for {{customer.email}}',
+    'subscription_created': 'Successfully subscription {{subscription.plan_name}} for {{customer.email}}',
+    'subscription_cancelled': 'Subscription {{subscription.plan_name}} for {{customer.email}} cancelled',
+    'trial_started': 'Trial started for {{customer.email}} for {{subscription.plan_name}}',
+    'trial_ended': 'Trial ended for {{customer.email}} for {{subscription.plan_name}}',
+    'trial_converted': 'Trial converted into a subscription for {{customer.email}} for {{subscription.plan_name}}',
+    'tax_country_threshold_reached': 'Tax country threshold of {{country.threshold}} reached for {{country.name}}',
+    'tax_state_threshold_reached': 'Tax state threshold of {{state.threshold}} reached for {{ state.name }} in {{country.name}}',
+    'workflow_failure': 'Workflow {{workflow}} failed to transition to {{transition}} because {{error_message}}'
+  }
+  
+  webhook.template = templates[webhook.event] || ''
+}
+
+// Form submission
+const save = async () => {
+  try {
+    await submitForm('/app/integrations/slack/notification/create', {
+      onSuccess: () => {
+        router.push({ name: 'app.system.integrations.slack.notification' })
       }
-    },
-    save: function () {
-      this.inProgress = true;
-      this.errors={};
-      axios.post("/app/integrations/slack/notification/create", this.webhook).then(response => {
-        this.inProgress = false;
-        this.$router.push({'name': 'app.system.integrations.slack.notification'})
-      }).catch(error => {
-        this.inProgress = false;
-        this.errors = error.response.data.errors;
-      })
-    }
+    })
+  } catch (error) {
+    // Error handling is managed by the useForm composable
   }
 }
 </script>
