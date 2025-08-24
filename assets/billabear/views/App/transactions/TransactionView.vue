@@ -23,10 +23,7 @@
 
 </template>
 
-<script>
-export default {
-  name: "TransactionView"
-}
+<script setup>
 </script>
 
 <style scoped>
