@@ -5,18 +5,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ErrorBear",
-  props: {
-    errorMessage: {
-      type: String,
-      default() {
-        return "app.default_error_message";
-      }
-    }
-  },
-}
+<script setup>
+const props = defineProps({
+  errorMessage: {
+    type: String,
+    default: "app.default_error_message"
+  }
+});
 </script>
 
 <style scoped>
