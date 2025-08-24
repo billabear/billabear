@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import { AuthService } from "../services/auth";
+
+import axios from "axios";
 import Login from "../views/Public/Login.vue";
 import Signup from "../views/Public/Signup.vue";
 import ForgotPassword from "../views/Public/ForgotPassword.vue";
@@ -45,14 +46,31 @@ export const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
-    const authRequired = AuthService.requiresAuth(to);
-    const loggedIn = AuthService.isLoggedIn();
+    const publicPages = ['/login', '/login-link', '/signup', '/signup/:code', '/forgot-password', '/forgot-password/:code', '/confirm-email/:code', '/', '/install', '/error/stripe-invalid', '/error/stripe'];
+    const authRequired = !publicPages.includes(to.matched[0].path);
+    let loggedIn = localStorage.getItem('user');
+
+    if (loggedIn == 'undefined'){
+        loggedIn = null;
+        localStorage.getItem('user', null);
+    }
 
     if (authRequired && !loggedIn) {
-        AuthService.setRedirect(window.location.pathname);
+        localStorage.setItem('app_redirect', window.location.pathname)
         return next('/login');
     }
 
     next();
 })
 
+// Handle redirections when logged out.
+axios.interceptors.response.use(response => {
+    return response;
+}, error => {
+    if (error.response.status === 401) {
+        localStorage.setItem('user', null);
+        localStorage.setItem('app_redirect', window.location.pathname)
+        router.push('/login')
+    }
+    return Promise.reject(error);
+});

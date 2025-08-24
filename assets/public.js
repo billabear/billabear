@@ -6,7 +6,6 @@ import {createVfm} from "vue-final-modal";
 import {router} from "./public/helper/router";
 import ParthenonUI from "@parthenon/ui";
 import {getBrowserLocale} from "./shared/utils/locale.js";
-import VueMoment from 'vue-moment-v3';
 
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'vue-final-modal/style.css';
@@ -45,7 +44,7 @@ const vfm = createVfm()
 
 app.use(router);
 app.use(i18n);
-app.use(VueMoment)
+app.use(require('vue-moment-v3'))
 app.use(vfm)
 app.use(ParthenonUI);
 app.mount('#app');

@@ -25,7 +25,6 @@ import App from "./billabear/views/App";
 
 import {router} from "./billabear/helpers/router"
 import {pinia} from './billabear/store'
-import {setupAxiosInterceptors} from "./billabear/services/interceptors"
 import { createApp } from "vue";
 import { createVfm } from 'vue-final-modal'
 import {createI18n} from "vue-i18n";
@@ -38,7 +37,6 @@ import ParthenonUI from "@parthenon/ui";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import RoleOnlyView from "./billabear/components/app/RoleOnlyView.vue";
-import VueMoment from 'vue-moment-v3';
 
 
 import { VueFlow } from '@vue-flow/core'
@@ -83,12 +81,9 @@ billabear.use(ParthenonMenu);
 billabear.use(ParthenonUI);
 billabear.use(VueFlow);
 billabear.use(VueApexCharts)
-billabear.use(VueMoment)
+billabear.use(require('vue-moment-v3'))
 billabear.use(vfm)
 billabear.component('RoleOnlyView', RoleOnlyView);
 billabear.component('VueDatePicker', VueDatePicker);
-
-// Initialize axios interceptors
-setupAxiosInterceptors();
 
 billabear.mount('#app');
