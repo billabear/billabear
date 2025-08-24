@@ -39,11 +39,33 @@ function cancel() {
     return axios.post(`/app/billing/cancel`, {}).then(handleResponse);
 }
 
+// Plan management functions for admin/store operations
+function fetchSubscriptionPlan(productId, subscriptionPlanId) {
+    return axios.get(`/app/product/${productId}/plan/${subscriptionPlanId}/update`);
+}
+
+function fetchPlanCreationData(productId) {
+    return axios.get(`/app/product/${productId}/plan-creation`);
+}
+
+function createFeature(feature) {
+    return axios.post('/app/feature', feature);
+}
+
+function createPrice(productId, price) {
+    return axios.post(`/app/product/${productId}/price`, price);
+}
+
 export const planservice = {
     fetchPlanInfo,
     createCheckout,
     createPerSeatCheckout,
     changePlan,
     cancel,
-    startSubscriptionFromPaymentDetails
+    startSubscriptionFromPaymentDetails,
+    // Plan management methods
+    fetchSubscriptionPlan,
+    fetchPlanCreationData,
+    createFeature,
+    createPrice
 };
