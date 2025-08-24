@@ -28,21 +28,19 @@
   </li>
 </template>
 
-<script>
-export default {
-  name: "MenuTopItem",
-  data() {
-      return {
-        showSubmenu: false
-      }
-  },
-  computed: {
-    hasSubmenu: function () {
+<script setup>
+import { ref, computed, useSlots } from 'vue'
 
-      return !!this.$slots.submenu;
-    }
-  }
-}
+// Component state
+const showSubmenu = ref(false)
+
+// Access slots in Composition API
+const slots = useSlots()
+
+// Computed property for checking if submenu slot exists
+const hasSubmenu = computed(() => {
+  return !!slots.submenu
+})
 </script>
 
 <style scoped>
