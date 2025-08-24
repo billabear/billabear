@@ -122,16 +122,16 @@ export default {
   },
   mounted() {
     const hash = this.$route.params.hash;
-    var imported = document.createElement('script');
+    const imported = document.createElement('script');
     imported.src = 'https://js.stripe.com/v3/';
     document.head.appendChild(imported);
 
-    axios.get("/public/quote/"+hash+"/pay").then(response => {
+    axios.get(`/public/quote/${hash}/pay`).then(response => {
       this.quote = response.data.quote;
       this.stripeConfig = response.data.stripe;
       this.ready = true;
       this.stripe = Stripe(this.stripeConfig.key);
-      var that = this;
+      const that = this;
       if (this.quote.paid === false && this.quote.expired === false) {
         setTimeout(()=> {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
@@ -151,10 +151,10 @@ export default {
     },
     send: function (value) {
       this.sending = true;
-      var that = this
+      const that = this
       stripeservice.sendCard(this.stripe, this.card).then(
           response => {
-            var token = response.token.id;
+            const token = response.token.id;
             const hash = this.$route.params.hash;
             billingservice.portalQuotePay(hash, token).then(response => {
               if (response.data.success) {

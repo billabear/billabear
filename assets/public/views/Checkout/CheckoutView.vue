@@ -118,18 +118,18 @@ export default {
       const slug = this.$route.params.slug;
 
       this.sending = true;
-      var imported = document.createElement('script');
+      const imported = document.createElement('script');
       imported.src = 'https://js.stripe.com/v3/';
       document.head.appendChild(imported);
 
-      axios.post("/public/checkout/"+slug+"/customer", this.customer).then(response => {
+      axios.post(`/public/checkout/${slug}/customer`, this.customer).then(response => {
         this.stage = 'payment';
         this.stripeConfig = response.data.stripe;
         this.checkout_session = response.data.checkout_session;
         this.ready = true;
         this.stripe = Stripe(this.stripeConfig.key);
         this.sending = false;
-        var that = this;
+        const that = this;
         setTimeout(()=> {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
         }, 500)
@@ -138,10 +138,10 @@ export default {
     createPayment: function () {
       const slug = this.$route.params.slug;
       this.sending = true;
-      var that = this
+      const that = this
       stripeservice.sendCard(this.stripe, this.card).then(
           response => {
-            var token = response.token.id;
+            const token = response.token.id;
             const hash = this.$route.params.hash;
             billingservice.portalCheckoutPay(slug, this.checkout_session.id, token).then(response => {
               if (response.data.success) {

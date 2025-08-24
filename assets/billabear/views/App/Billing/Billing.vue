@@ -19,10 +19,7 @@
     </div>
 </template>
 
-<script>
-export default {
-  name: "Billing"
-}
+<script setup>
 </script>
 
 <style scoped>
