@@ -1,0 +1,5 @@
+{
+  "name": "PHP",
+  "image": "mcr.microsoft.com/devcontainers/php",
+  "postCreateCommand": ".devcontainer/install-dependencies.sh"
+}
