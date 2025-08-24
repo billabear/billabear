@@ -1,122 +1,142 @@
-import {router} from "../helpers/router";
-import {userservice} from "../services/userservice";
-import axios from "axios";
+import { defineStore } from 'pinia';
+import { router } from "../helpers/router";
+import { userservice } from "../services/userservice";
+import { LocalStorageService } from "../services/localStorageService";
 
-const rawUserData = localStorage.getItem('user');
-let userData;
-try {
-     userData = JSON.parse(rawUserData);
-} catch (e) {
-    axios.get('/app/user').then(response => {
-        userData = response.data.user;
-        localStorage.setItem('user', JSON.stringify(userData));
-    }).catch(error => {
-        userData = null;
-    })
-}
-
-const state = {
-    logged_in: (userData !== null),
-    status: null,
-    error_info: {
-        has_error: false,
-        message: undefined,
+export const useUserStore = defineStore('user', {
+    state: () => {
+        const userData = LocalStorageService.getUserData();
+        
+        return {
+            logged_in: userData !== null,
+            status: null,
+            error_info: {
+                has_error: false,
+                message: undefined,
+            },
+            user: userData,
+            redirect_page: undefined,
+            in_progress: false,
+            successfully_progress: false,
+            locale: userData?.locale || 'en'
+        };
     },
-    user: userData,
-    redirect_page: undefined,
-    in_progress: false,
-    successfully_progress: false,
-    locale: 'en'
-}
 
-const actions = {
-    login({ dispatch, commit }, { username, password }) {
+    actions: {
+        async login({ username, password }) {
+            this.loginRequest({ username });
 
-        commit('loginRequest', { username });
+            if (username === "") {
+                this.loginFailure("A username must be provided");
+                return;
+            }
 
-        if (username === "") {
-            commit('loginFailure', "A username must be provided");
-            return;
-        }
+            if (password === "") {
+                this.loginFailure("A password must be provided");
+                return;
+            }
 
-        if (password === "") {
-            commit('loginFailure', "A password must be provided");
-            return;
-        }
+            try {
+                const user = await userservice.login(username, password);
+                this.loginSuccess(user.data);
+                LocalStorageService.setUserData(user.data);
 
-        userservice.login(username, password)
-            .then(
-                user => {
-                    commit('loginSuccess', user.data);
-                    localStorage.setItem('user', JSON.stringify(user.data));
-
-                    const url = localStorage.getItem('app_redirect')
-                    if (url === null) {
-                        router.push('/site/home');
-                    } else {
-                        localStorage.removeItem('app_redirect')
-                        router.push(url)
-                    }
-                },
-                error => {
-                    commit('loginFailure', error.response.data.error);
+                const url = LocalStorageService.getAppRedirect();
+                if (url === null) {
+                    router.push('/site/home');
+                } else {
+                    LocalStorageService.removeAppRedirect();
+                    router.push(url);
                 }
-            );
-    },
-    resetPassword({ dispatch, commit }, { password }) {
+            } catch (error) {
+                this.loginFailure(error.response.data.error);
+            }
+        },
 
-    },
-    logout({ commit }) {
-        commit('logout');
-    },
-    signup({ dispatch, commit }, user) {
-        commit('signupRequest', user);
-    },
-    markAsLoggedin({commit}, {user}) {
-        localStorage.setItem('user', JSON.stringify(user));
-        commit('loginSuccess', user);
-    },
-    updateLocale({commit}, {locale}) {
-        commit('setLocale', locale);
-    }
-};
+        async resetPassword({ password }) {
+            // TODO: Implement password reset functionality
+            console.warn('resetPassword action not implemented yet');
+            
+            this.resetPasswordRequest();
+            try {
+                // When implemented, this should call userservice.resetPassword(password)
+                // await userservice.resetPassword(password);
+                throw new Error('Password reset functionality not implemented');
+            } catch (error) {
+                console.error('Password reset error:', error);
+                this.in_progress = false;
+            }
+        },
 
-const mutations = {
-    loginRequest(state, user) {
-        state.in_progress = true;
-        state.user = user;
-        state.error_info = {
-            has_error: false,
-            message: undefined,
+        logout() {
+            this.logoutUser();
+        },
+
+        signup(user) {
+            this.signupRequest(user);
+        },
+
+        markAsLoggedin({ user }) {
+            LocalStorageService.setUserData(user);
+            this.loginSuccess(user);
+        },
+
+        updateLocale({ locale }) {
+            this.setLocale(locale);
+        },
+
+        // Mutation-like methods (now just regular methods in Pinia)
+        loginRequest(user) {
+            this.in_progress = true;
+            this.user = user;
+            this.error_info = {
+                has_error: false,
+                message: undefined,
+            };
+        },
+
+        setLocale(locale) {
+            this.locale = locale;
+        },
+
+        loginSuccess(user) {
+            this.in_progress = false;
+            this.status = { loggedIn: true };
+            this.user = user;
+            this.successfully_progress = true;
+            this.locale = user.locale;
+            this.logged_in = true;
+        },
+
+        loginFailure(error) {
+            this.in_progress = false;
+            this.status = { error: true };
+            this.error_info = {
+                has_error: true,
+                message: error
+            };
+            this.user = null;
+            this.logged_in = false;
+        },
+
+        resetPasswordRequest() {
+            this.in_progress = true;
+        },
+
+        logoutUser() {
+            this.user = null;
+            this.logged_in = false;
+            this.status = null;
+            this.error_info = {
+                has_error: false,
+                message: undefined,
+            };
+            LocalStorageService.removeUserData();
+        },
+
+        signupRequest(user) {
+            // Handle signup request logic here
+            console.log('Signup request for user:', user);
         }
-    },
-    setLocale(state, locale) {
-        state.locale = locale
-    },
-    loginSuccess(state, user) {
-        state.in_progress = false;
-        state.status = { loggedIn: true };
-        state.user = user;
-        state.successfully_progress = true;
-        state.locale = user.locale;
-    },
-    loginFailure(state, error) {
-        state.in_progress = false;
-        state.status = {error: true};
-        state.error_info = {
-            has_error: true,
-            message: error
-        }
-        state.user = null;
-    },
-    resetPasswordRequest(state) {
-        state.in_progress = true;
     }
-};
-
-export const userStore = {
-    namespaced: true,
-    state,
-    actions,
-    mutations
-};
+});

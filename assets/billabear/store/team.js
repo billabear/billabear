@@ -1,138 +1,143 @@
-import {teamservice} from "../services/teamservice";
+import { defineStore } from 'pinia';
+import { teamservice } from "../services/teamservice";
 
-const state = {
-    show_invite_form: false,
-    invite_sending_in_progress: false,
-    invite_successfully_processed: false,
-    invite_error: undefined,
-    current_invite: undefined,
-    cancel_invite_in_progress: false,
-    sent_invites: [],
-    members: [],
-    team_error: undefined,
-    disable_member_in_progress: false,
-    current_member: undefined,
-}
+export const useTeamStore = defineStore('team', {
+    state: () => ({
+        show_invite_form: false,
+        invite_sending_in_progress: false,
+        invite_successfully_processed: false,
+        invite_error: undefined,
+        current_invite: undefined,
+        cancel_invite_in_progress: false,
+        sent_invites: [],
+        members: [],
+        team_error: undefined,
+        disable_member_in_progress: false,
+        current_member: undefined,
+    }),
 
-const actions = {
-    cancelInvite({commit}, {invite}) {
-        commit('startCancelInvite', invite);
-        teamservice.cancelInvite(invite).then(
-            result => {
-                commit('removeInvite', invite);
-            },
-            error => {
-                commit('setTeamError', error);
+    actions: {
+        async cancelInvite({ invite }) {
+            this.startCancelInvite(invite);
+            try {
+                await teamservice.cancelInvite(invite);
+                this.removeInvite(invite);
+            } catch (error) {
+                this.setTeamError(error);
             }
-        )
-    },
-    disableMember({commit}, {member}) {
-        commit('startDisableMember', member);
-        teamservice.disableMember(member).then(
-            result => {
-                commit('markMemberAsDisabled', member);
-            },
-            error => {
-                commit('setTeamError', error);
+        },
+
+        async disableMember({ member }) {
+            this.startDisableMember(member);
+            try {
+                await teamservice.disableMember(member);
+                this.markMemberAsDisabled(member);
+            } catch (error) {
+                this.setTeamError(error);
             }
-        )
-    },
-    showInviteForm({commit}) {
-        commit('showInviteFormEnable');
-    },
-    hideInviteForm({commit}) {
-        commit('showInviteFormDisable');
-    },
-    sendAnother({commit}) {
-        commit('resetInvite')
-    },
-    sendInvite({commit}, {email}) {
+        },
 
-        commit('startInviteProcess');
+        showInviteForm() {
+            this.showInviteFormEnable();
+        },
 
-        if (email === "" || email === undefined || email === null) {
-            commit('inviteError', 'An email must be provided')
-            return;
+        hideInviteForm() {
+            this.showInviteFormDisable();
+        },
+
+        sendAnother() {
+            this.resetInvite();
+        },
+
+        async sendInvite({ email }) {
+            this.startInviteProcess();
+
+            if (email === "" || email === undefined || email === null) {
+                this.inviteError('An email must be provided');
+                return;
+            }
+
+            try {
+                await teamservice.invite(email);
+                this.inviteSent();
+            } catch (error) {
+                this.inviteError(error);
+            }
+        },
+
+        async loadTeamInfo() {
+            try {
+                const result = await teamservice.getTeam();
+                this.setTeamInfo(result);
+            } catch (error) {
+                this.setTeamError(error);
+            }
+        },
+
+        // Mutation-like methods (now just regular methods in Pinia)
+        startDisableMember(member) {
+            this.disable_member_in_progress = true;
+            this.current_member = member;
+        },
+
+        markMemberAsDisabled(member) {
+            this.disable_member_in_progress = false;
+            const index = this.members.indexOf(member);
+            this.members[index].is_deleted = true;
+        },
+
+        startCancelInvite(invite) {
+            this.current_invite = invite;
+            this.cancel_invite_in_progress = true;
+        },
+
+        removeInvite(invite) {
+            const invites = this.sent_invites;
+            const index = invites.indexOf(invite);
+            invites.splice(index, 1);
+
+            this.current_invite = undefined;
+            this.cancel_invite_in_progress = false;
+        },
+
+        setTeamInfo(result) {
+            this.sent_invites = result.sent_invites;
+            this.members = result.members;
+        },
+
+        setTeamError(error) {
+            this.team_error = error;
+            this.cancel_invite_in_progress = false;
+            this.invite_sending_in_progress = false;
+        },
+
+        resetInvite() {
+            this.invite_successfully_processed = false;
+            this.invite_error = undefined;
+        },
+
+        showInviteFormEnable() {
+            this.show_invite_form = true;
+        },
+
+        showInviteFormDisable() {
+            this.show_invite_form = false;
+        },
+
+        startInviteProcess() {
+            this.invite_sending_in_progress = true;
+            this.invite_error = undefined;
+        },
+
+        inviteError(error) {
+            this.invite_sending_in_progress = false;
+            this.invite_error = error;
+        },
+
+        inviteSent() {
+            this.invite_error = undefined;
+            this.invite_sending_in_progress = false;
+            this.invite_successfully_processed = true;
         }
-
-        teamservice.invite(email).then(
-            result => {
-                commit('inviteSent');
-            },
-            error => {
-                commit('inviteError', error)
-            }
-        )
-    },
-    loadTeamInfo({commit}) {
-        teamservice.getTeam().then(result => {
-                commit("setTeamInfo", result);
-            },
-            error => {
-                commit("setTeamError", error);
-            })
     }
-}
-
-const mutations = {
-    startDisableMember(state, member) {
-        state.disable_member_in_progress = true;
-        state.current_member = member;
-    },
-    markMemberAsDisabled(state, member) {
-        state.disable_member_in_progress = false;
-        const index = state.members.indexOf(member);
-        state.members[index].is_deleted = true;
-    },
-    startCancelInvite(state, invite) {
-        state.current_invite = invite;
-        state.cancel_invite_in_progress = true;
-    },
-    removeInvite(state, invite) {
-        const invites = state.sent_invites;
-        const index = invites.indexOf(invite);
-        invites.splice(index, 1);
-
-        state.current_invite = undefined;
-        state.cancel_invite_in_progress = false;
-    },
-    setTeamInfo(state, result) {
-        state.sent_invites = result.sent_invites;
-        state.members = result.members;
-    },
-    setTeamError(state, error) {
-        state.team_error = error;
-        state.cancel_invite_in_progress = false;
-        state.invite_sending_in_progress = false;
-    },
-    resetInvite(state) {
-        state.invite_successfully_processed = false;
-        state.invite_error = undefined;
-    },
-    showInviteFormEnable(state) {
-        state.show_invite_form = true;
-    },
-    showInviteFormDisable(state) {
-        state.show_invite_form = false;
-    },
-    startInviteProcess(state) {
-        state.invite_sending_in_progress = true;
-        state.invite_error = undefined;
-    },
-    inviteError(state, error) {
-        state.invite_sending_in_progress = false;
-        state.invite_error = error;
-    },
-    inviteSent(state) {
-        state.invite_error = undefined;
-        state.invite_sending_in_progress = false;
-        state.invite_successfully_processed = true;
-    }
-}
-
-export const teamStore = {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
-}
+});

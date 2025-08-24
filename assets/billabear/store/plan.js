@@ -1,160 +1,170 @@
-import axios from "axios";
+import { defineStore } from 'pinia';
+import { planservice } from "../services/planservice";
 
-const state = {
-    prices: [],
-    features: [],
-    loaded: false,
-    sendingRequest: false,
-    selectedFeatures: [],
-    selectedLimits: [],
-    selectedPrices: [],
-    errors: {},
-    metrics: [],
-}
+export const usePlanStore = defineStore('plan', {
+    state: () => ({
+        prices: [],
+        features: [],
+        loaded: false,
+        sendingRequest: false,
+        selectedFeatures: [],
+        selectedLimits: [],
+        selectedPrices: [],
+        errors: {},
+        metrics: [],
+    }),
 
-const actions = {
-    fetchSubscriptionPlan({commit}, {productId, subscriptionPlanId}) {
-        return new Promise((resolve, reject) => {
-            axios.get(`/app/product/${productId}/plan/${subscriptionPlanId}/update`).then(response => {
-                commit('setSubscriptionPlanData', response.data);
-                resolve(response);
-            }).catch(error => {
-                reject(error)
-            })
-        })
-    },
-    fetchData({commit}, {productId}) {
-        return new Promise((resolve, reject) => {
-            axios.get(`/app/product/${productId}/plan-creation`).then(response => {
-                commit('setData', response.data);
-                resolve(response);
-            }).catch(error => {
-                reject(error)
-            })
-        })
-    },
-    addFeatureToSelected({commit}, {feature}) {
-        commit('addFeature', feature);
-    },
-    removeFeatureFromSelected({commit}, {key}) {
-        commit('removeFeature', key);
-    },
-    addLimitToSelected({commit}, {limit}) {
-        commit('addLimit', limit);
-    },
-    removeLimitFromSelected({commit}, {key}) {
-        commit('removeLimit', key);
-    },
-    addPriceToSelected({commit}, {price}) {
-        commit('addPrice', price)
-    },
-    removePriceFromSelected({commit}, {key}) {
-        commit('removePrice', key)
-    },
-    reset({commit}) {
-        commit('resetEverything', []);
-    },
-    createFeature({commit}, {feature}) {
-        commit('markAsSendingRequest')
-        return new Promise((resolve, reject) => {
-            axios.post('/app/feature', feature).then(
-                response => {
-                    commit('addNewFeature', response.data)
-                    resolve(response)
-                }
-            ).catch(error => {
+    actions: {
+        async fetchSubscriptionPlan({ productId, subscriptionPlanId }) {
+            try {
+                const response = await planservice.fetchSubscriptionPlan(productId, subscriptionPlanId);
+                this.setSubscriptionPlanData(response.data);
+                return response;
+            } catch (error) {
+                throw error;
+            }
+        },
+
+        async fetchData({ productId }) {
+            try {
+                const response = await planservice.fetchPlanCreationData(productId);
+                this.setData(response.data);
+                return response;
+            } catch (error) {
+                throw error;
+            }
+        },
+
+        addFeatureToSelected({ feature }) {
+            this.addFeature(feature);
+        },
+
+        removeFeatureFromSelected({ key }) {
+            this.removeFeature(key);
+        },
+
+        addLimitToSelected({ limit }) {
+            this.addLimit(limit);
+        },
+
+        removeLimitFromSelected({ key }) {
+            this.removeLimit(key);
+        },
+
+        addPriceToSelected({ price }) {
+            this.addPrice(price);
+        },
+
+        removePriceFromSelected({ key }) {
+            this.removePrice(key);
+        },
+
+        reset() {
+            this.resetEverything();
+        },
+
+        async createFeature({ feature }) {
+            this.markAsSendingRequest();
+            try {
+                const response = await planservice.createFeature(feature);
+                this.addNewFeature(response.data);
+                return response;
+            } catch (error) {
                 if (error.response !== undefined) {
-                    commit('setErrors', error.response.data.errors)
+                    this.setErrors(error.response.data.errors);
                 }
-                commit('markAsNotSendingRequest')
-                reject(error)
-            })
-        });
-    },
-    createPrice({commit}, {productId, price}) {
-        commit('markAsSendingRequest')
-        return new Promise((resolve, reject) => {
-            axios.post(`/app/product/${productId}/price`, price).then(
-                response => {
-                    commit('addNewPrice', response.data);
-                    resolve(response);
-                }
-            ).catch(error => {
+                this.markAsNotSendingRequest();
+                throw error;
+            }
+        },
+
+        async createPrice({ productId, price }) {
+            this.markAsSendingRequest();
+            try {
+                const response = await planservice.createPrice(productId, price);
+                this.addNewPrice(response.data);
+                return response;
+            } catch (error) {
                 if (error.response !== undefined) {
-                    commit('setErrors', error.response.data.errors)
+                    this.setErrors(error.response.data.errors);
                 }
-                commit('markAsNotSendingRequest')
-                reject(error)
-            })
-        });
-    }
-}
+                this.markAsNotSendingRequest();
+                throw error;
+            }
+        },
 
-const mutations = {
-    markAsSendingRequest(state) {
-        state.errors = {};
-        state.sendingRequest = true;
-    },
-    markAsNotSendingRequest(state) {
-        state.sendingRequest = false;
-    },
-    setErrors(state, errors) {
-        state.errors = errors;
-        state.sendingRequest = false;
-    },
-    setData(state, payload) {
-        state.features = payload.features;
-        state.prices = payload.prices;
-        state.metrics = payload.metrics;
-        state.loaded = true;
-    },
-    setSubscriptionPlanData(state, payload) {
-        state.selectedPrices = payload.subscription_plan.prices;
-        state.selectedLimits = payload.subscription_plan.limits;
-        state.selectedFeatures = payload.subscription_plan.features;
-        state.features = payload.features;
-        state.prices = payload.prices;
-        state.metrics = payload.metrics;
-        state.loaded = true;
-    },
-    addNewFeature(state, feature) {
-        state.features.push(feature)
-        state.selectedFeatures.push(feature)
-        state.sendingRequest = false;
-    },
-    addFeature(state, feature) {
-        state.selectedFeatures.push(feature)
-    },
-    removeFeature(state, key) {
-        state.selectedFeatures.splice(key, 1);
-    },
-    addLimit(state, feature) {
-        state.selectedLimits.push(feature)
-    },
-    removeLimit(state, key) {
-        state.selectedLimits.splice(key, 1);
-    },
-    addNewPrice(state, price) {
-        state.prices.push(price)
-        state.selectedPrices.push(price)
-        state.sendingRequest = false;
-    },
-    addPrice(state, price) {
-        state.selectedPrices.push(price)
-    },
-    removePrice(state, key){
-        state.selectedPrices.splice(key, 1);
-    },
-    resetEverything(state, key){
-        state.selectedPrices = [];
-        state.selectedFeatures = [];
-        state.selectedLimits = [];
-    }
-}
+        // Mutation-like methods (now just regular methods in Pinia)
+        markAsSendingRequest() {
+            this.errors = {};
+            this.sendingRequest = true;
+        },
 
-export const planStore = {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
-}
+        markAsNotSendingRequest() {
+            this.sendingRequest = false;
+        },
+
+        setErrors(errors) {
+            this.errors = errors;
+            this.sendingRequest = false;
+        },
+
+        setData(payload) {
+            this.features = payload.features;
+            this.prices = payload.prices;
+            this.metrics = payload.metrics;
+            this.loaded = true;
+        },
+
+        setSubscriptionPlanData(payload) {
+            this.selectedPrices = payload.subscription_plan.prices;
+            this.selectedLimits = payload.subscription_plan.limits;
+            this.selectedFeatures = payload.subscription_plan.features;
+            this.features = payload.features;
+            this.prices = payload.prices;
+            this.metrics = payload.metrics;
+            this.loaded = true;
+        },
+
+        addNewFeature(feature) {
+            this.features.push(feature);
+            this.selectedFeatures.push(feature);
+            this.sendingRequest = false;
+        },
+
+        addFeature(feature) {
+            this.selectedFeatures.push(feature);
+        },
+
+        removeFeature(key) {
+            this.selectedFeatures.splice(key, 1);
+        },
+
+        addLimit(limit) {
+            this.selectedLimits.push(limit);
+        },
+
+        removeLimit(key) {
+            this.selectedLimits.splice(key, 1);
+        },
+
+        addNewPrice(price) {
+            this.prices.push(price);
+            this.selectedPrices.push(price);
+            this.sendingRequest = false;
+        },
+
+        addPrice(price) {
+            this.selectedPrices.push(price);
+        },
+
+        removePrice(key) {
+            this.selectedPrices.splice(key, 1);
+        },
+
+        resetEverything() {
+            this.selectedPrices = [];
+            this.selectedFeatures = [];
+            this.selectedLimits = [];
+        }
+    }
+});

@@ -24,7 +24,7 @@ import './billabear/flowbite/constants';
 import App from "./billabear/views/App";
 
 import {router} from "./billabear/helpers/router"
-import {store} from './billabear/store'
+import {pinia} from './billabear/store'
 import { createApp } from "vue";
 import { createVfm } from 'vue-final-modal'
 import {createI18n} from "vue-i18n";
@@ -76,7 +76,7 @@ const vfm = createVfm()
 
 billabear.use(router);
 billabear.use(i18n);
-billabear.use(store);
+billabear.use(pinia);
 billabear.use(ParthenonMenu);
 billabear.use(ParthenonUI);
 billabear.use(VueFlow);
