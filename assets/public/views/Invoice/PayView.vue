@@ -114,16 +114,16 @@ export default {
   },
   mounted() {
     const hash = this.$route.params.hash;
-    var imported = document.createElement('script');
+    const imported = document.createElement('script');
     imported.src = 'https://js.stripe.com/v3/';
     document.head.appendChild(imported);
 
-    axios.get("/public/invoice/"+hash+"/pay").then(response => {
+    axios.get(`/public/invoice/${hash}/pay`).then(response => {
       this.invoice = response.data.invoice;
       this.stripeConfig = response.data.stripe;
       this.ready = true;
       this.stripe = Stripe(this.stripeConfig.key);
-      var that = this;
+      const that = this;
       if (this.invoice.paid === false) {
         setTimeout(()=> {
           that.card = stripeservice.getCardToken(that.stripe, that.stripeConfig.token);
@@ -142,10 +142,10 @@ export default {
       return currency(value, { fromCents: true }).format({symbol: ''});
     },
     send: function (value) {
-      var that = this
+      const that = this
       stripeservice.sendCard(this.stripe, this.card).then(
           response => {
-            var token = response.token.id;
+            const token = response.token.id;
             const hash = this.$route.params.hash;
             billingservice.portalPay(hash, token).then(response => {
               if (response.data.success) {

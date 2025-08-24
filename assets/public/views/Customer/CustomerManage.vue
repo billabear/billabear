@@ -172,10 +172,9 @@ export default {
   methods: {
     downloadInvoice: function (invoice) {
       this.showError = false;
-      axios.get('/public/customer/'+this.token+'/invoice/'+invoice.id+'/download', {  responseType: 'blob'}).then(response => {
-        var fileDownload = require('js-file-download');
+      axios.get(`/public/customer/${this.token}/invoice/${invoice.id}/download`, {  responseType: 'blob'}).then(response => {
         const contentDisposition = response.headers['content-disposition'];
-        let filename = 'invoice-'+invoice.number+'.pdf';
+        let filename = `invoice-${invoice.number}.pdf`;
         if (contentDisposition) {const filenameRegex = /filename=(.*)/;
           const filenameMatch = filenameRegex.exec(contentDisposition);
           filename = filenameMatch[1];
@@ -184,7 +183,7 @@ export default {
         this.downloadInProgress = false;
       }).catch(error => {
         console.log(error)
-        var that = this;
+        const that = this;
         let errorString = async function getString() {
           const str = await error.response.data.text();
           const errorString = JSON.parse(str);
@@ -202,7 +201,7 @@ export default {
     },
     chargeInvoice: function (invoice) {
       this.sending_charge = true;
-      axios.post('/public/customer/'+this.token+'/invoice/'+invoice.id+'/charge', {  responseType: 'blob'}).then(response => {
+      axios.post(`/public/customer/${this.token}/invoice/${invoice.id}/charge`, {  responseType: 'blob'}).then(response => {
 
           if (response.data.paid) {
             invoice.paid = true;
@@ -227,7 +226,7 @@ export default {
   },
   mounted() {
     this.token= this.$route.params.token;
-    axios.get("/public/customer/"+this.token+"/manage").then(response => {
+    axios.get(`/public/customer/${this.token}/manage`).then(response => {
       this.ready = true;
       this.error = false
       this.customer = response.data.customer;
