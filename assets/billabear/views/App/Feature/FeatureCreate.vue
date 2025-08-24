@@ -43,31 +43,41 @@
   </div>
 </template>
 
-<script setup>
-import { useForm } from '../../composables/useForm'
+<script>
+import axios from "axios";
 
-// Initialize form with default feature data
-const initialData = {
-  name: null,
-  code: null,
-  description: null
-}
-
-// Use form composable for form handling
-const {
-  formData: feature,
-  isSubmitting: sendingInProgress,
-  success,
-  errors,
-  submitForm
-} = useForm(initialData)
-
-// Form submission handler
-const send = async () => {
-  try {
-    await submitForm('/app/feature')
-  } catch (error) {
-    // Error handling is managed by the composable
+export default {
+  name: "FeatureCreate",
+  data() {
+    return {
+      feature: {
+        name: null,
+        code: null,
+        description: null
+      },
+      sendingInProgress: false,
+      showAdvance: false,
+      success: false,
+      errors: {
+      }
+    }
+  },
+  methods: {
+    send: function () {
+      this.sendingInProgress = true;
+      this.success = false;
+      this.errors = {};
+      axios.post('/app/feature', this.feature).then(
+          response => {
+            this.sendingInProgress = false;
+            this.success = true;
+          }
+      ).catch(error => {
+        this.errors = error.response.data.errors;
+        this.sendingInProgress = false;
+        this.success = false;
+      })
+    }
   }
 }
 </script>

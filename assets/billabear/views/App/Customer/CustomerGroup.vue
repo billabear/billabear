@@ -15,9 +15,10 @@
   </div>
 </template>
 
-<script setup>
-// Component migrated from Options API to Composition API
-// This component requires no reactive data or methods, so script setup is minimal
+<script>
+export default {
+  name: "CustomerGroup"
+}
 </script>
 
 <style scoped>

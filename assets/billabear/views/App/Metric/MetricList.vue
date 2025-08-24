@@ -66,203 +66,184 @@
   </div>
 </template>
 
-<script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import currency from "currency.js"
-import { Dropdown, ListGroup, ListGroupItem } from "flowbite-vue"
-import { useApi } from '../../composables/useApi'
-import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue"
-import RoleOnlyView from "../../../components/app/RoleOnlyView.vue"
+<script>
+import axios from "axios";
+import InternalApp from "../InternalApp.vue";
+import currency from "currency.js";
+import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
+import FiltersSection from "../../../components/app/Ui/Section/FiltersSection.vue";
+import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
 
-// Router and route
-const route = useRoute()
-const router = useRouter()
-
-// API composable
-const { get } = useApi()
-
-// Component state
-const ready = ref(false)
-const loaded = ref(false)
-const has_error = ref(false)
-const metrics = ref([])
-const has_more = ref(false)
-const last_key = ref(null)
-const first_key = ref(null)
-const previous_last_key = ref(null)
-const next_page_in_progress = ref(false)
-const show_back = ref(false)
-const show_filter_menu = ref(false)
-const active_filters = ref([])
-const per_page = ref("10")
-
-// Filters configuration
-const filters = reactive({
-  name: {
-    label: 'app.metric.list.filter.name',
-    type: 'text',
-    value: null
-  }
-})
-
-// Currency formatting function
-const currencyFormat = (value) => {
-  return currency(value, { fromCents: true })
-}
-
-// Sync route query parameters to filters
-const syncQueryToFilters = () => {
-  Object.keys(filters).forEach(key => {
-    if (route.query[key] !== undefined) {
-      filters[key].value = route.query[key]
-      if (!isActive(key)) {
-        active_filters.value.push(key)
-      }
-    } else {
-      filters[key].value = null
-      const index = active_filters.value.indexOf(key)
-      if (index !== -1) {
-        active_filters.value.splice(index, 1)
+export default {
+  name: "MetricList",
+  components: {RoleOnlyView, FiltersSection, Dropdown, ListGroupItem, ListGroup, InternalApp},
+  data() {
+    return {
+      ready: false,
+      loaded: false,
+      has_error: false,
+      metrics: [],
+      has_more: false,
+      last_key: null,
+      first_key: null,
+      previous_last_key: null,
+      next_page_in_progress: false,
+      show_back: false,
+      show_filter_menu: false,
+      active_filters: [],
+      per_page: "10",
+      filters: {
+        name: {
+          label: 'app.metric.list.filter.name',
+          type: 'text',
+          value: null
+        },
       }
     }
-  })
-}
+  },
+  mounted() {
+    this.loadMetrics();
 
-// Build filter query object
-const buildFilterQuery = () => {
-  const queryVals = {}
-  
-  active_filters.value.forEach(filter => {
-    if (filters[filter].value !== null && filters[filter].value !== undefined) {
-      queryVals[filter] = filters[filter].value
+  },
+  watch: {
+    '$route.query': function (id) {
+      this.loadMetrics()
     }
-  })
+  },
+  methods: {
+    currency: function (value) {
+      return currency(value, {fromCents: true});
+    },
+    syncQueryToFilters: function () {
+      Object.keys(this.filters).forEach(key => {
+        if (this.$route.query[key] !== undefined) {
+          this.filters[key].value = this.$route.query[key];
+          if (!this.isActive(key)) {
+            this.active_filters.push(key);
+          }
+        } else {
+          this.filters[key].value = null;
+          if (this.active_filters.indexOf(key) !== -1) {
+            this.active_filters.splice(this.active_filters.indexOf(key), 1);
+          }
+        }
+      });
+    },
+    doSearch: function () {
+      const queryVals = this.buildFilterQuery();
+      this.$router.push({query: queryVals})
+    },
+    buildFilterQuery: function () {
+      const queryVals = {};
+      for (let i = 0; i < this.active_filters.length; i++) {
+        const filter = this.active_filters[i];
+        if (this.filters[filter].value !== null && this.filters[filter].value !== undefined) {
 
-  if (route.query.per_page !== undefined) {
-    queryVals.per_page = route.query.per_page
-    per_page.value = route.query.per_page
-  }
-
-  return queryVals
-}
-
-// Search functionality
-const doSearch = () => {
-  const queryVals = buildFilterQuery()
-  router.push({ query: queryVals })
-}
-
-// Pagination functions
-const nextPage = () => {
-  const queryVals = buildFilterQuery()
-  queryVals.last_key = last_key.value
-  router.push({ query: queryVals })
-}
-
-const prevPage = () => {
-  const queryVals = buildFilterQuery()
-  queryVals.first_key = first_key.value
-  router.push({ query: queryVals })
-}
-
-const changePerPage = (event) => {
-  const queryVals = buildFilterQuery()
-  queryVals.per_page = event.target.value
-  per_page.value = queryVals.per_page
-
-  if (route.query.last_key !== undefined) {
-    queryVals.last_key = route.query.last_key
-  } else if (route.query.first_key !== undefined) {
-    queryVals.first_key = route.query.first_key
-  }
-
-  router.push({ query: queryVals })
-}
-
-// Load metrics data
-const loadMetrics = async () => {
-  try {
-    syncQueryToFilters()
-    let mode = 'normal'
-    let urlString = '/app/metric/list?'
-
-    if (route.query.last_key !== undefined) {
-      urlString += '&last_key=' + encodeURIComponent(route.query.last_key)
-      show_back.value = true
-      mode = 'normal'
-    } else if (route.query.first_key !== undefined) {
-      urlString += '&first_key=' + encodeURIComponent(route.query.first_key)
-      has_more.value = true
-      mode = 'first_key'
-    }
-
-    if (route.query.per_page !== undefined) {
-      urlString += '&per_page=' + route.query.per_page
-    }
-
-    Object.keys(filters).forEach(key => {
-      if (route.query[key] !== undefined) {
-        urlString += '&' + key + '=' + encodeURIComponent(route.query[key])
+          queryVals[filter] = this.filters[filter].value;
+        }
       }
-    })
 
-    loaded.value = false
-    const response = await get(urlString)
+      if (this.$route.query.per_page !== undefined) {
+        queryVals.per_page = this.$route.query.per_page;
+        this.per_page = this.$route.query.per_page;
+      }
 
-    metrics.value = response.data.data
-    if (mode === 'normal') {
-      has_more.value = response.data.has_more
-    } else {
-      show_back.value = response.data.has_more
-      has_more.value = true
+      return queryVals;
+    },
+    nextPage: function () {
+
+      const queryVals = this.buildFilterQuery();
+      queryVals.last_key = this.last_key;
+      this.$router.push({query: queryVals})
+    },
+    prevPage: function () {
+      const queryVals = this.buildFilterQuery();
+      queryVals.first_key = this.first_key;
+      this.$router.push({query: queryVals})
+    },
+    changePerPage: function ($event) {
+      const queryVals = this.buildFilterQuery();
+      queryVals.per_page = $event.target.value;
+      this.per_page = queryVals.per_page;
+
+      if (this.$route.query.last_key !== undefined) {
+        queryVals.last_key = this.$route.query.last_key;
+      } else if (this.$route.query.first_key !== undefined) {
+        queryVals.first_key = this.$route.query.first_key;
+      }
+
+      this.$router.push({query: queryVals});
+    },
+    loadMetrics: function () {
+      this.syncQueryToFilters();
+      const mode = 'normal';
+      let urlString = '/app/metric/list?';
+
+      if (this.$route.query.last_key !== undefined) {
+        urlString = urlString + '&last_key=' + encodeURIComponent(this.$route.query.last_key);
+        this.show_back = true;
+        mode = 'normal';
+      } else if (this.$route.query.first_key !== undefined) {
+        urlString = urlString + '&first_key=' + encodeURIComponent(this.$route.query.first_key);
+        this.has_more = true;
+        mode = 'first_key';
+      }
+
+      if (this.$route.query.per_page !== undefined) {
+        urlString = urlString + '&per_page=' + this.$route.query.per_page;
+      }
+
+      Object.keys(this.filters).forEach(key => {
+        if (this.$route.query[key] !== undefined) {
+          urlString = urlString + '&' + key + '=' + encodeURIComponent(this.$route.query[key]);
+        }
+      });
+
+      this.loaded = false;
+      axios.get(urlString).then(response => {
+
+        this.metrics = response.data.data;
+        if (mode === 'normal') {
+          this.has_more = response.data.has_more;
+        } else {
+          this.show_back = response.data.has_more;
+          this.has_more = true;
+        }
+        this.last_key = response.data.last_key;
+        this.first_key = response.data.first_key;
+        this.ready = true;
+        this.loaded = true;
+      }).catch(error => {
+        this.has_error = true;
+      })
+
+    },
+    toogle: function (key) {
+      const newFilters = [];
+      let found = false;
+      for (let i = 0; i < this.active_filters.length; i++) {
+        if (this.active_filters[i] !== key) {
+
+          newFilters.push(this.active_filters[i]);
+        } else {
+          found = true;
+        }
+      }
+      if (!found) {
+        newFilters.push(key);
+      }
+      this.active_filters = newFilters;
+    },
+    isActive: function (key) {
+      for (let i = 0; i < this.active_filters.length; i++) {
+        if (this.active_filters[i] === key) {
+          return true;
+        }
+      }
+      return false;
     }
-    
-    last_key.value = response.data.last_key
-    first_key.value = response.data.first_key
-    ready.value = true
-    loaded.value = true
-  } catch (error) {
-    has_error.value = true
   }
 }
-
-// Filter toggle functionality
-const toggle = (key) => {
-  const index = active_filters.value.indexOf(key)
-  if (index === -1) {
-    active_filters.value.push(key)
-  } else {
-    active_filters.value.splice(index, 1)
-  }
-}
-
-// Check if filter is active
-const isActive = (key) => {
-  return active_filters.value.includes(key)
-}
-
-// Lifecycle hooks
-onMounted(() => {
-  loadMetrics()
-})
-
-// Watch for route query changes
-watch(() => route.query, () => {
-  loadMetrics()
-})
-
-// Define exposed functions for the template (fixing typo in original)
-defineExpose({
-  currencyFormat,
-  loadMetrics,
-  nextPage,
-  prevPage,
-  changePerPage,
-  doSearch,
-  toggle,
-  isActive
-})
 </script>
 
 <style scoped>

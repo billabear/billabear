@@ -32,37 +32,33 @@
   </div>
 </template>
 
-<script setup>
-import { useRouter } from 'vue-router'
-import { useForm } from '../../../composables/useForm'
+<script>
+import axios from "axios";
 
-// Router
-const router = useRouter()
-
-// Initial form data
-const initialWebhookData = {
-  name: '',
-  webhook: ''
-}
-
-// Form handling with useForm composable
-const {
-  formData: webhook,
-  isSubmitting: inProgress,
-  errors,
-  submitForm
-} = useForm(initialWebhookData)
-
-// Form submission
-const save = async () => {
-  try {
-    await submitForm('/app/integrations/slack/webhook/create', {
-      onSuccess: () => {
-        router.push({ name: 'app.system.integrations.slack.webhook' })
-      }
-    })
-  } catch (error) {
-    // Error handling is managed by the useForm composable
+export default {
+  name: "SlackWebhookCreate",
+  data() {
+    return {
+      webhook: {
+        name: '',
+        webhook: '',
+      },
+      errors: {},
+      inProgress: false
+    }
+  },
+  methods: {
+    save: function () {
+      this.inProgress = true;
+      this.errors={};
+      axios.post("/app/integrations/slack/webhook/create", this.webhook).then(response => {
+        this.inProgress = false;
+        this.$router.push({'name': 'app.system.integrations.slack.webhook'})
+      }).catch(error => {
+        this.inProgress = false;
+        this.errors = error.response.data.errors;
+      })
+    }
   }
 }
 </script>

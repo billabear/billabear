@@ -86,58 +86,49 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { Button, Input } from "flowbite-vue"
-import { useForm } from '../../composables/useForm'
-import PageTitle from "../../../components/app/Ui/Typography/PageTitle.vue"
+<script>
+import PageTitle from "../../../components/app/Ui/Typography/PageTitle.vue";
+import {Button, Input} from "flowbite-vue";
+import axios from "axios";
 
-// Router
-const router = useRouter()
-
-// Initial form data
-const initialMetricData = {
-  aggregation_method: 'count',
-  event_ingestion: 'real_time',
-  filters: [],
-  name: null,
-  code: null,
-  aggregation_property: null
-}
-
-// Form handling with useForm composable
-const {
-  formData: metric,
-  isSubmitting: sending,
-  errors,
-  submitForm
-} = useForm(initialMetricData)
-
-// Computed property for conditional field display
-const showAggregationProperty = computed(() => {
-  return !(metric.aggregation_method === 'count' || metric.aggregation_method === 'sum')
-})
-
-// Filter management functions
-const addFilter = () => {
-  metric.filters.push({ name: '', value: '', type: 'inclusive' })
-}
-
-const removeFilter = (index) => {
-  metric.filters.splice(index, 1)
-}
-
-// Form submission
-const send = async () => {
-  try {
-    await submitForm('/app/metric', {
-      onSuccess: (response) => {
-        router.push({ name: 'app.metric.view', params: { id: response.data.id } })
+export default {
+  name: "MetricCreate",
+  components: {Button, Input, PageTitle},
+  data() {
+    return {
+      sending: false,
+      errors: {},
+      metric: {
+        aggregation_method: 'count',
+        event_ingestion: 'real_time',
+        filters: []
       }
-    })
-  } catch (error) {
-    // Error handling is managed by the useForm composable
+    }
+  },
+  computed: {
+    showAggregationProperty: function() {
+       return !(this.metric.aggregation_method === 'count' || this.metric.aggregation_method === 'sum');
+    }
+  },
+  methods: {
+    addFilter: function() {
+      this.metric.filters.push({});
+    },
+    removeFilter: function(key) {
+      this.metric.filters.splice(key, 1)
+    },
+    send: function() {
+      this.errors = {};
+      this.sending = true;
+      axios.post('/app/metric', this.metric).then(response => {
+        this.$router.push({'name': 'app.metric.view', params: {id: response.data.id}})
+      }).catch(error => {
+        if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
+          this.errors = error.response.data.errors;
+        }
+        this.sending = false;
+      })
+    }
   }
 }
 </script>
