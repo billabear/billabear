@@ -199,9 +199,7 @@ docker compose up -d
 
 ### Managed Cloud Hosting
 
-You can get managed cloud hosting at https://billabear.com. 
-
-The managed cloud hosted version gets updates on a regular basis while the open version on GitHub gets a new feature release every 6 months.
+Currently, there is no managed cloud hosting option if you're interested in it or want to offer managed cloud hosting then reach out to sales@billabear.com
 
 ### Development
 
