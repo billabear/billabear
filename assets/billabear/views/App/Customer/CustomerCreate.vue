@@ -215,87 +215,110 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
-import {mapActions} from "vuex";
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useForm } from '../../composables/useForm'
+import { useApi } from '../../composables/useApi'
 
-export default {
-  name: "CustomerCreate",
-  data() {
-    return {
-      ready: false,
-      brands: [],
-      customer: {
-        email: null,
-        brand: 'default',
-        address: {
-          country: null,
-        },
-        reference: null,
-        external_reference: null,
-        tax_number: null,
-        digital_tax_rate: null,
-        standard_tax_rate: null,
-      },
-      metadata: [],
-      sendingInProgress: false,
-      showAdvance: false,
-      success: false,
-      failed: false,
-      errors: {
-      }
-    }
+// Router and store
+const router = useRouter()
+const store = useStore()
+
+// Component state
+const ready = ref(false)
+const brands = ref([])
+const showAdvance = ref(false)
+
+// Initialize form data with complete customer structure
+const initialCustomerData = {
+  email: null,
+  brand: 'default',
+  address: {
+    country: null,
+    street_line_one: null,
+    street_line_two: null,
+    city: null,
+    region: null,
+    postcode: null
   },
-  mounted() {
-    axios.get('/app/customer/create').then(response => {
-      this.brands = response.data.brands;
-    })
-  },
-  methods: {
-    ...mapActions('onboardingStore', ['customerAdded']),
-    addMetadata: function () {
-      this.metadata.push({key: '', value: ''});
-    },
-    removeMetadata: function (key) {
-      this.metadata.splice(key, 1)
-    },
-    send: function () {
-      this.sendingInProgress = true;
-      this.success = false;
-      this.failed = false;
-      this.errors = {};
-      // Make sure empty strings aren't sent
-      if (this.customer.digital_tax_rate == "") {
-        this.customer.digital_tax_rate = null;
-      }
+  reference: null,
+  external_reference: null,
+  tax_number: null,
+  digital_tax_rate: null,
+  standard_tax_rate: null,
+  type: null,
+  locale: null,
+  billing_type: null,
+  invoice_format: null
+}
 
-      if (this.customer.standard_tax_rate == "") {
-        this.customer.standard_tax_rate = null;
-      }
-      const payload = this.customer;
-      let metadata = {};
-      for (let i = 0; i < this.metadata.length; i++) {
-        metadata[this.metadata[i].key] = this.metadata[i].value;
-      }
-      payload.metadata = metadata;
-      axios.post('/app/customer', payload).then(
-          response => {
-            this.sendingInProgress = false;
-            this.success = true;
-            this.customerAdded();
+// Form handling with custom data transformation
+const {
+  formData: customer,
+  isSubmitting: sendingInProgress,
+  success,
+  failed,
+  errors,
+  submitForm
+} = useForm(initialCustomerData)
 
-            const id = response.data.id;
-            this.$router.push({name: 'app.customer.view', params: {id: id}})
+// Metadata management
+const metadata = ref([])
+
+const addMetadata = () => {
+  metadata.value.push({ key: '', value: '' })
+}
+
+const removeMetadata = (index) => {
+  metadata.value.splice(index, 1)
+}
+
+// API for loading brands
+const { get } = useApi()
+
+// Load brands on component mount
+onMounted(async () => {
+  try {
+    const response = await get('/app/customer/create')
+    brands.value = response.data.brands
+    ready.value = true
+  } catch (error) {
+    console.error('Failed to load brands:', error)
+  }
+})
+
+// Form submission with metadata transformation
+const send = async () => {
+  try {
+    await submitForm('/app/customer', {
+      cleanEmpty: true,
+      transformData: (data) => {
+        // Convert metadata array to object
+        const metadataObj = {}
+        metadata.value.forEach(item => {
+          if (item.key && item.value) {
+            metadataObj[item.key] = item.value
           }
-      ).catch(error => {
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.errors = error.response.data.errors;
+        })
+        
+        return {
+          ...data,
+          metadata: metadataObj
         }
-        this.sendingInProgress = false;
-        this.success = false;
-        this.failed = true;
-      })
-    }
+      },
+      onSuccess: (response) => {
+        // Call Vuex action
+        store.dispatch('onboardingStore/customerAdded')
+        
+        // Navigate to customer view
+        const id = response.data.id
+        router.push({ name: 'app.customer.view', params: { id } })
+      }
+    })
+  } catch (error) {
+    // Error handling is managed by the useForm composable
   }
 }
 </script>
