@@ -3,6 +3,6 @@ function redirectToCheckout(sessionId) {
     window.location = sessionId;
 }
 
-export const transactioncloudservice = {
+export const transactoncloudservice = {
     redirectToCheckout,
 }
