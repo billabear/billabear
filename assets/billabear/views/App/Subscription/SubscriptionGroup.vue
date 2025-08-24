@@ -17,13 +17,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import RoleOnlyView from "../../../components/app/RoleOnlyView.vue";
-
-export default {
-  name: "SubscriptionGroup",
-  components: {RoleOnlyView}
-}
 </script>
 
 <style scoped>
