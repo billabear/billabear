@@ -24,6 +24,8 @@
     @apply text-xl mb-3 font-medium;
 }
 
+
+
 .detail-list div:nth-child(even) {
     @apply  py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0;
 }
@@ -102,6 +104,7 @@ a {
 .form-field-error {
     @apply text-red-500 italic py-1;
 }
+
 
 .error-field {
     @apply border border-red-500 font-bold text-red-500;
