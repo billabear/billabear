@@ -5,28 +5,26 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ProgressBar",
-  props: {
-    total: {
-      type: Number,
-      required: true,
-    },
-    current:  {
-      type: Number,
-      required: true,
-    }
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+  total: {
+    type: Number,
+    required: true,
   },
-  computed: {
-    percentage: function () {
-      if (this.current > this.total) {
-        return '100%';
-      }
-      return (this.current / this.total * 100) + '%';
-    }
+  current: {
+    type: Number,
+    required: true,
   }
-}
+});
+
+const percentage = computed(() => {
+  if (props.current > props.total) {
+    return '100%';
+  }
+  return (props.current / props.total * 100) + '%';
+});
 </script>
 
 <style scoped>
