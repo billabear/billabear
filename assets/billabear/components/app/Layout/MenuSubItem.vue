@@ -4,10 +4,8 @@
   </li>
 </template>
 
-<script>
-export default {
-  name: "MenuSubItem"
-}
+<script setup>
+// Simple template-only component migrated from Options API to Composition API
 </script>
 
 <style scoped>

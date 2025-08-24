@@ -16,10 +16,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "SubscriptionPlanGroup"
-}
+<script setup>
 </script>
 
 <style scoped>
