@@ -3,7 +3,7 @@
 </p>
 
 <p align="center" style="text-align: center">
-  <strong>BillaBear - The Best Self-Hostable Billing System</strong>
+  <strong>BillaBear - The Best Self-Hostable Billing System.</strong>
 </p>
 
 BillaBear is a standalone Subscription Management and Billing System that integrates with Stripe. It provides a REST API
