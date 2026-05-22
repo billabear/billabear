@@ -1,5 +1,6 @@
 <p align="center">
-  <img width="450px" src="https://ha-static-data.s3.eu-central-1.amazonaws.com/github-readme-logo-v2.png">
+  <img width="450px" src="public/images/public-logo.png
+">
 </p>
 
 <p align="center" style="text-align: center">
