@@ -86,20 +86,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -146,21 +148,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-            sudo swapoff -a
-            sudo sysctl -w vm.swappiness=1
-            sudo sysctl -w fs.file-max=262144
-            sudo sysctl -w vm.max_map_count=262144
-            docker network create elastic
-            docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-            docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
-
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
@@ -205,20 +208,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -265,20 +270,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -327,19 +334,22 @@ jobs:
       redis:
         image: redis
 
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
@@ -386,20 +396,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -450,20 +462,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -514,20 +528,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -578,20 +594,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -649,20 +667,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -713,20 +733,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -778,19 +800,22 @@ jobs:
       redis:
         image: redis
 
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -841,20 +866,21 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
-
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
@@ -905,20 +931,22 @@ jobs:
           POSTGRES_PASSWORD: 'apppassword'
       redis:
         image: redis
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: false
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -s http://localhost:9200/_cat/health | grep -q green"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5  
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
         run: psql -h localhost -d parthenon_test -U appuser -f docker/database/init.sql
