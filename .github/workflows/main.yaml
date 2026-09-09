@@ -98,7 +98,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
@@ -158,7 +158,7 @@ jobs:
             sudo sysctl -w fs.file-max=262144
             sudo sysctl -w vm.max_map_count=262144
             docker network create elastic
-            docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+            docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
             docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
@@ -217,7 +217,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
@@ -277,7 +277,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
@@ -338,7 +338,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
@@ -398,7 +398,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -462,7 +462,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -526,7 +526,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -590,7 +590,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -661,7 +661,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -725,7 +725,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -789,7 +789,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -853,7 +853,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -917,7 +917,7 @@ jobs:
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
           docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
+          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:9.5.3 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
           docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Create all the databases
@@ -957,16 +957,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
-
       - name: Set Node.js 18.x
         uses: actions/setup-node@v3
         with:
@@ -1000,16 +990,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: 'Setup Elasticsearch'
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-          docker network create elastic
-          docker run -d --name=elasticsearch --network=elastic -p 9200:9200 -e discovery.type=single-node -e node.name=es docker.elastic.co/elasticsearch/elasticsearch:7.15.2 sh -c "./bin/elasticsearch-plugin install --batch ingest-attachment && /usr/local/bin/docker-entrypoint.sh"
-          docker run --rm --network=elastic curlimages/curl --max-time 120 --retry-max-time 120 --retry 120 --retry-delay 5 --retry-all-errors --show-error --silent http://elasticsearch:9200
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
