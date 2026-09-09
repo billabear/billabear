@@ -59,12 +59,6 @@ services:
   BillaBear\User\Form\UserSettings:
     # The form service that needs the UserInterface
     class: BillaBear\User\Form\UserSettings
-    arguments:
-        # Here we tell Symfony exactly what to inject for the $user argument
-        # We inject the current security user via the ExpressionLanguage.
-        # This requires the expression language provider to be set up.
-        $user: '@=service("security.token_storage").getToken().getUser()'
-
 
   BillaBear\Webhook\Outbound\WebhookDispatcherInterface: '@BillaBear\Webhook\Outbound\WebhookDispatcher'
 

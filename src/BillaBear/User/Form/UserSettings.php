@@ -21,13 +21,4 @@ class UserSettings extends SettingsType
         $builder->add('locale', TextType::class, ['label' => 'parthenon.user.form.profile.label.locale']);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            // Define the data class if necessary
-        ]);
-
-        $resolver->setRequired('user');
-        $resolver->setAllowedTypes('user', UserInterface::class);
-    }
 }
