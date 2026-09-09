@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { useForm } from '../../composables/useForm'
+import { useForm } from '../../../composables/useForm'
 
 // Initialize form with default feature data
 const initialData = {
