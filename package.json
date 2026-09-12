@@ -66,6 +66,7 @@
         "vue-moment-v3": "^4.1.0",
         "vue-router": "^4.1.5",
         "vue3-apexcharts": "^1.4.1",
-        "vuex": "^4.0.2"
+        "vuex": "^4.0.2",
+        "nanoid": "^5.1.16"
     }
 }
