@@ -44,6 +44,7 @@
         "@vue-stripe/vue-stripe": "^4.4.4",
         "@vue/test-utils": "^2.5.0",
         "@vuepic/vue-datepicker": "^4.3.0",
+        "flowbite-vue": "^0.4.0",
         "apexcharts": "^3.40.0",
         "autoprefixer": "^10.4.8",
         "axios": "^1.8.4",
