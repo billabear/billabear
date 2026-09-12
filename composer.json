@@ -48,7 +48,7 @@
         "symfony/yaml": "^7.2.0",
         "wildbit/postmark-php": "^4.0",
         "writecrow/country_code_converter": "^1.2",
-        "xeroapi/xero-php-oauth2": "^7.3",
+        "xeroapi/xero-php-oauth2": "^16.2.0",
         "zendesk/zendesk_api_client_php": "^4.0"
     },
     "require-dev": {
