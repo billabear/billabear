@@ -320,9 +320,8 @@ class AppContext implements Context
 
             if (intval($arg3) === $limit->getLimit()) {
                 return;
-            } else {
-                throw new \Exception(sprintf('Expected %d but got %d', $arg3, $limit->getLimit()));
             }
+            throw new \Exception(sprintf('Expected %d but got %d', $arg3, $limit->getLimit()));
         }
 
         throw new \Exception('No limit found');

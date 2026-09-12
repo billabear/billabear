@@ -175,9 +175,8 @@ class SubscriptionsContext implements Context
             if ($subscription['name'] === $arg1) {
                 if ($subscription['count'] == $count) {
                     return;
-                } else {
-                    throw new \Exception('subscription count found - '.$count);
                 }
+                throw new \Exception('subscription count found - '.$count);
             }
         }
         throw new \Exception('no subscription found');
@@ -198,9 +197,8 @@ class SubscriptionsContext implements Context
             if ('year' === $subscription['name']) {
                 if ($subscription['count'] == $count) {
                     return;
-                } else {
-                    throw new \Exception('schedules count found - '.$count);
                 }
+                throw new \Exception('schedules count found - '.$count);
             }
         }
         throw new \Exception('no schedules found');
@@ -221,9 +219,8 @@ class SubscriptionsContext implements Context
             if ('month' === $subscription['name']) {
                 if ($subscription['count'] == $count) {
                     return;
-                } else {
-                    throw new \Exception('schedules count found - '.$count);
                 }
+                throw new \Exception('schedules count found - '.$count);
             }
         }
         throw new \Exception('no schedules found');

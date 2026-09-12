@@ -125,9 +125,8 @@ class SubscriptionList extends AbstractFilterList
                         return Customer::BILLING_TYPE_CARD;
                     } elseif ('send_invoice' === $value) {
                         return Customer::BILLING_TYPE_INVOICE;
-                    } else {
-                        throw new \Exception('Invalid collection method');
                     }
+                    throw new \Exception('Invalid collection method');
                 },
             ],
             'status' => [

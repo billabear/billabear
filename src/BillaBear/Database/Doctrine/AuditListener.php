@@ -67,8 +67,8 @@ class AuditListener
             return (string) $value->getId();
         } elseif (is_object($value)) {
             return get_class($value);
-        } else {
-            return var_export($value, true);
         }
+
+        return var_export($value, true);
     }
 }

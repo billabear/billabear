@@ -43,9 +43,8 @@ class InvoiceContext implements Context
         foreach ($invoice->getLines() as $line) {
             if (20 == $line->getTaxPercentage()) {
                 return;
-            } else {
-                $rate = $line->getTaxPercentage();
             }
+            $rate = $line->getTaxPercentage();
         }
 
         throw new \Exception('Got rate - '.$rate);
@@ -93,9 +92,8 @@ class InvoiceContext implements Context
         foreach ($invoice->getLines() as $line) {
             if ($line->getTaxPercentage() == $expectedRate) {
                 return;
-            } else {
-                $rate = $line->getTaxPercentage();
             }
+            $rate = $line->getTaxPercentage();
         }
 
         throw new \Exception('Got rate - '.$rate);
@@ -119,9 +117,8 @@ class InvoiceContext implements Context
         foreach ($invoice->getLines() as $line) {
             if ('Digital Goods' === $line->getTaxType()->getName()) {
                 return;
-            } else {
-                $taxType = $line->getTaxType()->getName();
             }
+            $taxType = $line->getTaxType()->getName();
         }
 
         throw new \Exception('Got taxType - '.$taxType);
@@ -145,9 +142,8 @@ class InvoiceContext implements Context
         foreach ($invoice->getLines() as $line) {
             if ('Physical' === $line->getTaxType()->getName()) {
                 return;
-            } else {
-                $taxType = $line->getTaxType()->getName();
             }
+            $taxType = $line->getTaxType()->getName();
         }
 
         throw new \Exception('Got taxType - '.$taxType);
@@ -171,9 +167,8 @@ class InvoiceContext implements Context
         foreach ($invoice->getLines() as $line) {
             if ($line->getTaxCountry() == $expectedCountry) {
                 return;
-            } else {
-                $rate = $line->getTaxCountry();
             }
+            $rate = $line->getTaxCountry();
         }
 
         throw new \Exception('Got country - '.$rate);
@@ -382,9 +377,8 @@ class InvoiceContext implements Context
         foreach ($invoice->getLines() as $line) {
             if (0.0 === $line->getTaxPercentage()) {
                 return;
-            } else {
-                $rate = $line->getTaxPercentage();
             }
+            $rate = $line->getTaxPercentage();
         }
 
         throw new \Exception('Got rate - '.$rate);

@@ -209,17 +209,17 @@ class PriceDataMapper
         if (!empty($price->getTiers())) {
             if (TierMode::GRADUATED === $price->getTierMode()) {
                 return PriceType::TIERED_GRADUATED;
-            } else {
-                return PriceType::TIERED_VOLUME;
             }
+
+            return PriceType::TIERED_VOLUME;
         }
 
         if ($price->getUsageType()) {
             if (!$price->getPackageAmount()) {
                 return PriceType::UNIT;
-            } else {
-                return PriceType::PACKAGE;
             }
+
+            return PriceType::PACKAGE;
         }
 
         return PriceType::FIXED_PRICE;
