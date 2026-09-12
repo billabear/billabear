@@ -1,6 +1,5 @@
 <p align="center">
-  <img width="450px" src="public/images/public-logo.png
-">
+  <img width="450px" src="https://raw.githubusercontent.com/billabear/billabear/refs/heads/main/public/images/public-logo.png" alt="BillaBear" >
 </p>
 
 <p align="center" style="text-align: center">

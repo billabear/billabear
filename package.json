@@ -21,8 +21,8 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress",
-      "test": "vitest run",
-      "test:watch": "vitest"
+        "test": "vitest run",
+        "test:watch": "vitest"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.2.0",
