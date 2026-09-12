@@ -40,7 +40,7 @@
         "@vue-flow/core": "^1.27.1",
         "@vue-flow/node-toolbar": "^1.1.0",
         "@vue-stripe/vue-stripe": "^4.4.4",
-        "@vue/test-utils": "^2.0.2",
+        "@vue/test-utils": "^2.5.0",
         "@vuepic/vue-datepicker": "^4.3.0",
         "apexcharts": "^3.40.0",
         "autoprefixer": "^10.4.8",
