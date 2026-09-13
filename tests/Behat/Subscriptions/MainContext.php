@@ -166,7 +166,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When I add :arg2 seat to the suscription for :arg1
+     * @When I add :arg2 seat to the subscription for :arg1
      */
     public function iAddSeatToTheSuscriptionFor($seatNumber, $customerEmail)
     {
@@ -176,7 +176,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When I set the seat number to :arg2 for the suscription for :arg1 in the APP
+     * @When I set the seat number to :arg2 for the subscription for :arg1 in the APP
      */
     public function iSetTheSeatNumberToForTheSuscriptionForInTheApp($seatNumber, $customerEmail)
     {
@@ -186,7 +186,7 @@ class MainContext implements Context
     }
 
     /**
-     * @When I remove :arg2 seat to the suscription for :arg1
+     * @When I remove :arg2 seat to the subscription for :arg1
      */
     public function iRemoveSeatToTheSuscriptionFor($seatNumber, $customerEmail)
     {

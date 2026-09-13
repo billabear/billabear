@@ -35,7 +35,7 @@ Feature: Create per seat API
     And the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Seats |
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org | 3     |
-    When I add 1 seat to the suscription for "customer.one@example.org"
+    When I add 1 seat to the subscription for "customer.one@example.org"
     Then the subscription for "customer.one@example.org" has 4 seats
     And there is a subscription modification to add 1 seats to the subscription for "customer.one@example.org"
 
@@ -48,6 +48,6 @@ Feature: Create per seat API
     And the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Seats |
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org | 3     |
-    When I add 5 seat to the suscription for "customer.one@example.org"
+    When I add 5 seat to the subscription for "customer.one@example.org"
     Then the subscription for "customer.one@example.org" has 8 seats
     And there is a subscription modification to add 5 seats to the subscription for "customer.one@example.org"

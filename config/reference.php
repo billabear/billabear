@@ -1,10 +1,6 @@
 <?php
 
-/*
- * Copyright Iain Cambridge 2023-2026.
- *
- * Use of this software is governed by the Fair Core License, Version 1.0, ALv2 Future License included in the LICENSE.md file and at https://github.com/BillaBear/billabear/blob/main/LICENSE.
- */
+// This file is auto-generated and is for apps only. Bundles SHOULD NOT rely on its content.
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 

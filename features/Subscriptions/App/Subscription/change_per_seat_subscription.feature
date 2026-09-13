@@ -34,7 +34,7 @@ Feature: Change per seat subscription
     And the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Seats |
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org | 3     |
-    When I set the seat number to 4 for the suscription for "customer.one@example.org" in the APP
+    When I set the seat number to 4 for the subscription for "customer.one@example.org" in the APP
     Then the subscription for "customer.one@example.org" has 4 seats
     And there is a subscription modification to add 1 seats to the subscription for "customer.one@example.org"
 
@@ -47,6 +47,6 @@ Feature: Change per seat subscription
     And the following subscriptions exist:
       | Subscription Plan | Price Amount | Price Currency | Price Schedule | Customer                 | Seats |
       | Test Plan         | 3000         | USD            | month          | customer.one@example.org | 3     |
-    When I set the seat number to 1 for the suscription for "customer.one@example.org" in the APP
+    When I set the seat number to 1 for the subscription for "customer.one@example.org" in the APP
     Then the subscription for "customer.one@example.org" has 1 seats
     And there is a subscription modification to remove 2 seats to the subscription for "customer.one@example.org"

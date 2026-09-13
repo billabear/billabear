@@ -101,24 +101,6 @@ class ThresholdManager
         return $money;
     }
 
-    public function getTransactionNumber(Country $country, ?\DateTime $when = null): int
-    {
-        if (!$when) {
-            $when = new \DateTime('-12 months');
-        }
-        $defaultCurrency = $country->getCurrency();
-        $money = Money::zero($defaultCurrency);
-        $amounts = $this->paymentRepository->getPaymentsAmountForCountrySinceDate($country->getIsoCode(), $when);
-
-        foreach ($amounts as $amountData) {
-            $originalFee = Money::ofMinor($amountData['amount'], $amountData['currency']);
-            $amountToAdd = $this->currencyConverter->convert($originalFee, $defaultCurrency, RoundingMode::HALF_DOWN);
-            $money = $money->plus($amountToAdd, RoundingMode::HALF_DOWN);
-        }
-
-        return $money;
-    }
-
     public function isThresholdReachedForState(string $countryCode, State $state, ?Money $money): bool
     {
         if (!$money) {

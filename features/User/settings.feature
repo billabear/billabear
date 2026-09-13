@@ -15,7 +15,7 @@ Feature: User Settings
     When I edit my settings with the name "Test User 2"
     Then the user "sally.brown@example.org" will have the name "Test User 2"
 
-  Scenario: User not git logged in
+  Scenario: User not logged in
     Given I am not logged in
     When I visit the settings page
     Then I will be on the login page
